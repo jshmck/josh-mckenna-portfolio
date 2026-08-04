@@ -52,14 +52,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${archivo.variable} ${archivoBlack.variable} ${spaceMono.variable} h-full`}
     >
-      <head>
-        {/* Scroll reveals are hidden by default in CSS. Without JS the observer
-            never fires, so un-hide them declaratively rather than leaving
-            content invisible. */}
-        <noscript>
-          {`<style>[data-reveal]{opacity:1 !important;transform:none !important}</style>`}
-        </noscript>
-      </head>
       <body className="flex min-h-full flex-col">
         <a
           href="#main"

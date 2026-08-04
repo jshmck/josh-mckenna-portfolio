@@ -138,9 +138,9 @@
 }
 
 /* Scroll reveal — driven by the data attribute the Reveal component flips.
-   Hidden is the CSS default so there is no flash of visible content, and both
-   the reduced-motion query and the <noscript> override in the root layout
-   un-hide declaratively. Content can never be stranded invisible. */
+   Hidden is the CSS default so there is no flash of visible content. Both
+   escape hatches below are pure CSS, so content can never be stranded
+   invisible and no markup has to be injected to rescue it. */
 [data-reveal] {
   opacity: 0;
   transform: translateY(24px);
@@ -155,6 +155,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* No JS means the IntersectionObserver never fires, so nothing would ever be
+   revealed. `scripting: none` asks that question in CSS directly — no
+   <noscript> block and no injected markup. */
+@media (scripting: none) {
   [data-reveal] {
     opacity: 1;
     transform: none;
