@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { sequenceStates } from "@/lib/about";
+import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 /**
  * The pinned "decomposing illustration" section from the About wireframe.
@@ -35,15 +36,14 @@ export function DecomposeSequence() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const fragmentRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [stage, setStage] = useState(0);
-  const [animated, setAnimated] = useState(false);
+
+  /* Drives layout, not just whether a listener is attached, so it has to be a
+     rendered value rather than a check inside the effect. */
+  const animated = !useReducedMotion();
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    setAnimated(true);
+    if (!wrapper || !animated) return;
 
     let raf = 0;
     let queued = false;
@@ -99,7 +99,7 @@ export function DecomposeSequence() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [animated]);
 
   return (
     <section

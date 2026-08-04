@@ -137,13 +137,26 @@
   }
 }
 
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
+/* Scroll reveal — driven by the data attribute the Reveal component flips.
+   Hidden is the CSS default so there is no flash of visible content, and both
+   the reduced-motion query and the <noscript> override in the root layout
+   un-hide declaratively. Content can never be stranded invisible. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 700ms var(--ease-drift),
+    transform 700ms var(--ease-drift);
+}
+
+[data-reveal="shown"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
