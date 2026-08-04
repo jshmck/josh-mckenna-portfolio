@@ -18,7 +18,7 @@ export const siteConfig = {
   tagline: "Drawings that misbehave.",
   description:
     "Josh McKenna is an illustrator drawing loud, friendly, slightly queer characters for magazines, record sleeves and packaging.",
-  email: "hello@josh.com",
+  email: "hello@joshmckenna.com",
   instagram: {
     handle: "@josh",
     url: "https://instagram.com/josh",
