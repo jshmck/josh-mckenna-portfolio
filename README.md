@@ -7,6 +7,10 @@ in Figma.
 Next.js 16 · React 19 · TypeScript · Tailwind v4. Fully static — all 17 routes
 prerender, so it deploys anywhere and loads fast on a phone.
 
+> **Josh — start here:**
+> [#17 — end-to-end launch checklist](https://github.com/opensesh/josh-mckenna-portfolio/issues/17).
+> It maps everything left to do, in the order worth doing it.
+
 ## Getting started
 
 ```bash
