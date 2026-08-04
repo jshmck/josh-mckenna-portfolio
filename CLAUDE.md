@@ -2,9 +2,15 @@
 
 # Josh McKenna — portfolio
 
-A static Next.js 16 portfolio for illustrator Josh McKenna, built from the
-"Josh — Illustrator" wireframes in Figma
-([node 17:125](https://www.figma.com/design/eEQKXqithQ17p0iYdEWwvL/Website-Ref?node-id=17-125)).
+A static Next.js 16 portfolio for illustrator Josh McKenna.
+
+**Design source of truth:**
+[Website-Ref in Figma](https://www.figma.com/design/eEQKXqithQ17p0iYdEWwvL/Website-Ref?node-id=0-1)
+— the built site comes from the
+["Josh — Illustrator" wireframes, node 17:125](https://www.figma.com/design/eEQKXqithQ17p0iYdEWwvL/Website-Ref?node-id=17-125).
+The red annotations on those frames are implementation contracts, not commentary.
+When code and wireframe disagree about a behaviour, check the annotation before
+assuming the code is right.
 
 Six routes: Home, Work, Work/[slug], About, Contact, Shop. Every one prerenders
 static — there is no backend, no database and no API route. Keep it that way

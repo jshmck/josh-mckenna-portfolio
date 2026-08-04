@@ -1,7 +1,10 @@
 # Design system
 
-Everything here is derived from the "Josh — Illustrator" wireframes in Figma
-([node 17:125](https://www.figma.com/design/eEQKXqithQ17p0iYdEWwvL/Website-Ref?node-id=17-125)).
+Everything here is derived from the Figma file
+**[Website-Ref](https://www.figma.com/design/eEQKXqithQ17p0iYdEWwvL/Website-Ref?node-id=0-1)**
+— specifically the
+["Josh — Illustrator" wireframes at node 17:125](https://www.figma.com/design/eEQKXqithQ17p0iYdEWwvL/Website-Ref?node-id=17-125).
+
 Source of truth in code: the `@theme` block in [app/globals.css](app/globals.css).
 
 ## Colour
