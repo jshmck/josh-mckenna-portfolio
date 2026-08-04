@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================================================================
+   Design tokens — derived from Figma "Josh — Illustrator" (node 17:125)
+   Raw hex lives ONLY in this block. Everywhere else, use the mapped
+   utilities: bg-canvas, text-ink, text-ink-muted, border-hairline, etc.
+   ========================================================================== */
+
+@theme {
+  /* Surfaces */
+  --color-canvas: #ffffff;
+  --color-hairline: #e3dfd5;
+
+  /* Ink */
+  --color-ink: #141414;
+  --color-ink-muted: #8c877e;
+
+  /* Accents */
+  --color-accent: #ff3b2f; /* primary path — hire / commission */
+  --color-highlight: #ffb600; /* per-project accent wash */
+
+  /* Illustration placeholders — swap for real artwork as Josh delivers it */
+  --color-placeholder: #e3dfd5; /* ambient / decorative */
+  --color-placeholder-strong: #d8d3c7; /* navigable objects */
+
+  /* Type families.
+     "BBH Hegarty" is the licensed display face from the Figma file. It is not
+     a webfont we can redistribute, so it leads the stack and Archivo Black
+     stands in until a licensed woff2 is dropped into app/fonts/.
+     See DESIGN.md → Typography. */
+  --font-display: "BBH Hegarty", var(--font-archivo-black), system-ui, sans-serif;
+  --font-body: var(--font-archivo), system-ui, sans-serif;
+  --font-mono: var(--font-space-mono), ui-monospace, monospace;
+
+  /* Page rhythm — 44px page gutter, 1344px frame from the wireframes */
+  --spacing-gutter: 2.75rem;
+  --container-frame: 84rem;
+
+  /* Motion */
+  --ease-drift: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ==========================================================================
+   Base
+   ========================================================================== */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Josh's work is the loudest thing on the page — the focus ring should be
+     unmistakable without competing with it. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-canvas);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ==========================================================================
+   Semantic type utilities
+   The wireframes reuse four text roles relentlessly. Naming them here keeps
+   page markup readable and stops the scale from drifting.
+   ========================================================================== */
+
+/* 132px display at 1344px, fluid down to phones. */
+@utility type-display {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 9.8vw, 8.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+@utility type-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* The uppercase mono label — nav links, eyebrows, meta keys, footer. */
+@utility type-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+@utility type-lede {
+  font-family: var(--font-body);
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Motion
+   The hero objects, marquee and scroll reveals are all decorative motion.
+   One global switch turns every one of them off.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

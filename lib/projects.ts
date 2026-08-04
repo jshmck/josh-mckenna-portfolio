@@ -1,0 +1,338 @@
+/**
+ * Project content layer.
+ *
+ * This is deliberately a plain typed array rather than a CMS. It keeps the
+ * whole site statically renderable and lets Josh add a piece by copying an
+ * object. When the list outgrows a single file, swap the module for a CMS
+ * client and keep these exported function signatures — every page consumes
+ * projects through the helpers at the bottom, never the array directly.
+ */
+
+export const PROJECT_CATEGORIES = [
+  "Editorial",
+  "Character",
+  "Packaging",
+  "Mural",
+  "Personal",
+] as const;
+
+export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
+
+/** Aspect ratios available to gallery images, keyed to CSS aspect-ratio. */
+export type ImageRatio = "1/1" | "4/5" | "3/4" | "5/4" | "16/10";
+
+export type ProjectImage = {
+  ratio: ImageRatio;
+  /** Describes the artwork for screen readers and as the visible caption. */
+  alt: string;
+  /** Real artwork path under /public once Josh delivers files. */
+  src?: string;
+};
+
+export type Credit = {
+  role: string;
+  name: string;
+};
+
+export type Project = {
+  slug: string;
+  title: string;
+  client: string;
+  year: number;
+  discipline: string;
+  deliverables: string;
+  category: ProjectCategory;
+  /**
+   * Per-project accent wash behind the title block. Defaults to the house
+   * yellow; override to let a piece bring its own colour.
+   */
+  accent?: string;
+  /** One line under the card title in grids. */
+  summary: string;
+  /** Caption printed under the hero image. */
+  heroCaption: string;
+  /** "The brief, in Josh's words." — one paragraph per entry. */
+  brief: string[];
+  credits: Credit[];
+  hero: ProjectImage;
+  /** Gallery below the write-up. First two render as a two-up row. */
+  gallery: ProjectImage[];
+  /** Surfaced in the homepage "Selected work" band. */
+  featured?: boolean;
+};
+
+export const projects: Project[] = [
+  {
+    slug: "la-pride",
+    title: "L.A. Pride",
+    client: "City of Los Angeles",
+    year: 2026,
+    discipline: "Editorial illustration",
+    deliverables: "6 spot illos · 1 cover",
+    category: "Editorial",
+    accent: "#ffb600",
+    summary: "A parade that wouldn't stay inside the margins.",
+    heroCaption:
+      "The cover illustration, printed at 2m across the festival's main gate.",
+    brief: [
+      "The city wanted a cover that felt like the parade sounds — loud, warm, and slightly out of control. The first pass was too tidy, so I threw out the grid and let the characters overlap until the whole thing read as one crowd instead of six figures.",
+      "Everything was drawn at final size in brush pen, then coloured flat. No gradients, no texture overlays. The only rule was that no two neighbouring characters could share a skin tone.",
+    ],
+    credits: [
+      { role: "Art direction", name: "Maya Okonkwo" },
+      { role: "Words", name: "Dani Reyes" },
+      { role: "Photography", name: "Sam Ellery" },
+      { role: "Printed by", name: "Blackline Studio" },
+    ],
+    hero: { ratio: "16/10", alt: "L.A. Pride cover illustration" },
+    gallery: [
+      { ratio: "4/5", alt: "Spot illustration — the marching band" },
+      { ratio: "4/5", alt: "Spot illustration — the sound system" },
+      { ratio: "16/10", alt: "The cover in place on the festival gate" },
+    ],
+    featured: true,
+  },
+  {
+    slug: "hot-sauce-dynasty",
+    title: "Hot Sauce Dynasty",
+    client: "Dynasty Foods",
+    year: 2026,
+    discipline: "Packaging illustration",
+    deliverables: "5 labels · 1 outer carton",
+    category: "Packaging",
+    accent: "#ff3b2f",
+    summary: "Five sauces, five characters, escalating levels of regret.",
+    heroCaption:
+      "The full range. Heat level is communicated entirely by how worried the character looks.",
+    brief: [
+      "A range of five sauces needed to be legible from three metres away on a shelf and still reward someone holding the bottle. I gave each heat level its own character and let their expression carry the Scoville rating — no flame icons, no numbers.",
+      "The label die-cut wraps the character's arm around the bottle, so the artwork only resolves once it's on glass. That meant drawing to the flat and checking every revision on a mock-up.",
+    ],
+    credits: [
+      { role: "Art direction", name: "Josh McKenna" },
+      { role: "Structural design", name: "Ferran Vidal" },
+      { role: "Photography", name: "Sam Ellery" },
+      { role: "Printed by", name: "Kesler Label Co." },
+    ],
+    hero: { ratio: "16/10", alt: "The five-bottle hot sauce range" },
+    gallery: [
+      { ratio: "1/1", alt: "Label artwork — Mild" },
+      { ratio: "1/1", alt: "Label artwork — Ruinous" },
+      { ratio: "5/4", alt: "Outer carton, flat and assembled" },
+    ],
+    featured: true,
+  },
+  {
+    slug: "night-bus",
+    title: "Night Bus",
+    client: "Personal",
+    year: 2025,
+    discipline: "Character series",
+    deliverables: "12 drawings",
+    category: "Personal",
+    accent: "#e3dfd5",
+    summary: "Twelve people who all missed the last train.",
+    heroCaption:
+      "Drawn from memory on the top deck of the N29 over about four months.",
+    brief: [
+      "A personal series with no client and no brief. Every drawing started as a sketch made on an actual night bus, then got redrawn properly the next morning while I could still remember the posture.",
+      "It became the work that got me the most commissions, which I think says something about briefs.",
+    ],
+    credits: [{ role: "Everything", name: "Josh McKenna" }],
+    hero: { ratio: "16/10", alt: "Night Bus series, installed as a grid" },
+    gallery: [
+      { ratio: "3/4", alt: "Night Bus — the sleeper" },
+      { ratio: "3/4", alt: "Night Bus — the arguer" },
+      { ratio: "16/10", alt: "The full twelve, hung at Peckham Levels" },
+    ],
+    featured: true,
+  },
+  {
+    slug: "brixton-wall",
+    title: "Brixton Wall",
+    client: "Brixton Village",
+    year: 2025,
+    discipline: "Mural",
+    deliverables: "1 mural · 14m × 4m",
+    category: "Mural",
+    summary: "Fourteen metres of characters queueing for a bus that never comes.",
+    heroCaption: "Photographed the morning after the last coat went on.",
+    brief: [
+      "The wall runs alongside a bus stop, so the composition had to work for someone standing still for eight minutes and for someone walking past in four seconds. I built it as a queue — one continuous line of characters that reads left to right at walking pace.",
+      "Painted over nine days with two assistants. The line work is brush, the flats are roller.",
+    ],
+    credits: [
+      { role: "Commissioned by", name: "Brixton Village" },
+      { role: "Assistants", name: "Nia Ford · Tom Baptiste" },
+      { role: "Photography", name: "Sam Ellery" },
+    ],
+    hero: { ratio: "16/10", alt: "The completed Brixton mural" },
+    gallery: [
+      { ratio: "4/5", alt: "Detail — the queue's front" },
+      { ratio: "4/5", alt: "Detail — the queue's back" },
+      { ratio: "16/10", alt: "The wall in use, mid-afternoon" },
+    ],
+  },
+  {
+    slug: "the-long-weekend",
+    title: "The Long Weekend",
+    client: "The Guardian Weekend",
+    year: 2025,
+    discipline: "Editorial illustration",
+    deliverables: "1 cover · 4 spots",
+    category: "Editorial",
+    summary: "A feature about doing nothing, illustrated enthusiastically.",
+    heroCaption: "The cover, as it ran on 14 June.",
+    brief: [
+      "A 3,000-word feature about the collapse of the weekend. The commission came in on a Thursday for the following Wednesday, which felt like a joke the desk was making on purpose.",
+      "One cover, four spots, drawn in two days. The looseness is not a style choice.",
+    ],
+    credits: [
+      { role: "Art direction", name: "Priya Raman" },
+      { role: "Words", name: "Alex Whitmore" },
+    ],
+    hero: { ratio: "16/10", alt: "The Long Weekend cover illustration" },
+    gallery: [
+      { ratio: "1/1", alt: "Spot — Saturday" },
+      { ratio: "1/1", alt: "Spot — Sunday, 4pm" },
+    ],
+  },
+  {
+    slug: "gus-and-mabel",
+    title: "Gus & Mabel",
+    client: "Walker Books",
+    year: 2024,
+    discipline: "Character design",
+    deliverables: "2 leads · 9 supporting · style guide",
+    category: "Character",
+    summary: "Two dogs with a clear and escalating disagreement.",
+    heroCaption: "Final turnarounds for both leads.",
+    brief: [
+      "A picture book needed two leads that could hold a whole series. The publisher wanted them likeable; I wanted them to look like they'd genuinely annoy each other. We landed somewhere useful.",
+      "Delivered with a style guide so other illustrators could draw them consistently across the series.",
+    ],
+    credits: [
+      { role: "Art direction", name: "Elinor Hastie" },
+      { role: "Words", name: "R. J. Mbeki" },
+    ],
+    hero: { ratio: "16/10", alt: "Gus and Mabel character turnarounds" },
+    gallery: [
+      { ratio: "3/4", alt: "Gus — expression sheet" },
+      { ratio: "3/4", alt: "Mabel — expression sheet" },
+      { ratio: "5/4", alt: "Style guide spread" },
+    ],
+  },
+  {
+    slug: "sour-cherry",
+    title: "Sour Cherry",
+    client: "Sour Cherry Records",
+    year: 2024,
+    discipline: "Record sleeves",
+    deliverables: "4 sleeves · 4 labels",
+    category: "Packaging",
+    summary: "A label's whole first year, drawn as one continuous scene.",
+    heroCaption: "All four sleeves. Placed edge to edge they form one image.",
+    brief: [
+      "Four releases across one year. Rather than four unrelated sleeves, each one is a crop of a single much larger drawing — so collectors who buy all four can line them up.",
+      "Nobody at the label asked for this. They said yes immediately.",
+    ],
+    credits: [
+      { role: "Art direction", name: "Josh McKenna" },
+      { role: "Printed by", name: "Kesler Label Co." },
+    ],
+    hero: { ratio: "16/10", alt: "The four Sour Cherry sleeves in sequence" },
+    gallery: [
+      { ratio: "1/1", alt: "Sleeve one" },
+      { ratio: "1/1", alt: "Sleeve four" },
+    ],
+  },
+  {
+    slug: "cereal-monsters",
+    title: "Cereal Monsters",
+    client: "Morningside",
+    year: 2023,
+    discipline: "Character design",
+    deliverables: "3 mascots · 6 box panels",
+    category: "Character",
+    summary: "Three mascots that had to survive a focus group.",
+    heroCaption: "The three approved mascots, plus the one that didn't make it.",
+    brief: [
+      "Cereal mascots are one of the last places a character has to work at both 4cm and 4m. These were drawn at box scale first and tested small, which is the opposite of how I usually work.",
+      "The fourth mascot tested badly with parents and brilliantly with children. It was cut.",
+    ],
+    credits: [
+      { role: "Art direction", name: "Dee Halloran" },
+      { role: "Printed by", name: "Morningside Pack" },
+    ],
+    hero: { ratio: "16/10", alt: "The Cereal Monsters mascot line-up" },
+    gallery: [
+      { ratio: "4/5", alt: "Front-of-box panel" },
+      { ratio: "4/5", alt: "The rejected fourth mascot" },
+    ],
+  },
+  {
+    slug: "negotiable-tattoo",
+    title: "One Negotiable Tattoo",
+    client: "Personal",
+    year: 2023,
+    discipline: "Flash sheet",
+    deliverables: "24 designs",
+    category: "Personal",
+    summary: "A flash sheet drawn as a favour that got out of hand.",
+    heroCaption: "The full sheet. Nine of these now exist on people.",
+    brief: [
+      "A friend asked for one tattoo design. I drew twenty-four and put them on a sheet, on the condition that anyone using one had to send me a photo afterwards.",
+      "Nine photos so far. The healing ones are the best ones.",
+    ],
+    credits: [{ role: "Everything", name: "Josh McKenna" }],
+    hero: { ratio: "16/10", alt: "The complete flash sheet" },
+    gallery: [
+      { ratio: "1/1", alt: "Row one, detail" },
+      { ratio: "1/1", alt: "A healed piece, six months on" },
+    ],
+  },
+];
+
+/* ==========================================================================
+   Access helpers — pages should use these, never `projects` directly.
+   ========================================================================== */
+
+/** Newest first. */
+export function getAllProjects(): Project[] {
+  return [...projects].sort((a, b) => b.year - a.year);
+}
+
+export function getProject(slug: string): Project | undefined {
+  return projects.find((project) => project.slug === slug);
+}
+
+export function getFeaturedProjects(limit = 3): Project[] {
+  return getAllProjects()
+    .filter((project) => project.featured)
+    .slice(0, limit);
+}
+
+/**
+ * Previous / next for the project footer, wrapping at both ends so the
+ * sequence never dead-ends.
+ */
+export function getProjectNeighbours(slug: string): {
+  previous: Project | null;
+  next: Project | null;
+} {
+  const ordered = getAllProjects();
+  const index = ordered.findIndex((project) => project.slug === slug);
+
+  if (index === -1) return { previous: null, next: null };
+
+  return {
+    previous: ordered[(index - 1 + ordered.length) % ordered.length] ?? null,
+    next: ordered[(index + 1) % ordered.length] ?? null,
+  };
+}
+
+/** Only the categories that actually have work in them. */
+export function getActiveCategories(): ProjectCategory[] {
+  const used = new Set(projects.map((project) => project.category));
+  return PROJECT_CATEGORIES.filter((category) => used.has(category));
+}
