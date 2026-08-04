@@ -1,0 +1,39 @@
+# Database Pack Configuration
+name: "Database Pack"
+version: "1.0"
+source: "msitarzewski/agency-agents/engineering/engineering-database-optimizer.md"
+
+agent:
+  file: "database-optimizer.md"
+  name: "BOS Database Optimizer"
+  description: "Supabase/PostgreSQL optimization specialist for BOS"
+
+triggers:
+  keywords:
+    - "database"
+    - "query optimization"
+    - "index"
+    - "N+1"
+    - "slow query"
+    - "migration"
+    - "supabase"
+    - "postgres"
+    - "RLS"
+    - "row level security"
+  file_patterns:
+    - "**/supabase/**/*.ts"
+    - "**/lib/supabase/**/*.ts"
+    - "**/*.sql"
+    - "**/migrations/**/*"
+
+# BOS-specific context
+bos_context:
+  database: "Supabase (PostgreSQL)"
+  mcp_tools:
+    - "mcp__supabase__execute_sql"
+    - "mcp__supabase__apply_migration"
+    - "mcp__supabase__list_tables"
+    - "mcp__supabase__get_advisors"
+  client_library: "@supabase/supabase-js"
+
+explicit_only: false

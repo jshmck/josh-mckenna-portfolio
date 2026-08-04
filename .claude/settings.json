@@ -1,0 +1,70 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(./**)",
+      "Write(./**)",
+      "Edit(./**)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx prettier:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git fetch:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git switch:*)",
+      "Bash(git stash:*)",
+      "Bash(git restore:*)",
+      "Bash(git show:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh api:*)",
+      "Bash(ls:*)",
+      "Bash(du:*)",
+      "Bash(lsof:*)",
+      "WebSearch"
+    ],
+    "deny": ["Bash(rm -rf /)", "Bash(rm -rf ~)", "Bash(git push --force:*)"]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" && echo \"branch: $(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '?')\" && echo \"recent commits:\" && git log --oneline -5 2>/dev/null && { [ -n \"$(git status --porcelain 2>/dev/null)\" ] && echo 'NOTE: uncommitted changes present — commit or stash before starting new work.' || echo 'working tree clean'; } && echo 'reminder: commit after each logical unit (see /commit), never one bundled commit at the end.'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v npx >/dev/null 2>&1 || exit 0; [ -f \"${CLAUDE_PROJECT_DIR:-.}/node_modules/.bin/prettier\" ] || exit 0; npx prettier --write \"$CLAUDE_FILE_PATHS\" >/dev/null 2>&1 || true; exit 0"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "canvas-to-code@canvas-to-code-marketplace": true
+  },
+  "extraKnownMarketplaces": {
+    "canvas-to-code-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "opensesh/canvas-to-code"
+      }
+    }
+  }
+}

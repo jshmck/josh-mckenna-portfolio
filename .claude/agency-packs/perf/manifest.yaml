@@ -1,0 +1,36 @@
+# Performance Pack Configuration
+name: "Performance Pack"
+version: "1.0"
+source: "msitarzewski/agency-agents/testing/testing-performance-benchmarker.md"
+
+agent:
+  file: "performance-benchmarker.md"
+  name: "BOS Performance Benchmarker"
+  description: "Core Web Vitals and performance optimization for BOS"
+
+triggers:
+  keywords:
+    - "performance"
+    - "lighthouse"
+    - "core web vitals"
+    - "LCP"
+    - "FID"
+    - "CLS"
+    - "bundle size"
+    - "load time"
+    - "speed index"
+    - "ttfb"
+  file_patterns:
+    - "**/app/**/*.tsx"
+    - "next.config.*"
+    - "**/components/**/*.tsx"
+
+# BOS-specific context
+bos_context:
+  framework: "Next.js 16+ with App Router"
+  build_command: "bun run build"
+  dev_command: "bun dev"
+  deployment: "Vercel"
+  bundle_analyzer: "next-bundle-analyzer"
+
+explicit_only: false

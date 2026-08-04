@@ -1,0 +1,34 @@
+# Accessibility Pack Configuration
+name: "Accessibility Pack"
+version: "1.0"
+source: "msitarzewski/agency-agents/testing/testing-accessibility-auditor.md"
+
+agent:
+  file: "accessibility-auditor.md"
+  name: "BOS Accessibility Auditor"
+  description: "WCAG 2.2 AA compliance specialist for BOS"
+
+triggers:
+  keywords:
+    - "a11y"
+    - "accessibility"
+    - "wcag"
+    - "screen reader"
+    - "aria"
+    - "keyboard navigation"
+    - "focus management"
+    - "assistive technology"
+    - "voiceover"
+    - "nvda"
+  file_patterns:
+    - "**/components/**/*.tsx"
+    - "**/ui/**/*.tsx"
+
+# BOS-specific context
+bos_context:
+  component_library: "React Aria Components"
+  focus_pattern: "border-border-secondary → hover:border-border-primary"
+  color_system: "UUI semantic tokens with warm neutrals"
+  testing_command: "bun test"
+
+explicit_only: false

@@ -1,0 +1,139 @@
+# Agency Packs Registry
+# Third-party agents adapted for BOS
+
+version: "1.0"
+source: "https://github.com/msitarzewski/agency-agents"
+license: "MIT"
+
+# Global BOS rules injected into all pack agents
+bos_rules:
+  design_system:
+    css_syntax: "Style 2 mapped classes (bg-bg-primary, not bg-[var(--bg-primary)])"
+    colors:
+      charcoal: "#191919"
+      vanilla: "#FFFAEE"
+      aperol: "#FE5102"
+    borders: "border-border-secondary for containers, never brand colors"
+    forbidden:
+      - "Sparkles icon (hard ban)"
+      - "Icons before section headers"
+      - "border-2 or thick borders"
+      - "Pure black/white"
+
+  components:
+    library: "React Aria Components"
+    requirement: "devProps('ComponentName') on all components"
+
+  mcp_servers:
+    - name: "Supabase"
+      purpose: "Database operations, migrations, edge functions"
+    - name: "Vercel"
+      purpose: "Deployments, logs, project management"
+    - name: "Figma"
+      purpose: "Design context, screenshots, code generation"
+    - name: "GitHub"
+      purpose: "Repository, issues, PRs, code search"
+    - name: "Firecrawl"
+      purpose: "Web scraping, search, crawling"
+    - name: "BOS Brand"
+      purpose: "Brand colors, assets, voice guidelines"
+
+  workflows:
+    - "KARIMO for PRD-driven development"
+    - "feature-dev plugin for multi-file changes"
+    - "Incremental commits after each logical unit"
+    - "bos-code-quality checks before completion"
+
+# Available packs
+packs:
+  a11y:
+    name: "Accessibility Pack"
+    description: "WCAG 2.2 AA compliance specialist"
+    agent: "accessibility-auditor.md"
+    triggers:
+      keywords:
+        - "a11y"
+        - "accessibility"
+        - "wcag"
+        - "screen reader"
+        - "aria"
+        - "keyboard navigation"
+        - "focus management"
+      file_patterns:
+        - "**/components/**/*.tsx"
+        - "**/ui/**/*.tsx"
+    explicit_only: false
+
+  perf:
+    name: "Performance Pack"
+    description: "Core Web Vitals and performance optimization"
+    agent: "performance-benchmarker.md"
+    triggers:
+      keywords:
+        - "performance"
+        - "lighthouse"
+        - "core web vitals"
+        - "LCP"
+        - "FID"
+        - "CLS"
+        - "bundle size"
+        - "load time"
+      file_patterns:
+        - "**/app/**/*.tsx"
+        - "next.config.*"
+    explicit_only: false
+
+  security:
+    name: "Security Pack"
+    description: "Application security and threat modeling"
+    agent: "security-engineer.md"
+    triggers:
+      keywords:
+        - "security"
+        - "vulnerability"
+        - "threat model"
+        - "OWASP"
+        - "XSS"
+        - "CSRF"
+        - "injection"
+        - "authentication"
+      file_patterns:
+        - "**/api/**/*.ts"
+        - "**/auth/**/*.ts"
+        - "**/middleware.*"
+    explicit_only: false
+
+  database:
+    name: "Database Pack"
+    description: "Supabase/PostgreSQL optimization specialist"
+    agent: "database-optimizer.md"
+    triggers:
+      keywords:
+        - "database"
+        - "query optimization"
+        - "index"
+        - "N+1"
+        - "slow query"
+        - "migration"
+        - "supabase"
+        - "postgres"
+      file_patterns:
+        - "**/supabase/**/*.ts"
+        - "**/lib/supabase/**/*.ts"
+        - "**/*.sql"
+    explicit_only: false
+
+  ux:
+    name: "UX Research Pack"
+    description: "User research and usability testing"
+    agent: "ux-researcher.md"
+    triggers:
+      keywords:
+        - "user research"
+        - "usability testing"
+        - "persona"
+        - "user journey"
+        - "feedback synthesis"
+        - "user interview"
+      file_patterns: []
+    explicit_only: true  # Manual invocation only

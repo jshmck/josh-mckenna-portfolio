@@ -1,0 +1,36 @@
+# Security Pack Configuration
+name: "Security Pack"
+version: "1.0"
+source: "msitarzewski/agency-agents/engineering/engineering-security-engineer.md"
+
+agent:
+  file: "security-engineer.md"
+  name: "BOS Security Engineer"
+  description: "Application security specialist for BOS"
+
+triggers:
+  keywords:
+    - "security"
+    - "vulnerability"
+    - "threat model"
+    - "OWASP"
+    - "XSS"
+    - "CSRF"
+    - "injection"
+    - "authentication"
+    - "authorization"
+    - "secrets"
+  file_patterns:
+    - "**/api/**/*.ts"
+    - "**/auth/**/*.ts"
+    - "**/middleware.*"
+    - "**/lib/supabase/**/*.ts"
+
+# BOS-specific context
+bos_context:
+  auth_provider: "Supabase Auth"
+  api_routes: "Next.js API Routes (App Router)"
+  secrets_management: "Vercel Environment Variables"
+  existing_skill: "security-guidance (supplements, doesn't replace)"
+
+explicit_only: false

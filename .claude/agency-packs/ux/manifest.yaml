@@ -1,0 +1,30 @@
+# UX Research Pack Configuration
+name: "UX Research Pack"
+version: "1.0"
+source: "msitarzewski/agency-agents/design/design-ux-researcher.md"
+
+agent:
+  file: "ux-researcher.md"
+  name: "BOS UX Researcher"
+  description: "User research and usability testing for BOS"
+
+triggers:
+  keywords:
+    - "user research"
+    - "usability testing"
+    - "persona"
+    - "user journey"
+    - "feedback synthesis"
+    - "user interview"
+    - "A/B testing"
+    - "user behavior"
+  file_patterns: []  # No auto-trigger on files
+
+# BOS-specific context
+bos_context:
+  brand_voice: "Smart but not smug, technical but accessible, confident but humble"
+  target_users: "Marketing teams, brand managers, creative professionals"
+  research_tools: "Firecrawl MCP for web research"
+
+# Manual invocation only - UX research is intentional, not reactive
+explicit_only: true
