@@ -126,6 +126,7 @@ Before calling anything done, run `/verify`. It gates on:
 
 | Command          | What it does                                                     |
 | ---------------- | ---------------------------------------------------------------- |
+| `/new-project`   | Artwork in, reviewed project page out — ingest, interview, PR    |
 | `/restart`       | Clear `.next` + caches, bring the dev server back up on :3000    |
 | `/commit`        | Atomic conventional commits from the current diff                |
 | `/verify`        | Full pre-handoff gate (build · lint · design · browser)          |
@@ -135,7 +136,14 @@ Before calling anything done, run `/verify`. It gates on:
 
 Skills in `.claude/skills/` auto-activate: `frontend-design`,
 `brand-guidelines`, `incremental-commits`, `verification-before-completion`,
-`systematic-debugging`, `writing-plans`, `figma-to-code`, `figma-design`.
+`systematic-debugging`, `writing-plans`, `figma-to-code`, `figma-design`,
+`project-intake`.
+
+**Adding a project is a command, not an edit.** `/new-project` owns the whole
+path — ingesting artwork into `public/work/<slug>/`, interviewing for the copy,
+writing the entry, previewing it and opening the PR. Hand-editing
+`lib/projects.ts` skips the ratio snapping and the `featured` cap, which are
+the two things that go wrong silently.
 
 ## Open decisions
 
