@@ -60,10 +60,10 @@ const OBJECTS: DriftObject[] = [
     href: "/work",
     src: "/illustrations/hero/car-work.png",
     alt: "",
-    width: 0.319,
-    aspect: 1.491,
-    x: 0.603,
-    y: 0.096,
+    width: 0.36,
+    aspect: 1.778,
+    x: 0.57,
+    y: 0.1,
     vx: -0.011,
     vy: 0.014,
   },
@@ -74,10 +74,10 @@ const OBJECTS: DriftObject[] = [
     href: "/about",
     src: "/illustrations/hero/bearded-about.png",
     alt: "",
-    width: 0.217,
-    aspect: 1.03,
-    x: 0.079,
-    y: 0.598,
+    width: 0.24,
+    aspect: 1,
+    x: 0.075,
+    y: 0.58,
     vx: 0.016,
     vy: -0.012,
   },
@@ -88,10 +88,10 @@ const OBJECTS: DriftObject[] = [
     href: "/shop",
     src: "/illustrations/hero/hand-shop.png",
     alt: "",
-    width: 0.211,
+    width: 0.23,
     aspect: 1,
-    x: 0.707,
-    y: 0.55,
+    x: 0.7,
+    y: 0.54,
     vx: -0.014,
     vy: -0.01,
   },
@@ -261,9 +261,9 @@ export function DriftingHero() {
         // than the viewport.
         className="relative mx-auto h-[min(88vh,880px)] max-w-frame [container-type:size]"
       >
-        {/* Name lockup sits BEHIND the objects (they overlap it) and ignores
-            the pointer so it never blocks a repel or a link. */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
+        {/* Name lockup. Objects drift BEHIND it by default and only pull in
+            front on hover. Ignores the pointer so it never blocks a link. */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
           <h1 className="type-display text-brand">
             <span className="block">Josh</span>
             <span className="block">McKenna</span>
@@ -273,10 +273,31 @@ export function DriftingHero() {
         {OBJECTS.map((object, index) => {
           const isNav = object.kind === "nav";
 
+          // Every object is a clean cut-out drifting behind the wordmark. The
+          // nav objects add a hover/focus affordance: a frosted-blue glass card
+          // + outline fades in, the destination label appears, and the object
+          // lifts in front of the text (the z-index bump on the wrapper). Ambient
+          // objects have no destination, so they stay inert decoration — no glass,
+          // no lift — and never look falsely clickable.
           const plate = (
-            <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.06] group-focus-visible:scale-[1.06]">
+            <div
+              className={
+                isNav
+                  ? "relative transition-transform duration-500 ease-drift group-hover:scale-[1.04] group-focus-within:scale-[1.04]"
+                  : "relative"
+              }
+            >
+              {isNav ? (
+                <div
+                  aria-hidden="true"
+                  // backdrop-blur is only applied on hover: at opacity-0 a resting
+                  // backdrop-filter still composites in Chrome and leaks a ghost
+                  // outline, so it must not exist until the card is shown.
+                  className="pointer-events-none absolute -inset-[6%] rounded-[1.6rem] border-[1.5px] border-brand bg-brand/15 opacity-0 shadow-2xl transition-opacity duration-300 group-hover:opacity-100 group-hover:backdrop-blur-md group-focus-within:opacity-100 group-focus-within:backdrop-blur-md"
+                />
+              ) : null}
               <div
-                className="relative w-full"
+                className="relative z-10"
                 style={{ aspectRatio: String(object.aspect) }}
               >
                 <Image
@@ -290,7 +311,7 @@ export function DriftingHero() {
                 />
               </div>
               {isNav ? (
-                <span className="type-label mt-2 block text-center text-brand opacity-70 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                <span className="type-label absolute inset-x-0 -bottom-7 z-10 text-center text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
                   → {object.label}
                 </span>
               ) : null}
@@ -304,7 +325,11 @@ export function DriftingHero() {
                 nodeRefs.current[index] = node;
               }}
               aria-hidden={isNav ? undefined : "true"}
-              className="absolute left-0 top-0 z-10 will-change-transform"
+              className={
+                isNav
+                  ? "group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
+                  : "absolute left-0 top-0 z-0 will-change-transform"
+              }
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${object.x * 100}cqw, ${object.y * 100}cqh, 0)`,
@@ -313,13 +338,13 @@ export function DriftingHero() {
               {isNav ? (
                 <Link
                   href={object.href!}
-                  className="group block"
+                  className="block"
                   aria-label={`${object.label} — view Josh's ${object.label!.toLowerCase()}`}
                 >
                   {plate}
                 </Link>
               ) : (
-                <div className="group">{plate}</div>
+                plate
               )}
             </div>
           );
