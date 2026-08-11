@@ -137,6 +137,7 @@ function parseArgs(argv) {
     out: "public/work",
     manifest: null,
     dryRun: false,
+    keepDuplicates: false,
   };
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -175,6 +176,9 @@ function parseArgs(argv) {
       case "--dry-run":
         options.dryRun = true;
         break;
+      case "--keep-duplicates":
+        options.keepDuplicates = true;
+        break;
       case "--help":
       case "-h":
         process.stdout.write(helpText());
@@ -208,6 +212,7 @@ function helpText() {
   --out <dir>         parent for <slug>/ (default public/work)
   --manifest <path>   also write the JSON manifest here
   --dry-run           report only, write nothing
+  --keep-duplicates   ingest near-identical images instead of dropping them
 `;
 }
 
@@ -327,8 +332,8 @@ function normaliseInput(file, tempDir) {
 
 /**
  * Filenames are how the artist signals order, so exports usually arrive
- * already numbered (`01-range.png`). We prepend our own ordinal, so strip any
- * leading number first \u2014 otherwise the output reads `01-01-range.webp`.
+ * already numbered (`01-range.png`). We prepend our own ordinal, so strip any leading
+number first, or the output reads `01-01-range.webp`.
  */
 function kebab(input) {
   return (
@@ -340,6 +345,85 @@ function kebab(input) {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "") || "plate"
   );
+}
+
+/* ==========================================================================
+   Near-duplicate detection
+   ========================================================================== */
+
+/** Edge length of the fingerprint grid. 16×16 = 256 samples per image. */
+const FINGERPRINT_EDGE = 16;
+
+/** Mean per-sample difference (0–255) below which two images are the same. */
+const FINGERPRINT_TOLERANCE = 6;
+
+/**
+ * Reduce an image to a small grayscale grid.
+ *
+ * `fit: "fill"` on purpose: ignoring aspect ratio means a letterboxed or
+ * slightly differently cropped copy still lands on the same grid, which is
+ * what we want when matching a thumbnail to its full-resolution original.
+ */
+async function fingerprint(sharp, file) {
+  const data = await sharp(file)
+    .resize(FINGERPRINT_EDGE, FINGERPRINT_EDGE, { fit: "fill" })
+    .grayscale()
+    .raw()
+    .toBuffer();
+  return data;
+}
+
+function fingerprintDistance(a, b) {
+  let total = 0;
+  for (let i = 0; i < a.length; i += 1) total += Math.abs(a[i] - b[i]);
+  return total / a.length;
+}
+
+/**
+ * Drop images that are just smaller copies of another image in the set.
+ *
+ * Figma's download_assets returns both the original upload and a ~512px
+ * preview for every image fill, so a five-image frame arrives as ten files.
+ * Ingesting all of them silently doubles the gallery. Filename matching
+ * cannot catch it — the URLs are opaque GUIDs — so this compares content and
+ * keeps whichever copy has the most pixels.
+ *
+ * @returns {{ kept: object[], dropped: object[] }}
+ */
+function dedupe(candidates) {
+  const kept = [];
+  const dropped = [];
+
+  // Biggest first, so the survivor of each group is the highest resolution.
+  const ordered = [...candidates].sort(
+    (a, b) => b.width * b.height - a.width * a.height,
+  );
+
+  for (const candidate of ordered) {
+    const match = kept.find(
+      (survivor) =>
+        fingerprintDistance(survivor.fingerprint, candidate.fingerprint) <
+        FINGERPRINT_TOLERANCE,
+    );
+
+    if (match) {
+      dropped.push({
+        source: candidate.source,
+        duplicateOf: match.source,
+        resolution: `${candidate.width}x${candidate.height}`,
+        keptResolution: `${match.width}x${match.height}`,
+      });
+    } else {
+      kept.push(candidate);
+    }
+  }
+
+  // Restore the caller's ordering — filename order is the artist's intent,
+  // and sorting by size above was only a means of picking survivors.
+  const order = new Map(candidates.map((item, index) => [item.source, index]));
+  kept.sort((a, b) => order.get(a.source) - order.get(b.source));
+
+  return { kept, dropped };
 }
 
 /**
@@ -404,10 +488,11 @@ async function main() {
     fs.mkdirSync(outDir, { recursive: true });
   }
 
-  const plates = [];
+  /* Pass one — measure and fingerprint every source, writing nothing. The
+     write pass has to come second because deduping needs to see the whole set
+     before it can know which copy of an image is the one worth keeping. */
+  const measured = [];
 
-  // Ordinals come from `plates.length`, not the source index, so a file that
-  // fails to read leaves no gap in the output numbering.
   for (const source of sources) {
     const staged = normaliseInput(source, tempDir);
 
@@ -428,6 +513,37 @@ async function main() {
       );
       continue;
     }
+
+    measured.push({
+      source,
+      staged,
+      width,
+      height,
+      hasAlpha: Boolean(metadata.hasAlpha),
+      fingerprint: options.keepDuplicates
+        ? null
+        : await fingerprint(sharp, staged),
+    });
+  }
+
+  const { kept, dropped } = options.keepDuplicates
+    ? { kept: measured, dropped: [] }
+    : dedupe(measured);
+
+  for (const item of dropped) {
+    process.stderr.write(
+      `ingest-artwork: dropped ${path.basename(item.source)} ` +
+        `(${item.resolution}) — duplicate of ` +
+        `${path.basename(item.duplicateOf)} (${item.keptResolution})\n`,
+    );
+  }
+
+  /* Pass two — write the survivors. Ordinals come from `plates.length`, not
+     the source index, so a skipped file leaves no gap in the numbering. */
+  const plates = [];
+
+  for (const item of kept) {
+    const { source, staged, width, height } = item;
 
     const snap = snapRatio(width, height);
     const ordinal = String(plates.length + 1).padStart(2, "0");
@@ -474,7 +590,7 @@ async function main() {
       natural: Number((width / height).toFixed(4)),
       drift: Number(snap.drift.toFixed(4)),
       cropFlagged: shouldFlagCrop(snap, width, height),
-      hasAlpha: Boolean(metadata.hasAlpha),
+      hasAlpha: item.hasAlpha,
       bytes:
         options.dryRun || !fs.existsSync(destination)
           ? null
@@ -496,6 +612,7 @@ async function main() {
     outDir,
     dryRun: options.dryRun,
     heroReason: reason,
+    duplicatesDropped: dropped,
     hero,
     gallery: plates.filter((plate) => plate !== hero),
     flagged: plates.filter((plate) => plate.cropFlagged).map((plate) => ({
