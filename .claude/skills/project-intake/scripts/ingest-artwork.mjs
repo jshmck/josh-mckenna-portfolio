@@ -109,11 +109,16 @@ function snapRatio(width, height) {
 const CROP_TOLERANCE = 0.08; // ≈ 8% off the true ratio
 
 /**
+ * `width` and `height` are unused today and that is the point — they are here
+ * so the orientation-aware version of this rule can be written without
+ * changing every call site. See the TODO above.
+ *
  * @param {{ drift: number, value: number }} snap
- * @param {number} width
- * @param {number} height
+ * @param {number} width  natural pixel width
+ * @param {number} height natural pixel height
  * @returns {boolean} true when the human should look before this ships
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- reserved, see TODO
 function shouldFlagCrop(snap, width, height) {
   return snap.drift > CROP_TOLERANCE;
 }
@@ -401,7 +406,9 @@ async function main() {
 
   const plates = [];
 
-  for (const [index, source] of sources.entries()) {
+  // Ordinals come from `plates.length`, not the source index, so a file that
+  // fails to read leaves no gap in the output numbering.
+  for (const source of sources) {
     const staged = normaliseInput(source, tempDir);
 
     let metadata;
