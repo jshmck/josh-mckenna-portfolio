@@ -1,25 +1,33 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 /**
- * The homepage hero: six objects drifting on independent vectors, bouncing off
- * the frame like a DVD screensaver, leaning away from the cursor.
+ * The homepage hero: six illustration cut-outs drifting on independent vectors,
+ * bouncing off the frame like a DVD screensaver, leaning away from the cursor.
  *
  * Three of the six are real navigation (Work · About · Shop) and render as
- * links with visible focus and destination labels. The other three are
+ * links with visible focus and a destination label. The other three are
  * decoration and are hidden from assistive tech entirely.
  *
- * Geometry is ported from Figma node 17:180. Positions and sizes are stored as
- * fractions of the container rather than pixels, so the whole composition
- * scales with the viewport and the physics stays resolution-independent.
+ * Geometry is ported from Josh's v2 frame (Figma node 85:429). Positions and
+ * sizes are stored as fractions of the container rather than pixels, so the
+ * whole composition scales with the viewport and the physics stays
+ * resolution-independent. The nav objects' blue card + border is part of the
+ * exported artwork, so every object renders the same way — a transparent PNG.
  */
 
 type DriftObject = {
   id: string;
-  label: string;
+  kind: "nav" | "ambient";
+  /** Nav only — the destination label and route. */
+  label?: string;
   href?: string;
+  src: string;
+  /** Empty for decoration (aria-hidden) and nav (the link is labelled). */
+  alt: string;
   /** Fraction of container width. */
   width: number;
   /** width / height. */
@@ -30,87 +38,98 @@ type DriftObject = {
   /** Drift velocity in fractions-of-container per second. */
   vx: number;
   vy: number;
-  rotation: number;
 };
 
 const OBJECTS: DriftObject[] = [
   {
     id: "ambient-1",
-    label: "illo — ambient",
-    width: 0.146,
-    aspect: 1.289,
-    x: 0.04,
-    y: 0.127,
+    kind: "ambient",
+    src: "/illustrations/hero/blue-face.png",
+    alt: "",
+    width: 0.198,
+    aspect: 0.872,
+    x: 0.146,
+    y: 0.061,
     vx: 0.013,
     vy: 0.009,
-    rotation: 8,
   },
   {
     id: "work",
+    kind: "nav",
     label: "Work",
     href: "/work",
-    width: 0.131,
-    aspect: 0.822,
-    x: 0.775,
-    y: 0.079,
+    src: "/illustrations/hero/car-work.png",
+    alt: "",
+    width: 0.319,
+    aspect: 1.491,
+    x: 0.603,
+    y: 0.096,
     vx: -0.011,
     vy: 0.014,
-    rotation: -6,
   },
   {
     id: "about",
+    kind: "nav",
     label: "About",
     href: "/about",
-    width: 0.159,
-    aspect: 1.321,
-    x: 0.094,
-    y: 0.622,
+    src: "/illustrations/hero/bearded-about.png",
+    alt: "",
+    width: 0.217,
+    aspect: 1.03,
+    x: 0.079,
+    y: 0.598,
     vx: 0.016,
     vy: -0.012,
-    rotation: -5,
   },
   {
     id: "shop",
+    kind: "nav",
     label: "Shop",
     href: "/shop",
-    width: 0.141,
+    src: "/illustrations/hero/hand-shop.png",
+    alt: "",
+    width: 0.211,
     aspect: 1,
-    x: 0.772,
-    y: 0.627,
+    x: 0.707,
+    y: 0.55,
     vx: -0.014,
     vy: -0.01,
-    rotation: 7,
   },
   {
     id: "ambient-5",
-    label: "sticker",
-    width: 0.095,
+    kind: "ambient",
+    src: "/illustrations/hero/woman-flowers.png",
+    alt: "",
+    width: 0.186,
     aspect: 1,
-    x: 0.411,
-    y: 0.051,
+    x: 0.368,
+    y: 0.117,
     vx: 0.009,
     vy: 0.016,
-    rotation: -13,
   },
   {
     id: "ambient-6",
-    label: "sticker",
-    width: 0.118,
-    aspect: 1.411,
-    x: 0.272,
-    y: 0.716,
+    kind: "ambient",
+    src: "/illustrations/hero/bmw.png",
+    alt: "",
+    width: 0.254,
+    aspect: 1.263,
+    x: 0.38,
+    y: 0.572,
     vx: -0.017,
     vy: -0.008,
-    rotation: 11,
   },
 ];
 
-/** Collision inset — the dashed "screensaver collision bounds" annotation. */
+/** Collision inset — objects reverse this far from each edge. */
 const BOUNDS_INSET = 0.03;
 /** How close the pointer must get before an object leans away. */
 const REPEL_RADIUS = 0.26;
 /** Maximum lean, as a fraction of container width. */
 const REPEL_STRENGTH = 0.05;
+
+/** Responsive candidate widths — objects span ~18–32% of the frame. */
+const OBJECT_SIZES = "(max-width: 768px) 48vw, 30vw";
 
 export function DriftingHero() {
   const frameRef = useRef<HTMLDivElement>(null);
@@ -242,31 +261,39 @@ export function DriftingHero() {
         // than the viewport.
         className="relative mx-auto h-[min(88vh,880px)] max-w-frame [container-type:size]"
       >
+        {/* Name lockup sits BEHIND the objects (they overlap it) and ignores
+            the pointer so it never blocks a repel or a link. */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
+          <h1 className="type-display text-brand">
+            <span className="block">Josh</span>
+            <span className="block">McKenna</span>
+          </h1>
+        </div>
+
         {OBJECTS.map((object, index) => {
-          const isNav = Boolean(object.href);
+          const isNav = object.kind === "nav";
 
           const plate = (
-            <div
-              className="transition-transform duration-300 ease-drift group-hover:scale-[1.06] group-focus-visible:scale-[1.06]"
-              style={{ transform: `rotate(${object.rotation}deg)` }}
-            >
+            <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.06] group-focus-visible:scale-[1.06]">
               <div
-                className={`w-full rounded-lg ${
-                  isNav
-                    ? "border-[1.5px] border-accent bg-placeholder-strong"
-                    : "bg-placeholder"
-                }`}
+                className="relative w-full"
                 style={{ aspectRatio: String(object.aspect) }}
-              />
-              <span
-                className={`type-label mt-2 block text-center transition-opacity duration-300 ${
-                  isNav
-                    ? "text-accent opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100"
-                    : "text-ink-muted opacity-60"
-                }`}
               >
-                {isNav ? `→ ${object.label}` : object.label}
-              </span>
+                <Image
+                  src={object.src}
+                  alt={object.alt}
+                  fill
+                  sizes={OBJECT_SIZES}
+                  priority={isNav}
+                  draggable={false}
+                  className="object-contain"
+                />
+              </div>
+              {isNav ? (
+                <span className="type-label mt-2 block text-center text-brand opacity-70 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                  → {object.label}
+                </span>
+              ) : null}
             </div>
           );
 
@@ -277,7 +304,7 @@ export function DriftingHero() {
                 nodeRefs.current[index] = node;
               }}
               aria-hidden={isNav ? undefined : "true"}
-              className="absolute left-0 top-0 will-change-transform"
+              className="absolute left-0 top-0 z-10 will-change-transform"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${object.x * 100}cqw, ${object.y * 100}cqh, 0)`,
@@ -286,8 +313,8 @@ export function DriftingHero() {
               {isNav ? (
                 <Link
                   href={object.href!}
-                  className="group block rounded-lg"
-                  aria-label={`${object.label} — view Josh's ${object.label.toLowerCase()}`}
+                  className="group block"
+                  aria-label={`${object.label} — view Josh's ${object.label!.toLowerCase()}`}
                 >
                   {plate}
                 </Link>
@@ -297,21 +324,13 @@ export function DriftingHero() {
             </div>
           );
         })}
-
-        {/* Name lockup sits above the objects and ignores the pointer so it
-            never blocks a repel or a link. */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
-          <h1 className="type-display text-ink">Josh McKenna</h1>
-          <p className="type-label mt-4 text-ink-muted">
-            Illustrator · Based in London · Available for commissions
-          </p>
-          <p className="type-lede mt-4 text-ink-muted">
-            Drawings that misbehave.
-          </p>
-        </div>
       </div>
 
-      <p className="type-label pb-10 text-center text-ink-muted">Keep going ↓</p>
+      {/* Scroll cue — a hairline tick and a label, per node 85:456. */}
+      <div className="flex flex-col items-center gap-3 pb-10">
+        <span className="block h-8 w-px bg-brand" aria-hidden="true" />
+        <span className="type-label text-brand">Keep going</span>
+      </div>
     </section>
   );
 }

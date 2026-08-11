@@ -83,14 +83,13 @@
    ========================================================================== */
 
 /* The JOSH McKenna wordmark and other big Waldeck brand moments. ~200px at
-   1344px, fluid down to phones. Heavy weight — this is the loudest type role. */
+   1344px, fluid down to phones. Heavy Black weight — the loudest type role. */
 @utility type-display {
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 9.8vw, 8.25rem);
-  line-height: 0.86;
-  letter-spacing: -0.02em;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
   font-weight: 900;
-  text-wrap: balance;
 }
 
 /* Mid-size Waldeck — SELECTED WORK, MORE ABOUT JOSH →, the marquee. A fifth
