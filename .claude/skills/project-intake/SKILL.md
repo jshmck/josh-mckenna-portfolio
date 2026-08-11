@@ -79,10 +79,24 @@ to ingest images you can only see in the conversation: you would produce a
 project entry pointing at files that do not exist, and the build would pass,
 because `src` is just a string.
 
-**C · A Figma node.** A `figma.com/design/...` URL. Use the Figma MCP:
-`get_metadata` to find the exported image nodes, then `download_assets` into a
-temp directory, then treat that directory as route A. Capture the node URL —
-it belongs in the PR body.
+**C · A Figma node.** A `figma.com/design/...` URL. `get_metadata` first to see
+the frame's structure, then `download_assets`, then treat the download
+directory as route A. Capture the node URL — it belongs in the PR body.
+
+Three things about this route, all learned the hard way on `la-pride`:
+
+- **`get_metadata` lies about artwork.** Rectangles holding real image fills
+  are still named "illustration placeholder". Never conclude a frame is an
+  empty wireframe from the metadata alone — `get_screenshot` it and look.
+- **Every fill comes back twice**, as the original upload and a ~512px
+  preview, so a five-image frame downloads as ten files. The ingester's
+  fingerprint dedupe drops the small copies, but check `duplicatesDropped` in
+  the manifest and confirm the count matches what you saw in the screenshot.
+- **Rename before ingesting.** Figma filenames are opaque GUIDs, so ingesting
+  raw gives you `01-raw-07.webp` and a gallery you cannot reason about. Look
+  at the images, name them for what they are, and number them in the order the
+  Figma frame stacks them. That numbering is the only ordering signal the
+  ingester has.
 
 ### Normalise them
 
@@ -131,9 +145,16 @@ This is what makes the interview short: you arrive with drafts, not blanks.
 From the artwork alone, form a view on:
 
 - what the pieces have in common — medium, line quality, palette, subject;
-- which is the strongest opener, and whether the script's hero pick agrees;
-- which two should sit side by side (the first two gallery entries render as a
-  two-up row, so pair them by ratio and subject);
+- which is the strongest opener, and whether the script's hero pick agrees.
+  Its default is "largest landscape", which breaks ties by raw pixel count —
+  on a set of same-size camera exports that is effectively arbitrary, so
+  expect to pass `--hero` whenever the sources are all one shoot;
+- **the gallery order, which is a layout decision, not a preference.** The
+  project template pairs the *first two* entries into a two-up row and runs
+  everything after them full width. So portraits belong first. A 3/4 portrait
+  rendered full width is cropped to a letterbox strip through its middle —
+  `object-cover` throws away the top and bottom — and on a poster or a
+  character sheet that is the whole subject;
 - a candidate `category`, `discipline`, `accent`, and draft `summary`, `alt`
   and `brief` per [reference/voice.md](reference/voice.md).
 
