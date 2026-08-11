@@ -5,8 +5,8 @@ source: "msitarzewski/agency-agents/design/design-ux-researcher.md"
 
 agent:
   file: "ux-researcher.md"
-  name: "BOS UX Researcher"
-  description: "User research and usability testing for BOS"
+  name: "UX Researcher"
+  description: "User research and usability testing for this project"
 
 triggers:
   keywords:
@@ -20,8 +20,8 @@ triggers:
     - "user behavior"
   file_patterns: []  # No auto-trigger on files
 
-# BOS-specific context
-bos_context:
+# Project-specific context
+project_context:
   brand_voice: "Smart but not smug, technical but accessible, confident but humble"
   target_users: "Marketing teams, brand managers, creative professionals"
   research_tools: "Firecrawl MCP for web research"

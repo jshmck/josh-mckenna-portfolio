@@ -1,6 +1,6 @@
-# BOS Code Quality Review Walkthrough
+# Code Quality Review Walkthrough
 
-> Step-by-step example of conducting a code quality review using BOS standards.
+> Step-by-step example of conducting a code quality review using project standards.
 
 ---
 
@@ -84,7 +84,7 @@ FilterChip.tsx:   className="bg-blue-500 text-white hover:bg-blue-600"  // activ
 // Current
 className = 'border border-gray-200';
 
-// Expected BOS pattern (Style 2 syntax)
+// Expected project pattern (Style 2 syntax)
 className = 'border border-border-secondary hover:border-border-primary';
 ```
 
@@ -223,7 +223,7 @@ describe('FilterPanel', () => {
   it('calls onFilterChange when chip clicked', () => {...});
   it('shows active state for active filters', () => {...});
   it('supports keyboard navigation', () => {...});
-  it('uses BOS styling tokens', () => {...});
+  it('uses design system tokens', () => {...});
 });
 ```
 
@@ -234,7 +234,7 @@ describe('FilterPanel', () => {
 ## Step 6: Write Review Summary
 
 ````markdown
-## BOS Code Quality Review: FilterPanel
+## Code Quality Review: FilterPanel
 
 ### Summary
 
@@ -288,7 +288,7 @@ that will break dark mode and accessibility.
 **1. Insufficient test coverage**
 
 - Location: **tests**/FilterPanel.test.tsx
-- Recommendation: Add tests for filter interaction and BOS compliance
+- Recommendation: Add tests for filter interaction and design system compliance
 
 ### Corrected Code Example
 
@@ -368,7 +368,7 @@ $ npm run build
 ## Quick Checklist for Reviews
 
 ```markdown
-## BOS Quality Checklist
+## Quality Checklist
 
 ### Colors (Style 2 syntax)
 
@@ -401,5 +401,5 @@ $ npm run build
 
 - [ ] Behavior tested
 - [ ] Edge cases covered
-- [ ] BOS compliance verified
+- [ ] Design system compliance verified
 ```

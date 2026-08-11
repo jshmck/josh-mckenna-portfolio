@@ -6,12 +6,12 @@
 
 ## The Task
 
-Implement a **Notification Bell** component for the BOS dashboard header with:
+Implement a **Notification Bell** component for the dashboard header with:
 
 - Bell icon showing unread count badge
 - Dropdown with notification list
 - Mark as read functionality
-- BOS styling throughout
+- Project styling throughout
 
 ---
 
@@ -41,7 +41,7 @@ Extract from implementation plan into actionable tasks:
 
 ### Context
 
-We're building a notification bell for the BOS dashboard header.
+We're building a notification bell for the dashboard header.
 This task creates the foundational types and component shell.
 
 ### Requirements
@@ -53,7 +53,7 @@ This task creates the foundational types and component shell.
 3. Export empty component shell that returns null
 4. Write basic render test
 
-### BOS Design System Requirements
+### Design System Requirements
 
 - Use semantic CSS variables (var(--bg-primary), etc.)
 - Follow border pattern: border-border-secondary
@@ -106,7 +106,7 @@ NotificationBell
 - components/header/NotificationBell.tsx (new)
 - components/header/__tests__/NotificationBell.test.tsx (new)
 
-### BOS Compliance
+### Design Compliance
 - N/A for types only (styling in next task)
 
 ### Self-Review
@@ -229,11 +229,11 @@ Must show a badge with unread count when notifications exist.
 
 1. Bell icon (use Lucide BellIcon)
 2. Badge showing unread count (only if > 0)
-3. Badge uses brand color (Aperol) per BOS guidelines
+3. Badge uses brand color (Aperol) per project guidelines
 4. Button uses React Aria for accessibility
-5. Hover and focus states per BOS patterns
+5. Hover and focus states per project patterns
 
-### BOS Design System Requirements
+### Design System Requirements
 
 - Icon: text-fg-secondary, hover:text-fg-primary
 - Badge: bg-bg-brand-solid text-white
@@ -243,7 +243,7 @@ Must show a badge with unread count when notifications exist.
 ### Code Pattern Reference
 
 ```tsx
-// BOS Icon Button pattern
+// Icon Button pattern
 <Button
   aria-label="Notifications"
   className={cn(
@@ -333,7 +333,7 @@ PASS components/header/__tests__/NotificationBell.test.tsx
     ✓ includes unread count in aria-label (7ms)
 ```
 
-### BOS Compliance
+### Design Compliance
 
 - [x] CSS variables used throughout
 - [x] React Aria Button used
@@ -372,7 +372,7 @@ PASS components/header/__tests__/NotificationBell.test.tsx
 ```markdown
 ## Code Quality Review - Task 2
 
-### BOS-Specific Checks
+### Project-Specific Checks
 
 - [x] CSS variables (no hardcoded colors)
 - [x] Border opacity N/A (no borders in this component)
@@ -415,7 +415,7 @@ Task 3: Create NotificationItem subcomponent
 Task 4: Build notification list dropdown with React Aria
 → Agent B working...
 
-Both use same BOS patterns, no file conflicts.
+Both use same design patterns, no file conflicts.
 ```
 
 ---
@@ -435,7 +435,7 @@ After all tasks complete, run comprehensive review:
 - components/header/**tests**/NotificationItem.test.tsx
 - components/header/index.ts
 
-### BOS Compliance Summary
+### Design Compliance Summary
 
 - [x] All colors use CSS variables
 - [x] React Aria for all interactive elements
@@ -472,5 +472,5 @@ $ npm run build
 1. **Task boundaries matter** - Each task is small, focused, reviewable
 2. **Reviews catch issues early** - Spec review before quality review
 3. **Parallel execution speeds up** - Independent tasks run simultaneously
-4. **BOS compliance is non-negotiable** - Every review checks design system
+4. **Design system compliance is non-negotiable** - Every review checks design system
 5. **Fresh agent context** - Each implementer starts clean, no pollution

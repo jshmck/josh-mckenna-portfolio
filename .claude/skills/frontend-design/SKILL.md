@@ -1,12 +1,12 @@
 ---
 name: frontend-design
-description: Create distinctive, production-grade frontend interfaces aligned with BOS design principles. Generates polished code with intentional aesthetics that feel designed, not auto-generated.
+description: Create distinctive, production-grade frontend interfaces aligned with the project's design principles. Generates polished code with intentional aesthetics that feel designed, not auto-generated.
 license: Complete terms in LICENSE.txt
 ---
 
-This skill guides creation of distinctive, production-grade frontend interfaces that feel genuinely designed. When working on BOS projects, it automatically applies our warm neutrals philosophy and brand tokens.
+This skill guides creation of distinctive, production-grade frontend interfaces that feel genuinely designed. It automatically applies the project's warm neutrals philosophy and brand tokens.
 
-> **Attribution**: Interaction patterns, animation timing, and form UX guidelines adapted from [Vercel's Web Interface Guidelines](https://vercel.com/design/guidelines), synthesized with BOS brand principles. Skill structure informed by [Claude Code](https://github.com/anthropics/claude-code).
+> **Attribution**: Interaction patterns, animation timing, and form UX guidelines adapted from [Vercel's Web Interface Guidelines](https://vercel.com/design/guidelines), synthesized with project brand principles. Skill structure informed by [Claude Code](https://github.com/anthropics/claude-code).
 
 ### Source Files (Exact Specs)
 
@@ -53,9 +53,9 @@ Maybe it's a delightful hover state, an unexpected color choice, or how perfectl
 
 ---
 
-## 2. BOS Design System Integration
+## 2. Design System Integration
 
-When building for BOS, use our design tokens:
+When building for this project, use our design tokens:
 
 ### Colors (Warm Neutrals)
 
@@ -130,7 +130,7 @@ className = 'focus:border-border-primary';
 - Implement focus traps in modals/drawers per WAI-ARIA patterns
 
 ```jsx
-// BOS focus pattern
+// Project focus pattern
 className = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-primary';
 ```
 
@@ -434,7 +434,7 @@ Inner radius: 16px - 8px = 8px
 Use ≥2 shadow layers to mimic real light (ambient + direct):
 
 ```css
-/* BOS layered shadow using Charcoal (25,25,25) */
+/* Layered shadow using Charcoal (25,25,25) */
 box-shadow:
   0 1px 2px rgba(25, 25, 25, 0.06),
   /* Tight, direct light */ 0 4px 12px rgba(25, 25, 25, 0.08); /* Soft, ambient light */
@@ -462,7 +462,7 @@ padding-right: env(safe-area-inset-right);
 ### Contrast Standards
 
 - Prefer **APCA** over WCAG 2 for more accurate perceptual contrast
-- BOS Vanilla on Charcoal: 18.5:1 (AAA compliant)
+- Vanilla on Charcoal: 18.5:1 (AAA compliant)
 - Interactive states must have **more** contrast than rest state
 
 ```css
@@ -605,7 +605,7 @@ font-variant-numeric: tabular-nums;
 - Blocking paste on any input
 - Color-only status indicators
 
-**BOS-specific bans:**
+**Project-specific bans:**
 
 - Never use the `Sparkles` icon from Lucide
 - Never use brand colors (Aperol) for borders
@@ -635,7 +635,7 @@ When building interfaces, think like a **steward**:
 
 ## 12. Examples
 
-### Card with BOS Styling
+### Card with Project Styling
 
 ```jsx
 <div
@@ -730,4 +730,4 @@ _Remember: You're capable of extraordinary creative work. Commit fully to your v
 
 - Interaction patterns adapted from [Vercel Web Interface Guidelines](https://vercel.com/design/guidelines)
 - Skill structure informed by [Claude Code](https://github.com/anthropics/claude-code)
-- BOS design tokens: `tailwind.config.ts`, `app/theme.css`, `lib/motion.tsx`
+- Design tokens: `tailwind.config.ts`, `app/theme.css`, `lib/motion.tsx`

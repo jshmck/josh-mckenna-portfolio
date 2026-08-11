@@ -1,6 +1,6 @@
-# BOS Component Patterns Reference
+# Component Patterns Reference
 
-> Quick reference for common BOS component patterns to use in implementation plans.
+> Quick reference for common component patterns to use in implementation plans.
 
 ---
 

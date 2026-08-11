@@ -1,6 +1,6 @@
 # Example: Debugging CSS Variable Issues
 
-> A complete walkthrough of systematic debugging for a common BOS issue.
+> A complete walkthrough of systematic debugging for a common theming issue.
 
 ---
 
@@ -193,7 +193,7 @@ export function MetricCard({ title, value, trend }: MetricCardProps) {
   return (
     <div
       className={cn(
-        // BOS Card Pattern - uses semantic tokens
+        // Card Pattern - uses semantic tokens
         'bg-bg-secondary',
         'border border-border-secondary',
         'rounded-xl p-6',

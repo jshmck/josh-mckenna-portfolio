@@ -1,12 +1,12 @@
 # Agency Packs Registry
-# Third-party agents adapted for BOS
+# Third-party agents adapted for this project
 
 version: "1.0"
 source: "https://github.com/msitarzewski/agency-agents"
 license: "MIT"
 
-# Global BOS rules injected into all pack agents
-bos_rules:
+# Global project rules injected into all pack agents
+project_rules:
   design_system:
     css_syntax: "Style 2 mapped classes (bg-bg-primary, not bg-[var(--bg-primary)])"
     colors:
@@ -35,14 +35,14 @@ bos_rules:
       purpose: "Repository, issues, PRs, code search"
     - name: "Firecrawl"
       purpose: "Web scraping, search, crawling"
-    - name: "BOS Brand"
+    - name: "Brand"
       purpose: "Brand colors, assets, voice guidelines"
 
   workflows:
     - "KARIMO for PRD-driven development"
     - "feature-dev plugin for multi-file changes"
     - "Incremental commits after each logical unit"
-    - "bos-code-quality checks before completion"
+    - "code-quality checks before completion"
 
 # Available packs
 packs:

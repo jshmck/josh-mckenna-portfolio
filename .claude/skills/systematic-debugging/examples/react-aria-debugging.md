@@ -365,7 +365,7 @@ Popover provides the interaction handling, positioning, and keyboard support.
 
 ### Fix
 
-Wrapped ListBox in Popover with BOS styling:
+Wrapped ListBox in Popover with project styling:
 
 - bg-bg-primary
 - border-border-secondary

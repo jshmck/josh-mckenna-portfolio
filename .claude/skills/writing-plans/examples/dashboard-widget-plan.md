@@ -1,15 +1,15 @@
 # Example Plan: Dashboard Stats Widget
 
-> This is a complete example of a writing-plans skill output for a BOS component.
+> This is a complete example of a writing-plans skill output for a component.
 
 ---
 
 # Implementation Plan: Dashboard Stats Widget
 
-**Goal**: Create a reusable stats widget for the BOS dashboard showing key metrics with BOS styling
+**Goal**: Create a reusable stats widget for the dashboard showing key metrics with project styling
 **Architecture**: React component with React Aria, Framer Motion animations, semantic tokens
 **Tech Stack**: Next.js 16+, React 19, TypeScript strict, Tailwind CSS, React Aria
-**Design System**: BOS (Charcoal/Vanilla/Aperol palette, semantic tokens)
+**Design System**: Charcoal/Vanilla/Aperol palette, semantic tokens
 **Created**: 2026-01-12
 
 ---
@@ -19,7 +19,7 @@
 - [x] Uses semantic CSS variables (`--bg-secondary`, `--fg-primary`, etc.)
 - [x] Borders follow 40% opacity pattern
 - [x] Brand color (Aperol) reserved for trend indicators only
-- [x] Card pattern matches BOS standard
+- [x] Card pattern matches project standard
 - [x] Warm neutrals throughout
 
 ---
@@ -118,7 +118,7 @@ describe('StatsWidget', () => {
     expect(screen.getByText('12,847')).toBeInTheDocument();
   });
 
-  it('applies BOS card pattern classes', () => {
+  it('applies card pattern classes', () => {
     const { container } = render(<StatsWidget title="Test" value={100} />);
 
     const card = container.firstChild;
@@ -134,7 +134,7 @@ describe('StatsWidget', () => {
 FAIL  components/dashboard/__tests__/StatsWidget.test.tsx
   StatsWidget
     ✕ renders title and value (8ms)
-    ✕ applies BOS card pattern classes (3ms)
+    ✕ applies card pattern classes (3ms)
 ```
 
 **Commit**: `test(dashboard): add StatsWidget render tests`
@@ -154,7 +154,7 @@ FAIL  components/dashboard/__tests__/StatsWidget.test.tsx
 
 **Steps**:
 
-1. Implement component with BOS tokens
+1. Implement component with design tokens
 2. Run tests, verify they pass (GREEN)
 
 **Code**:
@@ -166,7 +166,7 @@ export function StatsWidget({ title, value, trend, icon, className }: StatsWidge
   return (
     <div
       className={cn(
-        // BOS Card Pattern
+        // Card Pattern
         'bg-bg-secondary',
         'border border-border-secondary',
         'rounded-xl p-6',
@@ -198,7 +198,7 @@ export function StatsWidget({ title, value, trend, icon, className }: StatsWidge
 PASS  components/dashboard/__tests__/StatsWidget.test.tsx
   StatsWidget
     ✓ renders title and value (12ms)
-    ✓ applies BOS card pattern classes (4ms)
+    ✓ applies card pattern classes (4ms)
 ```
 
 **Commit**: `feat(dashboard): implement StatsWidget base component`
@@ -322,7 +322,7 @@ export type { StatsWidgetProps } from './StatsWidget';
 // Add JSDoc to component
 /**
  * Stats widget displaying a metric with optional trend indicator.
- * Uses BOS card pattern with semantic tokens.
+ * Uses project card pattern with semantic tokens.
  *
  * @example
  * <StatsWidget
@@ -347,7 +347,7 @@ Before marking complete:
 - [ ] Tests pass: `npm test components/dashboard`
 - [ ] Build succeeds: `npm run build`
 - [ ] No hardcoded colors in component
-- [ ] BOS card pattern verified visually
+- [ ] Card pattern verified visually
 - [ ] Brand color only used for upward trend
 
 ---

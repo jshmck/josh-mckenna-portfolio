@@ -8,7 +8,7 @@
 
 Execute implementation plans by dispatching **independent subagents** for each task, with mandatory **two-stage reviews**: spec compliance first, then code quality.
 
-**Fresh agent per task + BOS-aware reviews = high quality, fast iteration**
+**Fresh agent per task + design-system-aware reviews = high quality, fast iteration**
 
 ---
 
@@ -43,7 +43,7 @@ Extract all tasks from plan into a tracking list:
 
 - [ ] Task 1: Create component skeleton
 - [ ] Task 2: Implement core logic
-- [ ] Task 3: Add styling with BOS tokens
+- [ ] Task 3: Add styling with design tokens
 - [ ] Task 4: Write integration tests
 ```
 
@@ -55,20 +55,20 @@ For each task:
 ┌─────────────────────────────────────────────────────────────────┐
 │  DISPATCH IMPLEMENTER                                           │
 │  → Use implementer-prompt with full task context                │
-│  → Include BOS design system requirements                       │
+│  → Include design system requirements                           │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │  ANSWER QUESTIONS                                               │
 │  → Clarify requirements before work begins                      │
-│  → Provide BOS pattern references if needed                     │
+│  → Provide pattern references if needed                         │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │  SPEC COMPLIANCE REVIEW                                         │
 │  → Did they build exactly what was requested?                   │
 │  → Missing requirements? Extra features?                        │
-│  → BOS tokens used correctly?                                   │
+│  → Design tokens used correctly?                                │
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
@@ -111,7 +111,7 @@ After all tasks:
 1. [Requirement 1]
 2. [Requirement 2]
 
-### BOS Design System Requirements
+### Design System Requirements
 
 - Use semantic CSS variables (var(--bg-primary), etc.)
 - Follow border pattern: border-border-secondary
@@ -125,7 +125,7 @@ Before starting:
 
 - Clarify any uncertainties about requirements
 - Ask about unclear design patterns
-- Confirm understanding of BOS tokens needed
+- Confirm understanding of design tokens needed
 
 ### Work Instructions
 
@@ -139,7 +139,7 @@ Before starting:
 
 - [ ] Fully implemented spec requirements
 - [ ] Tests verify actual behavior (not mocks)
-- [ ] BOS design tokens used throughout
+- [ ] Design tokens used throughout
 - [ ] No hardcoded colors
 - [ ] React Aria for interactive elements
 - [ ] Accessibility verified (focus, keyboard)
@@ -162,7 +162,7 @@ Before starting:
 
 - [List of files]
 
-### BOS Compliance
+### Design Compliance
 
 - CSS variables: [Yes/No]
 - React Aria: [Yes/No]
@@ -198,7 +198,7 @@ NEVER trust the report alone. Inspect actual code.
 - [ ] All requirements from spec implemented
 - [ ] No extra/unrequested features added
 - [ ] No misunderstandings of requirements
-- [ ] BOS design tokens used (verify in code)
+- [ ] Design tokens used (verify in code)
 - [ ] File paths match spec
 
 ### Code Inspection
@@ -225,7 +225,7 @@ NEVER trust the report alone. Inspect actual code.
 - Base SHA: [commit before task]
 - Head SHA: [current commit]
 
-### BOS-Specific Quality Checks
+### Project-Specific Quality Checks
 
 #### Design System Compliance
 
@@ -268,7 +268,7 @@ NEVER trust the report alone. Inspect actual code.
 3. **Fix before proceeding** - Don't start next task with open issues
 4. **Answer questions completely** - Incomplete answers lead to incorrect implementations
 5. **Keep implementer for fixes** - Don't manually fix; let the subagent iterate
-6. **Verify BOS compliance** - Design system is non-negotiable
+6. **Verify design system compliance** - Design system is non-negotiable
 
 ---
 
@@ -336,4 +336,4 @@ Tasks 4-5: Dependent on Tasks 1-3
 
 ---
 
-_Adapted from obra/superpowers with BOS brand integration_
+_Adapted from obra/superpowers_

@@ -159,7 +159,7 @@ See memory `[[figma-literal-port-and-frame-geometry]]`.
   coherent iter set first.
 - Treat the **pixel-diff %** as a pass/fail verdict, or run it on a full-viewport
   screenshot (crop to the component first).
-- Run any of this from the **BOS-Mono root** — run root is `frontend/`.
+- Run any of this from the monorepo root — run root is `frontend/`.
 
 ## Related
 

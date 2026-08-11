@@ -5,8 +5,8 @@ source: "msitarzewski/agency-agents/engineering/engineering-security-engineer.md
 
 agent:
   file: "security-engineer.md"
-  name: "BOS Security Engineer"
-  description: "Application security specialist for BOS"
+  name: "Security Engineer"
+  description: "Application security specialist"
 
 triggers:
   keywords:
@@ -26,8 +26,8 @@ triggers:
     - "**/middleware.*"
     - "**/lib/supabase/**/*.ts"
 
-# BOS-specific context
-bos_context:
+# Project-specific context
+project_context:
   auth_provider: "Supabase Auth"
   api_routes: "Next.js API Routes (App Router)"
   secrets_management: "Vercel Environment Variables"

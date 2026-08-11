@@ -21,12 +21,12 @@ Proposing solutions before completing Phase 1 violates this process. Every fix a
 1. **Read the error message thoroughly**
    - Full stack trace, not just the first line
    - Note file paths, line numbers, variable values
-   - For BOS: Check if error relates to CSS variables, React Aria, or design tokens
+   - Check if error relates to CSS variables, React Aria, or design tokens
 
 2. **Reproduce consistently**
    - Document exact steps to trigger
    - Identify if it's deterministic or intermittent
-   - For BOS UI bugs: Test in both light and dark themes
+   - For UI bugs: Test in both light and dark themes
 
 3. **Check recent changes**
    - `git diff HEAD~5` for recent modifications
@@ -35,7 +35,7 @@ Proposing solutions before completing Phase 1 violates this process. Every fix a
 
 4. **Trace data flow**
    - Follow the data from source to error
-   - For BOS: CSS variable chain → Tailwind config → Component usage
+   - CSS variable chain → Tailwind config → Component usage
    - For API: Request → Route → Service → Database → Response
 
 5. **Gather diagnostic evidence**
@@ -54,7 +54,7 @@ Proposing solutions before completing Phase 1 violates this process. Every fix a
 
 1. **Find working examples**
    - What similar code works correctly?
-   - For BOS: Check existing components using same tokens
+   - Check existing components using same tokens
 
 2. **Study reference implementations**
    - Read the WHOLE working example, not just the relevant line
@@ -62,11 +62,11 @@ Proposing solutions before completing Phase 1 violates this process. Every fix a
 
 3. **Identify differences**
    - What's different between working and broken?
-   - For BOS: Compare token usage, prop shapes, class patterns
+   - Compare token usage, prop shapes, class patterns
 
 4. **Map dependencies**
    - What does this code depend on?
-   - For BOS: theme.css → tailwind.config → component → usage
+   - theme.css → tailwind.config → component → usage
 
 ### Phase 3: Hypothesis & Testing
 
@@ -79,7 +79,7 @@ Proposing solutions before completing Phase 1 violates this process. Every fix a
 2. **Test minimally**
    - Change ONE thing at a time
    - Verify each change before moving on
-   - For BOS: Test in isolation before full integration
+   - Test in isolation before full integration
 
 3. **Record results**
    ```markdown
@@ -93,12 +93,12 @@ Proposing solutions before completing Phase 1 violates this process. Every fix a
 
 1. **Write a failing test first**
    - Captures the bug so it can't regress
-   - For BOS: Include design token verification
+   - Include design token verification
 
 2. **Implement focused fix**
    - Single responsibility: fix THIS bug
    - Don't refactor "while you're in there"
-   - For BOS: Maintain design system compliance
+   - Maintain design system compliance
 
 3. **Verify comprehensively**
    - Original bug test passes
@@ -107,7 +107,7 @@ Proposing solutions before completing Phase 1 violates this process. Every fix a
 
 ---
 
-## BOS-Specific Debugging Checklist
+## Project-Specific Debugging Checklist
 
 ### CSS Variable Issues
 ```bash
@@ -142,7 +142,7 @@ npm run build -- --verbose | grep "var(--"
 
 ### Hydration Mismatches
 ```tsx
-// Common in BOS: Dynamic content causing SSR/CSR mismatch
+// Common: Dynamic content causing SSR/CSR mismatch
 // Fix: Use useEffect for browser-only values
 // Fix: Add suppressHydrationWarning where appropriate
 ```
@@ -232,7 +232,7 @@ Stop if you catch yourself:
 
 ---
 
-## Defense in Depth for BOS
+## Defense in Depth
 
 When debugging, verify at multiple layers:
 
@@ -261,8 +261,8 @@ console.log({
 - **[React Aria Debugging](react-aria-debugging.md)** — Debugging accessibility and interaction bugs with React Aria components
 
 ### References
-- **[Common BOS Issues](common-bos-issues.md)** — Quick reference for frequently encountered issues with CSS variables, React Aria, layout, animations, TypeScript, and Supabase
+- **[Common Issues](common-issues.md)** — Quick reference for frequently encountered issues with CSS variables, React Aria, layout, animations, TypeScript, and Supabase
 
 ---
 
-*Adapted from obra/superpowers with BOS brand integration*
+*Adapted from obra/superpowers*

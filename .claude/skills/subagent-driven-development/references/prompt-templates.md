@@ -22,7 +22,7 @@ Copy and customize for each task:
 2. [Specific requirement 2]
 3. [Specific requirement 3]
 
-### BOS Design System Requirements
+### Design System Requirements
 
 - Use semantic CSS variables (var(--bg-primary), var(--fg-secondary), etc.)
 - Follow border pattern: border-border-secondary
@@ -38,7 +38,7 @@ Copy and customize for each task:
 
 ### Code Pattern Reference
 
-[Include relevant BOS pattern from component-patterns.md]
+[Include relevant pattern from component-patterns.md]
 
 ```tsx
 // Example pattern for this task
@@ -66,7 +66,7 @@ Before starting work, please clarify:
 
 - [ ] Fully implemented all spec requirements
 - [ ] Tests verify actual behavior (not mocks)
-- [ ] BOS design tokens used throughout
+- [ ] Design tokens used throughout
 - [ ] No hardcoded colors (grep verified)
 - [ ] React Aria for interactive elements
 - [ ] Accessibility verified (focus, keyboard, aria-labels)
@@ -99,7 +99,7 @@ Please provide your report in this format:
 
 - [List of files]
 
-### BOS Compliance
+### Design Compliance
 
 - CSS variables: [Yes/No, any exceptions]
 - React Aria: [Yes/No, components used]
@@ -167,7 +167,7 @@ For each requirement, verify in the actual code:
 - [ ] Verified in code at [file:line]
 - Finding: [PASS/FAIL - what you found]
 
-### BOS Compliance Check
+### Design System Compliance Check
 - [ ] CSS variables used (grep for hardcoded colors)
 - [ ] React Aria for interactive elements
 - [ ] Border opacity pattern followed (if applicable)
@@ -230,7 +230,7 @@ All requirements verified in code. Proceed to code quality review.
 
 ---
 
-## BOS-Specific Quality Checks
+## Project-Specific Quality Checks
 
 ### Design System Compliance
 

@@ -1,4 +1,4 @@
-# BOS Design Token Mapping Reference
+# Design Token Mapping Reference
 
 > Complete mapping of semantic tokens to their usage contexts.
 

@@ -5,8 +5,8 @@ source: "msitarzewski/agency-agents/engineering/engineering-database-optimizer.m
 
 agent:
   file: "database-optimizer.md"
-  name: "BOS Database Optimizer"
-  description: "Supabase/PostgreSQL optimization specialist for BOS"
+  name: "Database Optimizer"
+  description: "Supabase/PostgreSQL optimization specialist for this project"
 
 triggers:
   keywords:
@@ -26,8 +26,8 @@ triggers:
     - "**/*.sql"
     - "**/migrations/**/*"
 
-# BOS-specific context
-bos_context:
+# Project-specific context
+project_context:
   database: "Supabase (PostgreSQL)"
   mcp_tools:
     - "mcp__supabase__execute_sql"

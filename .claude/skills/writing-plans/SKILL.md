@@ -8,7 +8,7 @@
 
 Write comprehensive implementation plans assuming the reader has **zero context** for our codebase but deep development expertise. Plans should enable any skilled developer—or parallel agent—to execute independently with zero additional guidance.
 
-**BOS Integration**: Every plan must account for our design system, component patterns, and brand voice requirements at the architecture level.
+Every plan must account for our design system, component patterns, and brand voice requirements at the architecture level.
 
 ---
 
@@ -22,7 +22,7 @@ Write comprehensive implementation plans assuming the reader has **zero context*
 **Goal**: [One-sentence outcome statement]
 **Architecture**: [High-level approach]
 **Tech Stack**: Next.js 16+, React 19, TypeScript strict, Tailwind CSS, React Aria
-**Design System**: BOS (Charcoal/Vanilla/Aperol palette, semantic tokens)
+**Design System**: Charcoal/Vanilla/Aperol palette, semantic tokens
 **Created**: YYYY-MM-DD
 ```
 
@@ -66,7 +66,7 @@ import { render, screen } from '@testing-library/react';
 import { FeatureName } from '../FeatureName';
 
 describe('FeatureName', () => {
-it('renders with BOS design tokens', () => {
+it('renders with design tokens', () => {
 render(<FeatureName />);
 // Verify semantic token usage
 expect(screen.getByRole('region')).toHaveClass('bg-bg-secondary');
@@ -78,13 +78,13 @@ expect(screen.getByRole('region')).toHaveClass('bg-bg-secondary');
 \`\`\`
 FAIL **tests**/FeatureName.test.tsx
 FeatureName
-✕ renders with BOS design tokens (5ms)
+✕ renders with design tokens (5ms)
 \`\`\`
 ```
 
 ### 4. Component Pattern Reference
 
-For UI components, specify which BOS pattern applies:
+For UI components, specify which pattern applies:
 
 | Pattern              | Usage              | Tokens                                                                     |
 | -------------------- | ------------------ | -------------------------------------------------------------------------- |
@@ -117,7 +117,7 @@ After plan completion, offer these paths:
 Every plan must pass these checks:
 
 1. **Completeness**: Can someone execute this with ZERO questions?
-2. **Design System**: Are all UI elements mapped to BOS tokens?
+2. **Design System**: Are all UI elements mapped to design tokens?
 3. **Testing**: Does every code task include test-first steps?
 4. **Commits**: Is there a commit instruction after each completable unit?
 5. **Dependencies**: Are file paths exact and dependencies clear?
@@ -151,9 +151,9 @@ This skill complements:
 # Implementation Plan: Add Loading Skeleton
 
 **Goal**: Show loading state for data-dependent components
-**Architecture**: Reusable Skeleton component with BOS styling
+**Architecture**: Reusable Skeleton component with project styling
 **Tech Stack**: React, Tailwind, CSS animations
-**Design System**: BOS
+**Design System**: Project design system
 
 ## Design System Checklist
 
@@ -169,7 +169,7 @@ This skill complements:
 **Steps**:
 
 1. Write test for basic render
-2. Implement with BOS tokens
+2. Implement with design tokens
 3. Verify animation works
 4. Commit: `feat(ui): add Skeleton loading component`
 
@@ -195,12 +195,12 @@ className
 
 ### Examples
 
-- **[Dashboard Widget Plan](dashboard-widget-plan.md)** — Complete example plan for a StatsWidget component with all BOS patterns
+- **[Dashboard Widget Plan](dashboard-widget-plan.md)** — Complete example plan for a StatsWidget component with all design system patterns
 
 ### References
 
-- **[Component Patterns](claude%20config/Skills/writing-plans/references/component-patterns.md)** — Ready-to-use BOS component patterns (cards, buttons, inputs, modals, badges, animations)
+- **[Component Patterns](claude%20config/Skills/writing-plans/references/component-patterns.md)** — Ready-to-use component patterns (cards, buttons, inputs, modals, badges, animations)
 
 ---
 
-_Adapted from obra/superpowers with BOS brand integration_
+_Adapted from obra/superpowers_
