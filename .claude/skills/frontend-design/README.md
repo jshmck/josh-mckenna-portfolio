@@ -1,13 +1,13 @@
 # Frontend Design Plugin
 
-> Create distinctive, production-grade interfaces aligned with BOS design principles.
+> Create distinctive, production-grade interfaces aligned with the project's design principles.
 
 ## What It Does
 
 This plugin automatically activates when you're building frontend components. It helps you:
 
 - **Make intentional aesthetic choices** — not generic "AI-generated" looks
-- **Apply BOS design tokens** — warm neutrals, Aperol accents, proper typography
+- **Apply design tokens** — warm neutrals, Aperol accents, proper typography
 - **Think like a designer** — purpose, context, and that one memorable detail
 
 ## Quick Start
@@ -23,10 +23,10 @@ Just describe what you want to build:
 Claude will:
 1. Consider the purpose and context
 2. Choose an aesthetic direction that fits
-3. Apply BOS design tokens (colors, typography, borders)
+3. Apply design tokens (colors, typography, borders)
 4. Generate production-ready code
 
-## BOS Design System
+## Design System
 
 The plugin knows about our design system:
 
@@ -49,9 +49,9 @@ This plugin speaks your language:
 
 ## Learn More
 
-- [BOS Design System Reference](BOS-DESIGN-SYSTEM.md)
+- [Design System Reference](DESIGN-SYSTEM.md)
 - [Frontend Aesthetics Cookbook](https://github.com/anthropics/claude-cookbooks/blob/main/coding/prompting_for_frontend_aesthetics.ipynb)
 
 ---
 
-*Adapted for BOS design system*
+*Adapted for this project's design system*

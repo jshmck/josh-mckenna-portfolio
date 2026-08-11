@@ -1,13 +1,13 @@
 # Agency Packs
 
-Third-party agent packs adapted for BOS from [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents).
+Third-party agent packs adapted for this project from [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents).
 
 ## Philosophy
 
-Agency packs are **isolated, opt-in** extensions that add specialized capabilities without cluttering the core BOS configuration. They:
+Agency packs are **isolated, opt-in** extensions that add specialized capabilities without cluttering the core configuration. They:
 
-- Live in a separate namespace from core BOS agents
-- Include BOS-specific customizations (design system, MCP tools, workflow integration)
+- Live in a separate namespace from core agents
+- Include project-specific customizations (design system, MCP tools, workflow integration)
 - Can be activated on-demand via `/use-pack`
 - Stay dormant until explicitly invoked
 
@@ -29,7 +29,7 @@ Agency packs are **isolated, opt-in** extensions that add specialized capabiliti
 /use-pack a11y
 ```
 
-This loads the pack's agent into your current session with full BOS context.
+This loads the pack's agent into your current session with full project context.
 
 ### Direct Reference
 
@@ -44,7 +44,7 @@ agency-packs/
 ├── README.md                    # This file
 ├── manifest.yaml                # Pack registry and configuration
 ├── a11y/
-│   ├── accessibility-auditor.md # BOS-customized agent
+│   ├── accessibility-auditor.md # Project-customized agent
 │   └── manifest.yaml            # Pack-specific config
 ├── perf/
 │   ├── performance-benchmarker.md
@@ -60,11 +60,11 @@ agency-packs/
     └── manifest.yaml
 ```
 
-## BOS Customizations
+## Project Customizations
 
 Every imported agent includes:
 
-1. **BOS Design System Rules**: CSS syntax, color palette, border patterns
+1. **Design System Rules**: CSS syntax, color palette, border patterns
 2. **Component Standards**: React Aria, devProps requirements
 3. **MCP Tool Awareness**: Supabase, Vercel, Figma, GitHub, Firecrawl
 4. **Workflow Integration**: KARIMO, feature-dev, incremental commits
@@ -74,7 +74,7 @@ Every imported agent includes:
 
 1. Find a suitable agent from [agency-agents](https://github.com/msitarzewski/agency-agents)
 2. Create a new directory under `agency-packs/`
-3. Adapt the agent with BOS-specific rules (use existing packs as templates)
+3. Adapt the agent with project-specific rules (use existing packs as templates)
 4. Add pack metadata to `manifest.yaml`
 5. Test the agent on a real task
 

@@ -5,8 +5,8 @@ source: "msitarzewski/agency-agents/testing/testing-performance-benchmarker.md"
 
 agent:
   file: "performance-benchmarker.md"
-  name: "BOS Performance Benchmarker"
-  description: "Core Web Vitals and performance optimization for BOS"
+  name: "Performance Benchmarker"
+  description: "Core Web Vitals and performance optimization for this project"
 
 triggers:
   keywords:
@@ -25,8 +25,8 @@ triggers:
     - "next.config.*"
     - "**/components/**/*.tsx"
 
-# BOS-specific context
-bos_context:
+# Project-specific context
+project_context:
   framework: "Next.js 16+ with App Router"
   build_command: "bun run build"
   dev_command: "bun dev"

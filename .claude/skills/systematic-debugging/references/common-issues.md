@@ -1,4 +1,4 @@
-# Common BOS Issues Reference
+# Common Issues Reference
 
 > Quick reference for frequently encountered issues and their solutions.
 

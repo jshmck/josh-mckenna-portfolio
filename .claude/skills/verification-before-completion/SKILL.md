@@ -41,7 +41,7 @@ Before asserting ANY positive status, execute this sequence:
 
 ---
 
-## BOS-Specific Verification Checkpoints
+## Project-Specific Verification Checkpoints
 
 For UI/frontend work, add these verification steps:
 
@@ -120,7 +120,7 @@ You catch yourself:
 ### Pattern C: Design System Verification
 ```
 ❌ WRONG:
-"I used the BOS design tokens throughout."
+"I used the design tokens throughout."
 
 ✅ CORRECT:
 "Let me verify design system compliance."
@@ -181,7 +181,7 @@ When accepting work from subagents:
 1. **Never trust the report alone** - subagents may have incomplete context
 2. **Run verification yourself** - fresh test runs, build checks
 3. **Inspect the actual code** - compare against requirements
-4. **Check design system compliance** - subagents may not know BOS patterns
+4. **Check design system compliance** - subagents may not know project patterns
 
 ```
 ❌ "The subagent reports tests pass. Task complete."
@@ -225,4 +225,4 @@ When completing work, document evidence:
 
 ---
 
-*Adapted from obra/superpowers with BOS brand integration*
+*Adapted from obra/superpowers*

@@ -135,7 +135,7 @@ org now has it (tier `org`, seat `Dev`), so it no longer errors. **Try it**: if
 it returns mappings (non-empty), feed them to the bridge so reuse resolves to the
 real `shared/components/*`. But it returns `{}` for designs built from **raw
 frames** (no published component instances — "No published components found"),
-which is how BOS designs are currently authored; in that case reuse-mapping stays
+which is how designs in this project are currently authored; in that case reuse-mapping stays
 manual at the canvas-to-code mapper. On a seat error (lower tier), catch and skip;
 never treat it as fatal.
 
@@ -181,7 +181,7 @@ never treat it as fatal.
      --node <nodeId> --file <fileKey>
    ```
    This writes `jsx/<slug>.tsx` (re-headered verbatim Figma codegen) and
-   `tokens.json` (every var resolved to its nearest BOS token via
+   `tokens.json` (every var resolved to its nearest project token via
    `paper-figma-map.json` + OKLab snap). Delete `vars.tmp.json` after. The script
    **refuses** to write if handed a degraded structure tree — that's the signal to
    re-run step 6 with forceCode (or chunk).
@@ -270,13 +270,13 @@ Cross as few boundaries as possible — every inferred wrapper replaces real CSS
   the whole thing.
 - **Expiring asset URLs.** The inlined `figma.com/api/mcp/asset/…` constants live
   ~7 days. Localize via `download_assets` at capture (step 9), or the iter rots.
-- **Scale pollution.** If a frame is drawn above 1× (BOS boards often are), literal
+- **Scale pollution.** If a frame is drawn above 1× (boards in this project often are), literal
   `text-[Npx]` / `w-[Npx]` are inflated. The **variable names** in `tokens.json` are
   authoritative; record `capturedScale` so the mapper can divide out.
 - **Code Connect is available but usually empty.** The "open session" org now has
   the Dev seat (tier `org`), so `get_code_connect_map` no longer errors — but it
   only returns links for **published Figma component instances** that have been
-  mapped to code. BOS designs are built from raw frames (no published components +
+  mapped to code. Designs in this project are built from raw frames (no published components +
   no mappings authored), so it returns `{}` today. Try it; use mappings when
   present; otherwise component reuse is the canvas-to-code mapper's job (manual
   against `shared/components/`). To make it useful: publish a Figma component
@@ -345,7 +345,7 @@ the bridge's canonical handoff files.
   — the deterministic JSX + tokens.json extractor (`bun run figma:extract`).
 - [`scripts/figma/nearest-color.ts`](../../../scripts/figma/nearest-color.ts) +
   [`.canvas-to-code/paper-figma-map.json`](../../../.canvas-to-code/paper-figma-map.json)
-  — the hex → BOS-token resolver the extractor reuses.
+  — the hex → project-token resolver the extractor reuses.
 - [`.claude/commands/figma-design.md`](../../commands/figma-design.md) — the
   slash-command entry point.
 - `mcp__figma__*` — Figma MCP tool reference (`get_metadata`, `get_screenshot`,

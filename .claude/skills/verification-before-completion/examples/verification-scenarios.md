@@ -8,12 +8,12 @@
 
 ### The Situation
 
-You just implemented a new `Tooltip` component using React Aria and BOS styling.
+You just implemented a new `Tooltip` component using React Aria and project styling.
 
 ### ❌ WRONG Approach
 
 ```
-Me: "I've implemented the Tooltip component with React Aria and BOS styling.
+Me: "I've implemented the Tooltip component with React Aria and project styling.
      It should work correctly now. Moving on to the next task."
 ```
 
@@ -37,7 +37,7 @@ Output:
       ✓ renders trigger element (12ms)
       ✓ shows tooltip on hover (45ms)
       ✓ hides tooltip on blur (23ms)
-      ✓ applies BOS styling (8ms)
+      ✓ applies project styling (8ms)
       ✓ supports keyboard navigation (34ms)
 
   5 passed, 0 failed
@@ -117,12 +117,12 @@ Me: "Verified:
 
 ### The Situation
 
-You've updated several components and need to verify BOS compliance before PR.
+You've updated several components and need to verify design system compliance before PR.
 
 ### ❌ WRONG Approach
 
 ```
-Me: "I used CSS variables throughout and followed the BOS patterns.
+Me: "I used CSS variables throughout and followed the project patterns.
      Ready for code review!"
 ```
 
@@ -228,7 +228,7 @@ $ git diff HEAD~1 --stat
 
 Me: "Independently verified:
      - 4 tests pass (ran myself)
-     - Code uses React Aria and BOS tokens
+     - Code uses React Aria and project tokens
      - Debounce implemented as specified
      - Build succeeds
      Task verified complete."

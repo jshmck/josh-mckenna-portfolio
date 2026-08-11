@@ -1,4 +1,4 @@
-# BOS Code Quality
+# Code Quality
 
 > This skill activates during code review, PR review, quality checks, or when phrases like "check quality", "review code", "verify compliance", or "design system check" appear. Auto-activates after any UI component work.
 
@@ -6,7 +6,7 @@
 
 ## Core Purpose
 
-Ensure all code meets BOS (Brand Operating System) standards for design system compliance, accessibility, and brand consistency. This skill integrates with code reviews to add BOS-specific quality gates.
+Ensure all code meets project standards for design system compliance, accessibility, and brand consistency. This skill integrates with code reviews to add project-specific quality gates.
 
 ---
 
@@ -73,7 +73,7 @@ import { Button, Input, Select } from 'react-aria-components';
 #### Card Pattern (Style 2 Syntax)
 
 ```tsx
-// ✅ Standard BOS Card
+// ✅ Standard Card
 <div className={cn(
   "bg-bg-secondary",
   "border border-border-secondary",
@@ -123,7 +123,7 @@ Minimum Requirements:
 - Large text: 3:1 ratio (AA)
 - UI components: 3:1 ratio
 
-BOS Palette Compliance:
+Project Palette Compliance:
 - Vanilla on Charcoal: 18.5:1 ✅ AAA
 - Charcoal on Vanilla: 18.5:1 ✅ AAA
 - Aperol on Charcoal: 5.5:1 ✅ AA (large text)
@@ -202,7 +202,7 @@ transition-duration: 300ms;
 Use this checklist for every code review:
 
 ```markdown
-## BOS Quality Review
+## Code Quality Review
 
 ### Design System (Style 2 Syntax)
 
@@ -215,7 +215,7 @@ Use this checklist for every code review:
 ### Components
 
 - [ ] Interactive elements use React Aria
-- [ ] Card pattern matches BOS standard (bg-bg-secondary, border-border-secondary)
+- [ ] Card pattern matches project standard (bg-bg-secondary, border-border-secondary)
 - [ ] Button variants are correct
 - [ ] Focus states visible and styled (ring-brand)
 
@@ -261,7 +261,7 @@ fi
 ### CI Quality Gate
 
 ```yaml
-bos-quality-check:
+code-quality-check:
   runs-on: ubuntu-latest
   steps:
     - name: Check Design System Compliance
@@ -303,8 +303,8 @@ bos-quality-check:
 
 ### With code-review
 
-- BOS quality is a dimension of code-review
-- Add BOS checklist to review output
+- Code quality is a dimension of code-review
+- Add quality checklist to review output
 
 ### With feature-dev
 
@@ -313,12 +313,12 @@ bos-quality-check:
 
 ### With hookify
 
-- Create hooks for automated BOS checks
+- Create hooks for automated quality checks
 - Warn on deviations, block on violations
 
 ### With verification-before-completion
 
-- BOS compliance is verification criterion
+- Design system compliance is verification criterion
 - Must pass quality check before "complete"
 
 ---
@@ -327,7 +327,7 @@ bos-quality-check:
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│  BOS CODE QUALITY QUICK CHECK                              │
+│  CODE QUALITY QUICK CHECK                                  │
 ├────────────────────────────────────────────────────────────┤
 │  Colors:     bg-bg-*, text-fg-*, border-border-*          │
 │  Borders:    border-border-secondary (containers)         │
@@ -352,8 +352,8 @@ bos-quality-check:
 
 ### References
 
-- **[Design Token Mapping](design-token-mapping.md)** — Complete mapping of all BOS semantic tokens (backgrounds, text, borders, states) with usage patterns and migration guide
+- **[Design Token Mapping](design-token-mapping.md)** — Complete mapping of all semantic tokens (backgrounds, text, borders, states) with usage patterns and migration guide
 
 ---
 
-_BOS-specific skill for Brand Operating System quality enforcement_
+_Project-specific skill for design system quality enforcement_
