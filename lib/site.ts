@@ -29,10 +29,15 @@ export const siteConfig = {
   url: "https://joshmckenna.com",
 } as const;
 
+/* Josh's v2 nav (Figma node 85:420): HOME · WORK · SHOP · INFO · CONTACT, with
+   a CART on the right (rendered separately in the nav). INFO points at /about —
+   the "info" label, same page. */
 export const navLinks: NavLink[] = [
+  { label: "Home", href: "/" },
   { label: "Work", href: "/work" },
-  { label: "About", href: "/about" },
   { label: "Shop", href: "/shop" },
+  { label: "Info", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const footerLinks: NavLink[] = [

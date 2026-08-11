@@ -11,7 +11,7 @@ export function Footer() {
     <footer className="border-t border-hairline">
       <div className="mx-auto flex max-w-frame flex-col gap-4 px-6 py-10 md:flex-row md:items-center md:justify-between md:px-gutter">
         <p className="type-label text-ink-muted">
-          © {new Date().getFullYear()} {siteConfig.shortName}
+          © {new Date().getFullYear()} {siteConfig.name}
         </p>
 
         <ul className="flex flex-wrap items-center gap-x-7 gap-y-2">

@@ -4,8 +4,8 @@ import type { ComponentProps, ReactNode } from "react";
 type Variant = "primary" | "quiet";
 
 const VARIANT: Record<Variant, string> = {
-  /* The red pill — reserved for the commission path. */
-  primary: "bg-accent text-canvas hover:scale-[1.04]",
+  /* The blue pill — reserved for the commission path. */
+  primary: "bg-brand text-canvas hover:scale-[1.04]",
   /* Outline, for anything that isn't asking for money. */
   quiet: "border border-ink text-ink hover:bg-ink hover:text-canvas",
 };
