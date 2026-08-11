@@ -5,6 +5,8 @@
       "Write(./**)",
       "Edit(./**)",
       "Bash(npm run:*)",
+      "Bash(node .claude/skills/project-intake/scripts/ingest-artwork.mjs:*)",
+      "Bash(node .claude/skills/project-intake/scripts/find-drop.mjs:*)",
       "Bash(npx tsc:*)",
       "Bash(npx eslint:*)",
       "Bash(npx prettier:*)",
