@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, Archivo_Black, Space_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
 import { Footer } from "@/components/site/footer";
 import { Nav } from "@/components/site/nav";
@@ -14,12 +15,26 @@ const archivo = Archivo({
   display: "swap",
 });
 
-/* Display stand-in for BBH Hegarty. See DESIGN.md → Typography. */
+/* Grotesque for the tight statement headings. */
 const archivoBlack = Archivo_Black({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-archivo-black",
   display: "swap",
+});
+
+/* Waldeck (trial) — Josh's display face for the wordmark, section titles and
+   marquee. Self-hosted from public/fonts/waldeck. These are trial weights;
+   swap in the licensed files at the same paths before launch (DESIGN.md). */
+const waldeck = localFont({
+  src: [
+    { path: "../public/fonts/waldeck/Waldeck-trial-Medium.otf", weight: "500", style: "normal" },
+    { path: "../public/fonts/waldeck/Waldeck-trial-Bold.otf", weight: "700", style: "normal" },
+    { path: "../public/fonts/waldeck/Waldeck-trial-Black.otf", weight: "900", style: "normal" },
+  ],
+  variable: "--font-waldeck",
+  display: "swap",
+  fallback: ["Archivo Black", "system-ui", "sans-serif"],
 });
 
 /* Every uppercase label, eyebrow and meta key on the site. */
@@ -50,7 +65,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${archivoBlack.variable} ${spaceMono.variable} h-full`}
+      className={`${archivo.variable} ${archivoBlack.variable} ${spaceMono.variable} ${waldeck.variable} h-full`}
     >
       <body className="flex min-h-full flex-col">
         <a
