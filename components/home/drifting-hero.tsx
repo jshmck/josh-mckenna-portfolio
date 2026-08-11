@@ -5,19 +5,22 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 /**
- * The homepage hero: six illustration cut-outs drifting on independent vectors,
- * bouncing off the frame like a DVD screensaver, leaning away from the cursor.
+ * The homepage hero: six illustration cut-outs orbiting the JOSH McKenna
+ * wordmark, each on its own slow elliptical path so the composition keeps a
+ * gravity around the centre and never crowds the text. Nearby objects still
+ * lean away from the cursor.
  *
  * Three of the six are real navigation (Work · About · Shop) and render as
  * links with visible focus and a destination label. The other three are
- * decoration and are hidden from assistive tech entirely.
+ * decoration and are hidden from assistive tech entirely — but every object
+ * gets the same hover treatment: it lifts in front of the wordmark and a
+ * frosted-blue glass card fades in around it.
  *
- * Geometry is ported from Josh's v2 frame (Figma node 85:429). Positions and
- * sizes are stored as fractions of the container rather than pixels, so the
- * whole composition scales with the viewport and the physics stays
- * resolution-independent. The nav objects' blue card + border is part of the
- * exported artwork, so every object renders the same way — a transparent PNG.
+ * Geometry is expressed as fractions of the container, so the whole thing
+ * scales with the viewport and stays resolution-independent.
  */
+
+const rad = (deg: number) => (deg * Math.PI) / 180;
 
 type DriftObject = {
   id: string;
@@ -32,17 +35,15 @@ type DriftObject = {
   width: number;
   /** width / height. */
   aspect: number;
-  /** Start position as a fraction of container, top-left origin. */
-  x: number;
-  y: number;
-  /** Drift velocity in fractions-of-container per second. */
-  vx: number;
-  vy: number;
+  /** Starting angle on the orbit, radians. */
+  angle: number;
+  /** Orbit radii as a fraction of container width / height. */
+  rx: number;
+  ry: number;
+  /** Angular velocity, radians per second (sign sets direction). */
+  spin: number;
 };
 
-// Sources are tightly-cropped transparent cut-outs under /illustrations/objects
-// (the fresh path also sidesteps a stale next/image optimizer cache). Aspects
-// are measured from each cut-out's visible bounds so the hover card hugs it.
 const OBJECTS: DriftObject[] = [
   {
     id: "ambient-1",
@@ -51,10 +52,10 @@ const OBJECTS: DriftObject[] = [
     alt: "",
     width: 0.185,
     aspect: 0.795,
-    x: 0.14,
-    y: 0.06,
-    vx: 0.013,
-    vy: 0.009,
+    angle: rad(235),
+    rx: 0.33,
+    ry: 0.34,
+    spin: rad(5),
   },
   {
     id: "work",
@@ -65,10 +66,10 @@ const OBJECTS: DriftObject[] = [
     alt: "",
     width: 0.3,
     aspect: 1.991,
-    x: 0.58,
-    y: 0.12,
-    vx: -0.011,
-    vy: 0.014,
+    angle: rad(320),
+    rx: 0.3,
+    ry: 0.31,
+    spin: rad(-4.5),
   },
   {
     id: "about",
@@ -79,10 +80,10 @@ const OBJECTS: DriftObject[] = [
     alt: "",
     width: 0.19,
     aspect: 1.052,
-    x: 0.07,
-    y: 0.56,
-    vx: 0.016,
-    vy: -0.012,
+    angle: rad(150),
+    rx: 0.35,
+    ry: 0.33,
+    spin: rad(5.5),
   },
   {
     id: "shop",
@@ -93,10 +94,10 @@ const OBJECTS: DriftObject[] = [
     alt: "",
     width: 0.145,
     aspect: 0.734,
-    x: 0.74,
-    y: 0.52,
-    vx: -0.014,
-    vy: -0.01,
+    angle: rad(40),
+    rx: 0.34,
+    ry: 0.34,
+    spin: rad(-6.5),
   },
   {
     id: "ambient-5",
@@ -105,10 +106,10 @@ const OBJECTS: DriftObject[] = [
     alt: "",
     width: 0.175,
     aspect: 1.112,
-    x: 0.37,
-    y: 0.1,
-    vx: 0.009,
-    vy: 0.016,
+    angle: rad(285),
+    rx: 0.32,
+    ry: 0.35,
+    spin: rad(6),
   },
   {
     id: "ambient-6",
@@ -117,22 +118,38 @@ const OBJECTS: DriftObject[] = [
     alt: "",
     width: 0.235,
     aspect: 1.553,
-    x: 0.38,
-    y: 0.58,
-    vx: -0.017,
-    vy: -0.008,
+    angle: rad(100),
+    rx: 0.31,
+    ry: 0.32,
+    spin: rad(-5),
   },
 ];
 
-/** Collision inset — objects reverse this far from each edge. */
-const BOUNDS_INSET = 0.03;
+/** Orbit centre — the middle of the frame, under the wordmark. */
+const CENTRE = 0.5;
+/** Keep objects this far inside each edge. */
+const BOUNDS_INSET = 0.02;
 /** How close the pointer must get before an object leans away. */
 const REPEL_RADIUS = 0.26;
 /** Maximum lean, as a fraction of container width. */
 const REPEL_STRENGTH = 0.05;
 
-/** Responsive candidate widths — objects span ~18–32% of the frame. */
+/** Responsive candidate widths — objects span ~15–30% of the frame. */
 const OBJECT_SIZES = "(max-width: 768px) 48vw, 30vw";
+
+/** Position of an object's top-left corner on its orbit at a given angle. */
+function orbitPosition(o: {
+  angle: number;
+  rx: number;
+  ry: number;
+  width: number;
+  height: number;
+}) {
+  return {
+    x: CENTRE + o.rx * Math.cos(o.angle) - o.width / 2,
+    y: CENTRE + o.ry * Math.sin(o.angle) - o.height / 2,
+  };
+}
 
 export function DriftingHero() {
   const frameRef = useRef<HTMLDivElement>(null);
@@ -143,17 +160,17 @@ export function DriftingHero() {
     if (!frame) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      // Reduced motion: settle into the static scattered composition.
+      // Reduced motion: hold the static orbit (each object at its seed angle).
       return;
     }
 
-    // Live simulation state, seeded from the Figma layout. Kept outside React
+    // Live simulation state, seeded from the orbit params. Kept outside React
     // so the loop never triggers a re-render.
     const state = OBJECTS.map((object) => ({
-      x: object.x,
-      y: object.y,
-      vx: object.vx,
-      vy: object.vy,
+      angle: object.angle,
+      rx: object.rx,
+      ry: object.ry,
+      spin: object.spin,
       width: object.width,
       height: object.width / object.aspect,
     }));
@@ -180,52 +197,24 @@ export function DriftingHero() {
     let last = performance.now();
 
     const tick = (now: number) => {
-      // Clamp dt so a backgrounded tab doesn't teleport everything on return.
+      // Clamp dt so a backgrounded tab doesn't jump everything on return.
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
-
-      // The frame is wider than it is tall, so a shared velocity in fractional
-      // space would look faster vertically. Correcting by aspect keeps the
-      // apparent speed even in both axes.
-      const rect = frame.getBoundingClientRect();
-      const aspectCorrection = rect.height > 0 ? rect.width / rect.height : 1;
 
       for (let i = 0; i < state.length; i += 1) {
         const object = state[i];
         const node = nodeRefs.current[i];
         if (!node) continue;
 
-        object.x += object.vx * dt;
-        object.y += object.vy * dt * aspectCorrection;
-
-        // Reverse on contact with the bounds — never stop, never pause.
-        const maxX = 1 - BOUNDS_INSET - object.width;
-        const maxY = 1 - BOUNDS_INSET - object.height;
-
-        if (object.x <= BOUNDS_INSET) {
-          object.x = BOUNDS_INSET;
-          object.vx = Math.abs(object.vx);
-        } else if (object.x >= maxX) {
-          object.x = maxX;
-          object.vx = -Math.abs(object.vx);
-        }
-
-        if (object.y <= BOUNDS_INSET) {
-          object.y = BOUNDS_INSET;
-          object.vy = Math.abs(object.vy);
-        } else if (object.y >= maxY) {
-          object.y = maxY;
-          object.vy = -Math.abs(object.vy);
-        }
+        // Advance the orbit.
+        object.angle += object.spin * dt;
+        let { x, y } = orbitPosition(object);
 
         // Soft repel: falls off linearly to zero at REPEL_RADIUS so objects
-        // ease away instead of snapping.
-        let pushX = 0;
-        let pushY = 0;
-
+        // ease away from the cursor instead of snapping.
         if (pointer.active) {
-          const centreX = object.x + object.width / 2;
-          const centreY = object.y + object.height / 2;
+          const centreX = x + object.width / 2;
+          const centreY = y + object.height / 2;
           const dx = centreX - pointer.x;
           const dy = centreY - pointer.y;
           const distance = Math.hypot(dx, dy);
@@ -233,14 +222,19 @@ export function DriftingHero() {
           if (distance > 0.0001 && distance < REPEL_RADIUS) {
             const falloff = 1 - distance / REPEL_RADIUS;
             const scale = (falloff * REPEL_STRENGTH) / distance;
-            pushX = dx * scale;
-            pushY = dy * scale;
+            x += dx * scale;
+            y += dy * scale;
           }
         }
 
-        node.style.transform = `translate3d(${(object.x + pushX) * 100}cqw, ${
-          (object.y + pushY) * 100
-        }cqh, 0)`;
+        // Never let an orbit (or a repel push) run an object off the frame.
+        x = Math.max(BOUNDS_INSET, Math.min(x, 1 - BOUNDS_INSET - object.width));
+        y = Math.max(
+          BOUNDS_INSET,
+          Math.min(y, 1 - BOUNDS_INSET - object.height),
+        );
+
+        node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
       }
 
       raf = requestAnimationFrame(tick);
@@ -264,8 +258,8 @@ export function DriftingHero() {
         // than the viewport.
         className="relative mx-auto h-[min(88vh,880px)] max-w-frame [container-type:size]"
       >
-        {/* Name lockup. Objects drift BEHIND it by default and only pull in
-            front on hover. Ignores the pointer so it never blocks a link. */}
+        {/* Name lockup. Objects orbit BEHIND it and only pull in front on
+            hover. Ignores the pointer so it never blocks a link. */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
           <h1 className="type-display text-brand">
             <span className="block">Josh</span>
@@ -275,22 +269,28 @@ export function DriftingHero() {
 
         {OBJECTS.map((object, index) => {
           const isNav = object.kind === "nav";
+          const height = object.width / object.aspect;
+          const seed = orbitPosition({ ...object, height });
 
-          // Every object is a clean cut-out drifting behind the wordmark. The
-          // nav objects add a hover/focus affordance: a frosted-blue glass card
-          // + outline fades in, the destination label appears, and the object
-          // lifts in front of the text (the z-index bump on the wrapper). Ambient
-          // objects have no destination, so they stay inert decoration — no glass,
-          // no lift — and never look falsely clickable.
+          // A clean cut-out at rest; on hover/focus a frosted-blue glass card
+          // fades in around it (with generous padding), the destination label
+          // appears below with room from the border, and the object lifts in
+          // front of the wordmark via the z-index bump on the wrapper.
           const plate = (
-            <div className="relative transition-transform duration-500 ease-drift group-hover:scale-[1.04] group-focus-within:scale-[1.04]">
+            <div className="relative transition-transform duration-500 ease-drift group-hover:scale-[1.03] group-focus-within:scale-[1.03]">
               <div
                 aria-hidden="true"
-                // backdrop-blur is only applied on hover: at opacity-0 a resting
-                // backdrop-filter still composites in Chrome and leaks a ghost
-                // outline, so it must not exist until the card is shown.
-                className="pointer-events-none absolute -inset-[8%] rounded-[1.6rem] border-[1.5px] border-brand bg-brand/15 opacity-0 shadow-2xl transition-opacity duration-300 group-hover:opacity-100 group-hover:backdrop-blur-md group-focus-within:opacity-100 group-focus-within:backdrop-blur-md"
-              />
+                // border/bg/blur stay off until hover: a resting transparent
+                // backdrop-filter leaks a ghost outline in Chrome, and a
+                // transparent border keeps the layout from shifting.
+                className="pointer-events-none absolute -bottom-[20%] -left-[15%] -right-[15%] -top-[15%] flex flex-col items-center justify-end rounded-[1.75rem] border-[1.5px] border-transparent pb-[7%] shadow-2xl shadow-transparent transition-[background-color,border-color,box-shadow] duration-300 group-hover:border-brand group-hover:bg-brand/15 group-hover:shadow-brand/25 group-hover:backdrop-blur-md group-focus-within:border-brand group-focus-within:bg-brand/15 group-focus-within:shadow-brand/25 group-focus-within:backdrop-blur-md"
+              >
+                {isNav ? (
+                  <span className="type-label text-[1rem] leading-none text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+                    → {object.label}
+                  </span>
+                ) : null}
+              </div>
               <div
                 className="relative z-10"
                 style={{ aspectRatio: String(object.aspect) }}
@@ -305,11 +305,6 @@ export function DriftingHero() {
                   className="object-contain"
                 />
               </div>
-              {isNav ? (
-                <span className="type-label absolute inset-x-0 -bottom-7 z-10 text-center text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
-                  → {object.label}
-                </span>
-              ) : null}
             </div>
           );
 
@@ -320,12 +315,10 @@ export function DriftingHero() {
                 nodeRefs.current[index] = node;
               }}
               aria-hidden={isNav ? undefined : "true"}
-              // Every object lifts in front of the wordmark and shows the glass
-              // card on hover/focus; only nav objects add the label + link.
               className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
-                transform: `translate3d(${object.x * 100}cqw, ${object.y * 100}cqh, 0)`,
+                transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
               }}
             >
               {isNav ? (
