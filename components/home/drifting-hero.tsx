@@ -40,16 +40,19 @@ type DriftObject = {
   vy: number;
 };
 
+// Sources are tightly-cropped transparent cut-outs under /illustrations/objects
+// (the fresh path also sidesteps a stale next/image optimizer cache). Aspects
+// are measured from each cut-out's visible bounds so the hover card hugs it.
 const OBJECTS: DriftObject[] = [
   {
     id: "ambient-1",
     kind: "ambient",
-    src: "/illustrations/hero/blue-face.png",
+    src: "/illustrations/objects/face.png",
     alt: "",
-    width: 0.198,
-    aspect: 0.872,
-    x: 0.146,
-    y: 0.061,
+    width: 0.185,
+    aspect: 0.795,
+    x: 0.14,
+    y: 0.06,
     vx: 0.013,
     vy: 0.009,
   },
@@ -58,12 +61,12 @@ const OBJECTS: DriftObject[] = [
     kind: "nav",
     label: "Work",
     href: "/work",
-    src: "/illustrations/hero/car-work.png",
+    src: "/illustrations/objects/car.png",
     alt: "",
-    width: 0.36,
-    aspect: 1.778,
-    x: 0.57,
-    y: 0.1,
+    width: 0.3,
+    aspect: 1.991,
+    x: 0.58,
+    y: 0.12,
     vx: -0.011,
     vy: 0.014,
   },
@@ -72,12 +75,12 @@ const OBJECTS: DriftObject[] = [
     kind: "nav",
     label: "About",
     href: "/about",
-    src: "/illustrations/hero/bearded-about.png",
+    src: "/illustrations/objects/bearded.png",
     alt: "",
-    width: 0.24,
-    aspect: 1,
-    x: 0.075,
-    y: 0.58,
+    width: 0.19,
+    aspect: 1.052,
+    x: 0.07,
+    y: 0.56,
     vx: 0.016,
     vy: -0.012,
   },
@@ -86,36 +89,36 @@ const OBJECTS: DriftObject[] = [
     kind: "nav",
     label: "Shop",
     href: "/shop",
-    src: "/illustrations/hero/hand-shop.png",
+    src: "/illustrations/objects/hand.png",
     alt: "",
-    width: 0.23,
-    aspect: 1,
-    x: 0.7,
-    y: 0.54,
+    width: 0.145,
+    aspect: 0.734,
+    x: 0.74,
+    y: 0.52,
     vx: -0.014,
     vy: -0.01,
   },
   {
     id: "ambient-5",
     kind: "ambient",
-    src: "/illustrations/hero/woman-flowers.png",
+    src: "/illustrations/objects/flowers.png",
     alt: "",
-    width: 0.186,
-    aspect: 1,
-    x: 0.368,
-    y: 0.117,
+    width: 0.175,
+    aspect: 1.112,
+    x: 0.37,
+    y: 0.1,
     vx: 0.009,
     vy: 0.016,
   },
   {
     id: "ambient-6",
     kind: "ambient",
-    src: "/illustrations/hero/bmw.png",
+    src: "/illustrations/objects/bmw.png",
     alt: "",
-    width: 0.254,
-    aspect: 1.263,
+    width: 0.235,
+    aspect: 1.553,
     x: 0.38,
-    y: 0.572,
+    y: 0.58,
     vx: -0.017,
     vy: -0.008,
   },
@@ -280,22 +283,14 @@ export function DriftingHero() {
           // objects have no destination, so they stay inert decoration — no glass,
           // no lift — and never look falsely clickable.
           const plate = (
-            <div
-              className={
-                isNav
-                  ? "relative transition-transform duration-500 ease-drift group-hover:scale-[1.04] group-focus-within:scale-[1.04]"
-                  : "relative"
-              }
-            >
-              {isNav ? (
-                <div
-                  aria-hidden="true"
-                  // backdrop-blur is only applied on hover: at opacity-0 a resting
-                  // backdrop-filter still composites in Chrome and leaks a ghost
-                  // outline, so it must not exist until the card is shown.
-                  className="pointer-events-none absolute -inset-[6%] rounded-[1.6rem] border-[1.5px] border-brand bg-brand/15 opacity-0 shadow-2xl transition-opacity duration-300 group-hover:opacity-100 group-hover:backdrop-blur-md group-focus-within:opacity-100 group-focus-within:backdrop-blur-md"
-                />
-              ) : null}
+            <div className="relative transition-transform duration-500 ease-drift group-hover:scale-[1.04] group-focus-within:scale-[1.04]">
+              <div
+                aria-hidden="true"
+                // backdrop-blur is only applied on hover: at opacity-0 a resting
+                // backdrop-filter still composites in Chrome and leaks a ghost
+                // outline, so it must not exist until the card is shown.
+                className="pointer-events-none absolute -inset-[8%] rounded-[1.6rem] border-[1.5px] border-brand bg-brand/15 opacity-0 shadow-2xl transition-opacity duration-300 group-hover:opacity-100 group-hover:backdrop-blur-md group-focus-within:opacity-100 group-focus-within:backdrop-blur-md"
+              />
               <div
                 className="relative z-10"
                 style={{ aspectRatio: String(object.aspect) }}
@@ -325,11 +320,9 @@ export function DriftingHero() {
                 nodeRefs.current[index] = node;
               }}
               aria-hidden={isNav ? undefined : "true"}
-              className={
-                isNav
-                  ? "group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
-                  : "absolute left-0 top-0 z-0 will-change-transform"
-              }
+              // Every object lifts in front of the wordmark and shows the glass
+              // card on hover/focus; only nav objects add the label + link.
+              className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${object.x * 100}cqw, ${object.y * 100}cqh, 0)`,
