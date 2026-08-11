@@ -12,10 +12,7 @@ export function Marquee() {
   const sequence = [...marqueeWords, ...marqueeWords, ...marqueeWords];
 
   return (
-    <section
-      aria-hidden="true"
-      className="overflow-hidden border-y border-hairline bg-ink py-7"
-    >
+    <section aria-hidden="true" className="overflow-hidden bg-brand py-8">
       <div
         className="flex w-max animate-[marquee_22s_linear_infinite] items-center gap-8"
         style={{ willChange: "transform" }}
@@ -24,11 +21,9 @@ export function Marquee() {
           <div key={copy} className="flex items-center gap-8">
             {sequence.map((word, index) => (
               <span key={`${copy}-${index}`} className="flex items-center gap-8">
-                <span className="type-display shrink-0 text-[clamp(1.5rem,3.4vw,2.75rem)] text-canvas">
-                  {word}
-                </span>
+                <span className="type-title shrink-0 text-canvas">{word}</span>
                 <span
-                  className="size-2 shrink-0 rounded-full bg-accent"
+                  className="size-2.5 shrink-0 rounded-full bg-canvas"
                   role="presentation"
                 />
               </span>
