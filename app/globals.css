@@ -15,20 +15,24 @@
   --color-ink: #141414;
   --color-ink-muted: #8c877e;
 
-  /* Accents */
-  --color-accent: #ff3b2f; /* primary path — hire / commission */
+  /* Brand + accents — Josh's "Website v2" palette (Figma node 101:5).
+     Blue is the primary/commission colour; purple is the loud display accent
+     (section titles, active nav). Red is retired. */
+  --color-brand: #30b7ff; /* primary path — hire / commission / wordmark */
+  --color-accent: #ae88ff; /* display accent — section titles, active nav */
   --color-highlight: #ffb600; /* per-project accent wash */
 
-  /* Illustration placeholders — swap for real artwork as Josh delivers it */
+  /* Illustration placeholders — a real cut-out replaces these per slot. */
   --color-placeholder: #e3dfd5; /* ambient / decorative */
   --color-placeholder-strong: #d8d3c7; /* navigable objects */
 
   /* Type families.
-     "BBH Hegarty" is the licensed display face from the Figma file. It is not
-     a webfont we can redistribute, so it leads the stack and Archivo Black
-     stands in until a licensed woff2 is dropped into app/fonts/.
-     See DESIGN.md → Typography. */
-  --font-display: "BBH Hegarty", var(--font-archivo-black), system-ui, sans-serif;
+     Waldeck (trial) is Josh's display face — the JOSH McKenna wordmark,
+     section titles and marquee. It's loaded locally in app/layout.tsx and
+     exposed as --font-waldeck. Archivo Black is the tight grotesque used for
+     statement headings. See DESIGN.md → Typography. */
+  --font-display: var(--font-waldeck), "Archivo Black", system-ui, sans-serif;
+  --font-grotesque: var(--font-archivo-black), system-ui, sans-serif;
   --font-body: var(--font-archivo), system-ui, sans-serif;
   --font-mono: var(--font-space-mono), ui-monospace, monospace;
 
@@ -58,15 +62,16 @@
   }
 
   /* Josh's work is the loudest thing on the page — the focus ring should be
-     unmistakable without competing with it. */
+     unmistakable without competing with it. Brand blue keeps contrast on white
+     and on the blue marquee band, where a purple ring would disappear. */
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-brand);
     outline-offset: 3px;
     border-radius: 2px;
   }
 
   ::selection {
-    background-color: var(--color-accent);
+    background-color: var(--color-brand);
     color: var(--color-canvas);
   }
 }
@@ -77,19 +82,31 @@
    page markup readable and stops the scale from drifting.
    ========================================================================== */
 
-/* 132px display at 1344px, fluid down to phones. */
+/* The JOSH McKenna wordmark and other big Waldeck brand moments. ~200px at
+   1344px, fluid down to phones. Heavy Black weight — the loudest type role. */
 @utility type-display {
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 9.8vw, 8.25rem);
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  text-wrap: balance;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  font-weight: 900;
 }
 
-@utility type-heading {
+/* Mid-size Waldeck — SELECTED WORK, MORE ABOUT JOSH →, the marquee. A fifth
+   size added deliberately as an @utility (never inline). */
+@utility type-title {
   font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4.6vw, 3.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+/* The tight grotesque statement headings — Archivo Black, not Waldeck. */
+@utility type-heading {
+  font-family: var(--font-grotesque);
   font-size: clamp(1.75rem, 4vw, 3rem);
-  line-height: 1;
+  line-height: 1.02;
   letter-spacing: -0.02em;
 }
 

@@ -12,42 +12,46 @@ Source of truth in code: the `@theme` block in [app/globals.css](app/globals.css
 | Token                      | Value     | Use                                              |
 | -------------------------- | --------- | ------------------------------------------------ |
 | `canvas`                   | `#ffffff` | Page background                                  |
-| `ink`                      | `#141414` | Primary text, marquee band                       |
+| `ink`                      | `#141414` | Primary text                                     |
 | `ink-muted`                | `#8c877e` | Secondary text, labels, captions                  |
-| `accent`                   | `#ff3b2f` | The commission path — CTAs, hero nav, annotations |
+| `brand`                    | `#30b7ff` | The commission path — CTAs, wordmark, marquee, hero nav cards |
+| `accent`                   | `#ae88ff` | Purple display accent — section titles, active nav |
 | `highlight`                | `#ffb600` | Default project title wash                        |
 | `hairline`                 | `#e3dfd5` | Rules and container borders                       |
 | `placeholder`              | `#e3dfd5` | Decorative artwork slots                          |
 | `placeholder-strong`       | `#d8d3c7` | Navigable artwork slots                           |
 
-`accent` is a path marker, not a decoration. If something red isn't asking the
-visitor to hire Josh, it's probably wrong.
+Josh's Website v2 (Figma node 101:5) retired the old red accent. `brand` blue is
+the path marker — if something blue isn't asking the visitor to hire Josh, it's
+probably wrong. `accent` purple is the display voice: the Waldeck section titles.
 
 ## Typography
 
 | Role            | Family                    | Size                            |
 | --------------- | ------------------------- | ------------------------------- |
-| `type-display`  | BBH Hegarty → Archivo Black | `clamp(2.75rem, 9.8vw, 8.25rem)` |
-| `type-heading`  | BBH Hegarty → Archivo Black | `clamp(1.75rem, 4vw, 3rem)`     |
+| `type-display`  | Waldeck → Archivo Black   | `clamp(2.75rem, 9.8vw, 8.25rem)` |
+| `type-title`    | Waldeck → Archivo Black   | `clamp(1.75rem, 4.6vw, 3.5rem)` |
+| `type-heading`  | Archivo Black             | `clamp(1.75rem, 4vw, 3rem)`     |
 | `type-lede`     | Archivo Medium            | `clamp(1.125rem, 1.6vw, 1.375rem)` |
 | `type-label`    | Space Mono, uppercase     | `11px` / `0.02em`               |
 | body            | Archivo Medium            | `15px`                          |
 
-### The display typeface — open decision
+Two display voices. **Waldeck** (the bubbly rounded face) carries the brand
+moments — the `type-display` wordmark, the `type-title` section titles and the
+marquee. **Archivo Black** is the tight grotesque for `type-heading` statement
+lines ("London-based illustrator…", "Got something that needs drawing?").
 
-The wireframes specify **BBH Hegarty**, a licensed face we can't redistribute as
-a webfont. The stack currently leads with it and falls back to **Archivo Black**,
-which is on Google Fonts and shares Archivo's skeleton, so the pairing stays
-coherent.
+### The display typeface — Waldeck (trial)
 
-To switch to the real face once licensed: drop the `woff2` into `app/fonts/`,
-load it with `next/font/local` in [app/layout.tsx](app/layout.tsx) as
-`--font-archivo-black`, and nothing else changes — `--font-display` in
-`globals.css` already names `"BBH Hegarty"` first.
+Josh's v2 specifies **Waldeck**. The trial weights are self-hosted from
+[public/fonts/waldeck](public/fonts/waldeck) and loaded with `next/font/local`
+in [app/layout.tsx](app/layout.tsx) as `--font-waldeck`. Notes:
 
-Note the display face carries the site's personality. Archivo Black is a
-competent stand-in, not a match — Hegarty is chunkier and rounder. Worth
-resolving before launch.
+- The trial **Black (900)** OTF renders fine metrically but `type-display` uses a
+  `0.9` line-height so the stacked two-line wordmark doesn't collide.
+- To swap in the licensed family, drop the files at the same paths (keep the
+  `--font-waldeck` variable name) — nothing in `globals.css` changes.
+- These are **trial** files: resolve the licence before launch.
 
 ## Rhythm
 
@@ -77,7 +81,8 @@ itself.
 ## Accessibility
 
 - Skip link to `#main` in the root layout
-- `:focus-visible` ring in `accent`, 2px, 3px offset
+- `:focus-visible` ring in `brand`, 2px, 3px offset (blue keeps contrast on the
+  blue marquee band, where a purple ring would vanish)
 - Hero: 3 navigating objects are `<Link>` with `aria-label`; the 3 decorative
   ones are `aria-hidden="true"`
 - Work filters are `<button aria-pressed>`, with an `aria-live` result count
@@ -98,7 +103,7 @@ To add real artwork: drop the file in `public/`, set `src` on the image object i
 
 | Decision              | Where it bites                                                          |
 | --------------------- | ----------------------------------------------------------------------- |
-| **Display typeface**  | BBH Hegarty licence, or commit to Archivo Black. Changes the whole feel. |
+| **Display typeface**  | Waldeck is on trial weights — resolve the licence before launch.         |
 | **Commerce channel**  | Shopify vs Stripe vs print-on-demand. Restructures `/shop` entirely.     |
 | **Form backend**      | Both forms hand off to `mailto` today. Swap one function body each.      |
 | **Josh's city**       | `siteConfig.location` says London; the wireframe says `[CITY]`.          |

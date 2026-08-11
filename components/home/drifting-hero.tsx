@@ -1,116 +1,155 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 /**
- * The homepage hero: six objects drifting on independent vectors, bouncing off
- * the frame like a DVD screensaver, leaning away from the cursor.
+ * The homepage hero: six illustration cut-outs orbiting the JOSH McKenna
+ * wordmark, each on its own slow elliptical path so the composition keeps a
+ * gravity around the centre and never crowds the text. Nearby objects still
+ * lean away from the cursor.
  *
  * Three of the six are real navigation (Work · About · Shop) and render as
- * links with visible focus and destination labels. The other three are
- * decoration and are hidden from assistive tech entirely.
+ * links with visible focus and a destination label. The other three are
+ * decoration and are hidden from assistive tech entirely — but every object
+ * gets the same hover treatment: it lifts in front of the wordmark and a
+ * frosted-blue glass card fades in around it.
  *
- * Geometry is ported from Figma node 17:180. Positions and sizes are stored as
- * fractions of the container rather than pixels, so the whole composition
- * scales with the viewport and the physics stays resolution-independent.
+ * Geometry is expressed as fractions of the container, so the whole thing
+ * scales with the viewport and stays resolution-independent.
  */
+
+const rad = (deg: number) => (deg * Math.PI) / 180;
 
 type DriftObject = {
   id: string;
-  label: string;
+  kind: "nav" | "ambient";
+  /** Nav only — the destination label and route. */
+  label?: string;
   href?: string;
+  src: string;
+  /** Empty for decoration (aria-hidden) and nav (the link is labelled). */
+  alt: string;
   /** Fraction of container width. */
   width: number;
   /** width / height. */
   aspect: number;
-  /** Start position as a fraction of container, top-left origin. */
-  x: number;
-  y: number;
-  /** Drift velocity in fractions-of-container per second. */
-  vx: number;
-  vy: number;
-  rotation: number;
+  /** Starting angle on the orbit, radians. */
+  angle: number;
+  /** Orbit radii as a fraction of container width / height. */
+  rx: number;
+  ry: number;
+  /** Angular velocity, radians per second (sign sets direction). */
+  spin: number;
 };
 
 const OBJECTS: DriftObject[] = [
   {
     id: "ambient-1",
-    label: "illo — ambient",
-    width: 0.146,
-    aspect: 1.289,
-    x: 0.04,
-    y: 0.127,
-    vx: 0.013,
-    vy: 0.009,
-    rotation: 8,
+    kind: "ambient",
+    src: "/illustrations/objects/face.png",
+    alt: "",
+    width: 0.185,
+    aspect: 0.795,
+    angle: rad(235),
+    rx: 0.33,
+    ry: 0.34,
+    spin: rad(5),
   },
   {
     id: "work",
+    kind: "nav",
     label: "Work",
     href: "/work",
-    width: 0.131,
-    aspect: 0.822,
-    x: 0.775,
-    y: 0.079,
-    vx: -0.011,
-    vy: 0.014,
-    rotation: -6,
+    src: "/illustrations/objects/car.png",
+    alt: "",
+    width: 0.3,
+    aspect: 1.991,
+    angle: rad(320),
+    rx: 0.3,
+    ry: 0.31,
+    spin: rad(-4.5),
   },
   {
     id: "about",
+    kind: "nav",
     label: "About",
     href: "/about",
-    width: 0.159,
-    aspect: 1.321,
-    x: 0.094,
-    y: 0.622,
-    vx: 0.016,
-    vy: -0.012,
-    rotation: -5,
+    src: "/illustrations/objects/bearded.png",
+    alt: "",
+    width: 0.19,
+    aspect: 1.052,
+    angle: rad(150),
+    rx: 0.35,
+    ry: 0.33,
+    spin: rad(5.5),
   },
   {
     id: "shop",
+    kind: "nav",
     label: "Shop",
     href: "/shop",
-    width: 0.141,
-    aspect: 1,
-    x: 0.772,
-    y: 0.627,
-    vx: -0.014,
-    vy: -0.01,
-    rotation: 7,
+    src: "/illustrations/objects/hand.png",
+    alt: "",
+    width: 0.145,
+    aspect: 0.734,
+    angle: rad(40),
+    rx: 0.34,
+    ry: 0.34,
+    spin: rad(-6.5),
   },
   {
     id: "ambient-5",
-    label: "sticker",
-    width: 0.095,
-    aspect: 1,
-    x: 0.411,
-    y: 0.051,
-    vx: 0.009,
-    vy: 0.016,
-    rotation: -13,
+    kind: "ambient",
+    src: "/illustrations/objects/flowers.png",
+    alt: "",
+    width: 0.175,
+    aspect: 1.112,
+    angle: rad(285),
+    rx: 0.32,
+    ry: 0.35,
+    spin: rad(6),
   },
   {
     id: "ambient-6",
-    label: "sticker",
-    width: 0.118,
-    aspect: 1.411,
-    x: 0.272,
-    y: 0.716,
-    vx: -0.017,
-    vy: -0.008,
-    rotation: 11,
+    kind: "ambient",
+    src: "/illustrations/objects/bmw.png",
+    alt: "",
+    width: 0.235,
+    aspect: 1.553,
+    angle: rad(100),
+    rx: 0.31,
+    ry: 0.32,
+    spin: rad(-5),
   },
 ];
 
-/** Collision inset — the dashed "screensaver collision bounds" annotation. */
-const BOUNDS_INSET = 0.03;
+/** Orbit centre — the middle of the frame, under the wordmark. */
+const CENTRE = 0.5;
+/** Keep objects this far inside each edge. */
+const BOUNDS_INSET = 0.02;
 /** How close the pointer must get before an object leans away. */
 const REPEL_RADIUS = 0.26;
 /** Maximum lean, as a fraction of container width. */
 const REPEL_STRENGTH = 0.05;
+
+/** Responsive candidate widths — objects span ~15–30% of the frame. */
+const OBJECT_SIZES = "(max-width: 768px) 48vw, 30vw";
+
+/** Position of an object's top-left corner on its orbit at a given angle. */
+function orbitPosition(o: {
+  angle: number;
+  rx: number;
+  ry: number;
+  width: number;
+  height: number;
+}) {
+  return {
+    x: CENTRE + o.rx * Math.cos(o.angle) - o.width / 2,
+    y: CENTRE + o.ry * Math.sin(o.angle) - o.height / 2,
+  };
+}
 
 export function DriftingHero() {
   const frameRef = useRef<HTMLDivElement>(null);
@@ -121,17 +160,17 @@ export function DriftingHero() {
     if (!frame) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      // Reduced motion: settle into the static scattered composition.
+      // Reduced motion: hold the static orbit (each object at its seed angle).
       return;
     }
 
-    // Live simulation state, seeded from the Figma layout. Kept outside React
+    // Live simulation state, seeded from the orbit params. Kept outside React
     // so the loop never triggers a re-render.
     const state = OBJECTS.map((object) => ({
-      x: object.x,
-      y: object.y,
-      vx: object.vx,
-      vy: object.vy,
+      angle: object.angle,
+      rx: object.rx,
+      ry: object.ry,
+      spin: object.spin,
       width: object.width,
       height: object.width / object.aspect,
     }));
@@ -158,52 +197,24 @@ export function DriftingHero() {
     let last = performance.now();
 
     const tick = (now: number) => {
-      // Clamp dt so a backgrounded tab doesn't teleport everything on return.
+      // Clamp dt so a backgrounded tab doesn't jump everything on return.
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
-
-      // The frame is wider than it is tall, so a shared velocity in fractional
-      // space would look faster vertically. Correcting by aspect keeps the
-      // apparent speed even in both axes.
-      const rect = frame.getBoundingClientRect();
-      const aspectCorrection = rect.height > 0 ? rect.width / rect.height : 1;
 
       for (let i = 0; i < state.length; i += 1) {
         const object = state[i];
         const node = nodeRefs.current[i];
         if (!node) continue;
 
-        object.x += object.vx * dt;
-        object.y += object.vy * dt * aspectCorrection;
-
-        // Reverse on contact with the bounds — never stop, never pause.
-        const maxX = 1 - BOUNDS_INSET - object.width;
-        const maxY = 1 - BOUNDS_INSET - object.height;
-
-        if (object.x <= BOUNDS_INSET) {
-          object.x = BOUNDS_INSET;
-          object.vx = Math.abs(object.vx);
-        } else if (object.x >= maxX) {
-          object.x = maxX;
-          object.vx = -Math.abs(object.vx);
-        }
-
-        if (object.y <= BOUNDS_INSET) {
-          object.y = BOUNDS_INSET;
-          object.vy = Math.abs(object.vy);
-        } else if (object.y >= maxY) {
-          object.y = maxY;
-          object.vy = -Math.abs(object.vy);
-        }
+        // Advance the orbit.
+        object.angle += object.spin * dt;
+        let { x, y } = orbitPosition(object);
 
         // Soft repel: falls off linearly to zero at REPEL_RADIUS so objects
-        // ease away instead of snapping.
-        let pushX = 0;
-        let pushY = 0;
-
+        // ease away from the cursor instead of snapping.
         if (pointer.active) {
-          const centreX = object.x + object.width / 2;
-          const centreY = object.y + object.height / 2;
+          const centreX = x + object.width / 2;
+          const centreY = y + object.height / 2;
           const dx = centreX - pointer.x;
           const dy = centreY - pointer.y;
           const distance = Math.hypot(dx, dy);
@@ -211,14 +222,19 @@ export function DriftingHero() {
           if (distance > 0.0001 && distance < REPEL_RADIUS) {
             const falloff = 1 - distance / REPEL_RADIUS;
             const scale = (falloff * REPEL_STRENGTH) / distance;
-            pushX = dx * scale;
-            pushY = dy * scale;
+            x += dx * scale;
+            y += dy * scale;
           }
         }
 
-        node.style.transform = `translate3d(${(object.x + pushX) * 100}cqw, ${
-          (object.y + pushY) * 100
-        }cqh, 0)`;
+        // Never let an orbit (or a repel push) run an object off the frame.
+        x = Math.max(BOUNDS_INSET, Math.min(x, 1 - BOUNDS_INSET - object.width));
+        y = Math.max(
+          BOUNDS_INSET,
+          Math.min(y, 1 - BOUNDS_INSET - object.height),
+        );
+
+        node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
       }
 
       raf = requestAnimationFrame(tick);
@@ -242,31 +258,53 @@ export function DriftingHero() {
         // than the viewport.
         className="relative mx-auto h-[min(88vh,880px)] max-w-frame [container-type:size]"
       >
-        {OBJECTS.map((object, index) => {
-          const isNav = Boolean(object.href);
+        {/* Name lockup. Objects orbit BEHIND it and only pull in front on
+            hover. Ignores the pointer so it never blocks a link. */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
+          <h1 className="type-display text-brand">
+            <span className="block">Josh</span>
+            <span className="block">McKenna</span>
+          </h1>
+        </div>
 
+        {OBJECTS.map((object, index) => {
+          const isNav = object.kind === "nav";
+          const height = object.width / object.aspect;
+          const seed = orbitPosition({ ...object, height });
+
+          // A clean cut-out at rest; on hover/focus a frosted-blue glass card
+          // fades in around it (with generous padding), the destination label
+          // appears below with room from the border, and the object lifts in
+          // front of the wordmark via the z-index bump on the wrapper.
           const plate = (
-            <div
-              className="transition-transform duration-300 ease-drift group-hover:scale-[1.06] group-focus-visible:scale-[1.06]"
-              style={{ transform: `rotate(${object.rotation}deg)` }}
-            >
+            <div className="relative transition-transform duration-500 ease-drift group-hover:scale-[1.03] group-focus-within:scale-[1.03]">
               <div
-                className={`w-full rounded-lg ${
-                  isNav
-                    ? "border-[1.5px] border-accent bg-placeholder-strong"
-                    : "bg-placeholder"
-                }`}
-                style={{ aspectRatio: String(object.aspect) }}
-              />
-              <span
-                className={`type-label mt-2 block text-center transition-opacity duration-300 ${
-                  isNav
-                    ? "text-accent opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100"
-                    : "text-ink-muted opacity-60"
-                }`}
+                aria-hidden="true"
+                // border/bg/blur stay off until hover: a resting transparent
+                // backdrop-filter leaks a ghost outline in Chrome, and a
+                // transparent border keeps the layout from shifting.
+                className="pointer-events-none absolute -bottom-[20%] -left-[15%] -right-[15%] -top-[15%] flex flex-col items-center justify-end rounded-[1.75rem] border-[1.5px] border-transparent pb-[7%] shadow-2xl shadow-transparent transition-[background-color,border-color,box-shadow] duration-300 group-hover:border-brand group-hover:bg-brand/15 group-hover:shadow-brand/25 group-hover:backdrop-blur-md group-focus-within:border-brand group-focus-within:bg-brand/15 group-focus-within:shadow-brand/25 group-focus-within:backdrop-blur-md"
               >
-                {isNav ? `→ ${object.label}` : object.label}
-              </span>
+                {isNav ? (
+                  <span className="type-label text-[1rem] leading-none text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+                    → {object.label}
+                  </span>
+                ) : null}
+              </div>
+              <div
+                className="relative z-10"
+                style={{ aspectRatio: String(object.aspect) }}
+              >
+                <Image
+                  src={object.src}
+                  alt={object.alt}
+                  fill
+                  sizes={OBJECT_SIZES}
+                  priority={isNav}
+                  draggable={false}
+                  className="object-contain"
+                />
+              </div>
             </div>
           );
 
@@ -277,41 +315,33 @@ export function DriftingHero() {
                 nodeRefs.current[index] = node;
               }}
               aria-hidden={isNav ? undefined : "true"}
-              className="absolute left-0 top-0 will-change-transform"
+              className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
-                transform: `translate3d(${object.x * 100}cqw, ${object.y * 100}cqh, 0)`,
+                transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
               }}
             >
               {isNav ? (
                 <Link
                   href={object.href!}
-                  className="group block rounded-lg"
-                  aria-label={`${object.label} — view Josh's ${object.label.toLowerCase()}`}
+                  className="block"
+                  aria-label={`${object.label} — view Josh's ${object.label!.toLowerCase()}`}
                 >
                   {plate}
                 </Link>
               ) : (
-                <div className="group">{plate}</div>
+                plate
               )}
             </div>
           );
         })}
-
-        {/* Name lockup sits above the objects and ignores the pointer so it
-            never blocks a repel or a link. */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
-          <h1 className="type-display text-ink">Josh McKenna</h1>
-          <p className="type-label mt-4 text-ink-muted">
-            Illustrator · Based in London · Available for commissions
-          </p>
-          <p className="type-lede mt-4 text-ink-muted">
-            Drawings that misbehave.
-          </p>
-        </div>
       </div>
 
-      <p className="type-label pb-10 text-center text-ink-muted">Keep going ↓</p>
+      {/* Scroll cue — a hairline tick and a label, per node 85:456. */}
+      <div className="flex flex-col items-center gap-3 pb-10">
+        <span className="block h-8 w-px bg-brand" aria-hidden="true" />
+        <span className="type-label text-brand">Keep going</span>
+      </div>
     </section>
   );
 }

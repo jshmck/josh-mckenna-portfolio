@@ -6,6 +6,7 @@ const RATIO_CLASS: Record<ImageRatio, string> = {
   "1/1": "aspect-square",
   "4/5": "aspect-[4/5]",
   "3/4": "aspect-[3/4]",
+  "4/3": "aspect-[4/3]",
   "5/4": "aspect-[5/4]",
   "16/10": "aspect-[16/10]",
 };

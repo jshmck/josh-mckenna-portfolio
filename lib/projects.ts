@@ -19,7 +19,7 @@ export const PROJECT_CATEGORIES = [
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
 
 /** Aspect ratios available to gallery images, keyed to CSS aspect-ratio. */
-export type ImageRatio = "1/1" | "4/5" | "3/4" | "5/4" | "16/10";
+export type ImageRatio = "1/1" | "4/5" | "3/4" | "4/3" | "5/4" | "16/10";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -66,29 +66,53 @@ export const projects: Project[] = [
     slug: "la-pride",
     title: "L.A. Pride",
     client: "City of Los Angeles",
-    year: 2026,
-    discipline: "Editorial illustration",
-    deliverables: "6 spot illos · 1 cover",
-    category: "Editorial",
-    accent: "#ffb600",
-    summary: "A parade that wouldn't stay inside the margins.",
+    year: 2024,
+    discipline: "Festival identity",
+    deliverables: "Key art · stage · wayfinding · merch",
+    category: "Character",
+    accent: "#e3ddcb",
+    summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption:
-      "The cover illustration, printed at 2m across the festival's main gate.",
+      "The main stage. The key art runs the full width of the header and repeats on both side panels.",
     brief: [
-      "The city wanted a cover that felt like the parade sounds — loud, warm, and slightly out of control. The first pass was too tidy, so I threw out the grid and let the characters overlap until the whole thing read as one crowd instead of six figures.",
-      "Everything was drawn at final size in brush pen, then coloured flat. No gradients, no texture overlays. The only rule was that no two neighbouring characters could share a skin tone.",
+      "A festival identity has to survive every size there is — a stage header read from the back of a field, a wayfinding totem read at walking pace, and a badge on the front of a cap. I drew the L and the A as characters first and worked out afterwards whether they'd still hold together at 4cm.",
+      "Everything is flat colour and a single line weight, because the same drawing had to go onto vinyl, through a screen print, and up on a wall as a paste-up without reading as three different jobs. James Junk and I split the character work.",
     ],
     credits: [
-      { role: "Art direction", name: "Maya Okonkwo" },
-      { role: "Words", name: "Dani Reyes" },
-      { role: "Photography", name: "Sam Ellery" },
-      { role: "Printed by", name: "Blackline Studio" },
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Co-illustration", name: "James Junk" },
     ],
-    hero: { ratio: "16/10", alt: "L.A. Pride cover illustration" },
+    hero: {
+      ratio: "16/10",
+      alt: "The LA Pride 2024 main stage, key art across the header and both side panels",
+      src: "/work/la-pride/05-main-stage.webp",
+    },
+    /**
+     * Portraits first, because the template pairs the first two into a
+     * two-up row and runs everything after them full width. A 3/4 portrait
+     * at 1344px wide is almost entirely wall.
+     */
     gallery: [
-      { ratio: "4/5", alt: "Spot illustration — the marching band" },
-      { ratio: "4/5", alt: "Spot illustration — the sound system" },
-      { ratio: "16/10", alt: "The cover in place on the festival gate" },
+      {
+        ratio: "3/4",
+        alt: "Flyposted lineup sheet and site map",
+        src: "/work/la-pride/03-flyposted-lineup.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "The key art lockup",
+        src: "/work/la-pride/04-key-art-lockup.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Wayfinding totem — main stage and food village",
+        src: "/work/la-pride/01-wayfinding-totem.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Merch — hoodie, tee and cap",
+        src: "/work/la-pride/02-merch-rail.webp",
+      },
     ],
     featured: true,
   },
