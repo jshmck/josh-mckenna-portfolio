@@ -28,26 +28,31 @@ Tailwind v4 has **no `tailwind.config.js`**. Tokens live in the `@theme` block i
 
 - **Colour goes through tokens.** Raw hex belongs in the `@theme` block in
   `globals.css` and nowhere else. Use `bg-canvas`, `text-ink`, `text-ink-muted`,
-  `border-hairline`, `bg-accent`, `bg-placeholder`. The one sanctioned exception
-  is `Project.accent` in `lib/projects.ts` — a per-project wash is content.
+  `border-hairline`, `bg-brand`, `text-accent`, `bg-placeholder`. The one
+  sanctioned exception is `Project.accent` in `lib/projects.ts` — a per-project
+  wash is content.
 - **Never bracket a CSS var.** `bg-canvas`, not `bg-[var(--color-canvas)]`.
   Bracket notation silently drops opacity modifiers: `/30` on a bracketed var
   produces no opacity and no error.
-- **Four type roles, not ad-hoc sizes.** `type-display`, `type-heading`,
-  `type-label`, `type-lede`. A fifth size is a design decision — add it as an
-  `@utility` in `globals.css`, never inline.
-- **`--color-accent` (#ff3b2f) marks the commission path.** CTAs, hero
-  navigation objects, annotations. It is not a container border colour and not a
-  decorative fill. Containers use `border-hairline`.
+- **Five type roles, not ad-hoc sizes.** `type-display`, `type-title`,
+  `type-heading`, `type-label`, `type-lede`. A new size is a design decision —
+  add it as an `@utility` in `globals.css`, never inline.
+- **`--color-brand` (#30b7ff) marks the commission path.** CTAs, the JOSH
+  McKenna wordmark, the marquee band, the hero navigation cards. `--color-accent`
+  (#ae88ff) is the purple display accent — section titles (`SELECTED WORK`,
+  `MORE ABOUT JOSH →`) and the active nav link. Neither is a container border
+  colour; containers use `border-hairline`. (Josh's v2 retired the old red.)
 - **No `border-2` or thicker.** The hero's navigable objects use `border-[1.5px]`
   ported from Figma; that is the only exception.
 - **Never the `Sparkles` icon.** Hard ban.
 - **No icons before section headers.**
-- **Every image goes through `<Plate>`** ([components/ui/plate.tsx](components/ui/plate.tsx)).
+- **Framed images go through `<Plate>`** ([components/ui/plate.tsx](components/ui/plate.tsx)).
   It renders the taupe wireframe placeholder labelled with its own alt text until
   a real `src` exists, so the site is fully reviewable before any final artwork
   lands. Always pass `sizes` — without it Next serves the largest candidate to
-  every viewport.
+  every viewport. The one exception is the drifting-hero cut-outs: they're
+  transparent PNGs rendered with `object-contain` (no rounded frame or surface),
+  so they use `next/image` directly — still with `sizes`.
 - **Guard every animation.** The global `prefers-reduced-motion` rule in
   `globals.css` neutralises CSS `animation` and `transition`, but it **cannot
   stop a rAF loop or a scroll listener**. Those need an explicit
