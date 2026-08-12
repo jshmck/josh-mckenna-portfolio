@@ -153,9 +153,45 @@ function orbitPosition(o: {
   };
 }
 
+/** Flick distance/rotation on hover-enter, and how long it takes to settle. */
+const FLICK_DISTANCE = 10;
+const FLICK_ROTATE = 6;
+const FLICK_DURATION = 500;
+
 export function DriftingHero() {
   const frameRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const plateRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // One-shot "flick" on hover-enter: a quick directional nudge away from
+  // wherever the cursor landed, easing back to rest. Runs via the Web
+  // Animations API rather than a CSS transition so it never fights the
+  // group-hover scale transition already on the plate (same element, a
+  // different pair of CSS properties — translate/rotate here, scale there).
+  const handlePointerEnter = (index: number) => (event: React.PointerEvent) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const plate = plateRefs.current[index];
+    if (!plate) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const dx = event.clientX - (rect.left + rect.width / 2);
+    const dy = event.clientY - (rect.top + rect.height / 2);
+    const distance = Math.hypot(dx, dy) || 1;
+    const nx = dx / distance;
+    const ny = dy / distance;
+
+    plate.animate(
+      [
+        {
+          translate: `${-nx * FLICK_DISTANCE}px ${-ny * FLICK_DISTANCE}px`,
+          rotate: `${-nx * FLICK_ROTATE}deg`,
+        },
+        { translate: "0px 0px", rotate: "0deg" },
+      ],
+      { duration: FLICK_DURATION, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+    );
+  };
 
   useEffect(() => {
     const frame = frameRef.current;
@@ -279,7 +315,12 @@ export function DriftingHero() {
           // appears below with room from the border, and the object lifts in
           // front of the wordmark via the z-index bump on the wrapper.
           const plate = (
-            <div className="relative transition-transform duration-500 ease-drift group-hover:scale-[1.03] group-focus-within:scale-[1.03]">
+            <div
+              ref={(node) => {
+                plateRefs.current[index] = node;
+              }}
+              className="relative transition-transform duration-500 ease-drift group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
+            >
               <div
                 aria-hidden="true"
                 // bg/blur stay off until hover. No border — Josh wants a
@@ -318,6 +359,7 @@ export function DriftingHero() {
               ref={(node) => {
                 nodeRefs.current[index] = node;
               }}
+              onPointerEnter={handlePointerEnter(index)}
               aria-hidden={isNav ? undefined : "true"}
               className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
               style={{
