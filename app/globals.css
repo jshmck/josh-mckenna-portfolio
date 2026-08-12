@@ -134,7 +134,7 @@
 
 @utility type-lede {
   font-family: var(--font-body);
-  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  font-size: 1rem;
   line-height: 1.45;
   font-weight: 500;
 }
