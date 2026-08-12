@@ -281,15 +281,15 @@ export function DriftingHero() {
           // fades in around it (with generous padding), the destination label
           // appears below with room from the border, and the object lifts in
           // front of the wordmark via the z-index bump on the wrapper. Nav
-          // objects get a subtle lift; ambient objects get a full playful
-          // spin instead, since they have no destination to announce.
+          // objects get a subtle lift; ambient objects get a playful decaying
+          // wobble instead, since they have no destination to announce.
           const plate = (
             <div
-              className={`relative transition-transform ease-drift ${
+              className={
                 isNav
-                  ? "duration-500 group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
-                  : "duration-700 group-hover:scale-[1.05] group-hover:rotate-[360deg]"
-              }`}
+                  ? "relative transition-transform duration-500 ease-drift group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
+                  : "relative group-hover:animate-[jiggle_0.6s_ease-in-out]"
+              }
             >
               <div
                 aria-hidden="true"
