@@ -10,11 +10,14 @@ import { useEffect, useRef } from "react";
  * gravity around the centre and never crowds the text. Nearby objects still
  * lean away from the cursor.
  *
- * Three of the six are real navigation (Work · About · Shop) and render as
- * links with visible focus and a destination label. The other three are
- * decoration and are hidden from assistive tech entirely — but every object
- * gets the same hover treatment: it lifts in front of the wordmark and a
- * frosted-blue glass card fades in around it.
+ * Four of the six are real navigation — Work · Shop · Info · Contact,
+ * matching the site nav exactly — and render as links with visible focus
+ * and a destination label. Every nav object gets a hover/focus lift and a
+ * frosted-blue glass card with the destination label.
+ *
+ * The other two are decoration, hidden from assistive tech entirely. They
+ * get a different, purely playful hover treatment — a full spin — since
+ * they have no destination to announce.
  *
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
@@ -72,9 +75,9 @@ const OBJECTS: DriftObject[] = [
     spin: rad(-4.5),
   },
   {
-    id: "about",
+    id: "info",
     kind: "nav",
-    label: "About",
+    label: "Info",
     href: "/about",
     src: "/illustrations/objects/bearded.png",
     alt: "",
@@ -100,8 +103,10 @@ const OBJECTS: DriftObject[] = [
     spin: rad(-6.5),
   },
   {
-    id: "ambient-5",
-    kind: "ambient",
+    id: "contact",
+    kind: "nav",
+    label: "Contact",
+    href: "/contact",
     src: "/illustrations/objects/flowers.png",
     alt: "",
     width: 0.175,
@@ -275,9 +280,17 @@ export function DriftingHero() {
           // A clean cut-out at rest; on hover/focus a frosted-blue glass card
           // fades in around it (with generous padding), the destination label
           // appears below with room from the border, and the object lifts in
-          // front of the wordmark via the z-index bump on the wrapper.
+          // front of the wordmark via the z-index bump on the wrapper. Nav
+          // objects get a subtle lift; ambient objects get a full playful
+          // spin instead, since they have no destination to announce.
           const plate = (
-            <div className="relative transition-transform duration-500 ease-drift group-hover:scale-[1.03] group-focus-within:scale-[1.03]">
+            <div
+              className={`relative transition-transform ease-drift ${
+                isNav
+                  ? "duration-500 group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
+                  : "duration-700 group-hover:scale-[1.05] group-hover:rotate-[360deg]"
+              }`}
+            >
               <div
                 aria-hidden="true"
                 // border/bg/blur stay off until hover: a resting transparent
@@ -328,7 +341,7 @@ export function DriftingHero() {
                 <Link
                   href={object.href!}
                   className="block"
-                  aria-label={`${object.label} — view Josh's ${object.label!.toLowerCase()}`}
+                  aria-label={`${object.label} — view Josh's ${object.label!.toLowerCase()} page`}
                 >
                   {plate}
                 </Link>
