@@ -92,14 +92,28 @@
   font-weight: 900;
 }
 
-/* Mid-size Waldeck — SELECTED WORK, MORE ABOUT JOSH →, the marquee. A fifth
-   size added deliberately as an @utility (never inline). */
+/* Mid-size Waldeck — section titles (SELECTED WORK) and the marquee. Always
+   literal ALL CAPS in the source text — this role has no text-transform, so
+   a title typed in sentence case renders in sentence case. */
 @utility type-title {
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 4.6vw, 3.5rem);
   line-height: 0.95;
   letter-spacing: -0.01em;
   font-weight: 900;
+}
+
+/* Waldeck CTA/link role (MORE ABOUT josh →) — smaller than type-title and
+   set in small caps: literal capitals render full-size, literal lowercase
+   renders as reduced capitals. Pairs with the "Josh" name-casing rule —
+   type it lowercase and small-caps does the rest. */
+@utility type-link {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+  line-height: 1;
+  letter-spacing: -0.005em;
+  font-weight: 900;
+  font-variant-caps: small-caps;
 }
 
 /* The tight grotesque statement headings — Archivo Black, not Waldeck. */

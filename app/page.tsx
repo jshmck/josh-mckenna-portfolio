@@ -72,10 +72,10 @@ export default function HomePage() {
             </p>
             <Link
               href="/about"
-              className="type-title mt-8 inline-flex items-center gap-3 whitespace-nowrap text-accent transition-opacity hover:opacity-70"
+              className="type-link mt-8 inline-flex items-center gap-2 whitespace-nowrap text-accent transition-opacity hover:opacity-70"
             >
               MORE ABOUT josh
-              <span aria-hidden="true" className="font-body text-xl font-normal md:text-2xl">
+              <span aria-hidden="true" className="font-body text-base font-normal md:text-lg">
                 →
               </span>
             </Link>
