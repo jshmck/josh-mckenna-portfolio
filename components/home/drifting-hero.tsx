@@ -114,10 +114,10 @@ const OBJECTS: DriftObject[] = [
   {
     id: "ambient-6",
     kind: "ambient",
-    src: "/illustrations/objects/bmw.png",
+    src: "/illustrations/objects/car-pink.png",
     alt: "",
     width: 0.235,
-    aspect: 1.553,
+    aspect: 2.317,
     angle: rad(100),
     rx: 0.31,
     ry: 0.32,
