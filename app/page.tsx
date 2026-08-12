@@ -74,7 +74,7 @@ export default function HomePage() {
               href="/about"
               className="type-link mt-8 inline-flex items-center gap-2 whitespace-nowrap text-accent transition-opacity hover:opacity-70"
             >
-              MORE ABOUT josh
+              MORe ABOUT jOSH
               <span aria-hidden="true" className="font-body text-base font-normal md:text-lg">
                 →
               </span>
