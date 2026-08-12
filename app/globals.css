@@ -103,17 +103,16 @@
   font-weight: 900;
 }
 
-/* Waldeck CTA/link role (MORE ABOUT josh →) — smaller than type-title and
-   set in small caps: literal capitals render full-size, literal lowercase
-   renders as reduced capitals. Pairs with the "Josh" name-casing rule —
-   type it lowercase and small-caps does the rest. */
+/* Waldeck CTA/link role (MORe ABOUT jOSH) — smaller than type-title. Waldeck's
+   lowercase glyphs sit at nearly the same height as its caps, so the reduced
+   e/j in the CTA are sized explicitly per-letter in app/page.tsx, not via
+   font-variant-caps or the font's own casing. */
 @utility type-link {
   font-family: var(--font-display);
   font-size: clamp(1.125rem, 2.2vw, 1.5rem);
   line-height: 1;
   letter-spacing: -0.005em;
   font-weight: 900;
-  font-variant-caps: small-caps;
 }
 
 /* The tight grotesque statement headings — Archivo Black, not Waldeck. */

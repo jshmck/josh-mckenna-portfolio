@@ -74,7 +74,10 @@ export default function HomePage() {
               href="/about"
               className="type-link mt-8 inline-flex items-center gap-2 whitespace-nowrap text-accent transition-opacity hover:opacity-70"
             >
-              MORe ABOUT jOSH
+              <span>
+                MOR<span className="text-[0.7em]">e</span> ABOUT{" "}
+                <span className="text-[0.7em]">j</span>OSH
+              </span>
               <span aria-hidden="true" className="font-body text-base font-normal md:text-lg">
                 →
               </span>
