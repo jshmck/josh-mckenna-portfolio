@@ -167,30 +167,6 @@
   }
 }
 
-/* Hero ambient objects' hover reaction — a decaying wobble, not a full spin.
-   Plays once per hover-in; the reduced-motion override elsewhere collapses
-   it to a single frame. */
-@keyframes jiggle {
-  0%,
-  100% {
-    rotate: 0deg;
-    scale: 1;
-  }
-  20% {
-    rotate: -8deg;
-    scale: 1.04;
-  }
-  40% {
-    rotate: 7deg;
-  }
-  60% {
-    rotate: -5deg;
-  }
-  80% {
-    rotate: 3deg;
-  }
-}
-
 /* Scroll reveal — driven by the data attribute the Reveal component flips.
    Hidden is the CSS default so there is no flash of visible content. Both
    escape hatches below are pure CSS, so content can never be stranded

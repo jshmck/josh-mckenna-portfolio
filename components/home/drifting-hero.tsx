@@ -12,12 +12,9 @@ import { useEffect, useRef } from "react";
  *
  * Four of the six are real navigation — Work · Shop · Info · Contact,
  * matching the site nav exactly — and render as links with visible focus
- * and a destination label. Every nav object gets a hover/focus lift and a
- * frosted-blue glass card with the destination label.
- *
- * The other two are decoration, hidden from assistive tech entirely. They
- * get a different, purely playful hover treatment — a full spin — since
- * they have no destination to announce.
+ * and a destination label. The other two are decoration, hidden from
+ * assistive tech entirely — but every object gets the same hover/focus
+ * treatment: a subtle lift and a frosted-blue glass card.
  *
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
@@ -280,17 +277,9 @@ export function DriftingHero() {
           // A clean cut-out at rest; on hover/focus a frosted-blue glass card
           // fades in around it (with generous padding), the destination label
           // appears below with room from the border, and the object lifts in
-          // front of the wordmark via the z-index bump on the wrapper. Nav
-          // objects get a subtle lift; ambient objects get a playful decaying
-          // wobble instead, since they have no destination to announce.
+          // front of the wordmark via the z-index bump on the wrapper.
           const plate = (
-            <div
-              className={
-                isNav
-                  ? "relative transition-transform duration-500 ease-drift group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
-                  : "relative group-hover:animate-[jiggle_0.6s_ease-in-out]"
-              }
-            >
+            <div className="relative transition-transform duration-500 ease-drift group-hover:scale-[1.03] group-focus-within:scale-[1.03]">
               <div
                 aria-hidden="true"
                 // bg/blur stay off until hover. No border — Josh wants a
