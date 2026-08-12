@@ -153,44 +153,37 @@ function orbitPosition(o: {
   };
 }
 
-/** Flick distance/rotation on hover-enter, and how long it takes to settle. */
-const FLICK_DISTANCE = 10;
-const FLICK_ROTATE = 6;
-const FLICK_DURATION = 500;
+/** Maximum tilt at the object's own edge, degrees. Scales down toward 0 at centre. */
+const MAX_TILT = 8;
 
 export function DriftingHero() {
   const frameRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const plateRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // One-shot "flick" on hover-enter: a quick directional nudge away from
-  // wherever the cursor landed, easing back to rest. Runs via the Web
-  // Animations API rather than a CSS transition so it never fights the
-  // group-hover scale transition already on the plate (same element, a
-  // different pair of CSS properties — translate/rotate here, scale there).
-  const handlePointerEnter = (index: number) => (event: React.PointerEvent) => {
+  // Directional tilt: while the pointer is over an object, it leans away
+  // from wherever the cursor sits relative to its own centre — more tilt
+  // near the edge, near-flat at the centre — and eases back to flat on
+  // pointer-leave. Writes straight to the DOM (not React state) on every
+  // pointermove, same as the orbit loop below; the CSS transition on
+  // `rotate` (see the plate's className) is what makes it feel like a
+  // smooth follow rather than a snap.
+  const handlePointerMove = (index: number) => (event: React.PointerEvent) => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const plate = plateRefs.current[index];
     if (!plate) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
-    const dx = event.clientX - (rect.left + rect.width / 2);
-    const dy = event.clientY - (rect.top + rect.height / 2);
-    const distance = Math.hypot(dx, dy) || 1;
-    const nx = dx / distance;
-    const ny = dy / distance;
+    const relX = (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+    const clamped = Math.max(-1, Math.min(1, relX));
+    plate.style.rotate = `${-clamped * MAX_TILT}deg`;
+  };
 
-    plate.animate(
-      [
-        {
-          translate: `${-nx * FLICK_DISTANCE}px ${-ny * FLICK_DISTANCE}px`,
-          rotate: `${-nx * FLICK_ROTATE}deg`,
-        },
-        { translate: "0px 0px", rotate: "0deg" },
-      ],
-      { duration: FLICK_DURATION, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
-    );
+  const handlePointerLeave = (index: number) => () => {
+    const plate = plateRefs.current[index];
+    if (!plate) return;
+    plate.style.rotate = "0deg";
   };
 
   useEffect(() => {
@@ -319,7 +312,7 @@ export function DriftingHero() {
               ref={(node) => {
                 plateRefs.current[index] = node;
               }}
-              className="relative transition-transform duration-500 ease-drift group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
+              className="relative transition-[scale_500ms_var(--ease-drift),rotate_150ms_ease-out] group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
             >
               <div
                 aria-hidden="true"
@@ -359,7 +352,8 @@ export function DriftingHero() {
               ref={(node) => {
                 nodeRefs.current[index] = node;
               }}
-              onPointerEnter={handlePointerEnter(index)}
+              onPointerMove={handlePointerMove(index)}
+              onPointerLeave={handlePointerLeave(index)}
               aria-hidden={isNav ? undefined : "true"}
               className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
               style={{
