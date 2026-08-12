@@ -72,9 +72,12 @@ export default function HomePage() {
             </p>
             <Link
               href="/about"
-              className="type-title mt-8 inline-block text-accent transition-opacity hover:opacity-70"
+              className="type-title mt-8 inline-flex items-center gap-3 whitespace-nowrap text-accent transition-opacity hover:opacity-70"
             >
-              More about Josh →
+              MORE ABOUT josh
+              <span aria-hidden="true" className="font-body text-xl font-normal md:text-2xl">
+                →
+              </span>
             </Link>
           </Reveal>
 
@@ -95,7 +98,7 @@ export default function HomePage() {
       <section className="border-b border-hairline">
         <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
           <div className="flex items-baseline justify-between gap-6">
-            <h2 className="type-title text-accent">Selected work</h2>
+            <h2 className="type-title text-accent">SELECTED WORK</h2>
             <Link
               href="/work"
               className="type-label shrink-0 border-b border-ink pb-1 text-ink transition-colors hover:border-accent hover:text-accent"
