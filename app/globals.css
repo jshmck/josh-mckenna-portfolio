@@ -11,9 +11,9 @@
   --color-canvas: #ffffff;
   --color-hairline: #e3dfd5;
 
-  /* Ink */
-  --color-ink: #141414;
-  --color-ink-muted: #8c877e;
+  /* Ink — Josh runs pure black for both tiers, no muted gray/bronze. */
+  --color-ink: #000000;
+  --color-ink-muted: #000000;
 
   /* Brand + accents — Josh's "Website v2" palette (Figma node 101:5).
      Blue is the primary/commission colour; purple is the loud display accent
