@@ -298,7 +298,7 @@ export function DriftingHero() {
                 // Nav objects get extra room below for the destination
                 // label; ambient objects have no label, so their card stays
                 // centred on the illustration instead of bottom-heavy.
-                className={`pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] flex flex-col items-center justify-end rounded-[1.75rem] shadow-2xl shadow-transparent transition-[background-color,box-shadow] duration-300 group-hover:bg-brand/15 group-hover:shadow-brand/25 group-hover:backdrop-blur-md group-focus-within:bg-brand/15 group-focus-within:shadow-brand/25 group-focus-within:backdrop-blur-md ${isNav ? "-bottom-[calc(20%+1.75rem)] pb-4" : "-bottom-[15%]"}`}
+                className={`pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] flex flex-col items-center justify-end rounded-[1.75rem] transition-[background-color] duration-300 group-hover:bg-brand/15 group-hover:backdrop-blur-md group-focus-within:bg-brand/15 group-focus-within:backdrop-blur-md ${isNav ? "-bottom-[calc(20%+1.75rem)] pb-4" : "-bottom-[15%]"}`}
               >
                 {isNav ? (
                   <span className="type-label text-[1rem] leading-none text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
