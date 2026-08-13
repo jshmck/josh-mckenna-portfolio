@@ -120,11 +120,11 @@ export default function HomePage() {
                       sizes="(max-width: 768px) 100vw, 33vw"
                       priority={index === 0}
                     />
-                    <div className="mt-3 flex items-baseline justify-between gap-4">
+                    <div className="mt-3">
                       <h3 className="font-body text-[15px] font-medium text-ink transition-colors group-hover:text-accent">
                         {piece.title}
                       </h3>
-                      <p className="type-label shrink-0 text-ink-muted">
+                      <p className="type-label mt-1 text-ink-muted">
                         {piece.meta}
                       </p>
                     </div>

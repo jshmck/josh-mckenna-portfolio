@@ -34,11 +34,11 @@ export function ProjectCard({
         sizes={sizes}
         priority={priority}
       />
-      <div className="mt-3 flex items-baseline justify-between gap-4">
+      <div className="mt-3">
         <h3 className="font-body text-[15px] font-medium text-ink transition-colors group-hover:text-accent">
           {project.title}
         </h3>
-        <p className="type-label shrink-0 text-ink-muted">
+        <p className="type-label mt-1 text-ink-muted">
           {meta === "full" ? `${project.client} · ${project.year}` : project.year}
         </p>
       </div>
