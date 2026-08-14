@@ -17,8 +17,8 @@ export default function WorkPage() {
       <header>
         <h1 className="type-display text-accent">WORK</h1>
         <p className="type-lede mt-5 max-w-2xl text-ink-muted">
-          Everything worth showing, newest first. If you&apos;re after a
-          particular kind of thing, the filters narrow it down.
+          Everything worth showing, newest first. Filter if you know what you
+          came for.
         </p>
       </header>
 

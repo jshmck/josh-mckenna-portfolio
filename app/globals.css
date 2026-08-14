@@ -9,7 +9,6 @@
 @theme {
   /* Surfaces */
   --color-canvas: #ffffff;
-  --color-hairline: #e3dfd5;
 
   /* Ink — Josh runs pure black for both tiers, no muted gray/bronze. */
   --color-ink: #000000;
@@ -22,9 +21,12 @@
   --color-accent: #ae88ff; /* display accent — section titles, active nav */
   --color-highlight: #ffb600; /* per-project accent wash */
 
-  /* Illustration placeholders — a real cut-out replaces these per slot. */
-  --color-placeholder: #e3dfd5; /* ambient / decorative */
-  --color-placeholder-strong: #d8d3c7; /* navigable objects */
+  /* Hairline + placeholders were a warm taupe/bronze-grey — Josh wants every
+     neutral surface running the same brand blue as the "josh mckenna"
+     wordmark instead, no gray/bronze left anywhere on the site. */
+  --color-hairline: var(--color-brand);
+  --color-placeholder: var(--color-brand); /* ambient / decorative */
+  --color-placeholder-strong: var(--color-brand); /* navigable objects */
 
   /* Type families.
      Waldeck (trial) is Josh's display face — the JOSH McKenna wordmark,

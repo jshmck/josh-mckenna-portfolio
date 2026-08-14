@@ -43,7 +43,7 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
               type="button"
               onClick={() => setFilter(option)}
               aria-pressed={active}
-              className={`type-label rounded-full px-4 py-2 transition-colors ${
+              className={`font-display rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-colors ${
                 active
                   ? "bg-ink text-canvas"
                   : "border border-hairline text-ink-muted hover:border-ink hover:text-ink"
