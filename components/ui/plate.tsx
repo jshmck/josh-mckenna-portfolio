@@ -15,6 +15,8 @@ type PlateProps = {
   image: ProjectImage;
   /** `strong` is the warmer taupe used for interactive objects. */
   tone?: "ambient" | "strong";
+  /** Corner radius utility. Defaults to the sitewide rounded-lg. */
+  radius?: string;
   className?: string;
   sizes?: string;
   priority?: boolean;
@@ -32,6 +34,7 @@ type PlateProps = {
 export function Plate({
   image,
   tone = "ambient",
+  radius = "rounded-lg",
   className = "",
   sizes = "(max-width: 768px) 100vw, 50vw",
   priority = false,
@@ -40,7 +43,7 @@ export function Plate({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-lg ${RATIO_CLASS[image.ratio]} ${surface} ${className}`}
+      className={`relative overflow-hidden ${radius} ${RATIO_CLASS[image.ratio]} ${surface} ${className}`}
     >
       {image.src ? (
         <Image

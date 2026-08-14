@@ -63,7 +63,7 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
             <ProjectCard
               project={project}
               ratio={RATIO_CYCLE[index % RATIO_CYCLE.length]}
-              meta="minimal"
+              caption="hover"
               motion="quiet"
               parallax
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
