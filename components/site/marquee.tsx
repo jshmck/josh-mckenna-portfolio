@@ -1,7 +1,9 @@
 import { marqueeWords } from "@/lib/site";
 
 /**
- * Infinite marquee band — "Always drawing ● Never still", scrolling left.
+ * Infinite marquee band — "ALWAYS DRAWING ● NEVER STILL", scrolling left.
+ * Words alternate Waldeck weight (regular / black) and the separator dot is
+ * the purple display accent, per the wireframe annotation.
  *
  * Pure CSS, no JS: the word list is rendered twice inside a track that
  * translates -50%, so the second copy lands exactly where the first started
@@ -21,9 +23,14 @@ export function Marquee() {
           <div key={copy} className="flex items-center gap-8">
             {sequence.map((word, index) => (
               <span key={`${copy}-${index}`} className="flex items-center gap-8">
-                <span className="type-title shrink-0 text-canvas">{word}</span>
                 <span
-                  className="size-2.5 shrink-0 rounded-full bg-canvas"
+                  className="type-title shrink-0 text-canvas"
+                  style={{ fontWeight: index % 2 === 0 ? 500 : 900 }}
+                >
+                  {word}
+                </span>
+                <span
+                  className="size-2.5 shrink-0 rounded-full bg-accent"
                   role="presentation"
                 />
               </span>

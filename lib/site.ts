@@ -47,4 +47,4 @@ export const footerLinks: NavLink[] = [
 ];
 
 /** Marquee words for the homepage band. Repeated in-component to loop. */
-export const marqueeWords = ["Always drawing", "Never still"] as const;
+export const marqueeWords = ["ALWAYS DRAWING", "NEVER STILL"] as const;
