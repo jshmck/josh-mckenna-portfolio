@@ -7,10 +7,10 @@ import { useEffect, useState } from "react";
 import { navLinks } from "@/lib/site";
 
 /**
- * Fixed nav — the five links on the left, a CART on the right, matching
- * Josh's v2 (Figma node 85:420). Client-side only for `usePathname` and the
- * scroll-driven compact state; the active link (purple, bold) is the other
- * piece of state here.
+ * Fixed nav — Home/Work/Info/Contact on the left, Shop and Cart together on
+ * the far right for easier reach. Client-side only for `usePathname` and
+ * the scroll-driven compact state; the active link (purple, bold) is the
+ * other piece of state here.
  *
  * `position: fixed`, not `sticky` — a spacer div reserves its layout space
  * instead. A sticky header is still part of document flow, so animating its
@@ -152,17 +152,36 @@ export function Nav() {
             ))}
           </ul>
 
-          <Link
-            href="/shop"
-            aria-current={isActive("/shop") ? "page" : undefined}
-            className={`font-body ml-5 shrink-0 text-[11px] transition-colors md:ml-8 ${
-              isActive("/shop")
-                ? "font-bold text-accent"
-                : "text-ink hover:font-bold hover:text-accent"
-            }`}
-          >
-            Cart
-          </Link>
+          {/* Shop sits next to Cart, not in the main left-hand group — both
+              are one reach away on the right for easier navigation. */}
+          <ul className="ml-5 flex shrink-0 items-center gap-5 md:ml-8 md:gap-8">
+            <li>
+              <Link
+                href="/shop"
+                aria-current={isActive("/shop") ? "page" : undefined}
+                className={`font-body text-[11px] transition-colors ${
+                  isActive("/shop")
+                    ? "font-bold text-accent"
+                    : "text-ink-muted hover:font-bold hover:text-accent"
+                }`}
+              >
+                Shop
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/shop"
+                aria-current={isActive("/shop") ? "page" : undefined}
+                className={`font-body text-[11px] transition-colors ${
+                  isActive("/shop")
+                    ? "font-bold text-accent"
+                    : "text-ink hover:font-bold hover:text-accent"
+                }`}
+              >
+                Cart
+              </Link>
+            </li>
+          </ul>
         </nav>
       </header>
     </>
