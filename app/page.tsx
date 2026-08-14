@@ -96,7 +96,7 @@ export default function HomePage() {
       {/* Selected work */}
       <section>
         <div className="mx-auto max-w-frame px-6 py-32 md:px-gutter">
-          <div className="flex items-baseline justify-between gap-6">
+          <div className="flex items-end justify-between gap-6">
             <h2 className="type-title text-accent">SELECTED WORK</h2>
             <Link
               href="/work"
