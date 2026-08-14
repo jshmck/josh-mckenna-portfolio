@@ -57,7 +57,7 @@ export default function HomePage() {
 
       {/* Who Josh is */}
       <section>
-        <div className="mx-auto grid max-w-frame gap-14 px-6 pb-24 pt-16 md:grid-cols-2 md:items-center md:px-gutter">
+        <div className="mx-auto grid max-w-frame gap-16 px-6 pb-32 pt-16 md:grid-cols-2 md:items-center md:px-gutter">
           <Reveal>
             <h2 className="type-heading text-ink">
               London-based illustrator working across character design, LGBTQ+
@@ -95,7 +95,7 @@ export default function HomePage() {
 
       {/* Selected work */}
       <section>
-        <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 py-32 md:px-gutter">
           <div className="flex items-baseline justify-between gap-6">
             <h2 className="type-title text-accent">SELECTED WORK</h2>
             <Link
