@@ -376,12 +376,6 @@ export function DriftingHero() {
           );
         })}
       </div>
-
-      {/* Scroll cue — a hairline tick and a label, per node 85:456. */}
-      <div className="flex flex-col items-center gap-3 pb-10">
-        <span className="block h-8 w-px bg-brand" aria-hidden="true" />
-        <span className="type-label text-brand">Keep going</span>
-      </div>
     </section>
   );
 }

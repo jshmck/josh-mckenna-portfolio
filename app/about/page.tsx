@@ -34,12 +34,11 @@ export default function AboutPage() {
 
       <DecomposeSequence />
 
-      {/* 02 — The person */}
+      {/* The person */}
       <section>
         <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
           <Reveal className="max-w-2xl">
-            <p className="type-label text-ink-muted">02 — The person</p>
-            <h2 className="type-heading mt-6 text-ink">This is Josh.</h2>
+            <h2 className="type-heading text-ink">This is Josh.</h2>
             <p className="type-lede mt-6 text-ink-muted">
               He studied illustration in Bristol, moved to London for a job he
               left after eight months, and has been freelance since 2019. He
