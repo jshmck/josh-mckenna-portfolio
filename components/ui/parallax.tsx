@@ -9,6 +9,14 @@ type ParallaxProps = {
    * illustration — below 1 the element trails the page.
    */
   speed?: number;
+  /**
+   * Clamp on the shift, px either direction. Unbounded by default (Home's
+   * signature image has generous surrounding whitespace, so a large shift
+   * is fine). Grids with tight gaps between items need this set — otherwise
+   * an element far from the viewport centre can drift far enough to detach
+   * from its own layout position and overlap a neighbour.
+   */
+  maxOffset?: number;
   className?: string;
 };
 
@@ -22,6 +30,7 @@ type ParallaxProps = {
 export function Parallax({
   children,
   speed = 0.85,
+  maxOffset = Infinity,
   className = "",
 }: ParallaxProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -40,7 +49,8 @@ export function Parallax({
       const rect = node.getBoundingClientRect();
       // Distance of the element's centre from the viewport's centre.
       const offset = rect.top + rect.height / 2 - window.innerHeight / 2;
-      node.style.transform = `translate3d(0, ${offset * (speed - 1)}px, 0)`;
+      const clamped = Math.max(-maxOffset, Math.min(maxOffset, offset * (speed - 1)));
+      node.style.transform = `translate3d(0, ${clamped}px, 0)`;
     };
 
     const onScroll = () => {
@@ -58,7 +68,7 @@ export function Parallax({
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [speed]);
+  }, [speed, maxOffset]);
 
   return (
     <div ref={ref} className={`will-change-transform ${className}`}>

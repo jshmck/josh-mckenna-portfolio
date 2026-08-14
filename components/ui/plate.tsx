@@ -17,6 +17,10 @@ type PlateProps = {
   tone?: "ambient" | "strong";
   /** Corner radius utility. Defaults to the sitewide rounded-lg. */
   radius?: string;
+  /** Hide the placeholder's own centred alt-text caption — for callers that
+   *  render their own caption over the same spot (e.g. the Work gallery's
+   *  hover title), where showing both collides. */
+  showPlaceholderCaption?: boolean;
   className?: string;
   sizes?: string;
   priority?: boolean;
@@ -35,6 +39,7 @@ export function Plate({
   image,
   tone = "ambient",
   radius = "rounded-lg",
+  showPlaceholderCaption = true,
   className = "",
   sizes = "(max-width: 768px) 100vw, 50vw",
   priority = false,
@@ -54,14 +59,14 @@ export function Plate({
           priority={priority}
           className="object-cover"
         />
-      ) : (
+      ) : showPlaceholderCaption ? (
         <span
           aria-hidden="true"
           className="type-label absolute inset-0 flex items-center justify-center p-6 text-center text-ink-muted"
         >
           {image.alt}
         </span>
-      )}
+      ) : null}
     </div>
   );
 }

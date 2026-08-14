@@ -54,19 +54,20 @@ export function ProjectCard({
         sizes={sizes}
         priority={priority}
         radius={hoverCaption ? GALLERY_RADIUS : undefined}
+        showPlaceholderCaption={!hoverCaption}
         className={
           motion === "quiet"
             ? "transition-transform duration-300 ease-drift group-hover:scale-[1.02] group-focus-visible:scale-[1.02]"
             : ""
         }
       />
-      {/* Frosted-glass title reveal — same treatment as the hero's object
-          cards (bg-brand/15 + backdrop-blur-md), just inset to the image's
-          own bounds instead of extending past it. */}
+      {/* Title reveal on hover/focus — a flat brand-blue tint, no backdrop
+          blur (Josh doesn't want the frosted look here), centred over the
+          image rather than bottom-anchored. */}
       {hoverCaption && (
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 flex items-end ${GALLERY_RADIUS} p-4 transition-[background-color] duration-300 group-hover:bg-brand/15 group-hover:backdrop-blur-md group-focus-within:bg-brand/15 group-focus-within:backdrop-blur-md`}
+          className={`pointer-events-none absolute inset-0 flex items-center justify-center ${GALLERY_RADIUS} p-4 text-center transition-[background-color] duration-300 group-hover:bg-brand/15 group-focus-within:bg-brand/15`}
         >
           {/* text-canvas, not text-brand: the placeholder art is itself
               brand blue (see globals.css), so blue text on the blue-tinted
@@ -88,7 +89,18 @@ export function ProjectCard({
         motion === "lift" ? "hover:-translate-y-1.5 focus-visible:-translate-y-1.5" : ""
       }`}
     >
-      {parallax ? <Parallax speed={0.85}>{plate}</Parallax> : plate}
+      {parallax ? (
+        // Clamped well inside the grid's mb-8 (32px) gap between cards —
+        // unbounded parallax let far-from-centre images drift 70px+ and
+        // visually detach from their own layout position, overlapping
+        // neighbours. Gentler speed too, since the clamp does most of the
+        // limiting for anything more than a little off-centre.
+        <Parallax speed={0.92} maxOffset={12}>
+          {plate}
+        </Parallax>
+      ) : (
+        plate
+      )}
       {!hoverCaption && (
         <div className="mt-3">
           <h3 className="font-body text-[15px] font-medium text-ink transition-colors group-hover:text-accent">
