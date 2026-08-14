@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
+/** Resting distance from the viewport bottom, px — matches Tailwind's bottom-8. */
+const RESTING_OFFSET = 32;
+
 /**
  * Floating "back to top" pill for long, unpaginated grids (Work). Styled to
  * match the active filter chip — same Waldeck font, same pill — so it reads
@@ -11,9 +14,16 @@ import { useEffect, useRef, useState } from "react";
  * scrolls to top on click. Omits an explicit `behavior` from `scrollTo` so
  * the global `scroll-behavior` CSS rule (and its reduced-motion override)
  * decides smooth vs instant, rather than duplicating that logic here.
+ *
+ * Fixed to the viewport at rest, but docks 32px above the footer's top edge
+ * once the footer scrolls into view, rather than sitting on top of it. That
+ * offset changes on every scroll frame while the footer is entering, so it's
+ * written straight to the DOM via a ref rather than through React state —
+ * the same reasoning as the orbit loop and Parallax elsewhere in this repo.
  */
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const rafRef = useRef(0);
 
   useEffect(() => {
@@ -22,6 +32,13 @@ export function BackToTop() {
     const update = () => {
       queued = false;
       setVisible(window.scrollY > window.innerHeight);
+
+      const button = buttonRef.current;
+      const footer = document.querySelector("footer");
+      if (!button || !footer) return;
+
+      const footerVisible = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top);
+      button.style.bottom = `${Math.max(RESTING_OFFSET, footerVisible + RESTING_OFFSET)}px`;
     };
 
     const onScroll = () => {
@@ -32,15 +49,18 @@ export function BackToTop() {
 
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
   return (
     <button
+      ref={buttonRef}
       type="button"
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
