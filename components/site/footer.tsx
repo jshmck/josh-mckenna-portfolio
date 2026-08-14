@@ -130,6 +130,13 @@ export function Footer() {
           </ul>
         </div>
       </div>
+
+      <div className="mx-auto max-w-frame px-6 pb-10 md:px-gutter">
+        <p className="type-label text-ink-muted">
+          Copyright © {new Date().getFullYear()} {siteConfig.name}. All rights
+          reserved.
+        </p>
+      </div>
     </footer>
   );
 }
