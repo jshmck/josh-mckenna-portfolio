@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo_Black, Arimo, Space_Mono } from "next/font/google";
+import { Archivo_Black, Space_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
 import { Footer } from "@/components/site/footer";
@@ -8,13 +8,18 @@ import { siteConfig } from "@/lib/site";
 
 import "./globals.css";
 
-/* Body — Helvetica Neue isn't licensed for web embedding, so Arimo (Google's
-   metric-compatible match for Arial/Helvetica) stands in for it. Used at 15px
-   and 22px in the wireframes. */
-const arimo = Arimo({
-  subsets: ["latin"],
-  variable: "--font-arimo",
+/* Body — licensed Helvetica Neue, self-hosted from public/fonts/helvetica-neue.
+   Only the cuts the type system actually uses (Roman/Medium/Bold) are loaded.
+   Used at 15px and 22px in the wireframes. */
+const helveticaNeue = localFont({
+  src: [
+    { path: "../public/fonts/helvetica-neue/HelveticaNeueRoman.otf", weight: "400", style: "normal" },
+    { path: "../public/fonts/helvetica-neue/HelveticaNeueMedium.otf", weight: "500", style: "normal" },
+    { path: "../public/fonts/helvetica-neue/HelveticaNeueBold.otf", weight: "700", style: "normal" },
+  ],
+  variable: "--font-helvetica-neue",
   display: "swap",
+  fallback: ["Arial", "system-ui", "sans-serif"],
 });
 
 /* Grotesque for the tight statement headings. */
@@ -67,14 +72,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${arimo.variable} ${archivoBlack.variable} ${spaceMono.variable} ${waldeck.variable} h-full`}
+      className={`${helveticaNeue.variable} ${archivoBlack.variable} ${spaceMono.variable} ${waldeck.variable} h-full`}
     >
-      {/* Elza — licensed body face, served from Josh's Adobe Fonts kit. React 19
-          hoists a <link rel="stylesheet"> rendered anywhere in the tree into
-          <head> itself, so no next/head wrapper is needed. Arimo (self-hosted
-          via next/font) is the fallback in --font-body if this kit is ever
-          unreachable. */}
-      <link rel="stylesheet" href="https://use.typekit.net/fch8ghy.css" />
       <body className="flex min-h-full flex-col">
         <a
           href="#main"
