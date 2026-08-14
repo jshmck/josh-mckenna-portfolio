@@ -48,32 +48,32 @@ export function ProjectCard({
   const hoverCaption = caption === "hover";
 
   const plate = (
-    <div className="relative">
+    // Scale lives on this wrapper, not on Plate alone, so the image and its
+    // overlay scale as one unit. They used to scale separately — the
+    // overlay stayed at 100% while Plate grew 1.02%, leaving a sliver of
+    // unmasked image peeking past the overlay's edge on hover.
+    <div
+      className={`relative transition-transform duration-300 ease-drift ${
+        motion === "quiet"
+          ? "group-hover:scale-[1.02] group-focus-visible:scale-[1.02]"
+          : ""
+      }`}
+    >
       <Plate
         image={ratio ? { ...project.hero, ratio } : project.hero}
         sizes={sizes}
         priority={priority}
         radius={hoverCaption ? GALLERY_RADIUS : undefined}
         showPlaceholderCaption={!hoverCaption}
-        className={
-          motion === "quiet"
-            ? "transition-transform duration-300 ease-drift group-hover:scale-[1.02] group-focus-visible:scale-[1.02]"
-            : ""
-        }
       />
-      {/* Title reveal on hover/focus — a flat brand-blue tint, no backdrop
-          blur (Josh doesn't want the frosted look here), centred over the
-          image rather than bottom-anchored. */}
+      {/* Title reveal on hover/focus — a white wash, centred title in ink,
+          no blur. */}
       {hoverCaption && (
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 flex items-center justify-center ${GALLERY_RADIUS} p-4 text-center transition-[background-color] duration-300 group-hover:bg-brand/15 group-focus-within:bg-brand/15`}
+          className={`pointer-events-none absolute inset-0 flex items-center justify-center ${GALLERY_RADIUS} p-4 text-center transition-[background-color] duration-300 group-hover:bg-canvas/85 group-focus-within:bg-canvas/85`}
         >
-          {/* text-canvas, not text-brand: the placeholder art is itself
-              brand blue (see globals.css), so blue text on the blue-tinted
-              scrim would be unreadable. White holds contrast over any
-              underlying image, placeholder or real photo. */}
-          <span className="type-label text-base leading-none text-canvas opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+          <span className="type-label text-base leading-none text-ink opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
             {project.title}
           </span>
         </div>
