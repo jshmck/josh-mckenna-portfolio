@@ -67,7 +67,7 @@ export function Nav() {
     <header className="sticky top-0 z-40 bg-canvas/15 backdrop-blur-md">
       <nav
         aria-label="Primary"
-        className={`mx-auto flex max-w-frame items-center justify-between px-6 transition-[height] duration-300 md:px-gutter ${
+        className={`mx-auto flex max-w-frame items-center justify-between px-6 transition-[height] duration-300 will-change-[height] md:px-gutter ${
           compact
             ? "h-10 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
             : "h-[88px] ease-drift"
