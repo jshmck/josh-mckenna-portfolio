@@ -13,12 +13,14 @@ import { navLinks } from "@/lib/site";
  * piece of state here.
  *
  * Starts at 88px and shrinks to a compact 40px past 120px of scroll (back
- * above 40px re-expands it — the gap between the two is deliberate
+ * below 60px re-expands it — the gap between the two is deliberate
  * hysteresis so it doesn't flicker at the boundary). Text stays the same
- * size, only the bar's height and padding shrink. Background is the same
- * frosted-glass treatment as the hero's floating-object hover cards
- * (bg-brand/15 + backdrop-blur-md), so content scrolling underneath stays
- * partly visible through the blur.
+ * size, only the bar's height and padding shrink. Shrinking uses a slight
+ * overshoot easing so the header settles with a small bounce; expanding
+ * eases back out smoothly instead. Background is the same frosted-glass
+ * treatment as the hero's floating-object hover cards (bg-brand/15 +
+ * backdrop-blur-md), so content scrolling underneath stays partly visible
+ * through the blur.
  */
 export function Nav() {
   const pathname = usePathname();
@@ -65,8 +67,10 @@ export function Nav() {
     <header className="sticky top-0 z-40 bg-canvas/15 backdrop-blur-md">
       <nav
         aria-label="Primary"
-        className={`mx-auto flex max-w-frame items-center justify-between px-6 transition-[height] duration-300 ease-drift md:px-gutter ${
-          compact ? "h-10" : "h-[88px]"
+        className={`mx-auto flex max-w-frame items-center justify-between px-6 transition-[height] duration-300 md:px-gutter ${
+          compact
+            ? "h-10 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+            : "h-[88px] ease-drift"
         }`}
       >
         <ul className="flex items-center gap-5 md:gap-8">
