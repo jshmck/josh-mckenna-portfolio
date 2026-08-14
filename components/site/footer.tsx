@@ -97,7 +97,7 @@ export function Footer() {
             <p className="type-label text-ink-muted">Direct Commissions</p>
             <a
               href={`mailto:${siteConfig.email}`}
-              className="font-body text-[15px] text-ink-muted transition-colors hover:text-accent"
+              className="font-body text-[15px] text-ink-muted underline transition-colors hover:text-accent"
             >
               {siteConfig.email}
             </a>
