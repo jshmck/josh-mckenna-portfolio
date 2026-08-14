@@ -14,6 +14,8 @@ export const PROJECT_CATEGORIES = [
   "Packaging",
   "Mural",
   "Personal",
+  "Pride",
+  "3D",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
@@ -69,7 +71,7 @@ export const projects: Project[] = [
     year: 2024,
     discipline: "Festival identity",
     deliverables: "Key art · stage · wayfinding · merch",
-    category: "Character",
+    category: "Pride",
     accent: "#e3ddcb",
     summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption:
