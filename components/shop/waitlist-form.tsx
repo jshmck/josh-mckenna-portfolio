@@ -60,7 +60,7 @@ export function WaitlistForm() {
           aria-describedby={error ? "waitlist-error" : undefined}
           className="w-full rounded-full border border-hairline bg-canvas px-5 py-3 font-body text-[15px] text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none sm:w-72"
         />
-        <Button type="submit" className="shrink-0">
+        <Button type="submit" variant="quiet" className="shrink-0">
           Notify me
         </Button>
       </div>

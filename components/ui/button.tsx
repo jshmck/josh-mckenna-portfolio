@@ -6,8 +6,9 @@ type Variant = "primary" | "quiet";
 const VARIANT: Record<Variant, string> = {
   /* The blue pill — reserved for the commission path. */
   primary: "bg-brand text-canvas hover:scale-[1.04]",
-  /* Outline, for anything that isn't asking for money. */
-  quiet: "border border-ink text-ink hover:bg-ink hover:text-canvas",
+  /* Outline, for anything that isn't asking for money. Same rule as the
+     Work page's filter chips: black outline at rest, blue on hover. */
+  quiet: "border border-ink text-ink hover:border-brand",
 };
 
 const BASE =

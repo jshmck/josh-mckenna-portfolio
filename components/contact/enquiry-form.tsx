@@ -201,7 +201,7 @@ export function EnquiryForm() {
         </div>
       </div>
 
-      <Button type="submit" className="mt-8">
+      <Button type="submit" variant="quiet" className="mt-8">
         Send enquiry
       </Button>
     </form>
