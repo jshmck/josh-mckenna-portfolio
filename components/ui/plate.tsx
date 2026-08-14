@@ -15,7 +15,8 @@ type PlateProps = {
   image: ProjectImage;
   /** `strong` is the warmer taupe used for interactive objects. */
   tone?: "ambient" | "strong";
-  /** Corner radius utility. Defaults to the sitewide rounded-lg. */
+  /** Corner radius utility. Defaults to the sitewide rounded-3xl, matching
+   *  the Work gallery cards — every framed image sitewide uses this radius. */
   radius?: string;
   /** Hide the placeholder's own centred alt-text caption — for callers that
    *  render their own caption over the same spot (e.g. the Work gallery's
@@ -38,7 +39,7 @@ type PlateProps = {
 export function Plate({
   image,
   tone = "ambient",
-  radius = "rounded-lg",
+  radius = "rounded-3xl",
   showPlaceholderCaption = true,
   className = "",
   sizes = "(max-width: 768px) 100vw, 50vw",
