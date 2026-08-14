@@ -70,10 +70,9 @@ export function Footer() {
       <div className="mx-auto grid max-w-frame gap-10 px-6 py-16 md:grid-cols-3 md:gap-12 md:px-gutter">
         <div>
           <p className="font-body text-[15px] font-bold text-ink">
-            {siteConfig.role} based in {siteConfig.location}, UK
+            Selected Clients
           </p>
-          <p className="type-label mt-6 text-ink-muted">Selected Clients</p>
-          <p className="font-body mt-2 text-[15px] text-ink-muted">
+          <p className="font-body mt-6 text-[15px] text-ink-muted">
             {clients.join(", ")}
           </p>
         </div>
