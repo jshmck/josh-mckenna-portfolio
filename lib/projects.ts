@@ -9,13 +9,12 @@
  */
 
 export const PROJECT_CATEGORIES = [
-  "Editorial",
   "Character",
-  "Packaging",
-  "Mural",
-  "Personal",
   "Pride",
+  "Editorial",
+  "Personal",
   "3D",
+  "Mural",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
@@ -119,36 +118,6 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    slug: "hot-sauce-dynasty",
-    title: "Hot Sauce Dynasty",
-    client: "Dynasty Foods",
-    year: 2026,
-    discipline: "Packaging illustration",
-    deliverables: "5 labels · 1 outer carton",
-    category: "Packaging",
-    accent: "#ff3b2f",
-    summary: "Five sauces, five characters, escalating levels of regret.",
-    heroCaption:
-      "The full range. Heat level is communicated entirely by how worried the character looks.",
-    brief: [
-      "A range of five sauces needed to be legible from three metres away on a shelf and still reward someone holding the bottle. I gave each heat level its own character and let their expression carry the Scoville rating — no flame icons, no numbers.",
-      "The label die-cut wraps the character's arm around the bottle, so the artwork only resolves once it's on glass. That meant drawing to the flat and checking every revision on a mock-up.",
-    ],
-    credits: [
-      { role: "Art direction", name: "Josh McKenna" },
-      { role: "Structural design", name: "Ferran Vidal" },
-      { role: "Photography", name: "Sam Ellery" },
-      { role: "Printed by", name: "Kesler Label Co." },
-    ],
-    hero: { ratio: "16/10", alt: "The five-bottle hot sauce range" },
-    gallery: [
-      { ratio: "1/1", alt: "Label artwork — Mild" },
-      { ratio: "1/1", alt: "Label artwork — Ruinous" },
-      { ratio: "5/4", alt: "Outer carton, flat and assembled" },
-    ],
-    featured: true,
-  },
-  {
     slug: "night-bus",
     title: "Night Bus",
     client: "Personal",
@@ -246,30 +215,6 @@ export const projects: Project[] = [
       { ratio: "3/4", alt: "Gus — expression sheet" },
       { ratio: "3/4", alt: "Mabel — expression sheet" },
       { ratio: "5/4", alt: "Style guide spread" },
-    ],
-  },
-  {
-    slug: "sour-cherry",
-    title: "Sour Cherry",
-    client: "Sour Cherry Records",
-    year: 2024,
-    discipline: "Record sleeves",
-    deliverables: "4 sleeves · 4 labels",
-    category: "Packaging",
-    summary: "A label's whole first year, drawn as one continuous scene.",
-    heroCaption: "All four sleeves. Placed edge to edge they form one image.",
-    brief: [
-      "Four releases across one year. Rather than four unrelated sleeves, each one is a crop of a single much larger drawing — so collectors who buy all four can line them up.",
-      "Nobody at the label asked for this. They said yes immediately.",
-    ],
-    credits: [
-      { role: "Art direction", name: "Josh McKenna" },
-      { role: "Printed by", name: "Kesler Label Co." },
-    ],
-    hero: { ratio: "16/10", alt: "The four Sour Cherry sleeves in sequence" },
-    gallery: [
-      { ratio: "1/1", alt: "Sleeve one" },
-      { ratio: "1/1", alt: "Sleeve four" },
     ],
   },
   {
