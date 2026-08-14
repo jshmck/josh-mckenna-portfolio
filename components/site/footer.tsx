@@ -38,10 +38,25 @@ function LinkedInIcon() {
   );
 }
 
+function ThreadsIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        d="M12 2.5c4.5 0 7 2.7 7 7.3 0 3.4-1.4 5.3-3.9 5.3-1.7 0-2.7-.9-2.7-2.2 0-1.4 1.1-2.2 2.7-2.2.9 0 1.7.2 2.3.6M12 2.5C7.5 2.5 5 5.4 5 10.3 5 16 8 21.5 12 21.5c3 0 5.1-1.6 5.9-4.3"
+      />
+    </svg>
+  );
+}
+
 const socials = [
   { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon },
   { label: "X", href: siteConfig.x.url, Icon: XIcon },
   { label: "LinkedIn", href: siteConfig.linkedin.url, Icon: LinkedInIcon },
+  { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon },
 ];
 
 /**

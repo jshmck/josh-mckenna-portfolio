@@ -32,6 +32,10 @@ export const siteConfig = {
   linkedin: {
     url: "https://www.linkedin.com/in/joshmckennna/",
   },
+  threads: {
+    handle: "@jshmck",
+    url: "https://www.threads.com/@jshmck",
+  },
   /** Empty string renders the field as "—" on the contact page. */
   representation: "",
   /** Used for absolute OG image + canonical URLs. */
