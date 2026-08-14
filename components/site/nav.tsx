@@ -7,10 +7,19 @@ import { useEffect, useState } from "react";
 import { navLinks } from "@/lib/site";
 
 /**
- * Sticky nav — the five links on the left, a CART on the right, matching
+ * Fixed nav — the five links on the left, a CART on the right, matching
  * Josh's v2 (Figma node 85:420). Client-side only for `usePathname` and the
  * scroll-driven compact state; the active link (purple, bold) is the other
  * piece of state here.
+ *
+ * `position: fixed`, not `sticky` — a spacer div reserves its layout space
+ * instead. A sticky header is still part of document flow, so animating its
+ * height forces the browser to reflow every element below it on every frame
+ * of the transition, which fights the compositor thread mid-scroll and reads
+ * as the whole page pausing then catching up. A fixed element's size changes
+ * are isolated to its own box, so the bounce can't touch scroll performance.
+ * The spacer's height snaps instantly (no transition) alongside `compact`,
+ * so the one-time reflow it causes is a single frame, not eighteen of them.
  *
  * Starts at 88px and shrinks to a compact 40px past 120px of scroll (back
  * below 60px re-expands it — the gap between the two is deliberate
@@ -64,45 +73,52 @@ export function Nav() {
       : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="sticky top-0 z-40 bg-canvas/15 backdrop-blur-md">
-      <nav
-        aria-label="Primary"
-        className={`mx-auto flex max-w-frame items-center justify-between px-6 transition-[height] duration-300 will-change-[height] md:px-gutter ${
-          compact
-            ? "h-10 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-            : "h-[88px] ease-drift"
-        }`}
-      >
-        <ul className="flex items-center gap-5 md:gap-8">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                aria-current={isActive(link.href) ? "page" : undefined}
-                className={`font-body text-[11px] transition-colors ${
-                  isActive(link.href)
-                    ? "font-bold text-accent"
-                    : "text-ink-muted hover:font-bold hover:text-accent"
-                }`}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+    <>
+      {/* Reserves the header's layout space in the document flow. Height
+          snaps instantly with `compact` (no transition) — a single reflow
+          on state change, not one per animation frame. */}
+      <div aria-hidden="true" style={{ height: compact ? 40 : 88 }} />
 
-        <Link
-          href="/shop"
-          aria-current={isActive("/shop") ? "page" : undefined}
-          className={`font-body ml-5 shrink-0 text-[11px] transition-colors md:ml-8 ${
-            isActive("/shop")
-              ? "font-bold text-accent"
-              : "text-ink hover:font-bold hover:text-accent"
+      <header className="fixed inset-x-0 top-0 z-40 bg-canvas/15 backdrop-blur-md">
+        <nav
+          aria-label="Primary"
+          className={`mx-auto flex max-w-frame items-center justify-between px-6 transition-[height] duration-300 will-change-[height] md:px-gutter ${
+            compact
+              ? "h-10 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+              : "h-[88px] ease-drift"
           }`}
         >
-          Cart
-        </Link>
-      </nav>
-    </header>
+          <ul className="flex items-center gap-5 md:gap-8">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                  className={`font-body text-[11px] transition-colors ${
+                    isActive(link.href)
+                      ? "font-bold text-accent"
+                      : "text-ink-muted hover:font-bold hover:text-accent"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            href="/shop"
+            aria-current={isActive("/shop") ? "page" : undefined}
+            className={`font-body ml-5 shrink-0 text-[11px] transition-colors md:ml-8 ${
+              isActive("/shop")
+                ? "font-bold text-accent"
+                : "text-ink hover:font-bold hover:text-accent"
+            }`}
+          >
+            Cart
+          </Link>
+        </nav>
+      </header>
+    </>
   );
 }
