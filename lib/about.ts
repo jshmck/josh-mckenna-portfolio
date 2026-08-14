@@ -15,14 +15,20 @@ export const timeline: TimelineEntry[] = [
   { year: 2016, event: "Graduated — BA Illustration" },
 ];
 
-/** Placeholder wordmarks until Josh supplies logo files. */
+/** Shared with the footer's "Selected Clients" list — one source, both places. */
 export const clients: string[] = [
-  "The Guardian",
-  "Walker Books",
-  "Sour Cherry",
-  "Morningside",
-  "Brixton Village",
-  "Dynasty Foods",
+  "Apple",
+  "Google",
+  "Meta",
+  "WhatsApp",
+  "British Airways",
+  "Wall Street Journal",
+  "Kiehl's",
+  "Piper-Heidsieck",
+  "Coca-Cola",
+  "Vogue",
+  "UAL",
+  "Mr Porter",
 ];
 
 /**

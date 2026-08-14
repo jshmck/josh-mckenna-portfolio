@@ -19,9 +19,18 @@ export const siteConfig = {
   description:
     "Josh McKenna is an illustrator drawing loud, friendly, slightly queer characters for magazines, record sleeves and packaging.",
   email: "hello@joshmckenna.com",
+  /** For enquiries that go through representation rather than direct. */
+  agencyEmail: "info@ba-reps.com",
   instagram: {
-    handle: "@josh",
-    url: "https://instagram.com/josh",
+    handle: "@jshmck",
+    url: "https://www.instagram.com/jshmck/?hl=en",
+  },
+  x: {
+    handle: "@jshmck",
+    url: "https://x.com/jshmck",
+  },
+  linkedin: {
+    url: "https://www.linkedin.com/in/joshmckennna/",
   },
   /** Empty string renders the field as "—" on the contact page. */
   representation: "",
@@ -40,10 +49,13 @@ export const navLinks: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-export const footerLinks: NavLink[] = [
-  { label: "Instagram", href: siteConfig.instagram.url },
-  { label: "Commercial enquiry", href: "/contact" },
-  { label: "Terms", href: "/terms" },
+/** "Selected Talks and Features" — footer, newest/most notable first. */
+export const footerTalks: string[] = [
+  "Application Accepted - SXSW 2027",
+  "Speaker - Config 2026",
+  "Book Feature - Gestalten",
+  "Workshop - Apple",
+  "Speaker - Nicer Tuesdays 2017",
 ];
 
 /** Marquee words for the homepage band. Repeated in-component to loop. */
