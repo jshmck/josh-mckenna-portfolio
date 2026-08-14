@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 
-import { Reveal } from "@/components/ui/reveal";
 import { ProjectCard } from "@/components/work/project-card";
 import type { ImageRatio, Project, ProjectCategory } from "@/lib/projects";
 
@@ -61,18 +60,14 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
       <div className="mt-12 gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
         {visible.map((project, index) => (
           <div key={project.slug} className="mb-8 break-inside-avoid">
-            {/* Staggered reveal per the Work page annotation: fade + 8px
-                rise, 60ms apart. */}
-            <Reveal delay={index * 60} rise={8}>
-              <ProjectCard
-                project={project}
-                ratio={RATIO_CYCLE[index % RATIO_CYCLE.length]}
-                meta="minimal"
-                motion="quiet"
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                priority={index < 3}
-              />
-            </Reveal>
+            <ProjectCard
+              project={project}
+              ratio={RATIO_CYCLE[index % RATIO_CYCLE.length]}
+              meta="minimal"
+              motion="quiet"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              priority={index < 3}
+            />
           </div>
         ))}
       </div>

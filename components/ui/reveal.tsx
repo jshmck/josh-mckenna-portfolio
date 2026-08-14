@@ -6,9 +6,6 @@ type RevealProps = {
   children: React.ReactNode;
   /** Stagger within a group, in ms. */
   delay?: number;
-  /** Rise distance in px. Defaults to the sitewide 24px; pages with a more
-   *  restrained motion contract (e.g. Work) pass a smaller value. */
-  rise?: number;
   className?: string;
 };
 
@@ -30,7 +27,7 @@ type RevealProps = {
  * - The observer disconnects after the first trigger. A reveal that replays
  *   every time you scroll past reads as a glitch, not a flourish.
  */
-export function Reveal({ children, delay = 0, rise, className = "" }: RevealProps) {
+export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,10 +52,7 @@ export function Reveal({ children, delay = 0, rise, className = "" }: RevealProp
     <div
       ref={ref}
       data-reveal="hidden"
-      style={{
-        transitionDelay: `${delay}ms`,
-        ...(rise !== undefined ? { "--reveal-rise": `${rise}px` } : null),
-      }}
+      style={{ transitionDelay: `${delay}ms` }}
       className={className}
     >
       {children}
