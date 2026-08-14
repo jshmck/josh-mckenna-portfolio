@@ -26,10 +26,10 @@ import { navLinks } from "@/lib/site";
  * hysteresis so it doesn't flicker at the boundary). Text stays the same
  * size, only the bar's height and padding shrink. Shrinking uses a slight
  * overshoot easing so the header settles with a small bounce; expanding
- * eases back out smoothly instead. Background is the same frosted-glass
- * treatment as the hero's floating-object hover cards (bg-brand/15 +
- * backdrop-blur-md), so content scrolling underneath stays partly visible
- * through the blur.
+ * eases back out smoothly instead. Background is the same colourless
+ * frosted-glass treatment as the hero's floating-object hover cards
+ * (bg-canvas/15 + backdrop-blur-md), so content scrolling underneath stays
+ * partly visible through the blur.
  */
 export function Nav() {
   const pathname = usePathname();

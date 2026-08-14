@@ -303,7 +303,7 @@ export function DriftingHero() {
           const height = object.width / object.aspect;
           const seed = orbitPosition({ ...object, height });
 
-          // A clean cut-out at rest; on hover/focus a frosted-blue glass card
+          // A clean cut-out at rest; on hover/focus a frosted glass card
           // fades in around it (with generous padding), the destination label
           // appears below with room from the border, and the object lifts in
           // front of the wordmark via the z-index bump on the wrapper.
@@ -318,10 +318,11 @@ export function DriftingHero() {
                 aria-hidden="true"
                 // bg/blur stay off until hover. No border — Josh wants a
                 // soft frosted blur, not a boxed outline, around the object.
+                // Colourless frost, matching the nav's bg-canvas/15 treatment.
                 // Nav objects get extra room below for the destination
                 // label; ambient objects have no label, so their card stays
                 // centred on the illustration instead of bottom-heavy.
-                className={`pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] flex flex-col items-center justify-end rounded-[1.75rem] transition-[background-color] duration-300 group-hover:bg-brand/15 group-hover:backdrop-blur-md group-focus-within:bg-brand/15 group-focus-within:backdrop-blur-md ${isNav ? "-bottom-[calc(20%+1.75rem)] pb-4" : "-bottom-[15%]"}`}
+                className={`pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] flex flex-col items-center justify-end rounded-[1.75rem] transition-[background-color] duration-300 group-hover:bg-canvas/15 group-hover:backdrop-blur-md group-focus-within:bg-canvas/15 group-focus-within:backdrop-blur-md ${isNav ? "-bottom-[calc(20%+1.75rem)] pb-4" : "-bottom-[15%]"}`}
               >
                 {isNav ? (
                   <span className="type-label text-[1rem] leading-none text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
