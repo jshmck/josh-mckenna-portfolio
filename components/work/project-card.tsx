@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Parallax } from "@/components/ui/parallax";
 import { Plate } from "@/components/ui/plate";
 import type { Project } from "@/lib/projects";
 
@@ -12,10 +13,12 @@ type ProjectCardProps = {
   /**
    * `lift` moves the whole card up 6px — the expressive Home/About
    * treatment. `quiet` only scales the image 1.02× and leaves the card
-   * still, per the Work page annotation: "no parallax, no 3D, no drifting
-   * objects on this page... a quiet 1.02 image scale on hover."
+   * still.
    */
   motion?: "lift" | "quiet";
+  /** Wraps just the image in the same 0.85× scroll parallax as Home's
+   *  signature illustration — each grid image drifts independently. */
+  parallax?: boolean;
   sizes?: string;
   priority?: boolean;
 };
@@ -26,9 +29,23 @@ export function ProjectCard({
   ratio,
   meta = "full",
   motion = "lift",
+  parallax = false,
   sizes = "(max-width: 768px) 100vw, 33vw",
   priority = false,
 }: ProjectCardProps) {
+  const plate = (
+    <Plate
+      image={ratio ? { ...project.hero, ratio } : project.hero}
+      sizes={sizes}
+      priority={priority}
+      className={
+        motion === "quiet"
+          ? "transition-transform duration-300 ease-drift group-hover:scale-[1.02] group-focus-visible:scale-[1.02]"
+          : ""
+      }
+    />
+  );
+
   return (
     <Link
       href={`/work/${project.slug}`}
@@ -36,16 +53,7 @@ export function ProjectCard({
         motion === "lift" ? "hover:-translate-y-1.5 focus-visible:-translate-y-1.5" : ""
       }`}
     >
-      <Plate
-        image={ratio ? { ...project.hero, ratio } : project.hero}
-        sizes={sizes}
-        priority={priority}
-        className={
-          motion === "quiet"
-            ? "transition-transform duration-300 ease-drift group-hover:scale-[1.02] group-focus-visible:scale-[1.02]"
-            : ""
-        }
-      />
+      {parallax ? <Parallax speed={0.85}>{plate}</Parallax> : plate}
       <div className="mt-3">
         <h3 className="font-body text-[15px] font-medium text-ink transition-colors group-hover:text-accent">
           {project.title}
