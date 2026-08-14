@@ -121,7 +121,7 @@
 /* The tight statement headings — Helvetica Neue Bold, not Waldeck. */
 @utility type-heading {
   font-family: var(--font-grotesque);
-  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-size: clamp(2rem, 5vw, 3.75rem);
   line-height: 1.02;
   letter-spacing: -0.02em;
   font-weight: 700;

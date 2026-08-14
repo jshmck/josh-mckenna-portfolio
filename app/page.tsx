@@ -57,13 +57,13 @@ export default function HomePage() {
 
       {/* Who Josh is */}
       <section>
-        <div className="mx-auto max-w-frame px-6 pb-24 pt-16 md:px-gutter">
+        <div className="mx-auto grid max-w-frame gap-14 px-6 pb-24 pt-16 md:grid-cols-2 md:items-center md:px-gutter">
           <Reveal>
-            <h2 className="type-heading max-w-4xl text-ink">
+            <h2 className="type-heading text-ink">
               London-based illustrator working across character design, LGBTQ+
               themes, brand campaigns, and automotive art.
             </h2>
-            <p className="type-lede mt-6 max-w-2xl text-ink-muted">
+            <p className="type-lede mt-6 max-w-lg text-ink-muted">
               He&apos;s drawn for Apple, Meta, Coca-Cola, and for himself just as
               often — same loud, friendly, queer characters either way, always a
               mix of people. 2D mostly, 3D increasingly. Restaurant posters are
@@ -87,8 +87,7 @@ export default function HomePage() {
                 alt: "Josh's signature crowd illustration — a Pride march",
                 src: "/illustrations/signature-pride.png",
               }}
-              sizes="(max-width: 768px) 100vw, 40vw"
-              className="mt-10 max-w-xl"
+              sizes="(max-width: 768px) 100vw, 45vw"
             />
           </Parallax>
         </div>
