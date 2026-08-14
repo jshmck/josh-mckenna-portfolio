@@ -30,10 +30,28 @@ import { navLinks } from "@/lib/site";
  * frosted-glass treatment as the hero's floating-object hover cards
  * (bg-canvas/15 + backdrop-blur-md), so content scrolling underneath stays
  * partly visible through the blur.
+ *
+ * On "/" only, the active highlight is also scroll-position-driven: the
+ * homepage embeds the real Work gallery inline (see app/page.tsx's
+ * #home-work section) so scrolling past "Who" flows straight into it with
+ * no navigation. Once that section has scrolled under the header, "Work"
+ * borrows the active highlight from "Home" — the URL never changes, only
+ * the nav's read of where you are. Every other route's active-state stays
+ * pure pathname-matching, untouched by this.
  */
+
+// getBoundingClientRect().top thresholds, px, for handing the nav's active
+// highlight from Home to the embedded Work section on "/". Two thresholds,
+// not one — mirrors the compact-header hysteresis below; a single
+// threshold flickers when the section's top edge hovers right at the
+// boundary (trackpad rubber-banding, a stray scroll tick).
+const HOME_WORK_ENTER = 96; // just past the expanded 88px header
+const HOME_WORK_EXIT = 160;
+
 export function Nav() {
   const pathname = usePathname();
   const [compact, setCompact] = useState(false);
+  const [homeWorkActive, setHomeWorkActive] = useState(false);
 
   useEffect(() => {
     let raf = 0;
@@ -49,6 +67,20 @@ export function Nav() {
         if (current) return window.scrollY > 60;
         return window.scrollY > 120;
       });
+
+      // The embedded Work gallery on "/" has no route of its own, so its
+      // nav highlight is scroll-position-driven instead of
+      // usePathname()-driven. Gated to "/" — every other route's
+      // isActive() below stays pure route-matching, untouched by this.
+      if (pathname === "/") {
+        const section = document.getElementById("home-work");
+        const top = section?.getBoundingClientRect().top ?? Infinity;
+        setHomeWorkActive((current) =>
+          current ? top < HOME_WORK_EXIT : top <= HOME_WORK_ENTER,
+        );
+      } else {
+        setHomeWorkActive(false);
+      }
     };
 
     const onScroll = () => {
@@ -64,13 +96,27 @@ export function Nav() {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+    // Nav lives in the root layout and persists across client-side
+    // navigations, so this must re-run per pathname — a []-scoped closure
+    // would freeze whatever pathname was true at first mount and never see
+    // route changes again. Re-subscribing once per navigation (not per
+    // scroll frame) doesn't reintroduce the layout-thrash problem the
+    // fixed-positioning doc comment above warns about — that was about
+    // animating a layout property every frame, not re-adding a listener.
+  }, [pathname]);
 
-  // "/" would match every route under startsWith, so home is exact-match only.
-  const isActive = (href: string) =>
-    href === "/"
-      ? pathname === "/"
-      : pathname === href || pathname.startsWith(`${href}/`);
+  // "/" would match every route under startsWith, so home is exact-match
+  // only. On "/", only Home or Work can ever be active — Work borrows the
+  // highlight once the embedded gallery has scrolled under the header,
+  // Home cedes it.
+  const isActive = (href: string) => {
+    if (pathname === "/") {
+      if (href === "/work") return homeWorkActive;
+      if (href === "/") return !homeWorkActive;
+      return false;
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   return (
     <>

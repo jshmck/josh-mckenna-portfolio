@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { DecomposeSequence } from "@/components/about/decompose-sequence";
 import { CtaBand } from "@/components/site/cta-band";
+import { Marquee } from "@/components/site/marquee";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { clients, timeline } from "@/lib/about";
@@ -108,6 +109,8 @@ export default function AboutPage() {
           </ul>
         </div>
       </section>
+
+      <Marquee />
 
       <CtaBand heading="Want him to draw something?" action="Get in touch" />
     </>
