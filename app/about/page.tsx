@@ -22,7 +22,7 @@ const PHOTOS = [
 export default function AboutPage() {
   return (
     <>
-      <header className="border-b border-hairline">
+      <header>
         <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
           <h1 className="type-heading text-ink">About</h1>
           <p className="type-lede mt-5 max-w-2xl text-ink-muted">
@@ -35,7 +35,7 @@ export default function AboutPage() {
       <DecomposeSequence />
 
       {/* 02 — The person */}
-      <section className="border-y border-hairline">
+      <section>
         <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
           <Reveal className="max-w-2xl">
             <p className="type-label text-ink-muted">02 — The person</p>
@@ -68,7 +68,7 @@ export default function AboutPage() {
       </section>
 
       {/* How he got here */}
-      <section className="border-b border-hairline">
+      <section>
         <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
           <h2 className="type-heading text-ink">How he got here</h2>
 
@@ -76,9 +76,7 @@ export default function AboutPage() {
             {timeline.map((entry, index) => (
               <li key={entry.year}>
                 <Reveal delay={index * 60}>
-                  {/* The rule sits on the row so it draws itself in as the
-                      row reveals — the wireframe's "underlines on scroll". */}
-                  <div className="flex flex-wrap items-baseline gap-x-10 gap-y-1 border-b border-hairline py-6">
+                  <div className="flex flex-wrap items-baseline gap-x-10 gap-y-1 py-6">
                     <p className="type-label w-14 shrink-0 text-accent">
                       {entry.year}
                     </p>
@@ -94,7 +92,7 @@ export default function AboutPage() {
       </section>
 
       {/* Clients */}
-      <section className="border-b border-hairline">
+      <section>
         <div className="mx-auto max-w-frame px-6 py-16 md:px-gutter">
           <h2 className="type-label text-ink-muted">
             Selected clients &amp; publications

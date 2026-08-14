@@ -8,7 +8,7 @@ import { footerLinks, siteConfig } from "@/lib/site";
  */
 export function Footer() {
   return (
-    <footer className="border-t border-hairline">
+    <footer>
       <div className="mx-auto flex max-w-frame flex-col gap-4 px-6 py-10 md:flex-row md:items-center md:justify-between md:px-gutter">
         <p className="type-label text-ink-muted">
           © {new Date().getFullYear()} {siteConfig.name}

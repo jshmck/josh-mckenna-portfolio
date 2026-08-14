@@ -56,7 +56,7 @@ export default function HomePage() {
       <DriftingHero />
 
       {/* 01 — Who Josh is */}
-      <section className="border-b border-hairline">
+      <section>
         <div className="mx-auto grid max-w-frame gap-14 px-6 py-24 md:grid-cols-2 md:items-center md:px-gutter">
           <Reveal>
             <p className="type-label text-ink-muted">01 — Who</p>
@@ -95,7 +95,7 @@ export default function HomePage() {
       </section>
 
       {/* Selected work */}
-      <section className="border-b border-hairline">
+      <section>
         <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
           <div className="flex items-baseline justify-between gap-6">
             <h2 className="type-title text-accent">SELECTED WORK</h2>

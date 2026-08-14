@@ -141,10 +141,7 @@ export default async function ProjectPage({
       </div>
 
       {/* Previous / all / next */}
-      <nav
-        aria-label="Project navigation"
-        className="border-t border-hairline"
-      >
+      <nav aria-label="Project navigation">
         <div className="mx-auto flex max-w-frame flex-wrap items-center justify-between gap-4 px-6 py-10 md:px-gutter">
           {previous ? (
             <Link
