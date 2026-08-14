@@ -45,7 +45,7 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
               aria-pressed={active}
               className={`font-display rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-colors ${
                 active
-                  ? "bg-ink text-canvas"
+                  ? "bg-brand text-canvas"
                   : "border border-hairline text-ink-muted hover:border-ink hover:text-ink"
               }`}
             >
@@ -73,7 +73,11 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
         ))}
       </div>
 
-      <p aria-live="polite" className="type-label mt-4 text-ink-muted">
+      {/* Not visible — announces the filtered count to screen readers only.
+          Sighted users see the grid change; there's no visual equivalent of
+          that for a screen reader, so this fills the gap without cluttering
+          the page. */}
+      <p aria-live="polite" className="sr-only">
         {visible.length} {visible.length === 1 ? "piece" : "pieces"}
         {filter !== "All" ? ` in ${filter}` : ""}
       </p>
