@@ -91,17 +91,19 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Clients */}
+      {/* Clients — a typographic logo wall. No traced brand marks (accuracy
+          risk with real trademarks); each name reads as a bold black
+          wordmark instead, in the footer's monochrome spirit. */}
       <section>
         <div className="mx-auto max-w-frame px-6 py-16 md:px-gutter">
           <h2 className="type-label text-ink-muted">
             Selected clients &amp; publications
           </h2>
-          <ul className="mt-8 flex flex-wrap items-center gap-x-12 gap-y-6">
+          <ul className="mt-8 grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-3 md:grid-cols-4">
             {clients.map((client) => (
               <li
                 key={client}
-                className="font-body text-lg font-medium text-ink-muted"
+                className="font-body text-xl font-bold tracking-tight text-ink"
               >
                 {client}
               </li>
