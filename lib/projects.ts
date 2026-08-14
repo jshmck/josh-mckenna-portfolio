@@ -12,9 +12,9 @@ export const PROJECT_CATEGORIES = [
   "Character",
   "Pride",
   "Editorial",
-  "Personal",
-  "3D",
   "Mural",
+  "3D",
+  "Personal",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];

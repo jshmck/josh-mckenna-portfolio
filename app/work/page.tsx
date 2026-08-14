@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
+import { BackToTop } from "@/components/ui/back-to-top";
 import { WorkGallery } from "@/components/work/work-gallery";
-import { getActiveCategories, getAllProjects } from "@/lib/projects";
+import { PROJECT_CATEGORIES, getAllProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -23,8 +24,12 @@ export default function WorkPage() {
       </header>
 
       <div className="mt-12">
-        <WorkGallery projects={projects} categories={getActiveCategories()} />
+        {/* Every category shows as a chip, even ones with no work yet
+            (3D) — Josh wants the full set visible, not just active ones. */}
+        <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
       </div>
+
+      <BackToTop />
     </div>
   );
 }
