@@ -17,10 +17,6 @@ export default function WorkPage() {
     <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
       <header>
         <h1 className="type-display text-accent">WORK</h1>
-        <p className="type-lede mt-5 max-w-2xl text-ink-muted">
-          Everything worth showing, newest first. Filter if you know what you
-          came for.
-        </p>
       </header>
 
       <div className="mt-12">
