@@ -32,10 +32,12 @@
      Waldeck (trial) is Josh's display face — the JOSH McKenna wordmark,
      section titles and marquee. It's loaded locally in app/layout.tsx and
      exposed as --font-waldeck. Archivo Black is the tight grotesque used for
-     statement headings. See DESIGN.md → Typography. */
+     statement headings. Elza is the licensed body face, served from Adobe
+     Fonts (the <link> tag in app/layout.tsx) — Arimo is the self-hosted
+     fallback if that stylesheet is ever unreachable. See DESIGN.md → Typography. */
   --font-display: var(--font-waldeck), "Archivo Black", system-ui, sans-serif;
   --font-grotesque: var(--font-archivo-black), system-ui, sans-serif;
-  --font-body: var(--font-arimo), system-ui, sans-serif;
+  --font-body: "elza", var(--font-arimo), system-ui, sans-serif;
   --font-mono: var(--font-space-mono), ui-monospace, monospace;
 
   /* Page rhythm — 44px page gutter, 1344px frame from the wireframes */

@@ -69,6 +69,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${arimo.variable} ${archivoBlack.variable} ${spaceMono.variable} ${waldeck.variable} h-full`}
     >
+      {/* Elza — licensed body face, served from Josh's Adobe Fonts kit. React 19
+          hoists a <link rel="stylesheet"> rendered anywhere in the tree into
+          <head> itself, so no next/head wrapper is needed. Arimo (self-hosted
+          via next/font) is the fallback in --font-body if this kit is ever
+          unreachable. */}
+      <link rel="stylesheet" href="https://use.typekit.net/fch8ghy.css" />
       <body className="flex min-h-full flex-col">
         <a
           href="#main"
