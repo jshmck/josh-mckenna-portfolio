@@ -57,7 +57,7 @@ export default function HomePage() {
 
       {/* Who Josh is */}
       <section>
-        <div className="mx-auto grid max-w-frame gap-14 px-6 pb-24 pt-10 md:grid-cols-2 md:items-center md:px-gutter">
+        <div className="mx-auto grid max-w-frame gap-14 px-6 pb-24 pt-16 md:grid-cols-2 md:items-center md:px-gutter">
           <Reveal>
             <h2 className="type-heading text-ink">
               London-based illustrator working across character design, LGBTQ+
