@@ -175,7 +175,7 @@
    invisible and no markup has to be injected to rescue it. */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(var(--reveal-rise, 24px));
   transition:
     opacity 700ms var(--ease-drift),
     transform 700ms var(--ease-drift);
