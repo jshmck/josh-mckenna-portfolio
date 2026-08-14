@@ -12,11 +12,13 @@ import { navLinks } from "@/lib/site";
  * scroll-driven compact state; the active link (purple, bold) is the other
  * piece of state here.
  *
- * Starts at 88px and shrinks to a compact 40px once the page scrolls past
- * the very top — text stays the same size, only the bar's height and
- * padding shrink. Background is the same frosted-glass treatment as the
- * hero's floating-object hover cards (bg-brand/15 + backdrop-blur-md), so
- * content scrolling underneath stays partly visible through the blur.
+ * Starts at 88px and shrinks to a compact 40px past 120px of scroll (back
+ * above 40px re-expands it — the gap between the two is deliberate
+ * hysteresis so it doesn't flicker at the boundary). Text stays the same
+ * size, only the bar's height and padding shrink. Background is the same
+ * frosted-glass treatment as the hero's floating-object hover cards
+ * (bg-brand/15 + backdrop-blur-md), so content scrolling underneath stays
+ * partly visible through the blur.
  */
 export function Nav() {
   const pathname = usePathname();
@@ -26,9 +28,16 @@ export function Nav() {
     let raf = 0;
     let queued = false;
 
+    // Hysteresis: compact past 120px, expand again only below 60px. A single
+    // threshold flickers on trackpad rubber-banding and made the shrink fire
+    // the instant a scroll gesture began, which read as twitchy rather than
+    // a deliberate response to actually scrolling down the page.
     const update = () => {
       queued = false;
-      setCompact(window.scrollY > 8);
+      setCompact((current) => {
+        if (current) return window.scrollY > 60;
+        return window.scrollY > 120;
+      });
     };
 
     const onScroll = () => {
