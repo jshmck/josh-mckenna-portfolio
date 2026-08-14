@@ -14,9 +14,9 @@ export default function WorkPage() {
 
   return (
     <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
-      <header className="max-w-2xl">
-        <h1 className="type-heading text-ink">Work</h1>
-        <p className="type-lede mt-5 text-ink-muted">
+      <header>
+        <h1 className="type-display text-accent">WORK</h1>
+        <p className="type-lede mt-5 max-w-2xl text-ink-muted">
           Everything worth showing, newest first. If you&apos;re after a
           particular kind of thing, the filters narrow it down.
         </p>
