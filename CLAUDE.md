@@ -40,7 +40,8 @@ Tailwind v4 has **no `tailwind.config.js`**. Tokens live in the `@theme` block i
 - **`--color-brand` (#30b7ff) marks the commission path.** CTAs, the JOSH
   McKenna wordmark, the marquee band, the hero navigation cards. `--color-accent`
   (#ae88ff) is the purple display accent — section titles (`SELECTED WORK`,
-  `MORE ABOUT JOSH →`) and the active nav link. Neither is a container border
+  `MORE ABOUT JOSH →`) and the active/hovered primary nav link, which also goes
+  bold on hover/active as of the nav rework. Neither is a container border
   colour; containers use `border-hairline`. (Josh's v2 retired the old red.)
 - **No `border-2` or thicker.** No current exception — the hero's hover
   card dropped its `border-[1.5px]` in favour of a borderless frosted blur.
