@@ -54,9 +54,9 @@ function ThreadsIcon() {
 
 const socials = [
   { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon },
+  { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon },
   { label: "X", href: siteConfig.x.url, Icon: XIcon },
   { label: "LinkedIn", href: siteConfig.linkedin.url, Icon: LinkedInIcon },
-  { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon },
 ];
 
 /**
