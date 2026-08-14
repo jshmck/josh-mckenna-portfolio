@@ -54,16 +54,15 @@ export default function HomePage() {
       </section>
 
       {/* Work — the same gallery as /work, embedded so the page just keeps
-          scrolling into it rather than navigating there. Deliberately no
-          type-title/type-display "WORK" heading here — that would repeat
-          the standalone page; a small eyebrow marks the section without
-          restarting it. The id is the landmark Nav's scroll-spy reads to
-          hand the active highlight from Home to Work — see
-          components/site/nav.tsx. */}
+          scrolling into it rather than navigating there. Matches the
+          standalone page's own title treatment (type-display, accent)
+          deliberately — same section, same voice. The id is the landmark
+          Nav's scroll-spy reads to hand the active highlight from Home to
+          Work — see components/site/nav.tsx. */}
       <section id="home-work">
         <div className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
-          <h2 className="type-link text-ink-muted">Work</h2>
-          <div className="mt-8">
+          <h2 className="type-display text-accent">WORK</h2>
+          <div className="mt-12">
             <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
           </div>
         </div>
