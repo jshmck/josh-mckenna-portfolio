@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Archivo_Black, Space_Mono } from "next/font/google";
+import { Archivo_Black, Arimo, Space_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
 import { Footer } from "@/components/site/footer";
@@ -8,10 +8,12 @@ import { siteConfig } from "@/lib/site";
 
 import "./globals.css";
 
-/* Body — variable weight, used at 15px and 22px in the wireframes. */
-const archivo = Archivo({
+/* Body — Helvetica Neue isn't licensed for web embedding, so Arimo (Google's
+   metric-compatible match for Arial/Helvetica) stands in for it. Used at 15px
+   and 22px in the wireframes. */
+const arimo = Arimo({
   subsets: ["latin"],
-  variable: "--font-archivo",
+  variable: "--font-arimo",
   display: "swap",
 });
 
@@ -65,7 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${archivoBlack.variable} ${spaceMono.variable} ${waldeck.variable} h-full`}
+      className={`${arimo.variable} ${archivoBlack.variable} ${spaceMono.variable} ${waldeck.variable} h-full`}
     >
       <body className="flex min-h-full flex-col">
         <a

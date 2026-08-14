@@ -35,7 +35,7 @@
      statement headings. See DESIGN.md → Typography. */
   --font-display: var(--font-waldeck), "Archivo Black", system-ui, sans-serif;
   --font-grotesque: var(--font-archivo-black), system-ui, sans-serif;
-  --font-body: var(--font-archivo), system-ui, sans-serif;
+  --font-body: var(--font-arimo), system-ui, sans-serif;
   --font-mono: var(--font-space-mono), ui-monospace, monospace;
 
   /* Page rhythm — 44px page gutter, 1344px frame from the wireframes */
