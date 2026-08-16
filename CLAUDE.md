@@ -38,7 +38,7 @@ Tailwind v4 has **no `tailwind.config.js`**. Tokens live in the `@theme` block i
   `type-heading`, `type-label`, `type-lede`. A new size is a design decision —
   add it as an `@utility` in `globals.css`, never inline.
 - **`--color-brand` (#30b7ff) marks the commission path.** CTAs, the JOSH
-  McKenna wordmark, the marquee band, the hero navigation cards. `--color-accent`
+  McKenna wordmark, the marquee band. `--color-accent`
   (#ae88ff) is the purple display accent — section titles (`SELECTED WORK`,
   `MORE ABOUT JOSH →`) and the active/hovered primary nav link, which also goes
   bold on hover/active as of the nav rework. Neither is a container border
@@ -81,14 +81,13 @@ components/
   site/     nav · footer · marquee · cta-band     (chrome, every page)
   ui/       plate · button · reveal · parallax    (primitives)
   home/     drifting-hero                        (page-specific)
-  about/    decompose-sequence
   work/     project-card · work-gallery
   contact/  enquiry-form
   shop/     waitlist-form
 lib/
   site.ts       nav links, contact details, footer — single source for chrome
   projects.ts   typed project content + access helpers
-  about.ts      timeline, clients, sequence captions
+  about.ts      clients, press quotes, talks & features
 ```
 
 **Read content through the helpers in `lib/projects.ts`** (`getAllProjects`,
@@ -104,12 +103,12 @@ These are specified in the wireframe annotations, not invented. Preserve them:
 | ---------------- | ------------------------------------------------------------------------ |
 | Hero objects     | Drift on independent vectors, reverse at the bounds, never pause          |
 | Hero cursor      | Nearby objects lean away with linear falloff; hover scales 1.06           |
-| Hero semantics   | 3 of 6 objects are real navigation; the other 3 are `aria-hidden`         |
+| Hero semantics   | All 6 objects are decorative and `aria-hidden`; navigation lives only in the site nav |
+| Hero scatter     | Idle orbit + cursor-repel keep running; scroll progress (read from the hero's own `getBoundingClientRect()`, no pin, no added scroll length) additively scatters each object outward along its resting angle and fades it out |
 | Signature illo   | Trails scroll at 0.85×                                                   |
 | Marquee          | Loops seamlessly, left, forever                                          |
 | Project images   | Fade + rise once on first view, never replay                              |
 | Project credits  | Column pins while the write-up scrolls                                    |
-| About sequence   | Pins for 4 viewport-heights across four annotated states                  |
 
 ## Git workflow
 

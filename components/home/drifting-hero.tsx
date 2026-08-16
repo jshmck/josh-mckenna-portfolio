@@ -1,20 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 /**
- * The homepage hero: six illustration cut-outs orbiting the JOSH McKenna
- * wordmark, each on its own slow elliptical path so the composition keeps a
- * gravity around the centre and never crowds the text. Nearby objects still
- * lean away from the cursor.
+ * The homepage hero: six illustration cut-outs clustered over the "jOSH
+ * McKenna" wordmark, each drifting on its own slow elliptical path so the
+ * composition never goes fully still. At rest they loosely cover the name —
+ * some peek-through is fine, it's not meant to tile perfectly. Nearby
+ * objects lean away from the cursor, same as before.
  *
- * Four of the six are real navigation — Work · Shop · Info · Contact,
- * matching the site nav exactly — and render as links with visible focus
- * and a destination label. The other two are decoration, hidden from
- * assistive tech entirely — but every object gets the same hover/focus
- * treatment: a subtle lift and a frosted-blue glass card.
+ * All six are purely decorative now — none of them double as navigation.
+ * The site nav already covers Work/Info/Shop/Contact, so there's no reason
+ * for the hero to repeat it; every object renders `aria-hidden`.
+ *
+ * As the page scrolls, each object additionally scatters outward along its
+ * own resting angle and fades out — revealing the wordmark — in step with
+ * how far the hero's own box has scrolled past the top of the viewport.
+ * There's no pin and no added scroll length: this reads straight off the
+ * hero's natural `getBoundingClientRect()`, so scatter progress reaches 1
+ * well before the hero scrolls out from under the fixed nav, and the rest
+ * of the homepage's scroll length and pacing are completely untouched.
  *
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
@@ -24,117 +30,126 @@ const rad = (deg: number) => (deg * Math.PI) / 180;
 
 type DriftObject = {
   id: string;
-  kind: "nav" | "ambient";
-  /** Nav only — the destination label and route. */
-  label?: string;
-  href?: string;
   src: string;
-  /** Empty for decoration (aria-hidden) and nav (the link is labelled). */
+  /** Empty — every object is decorative (aria-hidden). */
   alt: string;
   /** Fraction of container width. */
   width: number;
   /** width / height. */
   aspect: number;
-  /** Starting angle on the orbit, radians. */
+  /** Starting angle on the orbit, radians — also the scatter direction. */
   angle: number;
   /** Orbit radii as a fraction of container width / height. */
   rx: number;
   ry: number;
   /** Angular velocity, radians per second (sign sets direction). */
   spin: number;
+  /** How far the object travels outward along its own resting `angle`, as
+   *  a fraction of the frame, by scroll progress = 1. */
+  scatterDistance: number;
+  /** Target rotation in degrees at scroll progress = 1. */
+  scatterRotate: number;
 };
 
 const OBJECTS: DriftObject[] = [
   {
-    id: "ambient-1",
-    kind: "ambient",
+    id: "obj-1",
     src: "/illustrations/objects/face.png",
     alt: "",
     width: 0.185,
     aspect: 0.795,
     angle: rad(235),
-    rx: 0.33,
-    ry: 0.34,
+    rx: 0.16,
+    ry: 0.17,
     spin: rad(5),
+    scatterDistance: 0.85,
+    scatterRotate: 18,
   },
   {
-    id: "work",
-    kind: "nav",
-    label: "Work",
-    href: "/work",
+    id: "obj-2",
     src: "/illustrations/objects/car.png",
     alt: "",
     width: 0.3,
     aspect: 1.991,
     angle: rad(320),
-    rx: 0.3,
-    ry: 0.31,
+    rx: 0.15,
+    ry: 0.155,
     spin: rad(-4.5),
+    scatterDistance: 0.9,
+    scatterRotate: -16,
   },
   {
-    id: "info",
-    kind: "nav",
-    label: "Info",
-    href: "/about",
+    id: "obj-3",
     src: "/illustrations/objects/bearded.png",
     alt: "",
     width: 0.19,
     aspect: 1.052,
     angle: rad(150),
-    rx: 0.35,
-    ry: 0.33,
+    rx: 0.175,
+    ry: 0.165,
     spin: rad(5.5),
+    scatterDistance: 0.8,
+    scatterRotate: 20,
   },
   {
-    id: "shop",
-    kind: "nav",
-    label: "Shop",
-    href: "/shop",
+    id: "obj-4",
     src: "/illustrations/objects/hand.png",
     alt: "",
     width: 0.145,
     aspect: 0.734,
     angle: rad(40),
-    rx: 0.34,
-    ry: 0.34,
+    rx: 0.17,
+    ry: 0.17,
     spin: rad(-6.5),
+    scatterDistance: 0.95,
+    scatterRotate: -14,
   },
   {
-    id: "contact",
-    kind: "nav",
-    label: "Contact",
-    href: "/contact",
+    id: "obj-5",
     src: "/illustrations/objects/flowers.png",
     alt: "",
     width: 0.175,
     aspect: 1.112,
     angle: rad(285),
-    rx: 0.32,
-    ry: 0.35,
+    rx: 0.16,
+    ry: 0.175,
     spin: rad(6),
+    scatterDistance: 0.85,
+    scatterRotate: 22,
   },
   {
-    id: "ambient-6",
-    kind: "ambient",
+    id: "obj-6",
     src: "/illustrations/objects/car-pink.png",
     alt: "",
     width: 0.36,
     aspect: 2.317,
     angle: rad(100),
-    rx: 0.31,
-    ry: 0.32,
+    rx: 0.155,
+    ry: 0.16,
     spin: rad(-5),
+    scatterDistance: 0.9,
+    scatterRotate: -18,
   },
 ];
 
 /** Orbit centre — the middle of the frame, under the wordmark. */
 const CENTRE = 0.5;
-/** Keep objects this far inside each edge. */
+/** Keep objects this far inside each edge at rest (progress = 0). */
 const BOUNDS_INSET = 0.02;
 /** How close the pointer must get before an object leans away. */
 const REPEL_RADIUS = 0.26;
 /** Maximum lean, as a fraction of container width. */
 const REPEL_STRENGTH = 0.05;
+/** Scroll progress (0–1) past which objects start fading out. */
+const SCATTER_FADE_START = 0.32;
+/** How fast the fade-out ramps once past SCATTER_FADE_START. Tuned so
+ *  fully-scattered objects are invisible by ~0.65 progress, well before
+ *  the hero has scrolled far enough for them to visually reach the
+ *  section below it. */
+const SCATTER_FADE_RATE = 3;
+/** How far the bounds clamp relaxes at full scatter — must clear the
+ *  largest scatterDistance with margin, so nothing clips before it fades. */
+const SCATTER_BOUNDS_RELAX = 1.4;
 
 /** Responsive candidate widths — objects span ~15–30% of the frame. */
 const OBJECT_SIZES = "(max-width: 768px) 48vw, 30vw";
@@ -191,7 +206,8 @@ export function DriftingHero() {
     if (!frame) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      // Reduced motion: hold the static orbit (each object at its seed angle).
+      // Reduced motion: hold the static composition (each object at its
+      // seed angle, covering the wordmark, no scroll-driven scatter).
       return;
     }
 
@@ -232,8 +248,24 @@ export function DriftingHero() {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
 
+      // No pin, no added scroll length: progress is purely "how far the
+      // hero's own box has scrolled past the top of the viewport." One
+      // read for the whole frame, not per-object.
+      const heroRect = frame.getBoundingClientRect();
+      const scrollProgress = Math.min(
+        Math.max(-heroRect.top / (heroRect.height || 1), 0),
+        1,
+      );
+      const eased = scrollProgress * scrollProgress;
+      const scatterFade = Math.max(
+        0,
+        1 - Math.max(0, scrollProgress - SCATTER_FADE_START) * SCATTER_FADE_RATE,
+      );
+      const boundsRelax = eased * SCATTER_BOUNDS_RELAX;
+
       for (let i = 0; i < state.length; i += 1) {
         const object = state[i];
+        const meta = OBJECTS[i];
         const node = nodeRefs.current[i];
         if (!node) continue;
 
@@ -258,14 +290,28 @@ export function DriftingHero() {
           }
         }
 
-        // Never let an orbit (or a repel push) run an object off the frame.
-        x = Math.max(BOUNDS_INSET, Math.min(x, 1 - BOUNDS_INSET - object.width));
+        // Scroll-driven scatter, additive on top of orbit + repel — fixed
+        // to the object's original seed angle (not the live orbiting
+        // angle) so the exit direction stays put instead of wobbling as
+        // the idle orbit keeps spinning underneath it.
+        x += Math.cos(meta.angle) * meta.scatterDistance * eased;
+        y += Math.sin(meta.angle) * meta.scatterDistance * eased;
+
+        // The bounds clamp relaxes as scatter progresses, so objects can
+        // actually fly clear of the frame instead of hitting an invisible
+        // wall — by the time they'd visibly clip, they've faded out.
+        x = Math.max(
+          BOUNDS_INSET - boundsRelax,
+          Math.min(x, 1 - BOUNDS_INSET - object.width + boundsRelax),
+        );
         y = Math.max(
-          BOUNDS_INSET,
-          Math.min(y, 1 - BOUNDS_INSET - object.height),
+          BOUNDS_INSET - boundsRelax,
+          Math.min(y, 1 - BOUNDS_INSET - object.height + boundsRelax),
         );
 
         node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
+        node.style.rotate = `${meta.scatterRotate * eased}deg`;
+        node.style.opacity = String(scatterFade);
       }
 
       raf = requestAnimationFrame(tick);
@@ -289,9 +335,10 @@ export function DriftingHero() {
         // than the viewport.
         className="relative mx-auto h-[min(88vh,880px)] max-w-frame [container-type:size]"
       >
-        {/* Name lockup. Objects orbit BEHIND it and only pull in front on
-            hover. Ignores the pointer so it never blocks a link. */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
+        {/* Name lockup. Sits BEHIND the objects now — they cluster over it
+            at rest and scatter clear as the page scrolls. Ignores the
+            pointer so it never blocks anything. */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
           <h1 className="type-display leading-[0.95] text-brand">
             <span className="block">jOSH</span>
             <span className="block">MCkeNNA</span>
@@ -299,14 +346,13 @@ export function DriftingHero() {
         </div>
 
         {OBJECTS.map((object, index) => {
-          const isNav = object.kind === "nav";
           const height = object.width / object.aspect;
           const seed = orbitPosition({ ...object, height });
 
-          // A clean cut-out at rest; on hover/focus a frosted glass card
-          // fades in around it (with generous padding), the destination label
-          // appears below with room from the border, and the object lifts in
-          // front of the wordmark via the z-index bump on the wrapper.
+          // A clean cut-out at rest; on hover/focus a soft frosted-glass
+          // card fades in around it (generous padding, no border — Josh
+          // wants a blur, not a boxed outline), and the object lifts above
+          // its neighbours via the z-index bump on the wrapper.
           const plate = (
             <div
               ref={(node) => {
@@ -316,20 +362,8 @@ export function DriftingHero() {
             >
               <div
                 aria-hidden="true"
-                // bg/blur stay off until hover. No border — Josh wants a
-                // soft frosted blur, not a boxed outline, around the object.
-                // Colourless frost, matching the nav's bg-canvas/15 treatment.
-                // Nav objects get extra room below for the destination
-                // label; ambient objects have no label, so their card stays
-                // centred on the illustration instead of bottom-heavy.
-                className={`pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] flex flex-col items-center justify-end rounded-[1.75rem] transition-[background-color] duration-300 group-hover:bg-canvas/15 group-hover:backdrop-blur-md group-focus-within:bg-canvas/15 group-focus-within:backdrop-blur-md ${isNav ? "-bottom-[calc(20%+1.75rem)] pb-4" : "-bottom-[15%]"}`}
-              >
-                {isNav ? (
-                  <span className="type-label text-[1rem] leading-none text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
-                    → {object.label}
-                  </span>
-                ) : null}
-              </div>
+                className="pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] -bottom-[15%] rounded-[1.75rem] transition-[background-color] duration-300 group-hover:bg-canvas/15 group-hover:backdrop-blur-md group-focus-within:bg-canvas/15 group-focus-within:backdrop-blur-md"
+              />
               <div
                 className="relative z-10"
                 style={{ aspectRatio: String(object.aspect) }}
@@ -339,7 +373,7 @@ export function DriftingHero() {
                   alt={object.alt}
                   fill
                   sizes={OBJECT_SIZES}
-                  priority={isNav}
+                  priority
                   draggable={false}
                   className="object-contain"
                 />
@@ -355,24 +389,14 @@ export function DriftingHero() {
               }}
               onPointerMove={handlePointerMove(index)}
               onPointerLeave={handlePointerLeave(index)}
-              aria-hidden={isNav ? undefined : "true"}
-              className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
+              aria-hidden="true"
+              className="group absolute left-0 top-0 z-10 will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
               }}
             >
-              {isNav ? (
-                <Link
-                  href={object.href!}
-                  className="block"
-                  aria-label={`${object.label} — view Josh's ${object.label!.toLowerCase()} page`}
-                >
-                  {plate}
-                </Link>
-              ) : (
-                plate
-              )}
+              {plate}
             </div>
           );
         })}
