@@ -25,8 +25,8 @@ export default function AboutPage() {
     <>
       <header>
         <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
-          <h1 className="type-heading text-ink">About</h1>
-          <p className="type-lede mt-5 max-w-2xl text-ink-muted">
+          <h1 className="type-display text-accent">ABOUT</h1>
+          <p className="type-lede mt-8 max-w-2xl text-ink-muted">
             Ten years of drawing for magazines, record sleeves, cereal boxes and
             one negotiable tattoo.
           </p>
