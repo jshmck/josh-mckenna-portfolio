@@ -7,8 +7,8 @@
    ========================================================================== */
 
 @theme {
-  /* Surfaces */
-  --color-canvas: #ffffff;
+  /* Surfaces — "Sugar White", not pure white. */
+  --color-canvas: #faf9f6;
 
   /* Ink — Josh runs pure black for both tiers, no muted gray/bronze. */
   --color-ink: #000000;
