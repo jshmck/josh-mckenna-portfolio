@@ -71,20 +71,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Clients — moved below talks & features per Josh, titled like every
-          other section title on the site. */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
-          <h2 className="type-heading text-ink">Selected Clients</h2>
-          <div className="mt-8">
-            <ClientLogos />
-          </div>
-        </div>
-      </section>
-
       {/* Press */}
       <section>
-        <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
           <ul className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
             {pressQuotes.map((press, index) => (
               <li key={press.source}>
@@ -99,6 +88,17 @@ export default function AboutPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Clients — moved below Press per Josh, titled like every other
+          section title on the site. */}
+      <section>
+        <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
+          <h2 className="type-heading text-ink">Selected Clients</h2>
+          <div className="mt-12">
+            <ClientLogos />
+          </div>
         </div>
       </section>
 
