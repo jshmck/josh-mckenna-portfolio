@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { DecomposeSequence } from "@/components/about/decompose-sequence";
 import { CtaBand } from "@/components/site/cta-band";
 import { Marquee } from "@/components/site/marquee";
 import { Plate } from "@/components/ui/plate";
@@ -31,6 +32,8 @@ export default function AboutPage() {
           </p>
         </div>
       </header>
+
+      <DecomposeSequence />
 
       {/* The person */}
       <section>

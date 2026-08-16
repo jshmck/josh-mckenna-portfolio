@@ -90,3 +90,26 @@ export const features: FeatureItem[] = [
     alt: "Photo placeholder — Bombay Sapphire feature",
   },
 ];
+
+/**
+ * The four states of the pinned "decomposing illustration" sequence.
+ * Progress is a 0–1 fraction of the way through the pinned section.
+ */
+export const sequenceStates = [
+  {
+    label: "Intact",
+    caption: "One complete illustration, holding itself together.",
+  },
+  {
+    label: "Separating",
+    caption: "The layers begin to pull apart on independent paths.",
+  },
+  {
+    label: "Scattering",
+    caption: "Pieces drift out of frame. The whole stops being a whole.",
+  },
+  {
+    label: "Handoff",
+    caption: "The illustration is gone. What's left is the person who drew it.",
+  },
+] as const;
