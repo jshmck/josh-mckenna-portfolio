@@ -10,9 +10,9 @@ import { useEffect, useRef } from "react";
  * lean away from the cursor.
  *
  * All six are purely decorative (`aria-hidden`) — none of them double as
- * navigation; the site nav already covers Work/Info/Shop/Contact. Every
- * object still gets the same hover/focus treatment: a subtle lift and a
- * frosted-blue glass card.
+ * navigation; the site nav already covers Work/Info/Shop/Contact. On
+ * hover/focus each object just lifts (scale + cursor-tilt) — no frosted
+ * card, no boxed outline, nothing but the cut-out itself moving.
  *
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
@@ -297,39 +297,25 @@ export function DriftingHero() {
                 transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
               }}
             >
-              {/* A clean cut-out at rest; on hover/focus a frosted glass
-                  card fades in around it (generous padding, no border —
-                  Josh wants a soft blur, not a boxed outline), and the
-                  object lifts above its neighbours via the z-index bump
-                  on the wrapper. */}
+              {/* A clean cut-out, no frosted card — on hover/focus it just
+                  lifts (scale + tilt), and lifts above its neighbours via
+                  the z-index bump on the wrapper. */}
               <div
                 ref={(node) => {
                   plateRefs.current[index] = node;
                 }}
                 className="relative transition-[scale_500ms_var(--ease-drift),rotate_150ms_ease-out] group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
+                style={{ aspectRatio: String(object.aspect) }}
               >
-                <div
-                  aria-hidden="true"
-                  // bg/blur stay off until hover. No border — Josh wants a
-                  // soft frosted blur, not a boxed outline, around the
-                  // object. Colourless frost, matching the nav's
-                  // bg-canvas/15 treatment.
-                  className="pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] -bottom-[15%] rounded-[1.75rem] transition-[background-color] duration-300 group-hover:bg-canvas/15 group-hover:backdrop-blur-md group-focus-within:bg-canvas/15 group-focus-within:backdrop-blur-md"
+                <Image
+                  src={object.src}
+                  alt={object.alt}
+                  fill
+                  sizes={OBJECT_SIZES}
+                  priority
+                  draggable={false}
+                  className="object-contain"
                 />
-                <div
-                  className="relative z-10"
-                  style={{ aspectRatio: String(object.aspect) }}
-                >
-                  <Image
-                    src={object.src}
-                    alt={object.alt}
-                    fill
-                    sizes={OBJECT_SIZES}
-                    priority
-                    draggable={false}
-                    className="object-contain"
-                  />
-                </div>
               </div>
             </div>
           );

@@ -43,8 +43,8 @@ Tailwind v4 has **no `tailwind.config.js`**. Tokens live in the `@theme` block i
   `MORE ABOUT JOSH →`) and the active/hovered primary nav link, which also goes
   bold on hover/active as of the nav rework. Neither is a container border
   colour; containers use `border-hairline`. (Josh's v2 retired the old red.)
-- **No `border-2` or thicker.** No current exception — the hero's hover
-  card dropped its `border-[1.5px]` in favour of a borderless frosted blur.
+- **No `border-2` or thicker.** No current exception — the hero objects'
+  hover state has no card or outline at all now, just a scale/tilt lift.
 - **Never the `Sparkles` icon.** Hard ban.
 - **No icons before section headers.**
 - **Framed images go through `<Plate>`** ([components/ui/plate.tsx](components/ui/plate.tsx)).
