@@ -154,7 +154,7 @@ export function EnquiryForm() {
         type="submit"
         className="font-display mt-8 rounded-full border border-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-ink active:border-brand active:bg-brand active:text-canvas"
       >
-        HOWDY!
+        HOWDY
       </button>
     </form>
   );
