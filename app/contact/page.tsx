@@ -13,7 +13,7 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Commissions, collaborations, editorial deadlines and unsolicited opinions about typefaces.",
+    "Commissions, collaborations, editorial deadlines that are already late — all welcome.",
 };
 
 const socials = [
@@ -32,9 +32,9 @@ export default function ContactPage() {
             heading structure intact. */}
         <h1 className="sr-only">Contact</h1>
         <p className="type-lede max-w-md text-ink-muted">
-          Commissions, collaborations, editorial deadlines and unsolicited
-          opinions about typefaces — all welcome. Josh replies to everything,
-          eventually.
+          Commissions, collaborations, editorial deadlines that are already
+          late — all welcome. Josh reads everything himself and replies
+          within two working days.
         </p>
 
         {/* Moved here from the old sitewide footer — same treatment,

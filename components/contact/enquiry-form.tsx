@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -42,7 +41,7 @@ export function EnquiryForm() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       found.email = "That address doesn't look like it can receive a reply.";
     if (message.length < 10)
-      found.message = "A sentence or two about the project, if you can.";
+      found.message = "A sentence or two, if you can.";
 
     setErrors(found);
     if (Object.keys(found).length > 0) return;
@@ -128,7 +127,7 @@ export function EnquiryForm() {
 
         <div>
           <label htmlFor="message" className="type-label text-ink-muted">
-            Tell Josh about it
+            Tell Josh what&apos;s up
           </label>
           <textarea
             id="message"
@@ -146,9 +145,17 @@ export function EnquiryForm() {
         </div>
       </div>
 
-      <Button type="submit" variant="quiet" className="mt-8">
-        Send enquiry
-      </Button>
+      {/* Styled like the Work page's filter chips, not the shared Button
+          component — same rest/hover treatment (ink outline -> brand
+          outline), plus a filled brand/canvas look on :active mirroring a
+          chip's selected state (the closest equivalent for a submit button,
+          which has no persistent "selected" identity of its own). */}
+      <button
+        type="submit"
+        className="font-display mt-8 rounded-full border border-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-ink active:border-brand active:bg-brand active:text-canvas"
+      >
+        HOWDY!
+      </button>
     </form>
   );
 }
