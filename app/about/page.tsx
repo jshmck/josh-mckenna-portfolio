@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 
+import { ClientLogos } from "@/components/site/client-logos";
 import { CtaBand } from "@/components/site/cta-band";
 import { Footer } from "@/components/site/footer";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
-import { clients, features, pressQuotes } from "@/lib/about";
+import { features, pressQuotes } from "@/lib/about";
 
 export const metadata: Metadata = {
   title: "Info",
@@ -75,9 +76,9 @@ export default function AboutPage() {
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
           <h2 className="type-heading text-ink">Selected Clients</h2>
-          <p className="font-body mt-6 max-w-2xl text-[15px] text-ink-muted">
-            {clients.join(", ")}
-          </p>
+          <div className="mt-8">
+            <ClientLogos />
+          </div>
         </div>
       </section>
 

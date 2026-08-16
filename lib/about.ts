@@ -1,20 +1,50 @@
 /** Content for the About page. Kept beside the site config so Josh can edit
  *  copy without opening a component. */
 
-/** Shared with the footer's "Selected Clients" list — one source, both places. */
-export const clients: string[] = [
-  "Apple",
-  "Google",
-  "Meta",
-  "WhatsApp",
-  "British Airways",
-  "Wall Street Journal",
-  "Kiehl's",
-  "Piper-Heidsieck",
-  "Coca-Cola",
-  "Vogue",
-  "UAL",
-  "Mr Porter",
+export type Client = {
+  name: string;
+  /** Path under /public/logos. Omitted clients render as text (no logo
+   *  file with a clear, reusable license was found for them). */
+  logo?: string;
+  /** `icon` marks squarish/compact logomarks (Apple, Meta...) — at the
+   *  standard row height they'd sit far smaller than the wide wordmarks
+   *  around them, so they're bumped up to read as equally prominent.
+   *  `lg` is the same fix for a wordmark whose own detail (small text,
+   *  decorative borders) reads poorly at the standard height. */
+  size?: "icon" | "lg" | "xl";
+};
+
+/** Shared with the footer's "Selected Clients" list — one source, both
+ *  places. Order is deliberate, not alphabetical or by category: the
+ *  biggest names lead (Apple, Google, Meta, British Airways...), and
+ *  icon-shaped marks and wordmarks mix in loose, varied runs (2-3 icons,
+ *  then a word, sometimes two words together) rather than a strict
+ *  alternation — a rigid pattern read as mechanical. The one hard rule is
+ *  never stacking two very wide wordmarks back to back (that's what
+ *  originally left a ragged gap on the right — British Airways directly
+ *  into Wall Street Journal ate a whole row on its own). */
+export const clients: Client[] = [
+  { name: "Apple", logo: "/logos/apple.svg", size: "icon" },
+  { name: "Google", logo: "/logos/google.svg", size: "icon" },
+  { name: "Meta", logo: "/logos/meta.svg", size: "icon" },
+  { name: "British Airways", logo: "/logos/british-airways.svg" },
+  { name: "WhatsApp", logo: "/logos/whatsapp.svg", size: "icon" },
+  { name: "Instagram", logo: "/logos/instagram.svg", size: "icon" },
+  { name: "Wall Street Journal", logo: "/logos/wsj.svg" },
+  { name: "Vogue", logo: "/logos/vogue.svg" },
+  { name: "Piper-Heidsieck", logo: "/logos/piper-heidsieck.png", size: "lg" },
+  { name: "Coca-Cola", logo: "/logos/coca-cola.svg" },
+  { name: "Mr Porter", logo: "/logos/mr-porter.png" },
+  { name: "Bombay Sapphire", logo: "/logos/bombay-sapphire.png", size: "lg" },
+  { name: "Monocle Magazine", logo: "/logos/monocle.svg" },
+  { name: "Wagamama", logo: "/logos/wagamama.svg" },
+  { name: "Wired Magazine", logo: "/logos/wired.svg" },
+  { name: "Kiehl's", logo: "/logos/kiehls.svg" },
+  { name: "UAL", logo: "/logos/ual.svg", size: "lg" },
+  { name: "Vodafone", logo: "/logos/vodafone.svg" },
+  { name: "Levi's", logo: "/logos/levis.svg" },
+  { name: "Converse", logo: "/logos/converse.svg", size: "icon" },
+  { name: "GQ", logo: "/logos/gq.svg" },
 ];
 
 export type PressQuote = {
