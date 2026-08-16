@@ -30,7 +30,6 @@ export const clients: Client[] = [
   { name: "British Airways", logo: "/logos/british-airways.svg" },
   { name: "WhatsApp", logo: "/logos/whatsapp.svg", size: "icon" },
   { name: "Instagram", logo: "/logos/instagram.svg", size: "icon" },
-  { name: "Wall Street Journal", logo: "/logos/wsj.svg" },
   { name: "Vogue", logo: "/logos/vogue.svg" },
   { name: "Piper-Heidsieck", logo: "/logos/piper-heidsieck.png", size: "lg" },
   { name: "Coca-Cola", logo: "/logos/coca-cola.svg" },
@@ -45,6 +44,7 @@ export const clients: Client[] = [
   { name: "Levi's", logo: "/logos/levis.svg" },
   { name: "Converse", logo: "/logos/converse.svg", size: "icon" },
   { name: "GQ", logo: "/logos/gq.svg" },
+  { name: "Wall Street Journal", logo: "/logos/wsj.svg" },
 ];
 
 export type PressQuote = {
