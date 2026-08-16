@@ -96,10 +96,10 @@ export default function AboutPage() {
           wordmark instead, in the footer's monochrome spirit. */}
       <section>
         <div className="mx-auto max-w-frame px-6 py-16 md:px-gutter">
-          <h2 className="type-label text-ink-muted">
+          <h2 className="type-heading text-ink">
             Selected clients &amp; publications
           </h2>
-          <ul className="mt-8 grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-3 md:grid-cols-4">
+          <ul className="mt-12 grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-3 md:grid-cols-4">
             {clients.map((client) => (
               <li
                 key={client}
