@@ -8,7 +8,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { features, pressQuotes } from "@/lib/about";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "Info",
   description:
     "Ten years of drawing for magazines, record sleeves, cereal boxes and one negotiable tattoo.",
 };
@@ -25,22 +25,16 @@ export default function AboutPage() {
     <>
       <header>
         <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
-          <h1 className="type-display text-accent">ABOUT</h1>
-          <p className="type-lede mt-8 max-w-2xl text-ink-muted">
-            Ten years of drawing for magazines, record sleeves, cereal boxes and
-            one negotiable tattoo.
-          </p>
+          <h1 className="type-display text-accent">INFO</h1>
         </div>
       </header>
 
-      <DecomposeSequence />
-
-      {/* The person */}
+      {/* The person — moved to the top, no title, no lede; just the copy
+          and photos. */}
       <section>
-        <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 pb-24 md:px-gutter">
           <Reveal className="max-w-2xl">
-            <h2 className="type-heading text-ink">This is Josh.</h2>
-            <p className="type-lede mt-6 text-ink-muted">
+            <p className="type-lede text-ink-muted">
               He studied illustration in Bristol, moved to London for a job he
               left after eight months, and has been freelance since 2019. He
               draws by hand first, every time, and colours flat.
@@ -119,6 +113,11 @@ export default function AboutPage() {
           </ul>
         </div>
       </section>
+
+      {/* Scroll sequence — kept, not deleted; moved to the bottom for now.
+          Josh wants to reuse this elsewhere, so it stays intact rather
+          than being torn out. */}
+      <DecomposeSequence />
 
       <Marquee />
 
