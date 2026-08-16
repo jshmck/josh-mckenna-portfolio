@@ -20,7 +20,7 @@ import { siteConfig } from "@/lib/site";
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
 const FIELD =
-  "mt-2 w-full rounded-md border border-hairline bg-canvas px-3 py-2.5 font-body text-[15px] text-ink transition-colors placeholder:text-ink-muted focus:border-ink focus:outline-none";
+  "mt-2 w-full rounded-md border border-ink bg-canvas px-3 py-2.5 font-body text-[15px] text-ink transition-colors placeholder:text-ink-muted focus:border-brand focus:outline-none";
 
 export function EnquiryForm() {
   const [sent, setSent] = useState(false);
@@ -59,7 +59,7 @@ export function EnquiryForm() {
 
   if (sent) {
     return (
-      <div className="rounded-3xl border border-hairline p-8">
+      <div className="rounded-3xl border border-ink p-8">
         <h2 className="type-title font-medium text-accent">NEARLY THERE</h2>
         <p className="type-lede mt-4 text-ink-muted">
           Your mail client should have opened with the enquiry ready to go —
@@ -81,7 +81,7 @@ export function EnquiryForm() {
     <form
       onSubmit={submit}
       noValidate
-      className="rounded-3xl border border-hairline p-6 md:p-8"
+      className="rounded-3xl border border-ink p-6 md:p-8"
     >
       <h2 className="type-title font-medium text-accent">SAY HELLO</h2>
 
