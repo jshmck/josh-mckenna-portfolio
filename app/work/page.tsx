@@ -16,7 +16,7 @@ export default function WorkPage() {
   return (
     <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
       <header>
-        <h1 className="type-display text-accent">WORK</h1>
+        <h1 className="type-display text-accent">WORk</h1>
       </header>
 
       <div className="mt-12">

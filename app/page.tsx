@@ -61,7 +61,7 @@ export default function HomePage() {
           Work — see components/site/nav.tsx. */}
       <section id="home-work">
         <div className="mx-auto max-w-frame px-6 pb-32 pt-4 md:px-gutter">
-          <h2 className="type-display text-accent">WORK</h2>
+          <h2 className="type-display text-accent">WORk</h2>
           <div className="mt-12">
             <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
           </div>
