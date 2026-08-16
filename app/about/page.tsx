@@ -5,7 +5,6 @@ import { Footer } from "@/components/site/footer";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { clients, features, pressQuotes } from "@/lib/about";
-import { talksAndFeatures } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Info",
@@ -20,6 +19,13 @@ const PHOTOS = [
   { ratio: "3/4" as const, alt: "Ink tests" },
 ];
 
+/**
+ * Deliberately no section titles on this page — Josh wants it clean.
+ * Each block's own format carries what it is (a comma-separated name list
+ * reads as clients, dated event lines read as talks, a quoted line with an
+ * attribution reads as press), and generous vertical spacing between
+ * blocks does the separating instead of a heading would.
+ */
 export default function AboutPage() {
   return (
     <>
@@ -29,10 +35,9 @@ export default function AboutPage() {
         </div>
       </header>
 
-      {/* The person — moved to the top, no title, no lede; just the copy
-          and photos. */}
+      {/* The person */}
       <section>
-        <div className="mx-auto max-w-frame px-6 pb-24 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
           <Reveal className="max-w-2xl">
             <p className="type-lede text-ink-muted">
               He studied illustration in Bristol, moved to London for a job he
@@ -61,44 +66,26 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Clients + the compact talks list — moved here from the old
-          sitewide footer, same text size/format, just living in the page
-          body instead of a footer now. */}
+      {/* Clients */}
       <section>
-        <div className="mx-auto grid max-w-frame gap-10 px-6 pb-16 md:grid-cols-2 md:gap-12 md:px-gutter">
-          <div>
-            <p className="font-body text-[15px] font-bold text-ink">
-              Selected Clients
-            </p>
-            <p className="font-body mt-6 text-[15px] text-ink-muted">
-              {clients.join(", ")}
-            </p>
-          </div>
-
-          <div>
-            <p className="font-body text-[15px] font-bold text-ink">
-              Selected Talks and Features
-            </p>
-            <ul className="mt-6 space-y-1">
-              {talksAndFeatures.map((talk) => (
-                <li key={talk} className="font-body text-[15px] text-ink-muted">
-                  {talk}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+          <p className="font-body text-[15px] font-bold text-ink">
+            Selected Clients
+          </p>
+          <p className="font-body mt-6 max-w-2xl text-[15px] text-ink-muted">
+            {clients.join(", ")}
+          </p>
         </div>
       </section>
 
-      {/* Talks & features — the rich version of the compact talks list
-          above, with a media slot and write-up per event. Real event names,
-          placeholder photos/video and captions until Josh sends the real
-          assets over (same "visible until real content lands" pattern
-          Plate uses everywhere else on the site). */}
+      {/* Talks & features — one merged list now, not a compact text list
+          plus a separate rich-card version of the same events. Real event
+          names, placeholder photos/video and captions until Josh sends the
+          real assets over (same "visible until real content lands"
+          pattern Plate uses everywhere else on the site). */}
       <section>
-        <div className="mx-auto max-w-frame px-6 py-16 md:px-gutter">
-          <h2 className="type-heading text-ink">Talks &amp; features</h2>
-          <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
+        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+          <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
               <li key={feature.alt}>
                 <Reveal delay={index * 80}>
@@ -106,9 +93,9 @@ export default function AboutPage() {
                     image={{ ratio: "16/10", alt: feature.alt }}
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
-                  <h3 className="font-body mt-4 text-[15px] font-bold text-ink">
+                  <h2 className="font-body mt-4 text-[15px] font-bold text-ink">
                     {feature.title}
-                  </h3>
+                  </h2>
                   <p className="type-lede mt-1 text-ink-muted">
                     {feature.description}
                   </p>
@@ -119,13 +106,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Press — the section above already carries the client list and the
-          talks list, so this one is deliberately not another list: real
-          quoted excerpts instead, the one thing neither of those show. */}
+      {/* Press */}
       <section>
-        <div className="mx-auto max-w-frame px-6 py-16 md:px-gutter">
-          <h2 className="type-heading text-ink">Selected press</h2>
-          <ul className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
+        <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
+          <ul className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
             {pressQuotes.map((press, index) => (
               <li key={press.source}>
                 <Reveal delay={index * 60}>

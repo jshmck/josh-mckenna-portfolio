@@ -54,6 +54,12 @@ export type FeatureItem = {
  */
 export const features: FeatureItem[] = [
   {
+    title: "Application Accepted — SXSW 2027",
+    description:
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    alt: "Photo placeholder — SXSW 2027",
+  },
+  {
     title: "Speaker — Config 2026",
     description:
       "Placeholder write-up — swap in the real caption once Josh sends it over.",

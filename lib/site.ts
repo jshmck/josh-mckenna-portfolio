@@ -51,14 +51,5 @@ export const navLinks: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-/** "Selected Talks and Features" — Info page, newest/most notable first. */
-export const talksAndFeatures: string[] = [
-  "Application Accepted - SXSW 2027",
-  "Speaker - Config 2026",
-  "Book Feature - Gestalten",
-  "Workshop - Apple",
-  "Speaker - Nicer Tuesdays 2017",
-];
-
 /** Marquee words for the homepage band. Repeated in-component to loop. */
 export const marqueeWords = ["ALWAYS DRAWING", "NEVER STILL"] as const;
