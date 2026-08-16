@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 };
 
 /**
- * Deliberately no section titles on this page — Josh wants it clean.
- * Each block's own format carries what it is (a comma-separated name list
- * reads as clients, dated event lines read as talks, a quoted line with an
- * attribution reads as press), and generous vertical spacing between
- * blocks does the separating instead of a heading would.
+ * Only Talks & Features and Selected Clients get titles — Press doesn't,
+ * its quote-plus-attribution format already reads as press on its own.
+ * Titles use type-title + text-accent, the same Waldeck-caps treatment as
+ * every other section title on the site (see the `--color-accent` hard
+ * rule in CLAUDE.md).
  */
 export default function AboutPage() {
   return (
@@ -43,18 +43,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Clients */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
-          <p className="font-body text-[15px] font-bold text-ink">
-            Selected Clients
-          </p>
-          <p className="font-body mt-6 max-w-2xl text-[15px] text-ink-muted">
-            {clients.join(", ")}
-          </p>
-        </div>
-      </section>
-
       {/* Talks & features — one merged list now, not a compact text list
           plus a separate rich-card version of the same events. Real event
           names, placeholder photos/video and captions until Josh sends the
@@ -62,7 +50,10 @@ export default function AboutPage() {
           pattern Plate uses everywhere else on the site). */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
-          <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2">
+          {/* "AND" spelled out, not "&" — Waldeck's ampersand glyph isn't
+              usable yet, revisit once Josh sorts that out. */}
+          <h2 className="type-title text-accent">TALKS AND FEATURES</h2>
+          <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
               <li key={feature.alt}>
                 <Reveal delay={index * 80}>
@@ -70,9 +61,9 @@ export default function AboutPage() {
                     image={{ ratio: "16/10", alt: feature.alt }}
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
-                  <h2 className="font-body mt-4 text-[15px] font-bold text-ink">
+                  <h3 className="font-body mt-4 text-[15px] font-bold text-ink">
                     {feature.title}
-                  </h2>
+                  </h3>
                   <p className="type-lede mt-1 text-ink-muted">
                     {feature.description}
                   </p>
@@ -80,6 +71,17 @@ export default function AboutPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Clients — moved below talks & features per Josh, titled like every
+          other section title on the site. */}
+      <section>
+        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+          <h2 className="type-title text-accent">SELECTED CLIENTS</h2>
+          <p className="font-body mt-6 max-w-2xl text-[15px] text-ink-muted">
+            {clients.join(", ")}
+          </p>
         </div>
       </section>
 
