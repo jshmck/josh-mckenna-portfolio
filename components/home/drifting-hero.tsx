@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 /**
@@ -10,11 +9,10 @@ import { useEffect, useRef } from "react";
  * gravity around the centre and never crowds the text. Nearby objects still
  * lean away from the cursor.
  *
- * Four of the six are real navigation — Work · Shop · Info · Contact,
- * matching the site nav exactly — and render as links with visible focus
- * and a destination label. The other two are decoration, hidden from
- * assistive tech entirely — but every object gets the same hover/focus
- * treatment: a subtle lift and a frosted-blue glass card.
+ * All six are purely decorative (`aria-hidden`) — none of them double as
+ * navigation; the site nav already covers Work/Info/Shop/Contact. Every
+ * object still gets the same hover/focus treatment: a subtle lift and a
+ * frosted-blue glass card.
  *
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
@@ -24,12 +22,8 @@ const rad = (deg: number) => (deg * Math.PI) / 180;
 
 type DriftObject = {
   id: string;
-  kind: "nav" | "ambient";
-  /** Nav only — the destination label and route. */
-  label?: string;
-  href?: string;
   src: string;
-  /** Empty for decoration (aria-hidden) and nav (the link is labelled). */
+  /** Empty — every object is decorative (aria-hidden). */
   alt: string;
   /** Fraction of container width. */
   width: number;
@@ -47,7 +41,6 @@ type DriftObject = {
 const OBJECTS: DriftObject[] = [
   {
     id: "ambient-1",
-    kind: "ambient",
     src: "/illustrations/objects/face.png",
     alt: "",
     width: 0.185,
@@ -59,9 +52,6 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "work",
-    kind: "nav",
-    label: "Work",
-    href: "/work",
     src: "/illustrations/objects/car.png",
     alt: "",
     width: 0.3,
@@ -73,9 +63,6 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "info",
-    kind: "nav",
-    label: "Info",
-    href: "/about",
     src: "/illustrations/objects/bearded.png",
     alt: "",
     width: 0.19,
@@ -87,9 +74,6 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "shop",
-    kind: "nav",
-    label: "Shop",
-    href: "/shop",
     src: "/illustrations/objects/hand.png",
     alt: "",
     width: 0.145,
@@ -101,9 +85,6 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "contact",
-    kind: "nav",
-    label: "Contact",
-    href: "/contact",
     src: "/illustrations/objects/flowers.png",
     alt: "",
     width: 0.175,
@@ -115,7 +96,6 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-6",
-    kind: "ambient",
     src: "/illustrations/objects/car-pink.png",
     alt: "",
     width: 0.36,
@@ -290,7 +270,7 @@ export function DriftingHero() {
         className="relative mx-auto h-[min(88vh,880px)] max-w-frame [container-type:size]"
       >
         {/* Name lockup. Objects orbit BEHIND it and only pull in front on
-            hover. Ignores the pointer so it never blocks a link. */}
+            hover. Ignores the pointer so it never blocks anything. */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
           <h1 className="type-display leading-[0.95] text-brand">
             <span className="block">jOSH</span>
@@ -299,53 +279,8 @@ export function DriftingHero() {
         </div>
 
         {OBJECTS.map((object, index) => {
-          const isNav = object.kind === "nav";
           const height = object.width / object.aspect;
           const seed = orbitPosition({ ...object, height });
-
-          // A clean cut-out at rest; on hover/focus a frosted glass card
-          // fades in around it (with generous padding), the destination label
-          // appears below with room from the border, and the object lifts in
-          // front of the wordmark via the z-index bump on the wrapper.
-          const plate = (
-            <div
-              ref={(node) => {
-                plateRefs.current[index] = node;
-              }}
-              className="relative transition-[scale_500ms_var(--ease-drift),rotate_150ms_ease-out] group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
-            >
-              <div
-                aria-hidden="true"
-                // bg/blur stay off until hover. No border — Josh wants a
-                // soft frosted blur, not a boxed outline, around the object.
-                // Colourless frost, matching the nav's bg-canvas/15 treatment.
-                // Nav objects get extra room below for the destination
-                // label; ambient objects have no label, so their card stays
-                // centred on the illustration instead of bottom-heavy.
-                className={`pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] flex flex-col items-center justify-end rounded-[1.75rem] transition-[background-color] duration-300 group-hover:bg-canvas/15 group-hover:backdrop-blur-md group-focus-within:bg-canvas/15 group-focus-within:backdrop-blur-md ${isNav ? "-bottom-[calc(20%+1.75rem)] pb-4" : "-bottom-[15%]"}`}
-              >
-                {isNav ? (
-                  <span className="type-label text-[1rem] leading-none text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
-                    → {object.label}
-                  </span>
-                ) : null}
-              </div>
-              <div
-                className="relative z-10"
-                style={{ aspectRatio: String(object.aspect) }}
-              >
-                <Image
-                  src={object.src}
-                  alt={object.alt}
-                  fill
-                  sizes={OBJECT_SIZES}
-                  priority={isNav}
-                  draggable={false}
-                  className="object-contain"
-                />
-              </div>
-            </div>
-          );
 
           return (
             <div
@@ -355,24 +290,47 @@ export function DriftingHero() {
               }}
               onPointerMove={handlePointerMove(index)}
               onPointerLeave={handlePointerLeave(index)}
-              aria-hidden={isNav ? undefined : "true"}
+              aria-hidden="true"
               className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
               }}
             >
-              {isNav ? (
-                <Link
-                  href={object.href!}
-                  className="block"
-                  aria-label={`${object.label} — view Josh's ${object.label!.toLowerCase()} page`}
+              {/* A clean cut-out at rest; on hover/focus a frosted glass
+                  card fades in around it (generous padding, no border —
+                  Josh wants a soft blur, not a boxed outline), and the
+                  object lifts above its neighbours via the z-index bump
+                  on the wrapper. */}
+              <div
+                ref={(node) => {
+                  plateRefs.current[index] = node;
+                }}
+                className="relative transition-[scale_500ms_var(--ease-drift),rotate_150ms_ease-out] group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
+              >
+                <div
+                  aria-hidden="true"
+                  // bg/blur stay off until hover. No border — Josh wants a
+                  // soft frosted blur, not a boxed outline, around the
+                  // object. Colourless frost, matching the nav's
+                  // bg-canvas/15 treatment.
+                  className="pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] -bottom-[15%] rounded-[1.75rem] transition-[background-color] duration-300 group-hover:bg-canvas/15 group-hover:backdrop-blur-md group-focus-within:bg-canvas/15 group-focus-within:backdrop-blur-md"
+                />
+                <div
+                  className="relative z-10"
+                  style={{ aspectRatio: String(object.aspect) }}
                 >
-                  {plate}
-                </Link>
-              ) : (
-                plate
-              )}
+                  <Image
+                    src={object.src}
+                    alt={object.alt}
+                    fill
+                    sizes={OBJECT_SIZES}
+                    priority
+                    draggable={false}
+                    className="object-contain"
+                  />
+                </div>
+              </div>
             </div>
           );
         })}
