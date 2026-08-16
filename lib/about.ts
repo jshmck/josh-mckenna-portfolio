@@ -95,6 +95,12 @@ export const features: FeatureItem[] = [
       "Placeholder write-up — swap in the real caption once Josh sends it over.",
     alt: "Photo placeholder — Bombay Sapphire feature",
   },
+  {
+    title: "Feature — Bombay Sapphire",
+    description:
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    alt: "Photo placeholder — Bombay Sapphire feature 2",
+  },
 ];
 
 /**
