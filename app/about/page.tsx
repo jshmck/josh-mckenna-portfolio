@@ -42,6 +42,29 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Press — short third-party credibility, right after the intro
+          paragraph rather than after the heavier Talks & Features grid;
+          eases from personal copy into a bigger visual section instead of
+          jumping straight there. */}
+      <section>
+        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+          <ul className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
+            {pressQuotes.map((press, index) => (
+              <li key={press.source}>
+                <Reveal delay={index * 60}>
+                  <blockquote className="font-body text-[15px] text-ink">
+                    &ldquo;{press.quote}&rdquo;
+                  </blockquote>
+                  <p className="type-label mt-4 text-ink-muted">
+                    {press.source}
+                  </p>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* Talks & features — one merged list now, not a compact text list
           plus a separate rich-card version of the same events. Real event
           names, placeholder photos/video and captions until Josh sends the
@@ -63,26 +86,6 @@ export default function AboutPage() {
                   </h3>
                   <p className="type-lede mt-1 text-ink-muted">
                     {feature.description}
-                  </p>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* Press */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
-          <ul className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
-            {pressQuotes.map((press, index) => (
-              <li key={press.source}>
-                <Reveal delay={index * 60}>
-                  <blockquote className="font-body text-[15px] text-ink">
-                    &ldquo;{press.quote}&rdquo;
-                  </blockquote>
-                  <p className="type-label mt-4 text-ink-muted">
-                    {press.source}
                   </p>
                 </Reveal>
               </li>
