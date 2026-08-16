@@ -47,6 +47,13 @@ export default async function ProjectPage({
     { label: "Deliverables", value: project.deliverables },
   ];
 
+  /* Same brand quirk as WORk/INfO — one lowercase letter, same cap-height
+     in Waldeck, everything else caps. Display-only, and only this project:
+     project.title itself stays "L.A. Pride" for the breadcrumb, gallery
+     card and metadata. */
+  const displayTitle =
+    project.slug === "la-pride" ? "L.A. PRIDe" : project.title;
+
   return (
     <article>
       {/* Title block — washed in the project's own accent colour. */}
@@ -64,7 +71,7 @@ export default async function ProjectPage({
           </p>
 
           <h1 className="type-display mt-6 max-w-4xl text-ink">
-            {project.title}
+            {displayTitle}
           </h1>
 
           <dl className="mt-8 flex flex-wrap gap-x-16 gap-y-6">
