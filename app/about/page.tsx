@@ -79,7 +79,9 @@ export default function AboutPage() {
           pattern Plate uses everywhere else on the site). */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
-          <h2 className="type-heading text-ink">Talks &amp; Features</h2>
+          <h2 className="type-title font-medium text-accent">
+            Talks &amp; Features
+          </h2>
           <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
               <li key={feature.alt}>
@@ -105,7 +107,9 @@ export default function AboutPage() {
           section title on the site. */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
-          <h2 className="type-heading text-ink">Selected Clients</h2>
+          <h2 className="type-title font-medium text-accent">
+            Selected Clients
+          </h2>
           <div className="mt-12">
             <ClientLogos />
           </div>
