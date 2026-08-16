@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 /**
@@ -9,13 +10,11 @@ import { useEffect, useRef } from "react";
  * gravity around the centre and never crowds the text. Nearby objects still
  * lean away from the cursor.
  *
- * All six are purely decorative (`aria-hidden`) — none of them double as
- * navigation; the site nav already covers Work/Info/Shop/Contact. On
- * hover/focus, instead of a frosted rounded-rect card, a thick coloured
- * stroke traces the illustration's own silhouette — see the SVG filter
- * below (`HERO_STROKE_FILTER_ID`), which dilates the cut-out's alpha shape
- * outward and keeps only the newly-grown ring, so the highlight matches the
- * object's actual outline rather than a generic bounding box.
+ * Four of the six are real navigation — Work · Shop · Info · Contact,
+ * matching the site nav exactly — and render as links with visible focus
+ * and a destination label. The other two are decoration, hidden from
+ * assistive tech entirely — but every object gets the same hover/focus
+ * treatment: a subtle lift and a frosted-blue glass card.
  *
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
@@ -25,8 +24,12 @@ const rad = (deg: number) => (deg * Math.PI) / 180;
 
 type DriftObject = {
   id: string;
+  kind: "nav" | "ambient";
+  /** Nav only — the destination label and route. */
+  label?: string;
+  href?: string;
   src: string;
-  /** Empty — every object is decorative (aria-hidden). */
+  /** Empty for decoration (aria-hidden) and nav (the link is labelled). */
   alt: string;
   /** Fraction of container width. */
   width: number;
@@ -43,7 +46,8 @@ type DriftObject = {
 
 const OBJECTS: DriftObject[] = [
   {
-    id: "obj-1",
+    id: "ambient-1",
+    kind: "ambient",
     src: "/illustrations/objects/face.png",
     alt: "",
     width: 0.185,
@@ -54,7 +58,10 @@ const OBJECTS: DriftObject[] = [
     spin: rad(5),
   },
   {
-    id: "obj-2",
+    id: "work",
+    kind: "nav",
+    label: "Work",
+    href: "/work",
     src: "/illustrations/objects/car.png",
     alt: "",
     width: 0.3,
@@ -65,7 +72,10 @@ const OBJECTS: DriftObject[] = [
     spin: rad(-4.5),
   },
   {
-    id: "obj-3",
+    id: "info",
+    kind: "nav",
+    label: "Info",
+    href: "/about",
     src: "/illustrations/objects/bearded.png",
     alt: "",
     width: 0.19,
@@ -76,7 +86,10 @@ const OBJECTS: DriftObject[] = [
     spin: rad(5.5),
   },
   {
-    id: "obj-4",
+    id: "shop",
+    kind: "nav",
+    label: "Shop",
+    href: "/shop",
     src: "/illustrations/objects/hand.png",
     alt: "",
     width: 0.145,
@@ -87,7 +100,10 @@ const OBJECTS: DriftObject[] = [
     spin: rad(-6.5),
   },
   {
-    id: "obj-5",
+    id: "contact",
+    kind: "nav",
+    label: "Contact",
+    href: "/contact",
     src: "/illustrations/objects/flowers.png",
     alt: "",
     width: 0.175,
@@ -98,7 +114,8 @@ const OBJECTS: DriftObject[] = [
     spin: rad(6),
   },
   {
-    id: "obj-6",
+    id: "ambient-6",
+    kind: "ambient",
     src: "/illustrations/objects/car-pink.png",
     alt: "",
     width: 0.36,
@@ -138,11 +155,6 @@ function orbitPosition(o: {
 
 /** Maximum tilt at the object's own edge, degrees. Scales down toward 0 at centre. */
 const MAX_TILT = 8;
-
-/** How far the hover stroke dilates outward from the cut-out's own alpha
- *  edge, in CSS px — "thick" per Josh's brief, not a hairline. */
-const STROKE_RADIUS = 8;
-const HERO_STROKE_FILTER_ID = "hero-object-stroke";
 
 export function DriftingHero() {
   const frameRef = useRef<HTMLDivElement>(null);
@@ -270,34 +282,6 @@ export function DriftingHero() {
 
   return (
     <section className="relative">
-      {/* Shared filter def — dilates a cut-out's own alpha shape outward by
-          STROKE_RADIUS and keeps only the newly-grown ring (feComposite
-          "out" against the un-dilated alpha), so the result is a stroke
-          that traces the illustration's silhouette rather than a filled
-          blob or a generic rounded-rect card. Referenced via `filter:
-          url(#hero-object-stroke)` on each object's stroke layer below. */}
-      <svg aria-hidden="true" className="absolute h-0 w-0" focusable="false">
-        <defs>
-          <filter
-            id={HERO_STROKE_FILTER_ID}
-            x="-30%"
-            y="-30%"
-            width="160%"
-            height="160%"
-          >
-            <feMorphology
-              in="SourceAlpha"
-              operator="dilate"
-              radius={STROKE_RADIUS}
-              result="dilated"
-            />
-            <feComposite in="dilated" in2="SourceAlpha" operator="out" result="ring" />
-            <feFlood floodColor="var(--color-brand)" result="colour" />
-            <feComposite in="colour" in2="ring" operator="in" />
-          </filter>
-        </defs>
-      </svg>
-
       <div
         ref={frameRef}
         // `container-type: size` gives the objects cqw/cqh units, so their
@@ -306,7 +290,7 @@ export function DriftingHero() {
         className="relative mx-auto h-[min(88vh,880px)] max-w-frame [container-type:size]"
       >
         {/* Name lockup. Objects orbit BEHIND it and only pull in front on
-            hover. Ignores the pointer so it never blocks anything. */}
+            hover. Ignores the pointer so it never blocks a link. */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
           <h1 className="type-display leading-[0.95] text-brand">
             <span className="block">jOSH</span>
@@ -315,44 +299,51 @@ export function DriftingHero() {
         </div>
 
         {OBJECTS.map((object, index) => {
+          const isNav = object.kind === "nav";
           const height = object.width / object.aspect;
           const seed = orbitPosition({ ...object, height });
 
-          // A clean cut-out at rest; on hover/focus a stroke shaped like
-          // the illustration itself fades in behind it (see the shared
-          // filter above), and the object lifts in front of the wordmark
-          // via the z-index bump on the wrapper.
+          // A clean cut-out at rest; on hover/focus a frosted glass card
+          // fades in around it (with generous padding), the destination label
+          // appears below with room from the border, and the object lifts in
+          // front of the wordmark via the z-index bump on the wrapper.
           const plate = (
             <div
               ref={(node) => {
                 plateRefs.current[index] = node;
               }}
               className="relative transition-[scale_500ms_var(--ease-drift),rotate_150ms_ease-out] group-hover:scale-[1.03] group-focus-within:scale-[1.03]"
-              style={{ aspectRatio: String(object.aspect) }}
             >
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100"
-                style={{ filter: `url(#${HERO_STROKE_FILTER_ID})` }}
+                // bg/blur stay off until hover. No border — Josh wants a
+                // soft frosted blur, not a boxed outline, around the object.
+                // Colourless frost, matching the nav's bg-canvas/15 treatment.
+                // Nav objects get extra room below for the destination
+                // label; ambient objects have no label, so their card stays
+                // centred on the illustration instead of bottom-heavy.
+                className={`pointer-events-none absolute -left-[15%] -right-[15%] -top-[15%] flex flex-col items-center justify-end rounded-[1.75rem] transition-[background-color] duration-300 group-hover:bg-canvas/15 group-hover:backdrop-blur-md group-focus-within:bg-canvas/15 group-focus-within:backdrop-blur-md ${isNav ? "-bottom-[calc(20%+1.75rem)] pb-4" : "-bottom-[15%]"}`}
+              >
+                {isNav ? (
+                  <span className="type-label text-[1rem] leading-none text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+                    → {object.label}
+                  </span>
+                ) : null}
+              </div>
+              <div
+                className="relative z-10"
+                style={{ aspectRatio: String(object.aspect) }}
               >
                 <Image
                   src={object.src}
-                  alt=""
+                  alt={object.alt}
                   fill
                   sizes={OBJECT_SIZES}
+                  priority={isNav}
                   draggable={false}
                   className="object-contain"
                 />
               </div>
-              <Image
-                src={object.src}
-                alt={object.alt}
-                fill
-                sizes={OBJECT_SIZES}
-                priority
-                draggable={false}
-                className="relative z-10 object-contain"
-              />
             </div>
           );
 
@@ -364,14 +355,24 @@ export function DriftingHero() {
               }}
               onPointerMove={handlePointerMove(index)}
               onPointerLeave={handlePointerLeave(index)}
-              aria-hidden="true"
+              aria-hidden={isNav ? undefined : "true"}
               className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
               }}
             >
-              {plate}
+              {isNav ? (
+                <Link
+                  href={object.href!}
+                  className="block"
+                  aria-label={`${object.label} — view Josh's ${object.label!.toLowerCase()} page`}
+                >
+                  {plate}
+                </Link>
+              ) : (
+                plate
+              )}
             </div>
           );
         })}
