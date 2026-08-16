@@ -17,7 +17,7 @@ export default function HomePage() {
 
       {/* Who Josh is */}
       <section>
-        <div className="mx-auto grid max-w-frame gap-16 px-6 pb-32 pt-16 md:grid-cols-2 md:items-center md:px-gutter">
+        <div className="mx-auto grid max-w-frame gap-16 px-6 pb-16 pt-16 md:grid-cols-2 md:items-center md:px-gutter">
           <Reveal>
             <h2 className="type-heading text-ink">
               London-based illustrator working across character design, LGBTQ+
@@ -60,7 +60,7 @@ export default function HomePage() {
           Nav's scroll-spy reads to hand the active highlight from Home to
           Work — see components/site/nav.tsx. */}
       <section id="home-work">
-        <div className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 pb-32 pt-4 md:px-gutter">
           <h2 className="type-display text-accent">WORK</h2>
           <div className="mt-12">
             <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
