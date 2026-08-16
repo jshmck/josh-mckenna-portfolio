@@ -102,7 +102,7 @@ These are specified in the wireframe annotations, not invented. Preserve them:
 
 | Where            | Contract                                                                 |
 | ---------------- | ------------------------------------------------------------------------ |
-| Hero objects     | Bounce physics — roam the frame, bounce off the edges, gentle pull back toward centre, repel each other so they don't pile up |
+| Hero objects     | Drift on independent vectors, reverse at the bounds, never pause          |
 | Hero cursor      | Nearby objects lean away with linear falloff; hover scales 1.06           |
 | Hero semantics   | 3 of 6 objects are real navigation; the other 3 are `aria-hidden`         |
 | Signature illo   | Trails scroll at 0.85×                                                   |
