@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 /**
  * Only Talks & Features and Selected Clients get titles — Press doesn't,
  * its quote-plus-attribution format already reads as press on its own.
- * Titles use type-title + text-accent, the same Waldeck-caps treatment as
- * every other section title on the site (see the `--color-accent` hard
- * rule in CLAUDE.md).
+ * Titles use type-heading + text-ink, matching the homepage "WHO" section
+ * heading rather than the purple Waldeck section-title treatment used
+ * elsewhere (WORK, INFO).
  */
 export default function AboutPage() {
   return (
@@ -50,9 +50,7 @@ export default function AboutPage() {
           pattern Plate uses everywhere else on the site). */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
-          {/* "AND" spelled out, not "&" — Waldeck's ampersand glyph isn't
-              usable yet, revisit once Josh sorts that out. */}
-          <h2 className="type-title text-accent">TALKS AND FEATURES</h2>
+          <h2 className="type-heading text-ink">TALKS AND FEATURES</h2>
           <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
               <li key={feature.alt}>
@@ -78,7 +76,7 @@ export default function AboutPage() {
           other section title on the site. */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
-          <h2 className="type-title text-accent">SELECTED CLIENTS</h2>
+          <h2 className="type-heading text-ink">SELECTED CLIENTS</h2>
           <p className="font-body mt-6 max-w-2xl text-[15px] text-ink-muted">
             {clients.join(", ")}
           </p>
