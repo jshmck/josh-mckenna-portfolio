@@ -14,11 +14,15 @@ export default function WorkPage() {
   const projects = getAllProjects();
 
   return (
-    <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
+    <div className="mx-auto max-w-frame px-6 pb-20 pt-12 md:px-gutter">
       {/* No visible title — Josh wants the gallery to be the page, not a
           labelled section. A screen-reader-only h1 keeps the page's
           heading structure intact; the browser tab title still says
-          "Work" via metadata above. */}
+          "Work" via metadata above. Top padding matches the chip-row's
+          own mt-12 to the thumbnail grid below (WorkGallery), so the
+          filter chips sit dead centre between the nav bar and the
+          thumbnails instead of in the leftover gap where the title used
+          to anchor that space. */}
       <h1 className="sr-only">Work</h1>
 
       {/* Every category shows as a chip, even ones with no work yet
