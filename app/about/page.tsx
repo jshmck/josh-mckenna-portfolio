@@ -12,13 +12,6 @@ export const metadata: Metadata = {
     "Ten years of drawing for magazines, record sleeves, cereal boxes and one negotiable tattoo.",
 };
 
-const PHOTOS = [
-  { ratio: "3/4" as const, alt: "Josh in the studio" },
-  { ratio: "3/4" as const, alt: "Work in progress on the desk" },
-  { ratio: "3/4" as const, alt: "Painting the Brixton wall" },
-  { ratio: "3/4" as const, alt: "Ink tests" },
-];
-
 /**
  * Deliberately no section titles on this page — Josh wants it clean.
  * Each block's own format carries what it is (a comma-separated name list
@@ -35,34 +28,18 @@ export default function AboutPage() {
         </div>
       </header>
 
-      {/* The person */}
+      {/* The person — one short paragraph, no photos. */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
           <Reveal className="max-w-2xl">
             <p className="type-lede text-ink-muted">
-              He studied illustration in Bristol, moved to London for a job he
-              left after eight months, and has been freelance since 2019. He
-              draws by hand first, every time, and colours flat.
-            </p>
-            <p className="type-lede mt-5 text-ink-muted">
-              He works out of a shared studio in Peckham, takes on roughly
-              twenty commissions a year, and is unreasonably competitive about
+              He studied illustration in Bristol, has been freelance since
+              2019, and works out of a shared studio in Peckham — drawing by
+              hand first, every time, and colouring flat. Roughly twenty
+              commissions a year, and unreasonably competitive about
               five-a-side.
             </p>
           </Reveal>
-
-          <ul className="mt-14 grid grid-cols-2 gap-6 md:grid-cols-4">
-            {PHOTOS.map((photo, index) => (
-              <li key={photo.alt}>
-                <Reveal delay={index * 80}>
-                  <Plate
-                    image={photo}
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                  />
-                </Reveal>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
