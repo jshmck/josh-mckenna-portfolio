@@ -5,7 +5,7 @@ import { CtaBand } from "@/components/site/cta-band";
 import { Marquee } from "@/components/site/marquee";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
-import { clients, timeline } from "@/lib/about";
+import { pressQuotes, timeline } from "@/lib/about";
 
 export const metadata: Metadata = {
   title: "About",
@@ -91,21 +91,24 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Clients — a typographic logo wall. No traced brand marks (accuracy
-          risk with real trademarks); each name reads as a bold black
-          wordmark instead, in the footer's monochrome spirit. */}
+      {/* Press — the footer already carries the client list and the talks
+          list on every page including this one, so this section is
+          deliberately not another list: real quoted excerpts instead,
+          the one thing the footer doesn't show. */}
       <section>
         <div className="mx-auto max-w-frame px-6 py-16 md:px-gutter">
-          <h2 className="type-heading text-ink">
-            Selected clients &amp; publications
-          </h2>
-          <ul className="mt-12 grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-3 md:grid-cols-4">
-            {clients.map((client) => (
-              <li
-                key={client}
-                className="font-body text-xl font-bold tracking-tight text-ink"
-              >
-                {client}
+          <h2 className="type-heading text-ink">Selected press</h2>
+          <ul className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
+            {pressQuotes.map((press, index) => (
+              <li key={press.source}>
+                <Reveal delay={index * 60}>
+                  <blockquote className="font-body text-[15px] text-ink">
+                    &ldquo;{press.quote}&rdquo;
+                  </blockquote>
+                  <p className="type-label mt-4 text-ink-muted">
+                    — {press.source}
+                  </p>
+                </Reveal>
               </li>
             ))}
           </ul>

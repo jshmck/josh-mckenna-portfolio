@@ -31,6 +31,44 @@ export const clients: string[] = [
   "Mr Porter",
 ];
 
+export type PressQuote = {
+  quote: string;
+  source: string;
+};
+
+/** Real press excerpts — About page's pull-quote section. */
+export const pressQuotes: PressQuote[] = [
+  {
+    quote:
+      "Devoted Instagram users will no doubt recognise the sassy red-heeled character in the mural, which appeared in the Pride-themed Stories sticker pack Instagram released in May.",
+    source: "Vogue Magazine",
+  },
+  {
+    quote:
+      "His work has become an intrinsic part of our lives on social media, which has now filtered out into the real world in the form of celebratory posters, floats, and artworks.",
+    source: "Gestalten (2019)",
+  },
+  {
+    quote:
+      "Josh McKenna's celebratory illustrations of 'what it's like to be gay' for Pride have been one of the most shareable hits of 2017.",
+    source: "It's Nice That (2017)",
+  },
+  {
+    quote:
+      "Josh McKenna is a final year Illustration student at Falmouth University who's not only including waves in his work but making waves on the UK design scene.",
+    source: "Creative Boom",
+  },
+  {
+    quote:
+      "East London-based designer and illustrator Josh McKenna wooed us with his lucid, playful pastel visions which feel at once retro and contemporary, minimal yet full of life.",
+    source: "Crack Magazine",
+  },
+  {
+    quote: "Josh McKenna is making waves in Cornwall with his tropical work.",
+    source: "It's Nice That (2014)",
+  },
+];
+
 /**
  * The four states of the pinned "decomposing illustration" sequence.
  * Progress is a 0–1 fraction of the way through the pinned section.
