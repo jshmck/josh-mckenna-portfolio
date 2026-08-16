@@ -86,7 +86,7 @@ export function EnquiryForm() {
   if (sent) {
     return (
       <div className="rounded-3xl border border-hairline p-8">
-        <h2 className="type-heading text-ink">Nearly there.</h2>
+        <h2 className="type-title font-medium text-accent">NEARLY THERE</h2>
         <p className="type-lede mt-4 text-ink-muted">
           Your mail client should have opened with the enquiry ready to go —
           hit send and Josh will come back to you within a few days. If nothing
@@ -109,7 +109,9 @@ export function EnquiryForm() {
       noValidate
       className="rounded-3xl border border-hairline p-6 md:p-8"
     >
-      <h2 className="type-heading text-ink">Start a commission</h2>
+      <h2 className="type-title font-medium text-accent">
+        START A COMMISSION
+      </h2>
 
       <div className="mt-8 space-y-6">
         <div>

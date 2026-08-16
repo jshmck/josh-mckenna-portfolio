@@ -27,7 +27,7 @@ export default function ContactPage() {
   return (
     <div className="mx-auto grid max-w-frame gap-14 px-6 py-20 md:grid-cols-2 md:px-gutter">
       <div>
-        <h1 className="type-heading text-ink">Say hello.</h1>
+        <h1 className="type-title font-medium text-accent">SAY HELLO</h1>
         <p className="type-lede mt-5 max-w-md text-ink-muted">
           Commissions, collaborations, editorial deadlines and unsolicited
           opinions about typefaces — all welcome. Josh replies to everything,
