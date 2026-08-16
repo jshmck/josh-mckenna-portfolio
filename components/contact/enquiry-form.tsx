@@ -109,9 +109,7 @@ export function EnquiryForm() {
       noValidate
       className="rounded-3xl border border-hairline p-6 md:p-8"
     >
-      <h2 className="type-title font-medium text-accent">
-        START A COMMISSION
-      </h2>
+      <h2 className="type-title font-medium text-accent">SAY HELLO</h2>
 
       <div className="mt-8 space-y-6">
         <div>
