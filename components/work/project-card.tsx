@@ -73,7 +73,7 @@ export function ProjectCard({
           aria-hidden="true"
           className={`pointer-events-none absolute inset-0 flex items-center justify-center ${GALLERY_RADIUS} p-4 text-center transition-[background-color] duration-300 group-hover:bg-canvas/85 group-focus-within:bg-canvas/85`}
         >
-          <span className="font-body text-base font-medium uppercase leading-none tracking-[0.02em] text-ink opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+          <span className="type-label leading-none text-ink opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
             {project.title}
           </span>
         </div>
