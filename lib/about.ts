@@ -54,16 +54,22 @@ export type FeatureItem = {
  */
 export const features: FeatureItem[] = [
   {
+    title: "Speaker — Config 2026",
+    description:
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    alt: "Photo placeholder — Config 2026 talk",
+  },
+  {
+    title: "A Minute With — Josh McKenna",
+    description:
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    alt: "Video placeholder — A Minute With interview",
+  },
+  {
     title: "Book Feature — Gestalten",
     description:
       "Placeholder write-up — swap in the real caption once Josh sends it over.",
     alt: "Photo placeholder — Gestalten book feature",
-  },
-  {
-    title: "Speaker — Nicer Tuesdays 2017",
-    description:
-      "Placeholder write-up — swap in the real caption once Josh sends it over.",
-    alt: "Video placeholder — Nicer Tuesdays talk",
   },
   {
     title: "Workshop — Apple",
@@ -72,16 +78,16 @@ export const features: FeatureItem[] = [
     alt: "Photo placeholder — Apple workshop",
   },
   {
-    title: "Speaker — Config 2026",
+    title: "Speaker — Nicer Tuesdays 2017",
     description:
       "Placeholder write-up — swap in the real caption once Josh sends it over.",
-    alt: "Photo placeholder — Config talk, on stage",
+    alt: "Video placeholder — Nicer Tuesdays talk",
   },
   {
-    title: "Speaker — Config 2026",
+    title: "Feature — Bombay Sapphire",
     description:
       "Placeholder write-up — swap in the real caption once Josh sends it over.",
-    alt: "Photo placeholder — Config talk, audience",
+    alt: "Photo placeholder — Bombay Sapphire feature",
   },
 ];
 
