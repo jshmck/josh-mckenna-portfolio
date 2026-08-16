@@ -36,8 +36,6 @@ export const siteConfig = {
     handle: "@jshmck",
     url: "https://www.threads.com/@jshmck",
   },
-  /** Empty string renders the field as "—" on the contact page. */
-  representation: "",
   /** Used for absolute OG image + canonical URLs. */
   url: "https://joshmckenna.com",
 } as const;
@@ -53,8 +51,8 @@ export const navLinks: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-/** "Selected Talks and Features" — footer, newest/most notable first. */
-export const footerTalks: string[] = [
+/** "Selected Talks and Features" — Info page, newest/most notable first. */
+export const talksAndFeatures: string[] = [
   "Application Accepted - SXSW 2027",
   "Speaker - Config 2026",
   "Book Feature - Gestalten",

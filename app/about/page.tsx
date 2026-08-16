@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 
-import { DecomposeSequence } from "@/components/about/decompose-sequence";
 import { CtaBand } from "@/components/site/cta-band";
 import { Footer } from "@/components/site/footer";
-import { Marquee } from "@/components/site/marquee";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
-import { features, pressQuotes } from "@/lib/about";
+import { clients, features, pressQuotes } from "@/lib/about";
+import { talksAndFeatures } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Info",
@@ -62,8 +61,37 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Talks & features — the rich version of the footer's compact talks
-          list, with a media slot and write-up per event. Real event names,
+      {/* Clients + the compact talks list — moved here from the old
+          sitewide footer, same text size/format, just living in the page
+          body instead of a footer now. */}
+      <section>
+        <div className="mx-auto grid max-w-frame gap-10 px-6 pb-16 md:grid-cols-2 md:gap-12 md:px-gutter">
+          <div>
+            <p className="font-body text-[15px] font-bold text-ink">
+              Selected Clients
+            </p>
+            <p className="font-body mt-6 text-[15px] text-ink-muted">
+              {clients.join(", ")}
+            </p>
+          </div>
+
+          <div>
+            <p className="font-body text-[15px] font-bold text-ink">
+              Selected Talks and Features
+            </p>
+            <ul className="mt-6 space-y-1">
+              {talksAndFeatures.map((talk) => (
+                <li key={talk} className="font-body text-[15px] text-ink-muted">
+                  {talk}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Talks & features — the rich version of the compact talks list
+          above, with a media slot and write-up per event. Real event names,
           placeholder photos/video and captions until Josh sends the real
           assets over (same "visible until real content lands" pattern
           Plate uses everywhere else on the site). */}
@@ -91,10 +119,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Press — the footer below already carries the client list and the
-          talks list, so this section is deliberately not another list:
-          real quoted excerpts instead, the one thing the footer doesn't
-          show. */}
+      {/* Press — the section above already carries the client list and the
+          talks list, so this one is deliberately not another list: real
+          quoted excerpts instead, the one thing neither of those show. */}
       <section>
         <div className="mx-auto max-w-frame px-6 py-16 md:px-gutter">
           <h2 className="type-heading text-ink">Selected press</h2>
@@ -115,12 +142,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Scroll sequence — kept, not deleted; moved to the bottom for now.
-          Josh wants to reuse this elsewhere, so it stays intact rather
-          than being torn out. */}
-      <DecomposeSequence />
-
-      <Marquee />
+      {/* DecomposeSequence (components/about/decompose-sequence.tsx) and
+          Marquee (components/site/marquee.tsx) are deliberately not
+          rendered here — Josh wants both off this page for now but plans
+          to reuse them elsewhere, so neither component was deleted, just
+          unhooked from this page. */}
 
       <CtaBand heading="Want him to draw something?" action="Get in touch" />
 
