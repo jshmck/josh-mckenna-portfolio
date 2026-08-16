@@ -1,20 +1,6 @@
 /** Content for the About page. Kept beside the site config so Josh can edit
  *  copy without opening a component. */
 
-export type TimelineEntry = {
-  year: number;
-  event: string;
-};
-
-/** "How he got here" — newest first, as in the wireframe. */
-export const timeline: TimelineEntry[] = [
-  { year: 2026, event: "Cover for L.A. Pride, printed 2m wide on the main gate" },
-  { year: 2024, event: "First picture-book series with Walker Books" },
-  { year: 2021, event: "First solo show — Peckham Levels" },
-  { year: 2019, event: "Went freelance" },
-  { year: 2016, event: "Graduated — BA Illustration" },
-];
-
 /** Shared with the footer's "Selected Clients" list — one source, both places. */
 export const clients: string[] = [
   "Apple",
@@ -41,7 +27,7 @@ export const pressQuotes: PressQuote[] = [
   {
     quote:
       "Devoted Instagram users will no doubt recognise the sassy red-heeled character in the mural, which appeared in the Pride-themed Stories sticker pack Instagram released in May.",
-    source: "Vogue Magazine",
+    source: "Vogue Magazine (2017)",
   },
   {
     quote:
@@ -52,20 +38,6 @@ export const pressQuotes: PressQuote[] = [
     quote:
       "Josh McKenna's celebratory illustrations of 'what it's like to be gay' for Pride have been one of the most shareable hits of 2017.",
     source: "It's Nice That (2017)",
-  },
-  {
-    quote:
-      "Josh McKenna is a final year Illustration student at Falmouth University who's not only including waves in his work but making waves on the UK design scene.",
-    source: "Creative Boom",
-  },
-  {
-    quote:
-      "East London-based designer and illustrator Josh McKenna wooed us with his lucid, playful pastel visions which feel at once retro and contemporary, minimal yet full of life.",
-    source: "Crack Magazine",
-  },
-  {
-    quote: "Josh McKenna is making waves in Cornwall with his tropical work.",
-    source: "It's Nice That (2014)",
   },
 ];
 
@@ -103,7 +75,13 @@ export const features: FeatureItem[] = [
     title: "Speaker — Config 2026",
     description:
       "Placeholder write-up — swap in the real caption once Josh sends it over.",
-    alt: "Photo placeholder — Config talk",
+    alt: "Photo placeholder — Config talk, on stage",
+  },
+  {
+    title: "Speaker — Config 2026",
+    description:
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    alt: "Photo placeholder — Config talk, audience",
   },
 ];
 

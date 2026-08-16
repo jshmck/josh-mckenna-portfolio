@@ -5,7 +5,7 @@ import { CtaBand } from "@/components/site/cta-band";
 import { Marquee } from "@/components/site/marquee";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
-import { features, pressQuotes, timeline } from "@/lib/about";
+import { features, pressQuotes } from "@/lib/about";
 
 export const metadata: Metadata = {
   title: "About",
@@ -67,30 +67,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* How he got here */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
-          <h2 className="type-heading text-ink">How he got here</h2>
-
-          <ol className="mt-12">
-            {timeline.map((entry, index) => (
-              <li key={entry.year}>
-                <Reveal delay={index * 60}>
-                  <div className="flex flex-wrap items-baseline gap-x-10 gap-y-1 py-6">
-                    <p className="type-label w-14 shrink-0 text-accent">
-                      {entry.year}
-                    </p>
-                    <p className="font-body text-[15px] font-medium text-ink">
-                      {entry.event}
-                    </p>
-                  </div>
-                </Reveal>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       {/* Press — the footer already carries the client list and the talks
           list on every page including this one, so this section is
           deliberately not another list: real quoted excerpts instead,
@@ -106,7 +82,7 @@ export default function AboutPage() {
                     &ldquo;{press.quote}&rdquo;
                   </blockquote>
                   <p className="type-label mt-4 text-ink-muted">
-                    — {press.source}
+                    {press.source}
                   </p>
                 </Reveal>
               </li>
@@ -125,7 +101,7 @@ export default function AboutPage() {
           <h2 className="type-heading text-ink">Selected talks &amp; features</h2>
           <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
-              <li key={feature.title}>
+              <li key={feature.alt}>
                 <Reveal delay={index * 80}>
                   <Plate
                     image={{ ratio: "16/10", alt: feature.alt }}
