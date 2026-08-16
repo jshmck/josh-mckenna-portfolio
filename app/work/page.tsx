@@ -15,15 +15,15 @@ export default function WorkPage() {
 
   return (
     <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
-      <header>
-        <h1 className="type-display text-accent">WORk</h1>
-      </header>
+      {/* No visible title — Josh wants the gallery to be the page, not a
+          labelled section. A screen-reader-only h1 keeps the page's
+          heading structure intact; the browser tab title still says
+          "Work" via metadata above. */}
+      <h1 className="sr-only">Work</h1>
 
-      <div className="mt-12">
-        {/* Every category shows as a chip, even ones with no work yet
-            (3D) — Josh wants the full set visible, not just active ones. */}
-        <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
-      </div>
+      {/* Every category shows as a chip, even ones with no work yet
+          (3D) — Josh wants the full set visible, not just active ones. */}
+      <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
 
       <BackToTop />
     </div>

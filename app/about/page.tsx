@@ -13,24 +13,22 @@ export const metadata: Metadata = {
 };
 
 /**
- * Only Talks & Features and Selected Clients get titles — Press doesn't,
- * its quote-plus-attribution format already reads as press on its own.
- * Titles use type-heading + text-ink, matching the homepage "WHO" section
- * heading rather than the purple Waldeck section-title treatment used
- * elsewhere (WORK, INFO).
+ * No visible page title — Josh wants the content to open the page, not a
+ * labelled header. A screen-reader-only h1 keeps the page's heading
+ * structure intact; the browser tab title still says "Info" via metadata
+ * above. Only Talks & Features and Selected Clients get visible titles —
+ * Press doesn't, its quote-plus-attribution format already reads as press
+ * on its own. Titles use type-heading + text-ink, matching the homepage
+ * "WHO" section heading.
  */
 export default function AboutPage() {
   return (
     <>
-      <header>
-        <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
-          <h1 className="type-display text-accent">INfO</h1>
-        </div>
-      </header>
+      <h1 className="sr-only">Info</h1>
 
       {/* The person — one short paragraph, no photos. */}
       <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 pb-28 pt-20 md:px-gutter">
           <Reveal className="max-w-2xl">
             <p className="type-lede text-ink-muted">
               He studied illustration in Bristol, has been freelance since
