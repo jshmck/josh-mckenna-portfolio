@@ -48,10 +48,17 @@ export default function AboutPage() {
           jumping straight there. */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+          {/* items-stretch (grid's default) makes each <li> match the row's
+              tallest quote; the Reveal wrapper below fills that height as a
+              flex column so the attribution lands on a shared baseline
+              across the row instead of trailing right under its own quote. */}
           <ul className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
             {pressQuotes.map((press, index) => (
               <li key={press.source}>
-                <Reveal delay={index * 60}>
+                <Reveal
+                  delay={index * 60}
+                  className="flex h-full flex-col justify-between"
+                >
                   <blockquote className="font-body text-[15px] text-ink">
                     &ldquo;{press.quote}&rdquo;
                   </blockquote>
