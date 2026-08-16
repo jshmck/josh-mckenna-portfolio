@@ -18,22 +18,6 @@ import { siteConfig } from "@/lib/site";
  * and the success view all stay as they are.
  */
 
-const PROJECT_TYPES = [
-  "Editorial illustration",
-  "Character design",
-  "Packaging",
-  "Mural",
-  "Something else",
-];
-
-const BUDGET_RANGES = [
-  "Under £1,000",
-  "£1,000 – £3,000",
-  "£3,000 – £10,000",
-  "£10,000+",
-  "Not sure yet",
-];
-
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
 const FIELD =
@@ -50,8 +34,6 @@ export function EnquiryForm() {
     const name = String(data.get("name") ?? "").trim();
     const email = String(data.get("email") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
-    const projectType = String(data.get("projectType") ?? "");
-    const budget = String(data.get("budget") ?? "");
 
     const found: Errors = {};
     if (!name) found.name = "Josh would like to know who you are.";
@@ -65,16 +47,9 @@ export function EnquiryForm() {
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      projectType ? `Project type: ${projectType}` : null,
-      budget ? `Budget: ${budget}` : null,
-      "",
-      message,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    const body = [`Name: ${name}`, `Email: ${email}`, "", message].join(
+      "\n",
+    );
 
     window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
       `Commission enquiry — ${name}`,
@@ -149,36 +124,6 @@ export function EnquiryForm() {
               {errors.email}
             </p>
           )}
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label htmlFor="projectType" className="type-label text-ink-muted">
-              Project type
-            </label>
-            <select id="projectType" name="projectType" className={FIELD}>
-              <option value="">Select…</option>
-              {PROJECT_TYPES.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="budget" className="type-label text-ink-muted">
-              Budget range
-            </label>
-            <select id="budget" name="budget" className={FIELD}>
-              <option value="">Select…</option>
-              {BUDGET_RANGES.map((range) => (
-                <option key={range} value={range}>
-                  {range}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
 
         <div>
