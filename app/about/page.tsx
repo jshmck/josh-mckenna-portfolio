@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { DecomposeSequence } from "@/components/about/decompose-sequence";
 import { CtaBand } from "@/components/site/cta-band";
+import { Footer } from "@/components/site/footer";
 import { Marquee } from "@/components/site/marquee";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
@@ -90,10 +91,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Press — the footer already carries the client list and the talks
-          list on every page including this one, so this section is
-          deliberately not another list: real quoted excerpts instead,
-          the one thing the footer doesn't show. */}
+      {/* Press — the footer below already carries the client list and the
+          talks list, so this section is deliberately not another list:
+          real quoted excerpts instead, the one thing the footer doesn't
+          show. */}
       <section>
         <div className="mx-auto max-w-frame px-6 py-16 md:px-gutter">
           <h2 className="type-heading text-ink">Selected press</h2>
@@ -122,6 +123,10 @@ export default function AboutPage() {
       <Marquee />
 
       <CtaBand heading="Want him to draw something?" action="Get in touch" />
+
+      {/* The footer now lives only here, not on every page — see
+          app/layout.tsx. */}
+      <Footer />
     </>
   );
 }

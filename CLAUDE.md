@@ -72,13 +72,16 @@ Tailwind v4 has **no `tailwind.config.js`**. Tokens live in the `@theme` block i
 ```
 app/
   globals.css          design tokens (@theme) + semantic type utilities
-  layout.tsx           fonts, metadata, nav/footer shell, skip link
+  layout.tsx           fonts, metadata, nav shell, skip link
   page.tsx             home
   work/page.tsx        gallery index
   work/[slug]/page.tsx project template (generateStaticParams)
   about/ contact/ shop/
 components/
-  site/     nav · footer · marquee · cta-band     (chrome, every page)
+  site/     nav · footer · marquee · cta-band     (chrome — nav/marquee/
+                                                     cta-band are every
+                                                     page, footer is Info-
+                                                     page-only, see below)
   ui/       plate · button · reveal · parallax    (primitives)
   home/     drifting-hero                        (page-specific)
   about/    decompose-sequence
@@ -88,8 +91,14 @@ components/
 lib/
   site.ts       nav links, contact details, footer — single source for chrome
   projects.ts   typed project content + access helpers
-  about.ts      timeline, clients, sequence captions
+  about.ts      clients, press quotes, talks & features, sequence captions
 ```
+
+**The footer is deliberately not in `app/layout.tsx`.** Josh asked for it
+off every page except Info — it's rendered directly at the bottom of
+`app/about/page.tsx` instead. Don't move `<Footer />` back into the root
+layout as a "fix"; that would put it back on all six pages, which is the
+opposite of what was asked.
 
 **Read content through the helpers in `lib/projects.ts`** (`getAllProjects`,
 `getProject`, `getFeaturedProjects`, `getProjectNeighbours`), never the

@@ -61,8 +61,9 @@ const socials = [
 
 /**
  * Three-column footer utilities row — about/clients, talks and features,
- * contact. Identical on all six pages per the wireframes. The CTA band
- * above it is page-specific and lives with each page.
+ * contact. Lives only on the Info page now (see app/about/page.tsx), not
+ * in the root layout — Josh wanted it off every other page. The CTA band
+ * above it is page-specific and lives with each page that uses one.
  */
 export function Footer() {
   return (
