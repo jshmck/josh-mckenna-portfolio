@@ -24,7 +24,7 @@ export default function AboutPage() {
     <>
       <header>
         <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
-          <h1 className="type-display text-accent">INFO</h1>
+          <h1 className="type-display text-accent">INfO</h1>
         </div>
       </header>
 
