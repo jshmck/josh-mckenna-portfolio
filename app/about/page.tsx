@@ -5,7 +5,7 @@ import { CtaBand } from "@/components/site/cta-band";
 import { Marquee } from "@/components/site/marquee";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
-import { pressQuotes, timeline } from "@/lib/about";
+import { features, pressQuotes, timeline } from "@/lib/about";
 
 export const metadata: Metadata = {
   title: "About",
@@ -107,6 +107,35 @@ export default function AboutPage() {
                   </blockquote>
                   <p className="type-label mt-4 text-ink-muted">
                     — {press.source}
+                  </p>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Talks & features — the rich version of the footer's compact talks
+          list, with a media slot and write-up per event. Real event names,
+          placeholder photos/video and captions until Josh sends the real
+          assets over (same "visible until real content lands" pattern
+          Plate uses everywhere else on the site). */}
+      <section>
+        <div className="mx-auto max-w-frame px-6 py-16 md:px-gutter">
+          <h2 className="type-heading text-ink">Selected talks &amp; features</h2>
+          <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
+            {features.map((feature, index) => (
+              <li key={feature.title}>
+                <Reveal delay={index * 80}>
+                  <Plate
+                    image={{ ratio: "16/10", alt: feature.alt }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <h3 className="font-body mt-4 text-[15px] font-bold text-ink">
+                    {feature.title}
+                  </h3>
+                  <p className="type-lede mt-1 text-ink-muted">
+                    {feature.description}
                   </p>
                 </Reveal>
               </li>

@@ -69,6 +69,44 @@ export const pressQuotes: PressQuote[] = [
   },
 ];
 
+export type FeatureItem = {
+  title: string;
+  description: string;
+  alt: string;
+};
+
+/**
+ * The rich version of the footer's "Selected Talks and Features" list —
+ * same real events, expanded with a photo/video slot and a write-up.
+ * Placeholder copy and media until Josh sends the real assets over.
+ */
+export const features: FeatureItem[] = [
+  {
+    title: "Book Feature — Gestalten",
+    description:
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    alt: "Photo placeholder — Gestalten book feature",
+  },
+  {
+    title: "Speaker — Nicer Tuesdays 2017",
+    description:
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    alt: "Video placeholder — Nicer Tuesdays talk",
+  },
+  {
+    title: "Workshop — Apple",
+    description:
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    alt: "Photo placeholder — Apple workshop",
+  },
+  {
+    title: "Speaker — Config 2026",
+    description:
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    alt: "Photo placeholder — Config talk",
+  },
+];
+
 /**
  * The four states of the pinned "decomposing illustration" sequence.
  * Progress is a 0–1 fraction of the way through the pinned section.
