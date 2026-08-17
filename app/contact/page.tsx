@@ -75,20 +75,24 @@ export default function ContactPage() {
           ))}
         </ul>
 
-        {/* A transparent PNG, not a framed photo -- goes straight through
-            next/image with object-contain, no Plate frame or background
-            surface, same exception the drifting-hero cut-outs use. Plate
-            always paints a background behind its image slot, which never
-            mattered before since every other real image on the site is an
-            opaque photo. */}
-        <div className="relative mt-8 aspect-[1255/1338] max-w-[280px]">
-          <Image
-            src="/illustrations/last-call.png"
-            alt="A drawing, for the sake of it"
-            fill
-            sizes="(max-width: 768px) 60vw, 20vw"
-            className="object-contain"
-          />
+        {/* max-w-md matches the paragraph above so mx-auto centres the
+            image against the body text's own width, not the whole column. */}
+        <div className="mt-8 max-w-md">
+          {/* A transparent PNG, not a framed photo -- goes straight through
+              next/image with object-contain, no Plate frame or background
+              surface, same exception the drifting-hero cut-outs use. Plate
+              always paints a background behind its image slot, which never
+              mattered before since every other real image on the site is an
+              opaque photo. */}
+          <div className="relative mx-auto aspect-[1255/1338] max-w-[280px]">
+            <Image
+              src="/illustrations/last-call.png"
+              alt="A drawing, for the sake of it"
+              fill
+              sizes="(max-width: 768px) 60vw, 20vw"
+              className="object-contain"
+            />
+          </div>
         </div>
       </div>
 
