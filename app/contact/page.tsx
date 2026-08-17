@@ -25,7 +25,7 @@ const socials = [
 
 export default function ContactPage() {
   return (
-    <div className="mx-auto grid max-w-frame gap-14 px-6 py-20 md:grid-cols-2 md:px-gutter">
+    <div className="mx-auto grid max-w-frame items-start gap-14 px-6 py-20 md:grid-cols-2 md:px-gutter">
       <div>
         {/* No visible title, matching Work/Info -- the nav already shows
             Contact highlighted. A screen-reader-only h1 keeps the page's
