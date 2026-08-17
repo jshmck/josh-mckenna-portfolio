@@ -51,10 +51,10 @@ const CENTRE_Y = 0.19;
 const STICKER_SIZES = "48px";
 
 /** How close the pointer must get before a sticker gets pushed away. */
-const REPEL_RADIUS = 0.2;
-/** Maximum push, as a fraction of container width. Cut hard from 0.045 --
- *  still not gentle enough at that value, wanted a lot less. */
-const REPEL_STRENGTH = 0.015;
+const REPEL_RADIUS = 0.12;
+/** Maximum push, as a fraction of container width. Still too strong at
+ *  0.015 -- cut hard again per "much less". */
+const REPEL_STRENGTH = 0.006;
 
 function orbitPosition(s: { angle: number; rx: number; ry: number; width: number; height: number }) {
   return {
