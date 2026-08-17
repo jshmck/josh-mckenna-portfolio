@@ -81,9 +81,9 @@ export default function ContactPage() {
             always paints a background behind its image slot, which never
             mattered before since every other real image on the site is an
             opaque photo. */}
-        <div className="relative mt-14 aspect-square max-w-xs">
+        <div className="relative mt-8 aspect-[1255/1338] max-w-[280px]">
           <Image
-            src="/illustrations/cowboy-hat.png"
+            src="/illustrations/last-call.png"
             alt="A drawing, for the sake of it"
             fill
             sizes="(max-width: 768px) 60vw, 20vw"
