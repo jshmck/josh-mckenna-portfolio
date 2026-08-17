@@ -62,7 +62,7 @@ const STICKER_SIZES = "48px";
 const POP_RADIUS = 0.35;
 /** Degrees of spin the pop applies, alternating sign per sticker so a
  *  cluster of them doesn't all spin the same way. */
-const POP_SPIN = 24;
+const POP_SPIN = 12;
 /** Once popped, ignored until the pointer leaves this radius and comes
  *  back — otherwise it'd retrigger every frame while the cursor lingers. */
 const POP_RESET_RADIUS = 0.45;
@@ -138,7 +138,7 @@ export function FloatingStickers() {
         if (s.armed && distance < POP_RADIUS) {
           s.armed = false;
           const sign = i % 2 === 0 ? 1 : -1;
-          plate.style.scale = "1.35";
+          plate.style.scale = "1.15";
           plate.style.rotate = `${sign * POP_SPIN}deg`;
           window.setTimeout(() => {
             if (!plate) return;
