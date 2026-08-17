@@ -7,13 +7,18 @@ import { useEffect, useRef } from "react";
  * A handful of small Pride sticker cut-outs drifting around the Press
  * section, echoing the homepage hero's orbit mechanic at icon scale.
  * Purely decorative (`aria-hidden`, `pointer-events-none`) — sits behind
- * the quotes, never blocks them.
+ * the quotes, never blocks them, which is also why the cursor-repel below
+ * tracks `pointermove` on `window` rather than on this component's own
+ * frame: a pointer-events-none element never receives its own pointer
+ * events, so listening here would never fire. Distance is computed
+ * against the frame's real position regardless of what DOM element the
+ * browser thinks the cursor is actually over.
  *
- * Deliberately simpler than the hero: no cursor-repel, no hover-tilt, just
- * a slow ambient drift. Same reasons for the same shape as drifting-hero.tsx
- * (see its own doc comment): deterministic seeded positions so there's no
- * hydration mismatch, and a rAF loop that writes transforms straight to the
- * DOM instead of through React state.
+ * Deliberately simpler than the hero otherwise: no hover-tilt, just the
+ * repel on top of the ambient drift. Same reasons for the same shape as
+ * drifting-hero.tsx (see its own doc comment): deterministic seeded
+ * positions so there's no hydration mismatch, and a rAF loop that writes
+ * transforms straight to the DOM instead of through React state.
  */
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -45,6 +50,14 @@ const CENTRE_X = 0.5;
 const CENTRE_Y = 0.19;
 const STICKER_SIZES = "48px";
 
+/** How close the pointer must get before a sticker gets pushed away. */
+const REPEL_RADIUS = 0.4;
+/** Maximum push, as a fraction of container width. Stronger than the
+ *  hero's 0.05 — these are small, tucked-behind-text icons, so the push
+ *  needs to read clearly as "the cursor did that" rather than a hero-scale
+ *  subtle lean. */
+const REPEL_STRENGTH = 0.09;
+
 function orbitPosition(s: { angle: number; rx: number; ry: number; width: number; height: number }) {
   return {
     x: CENTRE_X + s.rx * Math.cos(s.angle) - s.width / 2,
@@ -74,6 +87,20 @@ export function FloatingStickers() {
       height: s.width / ASPECT,
     }));
 
+    // Pointer in container-fraction space. -1 parks it outside the frame so
+    // nothing is repelled until the pointer actually arrives. Tracked on
+    // `window`, not `frame` — see the doc comment above.
+    const pointer = { x: -1, y: -1, active: false };
+
+    const onPointerMove = (event: PointerEvent) => {
+      const rect = frame.getBoundingClientRect();
+      pointer.x = (event.clientX - rect.left) / rect.width;
+      pointer.y = (event.clientY - rect.top) / rect.height;
+      pointer.active = true;
+    };
+
+    window.addEventListener("pointermove", onPointerMove);
+
     let raf = 0;
     let last = performance.now();
 
@@ -87,7 +114,25 @@ export function FloatingStickers() {
         if (!node) continue;
 
         s.angle += s.spin * dt;
-        const { x, y } = orbitPosition(s);
+        let { x, y } = orbitPosition(s);
+
+        // Soft repel: falls off linearly to zero at REPEL_RADIUS so
+        // stickers ease away from the cursor instead of snapping.
+        if (pointer.active) {
+          const centreX = x + s.width / 2;
+          const centreY = y + s.height / 2;
+          const dx = centreX - pointer.x;
+          const dy = centreY - pointer.y;
+          const distance = Math.hypot(dx, dy);
+
+          if (distance > 0.0001 && distance < REPEL_RADIUS) {
+            const falloff = 1 - distance / REPEL_RADIUS;
+            const scale = (falloff * REPEL_STRENGTH) / distance;
+            x += dx * scale;
+            y += dy * scale;
+          }
+        }
+
         node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
       }
 
@@ -95,7 +140,10 @@ export function FloatingStickers() {
     };
 
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onPointerMove);
+    };
   }, []);
 
   return (
