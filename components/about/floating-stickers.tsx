@@ -7,26 +7,18 @@ import { useEffect, useRef } from "react";
  * A handful of small Pride sticker cut-outs drifting around the Press
  * section, echoing the homepage hero's orbit mechanic at icon scale.
  * Purely decorative (`aria-hidden`, `pointer-events-none`) — sits behind
- * the quotes, never blocks them, which is also why proximity below tracks
- * `pointermove` on `window` rather than on this component's own frame: a
- * pointer-events-none element never receives its own pointer events, so
- * listening here would never fire. Distance is computed against the
- * frame's real position regardless of what DOM element the browser thinks
- * the cursor is actually over.
+ * the quotes, never blocks them, which is also why the cursor-repel below
+ * tracks `pointermove` on `window` rather than on this component's own
+ * frame: a pointer-events-none element never receives its own pointer
+ * events, so listening here would never fire. Distance is computed
+ * against the frame's real position regardless of what DOM element the
+ * browser thinks the cursor is actually over.
  *
- * Deliberately not a repel like the hero's — that read as too close a copy
- * of the homepage at a smaller scale. Instead each sticker does a quick
- * spin-and-scale "pop" the moment the cursor arrives nearby, then eases
- * back to normal — a one-shot burst, not a continuous push, so it reads as
- * its own gesture. The pop is a CSS transition on scale/rotate (an inner
- * "plate" node, split from the outer position node the same way the hero
- * and TiltIllustration both do it, since scale/rotate/translate are
- * independent properties in Tailwind v4, not bundled into one `transform`)
- * — the orbit position itself is never touched, so the drift keeps going
- * underneath the pop untouched. Same reasons for the same rAF-loop shape
- * as drifting-hero.tsx: deterministic seeded positions so there's no
- * hydration mismatch, and transforms written straight to the DOM instead
- * of through React state.
+ * Deliberately simpler than the hero otherwise: no hover-tilt, just the
+ * repel on top of the ambient drift. Same reasons for the same shape as
+ * drifting-hero.tsx (see its own doc comment): deterministic seeded
+ * positions so there's no hydration mismatch, and a rAF loop that writes
+ * transforms straight to the DOM instead of through React state.
  */
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -58,14 +50,13 @@ const CENTRE_X = 0.5;
 const CENTRE_Y = 0.19;
 const STICKER_SIZES = "48px";
 
-/** How close the pointer must get to trigger a pop. */
-const POP_RADIUS = 0.35;
-/** Degrees of spin the pop applies, alternating sign per sticker so a
- *  cluster of them doesn't all spin the same way. */
-const POP_SPIN = 24;
-/** Once popped, ignored until the pointer leaves this radius and comes
- *  back — otherwise it'd retrigger every frame while the cursor lingers. */
-const POP_RESET_RADIUS = 0.45;
+/** How close the pointer must get before a sticker gets pushed away. */
+const REPEL_RADIUS = 0.4;
+/** Maximum push, as a fraction of container width. Stronger than the
+ *  hero's 0.05 — these are small, tucked-behind-text icons, so the push
+ *  needs to read clearly as "the cursor did that" rather than a hero-scale
+ *  subtle lean. */
+const REPEL_STRENGTH = 0.09;
 
 function orbitPosition(s: { angle: number; rx: number; ry: number; width: number; height: number }) {
   return {
@@ -77,7 +68,6 @@ function orbitPosition(s: { angle: number; rx: number; ry: number; width: number
 export function FloatingStickers() {
   const frameRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const plateRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const frame = frameRef.current;
@@ -95,12 +85,11 @@ export function FloatingStickers() {
       spin: s.spin,
       width: s.width,
       height: s.width / ASPECT,
-      armed: true, // ready to pop again once the pointer has left POP_RESET_RADIUS
     }));
 
     // Pointer in container-fraction space. -1 parks it outside the frame so
-    // nothing pops until the pointer actually arrives. Tracked on `window`,
-    // not `frame` — see the doc comment above.
+    // nothing is repelled until the pointer actually arrives. Tracked on
+    // `window`, not `frame` — see the doc comment above.
     const pointer = { x: -1, y: -1, active: false };
 
     const onPointerMove = (event: PointerEvent) => {
@@ -122,32 +111,29 @@ export function FloatingStickers() {
       for (let i = 0; i < state.length; i += 1) {
         const s = state[i];
         const node = nodeRefs.current[i];
-        const plate = plateRefs.current[i];
         if (!node) continue;
 
         s.angle += s.spin * dt;
-        const { x, y } = orbitPosition(s);
-        node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
+        let { x, y } = orbitPosition(s);
 
-        if (!pointer.active || !plate) continue;
+        // Soft repel: falls off linearly to zero at REPEL_RADIUS so
+        // stickers ease away from the cursor instead of snapping.
+        if (pointer.active) {
+          const centreX = x + s.width / 2;
+          const centreY = y + s.height / 2;
+          const dx = centreX - pointer.x;
+          const dy = centreY - pointer.y;
+          const distance = Math.hypot(dx, dy);
 
-        const centreX = x + s.width / 2;
-        const centreY = y + s.height / 2;
-        const distance = Math.hypot(centreX - pointer.x, centreY - pointer.y);
-
-        if (s.armed && distance < POP_RADIUS) {
-          s.armed = false;
-          const sign = i % 2 === 0 ? 1 : -1;
-          plate.style.scale = "1.35";
-          plate.style.rotate = `${sign * POP_SPIN}deg`;
-          window.setTimeout(() => {
-            if (!plate) return;
-            plate.style.scale = "1";
-            plate.style.rotate = "0deg";
-          }, 200);
-        } else if (!s.armed && distance > POP_RESET_RADIUS) {
-          s.armed = true;
+          if (distance > 0.0001 && distance < REPEL_RADIUS) {
+            const falloff = 1 - distance / REPEL_RADIUS;
+            const scale = (falloff * REPEL_STRENGTH) / distance;
+            x += dx * scale;
+            y += dy * scale;
+          }
         }
+
+        node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
       }
 
       raf = requestAnimationFrame(tick);
@@ -183,20 +169,13 @@ export function FloatingStickers() {
               transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
             }}
           >
-            <div
-              ref={(node) => {
-                plateRefs.current[index] = node;
-              }}
-              className="relative h-full w-full transition-[scale,rotate] duration-200 ease-drift"
-            >
-              <Image
-                src="/illustrations/objects/pride-sticker.png"
-                alt=""
-                fill
-                sizes={STICKER_SIZES}
-                className="object-contain"
-              />
-            </div>
+            <Image
+              src="/illustrations/objects/pride-sticker.png"
+              alt=""
+              fill
+              sizes={STICKER_SIZES}
+              className="object-contain"
+            />
           </div>
         );
       })}
