@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { BackToTop } from "@/components/ui/back-to-top";
-import { TiltIllustration } from "@/components/work/tilt-illustration";
+import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { WorkGallery } from "@/components/work/work-gallery";
 import { PROJECT_CATEGORIES, getAllProjects } from "@/lib/projects";
 

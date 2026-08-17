@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 
 import { FloatingStickers } from "@/components/about/floating-stickers";
 import { ContactContent } from "@/components/contact/contact-content";
@@ -7,6 +6,7 @@ import { ClientLogos } from "@/components/site/client-logos";
 import { Footer } from "@/components/site/footer";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
+import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { features, pressQuotes } from "@/lib/about";
 
 export const metadata: Metadata = {
@@ -32,20 +32,18 @@ export default function AboutPage() {
       {/* The person — one short paragraph, no photos. */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 pt-8 md:px-gutter">
-          {/* A transparent PNG, not a framed photo -- same treatment as the
-              Contact page illustration: next/image directly, object-contain,
-              no Plate frame or background surface. Same bearded character
-              as one of the homepage hero objects, copied to its own path
-              here so the two stay independent. */}
-          <div className="relative aspect-[977/929] w-full max-w-[110px]">
-            <Image
-              src="/illustrations/bearded.png"
-              alt=""
-              fill
-              sizes="110px"
-              className="object-contain"
-            />
-          </div>
+          {/* Same treatment as the Contact page illustration and Work's
+              Twingo/iPad: next/image direct, object-contain, no Plate
+              frame or background surface, plus the same cursor-follow
+              tilt as Work (components/ui/tilt-illustration.tsx). Same
+              bearded character as one of the homepage hero objects,
+              copied to its own path so the two stay independent. Height
+              matches Work's illustrations (115px) for consistency. */}
+          <TiltIllustration
+            src="/illustrations/bearded.png"
+            aspect="977/929"
+            height={115}
+          />
 
           <Reveal className="mt-10 max-w-2xl">
             <p className="type-lede text-ink-muted">
