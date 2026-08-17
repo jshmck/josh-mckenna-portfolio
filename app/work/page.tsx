@@ -22,17 +22,29 @@ export default function WorkPage() {
           "Work" via metadata above. */}
       <h1 className="sr-only">Work</h1>
 
-      {/* A transparent PNG, not a framed photo -- same treatment as the
+      {/* Transparent PNGs, not framed photos -- same treatment as the
           Contact/Info page illustrations: next/image directly,
-          object-contain, no Plate frame or background surface. */}
-      <div className="relative aspect-[992/655] w-full max-w-[210px]">
-        <Image
-          src="/illustrations/ipad.png"
-          alt=""
-          fill
-          sizes="210px"
-          className="object-contain"
-        />
+          object-contain, no Plate frame or background surface. Twingo on
+          the left, iPad on the right. */}
+      <div className="flex flex-wrap items-end gap-6">
+        <div className="relative aspect-[1350/656] w-full max-w-[190px]">
+          <Image
+            src="/illustrations/twingo-white-final.png"
+            alt=""
+            fill
+            sizes="190px"
+            className="object-contain"
+          />
+        </div>
+        <div className="relative aspect-[992/655] w-full max-w-[190px]">
+          <Image
+            src="/illustrations/ipad.png"
+            alt=""
+            fill
+            sizes="190px"
+            className="object-contain"
+          />
+        </div>
       </div>
 
       {/* Every category shows as a chip, even ones with no work yet
