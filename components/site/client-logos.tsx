@@ -11,17 +11,17 @@ import { clients } from "@/lib/about";
  *  to full without that side effect. */
 export function ClientLogos() {
   return (
-    <ul className="flex flex-wrap items-center gap-x-7 gap-y-4">
+    <ul className="flex flex-wrap items-center gap-x-4 gap-y-3">
       {clients.map((client) =>
         client.logo ? (
           <li
             key={client.name}
             className={`flex items-center ${
               client.size === "xl"
-                ? "h-10"
+                ? "h-7"
                 : client.size === "lg" || client.size === "icon"
-                  ? "h-7"
-                  : "h-5"
+                  ? "h-5"
+                  : "h-3.5"
             }`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, no responsive sizing needed */}
@@ -32,8 +32,8 @@ export function ClientLogos() {
             />
           </li>
         ) : (
-          <li key={client.name} className="flex h-5 items-center">
-            <span className="font-body text-[13px] text-ink-muted">
+          <li key={client.name} className="flex h-3.5 items-center">
+            <span className="font-body text-[10px] text-ink-muted">
               {client.name}
             </span>
           </li>
