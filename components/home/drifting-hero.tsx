@@ -116,6 +116,28 @@ const OBJECTS: DriftObject[] = [
     ry: 0.335,
     spin: rad(-5.2),
   },
+  {
+    id: "ambient-8",
+    src: "/illustrations/objects/pato.png",
+    alt: "",
+    width: 0.16,
+    aspect: 0.8,
+    angle: rad(0),
+    rx: 0.32,
+    ry: 0.33,
+    spin: rad(4.8),
+  },
+  {
+    id: "ambient-9",
+    src: "/illustrations/objects/twingo-green.png",
+    alt: "",
+    width: 0.28,
+    aspect: 2.058,
+    angle: rad(70),
+    rx: 0.3,
+    ry: 0.31,
+    spin: rad(-4.2),
+  },
 ];
 
 /** Orbit centre — the middle of the frame, under the wordmark. */
