@@ -78,15 +78,20 @@ app/
   work/[slug]/page.tsx project template (generateStaticParams)
   about/ contact/ shop/
 components/
-  site/     nav · footer · marquee · cta-band     (chrome — nav/marquee/
-                                                     cta-band are every
+  site/     nav · footer · marquee · cta-band     (chrome — nav is every
                                                      page, footer is Info-
-                                                     page-only, see below)
+                                                     page-only; marquee and
+                                                     cta-band exist but
+                                                     aren't currently
+                                                     rendered anywhere, see
+                                                     below)
   ui/       plate · button · reveal · parallax    (primitives)
   home/     drifting-hero                        (page-specific)
-  about/    decompose-sequence
+  about/    decompose-sequence · floating-stickers
   work/     project-card · work-gallery
-  contact/  enquiry-form
+  contact/  enquiry-form · contact-content        (shared body, embedded by
+                                                     both /contact and Info
+                                                     — see below)
   shop/     waitlist-form
 lib/
   site.ts       nav links, contact details, footer — single source for chrome
@@ -99,6 +104,18 @@ off every page except Info — it's rendered directly at the bottom of
 `app/about/page.tsx` instead. Don't move `<Footer />` back into the root
 layout as a "fix"; that would put it back on all six pages, which is the
 opposite of what was asked.
+
+**Two pages scroll straight into the next one, with no click and no URL
+change.** Home embeds the real Work gallery inline (`app/page.tsx`'s
+`#home-work` section); Info embeds the real Contact content inline
+(`app/about/page.tsx`'s `#info-contact` section, via the shared
+`ContactContent` component in `components/contact/contact-content.tsx`).
+Both routes (`/work`, `/contact`) still exist standalone for direct links
+and nav clicks. `components/site/nav.tsx`'s scroll-spy (`MERGE_ENTER` /
+`MERGE_EXIT`) hands the active nav highlight from Home→Work and Info→Contact
+once the embedded section's top crosses the header. When testing this with
+scripted scrolling, use `behavior: 'instant'` — the sitewide smooth-scroll
+CSS otherwise races a scripted check against an in-flight scroll animation.
 
 **Read content through the helpers in `lib/projects.ts`** (`getAllProjects`,
 `getProject`, `getFeaturedProjects`, `getProjectNeighbours`), never the
