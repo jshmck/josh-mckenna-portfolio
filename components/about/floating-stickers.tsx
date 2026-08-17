@@ -32,19 +32,17 @@ type Sticker = {
 const ASPECT = 809 / 1045;
 
 const STICKERS: Sticker[] = [
-  { id: "s1", width: 0.034, angle: rad(20), rx: 0.46, ry: 0.3, spin: rad(6) },
-  { id: "s2", width: 0.029, angle: rad(100), rx: 0.42, ry: 0.28, spin: rad(-5.5) },
-  { id: "s3", width: 0.038, angle: rad(160), rx: 0.47, ry: 0.32, spin: rad(5) },
-  { id: "s4", width: 0.031, angle: rad(230), rx: 0.44, ry: 0.28, spin: rad(-6) },
-  { id: "s5", width: 0.036, angle: rad(290), rx: 0.46, ry: 0.3, spin: rad(4.5) },
-  { id: "s6", width: 0.027, angle: rad(340), rx: 0.42, ry: 0.26, spin: rad(-4.8) },
+  { id: "s1", width: 0.034, angle: rad(20), rx: 0.46, ry: 0.24, spin: rad(6) },
+  { id: "s2", width: 0.029, angle: rad(100), rx: 0.42, ry: 0.22, spin: rad(-5.5) },
+  { id: "s3", width: 0.038, angle: rad(160), rx: 0.47, ry: 0.26, spin: rad(5) },
+  { id: "s4", width: 0.031, angle: rad(230), rx: 0.44, ry: 0.22, spin: rad(-6) },
+  { id: "s5", width: 0.036, angle: rad(290), rx: 0.46, ry: 0.24, spin: rad(4.5) },
+  { id: "s6", width: 0.027, angle: rad(340), rx: 0.42, ry: 0.2, spin: rad(-4.8) },
 ];
 
 const CENTRE_X = 0.5;
-/** Measured, not guessed: the quotes occupy roughly the top 52% of this
- *  frame (the rest is the section's own pb-28 bottom padding), so their
- *  vertical midpoint sits at ~0.26 of the frame height, not 0.5. */
-const CENTRE_Y = 0.26;
+/** Still too low at 0.26 in practice -- pulled up further. */
+const CENTRE_Y = 0.19;
 const STICKER_SIZES = "48px";
 
 function orbitPosition(s: { angle: number; rx: number; ry: number; width: number; height: number }) {
