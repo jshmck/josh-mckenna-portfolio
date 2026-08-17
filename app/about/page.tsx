@@ -36,12 +36,12 @@ export default function AboutPage() {
               no Plate frame or background surface. Same bearded character
               as one of the homepage hero objects, copied to its own path
               here so the two stay independent. */}
-          <div className="relative aspect-[977/929] w-full max-w-[210px]">
+          <div className="relative aspect-[977/929] w-full max-w-[110px]">
             <Image
               src="/illustrations/bearded.png"
               alt=""
               fill
-              sizes="210px"
+              sizes="110px"
               className="object-contain"
             />
           </div>
