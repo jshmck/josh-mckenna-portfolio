@@ -15,7 +15,7 @@ export const metadata: Metadata = {
  *  next/image direct, object-contain, no Plate frame or background
  *  surface. Order is the order they land in the row, left to right. */
 const ILLUSTRATIONS = [
-  { src: "/illustrations/yeti.png", aspect: "729/1080" },
+  { src: "/illustrations/yeti.png", aspect: "729/1111" },
   { src: "/illustrations/twingo-white-final.png", aspect: "1350/656" },
   { src: "/illustrations/ipad.png", aspect: "981/655" },
 ];
@@ -31,11 +31,14 @@ export default function WorkPage() {
           "Work" via metadata above. */}
       <h1 className="sr-only">Work</h1>
 
+      {/* Shared height, not shared width -- Yeti's portrait aspect made it
+          read much taller than Twingo/iPad when all three shared a
+          max-width instead. */}
       <div className="flex flex-wrap items-end gap-6">
         {ILLUSTRATIONS.map(({ src, aspect }) => (
           <div
             key={src}
-            className="relative w-full max-w-[190px]"
+            className="relative h-[140px]"
             style={{ aspectRatio: aspect }}
           >
             <Image
