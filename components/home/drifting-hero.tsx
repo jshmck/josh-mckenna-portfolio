@@ -138,6 +138,17 @@ const OBJECTS: DriftObject[] = [
     ry: 0.31,
     spin: rad(-4.2),
   },
+  {
+    id: "ambient-10",
+    src: "/illustrations/objects/pride-sticker.png",
+    alt: "",
+    width: 0.095,
+    aspect: 0.774,
+    angle: rad(260),
+    rx: 0.34,
+    ry: 0.33,
+    spin: rad(5.6),
+  },
 ];
 
 /** Orbit centre — the middle of the frame, under the wordmark. */
