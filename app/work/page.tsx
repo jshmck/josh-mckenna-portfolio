@@ -34,7 +34,7 @@ export default function WorkPage() {
         {ILLUSTRATIONS.map(({ src, aspect, height }) => (
           <div
             key={src}
-            className="relative"
+            className="relative transition-transform duration-300 ease-drift hover:-rotate-2 hover:scale-[1.06]"
             style={{ aspectRatio: aspect, height }}
           >
             <Image
