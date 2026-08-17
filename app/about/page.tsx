@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import { FloatingStickers } from "@/components/about/floating-stickers";
 import { ClientLogos } from "@/components/site/client-logos";
 import { CtaBand } from "@/components/site/cta-band";
 import { Footer } from "@/components/site/footer";
@@ -63,9 +64,11 @@ export default function AboutPage() {
       {/* Press — short third-party credibility, right after the intro
           paragraph rather than after the heavier Talks & Features grid;
           eases from personal copy into a bigger visual section instead of
-          jumping straight there. */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+          jumping straight there. Small Pride sticker cut-outs drift around
+          the quotes -- see components/about/floating-stickers.tsx. */}
+      <section className="relative">
+        <FloatingStickers />
+        <div className="relative mx-auto max-w-frame px-6 pb-28 md:px-gutter">
           {/* items-stretch (grid's default) makes each <li> match the row's
               tallest quote; the Reveal wrapper below fills that height as a
               flex column so the attribution lands on a shared baseline
