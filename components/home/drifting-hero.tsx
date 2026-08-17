@@ -105,6 +105,17 @@ const OBJECTS: DriftObject[] = [
     ry: 0.32,
     spin: rad(-5),
   },
+  {
+    id: "ambient-7",
+    src: "/illustrations/objects/cowboy-hat.png",
+    alt: "",
+    width: 0.22,
+    aspect: 1.331,
+    angle: rad(190),
+    rx: 0.33,
+    ry: 0.335,
+    spin: rad(-5.2),
+  },
 ];
 
 /** Orbit centre — the middle of the frame, under the wordmark. */
