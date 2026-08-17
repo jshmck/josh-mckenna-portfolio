@@ -11,6 +11,15 @@ export const metadata: Metadata = {
     "Editorial illustration, character design, packaging and murals by Josh McKenna. Everything worth showing, newest first.",
 };
 
+/** Same transparent-PNG treatment as the Contact/Info page illustrations --
+ *  next/image direct, object-contain, no Plate frame or background
+ *  surface. Order is the order they land in the row, left to right. */
+const ILLUSTRATIONS = [
+  { src: "/illustrations/yeti.png", aspect: "729/1080" },
+  { src: "/illustrations/twingo-white-final.png", aspect: "1350/656" },
+  { src: "/illustrations/ipad.png", aspect: "981/655" },
+];
+
 export default function WorkPage() {
   const projects = getAllProjects();
 
@@ -22,29 +31,22 @@ export default function WorkPage() {
           "Work" via metadata above. */}
       <h1 className="sr-only">Work</h1>
 
-      {/* Transparent PNGs, not framed photos -- same treatment as the
-          Contact/Info page illustrations: next/image directly,
-          object-contain, no Plate frame or background surface. Twingo on
-          the left, iPad on the right. */}
       <div className="flex flex-wrap items-end gap-6">
-        <div className="relative aspect-[1350/656] w-full max-w-[190px]">
-          <Image
-            src="/illustrations/twingo-white-final.png"
-            alt=""
-            fill
-            sizes="190px"
-            className="object-contain"
-          />
-        </div>
-        <div className="relative aspect-[992/655] w-full max-w-[190px]">
-          <Image
-            src="/illustrations/ipad.png"
-            alt=""
-            fill
-            sizes="190px"
-            className="object-contain"
-          />
-        </div>
+        {ILLUSTRATIONS.map(({ src, aspect }) => (
+          <div
+            key={src}
+            className="relative w-full max-w-[190px]"
+            style={{ aspectRatio: aspect }}
+          >
+            <Image
+              src={src}
+              alt=""
+              fill
+              sizes="190px"
+              className="object-contain"
+            />
+          </div>
+        ))}
       </div>
 
       {/* Every category shows as a chip, even ones with no work yet
