@@ -18,7 +18,7 @@ export function ClientLogos() {
             key={client.name}
             className={`flex items-center ${
               client.size === "xl"
-                ? "h-7"
+                ? "h-9"
                 : client.size === "lg" || client.size === "icon"
                   ? "h-5"
                   : "h-3.5"
