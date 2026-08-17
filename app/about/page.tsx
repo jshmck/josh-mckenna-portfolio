@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 import { ClientLogos } from "@/components/site/client-logos";
 import { CtaBand } from "@/components/site/cta-band";
@@ -29,14 +30,30 @@ export default function AboutPage() {
 
       {/* The person — one short paragraph, no photos. */}
       <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 pt-20 md:px-gutter">
-          <Reveal className="max-w-2xl">
+        <div className="mx-auto max-w-frame px-6 pb-28 pt-8 md:px-gutter">
+          {/* A transparent PNG, not a framed photo -- same treatment as the
+              Contact page illustration: next/image directly, object-contain,
+              no Plate frame or background surface. ~45% smaller than the
+              first pass, and pt-8 (was pt-20) sits it tighter under the nav. */}
+          <div className="relative aspect-[1350/656] w-full max-w-[210px]">
+            <Image
+              src="/illustrations/twingo-white.png"
+              alt=""
+              fill
+              sizes="210px"
+              className="object-contain"
+            />
+          </div>
+
+          <Reveal className="mt-10 max-w-2xl">
             <p className="type-lede text-ink-muted">
-              He studied illustration in Bristol, has been freelance since
-              2019, and works out of a shared studio in Peckham — drawing by
-              hand first, every time, and colouring flat. Roughly twenty
-              commissions a year, and unreasonably competitive about
-              five-a-side.
+              Josh McKenna is a London-based illustrator with over a decade
+              of experience moving between digital products and physical
+              spaces. He studied illustration at Falmouth University before
+              going freelance in 2014, working with brands from Apple to the
+              Wall Street Journal. From the iconic Instagram Pride sticker to
+              murals for Facebook, his work uses simple vector shapes to
+              evolve 2D characters into 3D forms.
             </p>
           </Reveal>
         </div>
