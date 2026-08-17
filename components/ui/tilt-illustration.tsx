@@ -17,11 +17,19 @@ const MAX_TILT = 8;
 
 type TiltIllustrationProps = {
   src: string;
+  /** Empty by default (purely decorative, matching every other floating
+   *  cut-out on the site) — pass a real string for one that isn't. */
+  alt?: string;
   aspect: string;
   height: number;
 };
 
-export function TiltIllustration({ src, aspect, height }: TiltIllustrationProps) {
+export function TiltIllustration({
+  src,
+  alt = "",
+  aspect,
+  height,
+}: TiltIllustrationProps) {
   const plateRef = useRef<HTMLDivElement>(null);
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -53,7 +61,7 @@ export function TiltIllustration({ src, aspect, height }: TiltIllustrationProps)
         ref={plateRef}
         className="relative h-full w-full transition-[rotate_150ms_ease-out]"
       >
-        <Image src={src} alt="" fill sizes="190px" className="object-contain" />
+        <Image src={src} alt={alt} fill sizes="190px" className="object-contain" />
       </div>
     </div>
   );

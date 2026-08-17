@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import { EnquiryForm } from "@/components/contact/enquiry-form";
 import {
   InstagramIcon,
@@ -7,6 +5,7 @@ import {
   ThreadsIcon,
   XIcon,
 } from "@/components/ui/social-icons";
+import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { siteConfig } from "@/lib/site";
 
 const socials = [
@@ -73,19 +72,17 @@ export function ContactContent() {
           ))}
         </ul>
 
-        {/* A transparent PNG, not a framed photo -- goes straight through
-            next/image with object-contain, no Plate frame or background
-            surface, same exception the drifting-hero cut-outs use. Plate
-            always paints a background behind its image slot, which never
-            mattered before since every other real image on the site is an
-            opaque photo. */}
-        <div className="relative mt-8 aspect-[1255/1338] max-w-[280px]">
-          <Image
+        {/* Same treatment as Work/Info's illustrations -- next/image
+            direct, object-contain, no Plate frame or background surface,
+            plus the same cursor-follow tilt on hover
+            (components/ui/tilt-illustration.tsx). Height chosen to match
+            the old max-w-[280px] footprint at this aspect ratio. */}
+        <div className="mt-8">
+          <TiltIllustration
             src="/illustrations/last-call.png"
             alt="A drawing, for the sake of it"
-            fill
-            sizes="(max-width: 768px) 60vw, 20vw"
-            className="object-contain"
+            aspect="1255/1338"
+            height={298}
           />
         </div>
       </div>
