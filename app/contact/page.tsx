@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 import { EnquiryForm } from "@/components/contact/enquiry-form";
-import { Plate } from "@/components/ui/plate";
 import {
   InstagramIcon,
   LinkedInIcon,
@@ -75,10 +75,19 @@ export default function ContactPage() {
           ))}
         </ul>
 
-        <div className="mt-14 max-w-xs">
-          <Plate
-            image={{ ratio: "1/1", alt: "A drawing, for the sake of it" }}
+        {/* A transparent PNG, not a framed photo -- goes straight through
+            next/image with object-contain, no Plate frame or background
+            surface, same exception the drifting-hero cut-outs use. Plate
+            always paints a background behind its image slot, which never
+            mattered before since every other real image on the site is an
+            opaque photo. */}
+        <div className="relative mt-14 aspect-square max-w-xs">
+          <Image
+            src="/illustrations/cowboy-hat.png"
+            alt="A drawing, for the sake of it"
+            fill
             sizes="(max-width: 768px) 60vw, 20vw"
+            className="object-contain"
           />
         </div>
       </div>
