@@ -25,7 +25,7 @@ export default function WorkPage() {
       {/* A transparent PNG, not a framed photo -- same treatment as the
           Contact/Info page illustrations: next/image directly,
           object-contain, no Plate frame or background surface. */}
-      <div className="relative aspect-[932/617] w-full max-w-[210px]">
+      <div className="relative aspect-[992/655] w-full max-w-[210px]">
         <Image
           src="/illustrations/ipad.png"
           alt=""
