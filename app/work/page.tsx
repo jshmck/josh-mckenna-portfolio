@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 
 import { BackToTop } from "@/components/ui/back-to-top";
+import { TiltIllustration } from "@/components/work/tilt-illustration";
 import { WorkGallery } from "@/components/work/work-gallery";
 import { PROJECT_CATEGORIES, getAllProjects } from "@/lib/projects";
 
@@ -30,21 +30,12 @@ export default function WorkPage() {
           "Work" via metadata above. */}
       <h1 className="sr-only">Work</h1>
 
+      {/* Static -- no orbit, no drift -- but each leans toward the cursor
+          on hover, same tilt math as the homepage hero's floating
+          objects. See components/work/tilt-illustration.tsx. */}
       <div className="flex flex-wrap items-end gap-6">
         {ILLUSTRATIONS.map(({ src, aspect, height }) => (
-          <div
-            key={src}
-            className="relative transition-transform duration-300 ease-drift hover:-rotate-2 hover:scale-[1.06]"
-            style={{ aspectRatio: aspect, height }}
-          >
-            <Image
-              src={src}
-              alt=""
-              fill
-              sizes="190px"
-              className="object-contain"
-            />
-          </div>
+          <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
         ))}
       </div>
 
