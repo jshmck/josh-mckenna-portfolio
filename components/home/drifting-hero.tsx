@@ -325,14 +325,6 @@ export function DriftingHero() {
         {OBJECTS.map((object, index) => {
           const height = object.width / object.aspect;
           const seed = orbitPosition({ ...object, height });
-          // PROTOTYPE (one object only): a faint frosted-glass reflection,
-          // same mechanism as the nav's frosted header (bg + backdrop-blur
-          // sampling whatever's rendered behind it). Needs the car in front
-          // of the wordmark to have anything to reflect, which is why it
-          // sits at z-20 (above the wordmark's z-10) always, not just on
-          // hover like every other object -- a deliberate, temporary break
-          // from "objects orbit behind the wordmark" for this one test.
-          const isReflectTest = object.id === "work";
 
           return (
             <div
@@ -343,9 +335,7 @@ export function DriftingHero() {
               onPointerMove={handlePointerMove(index)}
               onPointerLeave={handlePointerLeave(index)}
               aria-hidden="true"
-              className={`group absolute left-0 top-0 will-change-transform hover:z-20 focus-within:z-20 ${
-                isReflectTest ? "z-20" : "z-0"
-              }`}
+              className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
@@ -370,12 +360,6 @@ export function DriftingHero() {
                   draggable={false}
                   className="object-contain"
                 />
-                {isReflectTest && (
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 bg-canvas/10 backdrop-blur-[2px]"
-                  />
-                )}
               </div>
             </div>
           );
