@@ -13,14 +13,8 @@ export const metadata: Metadata = {
 
 /** Same transparent-PNG treatment as the Contact/Info page illustrations --
  *  next/image direct, object-contain, no Plate frame or background
- *  surface. Order is the order they land in the row, left to right.
- *  Each has its own height: Yeti's crop is ~28% rising steam above the
- *  cooler (measured -- the cooler's own top edge sits at y=315 of 1111),
- *  so at the shared 140px it read tiny next to Twingo/iPad. 196px makes
- *  the cooler itself ~140px, matching them, and lets the steam rise above
- *  the row -- fine even if it reaches toward the nav. */
+ *  surface. Order is the order they land in the row, left to right. */
 const ILLUSTRATIONS = [
-  { src: "/illustrations/yeti.png", aspect: "729/1111", height: 196 },
   { src: "/illustrations/twingo-white-final.png", aspect: "1350/656", height: 140 },
   { src: "/illustrations/ipad.png", aspect: "981/655", height: 140 },
 ];
@@ -36,9 +30,6 @@ export default function WorkPage() {
           "Work" via metadata above. */}
       <h1 className="sr-only">Work</h1>
 
-      {/* Bottom-aligned, per-illustration height (see ILLUSTRATIONS) rather
-          than a shared max-width -- lets Yeti's steam rise above the row
-          while its cooler lines up with Twingo/iPad. */}
       <div className="flex flex-wrap items-end gap-6">
         {ILLUSTRATIONS.map(({ src, aspect, height }) => (
           <div
