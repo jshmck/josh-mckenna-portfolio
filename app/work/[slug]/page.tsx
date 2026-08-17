@@ -6,6 +6,23 @@ import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 
+/**
+ * All-caps display title, except 'e', 'j' and 'k' stay real lowercase —
+ * the same brand quirk as the homepage wordmark (jOSH / MCkeNNA). Every
+ * project title gets this; project.title itself keeps normal casing for
+ * the breadcrumb, gallery cards and metadata.
+ */
+function toDisplayTitle(title: string) {
+  return title
+    .split("")
+    .map((char) =>
+      ["e", "j", "k"].includes(char.toLowerCase())
+        ? char.toLowerCase()
+        : char.toUpperCase(),
+    )
+    .join("");
+}
+
 /** Every project is known at build time, so all detail pages prerender. */
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -47,12 +64,7 @@ export default async function ProjectPage({
     { label: "Deliverables", value: project.deliverables },
   ];
 
-  /* Same brand quirk as WORk/INfO — one lowercase letter, same cap-height
-     in Waldeck, everything else caps. Display-only, and only this project:
-     project.title itself stays "L.A. Pride" for the breadcrumb, gallery
-     card and metadata. */
-  const displayTitle =
-    project.slug === "la-pride" ? "L.A. PRIDe" : project.title;
+  const displayTitle = toDisplayTitle(project.title);
 
   return (
     <article>
