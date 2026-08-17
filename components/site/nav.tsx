@@ -31,27 +31,31 @@ import { navLinks } from "@/lib/site";
  * (bg-canvas/15 + backdrop-blur-md), so content scrolling underneath stays
  * partly visible through the blur.
  *
- * On "/" only, the active highlight is also scroll-position-driven: the
- * homepage embeds the real Work gallery inline (see app/page.tsx's
- * #home-work section) so scrolling past "Who" flows straight into it with
- * no navigation. Once that section has scrolled under the header, "Work"
- * borrows the active highlight from "Home" — the URL never changes, only
- * the nav's read of where you are. Every other route's active-state stays
- * pure pathname-matching, untouched by this.
+ * On "/" and "/about" only, the active highlight is also
+ * scroll-position-driven: the homepage embeds the real Work gallery inline
+ * (see app/page.tsx's #home-work section) and Info embeds the real Contact
+ * content inline (see app/about/page.tsx's #info-contact section), so
+ * scrolling past either page's own content flows straight into the next
+ * one with no navigation. Once that section has scrolled under the header,
+ * "Work"/"Contact" borrows the active highlight from "Home"/"Info" — the
+ * URL never changes, only the nav's read of where you are. Every other
+ * route's active-state stays pure pathname-matching, untouched by this.
  */
 
 // getBoundingClientRect().top thresholds, px, for handing the nav's active
-// highlight from Home to the embedded Work section on "/". Two thresholds,
-// not one — mirrors the compact-header hysteresis below; a single
-// threshold flickers when the section's top edge hovers right at the
-// boundary (trackpad rubber-banding, a stray scroll tick).
-const HOME_WORK_ENTER = 96; // just past the expanded 88px header
-const HOME_WORK_EXIT = 160;
+// highlight from Home to the embedded Work section on "/", and from Info
+// to the embedded Contact section on "/about". Two thresholds, not one —
+// mirrors the compact-header hysteresis below; a single threshold flickers
+// when the section's top edge hovers right at the boundary (trackpad
+// rubber-banding, a stray scroll tick).
+const MERGE_ENTER = 96; // just past the expanded 88px header
+const MERGE_EXIT = 160;
 
 export function Nav() {
   const pathname = usePathname();
   const [compact, setCompact] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
+  const [infoContactActive, setInfoContactActive] = useState(false);
 
   useEffect(() => {
     let raf = 0;
@@ -68,18 +72,29 @@ export function Nav() {
         return window.scrollY > 120;
       });
 
-      // The embedded Work gallery on "/" has no route of its own, so its
-      // nav highlight is scroll-position-driven instead of
-      // usePathname()-driven. Gated to "/" — every other route's
-      // isActive() below stays pure route-matching, untouched by this.
+      // The embedded Work gallery on "/" and the embedded Contact content
+      // on "/about" have no route of their own, so their nav highlight is
+      // scroll-position-driven instead of usePathname()-driven. Gated to
+      // their own route each — every other route's isActive() below stays
+      // pure route-matching, untouched by this.
       if (pathname === "/") {
         const section = document.getElementById("home-work");
         const top = section?.getBoundingClientRect().top ?? Infinity;
         setHomeWorkActive((current) =>
-          current ? top < HOME_WORK_EXIT : top <= HOME_WORK_ENTER,
+          current ? top < MERGE_EXIT : top <= MERGE_ENTER,
         );
       } else {
         setHomeWorkActive(false);
+      }
+
+      if (pathname === "/about") {
+        const section = document.getElementById("info-contact");
+        const top = section?.getBoundingClientRect().top ?? Infinity;
+        setInfoContactActive((current) =>
+          current ? top < MERGE_EXIT : top <= MERGE_ENTER,
+        );
+      } else {
+        setInfoContactActive(false);
       }
     };
 
@@ -108,11 +123,17 @@ export function Nav() {
   // "/" would match every route under startsWith, so home is exact-match
   // only. On "/", only Home or Work can ever be active — Work borrows the
   // highlight once the embedded gallery has scrolled under the header,
-  // Home cedes it.
+  // Home cedes it. Same shape on "/about": only Info or Contact can be
+  // active there.
   const isActive = (href: string) => {
     if (pathname === "/") {
       if (href === "/work") return homeWorkActive;
       if (href === "/") return !homeWorkActive;
+      return false;
+    }
+    if (pathname === "/about") {
+      if (href === "/contact") return infoContactActive;
+      if (href === "/about") return !infoContactActive;
       return false;
     }
     return pathname === href || pathname.startsWith(`${href}/`);

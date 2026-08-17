@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { FloatingStickers } from "@/components/about/floating-stickers";
+import { ContactContent } from "@/components/contact/contact-content";
 import { ClientLogos } from "@/components/site/client-logos";
 import { Footer } from "@/components/site/footer";
-import { ButtonLink } from "@/components/ui/button";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { features, pressQuotes } from "@/lib/about";
-import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Info",
@@ -144,48 +143,14 @@ export default function AboutPage() {
           to reuse them elsewhere, so neither component was deleted, just
           unhooked from this page. */}
 
-      {/* A taste of Contact, not the whole page — the "Want him to draw
-          something?" CTA band wasn't landing, so this closes Info with the
-          same intro line and direct emails Contact opens with, then hands
-          off to the real form with one link rather than embedding it here
-          too. Mirrors the Home -> Work merge in spirit (Info flows straight
-          into a contact moment instead of just linking away) without fully
-          duplicating Contact's page. */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
-          <h2 className="type-title font-medium text-accent">SAY HELLO</h2>
-          <p className="type-lede mt-5 max-w-md text-ink-muted">
-            Commissions, collaborations, editorial deadlines that are
-            already late — all welcome. Josh reads everything himself and
-            replies within two working days.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-x-12 gap-y-6">
-            <div>
-              <p className="type-label text-ink-muted">Direct Commissions</p>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="font-body text-[15px] text-ink-muted underline transition-colors hover:text-accent"
-              >
-                {siteConfig.email}
-              </a>
-            </div>
-
-            <div>
-              <p className="type-label text-ink-muted">Agency Contact</p>
-              <a
-                href={`mailto:${siteConfig.agencyEmail}`}
-                className="font-body text-[15px] text-ink-muted underline transition-colors hover:text-accent"
-              >
-                {siteConfig.agencyEmail}
-              </a>
-            </div>
-          </div>
-
-          <ButtonLink href="/contact" className="mt-10">
-            Start a commission
-          </ButtonLink>
-        </div>
+      {/* Info flows straight into the real Contact content -- same merge
+          pattern as Home -> Work (see app/page.tsx's #home-work section):
+          no title, no click-through, the page just keeps scrolling into
+          it. The id is the landmark Nav's scroll-spy reads to hand the
+          active highlight from Info to Contact — see
+          components/site/nav.tsx. /contact still exists as its own route. */}
+      <section id="info-contact" className="py-24">
+        <ContactContent />
       </section>
 
       {/* The footer now lives only here, not on every page — see
