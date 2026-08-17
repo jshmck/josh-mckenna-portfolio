@@ -33,11 +33,12 @@ export default function AboutPage() {
         <div className="mx-auto max-w-frame px-6 pb-28 pt-8 md:px-gutter">
           {/* A transparent PNG, not a framed photo -- same treatment as the
               Contact page illustration: next/image directly, object-contain,
-              no Plate frame or background surface. ~45% smaller than the
-              first pass, and pt-8 (was pt-20) sits it tighter under the nav. */}
-          <div className="relative aspect-[1350/656] w-full max-w-[210px]">
+              no Plate frame or background surface. Same bearded character
+              as one of the homepage hero objects, copied to its own path
+              here so the two stay independent. */}
+          <div className="relative aspect-[977/929] w-full max-w-[210px]">
             <Image
-              src="/illustrations/twingo-white.png"
+              src="/illustrations/bearded.png"
               alt=""
               fill
               sizes="210px"

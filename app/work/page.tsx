@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 import { BackToTop } from "@/components/ui/back-to-top";
 import { WorkGallery } from "@/components/work/work-gallery";
@@ -14,20 +15,31 @@ export default function WorkPage() {
   const projects = getAllProjects();
 
   return (
-    <div className="mx-auto max-w-frame px-6 pb-20 pt-12 md:px-gutter">
+    <div className="mx-auto max-w-frame px-6 pb-20 pt-8 md:px-gutter">
       {/* No visible title — Josh wants the gallery to be the page, not a
           labelled section. A screen-reader-only h1 keeps the page's
           heading structure intact; the browser tab title still says
-          "Work" via metadata above. Top padding matches the chip-row's
-          own mt-12 to the thumbnail grid below (WorkGallery), so the
-          filter chips sit dead centre between the nav bar and the
-          thumbnails instead of in the leftover gap where the title used
-          to anchor that space. */}
+          "Work" via metadata above. */}
       <h1 className="sr-only">Work</h1>
+
+      {/* A transparent PNG, not a framed photo -- same treatment as the
+          Contact/Info page illustrations: next/image directly,
+          object-contain, no Plate frame or background surface. */}
+      <div className="relative aspect-[1350/656] w-full max-w-[210px]">
+        <Image
+          src="/illustrations/twingo-white.png"
+          alt=""
+          fill
+          sizes="210px"
+          className="object-contain"
+        />
+      </div>
 
       {/* Every category shows as a chip, even ones with no work yet
           (3D) — Josh wants the full set visible, not just active ones. */}
-      <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
+      <div className="mt-10">
+        <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
+      </div>
 
       <BackToTop />
     </div>
