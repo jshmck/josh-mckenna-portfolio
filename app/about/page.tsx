@@ -3,11 +3,12 @@ import Image from "next/image";
 
 import { FloatingStickers } from "@/components/about/floating-stickers";
 import { ClientLogos } from "@/components/site/client-logos";
-import { CtaBand } from "@/components/site/cta-band";
 import { Footer } from "@/components/site/footer";
+import { ButtonLink } from "@/components/ui/button";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { features, pressQuotes } from "@/lib/about";
+import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Info",
@@ -143,7 +144,49 @@ export default function AboutPage() {
           to reuse them elsewhere, so neither component was deleted, just
           unhooked from this page. */}
 
-      <CtaBand heading="Want him to draw something?" action="Get in touch" />
+      {/* A taste of Contact, not the whole page — the "Want him to draw
+          something?" CTA band wasn't landing, so this closes Info with the
+          same intro line and direct emails Contact opens with, then hands
+          off to the real form with one link rather than embedding it here
+          too. Mirrors the Home -> Work merge in spirit (Info flows straight
+          into a contact moment instead of just linking away) without fully
+          duplicating Contact's page. */}
+      <section>
+        <div className="mx-auto max-w-frame px-6 py-24 md:px-gutter">
+          <h2 className="type-title font-medium text-accent">SAY HELLO</h2>
+          <p className="type-lede mt-5 max-w-md text-ink-muted">
+            Commissions, collaborations, editorial deadlines that are
+            already late — all welcome. Josh reads everything himself and
+            replies within two working days.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-x-12 gap-y-6">
+            <div>
+              <p className="type-label text-ink-muted">Direct Commissions</p>
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="font-body text-[15px] text-ink-muted underline transition-colors hover:text-accent"
+              >
+                {siteConfig.email}
+              </a>
+            </div>
+
+            <div>
+              <p className="type-label text-ink-muted">Agency Contact</p>
+              <a
+                href={`mailto:${siteConfig.agencyEmail}`}
+                className="font-body text-[15px] text-ink-muted underline transition-colors hover:text-accent"
+              >
+                {siteConfig.agencyEmail}
+              </a>
+            </div>
+          </div>
+
+          <ButtonLink href="/contact" className="mt-10">
+            Start a commission
+          </ButtonLink>
+        </div>
+      </section>
 
       {/* The footer now lives only here, not on every page — see
           app/layout.tsx. */}
