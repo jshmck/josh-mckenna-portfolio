@@ -66,7 +66,7 @@ export default async function ProjectPage({
             {project.title}
           </p>
 
-          <h1 className="type-display mt-6 max-w-4xl text-accent">
+          <h1 className="type-display mt-6 max-w-4xl leading-[1.1] text-accent">
             {displayTitle}
           </h1>
 
