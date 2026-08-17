@@ -56,11 +56,7 @@ export default async function ProjectPage({
 
   return (
     <article>
-      {/* Title block — washed in the project's own accent colour. */}
-      <header
-        className="px-6 py-16 md:px-gutter md:py-[60px]"
-        style={{ backgroundColor: project.accent ?? "var(--color-highlight)" }}
-      >
+      <header className="px-6 py-16 md:px-gutter md:py-[60px]">
         <div className="mx-auto max-w-frame">
           <p className="type-label text-ink/60">
             <Link href="/work" className="transition-opacity hover:opacity-70">
@@ -70,7 +66,7 @@ export default async function ProjectPage({
             {project.title}
           </p>
 
-          <h1 className="type-display mt-6 max-w-4xl text-ink">
+          <h1 className="type-display mt-6 max-w-4xl text-accent">
             {displayTitle}
           </h1>
 

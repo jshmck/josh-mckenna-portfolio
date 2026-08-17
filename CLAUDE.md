@@ -27,10 +27,10 @@ Tailwind v4 has **no `tailwind.config.js`**. Tokens live in the `@theme` block i
 ## Hard rules
 
 - **Colour goes through tokens.** Raw hex belongs in the `@theme` block in
-  `globals.css` and nowhere else. Use `bg-canvas`, `text-ink`, `text-ink-muted`,
-  `border-hairline`, `bg-brand`, `text-accent`, `bg-placeholder`. The one
-  sanctioned exception is `Project.accent` in `lib/projects.ts` — a per-project
-  wash is content.
+  `globals.css` and nowhere else, no exceptions. Use `bg-canvas`, `text-ink`,
+  `text-ink-muted`, `border-hairline`, `bg-brand`, `text-accent`,
+  `bg-placeholder`. (Project detail pages used to carry a per-project accent
+  wash behind the title — removed; the title itself is `text-accent` now.)
 - **Never bracket a CSS var.** `bg-canvas`, not `bg-[var(--color-canvas)]`.
   Bracket notation silently drops opacity modifiers: `/30` on a bracketed var
   produces no opacity and no error.

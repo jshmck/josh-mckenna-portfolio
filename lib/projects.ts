@@ -43,11 +43,6 @@ export type Project = {
   discipline: string;
   deliverables: string;
   category: ProjectCategory;
-  /**
-   * Per-project accent wash behind the title block. Defaults to the house
-   * yellow; override to let a piece bring its own colour.
-   */
-  accent?: string;
   /** One line under the card title in grids. */
   summary: string;
   /** Caption printed under the hero image. */
@@ -71,7 +66,6 @@ export const projects: Project[] = [
     discipline: "Festival Identity",
     deliverables: "Key Art · Stage · Wayfinding · Merch",
     category: "Pride",
-    accent: "#e3ddcb",
     summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption:
       "The main stage. The key art runs the full width of the header and repeats on both side panels.",
@@ -125,7 +119,6 @@ export const projects: Project[] = [
     discipline: "Character Series",
     deliverables: "12 Drawings",
     category: "Personal",
-    accent: "#e3dfd5",
     summary: "Twelve people who all missed the last train.",
     heroCaption:
       "Drawn from memory on the top deck of the N29 over about four months.",
