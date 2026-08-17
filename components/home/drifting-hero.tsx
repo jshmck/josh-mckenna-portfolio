@@ -129,7 +129,7 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-9",
-    src: "/illustrations/objects/twingo-final.png",
+    src: "/illustrations/objects/twingo-final-final.png",
     alt: "",
     width: 0.28,
     aspect: 2.058,
