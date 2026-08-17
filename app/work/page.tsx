@@ -27,7 +27,7 @@ export default function WorkPage() {
           object-contain, no Plate frame or background surface. */}
       <div className="relative aspect-[1350/656] w-full max-w-[210px]">
         <Image
-          src="/illustrations/twingo-white.png"
+          src="/illustrations/twingo-white-final.png"
           alt=""
           fill
           sizes="210px"
