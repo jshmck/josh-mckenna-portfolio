@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { FloatingStickers } from "@/components/about/floating-stickers";
 import { ContactContent } from "@/components/contact/contact-content";
+import { BackToTop } from "@/components/ui/back-to-top";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
@@ -155,6 +156,8 @@ export default function AboutPage() {
       <section id="info-contact" className="py-24">
         <ContactContent />
       </section>
+
+      <BackToTop />
     </>
   );
 }
