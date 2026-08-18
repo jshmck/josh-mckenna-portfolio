@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ArrowIcon } from "@/components/ui/arrow-icon";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
@@ -188,14 +187,20 @@ export default async function ProjectPage({
           {/* Bold-on-hover matches the primary nav's own hover treatment
               (font-medium -> font-bold); the arrow nudge is the one thing
               specific to a directional link, so it only exists here, not
-              on "All Work". */}
+              on "All Work". Plain unicode arrows, not Waldeck -- the font
+              has no ← / → glyph at all (confirmed against its cmap, same
+              gap as the missing '&'), so they'd silently fall back to a
+              different font if left inside the type-link span; font-body
+              here keeps them consistent regardless of what surrounds
+              them. Went back to these after trying a custom fletched-
+              arrow SVG (reverted) per Josh: preferred the plain arrows. */}
           {previous ? (
             <Link
               href={`/work/${previous.slug}`}
               className="type-link group inline-flex items-center gap-2 font-medium text-accent hover:font-bold"
             >
-              <span className="transition-transform group-hover:-translate-x-1">
-                <ArrowIcon direction="left" />
+              <span className="font-body transition-transform group-hover:-translate-x-1">
+                ←
               </span>
               PREVIOUS
             </Link>
@@ -216,8 +221,8 @@ export default async function ProjectPage({
               className="type-link group inline-flex items-center justify-end gap-2 font-medium text-accent hover:font-bold"
             >
               NEXT
-              <span className="transition-transform group-hover:translate-x-1">
-                <ArrowIcon direction="right" />
+              <span className="font-body transition-transform group-hover:translate-x-1">
+                →
               </span>
             </Link>
           ) : (
