@@ -224,6 +224,24 @@
   }
 }
 
+/* Same one-shot window as pride-intro/rainbow-pan-intro, but for the
+   Pride pill's own border -- without this the button's plain border-ink
+   stayed solid black through the whole preview, cutting a harsh line
+   across the rainbow reveal underneath it (the same problem the hover
+   state's border colour swap already solved on desktop, just missing
+   here for the mobile intro). Swaps to the ring's own pink for the same
+   stretch the rings/fill are visible, then back. */
+@keyframes pride-border-intro {
+  0%,
+  100% {
+    border-color: var(--color-ink);
+  }
+  20%,
+  70% {
+    border-color: #f7a0c4;
+  }
+}
+
 /* Gentle vertical bob — the 404 page's lost illustration. Pure CSS, so the
    sitewide prefers-reduced-motion rule above neutralises it on its own;
    no JS early-return needed. */
