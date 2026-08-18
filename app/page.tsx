@@ -55,12 +55,16 @@ export default function HomePage() {
       </section>
 
       {/* Clients — moved here from the Info page per Josh, directly below
-          Who. Same title treatment as every other section header on the
-          site. */}
+          Who. Dropped the loud type-title/text-accent treatment those other
+          section titles (Talks & Features, Say Hello) use — Home has no
+          other Waldeck title on the page (Who and Work both go title-less),
+          so the big purple version read as too bold and colourful sitting
+          on its own here. type-label instead, matching the site's quiet
+          eyebrow role. */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
-          <h2 className="type-title text-accent">SeLeCteD CLieNtS</h2>
-          <div className="mt-12">
+          <h2 className="type-label text-ink-muted">Selected Clients</h2>
+          <div className="mt-8">
             <ClientLogos />
           </div>
         </div>
