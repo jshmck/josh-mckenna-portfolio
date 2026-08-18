@@ -27,7 +27,7 @@ export default function NotFound() {
 
       <h1 className="type-display mt-8 text-accent">404</h1>
 
-      <h2 className="type-heading mt-4 text-ink">You&apos;re lost. Josh isn&apos;t.</h2>
+      <h2 className="type-heading mt-4 text-ink">You&apos;re lost.</h2>
       <p className="type-lede mt-4 max-w-md text-ink-muted">
         This page doesn&apos;t exist, but the good news is you can&apos;t
         actually get lost from here. One click and you&apos;re home.
