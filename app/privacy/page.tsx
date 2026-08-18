@@ -20,23 +20,23 @@ export const metadata: Metadata = {
  * deliberately formal, no decoration.
  */
 
-const H2 = "font-body text-lg font-bold text-ink";
-const H3 = "font-body text-[15px] font-bold text-ink";
-const P = "font-body mt-3 text-[15px] leading-relaxed text-ink";
+const H2 = "font-body text-base font-bold text-ink";
+const H3 = "font-body text-[13px] font-bold text-ink";
+const P = "font-body mt-3 text-[13px] leading-relaxed text-ink";
 
 export default function PrivacyPage() {
   return (
     <section>
       <div className="mx-auto max-w-frame px-6 pb-28 pt-16 md:px-gutter">
         <div className="mx-auto max-w-2xl">
-          <h1 className="font-body text-2xl font-bold text-ink">
+          <h1 className="font-body text-xl font-bold text-ink">
             Privacy Policy
           </h1>
-          <p className="font-body mt-2 text-[13px] text-ink-muted">
+          <p className="font-body mt-2 text-[12px] text-ink-muted">
             Last updated: [date to be confirmed at launch]
           </p>
 
-          <p className="font-body mt-8 text-[15px] leading-relaxed text-ink">
+          <p className="font-body mt-8 text-[13px] leading-relaxed text-ink">
             This policy explains what personal information{" "}
             {siteConfig.name} (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects
             through this website, how it is used and shared, the legal
@@ -95,7 +95,7 @@ export default function PrivacyPage() {
                 help us run this website and business, and only to the
                 extent needed for them to perform that service:
               </p>
-              <ul className="font-body mt-3 list-disc space-y-2 pl-5 text-[15px] leading-relaxed text-ink">
+              <ul className="font-body mt-3 list-disc space-y-2 pl-5 text-[13px] leading-relaxed text-ink">
                 <li>Resend, which delivers contact and waitlist messages;</li>
                 <li>
                   Shopify, which processes shop orders and payment once
@@ -118,7 +118,7 @@ export default function PrivacyPage() {
                 Where the UK or EU GDPR applies, we rely on the following
                 legal bases to process your personal information:
               </p>
-              <ul className="font-body mt-3 list-disc space-y-2 pl-5 text-[15px] leading-relaxed text-ink">
+              <ul className="font-body mt-3 list-disc space-y-2 pl-5 text-[13px] leading-relaxed text-ink">
                 <li>
                   <span className={H3}>Contract</span> — to fulfil an
                   order or respond to a request you have made;
