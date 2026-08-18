@@ -29,8 +29,7 @@ export default function NotFound() {
 
       <h2 className="type-heading mt-4 text-ink">You&apos;re lost.</h2>
       <p className="type-lede mt-4 max-w-md text-ink-muted">
-        This page doesn&apos;t exist, but the good news is you can&apos;t
-        actually get lost from here. One click and you&apos;re home.
+        This page doesn&apos;t exist. One click and you&apos;re home.
       </p>
 
       {/* Same pill as the Work page's category filters (components/work/work-gallery.tsx)
