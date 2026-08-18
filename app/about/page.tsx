@@ -35,15 +35,23 @@ export default function AboutPage() {
           {/* Same treatment as the Contact page illustration and Work's
               Twingo/iPad: next/image direct, object-contain, no Plate
               frame or background surface, plus the same cursor-follow
-              tilt as Work (components/ui/tilt-illustration.tsx). Same
-              bearded character as one of the homepage hero objects,
-              copied to its own path so the two stay independent. Height
-              matches Work's illustrations (115px) for consistency. */}
-          <TiltIllustration
-            src="/illustrations/bearded.png"
-            aspect="977/929"
-            height={115}
-          />
+              tilt as Work (components/ui/tilt-illustration.tsx). Both are
+              homepage hero objects, copied to their own paths so the
+              standalone pages stay independent of the hero's orbit.
+              Height matches Work's illustrations (115px) for consistency
+              across all three pages. */}
+          <div className="flex flex-wrap items-end gap-6">
+            <TiltIllustration
+              src="/illustrations/hand.png"
+              aspect="641/873"
+              height={115}
+            />
+            <TiltIllustration
+              src="/illustrations/bearded.png"
+              aspect="977/929"
+              height={115}
+            />
+          </div>
 
           <Reveal className="mt-10 max-w-2xl">
             <p className="type-lede text-ink-muted">
