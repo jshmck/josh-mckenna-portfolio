@@ -297,7 +297,7 @@ export function DriftingHero() {
   }, []);
 
   return (
-    <section className="relative">
+    <section className="relative pb-24">
       <div
         ref={frameRef}
         // `container-type: size` gives the objects cqw/cqh units, so their
