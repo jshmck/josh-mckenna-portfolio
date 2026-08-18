@@ -31,7 +31,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/about"
-              className="type-label mt-8 inline-flex items-center gap-2 whitespace-nowrap text-ink transition-colors hover:text-accent"
+              className="type-label mt-8 inline-flex items-center gap-2 whitespace-nowrap text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
             >
               <span>More about Josh</span>
               <span aria-hidden="true" className="font-body text-base font-normal md:text-lg">

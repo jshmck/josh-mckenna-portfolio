@@ -42,7 +42,7 @@ export function ContactContent() {
           <p className="type-label text-ink-muted">Direct Commissions</p>
           <a
             href={`mailto:${siteConfig.email}`}
-            className="font-body text-[15px] text-ink-muted underline transition-colors hover:text-accent"
+            className="inline-block font-body text-[15px] text-ink-muted underline transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
           >
             {siteConfig.email}
           </a>
@@ -52,7 +52,7 @@ export function ContactContent() {
           <p className="type-label text-ink-muted">Agency Contact</p>
           <a
             href={`mailto:${siteConfig.agencyEmail}`}
-            className="font-body text-[15px] text-ink-muted underline transition-colors hover:text-accent"
+            className="inline-block font-body text-[15px] text-ink-muted underline transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
           >
             {siteConfig.agencyEmail}
           </a>
@@ -66,7 +66,7 @@ export function ContactContent() {
                 target="_blank"
                 rel="noreferrer noopener"
                 aria-label={label}
-                className="block text-ink transition-colors hover:text-accent"
+                className="inline-block text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-accent hover:duration-300 hover:ease-drift"
               >
                 <Icon />
               </a>

@@ -1,4 +1,5 @@
 import {
+  BehanceIcon,
   EmailIcon,
   InstagramIcon,
   LinkedInIcon,
@@ -9,12 +10,14 @@ import { siteConfig } from "@/lib/site";
 
 /** Small, far right — a quiet way to reach Josh from any page, not a
  *  repeat of Contact's own full-size icon row. Email first (not a new
- *  tab), then the same social set/order as contact-content.tsx. */
+ *  tab), then the same social set/order as contact-content.tsx
+ *  (Behance included — this list had drifted out of sync with it). */
 const ICON_SIZE = 14;
 const links = [
   { label: "Email", href: `mailto:${siteConfig.email}`, Icon: EmailIcon, external: false },
   { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon, external: true },
   { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon, external: true },
+  { label: "Behance", href: siteConfig.behance.url, Icon: BehanceIcon, external: true },
   { label: "X", href: siteConfig.x.url, Icon: XIcon, external: true },
   { label: "LinkedIn", href: siteConfig.linkedin.url, Icon: LinkedInIcon, external: true },
 ];
@@ -58,7 +61,7 @@ export function Footer() {
                 href={href}
                 {...(external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
                 aria-label={label}
-                className="block text-ink-muted transition-colors hover:text-accent"
+                className="inline-block text-ink-muted transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-accent hover:duration-300 hover:ease-drift"
               >
                 <Icon size={ICON_SIZE} />
               </a>

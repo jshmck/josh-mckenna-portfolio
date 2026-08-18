@@ -64,7 +64,10 @@ export default async function ProjectPage({
       <header className="px-6 py-16 md:px-gutter md:py-[60px]">
         <div className="mx-auto max-w-frame">
           <p className="type-label text-ink">
-            <Link href="/work" className="hover:font-bold">
+            <Link
+              href="/work"
+              className="inline-block transition-[font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:font-bold hover:duration-300 hover:ease-drift"
+            >
               Work
             </Link>
             {"  /  "}

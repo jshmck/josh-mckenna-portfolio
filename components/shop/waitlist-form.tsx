@@ -66,7 +66,7 @@ export function WaitlistForm() {
             brand/canvas :active look mirroring a chip's selected state. */}
         <button
           type="submit"
-          className="font-display shrink-0 rounded-full border border-ink px-4 py-2 text-[11px] font-medium tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas"
+          className="font-display shrink-0 rounded-full border border-ink px-4 py-2 text-[11px] font-medium tracking-[0.02em] text-ink-muted transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas"
         >
           {toWaldeckCase("NOTIFY ME")}
         </button>

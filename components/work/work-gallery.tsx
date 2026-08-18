@@ -47,7 +47,11 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * bordered/filled button below. On hover it reveals a pride-flag treatment
  * underneath the label (pink/light-blue/white rings around a rainbow
  * fill), pure CSS, no image asset. Idle and active states otherwise match
- * every other pill so it doesn't stand out until you touch it.
+ * every other pill so it doesn't stand out until you touch it. Hover
+ * bounce (scale-105, duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)])
+ * matches BackToTop's exact recipe, not the simpler asymmetric-easing
+ * scale used on plain text links — this is a filled/outlined pill like
+ * that button, not a bare link.
  *
  * Label goes through toWaldeckCase() rather than a CSS `uppercase` class
  * (same as every other chip below) — the site's universal Waldeck-casing
@@ -66,7 +70,7 @@ function PrideFilterButton({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`font-display group relative overflow-hidden rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.02em] transition-colors ${
+      className={`font-display group relative overflow-hidden rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
         active
           ? "bg-brand text-canvas"
           : "border border-ink text-ink-muted hover:border-transparent hover:text-ink"
@@ -127,7 +131,7 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
               type="button"
               onClick={() => setFilter(option)}
               aria-pressed={active}
-              className={`font-display rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.02em] transition-colors ${
+              className={`font-display rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
                 active
                   ? "bg-brand text-canvas"
                   : "border border-ink text-ink-muted hover:border-brand hover:text-brand"
