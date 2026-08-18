@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
@@ -194,7 +195,7 @@ export default async function ProjectPage({
               className="type-link group inline-flex items-center gap-2 font-medium text-accent hover:font-bold"
             >
               <span className="transition-transform group-hover:-translate-x-1">
-                ←
+                <ArrowIcon direction="left" />
               </span>
               PREVIOUS
             </Link>
@@ -216,7 +217,7 @@ export default async function ProjectPage({
             >
               NEXT
               <span className="transition-transform group-hover:translate-x-1">
-                →
+                <ArrowIcon direction="right" />
               </span>
             </Link>
           ) : (
