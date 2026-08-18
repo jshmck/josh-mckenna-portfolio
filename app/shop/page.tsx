@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { WaitlistForm } from "@/components/shop/waitlist-form";
 import { Plate } from "@/components/ui/plate";
+import { Reveal } from "@/components/ui/reveal";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -29,12 +30,18 @@ export default function ShopPage() {
   return (
     <div className="mx-auto max-w-frame px-6 pb-20 pt-8 md:px-gutter">
       <div className="mx-auto max-w-xl text-center">
-        <h1 className="type-heading text-ink">
-          Prints, stickers and other small things.
-        </h1>
-        <p className="type-lede mt-5 text-ink-muted">
-          Not open yet. Leave an email and you&apos;ll hear the moment it is.
-        </p>
+        {/* Same fade + rise as Info's intro paragraph -- was missing here
+            (and on Contact), so this text just appeared instantly instead
+            of springing up like the rest of the site. */}
+        <Reveal>
+          <h1 className="type-heading text-ink">
+            Prints, stickers and other small things.
+          </h1>
+          <p className="type-lede mt-5 text-ink-muted">
+            Not open yet. Leave an email and you&apos;ll hear the moment it
+            is.
+          </p>
+        </Reveal>
 
         <div className="mt-10">
           <WaitlistForm />

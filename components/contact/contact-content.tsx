@@ -1,4 +1,5 @@
 import { EnquiryForm } from "@/components/contact/enquiry-form";
+import { Reveal } from "@/components/ui/reveal";
 import {
   BehanceIcon,
   InstagramIcon,
@@ -30,11 +31,16 @@ export function ContactContent() {
   return (
     <div className="mx-auto grid max-w-frame items-start gap-14 px-6 md:grid-cols-2 md:px-gutter">
       <div>
-        <p className="type-lede max-w-md text-ink-muted">
-          Commissions, collaborations, editorial deadlines that are already
-          late — all welcome. Josh reads everything himself and replies
-          within two working days.
-        </p>
+        {/* Same fade + rise as Info's intro paragraph -- was missing here,
+            so this text just appeared instantly instead of springing up
+            like the rest of the site. */}
+        <Reveal>
+          <p className="type-lede max-w-md text-ink-muted">
+            Commissions, collaborations, editorial deadlines that are
+            already late — all welcome. Josh reads everything himself and
+            replies within two working days.
+          </p>
+        </Reveal>
 
         {/* Moved here from the old sitewide footer — same treatment,
             same text size/format. */}
