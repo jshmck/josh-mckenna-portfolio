@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { FloatingStickers } from "@/components/about/floating-stickers";
 import { ContactContent } from "@/components/contact/contact-content";
 import { ClientLogos } from "@/components/site/client-logos";
-import { Footer } from "@/components/site/footer";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
@@ -158,10 +157,6 @@ export default function AboutPage() {
       <section id="info-contact" className="py-24">
         <ContactContent />
       </section>
-
-      {/* The footer now lives only here, not on every page — see
-          app/layout.tsx. */}
-      <Footer />
     </>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo_Black, Space_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
+import { Footer } from "@/components/site/footer";
 import { Nav } from "@/components/site/nav";
 import { siteConfig } from "@/lib/site";
 
@@ -84,6 +85,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main" className="flex-1">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );

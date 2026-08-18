@@ -5,12 +5,14 @@ import { siteConfig } from "@/lib/site";
  * list, and contact details that used to live here moved into the Info
  * and Contact pages' own content (see app/about/page.tsx and
  * app/contact/page.tsx) — Josh wanted them as real page content, not
- * footer chrome. Lives only on the Info page (see app/about/page.tsx),
- * not in the root layout.
+ * footer chrome. Lives in the root layout so it's on every page — the
+ * AI-training notice needs to be visible wherever a visitor lands, not
+ * just on Info, which most people arriving via search or a shared link
+ * would never scroll to.
  */
 export function Footer() {
   return (
-    <footer>
+    <footer className="border-t border-hairline">
       <div className="mx-auto max-w-frame px-6 py-10 md:px-gutter">
         {/* Two explicit paragraphs, not one long run-on string — this
             sentence is too long to fit type-label's mono/uppercase

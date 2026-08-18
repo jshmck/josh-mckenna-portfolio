@@ -78,13 +78,13 @@ app/
   work/[slug]/page.tsx project template (generateStaticParams)
   about/ contact/ shop/
 components/
-  site/     nav · footer · marquee · cta-band     (chrome — nav is every
-                                                     page, footer is Info-
-                                                     page-only; marquee and
-                                                     cta-band exist but
-                                                     aren't currently
-                                                     rendered anywhere, see
-                                                     below)
+  site/     nav · footer · marquee · cta-band     (chrome — nav and footer
+                                                     are both in the root
+                                                     layout, every page;
+                                                     marquee and cta-band
+                                                     exist but aren't
+                                                     currently rendered
+                                                     anywhere, see below)
   ui/       plate · button · reveal · parallax    (primitives)
   home/     drifting-hero                        (page-specific)
   about/    decompose-sequence · floating-stickers
@@ -99,11 +99,13 @@ lib/
   about.ts      clients, press quotes, talks & features, sequence captions
 ```
 
-**The footer is deliberately not in `app/layout.tsx`.** Josh asked for it
-off every page except Info — it's rendered directly at the bottom of
-`app/about/page.tsx` instead. Don't move `<Footer />` back into the root
-layout as a "fix"; that would put it back on all six pages, which is the
-opposite of what was asked.
+**The footer lives in `app/layout.tsx`, on every page.** It used to be
+Info-only, deliberately kept out of the root layout — reversed because the
+copyright/AI-training notice needs to be visible wherever a visitor lands,
+not just on the one page most people arriving via search or a shared link
+would never scroll to. It's a thin `border-t border-hairline` block, not
+the old client-list/talks-and-features chrome (that content lives in the
+Info and Contact pages themselves now).
 
 **Two pages scroll straight into the next one, with no click and no URL
 change.** Home embeds the real Work gallery inline (`app/page.tsx`'s
