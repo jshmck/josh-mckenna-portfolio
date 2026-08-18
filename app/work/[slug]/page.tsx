@@ -18,9 +18,15 @@ import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
  * (e.g. "NIgHt") reads as deliberate rather than a single outlier. Every
  * project title gets this; project.title itself keeps normal casing for
  * the breadcrumb, gallery cards and metadata.
+ *
+ * Waldeck (trial) also has no '&' glyph at all — confirmed against the
+ * font's cmap, not just a rendering guess — so "Gus & Mabel" would fall
+ * back to a different font mid-word for just that character. Spelled out
+ * as "AND" instead, same as the "TALKS AND FEATURES" section title.
  */
 function toDisplayTitle(title: string) {
   return title
+    .replace(/&/g, "AND")
     .split("")
     .map((char) =>
       ["e", "j", "k", "g", "i", "t"].includes(char.toLowerCase())
