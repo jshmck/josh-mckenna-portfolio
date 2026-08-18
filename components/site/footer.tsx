@@ -50,14 +50,16 @@ export function Footer() {
           <p className="font-body text-[11px] text-ink-muted">
             Copyright © {new Date().getFullYear()} {siteConfig.name}. All
             rights reserved.{" "}
-            {legalLinks.map(({ label, href }) => (
-              <Link
-                key={label}
-                href={href}
-                className="underline-offset-2 transition-colors hover:text-accent hover:underline"
-              >
-                {label}
-              </Link>
+            {legalLinks.map(({ label, href }, index) => (
+              <span key={label}>
+                {index > 0 && " · "}
+                <Link
+                  href={href}
+                  className="underline-offset-2 transition-colors hover:text-accent hover:underline"
+                >
+                  {label}
+                </Link>
+              </span>
             ))}
           </p>
           <p className="font-body mt-1 text-[11px] text-ink-muted">
