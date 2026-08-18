@@ -105,7 +105,7 @@ To add real artwork: drop the file in `public/`, set `src` on the image object i
 | --------------------- | ----------------------------------------------------------------------- |
 | **Display typeface**  | Waldeck is on trial weights — resolve the licence before launch.         |
 | **Commerce channel**  | Shopify vs Stripe vs print-on-demand. Restructures `/shop` entirely.     |
-| **Form backend**      | Both forms send via Resend (needs `RESEND_API_KEY`; contact uses a sandbox sender until the domain is verified, waitlist needs `RESEND_SEGMENT_ID` for its contacts segment). Both have a honeypot field. |
+| **Form backend**      | Both forms send via Resend (needs `RESEND_API_KEY`; contact uses a sandbox sender until the domain is verified, waitlist needs `RESEND_AUDIENCE_ID` for its contacts audience). Both have a honeypot field. |
 | **Josh's city**       | `siteConfig.location` says London; the wireframe says `[CITY]`.          |
 | **Real copy**         | Project write-ups are placeholder prose in Josh's voice, not his words.  |
 | **Terms page**        | Footer links `/terms`, which doesn't exist yet.                         |

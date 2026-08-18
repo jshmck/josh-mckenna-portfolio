@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 /**
  * Server-side shop waitlist handler. Replaces the old mailto: hand-off (see
  * git history on components/shop/waitlist-form.tsx) with a real signup:
- * the address is added as a contact in Resend, in the segment set by
- * RESEND_SEGMENT_ID (Resend's dashboard still labels this "Audience" in
- * places, but the SDK's create-contact call takes a segment id — get it
- * from Audiences/Segments → the list Josh wants shop signups in).
+ * the address is added as a contact in the Resend Audience identified by
+ * RESEND_AUDIENCE_ID (Resend dashboard → Audiences → the list Josh wants
+ * shop signups in → the id is in the URL, or the "</>" code snippet next
+ * to "+ Add contacts").
  */
 type WaitlistPayload = {
   email?: unknown;
@@ -21,10 +21,10 @@ function isNonEmptyString(value: unknown): value is string {
 
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
-  const segmentId = process.env.RESEND_SEGMENT_ID;
+  const audienceId = process.env.RESEND_AUDIENCE_ID;
 
-  if (!apiKey || !segmentId) {
-    console.error("RESEND_API_KEY or RESEND_SEGMENT_ID is not set");
+  if (!apiKey || !audienceId) {
+    console.error("RESEND_API_KEY or RESEND_AUDIENCE_ID is not set");
     return NextResponse.json(
       { error: "The waitlist isn't configured yet." },
       { status: 500 },
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
   const { error } = await resend.contacts.create({
     email,
-    segments: [{ id: segmentId }],
+    audienceId,
   });
 
   if (error) {
