@@ -15,6 +15,13 @@ const RESTING_OFFSET = 32;
  * the global `scroll-behavior` CSS rule (and its reduced-motion override)
  * decides smooth vs instant, rather than duplicating that logic here.
  *
+ * Pops in rather than just fading — scale + a small rise, eased with the
+ * same overshoot/bounce curve the compact nav header uses (nav.tsx), so it
+ * reads as an established site motion rather than a one-off. The global
+ * prefers-reduced-motion rule in globals.css (transition-duration:
+ * 0.01ms !important) neutralises the bounce automatically, no extra guard
+ * needed here.
+ *
  * Fixed to the viewport at rest, but docks 32px above the footer's top edge
  * once the footer scrolls into view, rather than sitting on top of it. That
  * offset changes on every scroll frame while the footer is entering, so it's
@@ -65,8 +72,10 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
-      className={`font-display fixed bottom-8 right-8 z-30 rounded-full bg-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-canvas shadow-lg transition-opacity duration-300 hover:opacity-80 ${
-        visible ? "opacity-100" : "pointer-events-none opacity-0"
+      className={`font-display fixed bottom-8 right-8 z-30 rounded-full bg-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-canvas shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:opacity-80 ${
+        visible
+          ? "translate-y-0 scale-100 opacity-100"
+          : "pointer-events-none translate-y-4 scale-50 opacity-0"
       }`}
     >
       Back to top
