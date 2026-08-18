@@ -30,10 +30,26 @@ const RATIO_CYCLE: ImageRatio[] = ["4/5", "3/4", "1/1", "5/4", "3/4", "4/5"];
  *  to react to the active filter category -- that per-category logic
  *  was tried and reverted, but the row stayed here since this is still
  *  the natural place to key it off `filter` once real per-category art
- *  exists. Same pair regardless of filter for now. */
+ *  exists. Same pair regardless of filter for now.
+ *
+ *  height is a clamp(), not a flat 115 -- at a flat height the pair's
+ *  combined width (twingo ~236px + ipad ~168px + the row's gap) doesn't
+ *  fit a phone-width container and wraps to two lines. clamp's preferred
+ *  value (20vw) only drops below its 115px ceiling under ~575px of
+ *  viewport width, so every breakpoint this project treats as "desktop"
+ *  renders at exactly 115px, identical to before -- only phones shrink,
+ *  continuously rather than snapping at a breakpoint. */
 const ILLUSTRATIONS = [
-  { src: "/illustrations/twingo-green-final.png", aspect: "1350/656", height: 115 },
-  { src: "/illustrations/ipad.png", aspect: "961/655", height: 115 },
+  {
+    src: "/illustrations/twingo-green-final.png",
+    aspect: "1350/656",
+    height: "clamp(60px, 20vw, 115px)",
+  },
+  {
+    src: "/illustrations/ipad.png",
+    aspect: "961/655",
+    height: "clamp(60px, 20vw, 115px)",
+  },
 ];
 
 /** Rainbow fill, top to bottom — bright/saturated to match Josh's mockup
@@ -94,6 +110,20 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * colour is the outer ring's own pink (#F7A0C4), not border-ink -- solid
  * black read as a harsh line cutting across the rainbow reveal; the pink
  * reads as part of the flag treatment instead.
+ *
+ * The reveal is pure hover:, which is invisible on touch -- Tailwind's
+ * hover: variant compiles to @media (hover: hover), deliberately excluding
+ * coarse-pointer devices so a tap never leaves a stuck hover state. That
+ * meant the flag never showed at all on mobile, and a filter pill has no
+ * natural "hover to discover" moment on touch anyway. Fix: on
+ * pointer-coarse devices (real @media (pointer: coarse), unrelated to
+ * hover), the rings + panning rainbow fill play once automatically a
+ * moment after the page loads (pride-intro/rainbow-pan-intro keyframes,
+ * globals.css) instead of waiting on interaction, then settle back to the
+ * plain resting pill — a one-shot "there's more here" preview rather than
+ * a permanently-different mobile state. Fine-pointer devices are
+ * untouched: pointer-coarse: never matches a mouse, so desktop's
+ * hover-only behaviour is unchanged.
  */
 function PrideFilterButton({
   active,
@@ -117,13 +147,13 @@ function PrideFilterButton({
         <span
           key={color}
           aria-hidden="true"
-          className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-coarse:animate-[pride-intro_2.4s_ease-in-out_500ms_1]"
           style={{ inset: `${i * 2}px`, backgroundColor: color }}
         />
       ))}
       <span
         aria-hidden="true"
-        className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:animate-[rainbow-pan_1.5s_linear_infinite] group-hover:opacity-100"
+        className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:animate-[rainbow-pan_1.5s_linear_infinite] group-hover:opacity-100 pointer-coarse:animate-[rainbow-pan-intro_2.4s_ease-in-out_500ms_1]"
         style={{
           inset: `${PRIDE_RINGS.length * 2}px`,
           background: prideStripeGradient,
@@ -166,7 +196,7 @@ export function WorkGallery({
           into WorkGallery made it start showing up on Home's embedded
           gallery too, which it never did before. */}
       {showIllustrations && (
-        <div className="mb-10 flex flex-wrap items-end gap-6">
+        <div className="mb-10 flex flex-nowrap items-end gap-4 sm:gap-6">
           {ILLUSTRATIONS.map(({ src, aspect, height }) => (
             <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
           ))}

@@ -185,6 +185,45 @@
   }
 }
 
+/* One-shot preview of the Pride pill's flag treatment for touch devices,
+   which never see the hover-driven reveal above (work-gallery.tsx's
+   pointer-coarse: usage) -- fades the rings in, holds, fades back out.
+   Single run (see the animation-iteration-count in the Tailwind class
+   that references this), so it plays once as the page loads rather than
+   looping. */
+@keyframes pride-intro {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  20%,
+  70% {
+    opacity: 1;
+  }
+}
+
+/* Same one-shot preview as pride-intro, for the rainbow fill layer --
+   combines the opacity flash with a background-position pan so the fill
+   itself visibly moves during its moment on screen instead of sitting
+   static. */
+@keyframes rainbow-pan-intro {
+  0% {
+    opacity: 0;
+    background-position: 0% 0%;
+  }
+  20% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    background-position: 0% 150%;
+  }
+  100% {
+    opacity: 0;
+    background-position: 0% 200%;
+  }
+}
+
 /* Gentle vertical bob — the 404 page's lost illustration. Pure CSS, so the
    sitewide prefers-reduced-motion rule above neutralises it on its own;
    no JS early-return needed. */

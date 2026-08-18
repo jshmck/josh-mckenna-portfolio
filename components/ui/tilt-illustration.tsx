@@ -21,7 +21,9 @@ type TiltIllustrationProps = {
    *  cut-out on the site) — pass a real string for one that isn't. */
   alt?: string;
   aspect: string;
-  height: number;
+  /** Number for a fixed px height, or a CSS length string (e.g. a
+   *  clamp()) for one that responds to viewport size. */
+  height: number | string;
 };
 
 export function TiltIllustration({
