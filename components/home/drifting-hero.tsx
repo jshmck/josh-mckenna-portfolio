@@ -338,19 +338,19 @@ export function DriftingHero() {
             >
               {/* A clean cut-out, no frosted card — on hover/focus it just
                   lifts (scale + tilt), and lifts above its neighbours via
-                  the z-index bump on the wrapper. md:scale-[1.25] is a flat
-                  desktop-only size bump per Josh ("bigger on web") — a CSS
-                  transform, not a change to object.width, so it never
-                  touches the orbit/bounds math above (all keyed off the
-                  untouched width fraction) and mobile is untouched below
-                  md. The hover/focus target bumps proportionally with it
+                  the z-index bump on the wrapper. max-md:scale-[1.25] is a
+                  flat mobile-only size bump per Josh — a CSS transform, not
+                  a change to object.width, so it never touches the
+                  orbit/bounds math above (all keyed off the untouched
+                  width fraction) and desktop is unaffected from md up. The
+                  hover/focus target bumps proportionally with it
                   (1.25 * 1.03) so hovering still reads as the same ~3%
                   lift on top of rest, not a snap back down to 1.03. */}
               <div
                 ref={(node) => {
                   plateRefs.current[index] = node;
                 }}
-                className="relative scale-100 transition-[scale_500ms_var(--ease-drift),rotate_150ms_ease-out] group-hover:scale-[1.03] group-focus-within:scale-[1.03] md:scale-[1.25] md:group-hover:scale-[1.29] md:group-focus-within:scale-[1.29]"
+                className="relative scale-100 transition-[scale_500ms_var(--ease-drift),rotate_150ms_ease-out] group-hover:scale-[1.03] group-focus-within:scale-[1.03] max-md:scale-[1.25] max-md:group-hover:scale-[1.29] max-md:group-focus-within:scale-[1.29]"
                 style={{ aspectRatio: String(object.aspect) }}
               >
                 <Image
