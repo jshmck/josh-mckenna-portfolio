@@ -1,84 +1,129 @@
 import type { Metadata } from "next";
 
+import { siteConfig } from "@/lib/site";
+
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "How Josh McKenna collects, uses and stores your data.",
 };
 
 /**
- * Placeholder copy only — pending review by a qualified person before
- * launch (see GitHub issue #6). Data flows at launch, per Josh: the
- * Contact form and Shop waitlist form both send name/email/message to
- * Resend (components/contact/enquiry-form.tsx,
- * components/shop/waitlist-form.tsx, app/api/contact,
- * app/api/waitlist), plus an analytics provider (not yet chosen/wired
- * in) tracking which work people look at. All three trigger UK/EU
- * GDPR once live. Whoever drafts the real policy should confirm this
- * list is still accurate and add retention periods + a
- * deletion-request process.
+ * Drafted from Josh's own notes (data collected, purpose, third
+ * parties, retention, deletion), not independently researched — this
+ * has not been reviewed by a solicitor and should be before launch
+ * (see GitHub issue #6). "Our analytics provider" and "our hosting
+ * provider" are left unnamed until those are chosen; update once
+ * they're wired in. Plain font-body throughout (bold headings,
+ * regular body) rather than the display/accent treatment used
+ * elsewhere on the site — deliberately formal, no decoration.
  */
 export default function PrivacyPage() {
   return (
     <section>
       <div className="mx-auto max-w-frame px-6 pb-28 pt-16 md:px-gutter">
         <div className="mx-auto max-w-2xl">
-          <h1 className="type-display text-ink">PRIVACY POLICY</h1>
-          <p className="type-lede mt-6 text-ink-muted">
-            This page is a placeholder. The final policy has not yet been
-            reviewed by a qualified person and should not be relied on.
+          <h1 className="font-body text-2xl font-bold text-ink">
+            Privacy Policy
+          </h1>
+          <p className="font-body mt-2 text-[13px] text-ink-muted">
+            Last updated: [date to be confirmed at launch]
           </p>
 
-          <div className="mt-16 space-y-12">
+          <p className="font-body mt-8 text-[15px] leading-relaxed text-ink">
+            This policy explains what personal data {siteConfig.name}{" "}
+            collects through this website, why it is collected, who else
+            may see it, how long it is kept, and how to request its
+            deletion.
+          </p>
+
+          <div className="mt-14 space-y-10">
             <div>
-              <h2 className="type-heading text-accent">
-                Data we collect
+              <h2 className="font-body text-lg font-bold text-ink">
+                1. What we collect
               </h2>
-              <p className="font-body mt-3 text-[15px] text-ink-muted">
-                Placeholder — to be confirmed. The Contact form and Shop
-                waitlist form collect a name, email address and message
-                when submitted; an analytics tool collects usage data
+              <p className="font-body mt-3 text-[15px] leading-relaxed text-ink">
+                When you use the contact form, we collect your name,
+                email address and the content of your message.
+              </p>
+              <p className="font-body mt-3 text-[15px] leading-relaxed text-ink">
+                When you join the shop waitlist, we collect your email
+                address.
+              </p>
+              <p className="font-body mt-3 text-[15px] leading-relaxed text-ink">
+                When you browse this website, we collect analytics data,
                 such as which pages and projects are viewed.
               </p>
             </div>
 
             <div>
-              <h2 className="type-heading text-accent">
-                Why we collect it
+              <h2 className="font-body text-lg font-bold text-ink">
+                2. Why we collect it
               </h2>
-              <p className="font-body mt-3 text-[15px] text-ink-muted">
-                Placeholder — to be confirmed. Used to respond to
-                enquiries, to notify the waitlist when Shop opens, and
-                to understand which work people engage with.
+              <p className="font-body mt-3 text-[15px] leading-relaxed text-ink">
+                Contact form and waitlist data is used to reply to your
+                enquiry and, for the waitlist, to notify you when the
+                shop opens. Analytics data is used to understand which
+                work people look at and to improve the website.
               </p>
             </div>
 
             <div>
-              <h2 className="type-heading text-accent">
-                Who has access
+              <h2 className="font-body text-lg font-bold text-ink">
+                3. Who else sees it
               </h2>
-              <p className="font-body mt-3 text-[15px] text-ink-muted">
-                Placeholder — to be confirmed. Form submissions are
-                processed by Resend; usage data is processed by an
-                analytics provider; both plus this site are hosted by
-                a hosting provider.
+              <p className="font-body mt-3 text-[15px] leading-relaxed text-ink">
+                Contact and waitlist submissions are processed by our
+                email delivery provider, Resend. Analytics data is
+                processed by our analytics provider. This website is
+                hosted by our hosting provider. We do not sell your
+                data, and we do not share it with anyone else.
               </p>
             </div>
 
             <div>
-              <h2 className="type-heading text-accent">
-                How long we keep it
+              <h2 className="font-body text-lg font-bold text-ink">
+                4. How long we keep it
               </h2>
-              <p className="font-body mt-3 text-[15px] text-ink-muted">
-                Placeholder — retention period to be confirmed.
+              <p className="font-body mt-3 text-[15px] leading-relaxed text-ink">
+                Contact form and waitlist data is kept for as long as
+                needed to respond to your enquiry or to run the
+                waitlist, and is deleted once it is no longer needed
+                for that purpose. Analytics data is retained according
+                to our analytics provider&rsquo;s default retention
+                period.
               </p>
             </div>
 
             <div>
-              <h2 className="type-heading text-accent">
-                Requesting deletion
+              <h2 className="font-body text-lg font-bold text-ink">
+                5. Requesting deletion
               </h2>
-              <p className="font-body mt-3 text-[15px] text-ink-muted">
-                Placeholder — contact process to be confirmed.
+              <p className="font-body mt-3 text-[15px] leading-relaxed text-ink">
+                To request that your data be deleted, or to ask what
+                data we hold about you, email{" "}
+                <a
+                  href={`mailto:${siteConfig.email}`}
+                  className="underline underline-offset-2"
+                >
+                  {siteConfig.email}
+                </a>
+                . We will respond within a reasonable time.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="font-body text-lg font-bold text-ink">
+                6. Contact
+              </h2>
+              <p className="font-body mt-3 text-[15px] leading-relaxed text-ink">
+                Questions about this policy can be sent to{" "}
+                <a
+                  href={`mailto:${siteConfig.email}`}
+                  className="underline underline-offset-2"
+                >
+                  {siteConfig.email}
+                </a>
+                .
               </p>
             </div>
           </div>
