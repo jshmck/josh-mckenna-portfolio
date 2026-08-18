@@ -170,18 +170,16 @@ export function Nav() {
             {/* Home link. Small enough to not reintroduce the wordiness
                 "Home" was cut for, brand-blue per the wordmark colour rule,
                 real lowercase j (not font-variant-caps) matching the hero's
-                "jOSH" — see the file doc comment above. Already font-black
-                (900) at rest, so there's no heavier weight to hover into
-                like the project nav's font-medium -> hover:font-black --
-                a playful scale+tilt bounce instead. Same asymmetric-
-                easing trick as that nav: entering hover uses
-                hover:duration-300 hover:ease-drift (the site's reveal
-                curve, suits growing into the pop), leaving falls back to
-                the base duration-200 ease-in-out for a cleaner revert. */}
+                "jOSH" — see the file doc comment above. Tried a bespoke
+                scale+tilt bounce first, but Josh wanted it to match the
+                pills/chips/buttons instead -- same BackToTop-family
+                recipe now (duration-500 ease-[cubic-bezier(0.34,1.56,
+                0.64,1)] hover:scale-105) as every other filled/outlined
+                pill on the site, no rotate. */}
             <Link
               href="/"
               aria-label="Josh McKenna — home"
-              className="font-display text-lg font-black text-brand transition-transform duration-200 ease-in-out hover:-rotate-6 hover:scale-110 hover:duration-300 hover:ease-drift"
+              className="font-display text-lg font-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105"
             >
               jM
             </Link>
