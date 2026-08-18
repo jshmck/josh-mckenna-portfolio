@@ -170,16 +170,16 @@ export function Nav() {
             {/* Home link. Small enough to not reintroduce the wordiness
                 "Home" was cut for, brand-blue per the wordmark colour rule,
                 real lowercase j (not font-variant-caps) matching the hero's
-                "jOSH" — see the file doc comment above. Tried a bespoke
-                scale+tilt bounce first, but Josh wanted it to match the
-                pills/chips/buttons instead -- same BackToTop-family
-                recipe now (duration-500 ease-[cubic-bezier(0.34,1.56,
-                0.64,1)] hover:scale-105) as every other filled/outlined
-                pill on the site, no rotate. */}
+                "jOSH" — see the file doc comment above. Same BackToTop-
+                family easing as every pill/chip/button on the site
+                (duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]), but
+                bigger and with a tilt -- jM is the one brand mark, not a
+                utility pill, so it gets a more pronounced version of the
+                same bounce rather than the exact scale-105. */}
             <Link
               href="/"
               aria-label="Josh McKenna — home"
-              className="font-display text-lg font-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105"
+              className="font-display text-lg font-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125"
             >
               jM
             </Link>
