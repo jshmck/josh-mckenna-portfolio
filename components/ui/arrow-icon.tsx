@@ -13,8 +13,8 @@ type ArrowIconProps = {
 export function ArrowIcon({ direction = "right" }: ArrowIconProps) {
   return (
     <svg
-      viewBox="0 0 26 16"
-      width="24"
+      viewBox="0 0 36 16"
+      width="32"
       height="14"
       aria-hidden="true"
       style={direction === "left" ? { transform: "scaleX(-1)" } : undefined}
@@ -27,14 +27,18 @@ export function ArrowIcon({ direction = "right" }: ArrowIconProps) {
         strokeLinejoin="round"
         d="M2 5 L6 8 L2 11"
       />
-      <line x1="5" y1="8" x2="19" y2="8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      {/* Shaft runs all the way to the head's tip (33,8), not just to
+          where its arms start (26) -- otherwise the line stops short in
+          the open space between the two arms and reads as disconnected
+          from the arrowhead. */}
+      <line x1="5" y1="8" x2="33" y2="8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       <path
         fill="none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M16 3 L23 8 L16 13"
+        d="M26 3 L33 8 L26 13"
       />
     </svg>
   );
