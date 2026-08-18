@@ -13,8 +13,8 @@ export const PROJECT_CATEGORIES = [
   "Pride",
   "Editorial",
   "Mural",
+  "Automotive",
   "3D",
-  "Personal",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
@@ -118,7 +118,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Character Series",
     deliverables: "12 Drawings",
-    category: "Personal",
+    category: "Character",
     summary: "Twelve people who all missed the last train.",
     heroCaption:
       "Drawn from memory on the top deck of the N29 over about four months.",
@@ -241,7 +241,7 @@ export const projects: Project[] = [
     year: 2023,
     discipline: "Flash Sheet",
     deliverables: "24 Designs",
-    category: "Personal",
+    category: "Character",
     summary: "A flash sheet drawn as a favour that got out of hand.",
     heroCaption: "The full sheet. Nine of these now exist on people.",
     brief: [
@@ -253,6 +253,26 @@ export const projects: Project[] = [
     gallery: [
       { ratio: "1/1", alt: "Row one, detail" },
       { ratio: "1/1", alt: "A healed piece, six months on" },
+    ],
+  },
+  {
+    slug: "personal-fleet",
+    title: "The Personal Fleet",
+    client: "Personal",
+    year: 2025,
+    discipline: "Automotive Illustration",
+    deliverables: "Ongoing series",
+    category: "Automotive",
+    summary: "Cars he was never asked to draw, drawn anyway.",
+    heroCaption: "Photo placeholder — swap in the real image once Josh sends it over.",
+    brief: [
+      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    ],
+    credits: [{ role: "Everything", name: "Josh McKenna" }],
+    hero: { ratio: "16/10", alt: "Photo placeholder — The Personal Fleet" },
+    gallery: [
+      { ratio: "4/5", alt: "Photo placeholder — The Personal Fleet, piece 2" },
+      { ratio: "4/5", alt: "Photo placeholder — The Personal Fleet, piece 3" },
     ],
   },
 ];
