@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { BackToTop } from "@/components/ui/back-to-top";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
@@ -84,8 +83,8 @@ export default async function ProjectPage({
     <article>
       <header className="px-6 py-16 md:px-gutter md:py-[60px]">
         <div className="mx-auto max-w-frame">
-          <p className="type-label text-ink/60">
-            <Link href="/work" className="transition-opacity hover:opacity-70">
+          <p className="type-label text-ink">
+            <Link href="/work" className="hover:font-bold">
               Work
             </Link>
             {"  /  "}
@@ -231,11 +230,6 @@ export default async function ProjectPage({
           )}
         </div>
       </nav>
-
-      {/* Placeholder pill, same as Home/Work -- Josh wants this swapped
-          for a snail icon/drawing eventually, but the functional button
-          goes back in now rather than leaving the page without one. */}
-      <BackToTop />
     </article>
   );
 }
