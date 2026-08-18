@@ -7,13 +7,15 @@ export const metadata: Metadata = {
 
 /**
  * Placeholder copy only — pending review by a qualified person before
- * launch (see GitHub issue #6). Real data flows on this site today:
- * the Contact form and Shop waitlist form both send name/email/message
- * to Resend (components/contact/enquiry-form.tsx,
+ * launch (see GitHub issue #6). Data flows at launch, per Josh: the
+ * Contact form and Shop waitlist form both send name/email/message to
+ * Resend (components/contact/enquiry-form.tsx,
  * components/shop/waitlist-form.tsx, app/api/contact,
- * app/api/waitlist); there is no analytics provider wired in yet.
- * Whoever drafts the real policy should confirm that list is still
- * accurate and add retention periods + a deletion-request process.
+ * app/api/waitlist), plus an analytics provider (not yet chosen/wired
+ * in) tracking which work people look at. All three trigger UK/EU
+ * GDPR once live. Whoever drafts the real policy should confirm this
+ * list is still accurate and add retention periods + a
+ * deletion-request process.
  */
 export default function PrivacyPage() {
   return (
@@ -32,9 +34,10 @@ export default function PrivacyPage() {
                 Data we collect
               </h2>
               <p className="font-body mt-3 text-[15px] text-ink-muted">
-                Placeholder — to be confirmed. Currently the Contact form
-                and Shop waitlist form collect a name, email address and
-                message when submitted.
+                Placeholder — to be confirmed. The Contact form and Shop
+                waitlist form collect a name, email address and message
+                when submitted; an analytics tool collects usage data
+                such as which pages and projects are viewed.
               </p>
             </div>
 
@@ -44,7 +47,8 @@ export default function PrivacyPage() {
               </h2>
               <p className="font-body mt-3 text-[15px] text-ink-muted">
                 Placeholder — to be confirmed. Used to respond to
-                enquiries and to notify the waitlist when Shop opens.
+                enquiries, to notify the waitlist when Shop opens, and
+                to understand which work people engage with.
               </p>
             </div>
 
@@ -54,7 +58,9 @@ export default function PrivacyPage() {
               </h2>
               <p className="font-body mt-3 text-[15px] text-ink-muted">
                 Placeholder — to be confirmed. Form submissions are
-                processed by Resend and the hosting provider.
+                processed by Resend; usage data is processed by an
+                analytics provider; both plus this site are hosted by
+                a hosting provider.
               </p>
             </div>
 
