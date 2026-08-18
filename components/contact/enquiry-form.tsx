@@ -34,6 +34,7 @@ export function EnquiryForm() {
     const name = String(data.get("name") ?? "").trim();
     const email = String(data.get("email") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
+    const company = String(data.get("company") ?? "").trim();
 
     const found: Errors = {};
     if (!name) found.name = "What's your name?";
@@ -54,7 +55,7 @@ export function EnquiryForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, message, company }),
       });
 
       if (!response.ok) {
@@ -88,9 +89,24 @@ export function EnquiryForm() {
     <form
       onSubmit={submit}
       noValidate
-      className="rounded-3xl border border-ink p-6 md:p-8"
+      className="relative rounded-3xl border border-ink p-6 md:p-8"
     >
       <h2 className="type-title text-accent">SAy HeLLO</h2>
+
+      {/* Honeypot — hidden from sighted and screen-reader visitors alike;
+          bots that fill every field trip the server-side check in
+          app/api/contact/route.ts. Off-screen, not display:none, since
+          some bots skip fields hidden that way. */}
+      <div className="absolute left-[-9999px]" aria-hidden="true">
+        <label htmlFor="company">Company</label>
+        <input
+          id="company"
+          name="company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
 
       <div className="mt-8 space-y-6">
         <div>

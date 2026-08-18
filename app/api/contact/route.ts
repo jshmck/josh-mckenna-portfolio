@@ -23,6 +23,8 @@ type ContactPayload = {
   name?: unknown;
   email?: unknown;
   message?: unknown;
+  /** Honeypot — real visitors never see or fill this field, bots do. */
+  company?: unknown;
 };
 
 function isNonEmptyString(value: unknown): value is string {
@@ -47,7 +49,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const { name, email, message } = payload;
+  const { name, email, message, company } = payload;
+
+  // Bots fill every field including the honeypot; report success without
+  // sending so they don't learn to leave it blank.
+  if (isNonEmptyString(company)) {
+    return NextResponse.json({ ok: true });
+  }
 
   if (!isNonEmptyString(name) || !isNonEmptyString(email) || !isNonEmptyString(message)) {
     return NextResponse.json({ error: "Name, email and message are all required." }, { status: 400 });
