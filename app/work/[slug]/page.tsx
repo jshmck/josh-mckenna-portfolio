@@ -168,15 +168,28 @@ export default async function ProjectPage({
         ))}
       </div>
 
-      {/* Previous / all / next */}
+      {/* Previous / all / next — Waldeck + purple like the Info page's
+          section titles (type-title font-medium text-accent), but at
+          type-link's smaller scale: three of these sit in one row, and
+          full type-title size (clamps up to 3.5rem) would dominate the
+          footer and wrap badly on mobile. Generic labels instead of the
+          neighbour's actual title -- the arrows plus "All Work" in the
+          middle already establish these are project-to-project links, so
+          "Project" on each side was redundant. type-link was already in
+          globals.css for exactly this "smaller Waldeck link" role and
+          had no callers yet. */}
       <nav aria-label="Project navigation">
-        <div className="mx-auto flex max-w-frame flex-wrap items-center justify-between gap-4 px-6 py-10 md:px-gutter">
+        {/* Grid, not flex-wrap justify-between -- with three items of
+            uneven width, flex-wrap can drop just the last one onto its
+            own line at narrow widths instead of wrapping the whole row.
+            A fixed 3-column grid guarantees each link its own slot. */}
+        <div className="mx-auto grid max-w-frame grid-cols-3 items-center gap-4 px-6 py-10 md:px-gutter">
           {previous ? (
             <Link
               href={`/work/${previous.slug}`}
-              className="type-label text-ink-muted transition-colors hover:text-accent"
+              className="type-link font-medium text-accent transition-opacity hover:opacity-70"
             >
-              ← {previous.title}
+              ← PREVIOUS
             </Link>
           ) : (
             <span />
@@ -184,17 +197,17 @@ export default async function ProjectPage({
 
           <Link
             href="/work"
-            className="type-label text-ink transition-colors hover:text-accent"
+            className="type-link text-center font-medium text-accent transition-opacity hover:opacity-70"
           >
-            All work
+            ALL WORK
           </Link>
 
           {next ? (
             <Link
               href={`/work/${next.slug}`}
-              className="type-label text-ink-muted transition-colors hover:text-accent"
+              className="type-link text-right font-medium text-accent transition-opacity hover:opacity-70"
             >
-              {next.title} →
+              NEXT →
             </Link>
           ) : (
             <span />
