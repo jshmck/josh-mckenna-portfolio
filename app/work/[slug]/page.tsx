@@ -5,39 +5,15 @@ import { notFound } from "next/navigation";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
+import { toWaldeckCase } from "@/lib/waldeck-case";
 
 /**
- * All-caps display title, except 'e', 'j', 'k', 'g', 'i', 't' and 'y'
- * stay real lowercase — the same brand quirk as the homepage wordmark
- * (jOSH / MCkeNNA). Waldeck (trial) turned out to have no true descender
- * on any lowercase letter (checked the glyph outlines directly: 'g'
- * bottoms out at y=0, same as the capital 'H' — not a CSS clipping
- * issue, the letterform itself doesn't extend below the baseline), so a
- * lone lowercase 'g' just reads as an odd short letter, not a drop.
- * Adding 'i' and 't' gives it company — a run of lowercase letters
- * together (e.g. "NIgHt") reads as deliberate rather than a single
- * outlier. 'y' joined later for a different reason: the capital Y glyph
- * is a blocky fork that reads as a "T" at display size, confirmed by
- * rendering both at 300px and comparing (capital Y vs lowercase y, which
- * has a real curved descender tail) — lowercase disambiguates it. Every
- * project title gets this; project.title itself keeps normal casing for
- * the breadcrumb, gallery cards and metadata.
- *
- * Waldeck (trial) also has no '&' glyph at all — confirmed against the
- * font's cmap, not just a rendering guess — so "Gus & Mabel" would fall
- * back to a different font mid-word for just that character. Spelled out
- * as "AND" instead, same as the "TALKS AND FEATURES" section title.
+ * project.title itself keeps normal casing for the breadcrumb, gallery
+ * cards and metadata — only the big display h1 gets the Waldeck-casing
+ * treatment (see lib/waldeck-case.ts for the rule and why).
  */
 function toDisplayTitle(title: string) {
-  return title
-    .replace(/&/g, "AND")
-    .split("")
-    .map((char) =>
-      ["e", "j", "k", "g", "i", "t", "y"].includes(char.toLowerCase())
-        ? char.toLowerCase()
-        : char.toUpperCase(),
-    )
-    .join("");
+  return toWaldeckCase(title);
 }
 
 /** Every project is known at build time, so all detail pages prerender. */
@@ -221,11 +197,19 @@ export default async function ProjectPage({
               jump -- Helvetica Bold (700) is already the heaviest cut
               loaded for font-body, no heavier weight to hover into, so
               a 0.6px -webkit-text-stroke fakes the extra boldness
-              instead, on top of the existing scale/nudge. */}
+              instead, on top of the existing scale/nudge. Asymmetric
+              transition on purpose: entering hover uses hover:duration-300
+              hover:ease-drift (the site's reveal-animation curve, a
+              strong deceleration that suits Chrome's font-weight
+              synthesis growing into Black), but CSS reads whichever
+              state you're transitioning INTO, so leaving hover falls
+              back to the base duration-200 ease-in-out instead --
+              ease-drift's long settle looked janky shrinking back down,
+              a plain ease-in-out reverts cleaner. */}
           {previous ? (
             <Link
               href={`/work/${previous.slug}`}
-              className="type-link group inline-flex items-center gap-2 font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-300 ease-drift hover:font-black hover:tracking-[0.02em]"
+              className="type-link group inline-flex items-center gap-2 font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-200 ease-in-out hover:font-black hover:tracking-[0.02em] hover:duration-300 hover:ease-drift"
             >
               <span className="font-body text-lg font-bold transition-transform [-webkit-text-stroke:0px] group-hover:-translate-x-2 group-hover:scale-125 group-hover:[-webkit-text-stroke:0.6px_currentColor]">
                 ←
@@ -238,7 +222,7 @@ export default async function ProjectPage({
 
           <Link
             href="/work"
-            className="type-link text-center font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-300 ease-drift hover:font-black hover:tracking-[0.02em]"
+            className="type-link text-center font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-200 ease-in-out hover:font-black hover:tracking-[0.02em] hover:duration-300 hover:ease-drift"
           >
             ALL WORK
           </Link>
@@ -246,7 +230,7 @@ export default async function ProjectPage({
           {next ? (
             <Link
               href={`/work/${next.slug}`}
-              className="type-link group inline-flex items-center justify-end gap-2 font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-300 ease-drift hover:font-black hover:tracking-[0.02em]"
+              className="type-link group inline-flex items-center justify-end gap-2 font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-200 ease-in-out hover:font-black hover:tracking-[0.02em] hover:duration-300 hover:ease-drift"
             >
               NEXT
               <span className="font-body text-lg font-bold transition-transform [-webkit-text-stroke:0px] group-hover:translate-x-2 group-hover:scale-125 group-hover:[-webkit-text-stroke:0.6px_currentColor]">
