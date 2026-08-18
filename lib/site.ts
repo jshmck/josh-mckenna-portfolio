@@ -45,14 +45,15 @@ export const siteConfig = {
 
 /* Deviates from the original Figma nav (node 85:420, HOME · WORK · INFO ·
    CONTACT on the left with SHOP + CART on the far right) — Josh moved Shop
-   into the left-hand group. Placed between Work and Info rather than
-   Home/Work or Info/Contact specifically because those two pairs merge on
-   scroll (see nav.tsx's MERGE_ENTER/EXIT — Home flows into Work, Info flows
-   into Contact with no click), so Shop sits in the one slot that doesn't
-   split either pairing. Cart stays alone on the far right. INFO points at
-   /about — the "info" label, same page. */
+   into the left-hand group, then dropped the "Home" label entirely to cut
+   down on wordiness: the small "jM" wordmark rendered separately in
+   nav.tsx (not part of this list) is the home link now. Shop sits between
+   Work and Info rather than Home/Work or Info/Contact specifically because
+   those two pairs merge on scroll (see nav.tsx's MERGE_ENTER/EXIT — Home
+   flows into Work, Info flows into Contact with no click), so Shop sits in
+   the one slot that doesn't split either pairing. Cart stays alone on the
+   far right. INFO points at /about — the "info" label, same page. */
 export const navLinks: NavLink[] = [
-  { label: "Home", href: "/" },
   { label: "Work", href: "/work" },
   { label: "Shop", href: "/shop" },
   { label: "Info", href: "/about" },

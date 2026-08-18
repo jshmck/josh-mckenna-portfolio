@@ -7,8 +7,13 @@ import { useEffect, useState } from "react";
 import { navLinks } from "@/lib/site";
 
 /**
- * Fixed nav — Home/Work/Shop/Info/Contact on the left, Cart alone on the
- * far right. Client-side only for `usePathname` and
+ * Fixed nav — a small "jM" wordmark (the home link) then Work/Shop/Info/
+ * Contact on the left, Cart alone on the far right. The wordmark reuses
+ * the same lowercase-j quirk as the homepage hero's "jOSH" (see
+ * drifting-hero.tsx) rather than getting its own pattern invented — it's
+ * always brand-blue and doesn't participate in isActive() below, since a
+ * logo mark reads as "go home," not as a page-state indicator the way the
+ * text links do. Client-side only for `usePathname` and
  * the scroll-driven compact state; the active link (purple, bold) is the
  * other piece of state here.
  *
@@ -120,16 +125,13 @@ export function Nav() {
     // animating a layout property every frame, not re-adding a listener.
   }, [pathname]);
 
-  // "/" would match every route under startsWith, so home is exact-match
-  // only. On "/", only Home or Work can ever be active — Work borrows the
-  // highlight once the embedded gallery has scrolled under the header,
-  // Home cedes it. Same shape on "/about": only Info or Contact can be
-  // active there.
+  // On "/", only Work can ever be active (once the embedded gallery has
+  // scrolled under the header) — the wordmark isn't in navLinks, so there's
+  // no "Home" case to handle here any more. Same shape on "/about": only
+  // Info or Contact can be active there.
   const isActive = (href: string) => {
     if (pathname === "/") {
-      if (href === "/work") return homeWorkActive;
-      if (href === "/") return !homeWorkActive;
-      return false;
+      return href === "/work" && homeWorkActive;
     }
     if (pathname === "/about") {
       if (href === "/contact") return infoContactActive;
@@ -155,23 +157,37 @@ export function Nav() {
               : "h-[88px] ease-drift"
           }`}
         >
-          <ul className="flex items-center gap-5 md:gap-8">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  aria-current={isActive(link.href) ? "page" : undefined}
-                  className={`font-body text-[11px] transition-colors ${
-                    isActive(link.href)
-                      ? "font-bold text-accent"
-                      : "text-ink-muted hover:font-bold hover:text-accent"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="flex items-center gap-6 md:gap-10">
+            {/* Home link. Small enough to not reintroduce the wordiness
+                "Home" was cut for, brand-blue per the wordmark colour rule,
+                real lowercase j (not font-variant-caps) matching the hero's
+                "jOSH" — see the file doc comment above. */}
+            <Link
+              href="/"
+              aria-label="Josh McKenna — home"
+              className="font-display text-lg font-black text-brand transition-opacity hover:opacity-70"
+            >
+              jM
+            </Link>
+
+            <ul className="flex items-center gap-5 md:gap-8">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    aria-current={isActive(link.href) ? "page" : undefined}
+                    className={`font-body text-[11px] transition-colors ${
+                      isActive(link.href)
+                        ? "font-bold text-accent"
+                        : "text-ink-muted hover:font-bold hover:text-accent"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <ul className="ml-5 flex shrink-0 items-center gap-5 md:ml-8 md:gap-8">
             <li>
