@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { siteConfig } from "@/lib/site";
+import { toWaldeckCase } from "@/lib/waldeck-case";
 
 /**
  * Waitlist capture for the unopened shop.
@@ -65,9 +66,9 @@ export function WaitlistForm() {
             brand/canvas :active look mirroring a chip's selected state. */}
         <button
           type="submit"
-          className="font-display shrink-0 rounded-full border border-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas"
+          className="font-display shrink-0 rounded-full border border-ink px-4 py-2 text-[11px] font-medium tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas"
         >
-          NOTIFY ME
+          {toWaldeckCase("NOTIFY ME")}
         </button>
       </div>
       {error && (

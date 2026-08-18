@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { siteConfig } from "@/lib/site";
+import { toWaldeckCase } from "@/lib/waldeck-case";
 
 /**
  * Commission enquiry form.
@@ -152,9 +153,9 @@ export function EnquiryForm() {
           which has no persistent "selected" identity of its own). */}
       <button
         type="submit"
-        className="font-display mt-8 rounded-full border border-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas"
+        className="font-display mt-8 rounded-full border border-ink px-4 py-2 text-[11px] font-medium tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas"
       >
-        HOWDY
+        {toWaldeckCase("HOWDY")}
       </button>
     </form>
   );

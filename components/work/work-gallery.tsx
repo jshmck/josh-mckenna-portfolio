@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 
 import { ProjectCard } from "@/components/work/project-card";
 import type { ImageRatio, Project, ProjectCategory } from "@/lib/projects";
+import { toWaldeckCase } from "@/lib/waldeck-case";
 
 type WorkGalleryProps = {
   projects: Project[];
@@ -47,6 +48,11 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * underneath the label (pink/light-blue/white rings around a rainbow
  * fill), pure CSS, no image asset. Idle and active states otherwise match
  * every other pill so it doesn't stand out until you touch it.
+ *
+ * Label goes through toWaldeckCase() rather than a CSS `uppercase` class
+ * (same as every other chip below) — the site's universal Waldeck-casing
+ * quirk needs literal per-letter case in the rendered text, which a CSS
+ * transform can't produce.
  */
 function PrideFilterButton({
   active,
@@ -60,7 +66,7 @@ function PrideFilterButton({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`font-display group relative overflow-hidden rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-colors ${
+      className={`font-display group relative overflow-hidden rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.02em] transition-colors ${
         active
           ? "bg-brand text-canvas"
           : "border border-ink text-ink-muted hover:border-transparent hover:text-ink"
@@ -80,7 +86,7 @@ function PrideFilterButton({
         style={{ inset: `${PRIDE_RINGS.length * 2}px`, background: prideStripeGradient }}
       />
       <span className="relative z-10 transition-colors duration-300 group-hover:text-black">
-        Pride
+        {toWaldeckCase("Pride")}
       </span>
     </button>
   );
@@ -121,13 +127,13 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
               type="button"
               onClick={() => setFilter(option)}
               aria-pressed={active}
-              className={`font-display rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-colors ${
+              className={`font-display rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.02em] transition-colors ${
                 active
                   ? "bg-brand text-canvas"
                   : "border border-ink text-ink-muted hover:border-brand hover:text-brand"
               }`}
             >
-              {option}
+              {toWaldeckCase(option)}
             </button>
           );
         })}

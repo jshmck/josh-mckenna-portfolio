@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { toWaldeckCase } from "@/lib/waldeck-case";
+
 /** Resting distance from the viewport bottom, px — matches Tailwind's bottom-8. */
 const RESTING_OFFSET = 32;
 
@@ -16,7 +18,9 @@ const RESTING_OFFSET = 32;
  * site (everything else is flat colour/outline), so it came off in favour
  * of this. Black border, not the blue hairline token, so it reads as a
  * neutral outline at rest rather than pre-empting the brand-blue active
- * state.
+ * state. Label goes through toWaldeckCase() (universal site-wide Waldeck
+ * casing quirk) rather than a CSS `uppercase` class, which can't produce
+ * the per-letter case the quirk needs.
  *
  * Appears once the page has scrolled past one viewport height and smooth-
  * scrolls to top on click. Omits an explicit `behavior` from `scrollTo` so
@@ -80,13 +84,13 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
-      className={`font-display fixed bottom-8 right-8 z-30 rounded-full border border-ink bg-canvas/15 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-ink backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas ${
+      className={`font-display fixed bottom-8 right-8 z-30 rounded-full border border-ink bg-canvas/15 px-4 py-2 text-[11px] font-medium tracking-[0.02em] text-ink backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas ${
         visible
           ? "translate-y-0 scale-100 opacity-100"
           : "pointer-events-none translate-y-4 scale-50 opacity-0"
       }`}
     >
-      Back to top
+      {toWaldeckCase("Back to top")}
     </button>
   );
 }
