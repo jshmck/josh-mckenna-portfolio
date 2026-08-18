@@ -52,7 +52,7 @@ export function Footer() {
             rights reserved.{" "}
             {legalLinks.map(({ label, href }, index) => (
               <span key={label}>
-                {index > 0 && " · "}
+                {index > 0 && " "}
                 <Link
                   href={href}
                   className="underline-offset-2 transition-colors hover:text-accent hover:underline"

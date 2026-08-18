@@ -30,7 +30,7 @@ export default function PrivacyPage() {
       <div className="mx-auto max-w-frame px-6 pb-28 pt-16 md:px-gutter">
         <div className="mx-auto max-w-2xl">
           <h1 className="font-body text-xl font-bold text-ink">
-            Privacy Policy
+            Privacy Policy.
           </h1>
           <p className="font-body mt-2 text-[12px] text-ink-muted">
             Last updated: [date to be confirmed at launch]
