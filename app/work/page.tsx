@@ -16,7 +16,7 @@ export const metadata: Metadata = {
  *  surface. Order is the order they land in the row, left to right. */
 const ILLUSTRATIONS = [
   { src: "/illustrations/twingo-green-final.png", aspect: "1350/656", height: 115 },
-  { src: "/illustrations/ipad.png", aspect: "981/655", height: 115 },
+  { src: "/illustrations/ipad.png", aspect: "961/655", height: 115 },
 ];
 
 export default function WorkPage() {
