@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -60,9 +59,16 @@ export function WaitlistForm() {
           aria-describedby={error ? "waitlist-error" : undefined}
           className="w-full rounded-full border border-hairline bg-canvas px-5 py-3 font-body text-[15px] text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none sm:w-72"
         />
-        <Button type="submit" variant="quiet" className="shrink-0">
-          Notify me
-        </Button>
+        {/* Styled like the Work page's filter chips / the contact form's
+            HOWDY button, not the shared Button component — same rest/hover
+            treatment (ink outline -> brand outline), plus a filled
+            brand/canvas :active look mirroring a chip's selected state. */}
+        <button
+          type="submit"
+          className="font-display shrink-0 rounded-full border border-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas"
+        >
+          NOTIFY ME
+        </button>
       </div>
       {error && (
         <p id="waitlist-error" className="type-label mt-3 text-accent">
