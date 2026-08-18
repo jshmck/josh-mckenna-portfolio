@@ -7,16 +7,19 @@ import { Reveal } from "@/components/ui/reveal";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 
 /**
- * All-caps display title, except 'e', 'j' and 'k' stay real lowercase —
- * the same brand quirk as the homepage wordmark (jOSH / MCkeNNA). Every
- * project title gets this; project.title itself keeps normal casing for
- * the breadcrumb, gallery cards and metadata.
+ * All-caps display title, except 'e', 'j', 'k' and 'g' stay real
+ * lowercase — the same brand quirk as the homepage wordmark (jOSH /
+ * MCkeNNA), extended to 'g' per Josh: unlike e/j/k (which sit at
+ * near-cap-height in Waldeck), a real lowercase 'g' keeps its descender
+ * and drops below the baseline as normal. Every project title gets this;
+ * project.title itself keeps normal casing for the breadcrumb, gallery
+ * cards and metadata.
  */
 function toDisplayTitle(title: string) {
   return title
     .split("")
     .map((char) =>
-      ["e", "j", "k"].includes(char.toLowerCase())
+      ["e", "j", "k", "g"].includes(char.toLowerCase())
         ? char.toLowerCase()
         : char.toUpperCase(),
     )
