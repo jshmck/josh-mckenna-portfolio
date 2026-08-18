@@ -7,8 +7,12 @@ const VARIANT: Record<Variant, string> = {
   /* The blue pill — reserved for the commission path. */
   primary: "bg-brand text-canvas hover:scale-[1.04]",
   /* Outline, for anything that isn't asking for money. Same rule as the
-     Work page's filter chips: black outline at rest, blue on hover. */
-  quiet: "border border-ink text-ink hover:border-brand",
+     Work page's filter chips: black outline/muted text at rest, both blue
+     on hover, and — for the one submit-button use (shop waitlist) — an
+     active state mirroring a chip's selected fill, same as the contact
+     form's HOWDY button. */
+  quiet:
+    "border border-ink text-ink-muted hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas",
 };
 
 const BASE =

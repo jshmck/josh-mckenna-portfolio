@@ -57,7 +57,7 @@ export function WaitlistForm() {
           autoComplete="email"
           aria-invalid={Boolean(error)}
           aria-describedby={error ? "waitlist-error" : undefined}
-          className="w-full rounded-full border border-hairline bg-canvas px-5 py-3 font-body text-[15px] text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none sm:w-72"
+          className="w-full rounded-full border border-ink bg-canvas px-5 py-3 font-body text-[15px] text-ink transition-colors placeholder:text-ink-muted focus:border-brand focus:outline-none sm:w-72"
         />
         {/* Styled like the Work page's filter chips / the contact form's
             HOWDY button, not the shared Button component — same rest/hover
