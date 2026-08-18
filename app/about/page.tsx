@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { FloatingStickers } from "@/components/about/floating-stickers";
 import { ContactContent } from "@/components/contact/contact-content";
-import { ClientLogos } from "@/components/site/client-logos";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
@@ -18,10 +17,11 @@ export const metadata: Metadata = {
  * No visible page title — Josh wants the content to open the page, not a
  * labelled header. A screen-reader-only h1 keeps the page's heading
  * structure intact; the browser tab title still says "Info" via metadata
- * above. Only Talks & Features and Selected Clients get visible titles —
- * Press doesn't, its quote-plus-attribution format already reads as press
- * on its own. Titles use type-heading + text-ink, matching the homepage
- * "WHO" section heading.
+ * above. Only Talks & Features gets a visible title — Press doesn't, its
+ * quote-plus-attribution format already reads as press on its own.
+ * Selected Clients lives on the homepage now, not here (see app/page.tsx).
+ * Titles use type-title + text-accent, matching the rest of the site's
+ * section headers.
  */
 export default function AboutPage() {
   return (
@@ -98,24 +98,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Clients — moved above Talks & Features per Josh, titled like
-          every other section title on the site. */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
-          <h2 className="type-title text-accent">SeLeCteD CLieNtS</h2>
-          <div className="mt-12">
-            <ClientLogos />
-          </div>
-        </div>
-      </section>
-
       {/* Talks & features — one merged list now, not a compact text list
           plus a separate rich-card version of the same events. Real event
           names, placeholder photos/video and captions until Josh sends the
           real assets over (same "visible until real content lands"
           pattern Plate uses everywhere else on the site). */}
       <section>
-        <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
           <h2 className="type-title text-accent">TALkS AND FeAtUReS</h2>
           <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (

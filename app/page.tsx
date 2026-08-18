@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { DriftingHero } from "@/components/home/drifting-hero";
+import { ClientLogos } from "@/components/site/client-logos";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { Parallax } from "@/components/ui/parallax";
 import { Plate } from "@/components/ui/plate";
@@ -50,6 +51,18 @@ export default function HomePage() {
               sizes="(max-width: 768px) 100vw, 45vw"
             />
           </Parallax>
+        </div>
+      </section>
+
+      {/* Clients — moved here from the Info page per Josh, directly below
+          Who. Same title treatment as every other section header on the
+          site. */}
+      <section>
+        <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
+          <h2 className="type-title text-accent">SeLeCteD CLieNtS</h2>
+          <div className="mt-12">
+            <ClientLogos />
+          </div>
         </div>
       </section>
 
