@@ -1,5 +1,6 @@
 import { EnquiryForm } from "@/components/contact/enquiry-form";
 import {
+  BehanceIcon,
   InstagramIcon,
   LinkedInIcon,
   ThreadsIcon,
@@ -11,6 +12,7 @@ import { siteConfig } from "@/lib/site";
 const socials = [
   { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon },
   { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon },
+  { label: "Behance", href: siteConfig.behance.url, Icon: BehanceIcon },
   { label: "X", href: siteConfig.x.url, Icon: XIcon },
   { label: "LinkedIn", href: siteConfig.linkedin.url, Icon: LinkedInIcon },
 ];
