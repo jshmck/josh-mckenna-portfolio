@@ -7,19 +7,23 @@ import { Reveal } from "@/components/ui/reveal";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 
 /**
- * All-caps display title, except 'e', 'j', 'k' and 'g' stay real
- * lowercase — the same brand quirk as the homepage wordmark (jOSH /
- * MCkeNNA), extended to 'g' per Josh: unlike e/j/k (which sit at
- * near-cap-height in Waldeck), a real lowercase 'g' keeps its descender
- * and drops below the baseline as normal. Every project title gets this;
- * project.title itself keeps normal casing for the breadcrumb, gallery
- * cards and metadata.
+ * All-caps display title, except 'e', 'j', 'k', 'g', 'i' and 't' stay
+ * real lowercase — the same brand quirk as the homepage wordmark (jOSH /
+ * MCkeNNA). Waldeck (trial) turned out to have no true descender on any
+ * lowercase letter (checked the glyph outlines directly: 'g' bottoms out
+ * at y=0, same as the capital 'H' — not a CSS clipping issue, the
+ * letterform itself doesn't extend below the baseline), so a lone
+ * lowercase 'g' just reads as an odd short letter, not a drop. Adding
+ * 'i' and 't' gives it company — a run of lowercase letters together
+ * (e.g. "NIgHt") reads as deliberate rather than a single outlier. Every
+ * project title gets this; project.title itself keeps normal casing for
+ * the breadcrumb, gallery cards and metadata.
  */
 function toDisplayTitle(title: string) {
   return title
     .split("")
     .map((char) =>
-      ["e", "j", "k", "g"].includes(char.toLowerCase())
+      ["e", "j", "k", "g", "i", "t"].includes(char.toLowerCase())
         ? char.toLowerCase()
         : char.toUpperCase(),
     )
