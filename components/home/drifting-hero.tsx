@@ -43,7 +43,8 @@ const OBJECTS: DriftObject[] = [
     id: "ambient-1",
     src: "/illustrations/objects/face.png",
     alt: "",
-    width: 0.185,
+    /* 0.185 -> 0.17 per Josh -- "slightly smaller, not a lot." */
+    width: 0.17,
     aspect: 0.795,
     angle: rad(235),
     rx: 0.33,
@@ -65,7 +66,9 @@ const OBJECTS: DriftObject[] = [
     id: "info",
     src: "/illustrations/objects/bearded.png",
     alt: "",
-    width: 0.19,
+    /* 0.19 -> 0.15 -> 0.12 per Josh, in two passes -- this is "his
+       head," reading too large next to the rest of the set. */
+    width: 0.12,
     aspect: 1.052,
     angle: rad(150),
     rx: 0.35,
@@ -100,7 +103,12 @@ const OBJECTS: DriftObject[] = [
     alt: "",
     width: 0.26,
     aspect: 2.317,
-    angle: rad(100),
+    /* Nudged from 100deg -- started only 30deg from the silver Twingo
+       (ambient-9, 70deg) on a near-identical orbit radius, so the two
+       cars kept passing close enough to clash. Same rx/ry/spin/size,
+       just more angular separation, per Josh: fix it without changing
+       the movement much. */
+    angle: rad(135),
     rx: 0.31,
     ry: 0.32,
     spin: rad(-5),
