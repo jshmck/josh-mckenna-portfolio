@@ -14,7 +14,7 @@ import { legalLinks, siteConfig } from "@/lib/site";
  *  repeat of Contact's own full-size icon row. Email first (not a new
  *  tab), then the same social set/order as contact-content.tsx
  *  (Behance included — this list had drifted out of sync with it). */
-const ICON_SIZE = 14;
+const ICON_SIZE = 18;
 const links = [
   { label: "Email", href: `mailto:${siteConfig.email}`, Icon: EmailIcon, external: false },
   { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon, external: true },
@@ -41,7 +41,7 @@ export function Footer() {
     <footer className="border-t border-hairline">
       <div className="mx-auto flex max-w-frame flex-wrap items-center justify-between gap-6 px-6 py-10 md:px-gutter">
         <div>
-          <p className="font-body text-[11px] text-ink-muted">
+          <p className="font-body text-[13px] text-ink-muted">
             Copyright © {new Date().getFullYear()} {siteConfig.name}. All
             rights reserved.{" "}
             {legalLinks.map(({ label, href }, index) => (

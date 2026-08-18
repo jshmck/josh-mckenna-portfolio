@@ -28,8 +28,12 @@ import { navLinks } from "@/lib/site";
  *
  * Starts at 88px and shrinks to a compact 40px past 120px of scroll (back
  * below 60px re-expands it — the gap between the two is deliberate
- * hysteresis so it doesn't flicker at the boundary). Text stays the same
- * size, only the bar's height and padding shrink. Shrinking uses a slight
+ * hysteresis so it doesn't flicker at the boundary). Link text is 13px,
+ * jM is text-xl — bumped up from an earlier 11px/text-lg pass that read
+ * too small on larger screens, since max-w-frame caps the bar's width but
+ * nothing scaled the type up to fill more of it. Text stays the same size
+ * across the compact/expanded states, only the bar's height and padding
+ * shrink. Shrinking uses a slight
  * overshoot easing so the header settles with a small bounce; expanding
  * eases back out smoothly instead. Background is the same colourless
  * frosted-glass treatment as the hero's floating-object hover cards
@@ -191,7 +195,7 @@ export function Nav() {
             <Link
               href="/"
               aria-label="Josh McKenna — home"
-              className="font-display text-lg font-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125"
+              className="font-display text-xl font-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125"
             >
               jM
             </Link>
@@ -208,7 +212,7 @@ export function Nav() {
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`inline-block font-body text-[11px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
+                    className={`inline-block font-body text-[13px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
@@ -226,7 +230,7 @@ export function Nav() {
               <Link
                 href="/shop"
                 aria-current={isActive("/shop") ? "page" : undefined}
-                className={`inline-block font-body text-[11px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
+                className={`inline-block font-body text-[13px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
                   isActive("/shop")
                     ? "font-bold text-accent"
                     : "text-ink hover:font-bold hover:text-accent"
