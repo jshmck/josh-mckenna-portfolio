@@ -4,12 +4,12 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 /**
- * The homepage hero: six illustration cut-outs orbiting the JOSH McKenna
+ * The homepage hero: nine illustration cut-outs orbiting the JOSH McKenna
  * wordmark, each on its own slow elliptical path so the composition keeps a
  * gravity around the centre and never crowds the text. Nearby objects still
  * lean away from the cursor.
  *
- * All six are purely decorative (`aria-hidden`) — none of them double as
+ * All of them are purely decorative (`aria-hidden`) — none double as
  * navigation; the site nav already covers Work/Info/Shop/Contact. On
  * hover/focus each object just lifts (scale + cursor-tilt) — no frosted
  * card, no boxed outline, nothing but the cut-out itself moving.
@@ -96,22 +96,6 @@ const OBJECTS: DriftObject[] = [
     rx: 0.32,
     ry: 0.35,
     spin: rad(6),
-  },
-  {
-    id: "ambient-6",
-    src: "/illustrations/objects/car-pink.png",
-    alt: "",
-    width: 0.26,
-    aspect: 2.317,
-    /* Nudged from 100deg -- started only 30deg from the silver Twingo
-       (ambient-9, 70deg) on a near-identical orbit radius, so the two
-       cars kept passing close enough to clash. Same rx/ry/spin/size,
-       just more angular separation, per Josh: fix it without changing
-       the movement much. */
-    angle: rad(135),
-    rx: 0.31,
-    ry: 0.32,
-    spin: rad(-5),
   },
   {
     id: "ambient-7",
