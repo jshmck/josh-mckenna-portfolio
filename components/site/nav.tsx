@@ -76,6 +76,21 @@ export function Nav() {
   const [homeWorkActive, setHomeWorkActive] = useState(false);
   const [infoContactActive, setInfoContactActive] = useState(false);
 
+  // Nav never unmounts across a client-side route change (it lives in the
+  // root layout), so `compact` could otherwise keep carrying the
+  // scrolled-down state from whichever page you clicked away from. A fresh
+  // navigation always lands at the top of the new page, so reset here the
+  // moment `pathname` changes -- React's documented pattern for adjusting
+  // state during render rather than in an effect (which would trail a
+  // frame behind and risks a flash of the wrong header height). Bypasses
+  // the update()/scroll-listener path below entirely, so there's no
+  // dependency on a 'scroll' event actually firing to correct it.
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setCompact(false);
+  }
+
   useEffect(() => {
     let raf = 0;
     let queued = false;
