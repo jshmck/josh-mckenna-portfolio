@@ -199,7 +199,7 @@ export default async function ProjectPage({
               href={`/work/${previous.slug}`}
               className="type-link group inline-flex items-center gap-2 font-medium text-accent hover:font-bold"
             >
-              <span className="font-body transition-transform group-hover:-translate-x-1">
+              <span className="font-body transition-transform group-hover:-translate-x-2">
                 ←
               </span>
               PREVIOUS
@@ -221,7 +221,7 @@ export default async function ProjectPage({
               className="type-link group inline-flex items-center justify-end gap-2 font-medium text-accent hover:font-bold"
             >
               NEXT
-              <span className="font-body transition-transform group-hover:translate-x-1">
+              <span className="font-body transition-transform group-hover:translate-x-2">
                 →
               </span>
             </Link>
