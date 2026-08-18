@@ -65,6 +65,6 @@ export const marqueeWords = ["ALWAYS DRAWING", "NEVER STILL"] as const;
 
 /** Footer-only legal links, separate from the primary nav above. */
 export const legalLinks: NavLink[] = [
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms of Service", href: "/terms" },
+  { label: "Privacy.", href: "/privacy" },
+  { label: "Terms.", href: "/terms" },
 ];

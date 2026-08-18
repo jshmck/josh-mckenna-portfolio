@@ -33,7 +33,7 @@ export default function TermsPage() {
       <div className="mx-auto max-w-frame px-6 pb-28 pt-16 md:px-gutter">
         <div className="mx-auto max-w-2xl">
           <h1 className="font-body text-xl font-bold text-ink">
-            Terms of Service.
+            Terms.
           </h1>
           <p className="font-body mt-2 text-[12px] text-ink-muted">
             Last updated: [date to be confirmed at launch]
@@ -96,11 +96,9 @@ export default function TermsPage() {
               </p>
               <p className={P}>
                 <span className={H3}>AI and machine learning.</span> No
-                content on this site — including artwork, commissioned
-                work, and written content — may be used to train,
-                fine-tune, or otherwise develop any artificial
-                intelligence or machine learning model without our prior
-                written permission.
+                content on this site, including artwork and commissioned
+                work, may be used to train any AI or machine learning
+                model without our prior written permission.
               </p>
             </div>
 
