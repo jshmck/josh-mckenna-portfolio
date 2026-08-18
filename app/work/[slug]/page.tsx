@@ -7,15 +7,19 @@ import { Reveal } from "@/components/ui/reveal";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 
 /**
- * All-caps display title, except 'e', 'j', 'k', 'g', 'i' and 't' stay
- * real lowercase — the same brand quirk as the homepage wordmark (jOSH /
- * MCkeNNA). Waldeck (trial) turned out to have no true descender on any
- * lowercase letter (checked the glyph outlines directly: 'g' bottoms out
- * at y=0, same as the capital 'H' — not a CSS clipping issue, the
- * letterform itself doesn't extend below the baseline), so a lone
- * lowercase 'g' just reads as an odd short letter, not a drop. Adding
- * 'i' and 't' gives it company — a run of lowercase letters together
- * (e.g. "NIgHt") reads as deliberate rather than a single outlier. Every
+ * All-caps display title, except 'e', 'j', 'k', 'g', 'i', 't' and 'y'
+ * stay real lowercase — the same brand quirk as the homepage wordmark
+ * (jOSH / MCkeNNA). Waldeck (trial) turned out to have no true descender
+ * on any lowercase letter (checked the glyph outlines directly: 'g'
+ * bottoms out at y=0, same as the capital 'H' — not a CSS clipping
+ * issue, the letterform itself doesn't extend below the baseline), so a
+ * lone lowercase 'g' just reads as an odd short letter, not a drop.
+ * Adding 'i' and 't' gives it company — a run of lowercase letters
+ * together (e.g. "NIgHt") reads as deliberate rather than a single
+ * outlier. 'y' joined later for a different reason: the capital Y glyph
+ * is a blocky fork that reads as a "T" at display size, confirmed by
+ * rendering both at 300px and comparing (capital Y vs lowercase y, which
+ * has a real curved descender tail) — lowercase disambiguates it. Every
  * project title gets this; project.title itself keeps normal casing for
  * the breadcrumb, gallery cards and metadata.
  *
@@ -29,7 +33,7 @@ function toDisplayTitle(title: string) {
     .replace(/&/g, "AND")
     .split("")
     .map((char) =>
-      ["e", "j", "k", "g", "i", "t"].includes(char.toLowerCase())
+      ["e", "j", "k", "g", "i", "t", "y"].includes(char.toLowerCase())
         ? char.toLowerCase()
         : char.toUpperCase(),
     )
@@ -168,8 +172,8 @@ export default async function ProjectPage({
         ))}
       </div>
 
-      {/* Previous / all / next — Waldeck + purple like the Info page's
-          section titles (type-title font-medium text-accent), but at
+      {/* Previous / all / next — Waldeck Black + purple like the Info
+          page's section titles (type-title text-accent), but at
           type-link's smaller scale: three of these sit in one row, and
           full type-title size (clamps up to 3.5rem) would dominate the
           footer and wrap badly on mobile. Generic labels instead of the
@@ -177,29 +181,53 @@ export default async function ProjectPage({
           middle already establish these are project-to-project links, so
           "Project" on each side was redundant. type-link was already in
           globals.css for exactly this "smaller Waldeck link" role and
-          had no callers yet. */}
+          had no callers yet. Plain full caps here, not the lowercase-
+          letter quirk everywhere else on the site -- Josh's call, these
+          three read better fully uppercase at this scale. font-medium
+          (500), not Black (900): tried Black
+          here to match the headers and it closed up/read cramped at this
+          much smaller size. Black suits a big headline; type-link's
+          smaller scale needs the lighter cut to stay legible -- same
+          Waldeck family, weight matched to size, not an inconsistency. */}
       <nav aria-label="Project navigation">
         {/* Grid, not flex-wrap justify-between -- with three items of
             uneven width, flex-wrap can drop just the last one onto its
             own line at narrow widths instead of wrapping the whole row.
             A fixed 3-column grid guarantees each link its own slot. */}
         <div className="mx-auto grid max-w-frame grid-cols-3 items-center gap-4 px-6 py-10 md:px-gutter">
-          {/* Bold-on-hover matches the primary nav's own hover treatment
-              (font-medium -> font-bold); the arrow nudge is the one thing
-              specific to a directional link, so it only exists here, not
-              on "All Work". Plain unicode arrows, not Waldeck -- the font
-              has no ← / → glyph at all (confirmed against its cmap, same
-              gap as the missing '&'), so they'd silently fall back to a
-              different font if left inside the type-link span; font-body
-              here keeps them consistent regardless of what surrounds
-              them. Went back to these after trying a custom fletched-
-              arrow SVG (reverted) per Josh: preferred the plain arrows. */}
+          {/* font-bold/text-lg arrows -- kept even after reverting the
+              text to font-medium, since Helvetica Bold next to Waldeck
+              Medium still reads better than the original thin default.
+              Plain unicode arrows, not
+              Waldeck -- the font has no ← / → glyph at all (confirmed
+              against its cmap, same gap as the missing '&'), so they'd
+              silently fall back to a different font if left inside the
+              type-link span; font-body here keeps them consistent
+              regardless of what surrounds them. Went back to these after
+              trying a custom fletched-arrow SVG (reverted) per Josh:
+              preferred the plain arrows. Bumped to font-bold/text-lg since
+              the heavier Waldeck neighbour text made the plain arrows look
+              skinny by comparison; hover nudges AND scales them up
+              (group-hover:scale-125) as the interactive cue. Text itself
+              goes font-medium -> hover:font-black -- a real weight jump
+              now that Black isn't the resting state, so it's available
+              again as the "something happened" signal. Dropped the
+              opacity fade this replaced: getting bolder AND fainter at
+              once read as conflicting. Tracking opens up slightly on
+              hover too (tracking-normal -> 0.02em) -- Black's heavier
+              strokes crowd each other at type-link's small size, and a
+              touch more letter-spacing gives them room to stay legible.
+              Arrows get chunkier on hover to match the text's weight
+              jump -- Helvetica Bold (700) is already the heaviest cut
+              loaded for font-body, no heavier weight to hover into, so
+              a 0.6px -webkit-text-stroke fakes the extra boldness
+              instead, on top of the existing scale/nudge. */}
           {previous ? (
             <Link
               href={`/work/${previous.slug}`}
-              className="type-link group inline-flex items-center gap-2 font-medium text-accent hover:font-bold"
+              className="type-link group inline-flex items-center gap-2 font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-300 ease-drift hover:font-black hover:tracking-[0.02em]"
             >
-              <span className="font-body transition-transform group-hover:-translate-x-2">
+              <span className="font-body text-lg font-bold transition-transform [-webkit-text-stroke:0px] group-hover:-translate-x-2 group-hover:scale-125 group-hover:[-webkit-text-stroke:0.6px_currentColor]">
                 ←
               </span>
               PREVIOUS
@@ -210,7 +238,7 @@ export default async function ProjectPage({
 
           <Link
             href="/work"
-            className="type-link text-center font-medium text-accent hover:font-bold"
+            className="type-link text-center font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-300 ease-drift hover:font-black hover:tracking-[0.02em]"
           >
             ALL WORK
           </Link>
@@ -218,10 +246,10 @@ export default async function ProjectPage({
           {next ? (
             <Link
               href={`/work/${next.slug}`}
-              className="type-link group inline-flex items-center justify-end gap-2 font-medium text-accent hover:font-bold"
+              className="type-link group inline-flex items-center justify-end gap-2 font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-300 ease-drift hover:font-black hover:tracking-[0.02em]"
             >
               NEXT
-              <span className="font-body transition-transform group-hover:translate-x-2">
+              <span className="font-body text-lg font-bold transition-transform [-webkit-text-stroke:0px] group-hover:translate-x-2 group-hover:scale-125 group-hover:[-webkit-text-stroke:0.6px_currentColor]">
                 →
               </span>
             </Link>
