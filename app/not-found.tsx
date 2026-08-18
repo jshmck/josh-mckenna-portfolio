@@ -1,6 +1,5 @@
 import Image from "next/image";
-
-import { ButtonLink } from "@/components/ui/button";
+import Link from "next/link";
 
 /**
  * App Router's dedicated 404 — renders for any unmatched route, no route
@@ -33,9 +32,14 @@ export default function NotFound() {
         get you back to the good stuff.
       </p>
 
-      <ButtonLink href="/" className="mt-10">
+      {/* Same pill as the Work page's category filters (components/work/work-gallery.tsx)
+          — filled/active look, since this is the one thing on the page to press. */}
+      <Link
+        href="/"
+        className="font-display mt-10 rounded-full bg-brand px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-canvas transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105"
+      >
         Back to home
-      </ButtonLink>
+      </Link>
     </section>
   );
 }
