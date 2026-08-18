@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { BackToTop } from "@/components/ui/back-to-top";
-import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { WorkGallery } from "@/components/work/work-gallery";
 import { PROJECT_CATEGORIES, getAllProjects } from "@/lib/projects";
 
@@ -10,14 +9,6 @@ export const metadata: Metadata = {
   description:
     "Editorial illustration, character design, packaging and murals by Josh McKenna. Everything worth showing, newest first.",
 };
-
-/** Same transparent-PNG treatment as the Contact/Info page illustrations --
- *  next/image direct, object-contain, no Plate frame or background
- *  surface. Order is the order they land in the row, left to right. */
-const ILLUSTRATIONS = [
-  { src: "/illustrations/twingo-green-final.png", aspect: "1350/656", height: 115 },
-  { src: "/illustrations/ipad.png", aspect: "961/655", height: 115 },
-];
 
 export default function WorkPage() {
   const projects = getAllProjects();
@@ -30,20 +21,11 @@ export default function WorkPage() {
           "Work" via metadata above. */}
       <h1 className="sr-only">Work</h1>
 
-      {/* Static -- no orbit, no drift -- but each leans toward the cursor
-          on hover, same tilt math as the homepage hero's floating
-          objects. See components/work/tilt-illustration.tsx. */}
-      <div className="flex flex-wrap items-end gap-6">
-        {ILLUSTRATIONS.map(({ src, aspect, height }) => (
-          <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
-        ))}
-      </div>
-
-      {/* Every category shows as a chip, even ones with no work yet
-          (3D) — Josh wants the full set visible, not just active ones. */}
-      <div className="mt-10">
-        <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
-      </div>
+      {/* Top illustration row now lives inside WorkGallery -- it needs to
+          react to the active filter (swaps to a Pride piece when that
+          pill's selected), so it moved to the client component that
+          already owns that state. See components/work/work-gallery.tsx. */}
+      <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
 
       <BackToTop />
     </div>
