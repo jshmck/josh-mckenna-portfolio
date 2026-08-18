@@ -28,12 +28,12 @@ import { navLinks } from "@/lib/site";
  *
  * Starts at 88px and shrinks to a compact 40px past 120px of scroll (back
  * below 60px re-expands it — the gap between the two is deliberate
- * hysteresis so it doesn't flicker at the boundary). Link text is 13px,
- * jM is text-xl — bumped up from an earlier 11px/text-lg pass that read
- * too small on larger screens, since max-w-frame caps the bar's width but
- * nothing scaled the type up to fill more of it. Text stays the same size
- * across the compact/expanded states, only the bar's height and padding
- * shrink. Shrinking uses a slight
+ * hysteresis so it doesn't flicker at the boundary). Link text is 14px,
+ * jM is 22px — bumped up in two passes from an original 11px/text-lg that
+ * read too small on larger screens, since max-w-frame caps the bar's width
+ * but nothing scaled the type up to fill more of it. Text stays the same
+ * size across the compact/expanded states, only the bar's height and
+ * padding shrink. Shrinking uses a slight
  * overshoot easing so the header settles with a small bounce; expanding
  * eases back out smoothly instead. Background is the same colourless
  * frosted-glass treatment as the hero's floating-object hover cards
@@ -198,19 +198,36 @@ export function Nav() {
           }`}
         >
           <div className="flex items-center gap-6 md:gap-10">
-            {/* Home link. Small enough to not reintroduce the wordiness
-                "Home" was cut for, brand-blue per the wordmark colour rule,
-                real lowercase j (not font-variant-caps) matching the hero's
-                "jOSH" — see the file doc comment above. Same BackToTop-
-                family easing as every pill/chip/button on the site
-                (duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]), but
-                bigger and with a tilt -- jM is the one brand mark, not a
-                utility pill, so it gets a more pronounced version of the
-                same bounce rather than the exact scale-105. */}
+            {/* Home link -- always routes to "/", every page, every state.
+                Small enough to not reintroduce the wordiness "Home" was cut
+                for, brand-blue per the wordmark colour rule, real lowercase
+                j (not font-variant-caps) matching the hero's "jOSH" — see
+                the file doc comment above. Same BackToTop-family easing as
+                every pill/chip/button on the site (duration-500
+                ease-[cubic-bezier(0.34,1.56,0.64,1)]), but bigger and with a
+                tilt -- jM is the one brand mark, not a utility pill, so it
+                gets a more pronounced version of the same bounce rather
+                than the exact scale-105. active: mirrors hover: exactly --
+                touch devices never trigger Tailwind's hover: variant (it's
+                scoped to @media (hover: hover) precisely so a tap doesn't
+                leave a stuck hover state), so without this a tap here would
+                have no visible feedback at all, just the navigation.
+
+                The explicit scroll-to-top handles a Next.js quirk: a <Link>
+                to the route you're already on doesn't trigger Next's own
+                navigation-scroll-restoration (no route change actually
+                happens), so clicking jM while already on "/" did nothing
+                if you'd scrolled down. window.scrollTo(0, 0) alone is
+                enough to pick up the sitewide scroll-behavior: smooth (and
+                its prefers-reduced-motion: auto override) from
+                globals.css — no behavior option needed here. */}
             <Link
               href="/"
               aria-label="Josh McKenna — home"
-              className="font-display text-xl font-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125"
+              onClick={() => {
+                if (pathname === "/") window.scrollTo(0, 0);
+              }}
+              className="font-display text-[22px] font-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125"
             >
               jM
             </Link>
@@ -227,7 +244,7 @@ export function Nav() {
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`inline-block font-body text-[13px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
+                    className={`inline-block font-body text-[14px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
@@ -245,7 +262,7 @@ export function Nav() {
               <Link
                 href="/shop"
                 aria-current={isActive("/shop") ? "page" : undefined}
-                className={`inline-block font-body text-[13px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
+                className={`inline-block font-body text-[14px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
                   isActive("/shop")
                     ? "font-bold text-accent"
                     : "text-ink hover:font-bold hover:text-accent"
