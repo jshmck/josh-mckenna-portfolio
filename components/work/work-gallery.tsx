@@ -63,7 +63,10 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * — measured it, the box and text were both scaling by the correct
  * 1.05x, but with no stable edge the growth just wasn't legible, so it
  * read as "only the text moves." The rings sit at inset 0/2/4/6px inside
- * the border, so a visible outline doesn't clash with them.
+ * the border, so a visible outline doesn't clash with them. Hover border
+ * colour is the outer ring's own pink (#F7A0C4), not border-ink -- solid
+ * black read as a harsh line cutting across the rainbow reveal; the pink
+ * reads as part of the flag treatment instead.
  */
 function PrideFilterButton({
   active,
@@ -80,7 +83,7 @@ function PrideFilterButton({
       className={`font-display group relative overflow-hidden rounded-full border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
         active
           ? "border-transparent bg-brand text-canvas"
-          : "border-ink text-ink-muted hover:text-ink"
+          : "border-ink text-ink-muted hover:border-[#F7A0C4] hover:text-ink"
       }`}
     >
       {PRIDE_RINGS.map((color, i) => (
