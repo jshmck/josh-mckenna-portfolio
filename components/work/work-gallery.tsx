@@ -55,6 +55,15 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * Plain CSS `uppercase`, not toWaldeckCase() — tried the lowercase quirk
  * here too, but at chip scale it read as a mistake rather than a
  * deliberate brand detail. Same exemption as the project prev/next nav.
+ *
+ * Border stays border-ink on hover rather than going transparent (only
+ * active drops it, matching the other chips). It used to disappear on
+ * hover to let the ring reveal show through, but that meant the pill's
+ * silhouette had nothing crisp to visibly scale during the hover bounce
+ * — measured it, the box and text were both scaling by the correct
+ * 1.05x, but with no stable edge the growth just wasn't legible, so it
+ * read as "only the text moves." The rings sit at inset 0/2/4/6px inside
+ * the border, so a visible outline doesn't clash with them.
  */
 function PrideFilterButton({
   active,
@@ -68,10 +77,10 @@ function PrideFilterButton({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`font-display group relative overflow-hidden rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
+      className={`font-display group relative overflow-hidden rounded-full border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
         active
-          ? "bg-brand text-canvas"
-          : "border border-ink text-ink-muted hover:border-transparent hover:text-ink"
+          ? "border-transparent bg-brand text-canvas"
+          : "border-ink text-ink-muted hover:text-ink"
       }`}
     >
       {PRIDE_RINGS.map((color, i) => (
