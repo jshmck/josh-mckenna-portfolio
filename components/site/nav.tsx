@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { navLinks } from "@/lib/site";
 
 /**
- * Fixed nav — Home/Work/Info/Contact on the left, Shop and Cart together on
- * the far right for easier reach. Client-side only for `usePathname` and
+ * Fixed nav — Home/Work/Shop/Info/Contact on the left, Cart alone on the
+ * far right. Client-side only for `usePathname` and
  * the scroll-driven compact state; the active link (purple, bold) is the
  * other piece of state here.
  *
@@ -173,22 +173,7 @@ export function Nav() {
             ))}
           </ul>
 
-          {/* Shop sits next to Cart, not in the main left-hand group — both
-              are one reach away on the right for easier navigation. */}
           <ul className="ml-5 flex shrink-0 items-center gap-5 md:ml-8 md:gap-8">
-            <li>
-              <Link
-                href="/shop"
-                aria-current={isActive("/shop") ? "page" : undefined}
-                className={`font-body text-[11px] transition-colors ${
-                  isActive("/shop")
-                    ? "font-bold text-accent"
-                    : "text-ink-muted hover:font-bold hover:text-accent"
-                }`}
-              >
-                Shop
-              </Link>
-            </li>
             <li>
               <Link
                 href="/shop"

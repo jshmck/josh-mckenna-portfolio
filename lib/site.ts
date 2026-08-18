@@ -36,17 +36,25 @@ export const siteConfig = {
     handle: "@jshmck",
     url: "https://www.threads.com/@jshmck",
   },
+  behance: {
+    url: "https://www.behance.net/joshmckennna",
+  },
   /** Used for absolute OG image + canonical URLs. */
   url: "https://joshmckenna.com",
 } as const;
 
-/* Josh's v2 nav (Figma node 85:420): HOME · WORK · INFO · CONTACT on the
-   left; SHOP and CART sit together on the far right (both rendered
-   separately in the nav, for easier reach next to the cart). INFO points
-   at /about — the "info" label, same page. */
+/* Deviates from the original Figma nav (node 85:420, HOME · WORK · INFO ·
+   CONTACT on the left with SHOP + CART on the far right) — Josh moved Shop
+   into the left-hand group. Placed between Work and Info rather than
+   Home/Work or Info/Contact specifically because those two pairs merge on
+   scroll (see nav.tsx's MERGE_ENTER/EXIT — Home flows into Work, Info flows
+   into Contact with no click), so Shop sits in the one slot that doesn't
+   split either pairing. Cart stays alone on the far right. INFO points at
+   /about — the "info" label, same page. */
 export const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Work", href: "/work" },
+  { label: "Shop", href: "/shop" },
   { label: "Info", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
