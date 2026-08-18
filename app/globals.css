@@ -185,6 +185,19 @@
   }
 }
 
+/* Gentle vertical bob — the 404 page's lost illustration. Pure CSS, so the
+   sitewide prefers-reduced-motion rule above neutralises it on its own;
+   no JS early-return needed. */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
 /* Scroll reveal — driven by the data attribute the Reveal component flips.
    Hidden is the CSS default so there is no flash of visible content. Both
    escape hatches below are pure CSS, so content can never be stranded

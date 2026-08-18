@@ -6,7 +6,9 @@ import {
   ThreadsIcon,
   XIcon,
 } from "@/components/ui/social-icons";
-import { siteConfig } from "@/lib/site";
+import Link from "next/link";
+
+import { legalLinks, siteConfig } from "@/lib/site";
 
 /** Small, far right — a quiet way to reach Josh from any page, not a
  *  repeat of Contact's own full-size icon row. Email first (not a new
@@ -28,29 +30,31 @@ const links = [
  * moved into the Info and Contact pages' own content (see
  * app/about/page.tsx and app/contact/page.tsx) — Josh wanted them as real
  * page content, not footer chrome. Lives in the root layout so it's on
- * every page — the AI-training notice needs to be visible wherever a
- * visitor lands, and the icon row exists for the same reason: a way to
- * reach Josh from any page, not just Contact.
+ * every page — Privacy Policy and Terms of Service need to be reachable
+ * wherever a visitor lands, and the icon row exists for the same reason:
+ * a way to reach Josh from any page, not just Contact. The AI-training
+ * notice that used to sit here moved into Terms of Service itself (see
+ * app/terms/page.tsx) — it's a term of using the site, not footer chrome.
  */
 export function Footer() {
   return (
     <footer className="border-t border-hairline">
       <div className="mx-auto flex max-w-frame flex-wrap items-center justify-between gap-6 px-6 py-10 md:px-gutter">
         <div>
-          {/* Two explicit paragraphs, not one long run-on string — this
-              sentence is too long to fit type-label's mono/uppercase
-              treatment on one line at any readable size, so it drops to
-              font-body at a small size instead. Splitting here guarantees
-              the line break lands right after "All rights reserved."
-              instead of wherever the browser happens to wrap. */}
           <p className="font-body text-[11px] text-ink-muted">
             Copyright © {new Date().getFullYear()} {siteConfig.name}. All
-            rights reserved.
-          </p>
-          <p className="font-body mt-1 text-[11px] text-ink-muted">
-            No content on this site may be used to train, fine-tune or
-            otherwise develop any artificial intelligence or machine
-            learning model without prior written permission.
+            rights reserved.{" "}
+            {legalLinks.map(({ label, href }, index) => (
+              <span key={label}>
+                {index > 0 && " "}
+                <Link
+                  href={href}
+                  className="underline-offset-2 transition-colors hover:text-accent hover:underline"
+                >
+                  {label}
+                </Link>
+              </span>
+            ))}
           </p>
         </div>
 
