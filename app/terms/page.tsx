@@ -50,10 +50,11 @@ export default function TermsPage() {
             <div>
               <h2 className={H2}>1. Commissions</h2>
               <p className={P}>
-                <span className={H3}>Deposit.</span> Commissioned work
-                begins once a non-refundable deposit has been paid. The
-                remaining balance is due on delivery of the final
-                artwork, before final files are released.
+                <span className={H3}>Payment.</span> Payment terms are
+                agreed individually for each commission — some projects
+                are paid upfront before work begins, others are invoiced
+                on completion. The agreed terms are confirmed with you
+                before work starts.
               </p>
               <p className={P}>
                 <span className={H3}>Revisions.</span> Each commission
@@ -63,14 +64,14 @@ export default function TermsPage() {
               </p>
               <p className={P}>
                 <span className={H3}>Cancellation.</span> If you cancel a
-                commission after work has started, the deposit is not
-                refunded, and you may be charged for work already
-                completed at the point of cancellation.
+                commission after work has started, any amount already
+                paid is non-refundable, and you may be invoiced for
+                further work completed up to the point of cancellation.
               </p>
               <p className={P}>
                 <span className={H3}>Delivery.</span> Delivery timelines
                 are agreed on a per-commission basis and communicated
-                before the deposit is taken. Timelines are estimates, not
+                before work begins. Timelines are estimates, not
                 guarantees, and may shift for reasons outside our
                 control.
               </p>
