@@ -162,7 +162,15 @@ export function FloatingStickers() {
             }}
             className="absolute left-0 top-0 will-change-transform"
             style={{
-              width: `${s.width * 100}cqw`,
+              // clamp floor of 26px -- width is a fraction of the press
+              // section's own container (cqw), which is wide on desktop
+              // but narrows to a phone-width column on mobile, shrinking
+              // these stickers down to ~11-13px there and making them
+              // basically invisible. The container never gets narrow
+              // enough on desktop for the floor to actually engage (it
+              // stays on its cqw value there, identical to before) --
+              // only phones get bumped up.
+              width: `clamp(26px, ${s.width * 100}cqw, 200cqw)`,
               aspectRatio: String(ASPECT),
               transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
             }}
