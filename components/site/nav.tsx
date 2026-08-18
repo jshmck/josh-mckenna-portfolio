@@ -148,7 +148,16 @@ export function Nav() {
           on state change, not one per animation frame. */}
       <div aria-hidden="true" style={{ height: compact ? 40 : 88 }} />
 
-      <header className="fixed inset-x-0 top-0 z-40 bg-canvas/15 backdrop-blur-md">
+      {/* Trial: a hairline bottom border, same border-hairline token as the
+          footer, but only once the header has shrunk to its compact
+          state — expanded, it sits over the hero/page content with
+          nothing to visually separate from yet, so the line only earns
+          its place once there's a scrolled page underneath it. */}
+      <header
+        className={`fixed inset-x-0 top-0 z-40 border-b bg-canvas/15 backdrop-blur-md transition-colors duration-300 ${
+          compact ? "border-hairline" : "border-transparent"
+        }`}
+      >
         <nav
           aria-label="Primary"
           className={`mx-auto flex max-w-frame items-center justify-between px-6 transition-[height] duration-300 will-change-[height] md:px-gutter ${
@@ -161,11 +170,18 @@ export function Nav() {
             {/* Home link. Small enough to not reintroduce the wordiness
                 "Home" was cut for, brand-blue per the wordmark colour rule,
                 real lowercase j (not font-variant-caps) matching the hero's
-                "jOSH" — see the file doc comment above. */}
+                "jOSH" — see the file doc comment above. Already font-black
+                (900) at rest, so there's no heavier weight to hover into
+                like the project nav's font-medium -> hover:font-black --
+                a playful scale+tilt bounce instead. Same asymmetric-
+                easing trick as that nav: entering hover uses
+                hover:duration-300 hover:ease-drift (the site's reveal
+                curve, suits growing into the pop), leaving falls back to
+                the base duration-200 ease-in-out for a cleaner revert. */}
             <Link
               href="/"
               aria-label="Josh McKenna — home"
-              className="font-display text-lg font-black text-brand transition-opacity hover:opacity-70"
+              className="font-display text-lg font-black text-brand transition-transform duration-200 ease-in-out hover:-rotate-6 hover:scale-110 hover:duration-300 hover:ease-drift"
             >
               jM
             </Link>
