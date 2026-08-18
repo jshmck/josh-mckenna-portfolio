@@ -184,12 +184,19 @@ export default async function ProjectPage({
             own line at narrow widths instead of wrapping the whole row.
             A fixed 3-column grid guarantees each link its own slot. */}
         <div className="mx-auto grid max-w-frame grid-cols-3 items-center gap-4 px-6 py-10 md:px-gutter">
+          {/* Bold-on-hover matches the primary nav's own hover treatment
+              (font-medium -> font-bold); the arrow nudge is the one thing
+              specific to a directional link, so it only exists here, not
+              on "All Work". */}
           {previous ? (
             <Link
               href={`/work/${previous.slug}`}
-              className="type-link font-medium text-accent transition-opacity hover:opacity-70"
+              className="type-link group inline-flex items-center gap-2 font-medium text-accent hover:font-bold"
             >
-              ← PREVIOUS
+              <span className="transition-transform group-hover:-translate-x-1">
+                ←
+              </span>
+              PREVIOUS
             </Link>
           ) : (
             <span />
@@ -197,7 +204,7 @@ export default async function ProjectPage({
 
           <Link
             href="/work"
-            className="type-link text-center font-medium text-accent transition-opacity hover:opacity-70"
+            className="type-link text-center font-medium text-accent hover:font-bold"
           >
             ALL WORK
           </Link>
@@ -205,9 +212,12 @@ export default async function ProjectPage({
           {next ? (
             <Link
               href={`/work/${next.slug}`}
-              className="type-link text-right font-medium text-accent transition-opacity hover:opacity-70"
+              className="type-link group inline-flex items-center justify-end gap-2 font-medium text-accent hover:font-bold"
             >
-              NEXT →
+              NEXT
+              <span className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
             </Link>
           ) : (
             <span />
