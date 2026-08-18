@@ -94,6 +94,14 @@ export default function TermsPage() {
                 before work begins. Any use outside the agreed scope
                 requires a separate licence.
               </p>
+              <p className={P}>
+                <span className={H3}>AI and machine learning.</span> No
+                content on this site — including artwork, commissioned
+                work, and written content — may be used to train,
+                fine-tune, or otherwise develop any artificial
+                intelligence or machine learning model without our prior
+                written permission.
+              </p>
             </div>
 
             <div>
