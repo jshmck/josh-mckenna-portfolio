@@ -6,9 +6,17 @@ import { useEffect, useRef, useState } from "react";
 const RESTING_OFFSET = 32;
 
 /**
- * Floating "back to top" pill for long, unpaginated grids (Work). Styled to
- * match the active filter chip — same Waldeck font, same pill — so it reads
- * as part of the same control family, not a bolted-on widget.
+ * Floating "back to top" pill for long, unpaginated grids (Work). Same
+ * Waldeck font and pill shape as the filter chips, and now the same
+ * rest/hover/active colour progression too (black outline -> brand
+ * outline+text on hover -> filled brand/canvas on active) — but with a
+ * frosted-glass surface (bg-canvas/15 + backdrop-blur-md) matching the nav
+ * header instead of the chip's flat canvas fill. Tried a plain
+ * shadow-lg/bg-ink pill first, but it was the only shadow anywhere on the
+ * site (everything else is flat colour/outline), so it came off in favour
+ * of this. Black border, not the blue hairline token, so it reads as a
+ * neutral outline at rest rather than pre-empting the brand-blue active
+ * state.
  *
  * Appears once the page has scrolled past one viewport height and smooth-
  * scrolls to top on click. Omits an explicit `behavior` from `scrollTo` so
@@ -72,7 +80,7 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
-      className={`font-display fixed bottom-8 right-8 z-30 rounded-full bg-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-canvas shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:opacity-80 ${
+      className={`font-display fixed bottom-8 right-8 z-30 rounded-full border border-ink bg-canvas/15 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-ink backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas ${
         visible
           ? "translate-y-0 scale-100 opacity-100"
           : "pointer-events-none translate-y-4 scale-50 opacity-0"
