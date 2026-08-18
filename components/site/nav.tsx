@@ -107,19 +107,44 @@ export function Nav() {
   }, [compact]);
 
   // Nav never unmounts across a client-side route change (it lives in the
-  // root layout), so `compact` could otherwise keep carrying the
-  // scrolled-down state from whichever page you clicked away from. A fresh
-  // navigation always lands at the top of the new page, so reset here the
-  // moment `pathname` changes -- React's documented pattern for adjusting
-  // state during render rather than in an effect (which would trail a
-  // frame behind and risks a flash of the wrong header height). Bypasses
-  // the update()/scroll-listener path below entirely, so there's no
-  // dependency on a 'scroll' event actually firing to correct it.
+  // root layout), so `compact`/`spacerCompact` could otherwise keep
+  // carrying the scrolled-down state from whichever page you clicked away
+  // from. A fresh navigation always lands at the top of the new page, so
+  // reset both here the moment `pathname` changes -- React's documented
+  // pattern for adjusting state during render rather than in an effect
+  // (which would trail a frame behind and risks a flash of the wrong
+  // header height). Bypasses the update()/scroll-listener path below
+  // entirely, so there's no dependency on a 'scroll' event actually firing
+  // to correct it. spacerCompact resets in the same render as compact
+  // (not through its own delayed effect above) -- otherwise the header
+  // itself would already be expanding back to 88px while the spacer, one
+  // render behind, was still only reserving the compact 40px, so the
+  // taller header would overlap the top of the new page's content for a
+  // frame.
+  //
+  // skipHeaderTransition suppresses the header's own height transition for
+  // that one reset render: without it, the header still visually animates
+  // from 40px up to 88px over duration-300 even though both state values
+  // already jumped straight to expanded, since the CSS transition doesn't
+  // know this change came from a reset rather than a scroll -- for that
+  // ~300ms the still-short header sits on top of the new page's content,
+  // which is exactly what a fresh navigation should never show. Cleared on
+  // the next frame so ordinary scroll-driven compact/expand keeps its
+  // animation.
   const [prevPathname, setPrevPathname] = useState(pathname);
+  const [skipHeaderTransition, setSkipHeaderTransition] = useState(false);
   if (pathname !== prevPathname) {
     setPrevPathname(pathname);
     setCompact(false);
+    setSpacerCompact(false);
+    setSkipHeaderTransition(true);
   }
+
+  useEffect(() => {
+    if (!skipHeaderTransition) return;
+    const raf = requestAnimationFrame(() => setSkipHeaderTransition(false));
+    return () => cancelAnimationFrame(raf);
+  }, [skipHeaderTransition]);
 
   useEffect(() => {
     let raf = 0;
@@ -224,7 +249,9 @@ export function Nav() {
       >
         <nav
           aria-label="Primary"
-          className={`mx-auto flex max-w-frame items-center justify-between px-6 transition-[height] duration-300 will-change-[height] md:px-gutter ${
+          className={`mx-auto flex max-w-frame items-center justify-between px-6 will-change-[height] md:px-gutter ${
+            skipHeaderTransition ? "" : "transition-[height] duration-300"
+          } ${
             compact
               ? "h-10 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
               : "h-[88px] ease-drift"
