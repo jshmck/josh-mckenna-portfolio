@@ -60,7 +60,14 @@ export default function HomePage() {
           highlight from Home to Work — see components/site/nav.tsx. */}
       <section id="home-work">
         <div className="mx-auto max-w-frame px-6 pb-32 pt-16 md:px-gutter">
-          <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
+          {/* showIllustrations=false -- the Twingo/iPad row is /work's
+              own top-of-page illustration, not something that should
+              duplicate into Home's embedded gallery. */}
+          <WorkGallery
+            projects={projects}
+            categories={[...PROJECT_CATEGORIES]}
+            showIllustrations={false}
+          />
         </div>
       </section>
 

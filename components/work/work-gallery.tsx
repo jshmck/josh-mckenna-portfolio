@@ -9,6 +9,11 @@ import type { ImageRatio, Project, ProjectCategory } from "@/lib/projects";
 type WorkGalleryProps = {
   projects: Project[];
   categories: ProjectCategory[];
+  /** Only the standalone /work page wants the top illustration row --
+   *  Home embeds this same component for its "#home-work" section, and
+   *  that row isn't meant to duplicate there. Defaults true since /work
+   *  is the more common caller; Home explicitly opts out. */
+  showIllustrations?: boolean;
 };
 
 type Filter = ProjectCategory | "All";
@@ -20,13 +25,12 @@ type Filter = ProjectCategory | "All";
  */
 const RATIO_CYCLE: ImageRatio[] = ["4/5", "3/4", "1/1", "5/4", "3/4", "4/5"];
 
-/** Top-of-page illustration row. Lives here (not app/work/page.tsx, where
- *  it used to be a static row) because it needs to react to `filter` --
- *  moved server-owned static content into the client component that
- *  already tracks the thing it needs to key off. Only shows on "All";
- *  tried swapping in a Pride-specific piece when that pill was active,
- *  but Josh decided against it -- any specific category filter now just
- *  drops the row entirely rather than showing a mismatched illustration. */
+/** Top-of-page illustration row, /work only (see showIllustrations
+ *  above). Lives here rather than in app/work/page.tsx because it used
+ *  to react to the active filter category -- that per-category logic
+ *  was tried and reverted, but the row stayed here since this is still
+ *  the natural place to key it off `filter` once real per-category art
+ *  exists. Same pair regardless of filter for now. */
 const ILLUSTRATIONS = [
   { src: "/illustrations/twingo-green-final.png", aspect: "1350/656", height: 115 },
   { src: "/illustrations/ipad.png", aspect: "961/655", height: 115 },
@@ -119,7 +123,11 @@ function PrideFilterButton({
   );
 }
 
-export function WorkGallery({ projects, categories }: WorkGalleryProps) {
+export function WorkGallery({
+  projects,
+  categories,
+  showIllustrations = true,
+}: WorkGalleryProps) {
   const [filter, setFilter] = useState<Filter>("All");
 
   const visible = useMemo(
@@ -140,14 +148,16 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
           every filter for now -- tried hiding it / swapping to a
           Pride-specific piece per category, but Josh wants to build
           real per-category illustrations later rather than have this
-          guess at it. Stayed inside WorkGallery (not back in
-          app/work/page.tsx) since that's the natural place to key
-          per-category art off `filter` once those exist. */}
-      <div className="mb-10 flex flex-wrap items-end gap-6">
-        {ILLUSTRATIONS.map(({ src, aspect, height }) => (
-          <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
-        ))}
-      </div>
+          guess at it. /work only (showIllustrations) -- moving this row
+          into WorkGallery made it start showing up on Home's embedded
+          gallery too, which it never did before. */}
+      {showIllustrations && (
+        <div className="mb-10 flex flex-wrap items-end gap-6">
+          {ILLUSTRATIONS.map(({ src, aspect, height }) => (
+            <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
+          ))}
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2" role="group" aria-label="Filter work by discipline">
         {filters.map((option) => {
