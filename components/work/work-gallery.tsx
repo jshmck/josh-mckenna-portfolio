@@ -19,6 +19,73 @@ type Filter = ProjectCategory | "All";
  */
 const RATIO_CYCLE: ImageRatio[] = ["4/5", "3/4", "1/1", "5/4", "3/4", "4/5"];
 
+/** Rainbow fill, top to bottom — bright/saturated to match Josh's mockup
+ *  rather than the deeper "official" flag hex values. */
+const PRIDE_STRIPES = [
+  "#F04C3B",
+  "#F7941D",
+  "#FDE94B",
+  "#6DDB4E",
+  "#57B8F2",
+  "#A98FE5",
+];
+
+/** Concentric rings around the pill, outermost first — pink, then light
+ *  blue, then white, echoing the trans flag before the rainbow fill
+ *  starts. Each is a full rounded-pill layer inset a bit further than
+ *  the last, so the layer beneath shows through as a ring. */
+const PRIDE_RINGS = ["#F7A0C4", "#7DD3F0", "#FFFFFF"];
+
+const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
+  (color, i) =>
+    `${color} ${(i / PRIDE_STRIPES.length) * 100}% ${((i + 1) / PRIDE_STRIPES.length) * 100}%`,
+).join(", ")})`;
+
+/**
+ * The "Pride" filter pill only — everywhere else in the row is the plain
+ * bordered/filled button below. On hover it reveals a pride-flag treatment
+ * underneath the label (pink/light-blue/white rings around a rainbow
+ * fill), pure CSS, no image asset. Idle and active states otherwise match
+ * every other pill so it doesn't stand out until you touch it.
+ */
+function PrideFilterButton({
+  active,
+  onClick,
+}: {
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={`font-display group relative overflow-hidden rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-colors ${
+        active
+          ? "bg-brand text-canvas"
+          : "border border-ink text-ink-muted hover:border-transparent hover:text-ink"
+      }`}
+    >
+      {PRIDE_RINGS.map((color, i) => (
+        <span
+          key={color}
+          aria-hidden="true"
+          className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ inset: `${i * 2}px`, backgroundColor: color }}
+        />
+      ))}
+      <span
+        aria-hidden="true"
+        className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{ inset: `${PRIDE_RINGS.length * 2}px`, background: prideStripeGradient }}
+      />
+      <span className="relative z-10 transition-colors duration-300 group-hover:text-black">
+        Pride
+      </span>
+    </button>
+  );
+}
+
 export function WorkGallery({ projects, categories }: WorkGalleryProps) {
   const [filter, setFilter] = useState<Filter>("All");
 
@@ -37,6 +104,17 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
       <div className="flex flex-wrap gap-2" role="group" aria-label="Filter work by discipline">
         {filters.map((option) => {
           const active = filter === option;
+
+          if (option === "Pride") {
+            return (
+              <PrideFilterButton
+                key={option}
+                active={active}
+                onClick={() => setFilter(option)}
+              />
+            );
+          }
+
           return (
             <button
               key={option}
@@ -46,7 +124,7 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
               className={`font-display rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-colors ${
                 active
                   ? "bg-brand text-canvas"
-                  : "border border-ink text-ink-muted hover:border-brand hover:text-ink"
+                  : "border border-ink text-ink-muted hover:border-brand hover:text-brand"
               }`}
             >
               {option}
@@ -66,6 +144,10 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
               caption="hover"
               motion="quiet"
               parallax
+              // Trial: swap to the project's second image on hover instead
+              // of just fading the hero — LA Pride only for now, see if
+              // Josh wants it everywhere before wiring up every card.
+              hoverImage={project.slug === "la-pride" ? project.gallery[0] : undefined}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               priority={index < 3}
             />

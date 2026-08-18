@@ -1,8 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Parallax } from "@/components/ui/parallax";
 import { Plate } from "@/components/ui/plate";
-import type { Project } from "@/lib/projects";
+import type { Project, ProjectImage } from "@/lib/projects";
 
 /** Shared between the image and its hover overlay so they stay in sync. */
 const GALLERY_RADIUS = "rounded-3xl";
@@ -30,6 +31,12 @@ type ProjectCardProps = {
   /** Wraps just the image in the same 0.85× scroll parallax as Home's
    *  signature illustration — each grid image drifts independently. */
   parallax?: boolean;
+  /** Trial (LA Pride only for now, see WorkGallery): a second image that
+   *  crossfades in over the hero on hover/focus, underneath the existing
+   *  title wash — swaps the artwork itself instead of just fading it, so
+   *  scanning the grid on hover stays interesting. Only wired up when
+   *  `caption="hover"`. */
+  hoverImage?: ProjectImage;
   sizes?: string;
   priority?: boolean;
 };
@@ -42,6 +49,7 @@ export function ProjectCard({
   caption = "below",
   motion = "lift",
   parallax = false,
+  hoverImage,
   sizes = "(max-width: 768px) 100vw, 33vw",
   priority = false,
 }: ProjectCardProps) {
@@ -66,6 +74,24 @@ export function ProjectCard({
         radius={hoverCaption ? GALLERY_RADIUS : undefined}
         showPlaceholderCaption={!hoverCaption}
       />
+      {hoverCaption && hoverImage && (
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 overflow-hidden ${GALLERY_RADIUS} opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100`}
+        >
+          {hoverImage.src ? (
+            <Image
+              src={hoverImage.src}
+              alt=""
+              fill
+              sizes={sizes}
+              className="object-cover"
+            />
+          ) : (
+            <div className="h-full w-full bg-placeholder" />
+          )}
+        </div>
+      )}
       {/* Title reveal on hover/focus — a white wash, centred title in ink,
           no blur. */}
       {hoverCaption && (
