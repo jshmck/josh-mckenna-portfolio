@@ -297,7 +297,10 @@ export function DriftingHero() {
   }, []);
 
   return (
-    <section className="relative pb-24">
+    // pb-24 on mobile stacked on top of an already-vh-dominated h-[88vh]
+    // frame read as a huge gap before Who -- desktop has room to spare at
+    // that width, mobile doesn't. Smaller below md, unchanged from md up.
+    <section className="relative pb-10 md:pb-24">
       <div
         ref={frameRef}
         // `container-type: size` gives the objects cqw/cqh units, so their
