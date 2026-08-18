@@ -28,7 +28,8 @@ export default function AboutPage() {
     <>
       <h1 className="sr-only">Info</h1>
 
-      {/* The person — one short paragraph, no photos. */}
+      {/* The person — one short paragraph, plus a placeholder portrait
+          on the right per Josh. */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 pt-8 md:px-gutter">
           {/* Same treatment as the Contact page illustration and Work's
@@ -52,17 +53,29 @@ export default function AboutPage() {
             />
           </div>
 
-          <Reveal className="mt-10 max-w-2xl">
-            <p className="type-lede text-ink-muted">
-              Josh McKenna is a London-based illustrator with over a decade
-              of experience moving between digital products and physical
-              spaces. He studied illustration at Falmouth University before
-              going freelance in 2014, working with brands from Apple to the
-              Wall Street Journal. From the iconic Instagram Pride sticker to
-              murals for Facebook, his work uses simple vector shapes to
-              evolve 2D characters into 3D forms.
-            </p>
-          </Reveal>
+          {/* Text + portrait, same two-column shape as Home's "Who"
+              section (app/page.tsx) — paragraph left, framed image
+              right. Plate shows the taupe placeholder until Josh sends
+              a real photo. */}
+          <div className="mt-10 grid gap-16 md:grid-cols-2 md:items-center">
+            <Reveal>
+              <p className="type-lede text-ink-muted">
+                Josh McKenna is a London-based illustrator with over a
+                decade of experience moving between digital products and
+                physical spaces. He studied illustration at Falmouth
+                University before going freelance in 2014, working with
+                brands from Apple to the Wall Street Journal. From the
+                iconic Instagram Pride sticker to murals for Facebook, his
+                work uses simple vector shapes to evolve 2D characters into
+                3D forms.
+              </p>
+            </Reveal>
+
+            <Plate
+              image={{ ratio: "4/3", alt: "Portrait of Josh McKenna" }}
+              sizes="(max-width: 768px) 100vw, 45vw"
+            />
+          </div>
         </div>
       </section>
 
