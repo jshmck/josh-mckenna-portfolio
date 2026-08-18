@@ -21,13 +21,13 @@ export default function HomePage() {
           <Reveal>
             <h2 className="type-heading text-ink">
               London-based illustrator working across character design, LGBTQ+
-              themes, brand campaigns, and automotive art.
+              themes, brand campaigns and automotive art.
             </h2>
             <p className="type-lede mt-6 max-w-lg text-ink-muted">
-              He&apos;s drawn for Apple, Meta, Coca-Cola, and for himself just as
-              often — same loud, friendly, queer characters either way, always a
-              mix of people. 2D mostly, 3D increasingly. Restaurant posters are
-              his bread and butter. Cars are the thing he draws for free.
+              He&apos;s drawn for the likes of Apple — loud, friendly, queer
+              characters, always diverse. 2D mostly, 3D lately. Restaurant
+              posters are his bread and butter. Cars are the thing he draws
+              for free.
             </p>
             <Link
               href="/about"

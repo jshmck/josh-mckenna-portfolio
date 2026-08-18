@@ -27,15 +27,13 @@ const GHOSTED = [
 
 export default function ShopPage() {
   return (
-    <div className="mx-auto max-w-frame px-6 py-20 md:px-gutter">
+    <div className="mx-auto max-w-frame px-6 pb-20 pt-8 md:px-gutter">
       <div className="mx-auto max-w-xl text-center">
-        <p className="type-label text-accent">Shop</p>
-        <h1 className="type-heading mt-5 text-ink">
-          Prints, stickers, and other small things.
+        <h1 className="type-heading text-ink">
+          Prints, stickers and other small things.
         </h1>
         <p className="type-lede mt-5 text-ink-muted">
-          Not open yet. Leave an email and you&apos;ll hear the moment it is —
-          no other mail, ever.
+          Not open yet. Leave an email and you&apos;ll hear the moment it is.
         </p>
 
         <div className="mt-10">

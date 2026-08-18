@@ -127,7 +127,7 @@ export function EnquiryForm() {
 
         <div>
           <label htmlFor="message" className="type-label text-ink-muted">
-            Tell Josh what&apos;s up
+            What&apos;s Up
           </label>
           <textarea
             id="message"
@@ -152,7 +152,7 @@ export function EnquiryForm() {
           which has no persistent "selected" identity of its own). */}
       <button
         type="submit"
-        className="font-display mt-8 rounded-full border border-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-ink active:border-brand active:bg-brand active:text-canvas"
+        className="font-display mt-8 rounded-full border border-ink px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] text-ink-muted transition-colors hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas"
       >
         HOWDY
       </button>
