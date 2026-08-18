@@ -3,8 +3,9 @@ import Link from "next/link";
 
 /**
  * App Router's dedicated 404 — renders for any unmatched route, no route
- * segment of its own. Pato (the confused dog from the hero orbit) turns up
- * lost, on the same gentle bob the rest of the site's decorative art uses.
+ * segment of its own. Pato (the confused dog from the hero orbit) stands in
+ * for the visitor who took a wrong turn, on the same gentle bob the rest of
+ * the site's decorative art uses.
  */
 export default function NotFound() {
   return (
@@ -26,10 +27,10 @@ export default function NotFound() {
 
       <h1 className="type-display mt-8 text-accent">404</h1>
 
-      <h2 className="type-heading mt-4 text-ink">Wrong turn somewhere.</h2>
+      <h2 className="type-heading mt-4 text-ink">You&apos;re lost. Josh isn&apos;t.</h2>
       <p className="type-lede mt-4 max-w-md text-ink-muted">
-        This page wandered off and hasn&apos;t been seen since. Let&apos;s
-        get you back to the good stuff.
+        This page doesn&apos;t exist, but the good news is you can&apos;t
+        actually get lost from here. One click and you&apos;re home.
       </p>
 
       {/* Same pill as the Work page's category filters (components/work/work-gallery.tsx)
