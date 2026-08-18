@@ -171,6 +171,20 @@
   }
 }
 
+/* Pans a gradient along its own background-position — used by the Pride
+   filter pill's hover fill (work-gallery.tsx). Shifting by exactly one
+   background-size length (200%) loops seamlessly regardless of the
+   gradient's own color stops, same trick shadcn/Magic UI's rainbow-button
+   uses for its animated border. */
+@keyframes rainbow-pan {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% 200%;
+  }
+}
+
 /* Scroll reveal — driven by the data attribute the Reveal component flips.
    Hidden is the CSS default so there is no flash of visible content. Both
    escape hatches below are pure CSS, so content can never be stranded

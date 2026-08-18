@@ -69,6 +69,16 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * scale used on plain text links — this is a filled/outlined pill like
  * that button, not a bare link.
  *
+ * The rainbow fill pans while hovered (rainbow-pan keyframes, globals.css)
+ * — the same background-position-over-background-size trick shadcn/Magic
+ * UI's rainbow-button uses, adapted to this pill's existing vertical
+ * stripe gradient rather than porting their border-clip layering. A
+ * shift of exactly one background-size length (200%) loops seamlessly
+ * regardless of the gradient's own stops, so it needs no manual
+ * duplicate-stop authoring. Plain CSS `animation`, so the sitewide
+ * prefers-reduced-motion rule already neutralises it — no JS guard
+ * needed here, unlike the hero/marquee's rAF-driven motion.
+ *
  * Plain CSS `uppercase`, not toWaldeckCase() — tried the lowercase quirk
  * here too, but at chip scale it read as a mistake rather than a
  * deliberate brand detail. Same exemption as the project prev/next nav.
@@ -113,8 +123,12 @@ function PrideFilterButton({
       ))}
       <span
         aria-hidden="true"
-        className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ inset: `${PRIDE_RINGS.length * 2}px`, background: prideStripeGradient }}
+        className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:animate-[rainbow-pan_1.5s_linear_infinite] group-hover:opacity-100"
+        style={{
+          inset: `${PRIDE_RINGS.length * 2}px`,
+          background: prideStripeGradient,
+          backgroundSize: "100% 200%",
+        }}
       />
       <span className="relative z-10 transition-colors duration-300 group-hover:text-black">
         Pride
