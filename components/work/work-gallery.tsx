@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 
 import { ProjectCard } from "@/components/work/project-card";
 import type { ImageRatio, Project, ProjectCategory } from "@/lib/projects";
-import { toWaldeckCase } from "@/lib/waldeck-case";
 
 type WorkGalleryProps = {
   projects: Project[];
@@ -53,10 +52,9 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * scale used on plain text links — this is a filled/outlined pill like
  * that button, not a bare link.
  *
- * Label goes through toWaldeckCase() rather than a CSS `uppercase` class
- * (same as every other chip below) — the site's universal Waldeck-casing
- * quirk needs literal per-letter case in the rendered text, which a CSS
- * transform can't produce.
+ * Plain CSS `uppercase`, not toWaldeckCase() — tried the lowercase quirk
+ * here too, but at chip scale it read as a mistake rather than a
+ * deliberate brand detail. Same exemption as the project prev/next nav.
  */
 function PrideFilterButton({
   active,
@@ -70,7 +68,7 @@ function PrideFilterButton({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`font-display group relative overflow-hidden rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
+      className={`font-display group relative overflow-hidden rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
         active
           ? "bg-brand text-canvas"
           : "border border-ink text-ink-muted hover:border-transparent hover:text-ink"
@@ -90,7 +88,7 @@ function PrideFilterButton({
         style={{ inset: `${PRIDE_RINGS.length * 2}px`, background: prideStripeGradient }}
       />
       <span className="relative z-10 transition-colors duration-300 group-hover:text-black">
-        {toWaldeckCase("Pride")}
+        Pride
       </span>
     </button>
   );
@@ -131,13 +129,13 @@ export function WorkGallery({ projects, categories }: WorkGalleryProps) {
               type="button"
               onClick={() => setFilter(option)}
               aria-pressed={active}
-              className={`font-display rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
+              className={`font-display rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
                 active
                   ? "bg-brand text-canvas"
                   : "border border-ink text-ink-muted hover:border-brand hover:text-brand"
               }`}
             >
-              {toWaldeckCase(option)}
+              {option}
             </button>
           );
         })}
