@@ -189,10 +189,16 @@ export function Nav() {
             <ul className="flex items-center gap-5 md:gap-8">
               {navLinks.map((link) => (
                 <li key={link.href}>
+                  {/* Scale bounce on top of the existing bold+purple --
+                      same asymmetric easing as jM/project-nav: smooth
+                      ease-drift growing into the hover, cleaner
+                      ease-in-out reverting. inline-block so the scale
+                      transform actually renders (inline elements can
+                      ignore it in some browsers). */}
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`font-body text-[11px] transition-colors ${
+                    className={`inline-block font-body text-[11px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
@@ -210,7 +216,7 @@ export function Nav() {
               <Link
                 href="/shop"
                 aria-current={isActive("/shop") ? "page" : undefined}
-                className={`font-body text-[11px] transition-colors ${
+                className={`inline-block font-body text-[11px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
                   isActive("/shop")
                     ? "font-bold text-accent"
                     : "text-ink hover:font-bold hover:text-accent"
