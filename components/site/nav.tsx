@@ -48,13 +48,23 @@ import { navLinks } from "@/lib/site";
  */
 
 // getBoundingClientRect().top thresholds, px, for handing the nav's active
-// highlight from Home to the embedded Work section on "/", and from Info
-// to the embedded Contact section on "/about". Two thresholds, not one —
-// mirrors the compact-header hysteresis below; a single threshold flickers
-// when the section's top edge hovers right at the boundary (trackpad
-// rubber-banding, a stray scroll tick).
+// highlight from Home to the embedded Work section on "/". Two thresholds,
+// not one — mirrors the compact-header hysteresis below; a single
+// threshold flickers when the section's top edge hovers right at the
+// boundary (trackpad rubber-banding, a stray scroll tick).
 const MERGE_ENTER = 96; // just past the expanded 88px header
 const MERGE_EXIT = 160;
+
+// Info -> Contact used the same section-top approach as Home -> Work
+// until Josh asked for it to hand off sooner — specifically the moment
+// the HOWDY button (id="howdy-button", enquiry-form.tsx) is visible,
+// not just whenever the embedded section's top edge reaches the header.
+// Thresholds are against window.innerHeight instead of a fixed px value
+// since "visible" is relative to viewport height, which varies by
+// device. Same hysteresis shape as MERGE_ENTER/EXIT above, just a
+// bigger gap (64px) since this fires much further down the page where
+// scroll deltas per frame are larger.
+const HOWDY_VISIBLE_BUFFER = 64;
 
 export function Nav() {
   const pathname = usePathname();
@@ -93,10 +103,12 @@ export function Nav() {
       }
 
       if (pathname === "/about") {
-        const section = document.getElementById("info-contact");
-        const top = section?.getBoundingClientRect().top ?? Infinity;
+        const howdy = document.getElementById("howdy-button");
+        const top = howdy?.getBoundingClientRect().top ?? Infinity;
         setInfoContactActive((current) =>
-          current ? top < MERGE_EXIT : top <= MERGE_ENTER,
+          current
+            ? top < window.innerHeight + HOWDY_VISIBLE_BUFFER
+            : top <= window.innerHeight,
         );
       } else {
         setInfoContactActive(false);
