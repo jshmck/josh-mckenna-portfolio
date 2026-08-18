@@ -76,7 +76,11 @@ export default function HomePage() {
           The id is the landmark Nav's scroll-spy reads to hand the active
           highlight from Home to Work — see components/site/nav.tsx. */}
       <section id="home-work">
-        <div className="mx-auto max-w-frame px-6 pb-32 pt-16 md:px-gutter">
+        {/* No pt- here -- Clients' own pb-16 above is the only spacer
+            between the two sections, same single-gap rhythm as Who ->
+            Clients. Stacking a pt-16 on top of that doubled the gap and
+            made Work read as disconnected from the brands above it. */}
+        <div className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
           {/* showIllustrations=false -- the Twingo/iPad row is /work's
               own top-of-page illustration, not something that should
               duplicate into Home's embedded gallery. */}
