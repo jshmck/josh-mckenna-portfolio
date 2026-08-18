@@ -70,11 +70,41 @@ const MERGE_EXIT = 160;
 // scroll deltas per frame are larger.
 const HOWDY_VISIBLE_BUFFER = 64;
 
+/** Matches the header's own shrink transition (duration-300 below) --
+ *  see the spacerCompact effect for why. */
+const HEADER_SHRINK_MS = 300;
+
 export function Nav() {
   const pathname = usePathname();
   const [compact, setCompact] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
   const [infoContactActive, setInfoContactActive] = useState(false);
+
+  // The header is `position: fixed`, so its own height animates over
+  // duration-300 without the page reflowing every frame (see the fixed-vs-
+  // sticky doc comment below) -- but the spacer that reserves its layout
+  // space used to snap to the new height the instant `compact` flipped
+  // true. That meant the layout below jumped up to the smaller gap
+  // immediately while the header was still visually mid-shrink (something
+  // between 88px and 40px), so the header briefly overlapped whatever
+  // content had just moved into that space -- most visible scrolling to
+  // the bottom of a page, where content sits right against the viewport
+  // edge. Delaying only the shrink (not the expand -- growing back to 88px
+  // instantly just leaves a harmless closing gap under the header, never
+  // an overlap) by the same 300ms the header takes to visually finish
+  // fixes it without reintroducing a smoothly-animated (many-reflow)
+  // spacer.
+  const [spacerCompact, setSpacerCompact] = useState(false);
+  useEffect(() => {
+    // 0ms for the expand direction -- still deferred to a callback (as the
+    // lint rule below wants), not truly synchronous, but with no
+    // meaningful delay.
+    const timeout = setTimeout(
+      () => setSpacerCompact(compact),
+      compact ? HEADER_SHRINK_MS : 0,
+    );
+    return () => clearTimeout(timeout);
+  }, [compact]);
 
   // Nav never unmounts across a client-side route change (it lives in the
   // root layout), so `compact` could otherwise keep carrying the
@@ -175,9 +205,12 @@ export function Nav() {
   return (
     <>
       {/* Reserves the header's layout space in the document flow. Height
-          snaps instantly with `compact` (no transition) — a single reflow
-          on state change, not one per animation frame. */}
-      <div aria-hidden="true" style={{ height: compact ? 40 : 88 }} />
+          still snaps instantly (no transition) — a single reflow on state
+          change, not one per animation frame — but keyed off
+          spacerCompact, not compact directly: see that effect above for
+          why the shrink is delayed to match the header's own visual
+          animation. */}
+      <div aria-hidden="true" style={{ height: spacerCompact ? 40 : 88 }} />
 
       {/* Trial: a hairline bottom border, same border-hairline token as the
           footer, but only once the header has shrunk to its compact
