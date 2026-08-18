@@ -98,13 +98,24 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Clients — moved above Talks & Features per Josh, titled like
+          every other section title on the site. */}
+      <section>
+        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+          <h2 className="type-title text-accent">SeLeCteD CLieNtS</h2>
+          <div className="mt-12">
+            <ClientLogos />
+          </div>
+        </div>
+      </section>
+
       {/* Talks & features — one merged list now, not a compact text list
           plus a separate rich-card version of the same events. Real event
           names, placeholder photos/video and captions until Josh sends the
           real assets over (same "visible until real content lands"
           pattern Plate uses everywhere else on the site). */}
       <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
           <h2 className="type-title text-accent">TALkS AND FeAtUReS</h2>
           <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
@@ -124,17 +135,6 @@ export default function AboutPage() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      {/* Clients — moved below Press per Josh, titled like every other
-          section title on the site. */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
-          <h2 className="type-title text-accent">SeLeCteD CLieNtS</h2>
-          <div className="mt-12">
-            <ClientLogos />
-          </div>
         </div>
       </section>
 
