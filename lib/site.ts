@@ -62,3 +62,6 @@ export const navLinks: NavLink[] = [
 
 /** Marquee words for the homepage band. Repeated in-component to loop. */
 export const marqueeWords = ["ALWAYS DRAWING", "NEVER STILL"] as const;
+
+/** Footer-only legal links, separate from the primary nav above. */
+export const legalLinks: NavLink[] = [{ label: "Privacy", href: "/privacy" }];

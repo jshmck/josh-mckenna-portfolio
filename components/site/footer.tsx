@@ -6,7 +6,9 @@ import {
   ThreadsIcon,
   XIcon,
 } from "@/components/ui/social-icons";
-import { siteConfig } from "@/lib/site";
+import Link from "next/link";
+
+import { legalLinks, siteConfig } from "@/lib/site";
 
 /** Small, far right — a quiet way to reach Josh from any page, not a
  *  repeat of Contact's own full-size icon row. Email first (not a new
@@ -52,6 +54,18 @@ export function Footer() {
             otherwise develop any artificial intelligence or machine
             learning model without prior written permission.
           </p>
+          <ul className="mt-2 flex gap-4">
+            {legalLinks.map(({ label, href }) => (
+              <li key={label}>
+                <Link
+                  href={href}
+                  className="font-body text-[11px] text-ink-muted underline-offset-2 transition-colors hover:text-accent hover:underline"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <ul className="flex items-center gap-4">
