@@ -44,28 +44,27 @@ export function Footer() {
               treatment on one line at any readable size, so it drops to
               font-body at a small size instead. Splitting here guarantees
               the line break lands right after "All rights reserved."
-              instead of wherever the browser happens to wrap. */}
+              instead of wherever the browser happens to wrap. Privacy
+              Policy sits inline right after that sentence, not in its
+              own row below both paragraphs. */}
           <p className="font-body text-[11px] text-ink-muted">
             Copyright © {new Date().getFullYear()} {siteConfig.name}. All
-            rights reserved.
+            rights reserved.{" "}
+            {legalLinks.map(({ label, href }) => (
+              <Link
+                key={label}
+                href={href}
+                className="underline-offset-2 transition-colors hover:text-accent hover:underline"
+              >
+                {label}
+              </Link>
+            ))}
           </p>
           <p className="font-body mt-1 text-[11px] text-ink-muted">
             No content on this site may be used to train, fine-tune or
             otherwise develop any artificial intelligence or machine
             learning model without prior written permission.
           </p>
-          <ul className="mt-2 flex gap-4">
-            {legalLinks.map(({ label, href }) => (
-              <li key={label}>
-                <Link
-                  href={href}
-                  className="font-body text-[11px] text-ink-muted underline-offset-2 transition-colors hover:text-accent hover:underline"
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
 
         <ul className="flex items-center gap-4">
