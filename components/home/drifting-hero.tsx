@@ -197,6 +197,23 @@ const REPEL_RADIUS = 0.18;
 /** Maximum lean, as a fraction of container width. */
 const REPEL_STRENGTH = 0.02;
 
+/** All nine objects otherwise share the same base z-0, so whenever two
+ * overlap, plain DOM/array order silently decides which one wins pointer
+ * hit-testing -- arbitrary, and completely disconnected from which one a
+ * visitor actually perceives as in front. A click that looks like it lands
+ * on the visible object can silently grab an unrelated neighbor whose
+ * transparent object-contain padding happens to cover that same pixel.
+ * Confirmed directly: sampling points inside car.png's own bounding box,
+ * several resolved via document.elementFromPoint to flowers.png's wrapper
+ * instead. Fixed by tying z-index to each object's own current vertical
+ * position every frame (further down the frame = further "forward") --
+ * a lightweight painter's-algorithm depth cue that at least makes the
+ * winner consistent and visually motivated instead of arbitrary. Kept well
+ * below the hover tier (z-20) and the wordmark (z-30) so neither is
+ * affected. */
+const AMBIENT_Z_MIN = 1;
+const AMBIENT_Z_MAX = 10;
+
 /** How far back we look, in ms, to estimate throw velocity on release.
  * Sized to comfortably hold a whole real flick gesture -- accelerate, peak,
  * ease off before the fingers actually leave the button -- not just its
@@ -929,6 +946,15 @@ export function DriftingHero() {
         object.x = x;
         object.y = y;
 
+        // Depth cue for hit-testing consistency -- see AMBIENT_Z_MIN/MAX.
+        // Dragging is unaffected (it's handled by onDragMove, which never
+        // reaches this line, and already wins via :hover's z-20 regardless).
+        const centreYForZ = y + object.height / 2;
+        node.style.zIndex = String(
+          AMBIENT_Z_MIN +
+            Math.round(clamp(centreYForZ, 0, 1) * (AMBIENT_Z_MAX - AMBIENT_Z_MIN)),
+        );
+
         node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
       }
 
@@ -974,6 +1000,16 @@ export function DriftingHero() {
         {OBJECTS.map((object, index) => {
           const height = object.width / object.aspect;
           const seed = orbitPosition({ ...object, height });
+          // Same depth-cue z-index the simulation writes every frame (see
+          // AMBIENT_Z_MIN/MAX) -- seeded here too so the static layout
+          // under prefers-reduced-motion (where the simulation loop never
+          // starts) still gets consistent hit-testing, not just the
+          // animated case.
+          const seedZ =
+            AMBIENT_Z_MIN +
+            Math.round(
+              clamp(seed.y + height / 2, 0, 1) * (AMBIENT_Z_MAX - AMBIENT_Z_MIN),
+            );
 
           return (
             <div
@@ -984,10 +1020,11 @@ export function DriftingHero() {
               onPointerMove={handlePointerMove(index)}
               onPointerLeave={handlePointerLeave(index)}
               aria-hidden="true"
-              className="group absolute left-0 top-0 z-0 cursor-grab will-change-transform hover:z-20 focus-within:z-20"
+              className="group absolute left-0 top-0 cursor-grab will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
+                zIndex: seedZ,
               }}
             >
               {/* A clean cut-out, no frosted card — on hover/focus it just
