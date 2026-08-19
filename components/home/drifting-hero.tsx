@@ -170,13 +170,16 @@ const REPEL_STRENGTH = 0.05;
 const DRAG_HISTORY_MS = 120;
 /** Hard cap on inherited throw speed, container-fractions per second. */
 const MAX_FLING_SPEED = 2.5;
-/** Spring pulling a released object back toward its live orbit position --
- * deliberately weak so a throw actually gets to coast and bounce around the
- * frame for a while instead of being reeled straight back to center. */
-const SPRING_K = 0.9;
-/** Damping on that spring — kept close to critical (ζ≈0.9) at this softer
- * SPRING_K so it still settles cleanly, just slowly, with no wobble. */
-const SPRING_DAMPING = 1.7;
+/** Spring pulling a released object back toward its live orbit position. A
+ * weaker spring here reads as elastic/rubber-band -- it takes long enough
+ * to settle that the approach itself becomes visible, wobble and all. This
+ * is back to the original strength: fast enough that the return reads as a
+ * catch, not a stretch. */
+const SPRING_K = 3.2;
+/** Damping on that spring, pushed just past critical (ζ≈1.06) so the
+ * approach can't overshoot at all -- no jiggle on the way in, even the
+ * subtle one the original just-under-critical tuning still had. */
+const SPRING_DAMPING = 3.8;
 /** Velocity kept after bouncing off a frame edge (rest lost as "energy"). */
 const BOUNCE_RESTITUTION = 0.5;
 /** Distance/speed thresholds below which a released object resumes orbit. */
