@@ -16,6 +16,20 @@ import { useEffect, useRef } from "react";
  *
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
+ *
+ * Grab-and-throw: any object can be picked up with the mouse (pointerType
+ * === "mouse" only — touch is left alone entirely, so nothing here fights
+ * page-scroll on mobile) and dragged around the frame. Each object carries a
+ * `mode` — "orbit" (its normal path), "dragging" (tracks the pointer 1:1),
+ * or "released" (free physics after letting go). On release it inherits the
+ * velocity of the last ~120ms of pointer motion, coasts, bounces off the
+ * frame's edges losing energy each bounce, and is pulled by a damped spring
+ * toward wherever its orbit *currently* is — the orbit angle keeps advancing
+ * the whole time it's away, so the object rejoins the live float in
+ * progress rather than snapping to a stale point. Once it's close and slow
+ * enough it folds back into "orbit" mode with no visible seam. The play
+ * area is this frame, the same box the orbit already respects — not the
+ * full page.
  */
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -152,6 +166,25 @@ const REPEL_RADIUS = 0.26;
 /** Maximum lean, as a fraction of container width. */
 const REPEL_STRENGTH = 0.05;
 
+/** How far back we look, in ms, to estimate throw velocity on release. */
+const DRAG_HISTORY_MS = 120;
+/** Hard cap on inherited throw speed, container-fractions per second. */
+const MAX_FLING_SPEED = 2.5;
+/** Spring pulling a released object back toward its live orbit position. */
+const SPRING_K = 3.2;
+/** Damping on that spring — tuned just under critical for a soft settle. */
+const SPRING_DAMPING = 3;
+/** Velocity kept after bouncing off a frame edge (rest lost as "energy"). */
+const BOUNCE_RESTITUTION = 0.5;
+/** Distance/speed thresholds below which a released object resumes orbit. */
+const SETTLE_DISTANCE = 0.006;
+const SETTLE_SPEED = 0.03;
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.max(min, Math.min(value, max));
+
+type DragMode = "orbit" | "dragging" | "released";
+
 /** Responsive candidate widths — objects span ~15–30% of the frame. */
 const OBJECT_SIZES = "(max-width: 768px) 48vw, 30vw";
 
@@ -206,24 +239,164 @@ export function DriftingHero() {
     const frame = frameRef.current;
     if (!frame) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      // Reduced motion: hold the static orbit (each object at its seed angle).
-      return;
-    }
+    const isReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     // Live simulation state, seeded from the orbit params. Kept outside React
-    // so the loop never triggers a re-render.
-    const state = OBJECTS.map((object) => ({
-      angle: object.angle,
-      rx: object.rx,
-      ry: object.ry,
-      spin: object.spin,
-      width: object.width,
-      height: object.width / object.aspect,
-    }));
+    // so the loop never triggers a re-render. x/y/vx/vy and mode drive the
+    // grab-and-throw interaction below; angle/rx/ry/spin still drive the
+    // underlying orbit those live values chase back toward.
+    const state = OBJECTS.map((object) => {
+      const height = object.width / object.aspect;
+      const seed = orbitPosition({ ...object, height });
+      return {
+        angle: object.angle,
+        rx: object.rx,
+        ry: object.ry,
+        spin: object.spin,
+        width: object.width,
+        height,
+        mode: "orbit" as DragMode,
+        x: seed.x,
+        y: seed.y,
+        vx: 0,
+        vy: 0,
+        pointerId: null as number | null,
+        grabOffsetX: 0,
+        grabOffsetY: 0,
+        dragHistory: [] as { t: number; x: number; y: number }[],
+      };
+    });
 
-    // Pointer in container-fraction space. -1 parks it outside the frame so
-    // nothing is repelled until the pointer actually arrives.
+    // --- Grab-and-throw wiring. Always live, independent of reduced motion,
+    // since a single direct-manipulation drag isn't the kind of autoplay
+    // motion that setting targets — only the momentum/bounce/spring-back
+    // afterward is, and that's gated below. Mouse-only: touch is left
+    // completely alone so nothing here fights page-scroll on mobile.
+    const dragCleanup: Array<() => void> = [];
+
+    nodeRefs.current.forEach((node, i) => {
+      if (!node) return;
+      const object = state[i];
+
+      const onDragStart = (event: PointerEvent) => {
+        if (event.pointerType !== "mouse" || event.button !== 0) return;
+        event.preventDefault();
+        node.setPointerCapture(event.pointerId);
+        object.mode = "dragging";
+        object.pointerId = event.pointerId;
+        object.vx = 0;
+        object.vy = 0;
+        const rect = frame.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        object.grabOffsetX = px - object.x;
+        object.grabOffsetY = py - object.y;
+        object.dragHistory = [{ t: performance.now(), x: object.x, y: object.y }];
+        node.style.transition = "none";
+        node.style.cursor = "grabbing";
+        // :hover tracks real cursor position, not pointer capture, so once
+        // the drag carries the pointer off the element it would drop back
+        // to z-0 and could vanish behind the z-10 wordmark mid-throw. Force
+        // it above everything until it's back in "orbit" mode (see tick()).
+        node.style.zIndex = "30";
+      };
+
+      const onDragMove = (event: PointerEvent) => {
+        if (object.mode !== "dragging" || event.pointerId !== object.pointerId) {
+          return;
+        }
+        const rect = frame.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        object.x = clamp(
+          px - object.grabOffsetX,
+          BOUNDS_INSET,
+          1 - BOUNDS_INSET - object.width,
+        );
+        object.y = clamp(
+          py - object.grabOffsetY,
+          BOUNDS_INSET,
+          1 - BOUNDS_INSET - object.height,
+        );
+
+        const now = performance.now();
+        object.dragHistory.push({ t: now, x: object.x, y: object.y });
+        while (
+          object.dragHistory.length > 1 &&
+          now - object.dragHistory[0].t > DRAG_HISTORY_MS
+        ) {
+          object.dragHistory.shift();
+        }
+
+        node.style.transform = `translate3d(${object.x * 100}cqw, ${object.y * 100}cqh, 0)`;
+      };
+
+      const onDragEnd = (event: PointerEvent) => {
+        if (object.mode !== "dragging" || event.pointerId !== object.pointerId) {
+          return;
+        }
+        node.releasePointerCapture(event.pointerId);
+        node.style.cursor = "";
+        object.pointerId = null;
+
+        if (isReduced) {
+          // No momentum simulation under reduced motion — ease straight
+          // back to the (static) orbit position. The sitewide
+          // reduced-motion rule in globals.css flattens this transition to
+          // instant, same as everywhere else on the site.
+          const home = orbitPosition(object);
+          object.mode = "orbit";
+          object.x = home.x;
+          object.y = home.y;
+          node.style.transition = "transform 500ms var(--ease-drift)";
+          node.style.transform = `translate3d(${home.x * 100}cqw, ${home.y * 100}cqh, 0)`;
+          node.style.zIndex = "";
+          window.setTimeout(() => {
+            node.style.transition = "";
+          }, 550);
+          return;
+        }
+
+        const history = object.dragHistory;
+        const first = history[0];
+        const last = history[history.length - 1];
+        if (last && history.length >= 2) {
+          const dt = Math.max((last.t - first.t) / 1000, 1 / 120);
+          object.vx = clamp((last.x - first.x) / dt, -MAX_FLING_SPEED, MAX_FLING_SPEED);
+          object.vy = clamp((last.y - first.y) / dt, -MAX_FLING_SPEED, MAX_FLING_SPEED);
+        } else {
+          object.vx = 0;
+          object.vy = 0;
+        }
+        object.mode = "released";
+      };
+
+      node.addEventListener("pointerdown", onDragStart);
+      node.addEventListener("pointermove", onDragMove);
+      node.addEventListener("pointerup", onDragEnd);
+      node.addEventListener("pointercancel", onDragEnd);
+
+      dragCleanup.push(() => {
+        node.removeEventListener("pointerdown", onDragStart);
+        node.removeEventListener("pointermove", onDragMove);
+        node.removeEventListener("pointerup", onDragEnd);
+        node.removeEventListener("pointercancel", onDragEnd);
+      });
+    });
+
+    if (isReduced) {
+      // Reduced motion: hold the static orbit otherwise — no drift, no
+      // repel, no momentum loop. Only the drag-and-snap-back above runs.
+      return () => {
+        dragCleanup.forEach((cleanup) => cleanup());
+      };
+    }
+
+    // Pointer in container-fraction space, for the hover-repel below. -1
+    // parks it outside the frame so nothing is repelled until the pointer
+    // actually arrives.
     const pointer = { x: -1, y: -1, active: false };
 
     const onPointerMove = (event: PointerEvent) => {
@@ -253,33 +426,100 @@ export function DriftingHero() {
         const node = nodeRefs.current[i];
         if (!node) continue;
 
-        // Advance the orbit.
+        // The orbit clock always advances, even mid-drag or mid-throw, so
+        // a released object is pulled back toward the *live* orbit rather
+        // than a stale point from when it was grabbed.
         object.angle += object.spin * dt;
-        let { x, y } = orbitPosition(object);
 
-        // Soft repel: falls off linearly to zero at REPEL_RADIUS so objects
-        // ease away from the cursor instead of snapping.
-        if (pointer.active) {
-          const centreX = x + object.width / 2;
-          const centreY = y + object.height / 2;
-          const dx = centreX - pointer.x;
-          const dy = centreY - pointer.y;
-          const distance = Math.hypot(dx, dy);
+        if (object.mode === "dragging") {
+          // onDragMove owns position and the transform while held.
+          continue;
+        }
 
-          if (distance > 0.0001 && distance < REPEL_RADIUS) {
-            const falloff = 1 - distance / REPEL_RADIUS;
-            const scale = (falloff * REPEL_STRENGTH) / distance;
-            x += dx * scale;
-            y += dy * scale;
+        let x: number;
+        let y: number;
+
+        if (object.mode === "released") {
+          const target = orbitPosition(object);
+          const dx = target.x - object.x;
+          const dy = target.y - object.y;
+          // The orbit itself is always moving, so a plain spring+damper
+          // only ever converges to a constant following-distance behind it
+          // (classic steady-state lag chasing a moving setpoint) and would
+          // never actually pass the settle check below. Feed the orbit's
+          // own instantaneous velocity (the derivative of orbitPosition
+          // w.r.t. time) into the damping term so the object is pulled
+          // toward matching the orbit's *motion*, not just its position —
+          // that's what lets the offset genuinely decay to zero.
+          const targetVx = -object.rx * Math.sin(object.angle) * object.spin;
+          const targetVy = object.ry * Math.cos(object.angle) * object.spin;
+          object.vx +=
+            (dx * SPRING_K - (object.vx - targetVx) * SPRING_DAMPING) * dt;
+          object.vy +=
+            (dy * SPRING_K - (object.vy - targetVy) * SPRING_DAMPING) * dt;
+          object.x += object.vx * dt;
+          object.y += object.vy * dt;
+
+          // Bounce off the frame edges, losing some speed each time.
+          const minX = BOUNDS_INSET;
+          const maxX = 1 - BOUNDS_INSET - object.width;
+          const minY = BOUNDS_INSET;
+          const maxY = 1 - BOUNDS_INSET - object.height;
+          if (object.x < minX) {
+            object.x = minX;
+            object.vx = Math.abs(object.vx) * BOUNCE_RESTITUTION;
+          } else if (object.x > maxX) {
+            object.x = maxX;
+            object.vx = -Math.abs(object.vx) * BOUNCE_RESTITUTION;
+          }
+          if (object.y < minY) {
+            object.y = minY;
+            object.vy = Math.abs(object.vy) * BOUNCE_RESTITUTION;
+          } else if (object.y > maxY) {
+            object.y = maxY;
+            object.vy = -Math.abs(object.vy) * BOUNCE_RESTITUTION;
+          }
+
+          x = object.x;
+          y = object.y;
+
+          // Close and slow enough — relative to the orbit's own cruising
+          // speed, not zero absolute speed — to rejoin with no visible seam.
+          const settled =
+            Math.hypot(dx, dy) < SETTLE_DISTANCE &&
+            Math.hypot(object.vx - targetVx, object.vy - targetVy) < SETTLE_SPEED;
+          if (settled) {
+            object.mode = "orbit";
+            object.vx = 0;
+            object.vy = 0;
+            node.style.zIndex = "";
+          }
+        } else {
+          ({ x, y } = orbitPosition(object));
+
+          // Soft repel: falls off linearly to zero at REPEL_RADIUS so
+          // objects ease away from the cursor instead of snapping.
+          if (pointer.active) {
+            const centreX = x + object.width / 2;
+            const centreY = y + object.height / 2;
+            const dx = centreX - pointer.x;
+            const dy = centreY - pointer.y;
+            const distance = Math.hypot(dx, dy);
+
+            if (distance > 0.0001 && distance < REPEL_RADIUS) {
+              const falloff = 1 - distance / REPEL_RADIUS;
+              const scale = (falloff * REPEL_STRENGTH) / distance;
+              x += dx * scale;
+              y += dy * scale;
+            }
           }
         }
 
-        // Never let an orbit (or a repel push) run an object off the frame.
-        x = Math.max(BOUNDS_INSET, Math.min(x, 1 - BOUNDS_INSET - object.width));
-        y = Math.max(
-          BOUNDS_INSET,
-          Math.min(y, 1 - BOUNDS_INSET - object.height),
-        );
+        // Never let anything run an object off the frame.
+        x = clamp(x, BOUNDS_INSET, 1 - BOUNDS_INSET - object.width);
+        y = clamp(y, BOUNDS_INSET, 1 - BOUNDS_INSET - object.height);
+        object.x = x;
+        object.y = y;
 
         node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
       }
@@ -293,6 +533,7 @@ export function DriftingHero() {
       cancelAnimationFrame(raf);
       frame.removeEventListener("pointermove", onPointerMove);
       frame.removeEventListener("pointerleave", onPointerLeave);
+      dragCleanup.forEach((cleanup) => cleanup());
     };
   }, []);
 
@@ -330,7 +571,7 @@ export function DriftingHero() {
               onPointerMove={handlePointerMove(index)}
               onPointerLeave={handlePointerLeave(index)}
               aria-hidden="true"
-              className="group absolute left-0 top-0 z-0 will-change-transform hover:z-20 focus-within:z-20"
+              className="group absolute left-0 top-0 z-0 cursor-grab will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
