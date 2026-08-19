@@ -32,44 +32,48 @@ export default function AboutPage() {
           on the right per Josh. */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-28 pt-8 md:px-gutter">
-          {/* Same treatment as the Contact page illustration and Work's
-              Twingo/iPad: next/image direct, object-contain, no Plate
-              frame or background surface, plus the same cursor-follow
-              tilt as Work (components/ui/tilt-illustration.tsx). Both are
-              homepage hero objects, copied to their own paths so the
-              standalone pages stay independent of the hero's orbit.
-              Height matches Work's illustrations (115px) for consistency
-              across all three pages. */}
-          <div className="flex flex-wrap items-end gap-6">
-            <TiltIllustration
-              src="/illustrations/hand.png"
-              aspect="641/873"
-              height={115}
-            />
-            <TiltIllustration
-              src="/illustrations/bearded.png"
-              aspect="977/929"
-              height={115}
-            />
-          </div>
-
           {/* Text + portrait, same two-column shape as Home's "Who"
               section (app/page.tsx) — paragraph left, framed image
               right. Plate shows the taupe placeholder until Josh sends
               a real photo. */}
-          <div className="mt-10 grid gap-16 md:grid-cols-2 md:items-center">
-            <Reveal>
-              <p className="type-lede text-ink-muted">
-                Josh McKenna is a London-based illustrator with over a
-                decade of experience moving between digital products and
-                physical spaces. He studied illustration at Falmouth
-                University before going freelance in 2014, working with
-                brands from Apple to the Wall Street Journal. From the
-                iconic Instagram Pride sticker to murals for Facebook, his
-                work uses simple vector shapes to evolve 2D characters into
-                3D forms.
-              </p>
-            </Reveal>
+          <div className="grid gap-16 md:grid-cols-2 md:items-center">
+            <div>
+              <Reveal>
+                <p className="type-lede text-ink-muted">
+                  Josh McKenna is a London-based illustrator with over a
+                  decade of experience moving between digital products and
+                  physical spaces. He studied illustration at Falmouth
+                  University before going freelance in 2014, working with
+                  brands from Apple to the Wall Street Journal. From the
+                  iconic Instagram Pride sticker to murals for Facebook, his
+                  work uses simple vector shapes to evolve 2D characters
+                  into 3D forms.
+                </p>
+              </Reveal>
+
+              {/* Same treatment as the Contact page illustration and
+                  Work's Twingo/iPad: next/image direct, object-contain,
+                  no Plate frame or background surface, plus the same
+                  cursor-follow tilt as Work
+                  (components/ui/tilt-illustration.tsx). Both are homepage
+                  hero objects, copied to their own paths so the
+                  standalone pages stay independent of the hero's orbit.
+                  Height matches Work's illustrations (115px) for
+                  consistency across all three pages. Below the paragraph
+                  per Josh, not above it. */}
+              <div className="mt-10 flex flex-wrap items-end gap-6">
+                <TiltIllustration
+                  src="/illustrations/hand.png"
+                  aspect="641/873"
+                  height={115}
+                />
+                <TiltIllustration
+                  src="/illustrations/bearded.png"
+                  aspect="977/929"
+                  height={115}
+                />
+              </div>
+            </div>
 
             <Plate
               image={{ ratio: "4/3", alt: "Portrait of Josh McKenna" }}
