@@ -241,10 +241,18 @@ export function Nav() {
           footer, but only once the header has shrunk to its compact
           state — expanded, it sits over the hero/page content with
           nothing to visually separate from yet, so the line only earns
-          its place once there's a scrolled page underneath it. */}
+          its place once there's a scrolled page underneath it. Frosted
+          background (bg-canvas/15 + backdrop-blur-md) is the same --
+          compact-only. Expanded, it's fully transparent: it sits directly
+          over a page's own top content (a hero, an illustration row) at
+          full 88px height, and a blur there was smudging saturated colour
+          right beneath it. Compact only ever sits over already-scrolled
+          content, which is what the frosted look was actually meant for. */}
       <header
-        className={`fixed inset-x-0 top-0 z-40 border-b bg-canvas/15 backdrop-blur-md transition-colors duration-300 ${
-          compact ? "border-hairline" : "border-transparent"
+        className={`fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300 ${
+          compact
+            ? "border-hairline bg-canvas/15 backdrop-blur-md"
+            : "border-transparent bg-transparent"
         }`}
       >
         <nav
