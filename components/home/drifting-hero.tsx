@@ -141,10 +141,13 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-7",
-    src: "/illustrations/objects/last-call.png",
+    /* No-key crop per Josh -- the keys/"Last Call" tag stay on the
+       Contact page version (/illustrations/last-call.png), just the
+       hat here. */
+    src: "/illustrations/objects/cowboy-hat.png",
     alt: "",
     width: 0.18,
-    aspect: 0.938,
+    aspect: 1.331,
     angle: rad(190),
     rx: 0.33,
     ry: 0.335,
