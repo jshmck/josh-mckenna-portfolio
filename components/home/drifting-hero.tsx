@@ -84,8 +84,8 @@ const OBJECTS: DriftObject[] = [
     id: "ambient-1",
     src: "/illustrations/objects/face.png",
     alt: "",
-    /* 0.185 -> 0.17 per Josh -- "slightly smaller, not a lot." */
-    width: 0.17,
+    /* 0.185 -> 0.17 -> 0.135 per Josh -- the blue head, smaller again. */
+    width: 0.135,
     aspect: 0.795,
     angle: rad(235),
     rx: 0.33,
@@ -96,7 +96,8 @@ const OBJECTS: DriftObject[] = [
     id: "work",
     src: "/illustrations/objects/car.png",
     alt: "",
-    width: 0.3,
+    /* 0.3 -> 0.24 per Josh -- the blue Honda, smaller. */
+    width: 0.24,
     aspect: 1.991,
     angle: rad(320),
     rx: 0.3,
