@@ -2,6 +2,7 @@ import { EnquiryForm } from "@/components/contact/enquiry-form";
 import { Reveal } from "@/components/ui/reveal";
 import {
   BehanceIcon,
+  FigmaIcon,
   InstagramIcon,
   LinkedInIcon,
   ThreadsIcon,
@@ -10,22 +11,28 @@ import {
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { siteConfig } from "@/lib/site";
 
+const DEFAULT_ICON_SIZE = 20;
+
 const socials = [
   { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon },
   { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon },
-  { label: "Behance", href: siteConfig.behance.url, Icon: BehanceIcon },
   { label: "X", href: siteConfig.x.url, Icon: XIcon },
   { label: "LinkedIn", href: siteConfig.linkedin.url, Icon: LinkedInIcon },
+  // Behance's mark is naturally wider than the others (its own proportions,
+  // not a square glyph like the rest) — sized down a touch so it doesn't
+  // read heavier than its neighbours at the same height.
+  { label: "Behance", href: siteConfig.behance.url, Icon: BehanceIcon, size: 16 },
+  { label: "Figma", href: siteConfig.figma.url, Icon: FigmaIcon },
 ];
 
 /**
  * The actual Contact page body — intro, direct/agency emails, socials,
- * illustration and the enquiry form. Shared between app/contact/page.tsx
- * (its own route) and Info's closing section (app/about/page.tsx embeds
- * this directly, mirroring the Home -> Work merge: Info flows straight
- * into the real Contact content instead of just linking to it). Each
- * caller owns its own page-level heading (sr-only or otherwise) — this
- * component starts at the intro paragraph.
+ * illustration and the enquiry form. Used by app/contact/page.tsx. Kept
+ * as its own component (rather than folded into the page) since it used
+ * to also be embedded at the end of Info — that merge was removed per
+ * Josh, but the split is still a reasonable seam if a similar embed is
+ * wanted again later. The caller owns its own page-level heading
+ * (sr-only or otherwise) — this component starts at the intro paragraph.
  */
 export function ContactContent() {
   return (
@@ -67,7 +74,7 @@ export function ContactContent() {
           </div>
 
           <ul className="mt-6 flex items-center gap-4">
-            {socials.map(({ label, href, Icon }) => (
+            {socials.map(({ label, href, Icon, size }) => (
               <li key={label}>
                 <a
                   href={href}
@@ -76,7 +83,7 @@ export function ContactContent() {
                   aria-label={label}
                   className="inline-block text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-accent hover:duration-300 hover:ease-drift"
                 >
-                  <Icon />
+                  <Icon size={size ?? DEFAULT_ICON_SIZE} />
                 </a>
               </li>
             ))}

@@ -39,6 +39,9 @@ export const siteConfig = {
   behance: {
     url: "https://www.behance.net/joshmckennna",
   },
+  figma: {
+    url: "https://www.figma.com/@joshmckenna",
+  },
   /** Used for absolute OG image + canonical URLs. */
   url: "https://joshmckenna.com",
 } as const;
@@ -48,11 +51,11 @@ export const siteConfig = {
    into the left-hand group, then dropped the "Home" label entirely to cut
    down on wordiness: the small "jM" wordmark rendered separately in
    nav.tsx (not part of this list) is the home link now. Shop sits between
-   Work and Info rather than Home/Work or Info/Contact specifically because
-   those two pairs merge on scroll (see nav.tsx's MERGE_ENTER/EXIT — Home
-   flows into Work, Info flows into Contact with no click), so Shop sits in
-   the one slot that doesn't split either pairing. Cart stays alone on the
-   far right. INFO points at /about — the "info" label, same page. */
+   Work and Info rather than next to Home/Work specifically because that
+   pair merges on scroll (see nav.tsx's MERGE_ENTER/EXIT — Home flows into
+   Work with no click), so Shop sits in the one slot that doesn't split
+   that pairing. Cart stays alone on the far right. INFO points at /about
+   — the "info" label, same page. */
 export const navLinks: NavLink[] = [
   { label: "Work", href: "/work" },
   { label: "Shop", href: "/shop" },

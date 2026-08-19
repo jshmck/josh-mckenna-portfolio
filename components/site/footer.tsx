@@ -1,6 +1,7 @@
 import {
   BehanceIcon,
   EmailIcon,
+  FigmaIcon,
   InstagramIcon,
   LinkedInIcon,
   ThreadsIcon,
@@ -19,9 +20,13 @@ const links = [
   { label: "Email", href: `mailto:${siteConfig.email}`, Icon: EmailIcon, external: false },
   { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon, external: true },
   { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon, external: true },
-  { label: "Behance", href: siteConfig.behance.url, Icon: BehanceIcon, external: true },
   { label: "X", href: siteConfig.x.url, Icon: XIcon, external: true },
   { label: "LinkedIn", href: siteConfig.linkedin.url, Icon: LinkedInIcon, external: true },
+  // Behance's mark is naturally wider than the others (its own proportions,
+  // not a square glyph like the rest) — sized down a touch so it doesn't
+  // read heavier than its neighbours at the same height.
+  { label: "Behance", href: siteConfig.behance.url, Icon: BehanceIcon, external: true, size: 14 },
+  { label: "Figma", href: siteConfig.figma.url, Icon: FigmaIcon, external: true },
 ];
 
 /**
@@ -59,7 +64,7 @@ export function Footer() {
         </div>
 
         <ul className="flex items-center gap-4">
-          {links.map(({ label, href, Icon, external }) => (
+          {links.map(({ label, href, Icon, external, size }) => (
             <li key={label}>
               <a
                 href={href}
@@ -67,7 +72,7 @@ export function Footer() {
                 aria-label={label}
                 className="inline-block text-ink-muted transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-accent hover:duration-300 hover:ease-drift"
               >
-                <Icon size={ICON_SIZE} />
+                <Icon size={size ?? ICON_SIZE} />
               </a>
             </li>
           ))}
