@@ -32,7 +32,9 @@ export default function ShopPage() {
       <div className="mx-auto max-w-xl text-center">
         {/* Same fade + rise as Info's intro paragraph -- was missing here
             (and on Contact), so this text just appeared instantly instead
-            of springing up like the rest of the site. */}
+            of springing up like the rest of the site. Covers the waitlist
+            form too (the email box and Notify Me button), not just the
+            heading/paragraph, so the whole thing springs up as one group. */}
         <Reveal>
           <h1 className="type-heading text-ink">
             Prints, stickers and other small things.
@@ -41,11 +43,11 @@ export default function ShopPage() {
             Not open yet. Leave an email and you&apos;ll hear the moment it
             is.
           </p>
-        </Reveal>
 
-        <div className="mt-10">
-          <WaitlistForm />
-        </div>
+          <div className="mt-10">
+            <WaitlistForm />
+          </div>
+        </Reveal>
       </div>
 
       <ul
