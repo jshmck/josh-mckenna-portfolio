@@ -21,20 +21,26 @@ import { useEffect, useRef } from "react";
  * === "mouse" only — touch is left alone entirely, so nothing here fights
  * page-scroll on mobile) and dragged around the frame. Each object carries a
  * `mode` — "orbit" (its normal path), "dragging" (tracks the pointer 1:1),
- * or "released" (free physics after letting go). On release it inherits the
- * velocity of the last ~120ms of pointer motion and just moves — momentum,
- * friction, bounces off the frame's edges — with one gentle addition the
- * whole time: a constant pull toward the *nearest point on the object's own
- * ellipse*, not toward any specific advancing phase. Since the ellipse
- * spans most of the frame already, that's usually a small correction, it
- * never fights the throw's tangential motion (only the radial distance
- * from the curve), and because the target is derived from the object's own
- * current position every frame rather than an independently moving clock,
- * there's nothing for it to chase — no steady-state lag, no scheduled
- * hand-off, so nothing for the eye to catch as a snap. It rejoins the
- * orbit at whatever phase the throw happened to leave it near, not at a
- * fixed start point. The play area is this frame, the same box the orbit
- * already respects — not the full page.
+ * "released" (free physics after letting go), or "landing" (a brief final
+ * blend, see below). On release it inherits the velocity of the last
+ * ~120ms of pointer motion and just moves — momentum, friction, bounces off
+ * the frame's edges — with one gentle addition the whole time: a constant
+ * pull toward the *nearest point on the object's own ellipse*, not toward
+ * any specific advancing phase. Since the ellipse spans most of the frame
+ * already, that's usually a small correction, it never fights the throw's
+ * tangential motion (only the radial distance from the curve), and because
+ * the target is derived from the object's own current position every frame
+ * rather than an independently moving clock, there's nothing for it to
+ * chase — no steady-state lag, no scheduled hand-off. Once captured (close
+ * to the line, slow enough), it's very likely near the right position but
+ * not necessarily moving in *exactly* the ellipse's tangent direction yet
+ * — "landing" is a short, fixed blend (LANDING_MS) that irons out just
+ * that last bit before resuming full-rate orbital motion, short precisely
+ * because capture only happens once already close, so there's never much
+ * ground left to blend over. It rejoins the orbit at whatever phase the
+ * throw happened to leave it near, not at a fixed start point. The play
+ * area is this frame, the same box the orbit already respects — not the
+ * full page.
  */
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -189,15 +195,27 @@ const BOUNCE_RESTITUTION = 0.5;
  * just always gently on, proportional to actual distance from the line. */
 const MAGNET_K = 1.1;
 /** Distance/speed thresholds below which a released object is considered
- * to have rejoined its orbit line and resumes normal orbital motion from
- * whatever phase it arrived at. */
+ * captured onto its orbit line and starts landing (see LANDING_MS) -- not
+ * yet the same instant as resuming full orbital motion. */
 const SETTLE_DISTANCE = 0.006;
 const SETTLE_SPEED = 0.03;
+/** The settle check only bounds speed, not direction -- a slow object can
+ * still be angled slightly off the ellipse's tangent right at capture, and
+ * handing that straight to fixed-rate orbital motion reads as a small
+ * directional snap. This is a short final blend from the captured position
+ * to the (still advancing) orbit position that smooths that last bit of
+ * mismatch away. Short on purpose: capture only happens once already very
+ * close, so even a brief blend covers very little ground. */
+const LANDING_MS = 400;
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(value, max));
 
-type DragMode = "orbit" | "dragging" | "released";
+/** Smoothstep: zero derivative at both ends, so the landing blend starts
+ * and finishes with no perceptible kink. */
+const smoothstep = (t: number) => t * t * (3 - 2 * t);
+
+type DragMode = "orbit" | "dragging" | "released" | "landing";
 
 /** Responsive candidate widths — objects span ~15–30% of the frame. */
 const OBJECT_SIZES = "(max-width: 768px) 48vw, 30vw";
@@ -291,6 +309,9 @@ export function DriftingHero() {
         y: seed.y,
         vx: 0,
         vy: 0,
+        landingMs: 0,
+        landingFromX: 0,
+        landingFromY: 0,
         pointerId: null as number | null,
         grabOffsetX: 0,
         grabOffsetY: 0,
@@ -605,17 +626,39 @@ export function DriftingHero() {
           x = object.x;
           y = object.y;
 
-          // Close enough to the line and slow enough that resuming normal
-          // orbital motion won't be a visible jump -- pick up the spin
-          // from the angle it actually arrived at, not any fixed start.
+          // Close enough to the line and slow enough that finishing the
+          // approach can be a brief blend instead of a hard cut -- pick up
+          // the spin from the angle it actually arrived at, not any fixed
+          // start. Speed alone doesn't guarantee *direction* was already
+          // aligned with the ellipse's tangent there, so this hands off to
+          // "landing" rather than jumping straight into fixed-rate orbital
+          // motion.
           if (
             Math.hypot(dx, dy) < SETTLE_DISTANCE &&
             Math.hypot(object.vx, object.vy) < SETTLE_SPEED
           ) {
             object.angle = nearestAngle;
-            object.mode = "orbit";
+            object.landingFromX = object.x;
+            object.landingFromY = object.y;
+            object.landingMs = 0;
+            object.mode = "landing";
             object.vx = 0;
             object.vy = 0;
+          }
+        } else if (object.mode === "landing") {
+          // The orbit clock keeps advancing normally here too, so the
+          // blend target is a properly moving point, not a stale one --
+          // by the time the blend finishes it's chasing nothing, it's
+          // already there.
+          object.landingMs += dt * 1000;
+          const t = clamp(object.landingMs / LANDING_MS, 0, 1);
+          const w = smoothstep(t);
+          const target = orbitPosition(object);
+          x = object.landingFromX + (target.x - object.landingFromX) * w;
+          y = object.landingFromY + (target.y - object.landingFromY) * w;
+
+          if (t >= 1) {
+            object.mode = "orbit";
             node.style.zIndex = "";
             const plate = plateRefs.current[i];
             if (plate) plate.style.scale = "";
