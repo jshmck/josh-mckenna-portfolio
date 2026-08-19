@@ -27,8 +27,9 @@ const RESTING_OFFSET = 32;
  * decides smooth vs instant, rather than duplicating that logic here.
  *
  * Pops in rather than just fading — scale + a small rise, eased with the
- * same overshoot/bounce curve the compact nav header uses (nav.tsx), so it
- * reads as an established site motion rather than a one-off. The global
+ * same overshoot/bounce curve the jM logo's hover/tap bounce uses
+ * (nav.tsx), so it reads as an established site motion rather than a
+ * one-off. The global
  * prefers-reduced-motion rule in globals.css (transition-duration:
  * 0.01ms !important) neutralises the bounce automatically, no extra guard
  * needed here.
