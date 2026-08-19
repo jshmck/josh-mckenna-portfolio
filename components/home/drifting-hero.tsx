@@ -276,6 +276,42 @@ export function DriftingHero() {
     // completely alone so nothing here fights page-scroll on mobile.
     const dragCleanup: Array<() => void> = [];
 
+    // Abandon a drag in progress and ease straight back to the live orbit
+    // position, no momentum. Used both for reduced motion's release (no
+    // fling simulation there at all) and for a drag that never got a clean
+    // pointerup -- the cursor left the browser window or the window lost
+    // focus mid-drag, cases the browser doesn't reliably deliver a pointer
+    // event for, which otherwise leaves the object stuck wherever it last
+    // was. Safe to call on an object that isn't dragging (a no-op).
+    const abandonDrag = (i: number) => {
+      const object = state[i];
+      const node = nodeRefs.current[i];
+      if (!node || object.mode !== "dragging") return;
+
+      if (object.pointerId !== null) {
+        try {
+          node.releasePointerCapture(object.pointerId);
+        } catch {
+          // Capture may already be gone (e.g. the window itself lost it).
+        }
+      }
+      node.style.cursor = "";
+      object.pointerId = null;
+
+      const home = orbitPosition(object);
+      object.mode = "orbit";
+      object.x = home.x;
+      object.y = home.y;
+      object.vx = 0;
+      object.vy = 0;
+      node.style.transition = "transform 500ms var(--ease-drift)";
+      node.style.transform = `translate3d(${home.x * 100}cqw, ${home.y * 100}cqh, 0)`;
+      node.style.zIndex = "";
+      window.setTimeout(() => {
+        node.style.transition = "";
+      }, 550);
+    };
+
     nodeRefs.current.forEach((node, i) => {
       if (!node) return;
       const object = state[i];
@@ -305,6 +341,14 @@ export function DriftingHero() {
 
       const onDragMove = (event: PointerEvent) => {
         if (object.mode !== "dragging" || event.pointerId !== object.pointerId) {
+          return;
+        }
+        // The primary button reads as already released -- the mouse button
+        // came up somewhere outside the browser window, where no pointerup
+        // event reaches us, and this move only fired because the cursor
+        // has since wandered back in. Treat it the same as a clean release.
+        if ((event.buttons & 1) === 0) {
+          abandonDrag(i);
           return;
         }
         const rect = frame.getBoundingClientRect();
@@ -337,27 +381,19 @@ export function DriftingHero() {
         if (object.mode !== "dragging" || event.pointerId !== object.pointerId) {
           return;
         }
-        node.releasePointerCapture(event.pointerId);
-        node.style.cursor = "";
-        object.pointerId = null;
 
         if (isReduced) {
           // No momentum simulation under reduced motion — ease straight
           // back to the (static) orbit position. The sitewide
           // reduced-motion rule in globals.css flattens this transition to
           // instant, same as everywhere else on the site.
-          const home = orbitPosition(object);
-          object.mode = "orbit";
-          object.x = home.x;
-          object.y = home.y;
-          node.style.transition = "transform 500ms var(--ease-drift)";
-          node.style.transform = `translate3d(${home.x * 100}cqw, ${home.y * 100}cqh, 0)`;
-          node.style.zIndex = "";
-          window.setTimeout(() => {
-            node.style.transition = "";
-          }, 550);
+          abandonDrag(i);
           return;
         }
+
+        node.releasePointerCapture(event.pointerId);
+        node.style.cursor = "";
+        object.pointerId = null;
 
         const history = object.dragHistory;
         const first = history[0];
@@ -384,6 +420,25 @@ export function DriftingHero() {
         node.removeEventListener("pointerup", onDragEnd);
         node.removeEventListener("pointercancel", onDragEnd);
       });
+    });
+
+    // Once the cursor leaves the browser window (or the window loses focus
+    // entirely -- alt-tab, clicking another app) while a button is held,
+    // most browsers stop delivering pointer events to the page altogether,
+    // so the node-level pointerup/pointercancel above never fires and an
+    // object can be left stranded wherever it last was. These two catch
+    // that: "pointerleave" on the document fires when the pointer exits the
+    // viewport even with capture held elsewhere, and "blur" catches focus
+    // loss that isn't necessarily a pointer leaving (e.g. alt-tab without
+    // the cursor moving).
+    const abandonAllDrags = () => {
+      for (let i = 0; i < state.length; i += 1) abandonDrag(i);
+    };
+    window.addEventListener("blur", abandonAllDrags);
+    document.addEventListener("pointerleave", abandonAllDrags);
+    dragCleanup.push(() => {
+      window.removeEventListener("blur", abandonAllDrags);
+      document.removeEventListener("pointerleave", abandonAllDrags);
     });
 
     if (isReduced) {
@@ -502,15 +557,15 @@ export function DriftingHero() {
           if (pointer.active) {
             const centreX = x + object.width / 2;
             const centreY = y + object.height / 2;
-            const dx = centreX - pointer.x;
-            const dy = centreY - pointer.y;
-            const distance = Math.hypot(dx, dy);
+            const rdx = centreX - pointer.x;
+            const rdy = centreY - pointer.y;
+            const distance = Math.hypot(rdx, rdy);
 
             if (distance > 0.0001 && distance < REPEL_RADIUS) {
               const falloff = 1 - distance / REPEL_RADIUS;
               const scale = (falloff * REPEL_STRENGTH) / distance;
-              x += dx * scale;
-              y += dy * scale;
+              x += rdx * scale;
+              y += rdy * scale;
             }
           }
         }
