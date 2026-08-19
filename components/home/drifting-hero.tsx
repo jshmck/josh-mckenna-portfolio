@@ -238,6 +238,22 @@ const SETTLE_SPEED = 0.03;
  * only happens once already very close, so even a brief blend covers very
  * little ground. */
 const LANDING_MS = 400;
+/** Minimum angular gap enforced when an object captures back onto orbit,
+ * checked against every other currently-orbiting object -- matches the
+ * tightest gap already present in the hand-placed OBJECTS seed angles
+ * (25° apart), so this doesn't introduce spacing tighter than the design
+ * already uses. All nine ellipses are similar in size and share the same
+ * centre, so when two objects get thrown into the same area, each one's
+ * *own*, independently-computed "nearest point on my own ellipse" can
+ * land very close to the other's -- nothing wrong with either
+ * calculation individually, but with reported spin rates only ~10-20%
+ * apart, two objects captured that close linger stacked for many seconds
+ * before drifting apart, reading as stuck rather than settled. This is a
+ * one-time nudge applied only at the instant of capture, not a
+ * continuous force -- it doesn't touch dragging or mid-flight physics,
+ * so it can't reintroduce objects dodging each other while being carried
+ * (the whole reason continuous inter-object repulsion was removed). */
+const MIN_ORBIT_SEPARATION = rad(40);
 
 /** Cubic Hermite interpolation matching both position and velocity at
  * t=0 and t=1 -- unlike a plain lerp/smoothstep blend (which implicitly
@@ -280,6 +296,29 @@ function orbitPosition(o: {
     x: CENTRE + o.rx * Math.cos(o.angle) - o.width / 2,
     y: CENTRE + o.ry * Math.sin(o.angle) - o.height / 2,
   };
+}
+
+/** The inverse of orbitPosition: given where an object currently is, which
+ * angle on its own ellipse is it nearest to? Normalizes its offset from
+ * centre into the ellipse's own circular coordinate space (divide by
+ * rx/ry) and reads the angle off there. Used both as a released object's
+ * own live magnet target and, for a neighbor, as a stand-in for "where is
+ * it heading" even before that neighbor has actually captured onto its
+ * curve -- an object mid-flight doesn't have a meaningful "settled angle"
+ * yet, but it does always have a nearest point on its own ellipse. */
+function nearestOrbitAngle(o: {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  rx: number;
+  ry: number;
+}) {
+  const centreX = o.x + o.width / 2;
+  const centreY = o.y + o.height / 2;
+  const u = (centreX - CENTRE) / o.rx;
+  const v = (centreY - CENTRE) / o.ry;
+  return Math.atan2(v, u);
 }
 
 /** Maximum tilt at the object's own edge, degrees. Scales down toward 0 at centre. */
@@ -497,7 +536,6 @@ export function DriftingHero() {
         ) {
           object.dragHistory.shift();
         }
-
         node.style.transform = `translate3d(${object.x * 100}cqw, ${object.y * 100}cqh, 0)`;
       };
 
@@ -665,16 +703,62 @@ export function DriftingHero() {
           // edges. This alone is what makes the throw's own direction and
           // kinetics honest -- nothing above this point pulls it anywhere.
           // Where is "this object's own orbit" from right where it
-          // currently is, and how fast would it naturally be moving there
-          // -- found by normalizing its offset from centre into the
-          // ellipse's own circular coordinate space (divide by rx/ry) and
-          // reading off the angle there. Computed once per frame, up
-          // front, and used by both friction (below) and the magnet.
-          const centreX = object.x + object.width / 2;
-          const centreY = object.y + object.height / 2;
-          const u = (centreX - CENTRE) / object.rx;
-          const v = (centreY - CENTRE) / object.ry;
-          const nearestAngle = Math.atan2(v, u);
+          // currently is, and how fast would it naturally be moving there.
+          // Computed once per frame, up front, and used by both friction
+          // (below) and the magnet.
+          //
+          // Nudged away from a nearby neighbor's angle first, if one is too
+          // close (see MIN_ORBIT_SEPARATION) -- applied continuously here,
+          // not only at the final capture instant. All nine ellipses are
+          // similar in size and share the same centre, so two objects
+          // thrown into the same area can each independently compute a
+          // "nearest point on my own ellipse" landing very close to the
+          // other's; nudging only at capture would mean a correction
+          // potentially many times larger than what the landing blend
+          // (below) was sized for. Doing it here instead means the object
+          // is already gravitating toward a clear stretch of its own curve
+          // well before it arrives. Checked against every other object not
+          // currently being dragged -- including ones still mid-flight
+          // themselves, using nearestOrbitAngle as a stand-in for "where
+          // it's heading" even before they've settled, since two objects
+          // thrown close together in time are usually *both* still
+          // in-flight when this matters and neither has a "real" angle yet.
+          let nearestAngle = nearestOrbitAngle(object);
+          let closestConflictAngle: number | null = null;
+          let closestConflictDiff = Infinity;
+          for (let j = 0; j < state.length; j += 1) {
+            if (j === i || state[j].mode === "dragging") continue;
+            const neighbor = state[j];
+            // Two simultaneously in-flight objects checking against each
+            // other's *current* (also still-moving) position is a mutual,
+            // symmetric adjustment -- each one's target shifts in reaction
+            // to the other's target shifting, which can chase into
+            // convergence instead of apart rather than settling. Fixed by
+            // a deterministic tiebreak: while both are mid-flight, only
+            // the higher index yields, so information only ever flows one
+            // way and there's nothing for either side to chase. An
+            // already-orbiting neighbor is a fixed reference regardless of
+            // index -- it isn't reacting to anything.
+            if (neighbor.mode !== "orbit" && j > i) continue;
+            const neighborAngle =
+              neighbor.mode === "orbit"
+                ? neighbor.angle
+                : nearestOrbitAngle(neighbor);
+            const rawDiff = nearestAngle - neighborAngle;
+            const diff = Math.atan2(Math.sin(rawDiff), Math.cos(rawDiff));
+            if (
+              Math.abs(diff) < MIN_ORBIT_SEPARATION &&
+              Math.abs(diff) < closestConflictDiff
+            ) {
+              closestConflictDiff = Math.abs(diff);
+              closestConflictAngle =
+                neighborAngle +
+                (diff >= 0 ? MIN_ORBIT_SEPARATION : -MIN_ORBIT_SEPARATION);
+            }
+          }
+          if (closestConflictAngle !== null) {
+            nearestAngle = closestConflictAngle;
+          }
           const nearest = orbitPosition({
             angle: nearestAngle,
             rx: object.rx,
@@ -757,9 +841,11 @@ export function DriftingHero() {
             // more -- computed analytically from the angle it'll have
             // advanced to by then, at this object's own cruising speed
             // (which varies a lot: some objects run faster than
-            // SETTLE_SPEED itself). The Hermite blend below then owns
-            // getting from one to the other without inventing a
-            // zero-velocity moment at either end.
+            // SETTLE_SPEED itself). nearestAngle already accounts for
+            // nearby orbiting neighbors (see above), so there's no
+            // separate spacing correction needed here. The Hermite blend
+            // below then owns getting from one endpoint to the other
+            // without inventing a zero-velocity moment at either end.
             const durationSec = LANDING_MS / 1000;
             const angleAtLandingEnd = nearestAngle + object.spin * durationSec;
             const landingEnd = orbitPosition({
