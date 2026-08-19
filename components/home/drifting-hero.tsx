@@ -6,13 +6,14 @@ import { useEffect, useRef } from "react";
 /**
  * The homepage hero: nine illustration cut-outs orbiting the JOSH McKenna
  * wordmark, each on its own slow elliptical path so the composition keeps a
- * gravity around the centre and never crowds the text. Nearby objects still
- * lean away from the cursor.
+ * gravity around the centre and never crowds the text.
  *
  * All of them are purely decorative (`aria-hidden`) — none double as
  * navigation; the site nav already covers Work/Info/Shop/Contact. On
- * hover/focus each object just lifts (scale + cursor-tilt) — no frosted
- * card, no boxed outline, nothing but the cut-out itself moving.
+ * hover/focus each object just lifts (scale + cursor-tilt) — a trace of
+ * movement inviting the grab below, without physically shoving the object
+ * away from the cursor — no frosted card, no boxed outline, nothing but
+ * the cut-out itself moving.
  *
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
@@ -161,10 +162,6 @@ const OBJECTS: DriftObject[] = [
 const CENTRE = 0.5;
 /** Keep objects this far inside each edge. */
 const BOUNDS_INSET = 0.02;
-/** How close the pointer must get before an object leans away. */
-const REPEL_RADIUS = 0.26;
-/** Maximum lean, as a fraction of container width. */
-const REPEL_STRENGTH = 0.05;
 
 /** How far back we look, in ms, to estimate throw velocity on release. */
 const DRAG_HISTORY_MS = 120;
@@ -465,30 +462,11 @@ export function DriftingHero() {
 
     if (isReduced) {
       // Reduced motion: hold the static orbit otherwise — no drift, no
-      // repel, no momentum loop. Only the drag-and-snap-back above runs.
+      // momentum loop. Only the drag-and-snap-back above runs.
       return () => {
         dragCleanup.forEach((cleanup) => cleanup());
       };
     }
-
-    // Pointer in container-fraction space, for the hover-repel below. -1
-    // parks it outside the frame so nothing is repelled until the pointer
-    // actually arrives.
-    const pointer = { x: -1, y: -1, active: false };
-
-    const onPointerMove = (event: PointerEvent) => {
-      const rect = frame.getBoundingClientRect();
-      pointer.x = (event.clientX - rect.left) / rect.width;
-      pointer.y = (event.clientY - rect.top) / rect.height;
-      pointer.active = true;
-    };
-
-    const onPointerLeave = () => {
-      pointer.active = false;
-    };
-
-    frame.addEventListener("pointermove", onPointerMove);
-    frame.addEventListener("pointerleave", onPointerLeave);
 
     let raf = 0;
     let last = performance.now();
@@ -575,23 +553,6 @@ export function DriftingHero() {
           }
         } else {
           ({ x, y } = orbitPosition(object));
-
-          // Soft repel: falls off linearly to zero at REPEL_RADIUS so
-          // objects ease away from the cursor instead of snapping.
-          if (pointer.active) {
-            const centreX = x + object.width / 2;
-            const centreY = y + object.height / 2;
-            const rdx = centreX - pointer.x;
-            const rdy = centreY - pointer.y;
-            const distance = Math.hypot(rdx, rdy);
-
-            if (distance > 0.0001 && distance < REPEL_RADIUS) {
-              const falloff = 1 - distance / REPEL_RADIUS;
-              const scale = (falloff * REPEL_STRENGTH) / distance;
-              x += rdx * scale;
-              y += rdy * scale;
-            }
-          }
         }
 
         // Never let anything run an object off the frame.
@@ -610,8 +571,6 @@ export function DriftingHero() {
 
     return () => {
       cancelAnimationFrame(raf);
-      frame.removeEventListener("pointermove", onPointerMove);
-      frame.removeEventListener("pointerleave", onPointerLeave);
       dragCleanup.forEach((cleanup) => cleanup());
     };
   }, []);
