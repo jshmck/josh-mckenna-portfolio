@@ -41,6 +41,11 @@ import { useEffect, useRef } from "react";
  * throw happened to leave it near, not at a fixed start point. The play
  * area is this frame, the same box the orbit already respects — not the
  * full page.
+ *
+ * The wordmark renders above every object in every mode, no exceptions —
+ * simpler and steadier than trying to track which state should sit above
+ * it and which shouldn't, and it means a thrown object settling back into
+ * orbit can never flicker as it crosses behind the text.
  */
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -357,7 +362,6 @@ export function DriftingHero() {
       object.vy = 0;
       node.style.transition = "transform 500ms var(--ease-drift)";
       node.style.transform = `translate3d(${home.x * 100}cqw, ${home.y * 100}cqh, 0)`;
-      node.style.zIndex = "";
       const plate = plateRefs.current[i];
       if (plate) plate.style.scale = "";
       window.setTimeout(() => {
@@ -385,15 +389,11 @@ export function DriftingHero() {
         object.dragHistory = [{ t: performance.now(), x: object.x, y: object.y }];
         node.style.transition = "none";
         node.style.cursor = "grabbing";
-        // :hover tracks real cursor position, not pointer capture, so once
-        // the drag carries the pointer off the element it would drop back
-        // to z-0 and could vanish behind the z-10 wordmark mid-throw. Force
-        // it above everything until it's back in "orbit" mode (see tick()).
-        node.style.zIndex = "30";
-        // Same reasoning for the hover scale bump: while dragging or
-        // bouncing back from a throw, the object can pass back under a
-        // cursor that never moved and re-trigger :hover, which reads as a
-        // jiggle riding on top of the throw. Hold it flat until orbit mode.
+        // :hover tracks real cursor position, not pointer capture, so while
+        // dragging or bouncing back from a throw the object can pass back
+        // under a cursor that never moved and re-trigger :hover, which
+        // reads as a jiggle riding on top of the throw. Hold it flat until
+        // it's genuinely idle again.
         const plate = plateRefs.current[i];
         if (plate) plate.style.scale = "1";
       };
@@ -659,7 +659,6 @@ export function DriftingHero() {
 
           if (t >= 1) {
             object.mode = "orbit";
-            node.style.zIndex = "";
             const plate = plateRefs.current[i];
             if (plate) plate.style.scale = "";
           }
@@ -718,9 +717,14 @@ export function DriftingHero() {
         // than the viewport.
         className="relative mx-auto h-[min(88vh,880px)] max-w-frame [container-type:size]"
       >
-        {/* Name lockup. Objects orbit BEHIND it and only pull in front on
-            hover. Ignores the pointer so it never blocks anything. */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
+        {/* Name lockup. Always on top of every hero object, in every mode
+            (idle, hovered, dragged, thrown) -- objects used to only pull
+            above it on hover, but a thrown object settling back into orbit
+            while it happened to be over the text made it flicker behind
+            mid-flight. One fixed rule with no exceptions reads as
+            intentional instead. Ignores the pointer so it never blocks
+            anything. */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
           <h1 className="type-display leading-[0.95] text-brand">
             <span className="block">jOSH</span>
             <span className="block">MCkeNNA</span>
