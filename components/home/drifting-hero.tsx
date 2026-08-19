@@ -275,6 +275,16 @@ function orbitPosition(o: {
 /** Maximum tilt at the object's own edge, degrees. Scales down toward 0 at centre. */
 const MAX_TILT = 8;
 
+/** Mirrors the plate's own `max-md:scale-[1.25]` Tailwind class -- same
+ * breakpoint as OBJECT_SIZES above. Forcing the plate's scale during a
+ * drag/throw (to hold off the hover-jiggle, see onDragStart) needs to
+ * match whatever the CSS cascade would otherwise be giving it, or grabbing
+ * an object below this breakpoint would visibly shrink it from 1.25x down
+ * to 1x for the whole flight, then pop back up once it settles. */
+const MOBILE_SCALE_QUERY = "(max-width: 768px)";
+const MOBILE_SCALE = "1.25";
+const DESKTOP_SCALE = "1";
+
 export function DriftingHero() {
   const frameRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -432,9 +442,14 @@ export function DriftingHero() {
         // dragging or bouncing back from a throw the object can pass back
         // under a cursor that never moved and re-trigger :hover, which
         // reads as a jiggle riding on top of the throw. Hold it flat until
-        // it's genuinely idle again.
+        // it's genuinely idle again -- flat meaning this breakpoint's own
+        // base size, not always 1x (see MOBILE_SCALE above).
         const plate = plateRefs.current[i];
-        if (plate) plate.style.scale = "1";
+        if (plate) {
+          plate.style.scale = window.matchMedia(MOBILE_SCALE_QUERY).matches
+            ? MOBILE_SCALE
+            : DESKTOP_SCALE;
+        }
       };
 
       const onDragMove = (event: PointerEvent) => {
