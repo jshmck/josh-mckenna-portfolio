@@ -29,7 +29,7 @@
   --color-placeholder-strong: var(--color-brand); /* navigable objects */
 
   /* Type families.
-     Waldeck (trial) is Josh's display face — the JOSH McKenna wordmark,
+     Waldeck is Josh's licensed display face — the JOSH McKenna wordmark,
      section titles and marquee. It's loaded locally in app/layout.tsx and
      exposed as --font-waldeck. Statement headings use Helvetica Neue Bold —
      the same licensed body face as --font-body, at its Bold cut — self-hosted
@@ -38,6 +38,15 @@
   --font-grotesque: var(--font-helvetica-neue), system-ui, sans-serif;
   --font-body: var(--font-helvetica-neue), system-ui, sans-serif;
   --font-mono: var(--font-space-mono), ui-monospace, monospace;
+
+  /* Waldeck's variable wght axis runs 100-340, not the standard CSS
+     100-900 scale (Light 100 / Regular 130 / Medium 180 / Bold 250 /
+     Black 340 — see the localFont() comment in app/layout.tsx). Tailwind's
+     stock font-medium/font-bold/font-black (500/700/900) all fall outside
+     that range and clamp to the same 340, making them indistinguishable —
+     so anything set in font-display uses these tokens instead. */
+  --font-weight-waldeck-medium: 180;
+  --font-weight-waldeck-black: 340;
 
   /* Page rhythm — 44px page gutter, 1344px frame from the wireframes */
   --spacing-gutter: 2.75rem;
@@ -92,7 +101,7 @@
   font-size: clamp(2.75rem, 9.8vw, 8.25rem);
   line-height: 0.9;
   letter-spacing: -0.01em;
-  font-weight: 900;
+  font-weight: var(--font-weight-waldeck-black);
 }
 
 /* Mid-size Waldeck — section titles (SELECTED WORK) and the marquee. Always
@@ -103,7 +112,7 @@
   font-size: clamp(1.75rem, 4.6vw, 3.5rem);
   line-height: 0.95;
   letter-spacing: -0.01em;
-  font-weight: 900;
+  font-weight: var(--font-weight-waldeck-black);
 }
 
 /* Waldeck CTA/link role (MORe ABOUT jOSH) — smaller than type-title. Waldeck's
@@ -115,7 +124,7 @@
   font-size: clamp(1.125rem, 2.2vw, 1.5rem);
   line-height: 1;
   letter-spacing: -0.005em;
-  font-weight: 900;
+  font-weight: var(--font-weight-waldeck-black);
 }
 
 /* The tight statement headings — Helvetica Neue Bold, not Waldeck. */

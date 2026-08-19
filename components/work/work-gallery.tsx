@@ -137,7 +137,7 @@ function PrideFilterButton({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`font-display group relative overflow-hidden rounded-full border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
+      className={`font-display group relative overflow-hidden rounded-full border px-4 py-2 text-[11px] font-waldeck-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
         active
           ? "border-transparent bg-brand text-canvas"
           : "border-ink text-ink-muted hover:border-[#F7A0C4] hover:text-ink pointer-coarse:animate-[pride-border-intro_2.4s_ease-in-out_500ms_1]"
@@ -223,7 +223,7 @@ export function WorkGallery({
               type="button"
               onClick={() => setFilter(option)}
               aria-pressed={active}
-              className={`font-display rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
+              className={`font-display rounded-full px-4 py-2 text-[11px] font-waldeck-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
                 active
                   ? "bg-brand text-canvas"
                   : "border border-ink text-ink-muted hover:border-brand hover:text-brand"

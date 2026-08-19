@@ -162,12 +162,16 @@ export default async function ProjectPage({
           globals.css for exactly this "smaller Waldeck link" role and
           had no callers yet. Plain full caps here, not the lowercase-
           letter quirk everywhere else on the site -- Josh's call, these
-          three read better fully uppercase at this scale. font-medium
-          (500), not Black (900): tried Black
+          three read better fully uppercase at this scale. font-waldeck-
+          medium (180), not Black (340): tried Black
           here to match the headers and it closed up/read cramped at this
           much smaller size. Black suits a big headline; type-link's
           smaller scale needs the lighter cut to stay legible -- same
-          Waldeck family, weight matched to size, not an inconsistency. */}
+          Waldeck family, weight matched to size, not an inconsistency.
+          Custom font-waldeck-medium/-black tokens (globals.css), not
+          Tailwind's stock font-medium/font-black -- Waldeck's variable
+          wght axis only spans 100-340, so 500 and 900 both clamp to the
+          same 340 and stop being distinguishable (see app/layout.tsx). */}
       <nav aria-label="Project navigation">
         {/* Grid, not flex-wrap justify-between -- with three items of
             uneven width, flex-wrap can drop just the last one onto its
@@ -175,8 +179,8 @@ export default async function ProjectPage({
             A fixed 3-column grid guarantees each link its own slot. */}
         <div className="mx-auto grid max-w-frame grid-cols-3 items-center gap-4 px-6 py-10 md:px-gutter">
           {/* font-bold/text-lg arrows -- kept even after reverting the
-              text to font-medium, since Helvetica Bold next to Waldeck
-              Medium still reads better than the original thin default.
+              text to font-waldeck-medium, since Helvetica Bold next to
+              Waldeck Medium still reads better than the original thin default.
               Plain unicode arrows, not
               Waldeck -- the font has no ← / → glyph at all (confirmed
               against its cmap, same gap as the missing '&'), so they'd
@@ -188,7 +192,7 @@ export default async function ProjectPage({
               the heavier Waldeck neighbour text made the plain arrows look
               skinny by comparison; hover nudges AND scales them up
               (group-hover:scale-125) as the interactive cue. Text itself
-              goes font-medium -> hover:font-black -- a real weight jump
+              goes font-waldeck-medium -> hover:font-waldeck-black -- a real weight jump
               now that Black isn't the resting state, so it's available
               again as the "something happened" signal. Dropped the
               opacity fade this replaced: getting bolder AND fainter at
@@ -212,7 +216,7 @@ export default async function ProjectPage({
           {previous ? (
             <Link
               href={`/work/${previous.slug}`}
-              className="type-link group inline-flex items-center gap-2 font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-200 ease-in-out hover:font-black hover:tracking-[0.02em] hover:duration-300 hover:ease-drift"
+              className="type-link group inline-flex items-center gap-2 font-waldeck-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-200 ease-in-out hover:font-waldeck-black hover:tracking-[0.02em] hover:duration-300 hover:ease-drift"
             >
               <span className="font-body text-lg font-bold transition-transform [-webkit-text-stroke:0px] group-hover:-translate-x-2 group-hover:scale-125 group-hover:[-webkit-text-stroke:0.6px_currentColor]">
                 ←
@@ -225,7 +229,7 @@ export default async function ProjectPage({
 
           <Link
             href="/work"
-            className="type-link text-center font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-200 ease-in-out hover:font-black hover:tracking-[0.02em] hover:duration-300 hover:ease-drift"
+            className="type-link text-center font-waldeck-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-200 ease-in-out hover:font-waldeck-black hover:tracking-[0.02em] hover:duration-300 hover:ease-drift"
           >
             ALL WORK
           </Link>
@@ -233,7 +237,7 @@ export default async function ProjectPage({
           {next ? (
             <Link
               href={`/work/${next.slug}`}
-              className="type-link group inline-flex items-center justify-end gap-2 font-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-200 ease-in-out hover:font-black hover:tracking-[0.02em] hover:duration-300 hover:ease-drift"
+              className="type-link group inline-flex items-center justify-end gap-2 font-waldeck-medium tracking-normal text-accent transition-[font-weight,letter-spacing] duration-200 ease-in-out hover:font-waldeck-black hover:tracking-[0.02em] hover:duration-300 hover:ease-drift"
             >
               NEXT
               <span className="font-body text-lg font-bold transition-transform [-webkit-text-stroke:0px] group-hover:translate-x-2 group-hover:scale-125 group-hover:[-webkit-text-stroke:0.6px_currentColor]">

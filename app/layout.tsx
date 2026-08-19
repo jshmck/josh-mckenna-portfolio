@@ -30,15 +30,19 @@ const archivoBlack = Archivo_Black({
   display: "swap",
 });
 
-/* Waldeck (trial) — Josh's display face for the wordmark, section titles and
-   marquee. Self-hosted from public/fonts/waldeck. These are trial weights;
-   swap in the licensed files at the same paths before launch (DESIGN.md). */
+/* Waldeck — Josh's licensed display face for the wordmark, section titles
+   and marquee. Self-hosted from public/fonts/waldeck as a single variable
+   file. Its wght axis is NOT the standard CSS 100-900 scale: it only spans
+   100-340 (Light 100 / Regular 130 / Medium 180 / Bold 250 / Black 340,
+   confirmed via the font's fvar/STAT tables). Declaring that real range
+   below means an out-of-range request (e.g. Tailwind's font-medium at 500,
+   or font-black at 900) clamps to the nearest bound instead of erroring —
+   but 500 and 900 both clamp to the SAME 340 and become indistinguishable.
+   So nothing should reach for font-medium/font-bold/font-black on text set
+   in font-display; use the --font-weight-waldeck-medium/-black tokens
+   (globals.css) instead. */
 const waldeck = localFont({
-  src: [
-    { path: "../public/fonts/waldeck/Waldeck-trial-Medium.otf", weight: "500", style: "normal" },
-    { path: "../public/fonts/waldeck/Waldeck-trial-Bold.otf", weight: "700", style: "normal" },
-    { path: "../public/fonts/waldeck/Waldeck-trial-Black.otf", weight: "900", style: "normal" },
-  ],
+  src: [{ path: "../public/fonts/waldeck/Waldeck.ttf", weight: "100 340", style: "normal" }],
   variable: "--font-waldeck",
   display: "swap",
   fallback: ["Archivo Black", "system-ui", "sans-serif"],

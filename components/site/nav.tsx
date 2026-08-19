@@ -223,7 +223,7 @@ export function Nav() {
               onClick={() => {
                 if (pathname === "/") window.scrollTo(0, 0);
               }}
-              className="font-display text-[22px] font-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125"
+              className="font-display text-[22px] font-waldeck-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125"
             >
               jM
             </Link>
