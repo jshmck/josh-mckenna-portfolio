@@ -63,6 +63,22 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Chrome's scroll anchoring auto-corrects scroll position to
+       compensate for layout shifts above the viewport (normally meant
+       for things like infinite-scroll content loading in above the
+       fold). It was firing spuriously here -- confirmed via direct CDP
+       measurement, a fresh page load drifted from scrollY 0 to ~1438
+       to a final resting 88 (exactly the header's height) over the
+       first ~2s, entirely outside any of this site's own JS -- most
+       likely confused by the sticky header's stuck/not-stuck state
+       changing as web fonts swap in (display: swap) and shift layout.
+       The 88px resting value pulled top-of-page content up underneath
+       the now-pinned header on every load. This site has no
+       infinite-scroll or above-the-fold content that loads in after
+       first paint, so there's nothing scroll anchoring is actually
+       protecting here -- disabling it outright removes the bug with
+       no real trade-off. */
+    overflow-anchor: none;
   }
 
   body {
