@@ -6,14 +6,13 @@ import { useEffect, useRef } from "react";
 /**
  * The homepage hero: nine illustration cut-outs orbiting the JOSH McKenna
  * wordmark, each on its own slow elliptical path so the composition keeps a
- * gravity around the centre and never crowds the text.
+ * gravity around the centre and never crowds the text. Nearby objects still
+ * lean away from the cursor.
  *
  * All of them are purely decorative (`aria-hidden`) — none double as
  * navigation; the site nav already covers Work/Info/Shop/Contact. On
- * hover/focus each object just lifts (scale + cursor-tilt) — a trace of
- * movement inviting the grab below, without physically shoving the object
- * away from the cursor — no frosted card, no boxed outline, nothing but
- * the cut-out itself moving.
+ * hover/focus each object just lifts (scale + cursor-tilt) — no frosted
+ * card, no boxed outline, nothing but the cut-out itself moving.
  *
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
@@ -23,16 +22,14 @@ import { useEffect, useRef } from "react";
  * page-scroll on mobile) and dragged around the frame. Each object carries a
  * `mode` — "orbit" (its normal path), "dragging" (tracks the pointer 1:1),
  * or "released" (free physics after letting go). On release it inherits the
- * velocity of the last ~120ms of pointer motion and just coasts: friction
- * decays that velocity, it bounces off the frame's edges losing energy each
- * bounce, and nothing pulls it toward anywhere while any of that is playing
- * out — the thrown trajectory is honest, not fighting a homing force the
- * whole time (that read as an elastic band snapping it back, no matter how
- * it was tuned). Only once the throw is genuinely spent (near-zero
- * velocity) does it hand off to a short, fixed-feel CSS ease back into
- * wherever its orbit has gotten to by then, scaled by distance so a long
- * way back doesn't warp. The play area is this frame, the same box the
- * orbit already respects — not the full page.
+ * velocity of the last ~120ms of pointer motion, coasts, bounces off the
+ * frame's edges losing energy each bounce, and is pulled by a damped spring
+ * toward wherever its orbit *currently* is — the orbit angle keeps advancing
+ * the whole time it's away, so the object rejoins the live float in
+ * progress rather than snapping to a stale point. Once it's close and slow
+ * enough it folds back into "orbit" mode with no visible seam. The play
+ * area is this frame, the same box the orbit already respects — not the
+ * full page.
  */
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -164,25 +161,24 @@ const OBJECTS: DriftObject[] = [
 const CENTRE = 0.5;
 /** Keep objects this far inside each edge. */
 const BOUNDS_INSET = 0.02;
+/** How close the pointer must get before an object leans away. */
+const REPEL_RADIUS = 0.26;
+/** Maximum lean, as a fraction of container width. */
+const REPEL_STRENGTH = 0.05;
 
 /** How far back we look, in ms, to estimate throw velocity on release. */
 const DRAG_HISTORY_MS = 120;
 /** Hard cap on inherited throw speed, container-fractions per second. */
 const MAX_FLING_SPEED = 2.5;
-/** Exponential velocity decay while coasting after a throw, per second --
- * pure friction, no pull toward anywhere, so the thrown trajectory plays
- * out honestly instead of fighting a homing force the whole time. */
-const FRICTION_RATE = 0.6;
+/** Spring pulling a released object back toward its live orbit position. */
+const SPRING_K = 3.2;
+/** Damping on that spring — tuned just under critical for a soft settle. */
+const SPRING_DAMPING = 3;
 /** Velocity kept after bouncing off a frame edge (rest lost as "energy"). */
 const BOUNCE_RESTITUTION = 0.5;
-/** Below this speed a released object is considered spent and hands off to
- * a short, fixed-feel ease back into orbit (see the settle branch below) —
- * not a force, so it can never read as elastic. */
+/** Distance/speed thresholds below which a released object resumes orbit. */
+const SETTLE_DISTANCE = 0.006;
 const SETTLE_SPEED = 0.03;
-/** How long that hand-off ease takes, scaled by how far it has to travel. */
-const RETURN_MS_BASE = 350;
-const RETURN_MS_PER_UNIT = 1400;
-const RETURN_MS_MAX = 1600;
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(value, max));
@@ -469,11 +465,30 @@ export function DriftingHero() {
 
     if (isReduced) {
       // Reduced motion: hold the static orbit otherwise — no drift, no
-      // momentum loop. Only the drag-and-snap-back above runs.
+      // repel, no momentum loop. Only the drag-and-snap-back above runs.
       return () => {
         dragCleanup.forEach((cleanup) => cleanup());
       };
     }
+
+    // Pointer in container-fraction space, for the hover-repel below. -1
+    // parks it outside the frame so nothing is repelled until the pointer
+    // actually arrives.
+    const pointer = { x: -1, y: -1, active: false };
+
+    const onPointerMove = (event: PointerEvent) => {
+      const rect = frame.getBoundingClientRect();
+      pointer.x = (event.clientX - rect.left) / rect.width;
+      pointer.y = (event.clientY - rect.top) / rect.height;
+      pointer.active = true;
+    };
+
+    const onPointerLeave = () => {
+      pointer.active = false;
+    };
+
+    frame.addEventListener("pointermove", onPointerMove);
+    frame.addEventListener("pointerleave", onPointerLeave);
 
     let raf = 0;
     let last = performance.now();
@@ -502,14 +517,23 @@ export function DriftingHero() {
         let y: number;
 
         if (object.mode === "released") {
-          // Pure momentum: velocity only ever decays (friction, bounces),
-          // nothing pulls it anywhere. The thrown trajectory plays out
-          // honestly instead of fighting a homing force the whole time --
-          // that force, however it was tuned, is what kept reading as an
-          // elastic band snapping it back.
-          const frictionDecay = Math.exp(-FRICTION_RATE * dt);
-          object.vx *= frictionDecay;
-          object.vy *= frictionDecay;
+          const target = orbitPosition(object);
+          const dx = target.x - object.x;
+          const dy = target.y - object.y;
+          // The orbit itself is always moving, so a plain spring+damper
+          // only ever converges to a constant following-distance behind it
+          // (classic steady-state lag chasing a moving setpoint) and would
+          // never actually pass the settle check below. Feed the orbit's
+          // own instantaneous velocity (the derivative of orbitPosition
+          // w.r.t. time) into the damping term so the object is pulled
+          // toward matching the orbit's *motion*, not just its position —
+          // that's what lets the offset genuinely decay to zero.
+          const targetVx = -object.rx * Math.sin(object.angle) * object.spin;
+          const targetVy = object.ry * Math.cos(object.angle) * object.spin;
+          object.vx +=
+            (dx * SPRING_K - (object.vx - targetVx) * SPRING_DAMPING) * dt;
+          object.vy +=
+            (dy * SPRING_K - (object.vy - targetVy) * SPRING_DAMPING) * dt;
           object.x += object.vx * dt;
           object.y += object.vy * dt;
 
@@ -533,39 +557,41 @@ export function DriftingHero() {
             object.vy = -Math.abs(object.vy) * BOUNCE_RESTITUTION;
           }
 
-          if (Math.hypot(object.vx, object.vy) < SETTLE_SPEED) {
-            // Spent. However far the throw actually left it, hand off to a
-            // short, fixed-feel ease back into the live orbit -- a CSS
-            // transition, not a force, so it reads as one deliberate drift
-            // home rather than a spring's recoil. Duration scales with the
-            // distance left to cover so a long way back doesn't warp.
-            const home = orbitPosition(object);
-            const distance = Math.hypot(home.x - object.x, home.y - object.y);
-            const durationMs = clamp(
-              RETURN_MS_BASE + distance * RETURN_MS_PER_UNIT,
-              RETURN_MS_BASE,
-              RETURN_MS_MAX,
-            );
+          x = object.x;
+          y = object.y;
+
+          // Close and slow enough — relative to the orbit's own cruising
+          // speed, not zero absolute speed — to rejoin with no visible seam.
+          const settled =
+            Math.hypot(dx, dy) < SETTLE_DISTANCE &&
+            Math.hypot(object.vx - targetVx, object.vy - targetVy) < SETTLE_SPEED;
+          if (settled) {
             object.mode = "orbit";
-            object.x = home.x;
-            object.y = home.y;
             object.vx = 0;
             object.vy = 0;
-            node.style.transition = `transform ${durationMs}ms var(--ease-drift)`;
-            node.style.transform = `translate3d(${home.x * 100}cqw, ${home.y * 100}cqh, 0)`;
             node.style.zIndex = "";
             const plate = plateRefs.current[i];
             if (plate) plate.style.scale = "";
-            window.setTimeout(() => {
-              node.style.transition = "";
-            }, durationMs + 50);
-            continue;
           }
-
-          x = object.x;
-          y = object.y;
         } else {
           ({ x, y } = orbitPosition(object));
+
+          // Soft repel: falls off linearly to zero at REPEL_RADIUS so
+          // objects ease away from the cursor instead of snapping.
+          if (pointer.active) {
+            const centreX = x + object.width / 2;
+            const centreY = y + object.height / 2;
+            const rdx = centreX - pointer.x;
+            const rdy = centreY - pointer.y;
+            const distance = Math.hypot(rdx, rdy);
+
+            if (distance > 0.0001 && distance < REPEL_RADIUS) {
+              const falloff = 1 - distance / REPEL_RADIUS;
+              const scale = (falloff * REPEL_STRENGTH) / distance;
+              x += rdx * scale;
+              y += rdy * scale;
+            }
+          }
         }
 
         // Never let anything run an object off the frame.
@@ -584,6 +610,8 @@ export function DriftingHero() {
 
     return () => {
       cancelAnimationFrame(raf);
+      frame.removeEventListener("pointermove", onPointerMove);
+      frame.removeEventListener("pointerleave", onPointerLeave);
       dragCleanup.forEach((cleanup) => cleanup());
     };
   }, []);
