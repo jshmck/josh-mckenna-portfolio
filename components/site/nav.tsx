@@ -33,18 +33,18 @@ import { navLinks } from "@/lib/site";
  * 120px of scroll, but chasing the visual side effects of animating a
  * fixed-position element's height kept surfacing new bugs for one motion
  * detail Josh wasn't attached to keeping. What scrolling still changes:
- * past half a viewport of scroll (back below 35% to undo — hysteresis, so
- * it doesn't flicker at the boundary) the header picks up a hairline
- * bottom border and the same colourless frosted-glass treatment as the
- * hero's floating-object hover cards (bg-canvas/15 + backdrop-blur-md).
- * Unscrolled, it's fully transparent. Threshold is viewport-relative, not
- * a small fixed px value (120px originally) -- Work's illustration row
- * sits close enough to the top (~120-235px) that a 120px threshold put it
- * directly under the header at the exact moment frost switched on.
- * Scaling with viewport height instead (matching BackToTop's own
- * threshold) means frost only appears once you've scrolled meaningfully
- * deep into any page, comfortably clear of any near-top content on any
- * device size.
+ * past 24px of scroll (back below 4px to undo — hysteresis, so it doesn't
+ * flicker at the boundary on trackpad rubber-banding) the header picks up
+ * a hairline bottom border and the same colourless frosted-glass treatment
+ * as the hero's floating-object hover cards (bg-canvas/15 +
+ * backdrop-blur-md). Unscrolled, it's fully transparent. Small fixed px
+ * values, not viewport-relative — Josh wants the frost on the first
+ * scroll gesture, not once you're meaningfully deep into the page. A
+ * mid-range threshold (120px, tried previously) happened to land exactly
+ * where Work's illustration row sits (~120-235px), so frost switching on
+ * coincided visually with that row passing under the header. Near-zero
+ * doesn't have that problem — frost is already on well before any
+ * near-top content reaches the header.
  *
  * Link text is 14px, jM is 22px — bumped up in two passes from an
  * original 11px/text-lg that read too small on larger screens, since
@@ -107,25 +107,23 @@ export function Nav() {
     let raf = 0;
     let queued = false;
 
-    // Hysteresis: frosted past half a viewport of scroll, clear again
-    // only below 35% -- a single threshold flickers on trackpad
-    // rubber-banding. Viewport-relative, not a small fixed px value
-    // (120/60 originally): a sticky header only avoids overlapping
-    // content while scrollY is less than its own offset from the top of
-    // the document, which for the very first element on the page is 0 --
-    // it's effectively pinned, with content scrolling underneath it, from
-    // the first pixel of scroll onward, same as `fixed` was. Work's
-    // illustration row sits close enough to the top (~120-235px) that a
-    // 120px threshold put it directly under the header at the exact
-    // moment frost switched on. Tying this to viewport height instead
-    // (matching BackToTop's own threshold) means frost only appears once
-    // you've scrolled meaningfully deep into any page, comfortably clear
-    // of any near-top content regardless of device size.
+    // Hysteresis: frosted past FROST_ENTER, clear again only below
+    // FROST_EXIT -- a single threshold flickers on trackpad rubber-banding
+    // at the very top. Small fixed px values, not viewport-relative: Josh
+    // wants the frost as soon as the first scroll gesture, not once you're
+    // meaningfully deep into the page. A mid-range threshold (120px, tried
+    // previously) landed exactly where Work's illustration row sits
+    // (~120-235px), so frost switching on coincided with that row passing
+    // under the header and looked like a glitch. A near-zero threshold
+    // doesn't have that problem -- frost is already on well before any
+    // near-top content reaches the header.
+    const FROST_ENTER = 24;
+    const FROST_EXIT = 4;
     const update = () => {
       queued = false;
       setScrolled((current) => {
-        if (current) return window.scrollY > window.innerHeight * 0.35;
-        return window.scrollY > window.innerHeight * 0.5;
+        if (current) return window.scrollY > FROST_EXIT;
+        return window.scrollY > FROST_ENTER;
       });
 
       // The embedded Work gallery on "/" and the embedded Contact content
