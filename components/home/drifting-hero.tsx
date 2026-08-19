@@ -35,12 +35,16 @@ import { useEffect, useRef } from "react";
  * to the line, slow enough), it's very likely near the right position but
  * not necessarily moving in *exactly* the ellipse's tangent direction yet
  * — "landing" is a short, fixed blend (LANDING_MS) that irons out just
- * that last bit before resuming full-rate orbital motion, short precisely
- * because capture only happens once already close, so there's never much
- * ground left to blend over. It rejoins the orbit at whatever phase the
- * throw happened to leave it near, not at a fixed start point. The play
- * area is this frame, the same box the orbit already respects — not the
- * full page.
+ * that last bit before resuming full-rate orbital motion. It's a cubic
+ * Hermite blend, not a plain lerp, because it has to match real velocity
+ * at both ends: the incoming throw velocity at the start, and this
+ * object's own cruising speed (rx * spin, which varies quite a bit object
+ * to object) at the end — a simpler blend implicitly assumes zero velocity
+ * at both ends, which is only true by coincidence for a slow-cruising
+ * object and is a real, visible snap for a fast one. It rejoins the orbit
+ * at whatever phase the throw happened to leave it near, not at a fixed
+ * start point. The play area is this frame, the same box the orbit
+ * already respects — not the full page.
  *
  * The wordmark renders above every object in every mode, no exceptions —
  * simpler and steadier than trying to track which state should sit above
@@ -208,17 +212,39 @@ const SETTLE_SPEED = 0.03;
  * still be angled slightly off the ellipse's tangent right at capture, and
  * handing that straight to fixed-rate orbital motion reads as a small
  * directional snap. This is a short final blend from the captured position
- * to the (still advancing) orbit position that smooths that last bit of
- * mismatch away. Short on purpose: capture only happens once already very
- * close, so even a brief blend covers very little ground. */
+ * to where the orbit will be once landing finishes, matching real velocity
+ * at both ends (see the Hermite blend in tick()) rather than assuming it's
+ * zero at either end -- every object's own cruising speed (rx * spin)
+ * differs, and several run faster than SETTLE_SPEED itself, so pretending
+ * velocity is zero at the hand-off was a real discontinuity for those,
+ * even though it was invisible on a slow one. Short on purpose: capture
+ * only happens once already very close, so even a brief blend covers very
+ * little ground. */
 const LANDING_MS = 400;
+
+/** Cubic Hermite interpolation matching both position and velocity at
+ * t=0 and t=1 -- unlike a plain lerp/smoothstep blend (which implicitly
+ * assumes zero velocity at both ends), this can start and end at whatever
+ * the real, non-zero velocities actually are, so there's no hidden
+ * "velocity must be near zero here" assumption baked into the curve. */
+const hermite = (
+  p0: number,
+  v0: number,
+  p1: number,
+  v1: number,
+  t: number,
+) => {
+  const t2 = t * t;
+  const t3 = t2 * t;
+  const h00 = 2 * t3 - 3 * t2 + 1;
+  const h10 = t3 - 2 * t2 + t;
+  const h01 = -2 * t3 + 3 * t2;
+  const h11 = t3 - t2;
+  return h00 * p0 + h10 * v0 + h01 * p1 + h11 * v1;
+};
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(value, max));
-
-/** Smoothstep: zero derivative at both ends, so the landing blend starts
- * and finishes with no perceptible kink. */
-const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
 type DragMode = "orbit" | "dragging" | "released" | "landing";
 
@@ -317,6 +343,12 @@ export function DriftingHero() {
         landingMs: 0,
         landingFromX: 0,
         landingFromY: 0,
+        landingFromVX: 0,
+        landingFromVY: 0,
+        landingToX: 0,
+        landingToY: 0,
+        landingToVX: 0,
+        landingToVY: 0,
         pointerId: null as number | null,
         grabOffsetX: 0,
         grabOffsetY: 0,
@@ -637,28 +669,68 @@ export function DriftingHero() {
             Math.hypot(dx, dy) < SETTLE_DISTANCE &&
             Math.hypot(object.vx, object.vy) < SETTLE_SPEED
           ) {
-            object.angle = nearestAngle;
+            // Capture both endpoints once, up front: where/how fast it
+            // actually is right now (its real velocity, not zero), and
+            // where/how fast the orbit will naturally be after LANDING_MS
+            // more -- computed analytically from the angle it'll have
+            // advanced to by then, at this object's own cruising speed
+            // (which varies a lot: some objects run faster than
+            // SETTLE_SPEED itself). The Hermite blend below then owns
+            // getting from one to the other without inventing a
+            // zero-velocity moment at either end.
+            const durationSec = LANDING_MS / 1000;
+            const angleAtLandingEnd = nearestAngle + object.spin * durationSec;
+            const landingEnd = orbitPosition({
+              angle: angleAtLandingEnd,
+              rx: object.rx,
+              ry: object.ry,
+              width: object.width,
+              height: object.height,
+            });
             object.landingFromX = object.x;
             object.landingFromY = object.y;
+            object.landingFromVX = object.vx;
+            object.landingFromVY = object.vy;
+            object.landingToX = landingEnd.x;
+            object.landingToY = landingEnd.y;
+            object.landingToVX = -object.rx * Math.sin(angleAtLandingEnd) * object.spin;
+            object.landingToVY = object.ry * Math.cos(angleAtLandingEnd) * object.spin;
             object.landingMs = 0;
+            // The angle keeps advancing at the top of the loop every
+            // frame regardless of mode, so setting it to nearestAngle now
+            // means it'll have naturally reached angleAtLandingEnd by the
+            // time landing's timer runs out -- landingToX/Y/VX/VY above
+            // were computed assuming exactly that.
+            object.angle = nearestAngle;
             object.mode = "landing";
-            object.vx = 0;
-            object.vy = 0;
           }
         } else if (object.mode === "landing") {
-          // The orbit clock keeps advancing normally here too, so the
-          // blend target is a properly moving point, not a stale one --
-          // by the time the blend finishes it's chasing nothing, it's
-          // already there.
+          // Both endpoints (position AND velocity) were captured once, at
+          // the moment landing began -- this just reads the curve between
+          // them. Real incoming velocity in, this object's own real
+          // cruising velocity out, whatever that happens to be.
           object.landingMs += dt * 1000;
           const t = clamp(object.landingMs / LANDING_MS, 0, 1);
-          const w = smoothstep(t);
-          const target = orbitPosition(object);
-          x = object.landingFromX + (target.x - object.landingFromX) * w;
-          y = object.landingFromY + (target.y - object.landingFromY) * w;
+          const durationSec = LANDING_MS / 1000;
+          x = hermite(
+            object.landingFromX,
+            object.landingFromVX * durationSec,
+            object.landingToX,
+            object.landingToVX * durationSec,
+            t,
+          );
+          y = hermite(
+            object.landingFromY,
+            object.landingFromVY * durationSec,
+            object.landingToY,
+            object.landingToVY * durationSec,
+            t,
+          );
 
           if (t >= 1) {
             object.mode = "orbit";
+            object.vx = 0;
+            object.vy = 0;
             const plate = plateRefs.current[i];
             if (plate) plate.style.scale = "";
           }
