@@ -193,8 +193,14 @@ const REPEL_RADIUS = 0.18;
 /** Maximum lean, as a fraction of container width. */
 const REPEL_STRENGTH = 0.02;
 
-/** How far back we look, in ms, to estimate throw velocity on release. */
-const DRAG_HISTORY_MS = 120;
+/** How far back we look, in ms, to estimate throw velocity on release.
+ * Sized to comfortably hold a whole real flick gesture -- accelerate, peak,
+ * ease off before the fingers actually leave the button -- not just its
+ * final moment. That easing-off alone can take 150-200ms, so a window much
+ * shorter than this would have the buffer trimmed down to nothing but the
+ * tail before release ever happens, discarding the peak before onDragEnd
+ * gets a chance to look for it. */
+const DRAG_HISTORY_MS = 320;
 /** Hard cap on inherited throw speed, container-fractions per second. */
 const MAX_FLING_SPEED = 2.5;
 /** Exponential velocity decay while a thrown object is in flight, per
@@ -509,17 +515,49 @@ export function DriftingHero() {
         node.style.cursor = "";
         object.pointerId = null;
 
-        const history = object.dragHistory;
-        const first = history[0];
-        const last = history[history.length - 1];
-        if (last && history.length >= 2) {
-          const dt = Math.max((last.t - first.t) / 1000, 1 / 120);
-          object.vx = clamp((last.x - first.x) / dt, -MAX_FLING_SPEED, MAX_FLING_SPEED);
-          object.vy = clamp((last.y - first.y) / dt, -MAX_FLING_SPEED, MAX_FLING_SPEED);
-        } else {
-          object.vx = 0;
-          object.vy = 0;
+        // Trimming during onDragMove only runs when a pointermove actually
+        // fires -- if the cursor goes still for a while (no events) right
+        // before release, old samples from earlier in the drag never get
+        // aged out. Trim once more here, relative to the real release
+        // instant, so a stale fast movement from well before a genuine
+        // pause can't get mistaken for the throw.
+        const releaseNow = performance.now();
+        while (
+          object.dragHistory.length > 1 &&
+          releaseNow - object.dragHistory[0].t > DRAG_HISTORY_MS
+        ) {
+          object.dragHistory.shift();
         }
+
+        // Peak speed across consecutive samples in the recent window, not
+        // the net first-to-last displacement over it. A real flick has a
+        // shape: accelerate, peak, then ease off before the fingers
+        // actually let go of the button -- that easing-off is completely
+        // normal and can easily take longer than DRAG_HISTORY_MS on its
+        // own. First-to-last measures the *net* motion across the window,
+        // so if the window happens to land entirely inside that easing-off
+        // tail, it reads as barely having moved at all even though the
+        // gesture a moment earlier was a real throw -- a dead-feeling
+        // release exactly when the user was throwing hardest.
+        const history = object.dragHistory;
+        let peakVx = 0;
+        let peakVy = 0;
+        let peakSpeedSq = 0;
+        for (let h = 1; h < history.length; h += 1) {
+          const a = history[h - 1];
+          const b = history[h];
+          const stepDt = Math.max((b.t - a.t) / 1000, 1 / 240);
+          const stepVx = (b.x - a.x) / stepDt;
+          const stepVy = (b.y - a.y) / stepDt;
+          const speedSq = stepVx * stepVx + stepVy * stepVy;
+          if (speedSq > peakSpeedSq) {
+            peakSpeedSq = speedSq;
+            peakVx = stepVx;
+            peakVy = stepVy;
+          }
+        }
+        object.vx = clamp(peakVx, -MAX_FLING_SPEED, MAX_FLING_SPEED);
+        object.vy = clamp(peakVy, -MAX_FLING_SPEED, MAX_FLING_SPEED);
         object.mode = "released";
       };
 
