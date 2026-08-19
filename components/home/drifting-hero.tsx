@@ -170,16 +170,10 @@ const REPEL_STRENGTH = 0.05;
 const DRAG_HISTORY_MS = 120;
 /** Hard cap on inherited throw speed, container-fractions per second. */
 const MAX_FLING_SPEED = 2.5;
-/** Spring pulling a released object back toward its live orbit position. A
- * weaker spring here reads as elastic/rubber-band -- it takes long enough
- * to settle that the approach itself becomes visible, wobble and all. This
- * is back to the original strength: fast enough that the return reads as a
- * catch, not a stretch. */
+/** Spring pulling a released object back toward its live orbit position. */
 const SPRING_K = 3.2;
-/** Damping on that spring, pushed just past critical (ζ≈1.06) so the
- * approach can't overshoot at all -- no jiggle on the way in, even the
- * subtle one the original just-under-critical tuning still had. */
-const SPRING_DAMPING = 3.8;
+/** Damping on that spring — tuned just under critical for a soft settle. */
+const SPRING_DAMPING = 3;
 /** Velocity kept after bouncing off a frame edge (rest lost as "energy"). */
 const BOUNCE_RESTITUTION = 0.5;
 /** Distance/speed thresholds below which a released object resumes orbit. */
@@ -215,6 +209,10 @@ export function DriftingHero() {
   const frameRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const plateRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Points at the simulation effect's live per-object state so the
+  // hover-tilt handler below (a component-level closure, outside that
+  // effect) can tell whether an object is idly orbiting or mid-drag/throw.
+  const modeRef = useRef<{ mode: DragMode }[]>([]);
 
   // Directional tilt: while the pointer is over an object, it leans away
   // from wherever the cursor sits relative to its own centre — more tilt
@@ -223,8 +221,17 @@ export function DriftingHero() {
   // pointermove, same as the orbit loop below; the CSS transition on
   // `rotate` (see the plate's className) is what makes it feel like a
   // smooth follow rather than a snap.
+  //
+  // Gated to "orbit" mode only: :hover/pointermove fire off the object's
+  // real, current bounding box regardless of *why* the pointer is there --
+  // while an object is bouncing back from a throw it can pass right back
+  // under a cursor that never moved, and without this check that reads as
+  // the tilt (and the CSS group-hover scale bump, suppressed the same way
+  // in the effect below) flickering on and off mid-flight, on top of
+  // whatever the spring is doing. A visible jiggle riding on the throw.
   const handlePointerMove = (index: number) => (event: React.PointerEvent) => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (modeRef.current[index]?.mode !== "orbit") return;
 
     const plate = plateRefs.current[index];
     if (!plate) return;
@@ -274,6 +281,7 @@ export function DriftingHero() {
         dragHistory: [] as { t: number; x: number; y: number }[],
       };
     });
+    modeRef.current = state;
 
     // --- Grab-and-throw wiring. Always live, independent of reduced motion,
     // since a single direct-manipulation drag isn't the kind of autoplay
@@ -313,6 +321,8 @@ export function DriftingHero() {
       node.style.transition = "transform 500ms var(--ease-drift)";
       node.style.transform = `translate3d(${home.x * 100}cqw, ${home.y * 100}cqh, 0)`;
       node.style.zIndex = "";
+      const plate = plateRefs.current[i];
+      if (plate) plate.style.scale = "";
       window.setTimeout(() => {
         node.style.transition = "";
       }, 550);
@@ -343,6 +353,12 @@ export function DriftingHero() {
         // to z-0 and could vanish behind the z-10 wordmark mid-throw. Force
         // it above everything until it's back in "orbit" mode (see tick()).
         node.style.zIndex = "30";
+        // Same reasoning for the hover scale bump: while dragging or
+        // bouncing back from a throw, the object can pass back under a
+        // cursor that never moved and re-trigger :hover, which reads as a
+        // jiggle riding on top of the throw. Hold it flat until orbit mode.
+        const plate = plateRefs.current[i];
+        if (plate) plate.style.scale = "1";
       };
 
       const onDragMove = (event: PointerEvent) => {
@@ -554,6 +570,8 @@ export function DriftingHero() {
             object.vx = 0;
             object.vy = 0;
             node.style.zIndex = "";
+            const plate = plateRefs.current[i];
+            if (plate) plate.style.scale = "";
           }
         } else {
           ({ x, y } = orbitPosition(object));
