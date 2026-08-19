@@ -33,52 +33,55 @@ export function ContactContent() {
       <div>
         {/* Same fade + rise as Info's intro paragraph -- was missing here,
             so this text just appeared instantly instead of springing up
-            like the rest of the site. */}
+            like the rest of the site. Covers the intro through the social
+            icons -- everything in this column that's text/links, not just
+            the paragraph -- as one group rather than each piece firing on
+            its own. */}
         <Reveal>
           <p className="type-lede max-w-md text-ink-muted">
             Commissions, collaborations, editorial deadlines that are
             already late — all welcome. Josh reads everything himself and
             replies within two working days.
           </p>
+
+          {/* Moved here from the old sitewide footer — same treatment,
+              same text size/format. */}
+          <div className="mt-12">
+            <p className="type-label text-ink-muted">Direct Commissions</p>
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="inline-block font-body text-[15px] text-ink-muted underline transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
+            >
+              {siteConfig.email}
+            </a>
+          </div>
+
+          <div className="mt-5">
+            <p className="type-label text-ink-muted">Agency Contact</p>
+            <a
+              href={`mailto:${siteConfig.agencyEmail}`}
+              className="inline-block font-body text-[15px] text-ink-muted underline transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
+            >
+              {siteConfig.agencyEmail}
+            </a>
+          </div>
+
+          <ul className="mt-6 flex items-center gap-4">
+            {socials.map(({ label, href, Icon }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={label}
+                  className="inline-block text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-accent hover:duration-300 hover:ease-drift"
+                >
+                  <Icon />
+                </a>
+              </li>
+            ))}
+          </ul>
         </Reveal>
-
-        {/* Moved here from the old sitewide footer — same treatment,
-            same text size/format. */}
-        <div className="mt-12">
-          <p className="type-label text-ink-muted">Direct Commissions</p>
-          <a
-            href={`mailto:${siteConfig.email}`}
-            className="inline-block font-body text-[15px] text-ink-muted underline transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
-          >
-            {siteConfig.email}
-          </a>
-        </div>
-
-        <div className="mt-5">
-          <p className="type-label text-ink-muted">Agency Contact</p>
-          <a
-            href={`mailto:${siteConfig.agencyEmail}`}
-            className="inline-block font-body text-[15px] text-ink-muted underline transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
-          >
-            {siteConfig.agencyEmail}
-          </a>
-        </div>
-
-        <ul className="mt-6 flex items-center gap-4">
-          {socials.map(({ label, href, Icon }) => (
-            <li key={label}>
-              <a
-                href={href}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label={label}
-                className="inline-block text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-accent hover:duration-300 hover:ease-drift"
-              >
-                <Icon />
-              </a>
-            </li>
-          ))}
-        </ul>
 
         {/* Same treatment as Work/Info's illustrations -- next/image
             direct, object-contain, no Plate frame or background surface,
