@@ -180,6 +180,18 @@ export function Nav() {
   // scrolled under the header) — the wordmark isn't in navLinks, so there's
   // no "Home" case to handle here any more. Same shape on "/about": only
   // Info or Contact can be active there.
+  // Same Next.js quirk as jM below: a <Link> to the route you're already on
+  // triggers no route change, so Next's own navigation-scroll-restoration
+  // never fires -- clicking Work again while scrolled down on /work did
+  // nothing without this. window.scrollTo(0, 0) alone is enough to pick up
+  // the sitewide scroll-behavior: smooth (and its prefers-reduced-motion:
+  // auto override) from globals.css. Unrelated to the data-scroll-behavior
+  // fix on <html> -- that only governs Next's own router-triggered scroll,
+  // not a manual scrollTo() outside of a route change.
+  const scrollToTopIfCurrent = (href: string) => {
+    if (pathname === href) window.scrollTo(0, 0);
+  };
+
   const isActive = (href: string) => {
     if (pathname === "/") {
       return href === "/work" && homeWorkActive;
@@ -221,20 +233,16 @@ export function Nav() {
                 leave a stuck hover state), so without this a tap here would
                 have no visible feedback at all, just the navigation.
 
-                The explicit scroll-to-top handles a Next.js quirk: a <Link>
-                to the route you're already on doesn't trigger Next's own
-                navigation-scroll-restoration (no route change actually
-                happens), so clicking jM while already on "/" did nothing
-                if you'd scrolled down. window.scrollTo(0, 0) alone is
-                enough to pick up the sitewide scroll-behavior: smooth (and
-                its prefers-reduced-motion: auto override) from
-                globals.css — no behavior option needed here. */}
+                The explicit scroll-to-top (scrollToTopIfCurrent below)
+                handles a Next.js quirk: a <Link> to the route you're
+                already on doesn't trigger Next's own navigation-scroll-
+                restoration (no route change actually happens), so clicking
+                jM while already on "/" did nothing if you'd scrolled down.
+                Every primary nav link gets the same treatment now. */}
             <Link
               href="/"
               aria-label="Josh McKenna — home"
-              onClick={() => {
-                if (pathname === "/") window.scrollTo(0, 0);
-              }}
+              onClick={() => scrollToTopIfCurrent("/")}
               className="font-display text-[22px] font-waldeck-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125"
             >
               jM
@@ -252,6 +260,7 @@ export function Nav() {
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
+                    onClick={() => scrollToTopIfCurrent(link.href)}
                     className={`inline-block font-body text-[14px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
                       isActive(link.href)
                         ? "font-bold text-accent"
@@ -270,6 +279,7 @@ export function Nav() {
               <Link
                 href="/shop"
                 aria-current={isActive("/shop") ? "page" : undefined}
+                onClick={() => scrollToTopIfCurrent("/shop")}
                 className={`inline-block font-body text-[14px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
                   isActive("/shop")
                     ? "font-bold text-accent"
