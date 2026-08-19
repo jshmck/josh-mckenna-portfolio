@@ -23,17 +23,24 @@ import { useEffect, useRef } from "react";
  * `mode` — "orbit" (its normal path), "dragging" (tracks the pointer 1:1),
  * "released" (free physics after letting go), or "landing" (a brief final
  * blend, see below). On release it inherits the velocity of the last
- * ~120ms of pointer motion and just moves — momentum, friction, bounces off
- * the frame's edges — with one gentle addition the whole time: a constant
- * pull toward the *nearest point on the object's own ellipse*, not toward
- * any specific advancing phase. Since the ellipse spans most of the frame
- * already, that's usually a small correction, it never fights the throw's
- * tangential motion (only the radial distance from the curve), and because
- * the target is derived from the object's own current position every frame
- * rather than an independently moving clock, there's nothing for it to
- * chase — no steady-state lag, no scheduled hand-off. Once captured (close
- * to the line, slow enough), it's very likely near the right position but
- * not necessarily moving in *exactly* the ellipse's tangent direction yet
+ * ~120ms of pointer motion and just moves — momentum, bounces off the
+ * frame's edges — with two gentle additions the whole time. Friction decays
+ * velocity toward this object's own *local cruising velocity* (the
+ * tangential speed it would naturally be moving at, at the nearest point on
+ * its own ellipse) rather than toward zero — every object cruises at a
+ * different speed (rx * spin), and decaying all the way to a standstill
+ * meant a fast-cruising object would grind almost to a stop right before
+ * rejoining, then have to speed back up, reading as a spring rather than a
+ * natural settle. And a constant pull nudges *position* toward that same
+ * nearest point, not toward any specific advancing phase. Since the ellipse
+ * spans most of the frame already, that's usually a small correction, it
+ * never fights the throw's tangential motion (only the radial distance
+ * from the curve), and because the target is derived from the object's own
+ * current position every frame rather than an independently moving clock,
+ * there's nothing for it to chase — no steady-state lag, no scheduled
+ * hand-off. Once captured (close to the line, close to that local cruising
+ * speed), it's very likely near the right position but not necessarily
+ * moving in *exactly* the ellipse's tangent direction yet
  * — "landing" is a short, fixed blend (LANDING_MS) that irons out just
  * that last bit before resuming full-rate orbital motion. It's a cubic
  * Hermite blend, not a plain lerp, because it has to match real velocity
@@ -599,9 +606,56 @@ export function DriftingHero() {
           // Momentum: friction decay, integrate, bounce off the frame
           // edges. This alone is what makes the throw's own direction and
           // kinetics honest -- nothing above this point pulls it anywhere.
+          // Where is "this object's own orbit" from right where it
+          // currently is, and how fast would it naturally be moving there
+          // -- found by normalizing its offset from centre into the
+          // ellipse's own circular coordinate space (divide by rx/ry) and
+          // reading off the angle there. Computed once per frame, up
+          // front, and used by both friction (below) and the magnet.
+          const centreX = object.x + object.width / 2;
+          const centreY = object.y + object.height / 2;
+          const u = (centreX - CENTRE) / object.rx;
+          const v = (centreY - CENTRE) / object.ry;
+          const nearestAngle = Math.atan2(v, u);
+          const nearest = orbitPosition({
+            angle: nearestAngle,
+            rx: object.rx,
+            ry: object.ry,
+            width: object.width,
+            height: object.height,
+          });
+          const targetVx = -object.rx * Math.sin(nearestAngle) * object.spin;
+          const targetVy = object.ry * Math.cos(nearestAngle) * object.spin;
+
+          // Friction decays velocity toward that local cruising velocity,
+          // not toward zero -- every object has its own cruising speed
+          // (rx * spin), and decaying all the way to a standstill meant a
+          // fast-cruising object would grind almost to a stop right before
+          // landing, then have to speed back up to rejoin, reading as a
+          // spring rather than a natural settle. This still bleeds off
+          // the throw's excess energy exactly as before (the *difference*
+          // from cruising velocity decays exponentially), it just settles
+          // on "moving at its own pace" instead of "stopped."
           const frictionDecay = Math.exp(-FRICTION_RATE * dt);
-          object.vx *= frictionDecay;
-          object.vy *= frictionDecay;
+          object.vx = targetVx + (object.vx - targetVx) * frictionDecay;
+          object.vy = targetVy + (object.vy - targetVy) * frictionDecay;
+
+          // The magnet: a pull toward the nearest point on the curve, not
+          // toward any specific advancing phase. Since the ellipse spans
+          // most of the frame already, this is usually a small correction,
+          // and because the target is derived from the object's own
+          // current position rather than an independently moving clock, it
+          // has nothing to chase -- once close, it stays close, no
+          // steady-state lag to fight. Only the radial distance from the
+          // curve is corrected; tangential motion (drifting along it) is
+          // completely untouched, which is what lets it rejoin at whatever
+          // phase the throw happened to leave it near, rather than needing
+          // to return to one fixed start point.
+          const dx = nearest.x - object.x;
+          const dy = nearest.y - object.y;
+          object.vx += dx * MAGNET_K * dt;
+          object.vy += dy * MAGNET_K * dt;
+
           object.x += object.vx * dt;
           object.y += object.vy * dt;
 
@@ -624,50 +678,20 @@ export function DriftingHero() {
             object.vy = -Math.abs(object.vy) * BOUNCE_RESTITUTION;
           }
 
-          // The magnet: not a pull toward a specific advancing phase, but
-          // toward the nearest point on *this object's own ellipse* to
-          // wherever it currently is -- found by normalizing its offset
-          // from centre into the ellipse's own circular coordinate space
-          // (divide by rx/ry) and reading off the angle there. Since the
-          // ellipse spans most of the frame already, this is usually a
-          // small correction, and because the target is derived from the
-          // object's own current position rather than an independently
-          // moving clock, it has nothing to chase -- once close, it stays
-          // close, no steady-state lag to fight. Only the radial distance
-          // from the curve is corrected; tangential motion (drifting along
-          // it) is completely untouched, which is what lets it rejoin at
-          // whatever phase the throw happened to leave it near, rather
-          // than needing to return to one fixed start point.
-          const centreX = object.x + object.width / 2;
-          const centreY = object.y + object.height / 2;
-          const u = (centreX - CENTRE) / object.rx;
-          const v = (centreY - CENTRE) / object.ry;
-          const nearestAngle = Math.atan2(v, u);
-          const nearest = orbitPosition({
-            angle: nearestAngle,
-            rx: object.rx,
-            ry: object.ry,
-            width: object.width,
-            height: object.height,
-          });
-          const dx = nearest.x - object.x;
-          const dy = nearest.y - object.y;
-          object.vx += dx * MAGNET_K * dt;
-          object.vy += dy * MAGNET_K * dt;
-
           x = object.x;
           y = object.y;
 
-          // Close enough to the line and slow enough that finishing the
+          // Close enough to the line and moving close enough to that
+          // line's own local pace (not to a standstill) that finishing the
           // approach can be a brief blend instead of a hard cut -- pick up
           // the spin from the angle it actually arrived at, not any fixed
-          // start. Speed alone doesn't guarantee *direction* was already
-          // aligned with the ellipse's tangent there, so this hands off to
-          // "landing" rather than jumping straight into fixed-rate orbital
-          // motion.
+          // start. Being at the right *speed* doesn't guarantee *direction*
+          // was already aligned with the ellipse's tangent there, so this
+          // hands off to "landing" rather than jumping straight into
+          // fixed-rate orbital motion.
           if (
             Math.hypot(dx, dy) < SETTLE_DISTANCE &&
-            Math.hypot(object.vx, object.vy) < SETTLE_SPEED
+            Math.hypot(object.vx - targetVx, object.vy - targetVy) < SETTLE_SPEED
           ) {
             // Capture both endpoints once, up front: where/how fast it
             // actually is right now (its real velocity, not zero), and
