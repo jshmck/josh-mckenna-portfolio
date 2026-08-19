@@ -514,6 +514,16 @@ export function DriftingHero() {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
 
+      // There's no collision between objects -- the only thing that ever
+      // reacts to anything is the cursor-repel below, and the cursor is
+      // effectively wherever a dragged object is. Without this check,
+      // carrying one object near an idle one would make the idle one dodge
+      // the cursor sitting right on top of the object in your hand, which
+      // reads as the two objects rejecting each other. Suppressed for the
+      // whole frame while anything's being carried, so two objects can
+      // actually be brought together.
+      const anyDragging = state.some((object) => object.mode === "dragging");
+
       for (let i = 0; i < state.length; i += 1) {
         const object = state[i];
         const node = nodeRefs.current[i];
@@ -615,7 +625,7 @@ export function DriftingHero() {
 
           // Soft repel: falls off linearly to zero at REPEL_RADIUS so
           // objects ease away from the cursor instead of snapping.
-          if (pointer.active) {
+          if (pointer.active && !anyDragging) {
             const centreX = x + object.width / 2;
             const centreY = y + object.height / 2;
             const rdx = centreX - pointer.x;
