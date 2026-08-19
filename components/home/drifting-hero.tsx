@@ -467,19 +467,20 @@ export function DriftingHero() {
         const rect = frame.getBoundingClientRect();
         const px = (event.clientX - rect.left) / rect.width;
         const py = (event.clientY - rect.top) / rect.height;
-        object.x = clamp(
-          px - object.grabOffsetX,
-          BOUNDS_INSET,
-          1 - BOUNDS_INSET - object.width,
-        );
-        object.y = clamp(
-          py - object.grabOffsetY,
-          BOUNDS_INSET,
-          1 - BOUNDS_INSET - object.height,
-        );
+        const rawX = px - object.grabOffsetX;
+        const rawY = py - object.grabOffsetY;
+        object.x = clamp(rawX, BOUNDS_INSET, 1 - BOUNDS_INSET - object.width);
+        object.y = clamp(rawY, BOUNDS_INSET, 1 - BOUNDS_INSET - object.height);
 
         const now = performance.now();
-        object.dragHistory.push({ t: now, x: object.x, y: object.y });
+        // Record the *raw* pointer position, not the clamped one. If the
+        // cursor drags past the frame edge, the rendered object pins at
+        // the boundary while the raw cursor keeps moving -- recording the
+        // clamped position would mean every sample near the edge reads as
+        // "hasn't moved," zeroing out the computed throw velocity on
+        // release even though the hand is still flicking. This is exactly
+        // what made throws near an edge feel dead / elastic-band-like.
+        object.dragHistory.push({ t: now, x: rawX, y: rawY });
         while (
           object.dragHistory.length > 1 &&
           now - object.dragHistory[0].t > DRAG_HISTORY_MS
