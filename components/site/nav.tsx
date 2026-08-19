@@ -17,24 +17,33 @@ import { navLinks } from "@/lib/site";
  * the scroll-driven frost state; the active link (purple, bold) is the
  * other piece of state here.
  *
- * `position: fixed`, not `sticky` — a spacer div reserves its layout space
- * instead, sized to match the header's own fixed 88px so the page never
- * needs to reflow around it.
+ * `position: sticky`, not `fixed` — sits in normal document flow at rest,
+ * so a page's own top content can never load underneath it; there's
+ * nothing to overlap because it isn't removed from the layout the way a
+ * fixed element is. Once scrolled past, it pins to the top like a
+ * floating nav. This used to be `fixed` (plus a spacer div reserving its
+ * space) specifically to avoid a `sticky` header's height-change forcing
+ * a reflow on every frame of an animated resize -- but the header no
+ * longer resizes at all (below), so that concern doesn't apply and
+ * `sticky` is both simpler and the actual fix for a real bug: giving the
+ * header a transparent, frosted-when-scrolled background (next
+ * paragraph) still let a page whose top content sits close to the 120px
+ * frost threshold (Work's illustration row) scroll up underneath a
+ * freshly-frosted header at exactly that boundary. `sticky` makes that
+ * structurally impossible instead of tuning around it -- content below
+ * the header is never behind it until it has actually scrolled past.
  *
  * Always 88px, never shrinks — a compact height used to kick in past
  * 120px of scroll, but chasing the visual side effects of animating a
- * fixed-position element's height (a spacer that has to track it, a
- * transition that has to be suppressed on every fresh navigation so it
- * doesn't visibly re-play) kept surfacing new bugs for one motion detail
- * Josh wasn't attached to keeping. What scrolling still changes: past
- * 120px (back below 60px to undo — hysteresis, so it doesn't flicker at
- * the boundary) the header picks up a hairline bottom border and the same
- * colourless frosted-glass treatment as the hero's floating-object hover
- * cards (bg-canvas/15 + backdrop-blur-md). Unscrolled, it's fully
- * transparent — it sits directly over a page's own top content there (a
- * hero, an illustration row), and a blur with nothing solid behind it was
- * smudging saturated colour right beneath it. Scrolled content is what
- * the frosted look was actually meant for.
+ * fixed-position element's height kept surfacing new bugs for one motion
+ * detail Josh wasn't attached to keeping. What scrolling still changes:
+ * past 120px (back below 60px to undo — hysteresis, so it doesn't
+ * flicker at the boundary) the header picks up a hairline bottom border
+ * and the same colourless frosted-glass treatment as the hero's
+ * floating-object hover cards (bg-canvas/15 + backdrop-blur-md).
+ * Unscrolled, it's fully transparent — with `sticky` this is now purely
+ * cosmetic (there's structurally nothing under it to smudge either way),
+ * but scrolled content is still what the frosted look was meant for.
  *
  * Link text is 14px, jM is 22px — bumped up in two passes from an
  * original 11px/text-lg that read too small on larger screens, since
@@ -177,13 +186,8 @@ export function Nav() {
 
   return (
     <>
-      {/* Reserves the header's layout space in the document flow. Fixed
-          88px, matching the header -- neither ever changes size, so this
-          never needs to either. */}
-      <div aria-hidden="true" className="h-[88px]" />
-
       <header
-        className={`fixed inset-x-0 top-0 z-40 h-[88px] border-b transition-colors duration-300 ${
+        className={`sticky top-0 z-40 h-[88px] border-b transition-colors duration-300 ${
           scrolled
             ? "border-hairline bg-canvas/15 backdrop-blur-md"
             : "border-transparent bg-transparent"
