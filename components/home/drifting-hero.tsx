@@ -22,14 +22,15 @@ import { useEffect, useRef } from "react";
  * page-scroll on mobile) and dragged around the frame. Each object carries a
  * `mode` — "orbit" (its normal path), "dragging" (tracks the pointer 1:1),
  * or "released" (free physics after letting go). On release it inherits the
- * velocity of the last ~120ms of pointer motion, coasts, bounces off the
- * frame's edges losing energy each bounce, and is pulled by a damped spring
- * toward wherever its orbit *currently* is — the orbit angle keeps advancing
- * the whole time it's away, so the object rejoins the live float in
- * progress rather than snapping to a stale point. Once it's close and slow
- * enough it folds back into "orbit" mode with no visible seam. The play
- * area is this frame, the same box the orbit already respects — not the
- * full page.
+ * velocity of the last ~120ms of pointer motion and bounces around on pure
+ * momentum — friction, wall bounces, nothing pulling it anywhere — for
+ * FREE_FLIGHT_MS, so the throw's own kinetics are honestly what's on
+ * screen. Only after that does it start blending toward the live orbit
+ * position, smoothly over RETURN_RAMP_MS, computed fresh every frame as an
+ * interpolation rather than handed off to a separate animation — so there's
+ * no discrete moment for the return to read as a snap, elastic recoil, or
+ * random jump. The play area is this frame, the same box the orbit already
+ * respects — not the full page.
  */
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -170,18 +171,23 @@ const REPEL_STRENGTH = 0.05;
 const DRAG_HISTORY_MS = 120;
 /** Hard cap on inherited throw speed, container-fractions per second. */
 const MAX_FLING_SPEED = 2.5;
-/** Spring pulling a released object back toward its live orbit position. */
-const SPRING_K = 3.2;
-/** Damping on that spring — tuned just under critical for a soft settle. */
-const SPRING_DAMPING = 3;
+/** Exponential velocity decay on the free-flight simulation, per second. */
+const FRICTION_RATE = 0.6;
 /** Velocity kept after bouncing off a frame edge (rest lost as "energy"). */
 const BOUNCE_RESTITUTION = 0.5;
-/** Distance/speed thresholds below which a released object resumes orbit. */
-const SETTLE_DISTANCE = 0.006;
-const SETTLE_SPEED = 0.03;
+/** How long a thrown object gets to bounce around completely untouched
+ * before any pull toward orbit starts -- this is what makes the throw
+ * itself read as honest kinetics, not a force fighting it from frame one. */
+const FREE_FLIGHT_MS = 1500;
+/** How long the graceful blend back into orbit takes, once it starts. */
+const RETURN_RAMP_MS = 2000;
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(value, max));
+
+/** Smoothstep: zero derivative at both ends, so the return ramp starts and
+ * finishes with no perceptible kink -- no moment that reads as a snap. */
+const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
 type DragMode = "orbit" | "dragging" | "released";
 
@@ -257,9 +263,13 @@ export function DriftingHero() {
     ).matches;
 
     // Live simulation state, seeded from the orbit params. Kept outside React
-    // so the loop never triggers a re-render. x/y/vx/vy and mode drive the
-    // grab-and-throw interaction below; angle/rx/ry/spin still drive the
-    // underlying orbit those live values chase back toward.
+    // so the loop never triggers a re-render. angle/rx/ry/spin still drive
+    // the underlying orbit; mode/x/y drive what's actually rendered.
+    //
+    // While "released", x/y is a *blend* of two things computed fresh every
+    // frame -- freeX/freeY (an untouched momentum + bounce simulation) and
+    // the live orbit position -- not a separate value being animated
+    // toward one or the other. See the tick() released branch for why.
     const state = OBJECTS.map((object) => {
       const height = object.width / object.aspect;
       const seed = orbitPosition({ ...object, height });
@@ -275,6 +285,9 @@ export function DriftingHero() {
         y: seed.y,
         vx: 0,
         vy: 0,
+        freeX: seed.x,
+        freeY: seed.y,
+        releasedMs: 0,
         pointerId: null as number | null,
         grabOffsetX: 0,
         grabOffsetY: 0,
@@ -428,6 +441,10 @@ export function DriftingHero() {
           object.vx = 0;
           object.vy = 0;
         }
+        // Seed the free-flight simulation from right where it was let go.
+        object.freeX = object.x;
+        object.freeY = object.y;
+        object.releasedMs = 0;
         object.mode = "released";
       };
 
@@ -517,55 +534,64 @@ export function DriftingHero() {
         let y: number;
 
         if (object.mode === "released") {
-          const target = orbitPosition(object);
-          const dx = target.x - object.x;
-          const dy = target.y - object.y;
-          // The orbit itself is always moving, so a plain spring+damper
-          // only ever converges to a constant following-distance behind it
-          // (classic steady-state lag chasing a moving setpoint) and would
-          // never actually pass the settle check below. Feed the orbit's
-          // own instantaneous velocity (the derivative of orbitPosition
-          // w.r.t. time) into the damping term so the object is pulled
-          // toward matching the orbit's *motion*, not just its position —
-          // that's what lets the offset genuinely decay to zero.
-          const targetVx = -object.rx * Math.sin(object.angle) * object.spin;
-          const targetVy = object.ry * Math.cos(object.angle) * object.spin;
-          object.vx +=
-            (dx * SPRING_K - (object.vx - targetVx) * SPRING_DAMPING) * dt;
-          object.vy +=
-            (dy * SPRING_K - (object.vy - targetVy) * SPRING_DAMPING) * dt;
-          object.x += object.vx * dt;
-          object.y += object.vy * dt;
+          object.releasedMs += dt * 1000;
 
-          // Bounce off the frame edges, losing some speed each time.
+          // The free-flight simulation: momentum, friction, wall bounces.
+          // Nothing here ever points toward the orbit -- it runs completely
+          // untouched for FREE_FLIGHT_MS so the throw's own kinetics are
+          // what's on screen, then keeps running underneath the blend
+          // below for as long as it takes to fully fade out. This is the
+          // "honest" trajectory: direction of throw, bounces off the
+          // edges, gradually losing speed to friction.
+          const frictionDecay = Math.exp(-FRICTION_RATE * dt);
+          object.vx *= frictionDecay;
+          object.vy *= frictionDecay;
+          object.freeX += object.vx * dt;
+          object.freeY += object.vy * dt;
+
           const minX = BOUNDS_INSET;
           const maxX = 1 - BOUNDS_INSET - object.width;
           const minY = BOUNDS_INSET;
           const maxY = 1 - BOUNDS_INSET - object.height;
-          if (object.x < minX) {
-            object.x = minX;
+          if (object.freeX < minX) {
+            object.freeX = minX;
             object.vx = Math.abs(object.vx) * BOUNCE_RESTITUTION;
-          } else if (object.x > maxX) {
-            object.x = maxX;
+          } else if (object.freeX > maxX) {
+            object.freeX = maxX;
             object.vx = -Math.abs(object.vx) * BOUNCE_RESTITUTION;
           }
-          if (object.y < minY) {
-            object.y = minY;
+          if (object.freeY < minY) {
+            object.freeY = minY;
             object.vy = Math.abs(object.vy) * BOUNCE_RESTITUTION;
-          } else if (object.y > maxY) {
-            object.y = maxY;
+          } else if (object.freeY > maxY) {
+            object.freeY = maxY;
             object.vy = -Math.abs(object.vy) * BOUNCE_RESTITUTION;
           }
 
-          x = object.x;
-          y = object.y;
+          // What's actually rendered is a blend of that free position and
+          // the live orbit position -- computed fresh every frame, not
+          // animated toward one or the other, so there's no discrete
+          // hand-off for anything to read as a snap. w stays exactly 0 for
+          // FREE_FLIGHT_MS (100% the free trajectory, bounces and all),
+          // then eases from 0 to 1 over RETURN_RAMP_MS with a zero
+          // derivative at both ends -- no kink at either boundary.
+          const rampT = clamp(
+            (object.releasedMs - FREE_FLIGHT_MS) / RETURN_RAMP_MS,
+            0,
+            1,
+          );
+          const w = smoothstep(rampT);
+          const target = orbitPosition(object);
+          x = object.freeX + (target.x - object.freeX) * w;
+          y = object.freeY + (target.y - object.freeY) * w;
+          object.x = x;
+          object.y = y;
 
-          // Close and slow enough — relative to the orbit's own cruising
-          // speed, not zero absolute speed — to rejoin with no visible seam.
-          const settled =
-            Math.hypot(dx, dy) < SETTLE_DISTANCE &&
-            Math.hypot(object.vx - targetVx, object.vy - targetVy) < SETTLE_SPEED;
-          if (settled) {
+          // w reached 1 -- the blend has fully arrived at the orbit
+          // position (and, since w's derivative is also 0 there, arrived
+          // at zero relative speed too), so folding back into "orbit" mode
+          // here changes nothing about what's on screen next frame.
+          if (rampT >= 1) {
             object.mode = "orbit";
             object.vx = 0;
             object.vy = 0;
