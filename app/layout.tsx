@@ -76,6 +76,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${helveticaNeue.variable} ${archivoBlack.variable} ${spaceMono.variable} ${waldeck.variable} h-full`}
     >
       <body className="flex min-h-full flex-col">
