@@ -51,15 +51,15 @@ import { navLinks } from "@/lib/site";
  * max-w-frame caps the bar's width but nothing scaled the type up to
  * fill more of it.
  *
- * On "/" and "/about" only, the active highlight is also
- * scroll-position-driven: the homepage embeds the real Work gallery inline
- * (see app/page.tsx's #home-work section) and Info embeds the real Contact
- * content inline (see app/about/page.tsx's #info-contact section), so
- * scrolling past either page's own content flows straight into the next
- * one with no navigation. Once that section has scrolled under the header,
- * "Work"/"Contact" borrows the active highlight from "Home"/"Info" — the
+ * On "/" only, the active highlight is also scroll-position-driven: the
+ * homepage embeds the real Work gallery inline (see app/page.tsx's
+ * #home-work section), so scrolling past Home's own content flows
+ * straight into Work with no navigation. Once that section has scrolled
+ * under the header, "Work" borrows the active highlight from "Home" — the
  * URL never changes, only the nav's read of where you are. Every other
  * route's active-state stays pure pathname-matching, untouched by this.
+ * Info used to merge into Contact the same way; that embed was removed
+ * per Josh, so "/about" is back to plain pathname-matching too.
  */
 
 // getBoundingClientRect().top thresholds, px, for handing the nav's active
@@ -70,22 +70,10 @@ import { navLinks } from "@/lib/site";
 const MERGE_ENTER = 96; // just past the 88px header
 const MERGE_EXIT = 160;
 
-// Info -> Contact used the same section-top approach as Home -> Work
-// until Josh asked for it to hand off sooner — specifically the moment
-// the HOWDY button (id="howdy-button", enquiry-form.tsx) is visible,
-// not just whenever the embedded section's top edge reaches the header.
-// Thresholds are against window.innerHeight instead of a fixed px value
-// since "visible" is relative to viewport height, which varies by
-// device. Same hysteresis shape as MERGE_ENTER/EXIT above, just a
-// bigger gap (64px) since this fires much further down the page where
-// scroll deltas per frame are larger.
-const HOWDY_VISIBLE_BUFFER = 64;
-
 export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
-  const [infoContactActive, setInfoContactActive] = useState(false);
 
   // Nav never unmounts across a client-side route change (it lives in the
   // root layout), so `scrolled` could otherwise keep carrying the
@@ -126,11 +114,11 @@ export function Nav() {
         return window.scrollY > FROST_ENTER;
       });
 
-      // The embedded Work gallery on "/" and the embedded Contact content
-      // on "/about" have no route of their own, so their nav highlight is
-      // scroll-position-driven instead of usePathname()-driven. Gated to
-      // their own route each — every other route's isActive() below stays
-      // pure route-matching, untouched by this.
+      // The embedded Work gallery on "/" has no route of its own, so its
+      // nav highlight is scroll-position-driven instead of
+      // usePathname()-driven. Gated to its own route — every other
+      // route's isActive() below stays pure route-matching, untouched by
+      // this.
       if (pathname === "/") {
         const section = document.getElementById("home-work");
         const top = section?.getBoundingClientRect().top ?? Infinity;
@@ -139,18 +127,6 @@ export function Nav() {
         );
       } else {
         setHomeWorkActive(false);
-      }
-
-      if (pathname === "/about") {
-        const howdy = document.getElementById("howdy-button");
-        const top = howdy?.getBoundingClientRect().top ?? Infinity;
-        setInfoContactActive((current) =>
-          current
-            ? top < window.innerHeight + HOWDY_VISIBLE_BUFFER
-            : top <= window.innerHeight,
-        );
-      } else {
-        setInfoContactActive(false);
       }
     };
 
@@ -178,8 +154,7 @@ export function Nav() {
 
   // On "/", only Work can ever be active (once the embedded gallery has
   // scrolled under the header) — the wordmark isn't in navLinks, so there's
-  // no "Home" case to handle here any more. Same shape on "/about": only
-  // Info or Contact can be active there.
+  // no "Home" case to handle here any more.
   // Same Next.js quirk as jM below: a <Link> to the route you're already on
   // triggers no route change, so Next's own navigation-scroll-restoration
   // never fires -- clicking Work again while scrolled down on /work did
@@ -195,11 +170,6 @@ export function Nav() {
   const isActive = (href: string) => {
     if (pathname === "/") {
       return href === "/work" && homeWorkActive;
-    }
-    if (pathname === "/about") {
-      if (href === "/contact") return infoContactActive;
-      if (href === "/about") return !infoContactActive;
-      return false;
     }
     return pathname === href || pathname.startsWith(`${href}/`);
   };

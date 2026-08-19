@@ -186,11 +186,7 @@ export function EnquiryForm() {
           outline), plus a filled brand/canvas look on :active mirroring a
           chip's selected state (the closest equivalent for a submit button,
           which has no persistent "selected" identity of its own). */}
-      {/* id targeted by nav.tsx's scroll-spy on /about -- the Info->Contact
-          nav highlight hands off the moment this button enters the
-          viewport, not when the embedded section merely starts. */}
       <button
-        id="howdy-button"
         type="submit"
         disabled={submitting}
         className="font-display mt-8 rounded-full border border-ink px-4 py-2 text-[11px] font-waldeck-medium tracking-[0.02em] text-ink-muted transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas disabled:pointer-events-none disabled:opacity-50"

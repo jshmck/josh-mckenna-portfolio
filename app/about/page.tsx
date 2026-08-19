@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { FloatingStickers } from "@/components/about/floating-stickers";
-import { ContactContent } from "@/components/contact/contact-content";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
@@ -146,16 +145,6 @@ export default function AboutPage() {
           rendered here — Josh wants both off this page for now but plans
           to reuse them elsewhere, so neither component was deleted, just
           unhooked from this page. */}
-
-      {/* Info flows straight into the real Contact content -- same merge
-          pattern as Home -> Work (see app/page.tsx's #home-work section):
-          no title, no click-through, the page just keeps scrolling into
-          it. The id is the landmark Nav's scroll-spy reads to hand the
-          active highlight from Info to Contact — see
-          components/site/nav.tsx. /contact still exists as its own route. */}
-      <section id="info-contact" className="py-24">
-        <ContactContent />
-      </section>
 
       <BackToTop />
     </>

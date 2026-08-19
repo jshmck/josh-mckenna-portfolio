@@ -107,17 +107,18 @@ would never scroll to. It's a thin `border-t border-hairline` block, not
 the old client-list/talks-and-features chrome (that content lives in the
 Info and Contact pages themselves now).
 
-**Two pages scroll straight into the next one, with no click and no URL
-change.** Home embeds the real Work gallery inline (`app/page.tsx`'s
-`#home-work` section); Info embeds the real Contact content inline
-(`app/about/page.tsx`'s `#info-contact` section, via the shared
-`ContactContent` component in `components/contact/contact-content.tsx`).
-Both routes (`/work`, `/contact`) still exist standalone for direct links
-and nav clicks. `components/site/nav.tsx`'s scroll-spy (`MERGE_ENTER` /
-`MERGE_EXIT`) hands the active nav highlight from Home→Work and Info→Contact
-once the embedded section's top crosses the header. When testing this with
-scripted scrolling, use `behavior: 'instant'` — the sitewide smooth-scroll
-CSS otherwise races a scripted check against an in-flight scroll animation.
+**Home scrolls straight into Work, with no click and no URL change.** Home
+embeds the real Work gallery inline (`app/page.tsx`'s `#home-work`
+section); `/work` still exists standalone for direct links and nav clicks.
+`components/site/nav.tsx`'s scroll-spy (`MERGE_ENTER` / `MERGE_EXIT`) hands
+the active nav highlight from Home→Work once the embedded section's top
+crosses the header. When testing this with scripted scrolling, use
+`behavior: 'instant'` — the sitewide smooth-scroll CSS otherwise races a
+scripted check against an in-flight scroll animation. Info used to merge
+into Contact the same way; that embed was removed per Josh, so Info
+(`/about`) is a self-contained page again and `ContactContent`
+(`components/contact/contact-content.tsx`) is only rendered by
+`/contact` now.
 
 **Read content through the helpers in `lib/projects.ts`** (`getAllProjects`,
 `getProject`, `getFeaturedProjects`, `getProjectNeighbours`), never the
