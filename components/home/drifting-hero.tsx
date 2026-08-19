@@ -178,9 +178,9 @@ const CENTRE = 0.5;
 /** Keep objects this far inside each edge. */
 const BOUNDS_INSET = 0.02;
 /** How close the pointer must get before an object leans away. */
-const REPEL_RADIUS = 0.26;
+const REPEL_RADIUS = 0.18;
 /** Maximum lean, as a fraction of container width. */
-const REPEL_STRENGTH = 0.05;
+const REPEL_STRENGTH = 0.02;
 
 /** How far back we look, in ms, to estimate throw velocity on release. */
 const DRAG_HISTORY_MS = 120;
