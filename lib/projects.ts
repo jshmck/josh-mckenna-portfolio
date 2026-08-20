@@ -76,6 +76,14 @@ export type Project = {
    * art that reads fine without a caption, not anything load-bearing.
    */
   headerIllustrations?: { src: string; aspect: string }[];
+  /**
+   * Trial: small decorative pieces stacked under the sticky credits
+   * sidebar, top to bottom — la-pride only for now. Unlike
+   * `headerIllustrations`, these lean toward the cursor on hover
+   * (TiltIllustration), matching the /work page's top row rather than the
+   * static header treatment.
+   */
+  creditsIllustrations?: { src: string; aspect: string }[];
   /** Gallery below the write-up. First two render as a two-up row. */
   gallery: ProjectImage[];
   /** Surfaced in the homepage "Selected work" band. */
@@ -99,14 +107,18 @@ export const projects: Project[] = [
       "Everything's flat colour and a single line weight, so the same drawing could go on vinyl, through a screen print, and up on a wall as a paste-up without looking like three different jobs. James Junk did the type and some of the graphics; I did the characters. It felt like a lot to be trusted with something that's been running that long.",
     ],
     credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Co-illustration", name: "James Junk" },
+      { role: "Illustration & Graphics", name: "Josh McKenna" },
+      { role: "Graphics", name: "James Junk" },
     ],
     hero: {
       ratio: "16/10",
       alt: "The LA Pride 2024 main stage, key art across the header and both side panels",
       src: "/work/la-pride/01-main-stage.webp",
     },
+    creditsIllustrations: [
+      { src: "/work/la-pride/lol-shield.webp", aspect: "2160/1500" },
+      { src: "/work/la-pride/license-plate.webp", aspect: "2160/1500" },
+    ],
     cardImage: {
       ratio: "1/1",
       fit: "contain",

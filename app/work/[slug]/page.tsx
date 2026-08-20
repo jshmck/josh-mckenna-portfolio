@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
+import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
@@ -154,6 +155,17 @@ export default async function ProjectPage({
               </div>
             ))}
           </dl>
+
+          {/* Trial (la-pride only for now): small pieces stacked under the
+              credits, same lean-toward-cursor hover as the /work page's
+              top illustration row. */}
+          {project.creditsIllustrations && (
+            <div className="mt-8 flex flex-col items-start gap-6">
+              {project.creditsIllustrations.map(({ src, aspect }) => (
+                <TiltIllustration key={src} src={src} aspect={aspect} width={140} />
+              ))}
+            </div>
+          )}
         </aside>
       </div>
 
