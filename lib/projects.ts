@@ -28,6 +28,15 @@ export type ProjectImage = {
   alt: string;
   /** Real artwork path under /public once Josh delivers files. */
   src?: string;
+  /**
+   * `cover` (default) fills the frame, cropping overflow — right for
+   * photography. `contain` shows the whole image with no crop, for flat
+   * lockups/logos whose edges are the content — Plate pairs it with a
+   * canvas-matched surface instead of the placeholder tone, since the
+   * letterbox gap would otherwise show as a jarring placeholder-blue bar
+   * behind real artwork.
+   */
+  fit?: "cover" | "contain";
 };
 
 export type Credit = {
@@ -104,9 +113,10 @@ export const projects: Project[] = [
     /**
      * Not-landscape first, because the template pairs the first two into a
      * two-up row and runs everything after them full width. A 2/3 portrait
-     * at 1344px wide is almost entirely wall — the key art lockup stays at
-     * its true 1/1 rather than a cropped portrait ratio, since this export
-     * runs edge-to-edge and a 4/5 crop clips "PRIDE" and "2024" at the sides.
+     * at 1344px wide is almost entirely wall. The key art lockup runs
+     * edge-to-edge — any object-cover crop clips "PRIDE" or "2024" at the
+     * sides — so it's framed to match the flyposted lineup's 2/3 height via
+     * `fit: "contain"` instead of a crop, at its own true 1/1.
      */
     gallery: [
       {
@@ -115,7 +125,8 @@ export const projects: Project[] = [
         src: "/work/la-pride/07-flyposted-lineup.webp",
       },
       {
-        ratio: "1/1",
+        ratio: "2/3",
+        fit: "contain",
         alt: "The key art lockup",
         src: "/work/la-pride/04-key-art-lockup.webp",
       },

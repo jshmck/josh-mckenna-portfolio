@@ -46,7 +46,17 @@ export function Plate({
   sizes = "(max-width: 768px) 100vw, 50vw",
   priority = false,
 }: PlateProps) {
-  const surface = tone === "strong" ? "bg-placeholder-strong" : "bg-placeholder";
+  const fit = image.fit ?? "cover";
+  // `contain` frames real artwork, not a missing-image state — the
+  // placeholder tones exist to signal "nothing here yet," so a contain
+  // letterbox uses the canvas colour instead of leaking placeholder-blue
+  // behind a piece that already exists.
+  const surface =
+    fit === "contain"
+      ? "bg-canvas"
+      : tone === "strong"
+        ? "bg-placeholder-strong"
+        : "bg-placeholder";
 
   return (
     <div
@@ -59,7 +69,7 @@ export function Plate({
           fill
           sizes={sizes}
           priority={priority}
-          className="object-cover"
+          className={fit === "contain" ? "object-contain" : "object-cover"}
         />
       ) : showPlaceholderCaption ? (
         <span
