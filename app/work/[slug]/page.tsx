@@ -62,8 +62,8 @@ export default async function ProjectPage({
 
   return (
     <article>
-      <header className="px-6 py-16 md:px-gutter md:py-[60px]">
-        <div className="mx-auto max-w-frame">
+      <header className="py-16 md:py-[60px]">
+        <div className="mx-auto max-w-frame px-6 md:px-gutter">
           <p className="type-label text-ink">
             <Link
               href="/work"
