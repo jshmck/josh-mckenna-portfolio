@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
+import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
@@ -74,9 +75,28 @@ export default async function ProjectPage({
             {project.title}
           </p>
 
-          <h1 className="type-display mt-6 max-w-4xl leading-[1.1] text-accent">
-            {displayTitle}
-          </h1>
+          <div className="mt-6 flex flex-wrap items-center gap-6">
+            <h1 className="type-display max-w-4xl leading-[1.1] text-accent">
+              {displayTitle}
+            </h1>
+
+            {/* Trial (la-pride only for now): same lean-toward-cursor
+                treatment as the /work page's top illustration row, sat on
+                the title's own line rather than up by the breadcrumb.
+                Hidden below md since the title needs the width there. */}
+            {project.headerIllustrations && (
+              <div className="hidden shrink-0 items-center gap-4 md:flex">
+                {project.headerIllustrations.map(({ src, aspect }) => (
+                  <TiltIllustration
+                    key={src}
+                    src={src}
+                    aspect={aspect}
+                    height="clamp(80px, 10vw, 140px)"
+                  />
+                ))}
+              </div>
+            )}
+          </div>
 
           <dl className="mt-8 flex flex-wrap gap-x-16 gap-y-6">
             {meta.map((item) => (

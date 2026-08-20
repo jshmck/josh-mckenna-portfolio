@@ -69,6 +69,13 @@ export type Project = {
   cardImage?: ProjectImage;
   /** Paired with `cardImage` — crossfades in over it on card hover/focus. */
   cardHoverImage?: ProjectImage;
+  /**
+   * Trial: small decorative pieces that lean toward the cursor next to the
+   * title, same treatment as the /work page's top illustration row — la-pride
+   * only for now. Purely decorative (no alt), so keep this to flat character
+   * art that reads fine without a caption, not anything load-bearing.
+   */
+  headerIllustrations?: { src: string; aspect: string }[];
   /** Gallery below the write-up. First two render as a two-up row. */
   gallery: ProjectImage[];
   /** Surfaced in the homepage "Selected work" band. */
@@ -110,6 +117,9 @@ export const projects: Project[] = [
       alt: "Billboard — Hollywood Blvd, Sunday June 9",
       src: "/work/la-pride/09-lamp-post-banner.webp",
     },
+    headerIllustrations: [
+      { src: "/work/la-pride/bronco-rainbow.webp", aspect: "2160/1500" },
+    ],
     /**
      * Not-landscape first, because the template pairs the first two into a
      * two-up row and runs everything after them full width. A 2/3 portrait
