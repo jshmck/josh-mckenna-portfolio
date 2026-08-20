@@ -82,7 +82,7 @@ export const projects: Project[] = [
     client: "City of Los Angeles",
     year: 2024,
     discipline: "Festival Identity",
-    deliverables: "Key Art · Stage · Wayfinding · Merch",
+    deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
     category: "Pride",
     summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption:
