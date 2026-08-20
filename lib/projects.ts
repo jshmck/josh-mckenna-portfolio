@@ -88,8 +88,8 @@ export const projects: Project[] = [
     heroCaption:
       "The main stage. The key art runs the full width of the header and repeats on both side panels.",
     brief: [
-      "A festival identity has to survive every size there is — a stage header read from the back of a field, a wayfinding totem read at walking pace, and a badge on the front of a cap. I drew the L and the A as characters first and worked out afterwards whether they'd still hold together at 4cm.",
-      "Everything is flat colour and a single line weight, because the same drawing had to go onto vinyl, through a screen print, and up on a wall as a paste-up without reading as three different jobs. James Junk and I split the character work.",
+      "LA Pride's been running for over fifty years, and this time they wanted the whole thing rebuilt: branding, wayfinding, stage and bar banners, lounges, performer socials, wristbands, merch, the lot. James Junk and I started with vintage Olympic typography and old campaign posters, then built the letters themselves out of characters — the L and the A are each made of people, stacked into the letterforms. It still had to work at every size there is, from a stage header read from the back of a field to a badge on the front of a cap.",
+      "Everything's flat colour and a single line weight, so the same drawing could go on vinyl, through a screen print, and up on a wall as a paste-up without looking like three different jobs. James Junk did the type and some of the graphics; I did the characters. It felt like a lot to be trusted with something that's been running that long.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -139,6 +139,11 @@ export const projects: Project[] = [
         ratio: "16/10",
         alt: "Merch — hoodie, tee and cap",
         src: "/work/la-pride/06-merch-rail.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Wristbands — VIP and general admission",
+        src: "/work/la-pride/10-wristbands.webp",
       },
       {
         ratio: "16/10",
