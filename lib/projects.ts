@@ -91,17 +91,24 @@ export const projects: Project[] = [
       alt: "The LA Pride 2024 main stage, key art across the header and both side panels",
       src: "/work/la-pride/01-main-stage.webp",
     },
+    cardImage: {
+      ratio: "1/1",
+      alt: "The key art lockup",
+      src: "/work/la-pride/04-key-art-lockup.webp",
+    },
+    cardHoverImage: {
+      ratio: "2/3",
+      alt: "Billboard — Hollywood Blvd, Sunday June 9",
+      src: "/work/la-pride/09-lamp-post-banner.webp",
+    },
     /**
-     * Portraits first, because the template pairs the first two into a
+     * Not-landscape first, because the template pairs the first two into a
      * two-up row and runs everything after them full width. A 2/3 portrait
-     * at 1344px wide is almost entirely wall.
+     * at 1344px wide is almost entirely wall — the key art lockup stays at
+     * its true 1/1 rather than a cropped portrait ratio, since this export
+     * runs edge-to-edge and a 4/5 crop clips "PRIDE" and "2024" at the sides.
      */
     gallery: [
-      {
-        ratio: "2/3",
-        alt: "Billboard — Saturday, June 8",
-        src: "/work/la-pride/02-billboard-installation.webp",
-      },
       {
         ratio: "2/3",
         alt: "Flyposted lineup sheet and site map",
