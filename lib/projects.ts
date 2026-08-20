@@ -143,8 +143,18 @@ export const projects: Project[] = [
       },
       {
         ratio: "16/10",
+        alt: "Entrance arch — the main gate",
+        src: "/work/la-pride/11-entrance-arch.webp",
+      },
+      {
+        ratio: "16/10",
         alt: "Wayfinding totem — main stage and food village",
         src: "/work/la-pride/05-wayfinding-totem.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Wayfinding — entrance detail",
+        src: "/work/la-pride/12-entrance-detail.webp",
       },
       {
         ratio: "16/10",
