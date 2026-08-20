@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
-import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
@@ -75,24 +75,31 @@ export default async function ProjectPage({
             {project.title}
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-6">
-            <h1 className="type-display max-w-4xl leading-[1.1] text-accent">
+          <div className="mt-6 flex items-end gap-2">
+            <h1 className="type-display max-w-4xl shrink-0 leading-[1.1] text-accent">
               {displayTitle}
             </h1>
 
-            {/* Trial (la-pride only for now): same lean-toward-cursor
-                treatment as the /work page's top illustration row, sat on
-                the title's own line rather than up by the breadcrumb.
-                Hidden below md since the title needs the width there. */}
+            {/* Trial (la-pride only for now): sat on the title's own
+                baseline, anchored left right after the title and reduced
+                shy of the frame's right edge below — static, no hover
+                movement, unlike the /work page's top illustration row. */}
             {project.headerIllustrations && (
-              <div className="hidden shrink-0 items-center gap-4 md:flex">
+              <div className="hidden min-w-0 flex-1 items-end md:flex">
                 {project.headerIllustrations.map(({ src, aspect }) => (
-                  <TiltIllustration
+                  <div
                     key={src}
-                    src={src}
-                    aspect={aspect}
-                    height="clamp(80px, 10vw, 140px)"
-                  />
+                    className="relative w-[80%]"
+                    style={{ aspectRatio: aspect }}
+                  >
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      sizes="(max-width: 1344px) 40vw, 560px"
+                      className="object-contain object-left"
+                    />
+                  </div>
                 ))}
               </div>
             )}

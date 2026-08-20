@@ -119,7 +119,7 @@ export const projects: Project[] = [
       src: "/work/la-pride/09-lamp-post-banner.webp",
     },
     headerIllustrations: [
-      { src: "/work/la-pride/bronco-rainbow.webp", aspect: "2160/1500" },
+      { src: "/work/la-pride/bronco-rainbow.webp", aspect: "2700/1500" },
     ],
     /**
      * Not-landscape first, because the template pairs the first two into a
