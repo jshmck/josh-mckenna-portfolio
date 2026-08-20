@@ -213,6 +213,22 @@ const REPEL_STRENGTH = 0.02;
  * affected. */
 const AMBIENT_Z_MIN = 1;
 const AMBIENT_Z_MAX = 10;
+/** The z-index above was recomputed from *instantaneous* position every
+ * frame -- fine on its own, but whenever two objects' vertical positions
+ * are close (which happens constantly; nine independent elliptical paths
+ * cross each other's Y-range all the time), ordinary floating-point noise
+ * in that position was enough to flip which one is "further down" several
+ * times a second, and CSS stacking order has no transition -- every flip
+ * is an instant, visible pop. That's the stacking "fighting for hierarchy"
+ * feel passing objects had. Fixed by feeding the z-index calculation a
+ * lagging, exponentially-smoothed copy of each object's Y position instead
+ * of the raw value -- small noise gets averaged away, so it doesn't
+ * generate a re-rank, while a genuine sustained crossing still updates the
+ * order, just following the real motion by a fraction of a second rather
+ * than reacting to every frame's jitter. Purely a smoothing pass on the
+ * z-index inputs -- doesn't touch x/y/vx/vy or anything that actually
+ * moves an object, so it can't change the throw, drift, or hover feel. */
+const Z_SMOOTHING_RATE = 4;
 
 /** How far back we look, in ms, to estimate throw velocity on release.
  * Sized to comfortably hold a whole real flick gesture -- accelerate, peak,
@@ -423,6 +439,7 @@ export function DriftingHero() {
         y: seed.y,
         vx: 0,
         vy: 0,
+        zSmoothY: seed.y + height / 2,
         landingMs: 0,
         landingFromX: 0,
         landingFromY: 0,
@@ -949,10 +966,16 @@ export function DriftingHero() {
         // Depth cue for hit-testing consistency -- see AMBIENT_Z_MIN/MAX.
         // Dragging is unaffected (it's handled by onDragMove, which never
         // reaches this line, and already wins via :hover's z-20 regardless).
+        // Smoothed toward the real position rather than reading it
+        // directly -- see Z_SMOOTHING_RATE -- so ordinary position noise
+        // near a crossing can't flip the stacking order every frame.
         const centreYForZ = y + object.height / 2;
+        object.zSmoothY =
+          centreYForZ +
+          (object.zSmoothY - centreYForZ) * Math.exp(-Z_SMOOTHING_RATE * dt);
         node.style.zIndex = String(
           AMBIENT_Z_MIN +
-            Math.round(clamp(centreYForZ, 0, 1) * (AMBIENT_Z_MAX - AMBIENT_Z_MIN)),
+            Math.round(clamp(object.zSmoothY, 0, 1) * (AMBIENT_Z_MAX - AMBIENT_Z_MIN)),
         );
 
         node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
