@@ -757,8 +757,9 @@ export function DriftingHero() {
           // it's heading" even before they've settled, since two objects
           // thrown close together in time are usually *both* still
           // in-flight when this matters and neither has a "real" angle yet.
-          let nearestAngle = nearestOrbitAngle(object);
-          let closestConflictAngle: number | null = null;
+          const rawNearestAngle = nearestOrbitAngle(object);
+          let nearestAngle = rawNearestAngle;
+          let closestConflictPush = 0;
           let closestConflictDiff = Infinity;
           for (let j = 0; j < state.length; j += 1) {
             if (j === i || state[j].mode === "dragging") continue;
@@ -778,21 +779,28 @@ export function DriftingHero() {
               neighbor.mode === "orbit"
                 ? neighbor.angle
                 : nearestOrbitAngle(neighbor);
-            const rawDiff = nearestAngle - neighborAngle;
+            const rawDiff = rawNearestAngle - neighborAngle;
             const diff = Math.atan2(Math.sin(rawDiff), Math.cos(rawDiff));
-            if (
-              Math.abs(diff) < MIN_ORBIT_SEPARATION &&
-              Math.abs(diff) < closestConflictDiff
-            ) {
-              closestConflictDiff = Math.abs(diff);
-              closestConflictAngle =
-                neighborAngle +
-                (diff >= 0 ? MIN_ORBIT_SEPARATION : -MIN_ORBIT_SEPARATION);
+            const absDiff = Math.abs(diff);
+            if (absDiff < MIN_ORBIT_SEPARATION && absDiff < closestConflictDiff) {
+              closestConflictDiff = absDiff;
+              // Proportional, not a hard switch: 0 right at the boundary
+              // (matching "no effect" just outside it, so there's no seam
+              // there) ramping smoothly up to a full MIN_ORBIT_SEPARATION
+              // push only once directly on top of the neighbor. A hard
+              // on/off cutoff here meant crossing the boundary snapped the
+              // target from "unaffected" to "neighborAngle ± 40° away" in
+              // a single frame -- a sudden target jump the position magnet
+              // (proportional to distance from target) would read as a
+              // sudden force, a visible kick right as two objects neared
+              // each other. Same falloff shape as the cursor-repel below,
+              // just applied to an angle instead of a position vector.
+              const falloff = 1 - absDiff / MIN_ORBIT_SEPARATION;
+              closestConflictPush =
+                falloff * MIN_ORBIT_SEPARATION * (diff >= 0 ? 1 : -1);
             }
           }
-          if (closestConflictAngle !== null) {
-            nearestAngle = closestConflictAngle;
-          }
+          nearestAngle = rawNearestAngle + closestConflictPush;
           const nearest = orbitPosition({
             angle: nearestAngle,
             rx: object.rx,
