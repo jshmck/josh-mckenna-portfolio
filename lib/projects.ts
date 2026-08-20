@@ -109,6 +109,7 @@ export const projects: Project[] = [
     },
     cardImage: {
       ratio: "1/1",
+      fit: "contain",
       alt: "The key art lockup",
       src: "/work/la-pride/04-key-art-lockup.webp",
     },
