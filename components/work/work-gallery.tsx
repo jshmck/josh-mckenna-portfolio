@@ -242,14 +242,16 @@ export function WorkGallery({
           <div key={project.slug} className="mb-8 break-inside-avoid">
             <ProjectCard
               project={project}
+              // Trial: la-pride sets cardImage/cardHoverImage to swap in a
+              // different lead image and crossfade to a second on hover
+              // instead of just fading the hero — see if Josh wants it
+              // everywhere before wiring up every card.
+              image={project.cardImage}
               ratio={RATIO_CYCLE[index % RATIO_CYCLE.length]}
               caption="hover"
               motion="quiet"
               parallax
-              // Trial: swap to the project's second image on hover instead
-              // of just fading the hero — LA Pride only for now, see if
-              // Josh wants it everywhere before wiring up every card.
-              hoverImage={project.slug === "la-pride" ? project.gallery[0] : undefined}
+              hoverImage={project.cardHoverImage}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               priority={index < 3}
             />

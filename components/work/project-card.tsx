@@ -10,6 +10,10 @@ const GALLERY_RADIUS = "rounded-3xl";
 
 type ProjectCardProps = {
   project: Project;
+  /** Trial (LA Pride only for now, see WorkGallery): overrides the card's
+   *  lead image when it should differ from `project.hero` — the image atop
+   *  the project's own page. Falls back to `project.hero` when absent. */
+  image?: ProjectImage;
   /** Grids override this so the masonry columns keep their varied heights. */
   ratio?: Project["hero"]["ratio"];
   /** `full` shows client and year; `minimal` shows year only. Ignored when
@@ -44,6 +48,7 @@ type ProjectCardProps = {
 /** The one card used in both the homepage "Selected work" band and the Work gallery. */
 export function ProjectCard({
   project,
+  image,
   ratio,
   meta = "full",
   caption = "below",
@@ -54,6 +59,7 @@ export function ProjectCard({
   priority = false,
 }: ProjectCardProps) {
   const hoverCaption = caption === "hover";
+  const baseImage = image ?? project.hero;
 
   const plate = (
     // Scale lives on this wrapper, not on Plate alone, so the image and its
@@ -68,7 +74,7 @@ export function ProjectCard({
       }`}
     >
       <Plate
-        image={ratio ? { ...project.hero, ratio } : project.hero}
+        image={ratio ? { ...baseImage, ratio } : baseImage}
         sizes={sizes}
         priority={priority}
         radius={hoverCaption ? GALLERY_RADIUS : undefined}

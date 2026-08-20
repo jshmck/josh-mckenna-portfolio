@@ -51,6 +51,15 @@ export type Project = {
   brief: string[];
   credits: Credit[];
   hero: ProjectImage;
+  /**
+   * Trial: overrides the /work and home-embedded gallery card's lead image
+   * when it should differ from `hero` (the big image atop the project's own
+   * page) — la-pride only for now, see WorkGallery. Falls back to `hero`
+   * when absent.
+   */
+  cardImage?: ProjectImage;
+  /** Paired with `cardImage` — crossfades in over it on card hover/focus. */
+  cardHoverImage?: ProjectImage;
   /** Gallery below the write-up. First two render as a two-up row. */
   gallery: ProjectImage[];
   /** Surfaced in the homepage "Selected work" band. */
