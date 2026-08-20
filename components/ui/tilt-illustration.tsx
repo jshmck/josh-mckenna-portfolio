@@ -21,9 +21,18 @@ type TiltIllustrationProps = {
    *  cut-out on the site) — pass a real string for one that isn't. */
   alt?: string;
   aspect: string;
-  /** Number for a fixed px height, or a CSS length string (e.g. a
-   *  clamp()) for one that responds to viewport size. */
-  height: number | string;
+  /**
+   * Fixed dimension driving the box; the other follows from `aspect`.
+   * Pass exactly one — `height` for a piece sized to its own scale (a
+   * number, or a CSS length string like a clamp()), `width` for one that
+   * should fill whatever space it's given (e.g. "100%" in a flex-1 slot).
+   */
+  height?: number | string;
+  width?: number | string;
+  /** Passed straight to next/image. Widen this if the rendered box is
+   *  much bigger than the 190px default — otherwise the optimizer keeps
+   *  serving a small candidate that ends up upscaled and soft. */
+  sizes?: string;
 };
 
 export function TiltIllustration({
@@ -31,6 +40,8 @@ export function TiltIllustration({
   alt = "",
   aspect,
   height,
+  width,
+  sizes = "190px",
 }: TiltIllustrationProps) {
   const plateRef = useRef<HTMLDivElement>(null);
 
@@ -57,13 +68,13 @@ export function TiltIllustration({
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       className="relative transition-[scale_300ms_var(--ease-drift)] hover:scale-[1.06]"
-      style={{ aspectRatio: aspect, height }}
+      style={{ aspectRatio: aspect, height, width }}
     >
       <div
         ref={plateRef}
         className="relative h-full w-full transition-[rotate_150ms_ease-out]"
       >
-        <Image src={src} alt={alt} fill sizes="190px" className="object-contain" />
+        <Image src={src} alt={alt} fill sizes={sizes} className="object-contain" />
       </div>
     </div>
   );
