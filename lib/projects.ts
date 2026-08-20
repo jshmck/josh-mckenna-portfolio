@@ -80,33 +80,43 @@ export const projects: Project[] = [
     hero: {
       ratio: "16/10",
       alt: "The LA Pride 2024 main stage, key art across the header and both side panels",
-      src: "/work/la-pride/05-main-stage.webp",
+      src: "/work/la-pride/01-main-stage.webp",
     },
     /**
      * Portraits first, because the template pairs the first two into a
-     * two-up row and runs everything after them full width. A 3/4 portrait
+     * two-up row and runs everything after them full width. A 2/3 portrait
      * at 1344px wide is almost entirely wall.
      */
     gallery: [
       {
-        ratio: "3/4",
-        alt: "Flyposted lineup sheet and site map",
-        src: "/work/la-pride/03-flyposted-lineup.webp",
+        ratio: "2/3",
+        alt: "Billboard — Saturday, June 8",
+        src: "/work/la-pride/02-billboard-installation.webp",
       },
       {
-        ratio: "4/5",
+        ratio: "2/3",
+        alt: "Flyposted lineup sheet and site map",
+        src: "/work/la-pride/07-flyposted-lineup.webp",
+      },
+      {
+        ratio: "1/1",
         alt: "The key art lockup",
         src: "/work/la-pride/04-key-art-lockup.webp",
       },
       {
         ratio: "16/10",
         alt: "Wayfinding totem — main stage and food village",
-        src: "/work/la-pride/01-wayfinding-totem.webp",
+        src: "/work/la-pride/05-wayfinding-totem.webp",
       },
       {
         ratio: "16/10",
         alt: "Merch — hoodie, tee and cap",
-        src: "/work/la-pride/02-merch-rail.webp",
+        src: "/work/la-pride/06-merch-rail.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Vehicle wrap — the box truck",
+        src: "/work/la-pride/08-truck-wrap.webp",
       },
     ],
     featured: true,
