@@ -20,7 +20,7 @@ export const PROJECT_CATEGORIES = [
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
 
 /** Aspect ratios available to gallery images, keyed to CSS aspect-ratio. */
-export type ImageRatio = "1/1" | "4/5" | "3/4" | "4/3" | "5/4" | "16/10";
+export type ImageRatio = "1/1" | "2/3" | "4/5" | "3/4" | "4/3" | "5/4" | "16/10";
 
 export type ProjectImage = {
   ratio: ImageRatio;
