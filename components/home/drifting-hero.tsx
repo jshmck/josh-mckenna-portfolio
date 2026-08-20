@@ -57,6 +57,21 @@ import { useEffect, useRef } from "react";
  * simpler and steadier than trying to track which state should sit above
  * it and which shouldn't, and it means a thrown object settling back into
  * orbit can never flicker as it crosses behind the text.
+ *
+ * Objects among themselves are a plain z-0, hover:z-20 -- DOM order breaks
+ * ties. A tried-and-reverted alternative tied z-index to each object's
+ * live vertical position (further down = further "forward"), meant to fix
+ * a real pointer hit-testing inconsistency where a click near one object
+ * could land on a different, overlapping one. That made stacking order
+ * change continuously as objects moved -- correct in principle, but any
+ * two objects passing each other now had their front/back relationship
+ * flip according to which was lower at that instant, which read as
+ * "random" hierarchy even once smoothed to remove outright flicker.
+ * Reverted per Josh: fixed DOM order feels stable and predictable even
+ * though it's arbitrary, which won out over dynamic-but-technically-more-
+ * consistent. The hit-testing inconsistency this reintroduces is a known,
+ * accepted trade-off, not an oversight (see hero-with-dynamic-depth-zindex
+ * tag for the alternative if it's worth revisiting).
  */
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -197,38 +212,6 @@ const REPEL_RADIUS = 0.18;
 /** Maximum lean, as a fraction of container width. */
 const REPEL_STRENGTH = 0.02;
 
-/** All nine objects otherwise share the same base z-0, so whenever two
- * overlap, plain DOM/array order silently decides which one wins pointer
- * hit-testing -- arbitrary, and completely disconnected from which one a
- * visitor actually perceives as in front. A click that looks like it lands
- * on the visible object can silently grab an unrelated neighbor whose
- * transparent object-contain padding happens to cover that same pixel.
- * Confirmed directly: sampling points inside car.png's own bounding box,
- * several resolved via document.elementFromPoint to flowers.png's wrapper
- * instead. Fixed by tying z-index to each object's own current vertical
- * position every frame (further down the frame = further "forward") --
- * a lightweight painter's-algorithm depth cue that at least makes the
- * winner consistent and visually motivated instead of arbitrary. Kept well
- * below the hover tier (z-20) and the wordmark (z-30) so neither is
- * affected. */
-const AMBIENT_Z_MIN = 1;
-const AMBIENT_Z_MAX = 10;
-/** The z-index above was recomputed from *instantaneous* position every
- * frame -- fine on its own, but whenever two objects' vertical positions
- * are close (which happens constantly; nine independent elliptical paths
- * cross each other's Y-range all the time), ordinary floating-point noise
- * in that position was enough to flip which one is "further down" several
- * times a second, and CSS stacking order has no transition -- every flip
- * is an instant, visible pop. That's the stacking "fighting for hierarchy"
- * feel passing objects had. Fixed by feeding the z-index calculation a
- * lagging, exponentially-smoothed copy of each object's Y position instead
- * of the raw value -- small noise gets averaged away, so it doesn't
- * generate a re-rank, while a genuine sustained crossing still updates the
- * order, just following the real motion by a fraction of a second rather
- * than reacting to every frame's jitter. Purely a smoothing pass on the
- * z-index inputs -- doesn't touch x/y/vx/vy or anything that actually
- * moves an object, so it can't change the throw, drift, or hover feel. */
-const Z_SMOOTHING_RATE = 4;
 
 /** How far back we look, in ms, to estimate throw velocity on release.
  * Sized to comfortably hold a whole real flick gesture -- accelerate, peak,
@@ -439,7 +422,6 @@ export function DriftingHero() {
         y: seed.y,
         vx: 0,
         vy: 0,
-        zSmoothY: seed.y + height / 2,
         landingMs: 0,
         landingFromX: 0,
         landingFromY: 0,
@@ -971,21 +953,6 @@ export function DriftingHero() {
         object.x = x;
         object.y = y;
 
-        // Depth cue for hit-testing consistency -- see AMBIENT_Z_MIN/MAX.
-        // Dragging is unaffected (it's handled by onDragMove, which never
-        // reaches this line, and already wins via :hover's z-20 regardless).
-        // Smoothed toward the real position rather than reading it
-        // directly -- see Z_SMOOTHING_RATE -- so ordinary position noise
-        // near a crossing can't flip the stacking order every frame.
-        const centreYForZ = y + object.height / 2;
-        object.zSmoothY =
-          centreYForZ +
-          (object.zSmoothY - centreYForZ) * Math.exp(-Z_SMOOTHING_RATE * dt);
-        node.style.zIndex = String(
-          AMBIENT_Z_MIN +
-            Math.round(clamp(object.zSmoothY, 0, 1) * (AMBIENT_Z_MAX - AMBIENT_Z_MIN)),
-        );
-
         node.style.transform = `translate3d(${x * 100}cqw, ${y * 100}cqh, 0)`;
       }
 
@@ -1031,16 +998,6 @@ export function DriftingHero() {
         {OBJECTS.map((object, index) => {
           const height = object.width / object.aspect;
           const seed = orbitPosition({ ...object, height });
-          // Same depth-cue z-index the simulation writes every frame (see
-          // AMBIENT_Z_MIN/MAX) -- seeded here too so the static layout
-          // under prefers-reduced-motion (where the simulation loop never
-          // starts) still gets consistent hit-testing, not just the
-          // animated case.
-          const seedZ =
-            AMBIENT_Z_MIN +
-            Math.round(
-              clamp(seed.y + height / 2, 0, 1) * (AMBIENT_Z_MAX - AMBIENT_Z_MIN),
-            );
 
           return (
             <div
@@ -1051,11 +1008,10 @@ export function DriftingHero() {
               onPointerMove={handlePointerMove(index)}
               onPointerLeave={handlePointerLeave(index)}
               aria-hidden="true"
-              className="group absolute left-0 top-0 cursor-grab will-change-transform hover:z-20 focus-within:z-20"
+              className="group absolute left-0 top-0 z-0 cursor-grab will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
-                zIndex: seedZ,
               }}
             >
               {/* A clean cut-out, no frosted card — on hover/focus it just
