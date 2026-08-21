@@ -61,6 +61,12 @@ export type Project = {
   credits: Credit[];
   hero: ProjectImage;
   /**
+   * Trial: a second image shown side-by-side with `hero` instead of the
+   * usual single full-width Plate — sound-of-driving only for now. Own
+   * caption from its own `alt`, same as the later gallery two-up.
+   */
+  heroPair?: ProjectImage;
+  /**
    * Trial: overrides the /work and home-embedded gallery card's lead image
    * when it should differ from `hero` (the big image atop the project's own
    * page) — la-pride only for now, see WorkGallery. Falls back to `hero`
@@ -349,18 +355,19 @@ export const projects: Project[] = [
       alt: "\"Have EVs Killed the Sound of Driving?\" — the finished key art",
       src: "/work/sound-of-driving/03-final.webp",
     },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "Mocked up as a magazine spread",
-        src: "/work/sound-of-driving/04-mag-03.webp",
-      },
-      {
-        ratio: "16/10",
-        alt: "The car on its own",
-        src: "/work/sound-of-driving/01-car-solo.webp",
-      },
+    heroPair: {
+      ratio: "4/5",
+      alt: "Mocked up as a magazine spread",
+      src: "/work/sound-of-driving/04-mag-03.webp",
+    },
+    // The homepage hero's own car-pink.png (transparent, same grain/colour
+    // treatment) instead of a second grey-background export of the same
+    // car — fills the blank space next to the title, same role as LA
+    // Pride's headerIllustrations.
+    headerIllustrations: [
+      { src: "/illustrations/objects/car-pink.png", aspect: "899/388" },
     ],
+    gallery: [],
     featured: true,
   },
 ];

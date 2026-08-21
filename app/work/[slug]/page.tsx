@@ -119,14 +119,44 @@ export default async function ProjectPage({
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero — heroPair (sound-of-driving only for now) renders it as a
+          two-up instead of one full-width Plate, each with its own
+          caption from its own `alt`. */}
       <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
-        <Plate
-          image={project.hero}
-          sizes="(max-width: 1344px) 100vw, 1344px"
-          priority
-        />
-        <p className="type-label mt-3 text-ink-muted">{project.heroCaption}</p>
+        {project.heroPair ? (
+          <div className="grid gap-8 md:grid-cols-2">
+            <div>
+              <Plate
+                image={project.hero}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+              <p className="type-label mt-3 text-ink-muted">
+                {project.heroCaption}
+              </p>
+            </div>
+            <div>
+              <Plate
+                image={project.heroPair}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+              <p className="type-label mt-3 text-ink-muted">
+                {project.heroPair.alt}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <Plate
+              image={project.hero}
+              sizes="(max-width: 1344px) 100vw, 1344px"
+              priority
+            />
+            <p className="type-label mt-3 text-ink-muted">
+              {project.heroCaption}
+            </p>
+          </>
+        )}
       </div>
 
       {/* Write-up + sticky credits */}
