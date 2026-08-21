@@ -132,11 +132,11 @@ export default async function ProjectPage({
       {/* Write-up + sticky credits */}
       <div className="mx-auto grid max-w-frame gap-14 px-6 py-20 md:grid-cols-[1fr_260px] md:px-gutter">
         <div className="max-w-2xl">
-          <h2 className="type-heading text-ink">
-            The brief, in Josh&apos;s words.
-          </h2>
           {project.brief.map((paragraph, index) => (
-            <p key={index} className="type-lede mt-6 text-ink-muted">
+            <p
+              key={index}
+              className={`type-lede text-ink-muted ${index > 0 ? "mt-6" : ""}`}
+            >
               {paragraph}
             </p>
           ))}
@@ -144,8 +144,7 @@ export default async function ProjectPage({
 
         {/* Pins while the write-up scrolls past, per the wireframe. */}
         <aside className="h-fit md:sticky md:top-[112px]">
-          <h3 className="type-label text-ink">Credits</h3>
-          <dl className="mt-5 space-y-4">
+          <dl className="space-y-4">
             {project.credits.map((credit) => (
               <div key={credit.role}>
                 <dt className="type-label text-ink-muted">{credit.role}</dt>
