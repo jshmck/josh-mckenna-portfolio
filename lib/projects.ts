@@ -419,11 +419,6 @@ export const projects: Project[] = [
         src: "/work/bombay-sapphire/05-ipad-sketch.webp",
       },
       {
-        ratio: "4/3",
-        alt: "Reviewing the finished piece with Lisa",
-        src: "/work/bombay-sapphire/06-jacket-review.webp",
-      },
-      {
         ratio: "3/2",
         alt: "Painting the mural live in the window",
         src: "/work/bombay-sapphire/02-mural-painting.webp",
