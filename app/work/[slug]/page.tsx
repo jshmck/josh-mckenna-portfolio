@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
+import { SmallerGallery } from "@/components/work/smaller-gallery";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
@@ -226,6 +227,16 @@ export default async function ProjectPage({
           </Reveal>
         ))}
       </div>
+
+      {/* Trial (la-pride only for now): extra shots that don't earn a full
+          gallery slot — a denser grid of smaller frames rather than the
+          image stack's one/two-up rows above. Click-to-enlarge lives in
+          SmallerGallery since it needs client state for the lightbox. */}
+      {project.smallerGallery && (
+        <div className="mx-auto max-w-frame px-6 pb-20 md:px-gutter">
+          <SmallerGallery images={project.smallerGallery} />
+        </div>
+      )}
 
       {/* Previous / all / next — Waldeck Black + purple like the Info
           page's section titles (type-title text-accent), but at

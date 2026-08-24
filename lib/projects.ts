@@ -20,7 +20,15 @@ export const PROJECT_CATEGORIES = [
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
 
 /** Aspect ratios available to gallery images, keyed to CSS aspect-ratio. */
-export type ImageRatio = "1/1" | "2/3" | "4/5" | "3/4" | "4/3" | "5/4" | "16/10";
+export type ImageRatio =
+  | "1/1"
+  | "2/3"
+  | "4/5"
+  | "3/4"
+  | "4/3"
+  | "5/4"
+  | "3/2"
+  | "16/10";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -98,6 +106,12 @@ export type Project = {
   creditsIllustrations?: { src: string; aspect: string }[];
   /** Gallery below the write-up. First two render as a two-up row. */
   gallery: ProjectImage[];
+  /**
+   * Trial: extra shots that don't earn a full gallery slot — renders as a
+   * dense, small-framed grid below the main gallery — la-pride only for
+   * now.
+   */
+  smallerGallery?: ProjectImage[];
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
 };
@@ -213,13 +227,35 @@ export const projects: Project[] = [
       },
       {
         ratio: "16/10",
-        alt: "A trans cowboy couple at the entrance arch",
-        src: "/work/la-pride/15-cowboy-couple.webp",
-      },
-      {
-        ratio: "16/10",
         alt: "The main stage screen, running archival Pride footage",
         src: "/work/la-pride/16-main-stage-screen.webp",
+      },
+    ],
+    smallerGallery: [
+      {
+        ratio: "3/2",
+        alt: "VIP entrance",
+        src: "/work/la-pride/17-vip-entrance.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Wayfinding totem, another angle",
+        src: "/work/la-pride/18-totem-angle.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The main stage by day",
+        src: "/work/la-pride/19-main-stage-day.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Main stage banner, rainbow umbrella in the crowd",
+        src: "/work/la-pride/20-umbrella-shot.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The main stage at night, before the crowd arrived",
+        src: "/work/la-pride/21-night-stage.webp",
       },
     ],
     featured: true,
