@@ -12,15 +12,12 @@ type ImageStackProps = {
   images: ProjectImage[];
 };
 
-/**
- * One shared circular control for the lightbox (close, prev, next) — the
- * frosted-glass recipe from BackToTop (bg-canvas/15 + backdrop-blur-md),
- * adapted for this dark backdrop with a light rim instead of BackToTop's
- * black-on-canvas border, and the same hover bounce curve. Every caller
- * appends its own position classes.
- */
-const LIGHTBOX_CONTROL_CLASS =
-  "absolute z-10 flex h-11 w-11 items-center justify-center rounded-full border border-canvas/25 bg-canvas/15 text-accent backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:border-accent";
+/** One icon slot inside the toolbar pill — no border of its own (the pill
+ *  carries that), just a hover fill so each control still reads as
+ *  pressable. Flex-centred with leading-none on the glyph so ✕ sits dead
+ *  centre instead of drifting off the font's own metrics. */
+const LIGHTBOX_BUTTON_CLASS =
+  "flex h-9 w-9 items-center justify-center rounded-full text-canvas transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:bg-canvas/15 hover:text-accent";
 
 /**
  * The gallery below a project's write-up — first two as a two-up row, the
@@ -99,49 +96,45 @@ export function ImageStack({ images }: ImageStackProps) {
           className="fixed inset-0 z-50 flex items-center justify-center bg-ink/90 p-6"
           onClick={() => setOpenIndex(null)}
         >
-          {/* One shared control language: a circular frosted-glass button —
-              bg-canvas/15 + backdrop-blur-md, same recipe as BackToTop's
-              pill — adapted for this dark backdrop with a light rim instead
-              of BackToTop's black-on-canvas border. z-10 on all three: the
-              image div below is also position:relative with no z-index of
-              its own, so as the later sibling it would otherwise paint over
-              these at the edges once it gets wide (min(95vw, ...) can run
-              right up to the arrows' left-4/right-4 position). */}
-          <button
-            type="button"
-            onClick={() => setOpenIndex(null)}
-            aria-label="Close"
-            className={LIGHTBOX_CONTROL_CLASS + " right-6 top-6"}
+          {/* One grouped toolbar instead of three floating circles — same
+              frosted-glass pill recipe as BackToTop (bg-canvas/15 +
+              backdrop-blur-md), adapted for this dark backdrop with a light
+              rim instead of BackToTop's black-on-canvas border. Anchored to
+              the dialog itself, not the image, so it never overlaps or
+              floats at an image edge regardless of that image's own width. */}
+          <div
+            className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full border border-canvas/25 bg-canvas/15 p-1.5 backdrop-blur-md sm:bottom-8"
+            onClick={(event) => event.stopPropagation()}
           >
-            <span className="text-lg leading-none">✕</span>
-          </button>
-
-          {images.length > 1 && (
-            <>
+            {images.length > 1 && (
               <button
                 type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setOpenIndex((i) => (i === null ? i : (i - 1 + images.length) % images.length));
-                }}
+                onClick={() => setOpenIndex((i) => (i === null ? i : (i - 1 + images.length) % images.length))}
                 aria-label="Previous image"
-                className={LIGHTBOX_CONTROL_CLASS + " left-4 top-1/2 -translate-y-1/2 sm:left-8"}
+                className={LIGHTBOX_BUTTON_CLASS}
               >
                 <span className="font-body text-lg font-bold leading-none">←</span>
               </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setOpenIndex(null)}
+              aria-label="Close"
+              className={LIGHTBOX_BUTTON_CLASS}
+            >
+              <span className="text-lg leading-none">✕</span>
+            </button>
+            {images.length > 1 && (
               <button
                 type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setOpenIndex((i) => (i === null ? i : (i + 1) % images.length));
-                }}
+                onClick={() => setOpenIndex((i) => (i === null ? i : (i + 1) % images.length))}
                 aria-label="Next image"
-                className={LIGHTBOX_CONTROL_CLASS + " right-4 top-1/2 -translate-y-1/2 sm:right-8"}
+                className={LIGHTBOX_BUTTON_CLASS}
               >
                 <span className="font-body text-lg font-bold leading-none">→</span>
               </button>
-            </>
-          )}
+            )}
+          </div>
 
           <div
             className="relative rounded-2xl"
