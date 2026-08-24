@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 
 import { ProjectCard } from "@/components/work/project-card";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
+import { getCardHoverImage } from "@/lib/projects";
 import type { ImageRatio, Project, ProjectCategory } from "@/lib/projects";
 
 type WorkGalleryProps = {
@@ -178,7 +179,7 @@ export function WorkGallery({
     () =>
       filter === "All"
         ? projects
-        : projects.filter((project) => project.category === filter),
+        : projects.filter((project) => project.categories.includes(filter)),
     [filter, projects],
   );
 
@@ -242,16 +243,15 @@ export function WorkGallery({
           <div key={project.slug} className="mb-8 break-inside-avoid">
             <ProjectCard
               project={project}
-              // Trial: la-pride sets cardImage/cardHoverImage to swap in a
-              // different lead image and crossfade to a second on hover
-              // instead of just fading the hero — see if Josh wants it
-              // everywhere before wiring up every card.
+              // cardImage lets a project override its lead image (la-pride);
+              // hoverImage crossfades to another image from the same
+              // project wherever one's available (getCardHoverImage).
               image={project.cardImage}
               ratio={RATIO_CYCLE[index % RATIO_CYCLE.length]}
               caption="hover"
               motion="quiet"
               parallax
-              hoverImage={project.cardHoverImage}
+              hoverImage={getCardHoverImage(project)}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               priority={index < 3}
             />

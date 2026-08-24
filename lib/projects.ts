@@ -51,7 +51,8 @@ export type Project = {
   year: number;
   discipline: string;
   deliverables: string;
-  category: ProjectCategory;
+  /** A project can sit under more than one filter pill on /work. */
+  categories: ProjectCategory[];
   /** One line under the card title in grids. */
   summary: string;
   /** Caption printed under the hero image. */
@@ -61,13 +62,24 @@ export type Project = {
   credits: Credit[];
   hero: ProjectImage;
   /**
+   * Trial: a second image shown side-by-side with `hero` instead of the
+   * usual single full-width Plate — sound-of-driving only for now. Own
+   * caption from its own `alt`, same as the later gallery two-up.
+   */
+  heroPair?: ProjectImage;
+  /**
    * Trial: overrides the /work and home-embedded gallery card's lead image
    * when it should differ from `hero` (the big image atop the project's own
    * page) — la-pride only for now, see WorkGallery. Falls back to `hero`
    * when absent.
    */
   cardImage?: ProjectImage;
-  /** Paired with `cardImage` — crossfades in over it on card hover/focus. */
+  /**
+   * Crossfades in over the card's lead image on hover/focus. Set this to
+   * curate the pick (e.g. la-pride); otherwise `getCardHoverImage` below
+   * picks `heroPair` or the first gallery image automatically, so every
+   * project with a second image gets the swap for free.
+   */
   cardHoverImage?: ProjectImage;
   /**
    * Trial: small decorative pieces that lean toward the cursor next to the
@@ -98,7 +110,7 @@ export const projects: Project[] = [
     year: 2024,
     discipline: "Festival Identity",
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
-    category: "Pride",
+    categories: ["Pride"],
     summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption:
       "The main stage. The key art runs the full width of the header and repeats on both side panels.",
@@ -193,7 +205,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Character Series",
     deliverables: "12 Drawings",
-    category: "Character",
+    categories: ["Character"],
     summary: "Twelve people who all missed the last train.",
     heroCaption:
       "Drawn from memory on the top deck of the N29 over about four months.",
@@ -217,7 +229,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Mural",
     deliverables: "1 Mural · 14m × 4m",
-    category: "Mural",
+    categories: ["Mural"],
     summary: "Fourteen metres of characters queueing for a bus that never comes.",
     heroCaption: "Photographed the morning after the last coat went on.",
     brief: [
@@ -243,7 +255,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Editorial Illustration",
     deliverables: "1 Cover · 4 Spots",
-    category: "Editorial",
+    categories: ["Editorial"],
     summary: "A feature about doing nothing, illustrated enthusiastically.",
     heroCaption: "The cover, as it ran on 14 June.",
     brief: [
@@ -267,7 +279,7 @@ export const projects: Project[] = [
     year: 2024,
     discipline: "Character Design",
     deliverables: "2 Leads · 9 Supporting · Style Guide",
-    category: "Character",
+    categories: ["Character"],
     summary: "Two dogs with a clear and escalating disagreement.",
     heroCaption: "Final turnarounds for both leads.",
     brief: [
@@ -292,7 +304,7 @@ export const projects: Project[] = [
     year: 2023,
     discipline: "Character Design",
     deliverables: "3 Mascots · 6 Box Panels",
-    category: "Character",
+    categories: ["Character"],
     summary: "Three mascots that had to survive a focus group.",
     heroCaption: "The three approved mascots, plus the one that didn't make it.",
     brief: [
@@ -316,7 +328,7 @@ export const projects: Project[] = [
     year: 2023,
     discipline: "Flash Sheet",
     deliverables: "24 Designs",
-    category: "Character",
+    categories: ["Character"],
     summary: "A flash sheet drawn as a favour that got out of hand.",
     heroCaption: "The full sheet. Nine of these now exist on people.",
     brief: [
@@ -337,35 +349,24 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "Editorial Illustration",
     deliverables: "Key Art · Magazine Mockup",
-    category: "Automotive",
+    categories: ["Automotive", "Editorial"],
     summary: "A hot-pink electric sports car makes the case for keeping the noise.",
-    heroCaption: "The finished key art, headline treatment included.",
+    heroCaption: "The finished key art.",
     brief: [
       "An editorial about the debate between rumbling exhaust notes and the futuristic hum of instant torque.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     hero: {
       ratio: "4/5",
-      alt: "\"Have EVs Killed the Sound of Driving?\" — the finished key art with headline",
-      src: "/work/sound-of-driving/02-final-white-headline.webp",
+      alt: "\"Have EVs Killed the Sound of Driving?\" — the finished key art",
+      src: "/work/sound-of-driving/03-final.webp",
     },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "The key art without the headline treatment",
-        src: "/work/sound-of-driving/03-final.webp",
-      },
-      {
-        ratio: "4/5",
-        alt: "Mocked up as a magazine spread",
-        src: "/work/sound-of-driving/04-mag-03.webp",
-      },
-      {
-        ratio: "4/5",
-        alt: "The car on its own",
-        src: "/work/sound-of-driving/01-car-solo.webp",
-      },
-    ],
+    heroPair: {
+      ratio: "4/5",
+      alt: "Mocked up as a magazine spread",
+      src: "/work/sound-of-driving/04-mag-03.webp",
+    },
+    gallery: [],
     featured: true,
   },
 ];
@@ -410,6 +411,23 @@ export function getProjectNeighbours(slug: string): {
 
 /** Only the categories that actually have work in them. */
 export function getActiveCategories(): ProjectCategory[] {
-  const used = new Set(projects.map((project) => project.category));
+  const used = new Set(projects.flatMap((project) => project.categories));
   return PROJECT_CATEGORIES.filter((category) => used.has(category));
+}
+
+/**
+ * The gallery card's hover image. An explicit `cardHoverImage` (la-pride)
+ * wins; otherwise picks the first other real image belonging to the same
+ * project — `heroPair`, then the gallery — so hovering swaps in something
+ * different wherever a project actually has a second image available.
+ */
+export function getCardHoverImage(project: Project): ProjectImage | undefined {
+  if (project.cardHoverImage) return project.cardHoverImage;
+
+  const lead = project.cardImage ?? project.hero;
+  const candidates = [project.heroPair, ...project.gallery];
+
+  return candidates.find(
+    (image): image is ProjectImage => Boolean(image?.src) && image?.src !== lead.src,
+  );
 }

@@ -35,11 +35,11 @@ type ProjectCardProps = {
   /** Wraps just the image in the same 0.85× scroll parallax as Home's
    *  signature illustration — each grid image drifts independently. */
   parallax?: boolean;
-  /** Trial (LA Pride only for now, see WorkGallery): a second image that
-   *  crossfades in over the hero on hover/focus, underneath the existing
-   *  title wash — swaps the artwork itself instead of just fading it, so
-   *  scanning the grid on hover stays interesting. Only wired up when
-   *  `caption="hover"`. */
+  /** A second image that crossfades in over the hero on hover/focus,
+   *  underneath the existing title wash — swaps the artwork itself instead
+   *  of just fading it, so scanning the grid on hover stays interesting.
+   *  See getCardHoverImage in lib/projects.ts for how this is picked. Only
+   *  wired up when `caption="hover"`. */
   hoverImage?: ProjectImage;
   sizes?: string;
   priority?: boolean;
