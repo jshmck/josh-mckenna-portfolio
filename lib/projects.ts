@@ -115,12 +115,18 @@ export const projects: Project[] = [
     heroCaption:
       "The main stage. The key art runs the full width of the header and repeats on both side panels.",
     brief: [
-      "LA Pride's been running for over fifty years, and this time they wanted the whole thing rebuilt: branding, wayfinding, stage and bar banners, lounges, performer socials, wristbands, merch, the lot. James Junk and I started with vintage Olympic typography and old campaign posters, then built the letters themselves out of characters — the L and the A are each made of people, stacked into the letterforms. It still had to work at every size there is, from a stage header read from the back of a field to a badge on the front of a cap.",
+      "LA Pride's been running since 1970, and this time they wanted the whole thing rebuilt: branding, wayfinding, stage and bar banners, lounges, performer socials, wristbands, merch, the lot. James Junk and I started with vintage Olympic typography and old campaign posters, then built the letters themselves out of characters — the L and the A are each made of people, stacked into the letterforms. It still had to work at every size there is, from a stage header read from the back of a field to a badge on the front of a cap.",
       "Everything's flat colour and a single line weight, so the same drawing could go on vinyl, through a screen print, and up on a wall as a paste-up without looking like three different jobs. James Junk did the type and some of the graphics; I did the characters. It felt like a lot to be trusted with something that's been running that long.",
     ],
     credits: [
       { role: "Illustration & Graphics", name: "Josh McKenna" },
       { role: "Graphics", name: "James Junk" },
+      {
+        role: "Photography",
+        name: "Wes and Alex, Ashley Osborn, Polk Imaging, Dana Pleasant, Amy Hanoa",
+      },
+      { role: "Production", name: "NVE Experience Agency" },
+      { role: "Client", name: "LA Pride / Christopher Street West Association" },
     ],
     hero: {
       ratio: "16/10",
@@ -194,6 +200,26 @@ export const projects: Project[] = [
         ratio: "16/10",
         alt: "Vehicle wrap — the box truck",
         src: "/work/la-pride/08-truck-wrap.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "The Trans Lounge signage",
+        src: "/work/la-pride/13-trans-lounge.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Lockers and water station signage",
+        src: "/work/la-pride/14-lockers-water.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "The crowd, flags up along the barrier",
+        src: "/work/la-pride/15-crowd-barrier.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "The photo booth, packed all weekend",
+        src: "/work/la-pride/16-photo-booth.webp",
       },
     ],
     featured: true,
