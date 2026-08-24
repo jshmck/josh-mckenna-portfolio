@@ -16,6 +16,16 @@ type GalleryGridProps = {
 };
 
 /**
+ * One shared circular control for the lightbox (close, prev, next) — the
+ * frosted-glass recipe from BackToTop (bg-canvas/15 + backdrop-blur-md),
+ * adapted for this dark backdrop with a light rim instead of BackToTop's
+ * black-on-canvas border, and the same hover bounce curve. Every caller
+ * appends its own position classes.
+ */
+const LIGHTBOX_CONTROL_CLASS =
+  "absolute z-10 flex h-11 w-11 items-center justify-center rounded-full border border-canvas/25 bg-canvas/15 text-accent backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:border-accent";
+
+/**
  * Trial (la-pride only for now, via `Project.galleryLayout === "grid"`): a
  * uniform two-column grid for the whole gallery, closer to how James Junk's
  * own project page presents the same shoot than this site's usual
@@ -101,20 +111,23 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
           className="fixed inset-0 z-50 flex items-center justify-center bg-ink/90 p-6"
           onClick={() => setOpenIndex(null)}
         >
+          {/* One shared control language: a circular frosted-glass button.
+              z-10 on all three: the image div below is also
+              position:relative with no z-index of its own, so as the later
+              sibling it would otherwise paint over these at the edges once
+              it gets wide (min(95vw, ...) can run right up to the arrows'
+              left-4/right-4 position). */}
           <button
             type="button"
             onClick={() => setOpenIndex(null)}
             aria-label="Close"
-            className="absolute right-6 top-6 font-body text-2xl text-canvas transition-transform hover:scale-110"
+            className={LIGHTBOX_CONTROL_CLASS + " right-6 top-6"}
           >
-            ✕
+            <span className="text-lg leading-none">✕</span>
           </button>
 
           {allImages.length > 1 && (
             <>
-              {/* Same glyph/weight/hover recipe as the project prev/next
-                  nav at the page footer — translate, scale up, and fake
-                  extra boldness via text-stroke on hover. */}
               <button
                 type="button"
                 onClick={(event) => {
@@ -122,9 +135,9 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
                   setOpenIndex((i) => (i === null ? i : (i - 1 + allImages.length) % allImages.length));
                 }}
                 aria-label="Previous image"
-                className="absolute left-4 font-body text-lg font-bold text-canvas transition-transform [-webkit-text-stroke:0px] hover:-translate-x-2 hover:scale-125 hover:[-webkit-text-stroke:0.6px_currentColor] sm:left-8"
+                className={LIGHTBOX_CONTROL_CLASS + " left-4 top-1/2 -translate-y-1/2 sm:left-8"}
               >
-                ←
+                <span className="font-body text-lg font-bold leading-none">←</span>
               </button>
               <button
                 type="button"
@@ -133,9 +146,9 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
                   setOpenIndex((i) => (i === null ? i : (i + 1) % allImages.length));
                 }}
                 aria-label="Next image"
-                className="absolute right-4 font-body text-lg font-bold text-canvas transition-transform [-webkit-text-stroke:0px] hover:translate-x-2 hover:scale-125 hover:[-webkit-text-stroke:0.6px_currentColor] sm:right-8"
+                className={LIGHTBOX_CONTROL_CLASS + " right-4 top-1/2 -translate-y-1/2 sm:right-8"}
               >
-                →
+                <span className="font-body text-lg font-bold leading-none">→</span>
               </button>
             </>
           )}
