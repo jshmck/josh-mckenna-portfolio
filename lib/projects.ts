@@ -20,7 +20,15 @@ export const PROJECT_CATEGORIES = [
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
 
 /** Aspect ratios available to gallery images, keyed to CSS aspect-ratio. */
-export type ImageRatio = "1/1" | "2/3" | "4/5" | "3/4" | "4/3" | "5/4" | "16/10";
+export type ImageRatio =
+  | "1/1"
+  | "2/3"
+  | "4/5"
+  | "3/4"
+  | "4/3"
+  | "5/4"
+  | "3/2"
+  | "16/10";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -368,6 +376,69 @@ export const projects: Project[] = [
     },
     gallery: [],
     featured: true,
+  },
+  {
+    slug: "bombay-sapphire",
+    title: "Stir Creativity",
+    client: "Bombay Sapphire",
+    year: 2018,
+    discipline: "Illustration",
+    deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
+    categories: ["Mural"],
+    summary:
+      "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
+    heroCaption: "The mural, live in Bombay Sapphire's Shoreditch pop-up.",
+    brief: [
+      "Bombay Sapphire's CANVAS was a four-day pop-up in Shoreditch built around one line: Stir Creativity. I was one of fifteen artists asked to contribute, working across three pieces instead of one — a mural painted live in the window, a back-of-jacket embroidery, and fifty hand-finished bottles.",
+      "The starting point was a Grains of Paradise pod from a trip to the distillery — earthy for the first few seconds, then this fiery burst. I wanted the work to feel the same way, harvesty and celebratory at once, so the mural and the jacket both lean on the same botanical shapes and hot orange-on-blue palette.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Embroidery", name: "Lisa" },
+      { role: "Photography", name: "Rankin" },
+    ],
+    hero: {
+      ratio: "3/2",
+      alt: "The mural in Bombay Sapphire's Shoreditch CANVAS pop-up, #StirCreativity in the window",
+      src: "/work/bombay-sapphire/01-storefront.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/3",
+        alt: "The finished jacket back",
+        src: "/work/bombay-sapphire/03-jacket-flatlay.webp",
+      },
+      {
+        ratio: "4/3",
+        alt: "Embroidering the design by hand",
+        src: "/work/bombay-sapphire/04-embroidery-macro.webp",
+      },
+      {
+        ratio: "5/4",
+        alt: "Sketching the design on iPad before it went to embroidery",
+        src: "/work/bombay-sapphire/05-ipad-sketch.webp",
+      },
+      {
+        ratio: "4/3",
+        alt: "Reviewing the finished piece with Lisa",
+        src: "/work/bombay-sapphire/06-jacket-review.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Painting the mural live in the window",
+        src: "/work/bombay-sapphire/02-mural-painting.webp",
+      },
+      {
+        ratio: "4/3",
+        alt: "Fifty hand-finished bottles, ready to go",
+        src: "/work/bombay-sapphire/07-bottles-wide.webp",
+      },
+      {
+        ratio: "4/3",
+        alt: "Bottle detail — botanicals from the Grains of Paradise",
+        src: "/work/bombay-sapphire/08-bottles-macro.webp",
+      },
+    ],
   },
 ];
 
