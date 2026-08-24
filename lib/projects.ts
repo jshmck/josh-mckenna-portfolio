@@ -136,10 +136,6 @@ export const projects: Project[] = [
       alt: "The LA Pride 2024 main stage, key art across the header and both side panels",
       src: "/work/la-pride/01-main-stage.webp",
     },
-    creditsIllustrations: [
-      { src: "/work/la-pride/lol-shield.webp", aspect: "2160/1500" },
-      { src: "/work/la-pride/license-plate.webp", aspect: "2160/1500" },
-    ],
     cardImage: {
       ratio: "1/1",
       fit: "contain",
@@ -152,7 +148,8 @@ export const projects: Project[] = [
       src: "/work/la-pride/09-lamp-post-banner.webp",
     },
     headerIllustrations: [
-      { src: "/work/la-pride/bronco-rainbow.webp", aspect: "2700/1500" },
+      { src: "/work/la-pride/lol-shield.webp", aspect: "2160/1500" },
+      { src: "/work/la-pride/license-plate.webp", aspect: "2160/1500" },
     ],
     /**
      * Not-landscape first, because the template pairs the first two into a

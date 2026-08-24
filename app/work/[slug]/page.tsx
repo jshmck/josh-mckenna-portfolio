@@ -60,6 +60,7 @@ export default async function ProjectPage({
   ];
 
   const displayTitle = toDisplayTitle(project.title);
+  const headerIllustrations = project.headerIllustrations;
 
   return (
     <article>
@@ -84,14 +85,21 @@ export default async function ProjectPage({
             {/* Trial (la-pride only for now): sat on the title's own
                 baseline, anchored left right after the title and reduced
                 shy of the frame's right edge below — static, no hover
-                movement, unlike the /work page's top illustration row. */}
-            {project.headerIllustrations && (
-              <div className="hidden min-w-0 flex-1 items-end md:flex">
-                {project.headerIllustrations.map(({ src, aspect }) => (
+                movement, unlike the /work page's top illustration row.
+                Width splits evenly across however many pieces are given
+                (96% total, small gap) so a two-up like la-pride's shield
+                + plate reads as a pair sitting close together rather than
+                stranded at opposite ends of the row. */}
+            {headerIllustrations && (
+              <div className="hidden min-w-0 flex-1 items-end gap-2 md:flex">
+                {headerIllustrations.map(({ src, aspect }) => (
                   <div
                     key={src}
-                    className="relative w-[80%]"
-                    style={{ aspectRatio: aspect }}
+                    className="relative shrink-0"
+                    style={{
+                      aspectRatio: aspect,
+                      width: `${96 / headerIllustrations.length}%`,
+                    }}
                   >
                     <Image
                       src={src}
