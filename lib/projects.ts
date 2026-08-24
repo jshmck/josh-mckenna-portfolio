@@ -131,8 +131,8 @@ export const projects: Project[] = [
     heroCaption:
       "The main stage. The key art runs the full width of the header and repeats on both side panels.",
     brief: [
-      "LA Pride's been running since 1970, and this time they wanted the whole thing rebuilt: branding, wayfinding, stage and bar banners, lounges, performer socials, wristbands, merch, the lot. James Junk and I started with vintage Olympic typography and old campaign posters, then built the letters themselves out of characters — the L and the A are each made of people, stacked into the letterforms. It still had to work at every size there is, from a stage header read from the back of a field to a badge on the front of a cap.",
-      "Everything's flat colour and a single line weight, so the same drawing could go on vinyl, through a screen print, and up on a wall as a paste-up without looking like three different jobs. James Junk did the type and some of the graphics; I did the characters. It felt like a lot to be trusted with something that's been running that long.",
+      "LA Pride's been running since 1970, and by 2024 the bill included Ricky Martin, Muna and Jojo Siwa. James Junk and I got the call to rebuild the whole visual identity — branding, wayfinding, every banner on site, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there we built the letters themselves out of people, stacking characters into the L and the A. It had to hold up at every scale there is — stage-header-sized and cap-badge-sized, same drawing.",
+      "James handled the type, I drew the characters. Fifty years is a long time to be handed the keys to. Scroll on, you'll see what we did with them.",
     ],
     credits: [
       {
