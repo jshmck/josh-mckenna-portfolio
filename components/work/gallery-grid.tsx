@@ -110,12 +110,14 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
         >
           {/* One grouped toolbar instead of three floating circles — same
               frosted-glass pill recipe as BackToTop (bg-canvas/15 +
-              backdrop-blur-md), adapted for this dark backdrop with a light
-              rim instead of BackToTop's black-on-canvas border. Anchored to
-              the dialog itself, not the image, so it never overlaps or
-              floats at an image edge regardless of that image's own width. */}
+              backdrop-blur-md) and the same solid, fully-opaque outline
+              weight as BackToTop/the filter pills (border-ink there; a
+              solid border-canvas here, since ink-on-ink would vanish
+              against this dark backdrop). Anchored to the dialog itself,
+              not the image, so it never overlaps or floats at an image
+              edge regardless of that image's own width. */}
           <div
-            className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full border border-canvas/25 bg-canvas/15 p-1.5 backdrop-blur-md sm:bottom-8"
+            className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full border border-canvas bg-canvas/15 p-1.5 backdrop-blur-md sm:bottom-8"
             onClick={(event) => event.stopPropagation()}
           >
             {allImages.length > 1 && (
@@ -127,7 +129,7 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
                 aria-label="Previous image"
                 className={LIGHTBOX_BUTTON_CLASS}
               >
-                <span className="font-body text-lg font-bold leading-none">←</span>
+                <span className="font-body text-lg font-bold leading-none text-accent">←</span>
               </button>
             )}
             <button
@@ -145,7 +147,7 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
                 aria-label="Next image"
                 className={LIGHTBOX_BUTTON_CLASS}
               >
-                <span className="font-body text-lg font-bold leading-none">→</span>
+                <span className="font-body text-lg font-bold leading-none text-accent">→</span>
               </button>
             )}
           </div>
