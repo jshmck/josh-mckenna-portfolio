@@ -119,8 +119,11 @@ export const projects: Project[] = [
       "Everything's flat colour and a single line weight, so the same drawing could go on vinyl, through a screen print, and up on a wall as a paste-up without looking like three different jobs. James Junk did the type and some of the graphics; I did the characters. It felt like a lot to be trusted with something that's been running that long.",
     ],
     credits: [
-      { role: "Illustration & Graphics", name: "Josh McKenna" },
-      { role: "Graphics", name: "James Junk" },
+      {
+        role: "Creative Direction, Illustration & Graphic Design",
+        name: "Josh McKenna",
+      },
+      { role: "Graphic Design, Co-Designer", name: "James Junk" },
       {
         role: "Photography",
         name: "Wes and Alex, Ashley Osborn, Polk Imaging, Dana Pleasant, Amy Hanoa",
