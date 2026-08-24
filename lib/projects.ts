@@ -360,13 +360,6 @@ export const projects: Project[] = [
       alt: "Mocked up as a magazine spread",
       src: "/work/sound-of-driving/04-mag-03.webp",
     },
-    // The homepage hero's own car-pink.png (transparent, same grain/colour
-    // treatment) instead of a second grey-background export of the same
-    // car — fills the blank space next to the title, same role as LA
-    // Pride's headerIllustrations.
-    headerIllustrations: [
-      { src: "/illustrations/objects/car-pink.png", aspect: "899/388" },
-    ],
     gallery: [],
     featured: true,
   },
