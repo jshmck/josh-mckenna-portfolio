@@ -213,13 +213,13 @@ export const projects: Project[] = [
       },
       {
         ratio: "16/10",
-        alt: "The crowd, flags up along the barrier",
-        src: "/work/la-pride/15-crowd-barrier.webp",
+        alt: "A trans cowboy couple at the entrance arch",
+        src: "/work/la-pride/15-cowboy-couple.webp",
       },
       {
         ratio: "16/10",
-        alt: "The photo booth, packed all weekend",
-        src: "/work/la-pride/16-photo-booth.webp",
+        alt: "The main stage screen, running archival Pride footage",
+        src: "/work/la-pride/16-main-stage-screen.webp",
       },
     ],
     featured: true,
