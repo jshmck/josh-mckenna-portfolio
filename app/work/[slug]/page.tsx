@@ -211,17 +211,14 @@ export default async function ProjectPage({
           tall two-up leads (key art + flyposted lineup), then everything
           after flows into a uniform, clickable two-column grid — closer to
           how James Junk's own project page presents the same shoot — rather
-          than the default two-up-then-single-column stack below. */}
+          than the default two-up-then-single-column stack below. Leads and
+          grid share one lightbox/cycle via GalleryGrid's `leadImages`. */}
       {project.galleryLayout === "grid" ? (
-        <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
-          {(firstImage || secondImage) && (
-            <div className="grid gap-8 md:grid-cols-2">
-              {[firstImage, secondImage].filter(Boolean).map((image) => (
-                <Plate key={image.alt} image={image} sizes="(max-width: 768px) 100vw, 50vw" />
-              ))}
-            </div>
-          )}
-          <GalleryGrid images={restImages} />
+        <div className="mx-auto max-w-frame px-6 pb-20 md:px-gutter">
+          <GalleryGrid
+            leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
+            images={restImages}
+          />
         </div>
       ) : (
         <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">

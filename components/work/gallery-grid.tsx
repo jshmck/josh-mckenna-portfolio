@@ -8,6 +8,10 @@ import { Reveal } from "@/components/ui/reveal";
 import type { ProjectImage } from "@/lib/projects";
 
 type GalleryGridProps = {
+  /** Rendered above the grid as their own tall two-up row (la-pride's key
+   *  art + flyposted lineup) — same click-to-enlarge, same lightbox cycle
+   *  as everything in `images`, just a different lead-in size. */
+  leadImages?: ProjectImage[];
   images: ProjectImage[];
 };
 
@@ -19,8 +23,9 @@ type GalleryGridProps = {
  * Each frame opens full-size in a lightbox, since two columns still crops
  * every shot down from its real size.
  */
-export function GalleryGrid({ images }: GalleryGridProps) {
+export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const allImages = [...leadImages, ...images];
 
   useEffect(() => {
     if (openIndex === null) return;
@@ -29,9 +34,10 @@ export function GalleryGrid({ images }: GalleryGridProps) {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpenIndex(null);
-      if (event.key === "ArrowRight") setOpenIndex((i) => (i === null ? i : (i + 1) % images.length));
+      if (event.key === "ArrowRight")
+        setOpenIndex((i) => (i === null ? i : (i + 1) % allImages.length));
       if (event.key === "ArrowLeft")
-        setOpenIndex((i) => (i === null ? i : (i - 1 + images.length) % images.length));
+        setOpenIndex((i) => (i === null ? i : (i - 1 + allImages.length) % allImages.length));
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -39,20 +45,41 @@ export function GalleryGrid({ images }: GalleryGridProps) {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [openIndex, images.length]);
+  }, [openIndex, allImages.length]);
 
-  const openImage = openIndex === null ? null : images[openIndex];
+  const openImage = openIndex === null ? null : allImages[openIndex];
   const [ratioW, ratioH] = (openImage?.ratio ?? "1/1").split("/").map(Number);
   const openRatio = ratioW / ratioH;
 
   return (
     <>
+      {leadImages.length > 0 && (
+        <div className="mb-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
+          {leadImages.map((image, index) => (
+            <Reveal key={image.alt}>
+              <button
+                type="button"
+                onClick={() => setOpenIndex(index)}
+                aria-label={`Open larger view of ${image.alt}`}
+                className="group block w-full cursor-zoom-in text-left"
+              >
+                <div className="overflow-hidden rounded-3xl">
+                  <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.03]">
+                    <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
+                  </div>
+                </div>
+              </button>
+            </Reveal>
+          ))}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
         {images.map((image, index) => (
           <Reveal key={image.alt} delay={index * 60}>
             <button
               type="button"
-              onClick={() => setOpenIndex(index)}
+              onClick={() => setOpenIndex(leadImages.length + index)}
               aria-label={`Open larger view of ${image.alt}`}
               className="group block w-full cursor-zoom-in text-left"
             >
@@ -83,7 +110,7 @@ export function GalleryGrid({ images }: GalleryGridProps) {
             ✕
           </button>
 
-          {images.length > 1 && (
+          {allImages.length > 1 && (
             <>
               {/* Same glyph/weight/hover recipe as the project prev/next
                   nav at the page footer — translate, scale up, and fake
@@ -92,7 +119,7 @@ export function GalleryGrid({ images }: GalleryGridProps) {
                 type="button"
                 onClick={(event) => {
                   event.stopPropagation();
-                  setOpenIndex((i) => (i === null ? i : (i - 1 + images.length) % images.length));
+                  setOpenIndex((i) => (i === null ? i : (i - 1 + allImages.length) % allImages.length));
                 }}
                 aria-label="Previous image"
                 className="absolute left-4 font-body text-lg font-bold text-canvas transition-transform [-webkit-text-stroke:0px] hover:-translate-x-2 hover:scale-125 hover:[-webkit-text-stroke:0.6px_currentColor] sm:left-8"
@@ -103,7 +130,7 @@ export function GalleryGrid({ images }: GalleryGridProps) {
                 type="button"
                 onClick={(event) => {
                   event.stopPropagation();
-                  setOpenIndex((i) => (i === null ? i : (i + 1) % images.length));
+                  setOpenIndex((i) => (i === null ? i : (i + 1) % allImages.length));
                 }}
                 aria-label="Next image"
                 className="absolute right-4 font-body text-lg font-bold text-canvas transition-transform [-webkit-text-stroke:0px] hover:translate-x-2 hover:scale-125 hover:[-webkit-text-stroke:0.6px_currentColor] sm:right-8"
