@@ -85,6 +85,9 @@ export function GalleryGrid({ images }: GalleryGridProps) {
 
           {images.length > 1 && (
             <>
+              {/* Same glyph/weight/hover recipe as the project prev/next
+                  nav at the page footer — translate, scale up, and fake
+                  extra boldness via text-stroke on hover. */}
               <button
                 type="button"
                 onClick={(event) => {
@@ -92,7 +95,7 @@ export function GalleryGrid({ images }: GalleryGridProps) {
                   setOpenIndex((i) => (i === null ? i : (i - 1 + images.length) % images.length));
                 }}
                 aria-label="Previous image"
-                className="absolute left-4 font-body text-3xl font-bold text-canvas transition-transform hover:-translate-x-1 sm:left-8"
+                className="absolute left-4 font-body text-lg font-bold text-canvas transition-transform [-webkit-text-stroke:0px] hover:-translate-x-2 hover:scale-125 hover:[-webkit-text-stroke:0.6px_currentColor] sm:left-8"
               >
                 ←
               </button>
@@ -103,7 +106,7 @@ export function GalleryGrid({ images }: GalleryGridProps) {
                   setOpenIndex((i) => (i === null ? i : (i + 1) % images.length));
                 }}
                 aria-label="Next image"
-                className="absolute right-4 font-body text-3xl font-bold text-canvas transition-transform hover:translate-x-1 sm:right-8"
+                className="absolute right-4 font-body text-lg font-bold text-canvas transition-transform [-webkit-text-stroke:0px] hover:translate-x-2 hover:scale-125 hover:[-webkit-text-stroke:0.6px_currentColor] sm:right-8"
               >
                 →
               </button>

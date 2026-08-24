@@ -181,6 +181,12 @@ export const projects: Project[] = [
         src: "/work/la-pride/07-flyposted-lineup.webp",
       },
       {
+        ratio: "2/3",
+        fit: "contain",
+        alt: "The key art lockup",
+        src: "/work/la-pride/04-key-art-lockup.webp",
+      },
+      {
         ratio: "16/10",
         alt: "VIP entrance",
         src: "/work/la-pride/17-vip-entrance.webp",
