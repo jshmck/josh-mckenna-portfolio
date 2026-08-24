@@ -4,8 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Plate } from "@/components/ui/plate";
-import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
+import { ImageStack } from "@/components/work/image-stack";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
@@ -50,7 +50,6 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   const { previous, next } = getProjectNeighbours(slug);
-  const [firstImage, secondImage, ...restImages] = project.gallery;
 
   const meta = [
     { label: "Client", value: project.client },
@@ -198,26 +197,9 @@ export default async function ProjectPage({
         </aside>
       </div>
 
-      {/* Image stack — first two as a two-up, the rest full width. */}
-      <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
-        {(firstImage || secondImage) && (
-          <div className="grid gap-8 md:grid-cols-2">
-            {[firstImage, secondImage].filter(Boolean).map((image, index) => (
-              <Reveal key={image.alt} delay={index * 110}>
-                <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
-                <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-              </Reveal>
-            ))}
-          </div>
-        )}
-
-        {restImages.map((image) => (
-          <Reveal key={image.alt}>
-            <Plate image={image} sizes="(max-width: 1344px) 100vw, 1344px" />
-            <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-          </Reveal>
-        ))}
-      </div>
+      {/* Image stack — first two as a two-up, the rest full width. Every
+          frame opens full-size in a shared lightbox (ImageStack). */}
+      <ImageStack images={project.gallery} />
 
       {/* Previous / all / next — Waldeck Black + purple like the Info
           page's section titles (type-title text-accent), but at
