@@ -7,17 +7,19 @@ import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import type { ProjectImage } from "@/lib/projects";
 
-type SmallerGalleryProps = {
+type GalleryGridProps = {
   images: ProjectImage[];
 };
 
 /**
- * Trial (la-pride only for now): the smaller-framed grid below the main
- * image stack. Each frame opens the same image full-size in a lightbox —
- * the grid's whole point is fitting more shots in without blowing each one
- * up, so there has to be a way to actually see one at full size.
+ * Trial (la-pride only for now, via `Project.galleryLayout === "grid"`): a
+ * uniform two-column grid for the whole gallery, closer to how James Junk's
+ * own project page presents the same shoot than this site's usual
+ * two-up-then-single-column stack. No captions — the point is the photos.
+ * Each frame opens full-size in a lightbox, since two columns still crops
+ * every shot down from its real size.
  */
-export function SmallerGallery({ images }: SmallerGalleryProps) {
+export function GalleryGrid({ images }: GalleryGridProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   useEffect(() => {
@@ -40,10 +42,12 @@ export function SmallerGallery({ images }: SmallerGalleryProps) {
   }, [openIndex, images.length]);
 
   const openImage = openIndex === null ? null : images[openIndex];
+  const [ratioW, ratioH] = (openImage?.ratio ?? "1/1").split("/").map(Number);
+  const openRatio = ratioW / ratioH;
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
         {images.map((image, index) => (
           <Reveal key={image.alt} delay={index * 60}>
             <button
@@ -54,10 +58,9 @@ export function SmallerGallery({ images }: SmallerGalleryProps) {
             >
               <div className="overflow-hidden rounded-3xl">
                 <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.03]">
-                  <Plate image={image} sizes="(max-width: 768px) 50vw, 25vw" />
+                  <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
                 </div>
               </div>
-              <p className="type-label mt-2 text-ink-muted">{image.alt}</p>
             </button>
           </Reveal>
         ))}
@@ -108,20 +111,23 @@ export function SmallerGallery({ images }: SmallerGalleryProps) {
           )}
 
           <div
-            className="relative max-h-full max-w-4xl"
+            className="relative rounded-2xl"
+            style={{
+              width: `min(95vw, 92vh * ${openRatio})`,
+              aspectRatio: String(openRatio),
+            }}
             onClick={(event) => event.stopPropagation()}
           >
             {openImage.src && (
               <Image
                 src={openImage.src}
                 alt={openImage.alt}
-                width={1600}
-                height={1067}
-                sizes="90vw"
-                className="max-h-[85vh] w-auto rounded-2xl object-contain"
+                fill
+                sizes="95vw"
+                className="rounded-2xl object-contain"
+                priority
               />
             )}
-            <p className="type-label mt-3 text-center text-canvas/80">{openImage.alt}</p>
           </div>
         </div>
       )}

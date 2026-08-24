@@ -104,14 +104,16 @@ export type Project = {
    * static header treatment.
    */
   creditsIllustrations?: { src: string; aspect: string }[];
-  /** Gallery below the write-up. First two render as a two-up row. */
+  /** Gallery below the write-up. First two render as a two-up row, unless
+   *  `galleryLayout` says otherwise. */
   gallery: ProjectImage[];
   /**
-   * Trial: extra shots that don't earn a full gallery slot — renders as a
-   * dense, small-framed grid below the main gallery — la-pride only for
-   * now.
+   * Trial: `"grid"` renders the whole `gallery` as a uniform, clickable
+   * two-column grid (each image opens full-size in a lightbox) instead of
+   * the default two-up-then-single-column stack — la-pride only for now,
+   * closer to how James Junk's own project page presents the same shoot.
    */
-  smallerGallery?: ProjectImage[];
+  galleryLayout?: "grid";
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
 };
@@ -168,10 +170,9 @@ export const projects: Project[] = [
     /**
      * Not-landscape first, because the template pairs the first two into a
      * two-up row and runs everything after them full width. A 2/3 portrait
-     * at 1344px wide is almost entirely wall. The key art lockup runs
-     * edge-to-edge — any object-cover crop clips "PRIDE" or "2024" at the
-     * sides — so it's framed to match the flyposted lineup's 2/3 height via
-     * `fit: "contain"` instead of a crop, at its own true 1/1.
+     * at 1344px wide is almost entirely wall. `ratio` is a curatorial crop,
+     * not the source's native aspect — the VIP entrance shot is landscape
+     * but declared 2/3 here so it pairs at the flyposted lineup's height.
      */
     gallery: [
       {
@@ -180,25 +181,14 @@ export const projects: Project[] = [
         src: "/work/la-pride/07-flyposted-lineup.webp",
       },
       {
-        ratio: "2/3",
-        fit: "contain",
-        alt: "The key art lockup",
-        src: "/work/la-pride/04-key-art-lockup.webp",
-      },
-      {
         ratio: "16/10",
-        alt: "Entrance arch — the main gate",
-        src: "/work/la-pride/11-entrance-arch.webp",
+        alt: "VIP entrance",
+        src: "/work/la-pride/17-vip-entrance.webp",
       },
       {
         ratio: "16/10",
         alt: "Wayfinding totem — main stage and food village",
         src: "/work/la-pride/05-wayfinding-totem.webp",
-      },
-      {
-        ratio: "16/10",
-        alt: "Wayfinding — entrance detail",
-        src: "/work/la-pride/12-entrance-detail.webp",
       },
       {
         ratio: "16/10",
@@ -230,34 +220,28 @@ export const projects: Project[] = [
         alt: "The main stage screen, running archival Pride footage",
         src: "/work/la-pride/16-main-stage-screen.webp",
       },
-    ],
-    smallerGallery: [
       {
-        ratio: "3/2",
-        alt: "VIP entrance",
-        src: "/work/la-pride/17-vip-entrance.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Wayfinding totem, another angle",
-        src: "/work/la-pride/18-totem-angle.webp",
-      },
-      {
-        ratio: "3/2",
+        ratio: "16/10",
         alt: "The main stage by day",
         src: "/work/la-pride/19-main-stage-day.webp",
       },
       {
-        ratio: "3/2",
+        ratio: "16/10",
         alt: "Main stage banner, rainbow umbrella in the crowd",
         src: "/work/la-pride/20-umbrella-shot.webp",
       },
       {
-        ratio: "3/2",
+        ratio: "16/10",
+        alt: "Wayfinding totem, another angle",
+        src: "/work/la-pride/18-totem-angle.webp",
+      },
+      {
+        ratio: "16/10",
         alt: "The main stage at night, before the crowd arrived",
         src: "/work/la-pride/21-night-stage.webp",
       },
     ],
+    galleryLayout: "grid",
     featured: true,
   },
   {

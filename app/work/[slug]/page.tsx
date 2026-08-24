@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
-import { SmallerGallery } from "@/components/work/smaller-gallery";
+import { GalleryGrid } from "@/components/work/gallery-grid";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
@@ -207,34 +207,33 @@ export default async function ProjectPage({
         </aside>
       </div>
 
-      {/* Image stack — first two as a two-up, the rest full width. */}
-      <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
-        {(firstImage || secondImage) && (
-          <div className="grid gap-8 md:grid-cols-2">
-            {[firstImage, secondImage].filter(Boolean).map((image, index) => (
-              <Reveal key={image.alt} delay={index * 110}>
-                <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
-                <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-              </Reveal>
-            ))}
-          </div>
-        )}
-
-        {restImages.map((image) => (
-          <Reveal key={image.alt}>
-            <Plate image={image} sizes="(max-width: 1344px) 100vw, 1344px" />
-            <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-          </Reveal>
-        ))}
-      </div>
-
-      {/* Trial (la-pride only for now): extra shots that don't earn a full
-          gallery slot — a denser grid of smaller frames rather than the
-          image stack's one/two-up rows above. Click-to-enlarge lives in
-          SmallerGallery since it needs client state for the lightbox. */}
-      {project.smallerGallery && (
+      {/* Trial (la-pride only for now, `galleryLayout: "grid"`): the whole
+          gallery as a uniform, clickable two-column grid — closer to how
+          James Junk's own project page presents the same shoot — instead
+          of the default two-up-then-single-column stack below. */}
+      {project.galleryLayout === "grid" ? (
         <div className="mx-auto max-w-frame px-6 pb-20 md:px-gutter">
-          <SmallerGallery images={project.smallerGallery} />
+          <GalleryGrid images={project.gallery} />
+        </div>
+      ) : (
+        <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
+          {(firstImage || secondImage) && (
+            <div className="grid gap-8 md:grid-cols-2">
+              {[firstImage, secondImage].filter(Boolean).map((image, index) => (
+                <Reveal key={image.alt} delay={index * 110}>
+                  <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
+                  <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
+                </Reveal>
+              ))}
+            </div>
+          )}
+
+          {restImages.map((image) => (
+            <Reveal key={image.alt}>
+              <Plate image={image} sizes="(max-width: 1344px) 100vw, 1344px" />
+              <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
+            </Reveal>
+          ))}
         </div>
       )}
 
