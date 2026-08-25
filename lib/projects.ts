@@ -618,6 +618,77 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "rainbow-rodeo",
+    title: "Rainbow Rodeo",
+    client: "Levi's",
+    year: 2024,
+    discipline: "Brand Activation",
+    deliverables: "Invite · Pins · Apparel · Cups · Plates",
+    categories: ["Pride"],
+    summary: "Two cowboys, one horse, hearts for spots.",
+    heroCaption: "All three Rainbow Rodeo pin colourways, side by side.",
+    brief: [
+      "For Levi's Rainbow Rodeo, I created bold, vibrant illustrations celebrating LGBTQ+ culture through a modern Western lens — combining themes of inclusivity, pride and individuality with Levi's iconic heritage.",
+      "The artwork ran across the event invite, enamel pins, a T-shirt, and bar accessories — cups and plates — for Levi's Pride event in Los Angeles.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Levi's" },
+    ],
+    hero: {
+      ratio: "2/3",
+      alt: "All three Rainbow Rodeo pin colourways, laid out together",
+      src: "/work/rainbow-rodeo/01-pin-trio.webp",
+    },
+    // The /work card's hover crossfade renders this with a plain
+    // object-cover fill, bypassing Plate's ratio box — the default (first
+    // gallery image, the invite) barely crops at that near-native ratio, so
+    // its own baked-in cream border showed through. This is a dedicated,
+    // deeper crop of the same artwork with the border cropped well clear.
+    cardHoverImage: {
+      ratio: "3/4",
+      alt: "The Rainbow Rodeo invite, detail",
+      src: "/work/rainbow-rodeo/09-invite-hover.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "The event invite — Levi's Haus, June 8th",
+        src: "/work/rainbow-rodeo/02-invite.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "The tee's front print",
+        src: "/work/rainbow-rodeo/06-portrait-front.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Pin badges, two cowboys",
+        src: "/work/rainbow-rodeo/03-pins-yellow-bulk.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Pin badges, rainbow arch",
+        src: "/work/rainbow-rodeo/04-pins-orange-bulk.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Pin badges, bucking bronco",
+        src: "/work/rainbow-rodeo/05-pins-red-bulk.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The tee's back print",
+        src: "/work/rainbow-rodeo/07-portrait-back.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Rainbow Rodeo cups, table-side",
+        src: "/work/rainbow-rodeo/08-cups.webp",
+      },
+    ],
+  },
 ];
 
 /* ==========================================================================
