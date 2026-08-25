@@ -664,17 +664,17 @@ export const projects: Project[] = [
       },
       {
         ratio: "1/1",
-        alt: "Detail — the rainbow fan",
+        alt: "Detail — the sunglasses girl",
         src: "/work/wagamama-brighton/03-detail-purple-top.webp",
       },
       {
         ratio: "1/1",
-        alt: "Detail — the wide-brim hat",
+        alt: "Detail — the Wagamama cowboy",
         src: "/work/wagamama-brighton/04-detail-pink-hat.webp",
       },
       {
         ratio: "1/1",
-        alt: "Detail — the trans flag",
+        alt: "Detail — love is love",
         src: "/work/wagamama-brighton/05-detail-wheelchair.webp",
       },
     ],
