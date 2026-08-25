@@ -624,7 +624,7 @@ export const projects: Project[] = [
     client: "Levi's",
     year: 2024,
     discipline: "Brand Activation",
-    deliverables: "Invite · Pins · Apparel · Cups · Plates",
+    deliverables: "Invite · Pins · Apparel · Bar Items",
     categories: ["Pride"],
     summary: "Two cowboys, one horse, hearts for spots.",
     heroCaption: "All three Rainbow Rodeo pin colourways, side by side.",
@@ -637,9 +637,18 @@ export const projects: Project[] = [
       { role: "Client", name: "Levi's" },
     ],
     hero: {
-      ratio: "2/3",
+      ratio: "3/2",
       alt: "All three Rainbow Rodeo pin colourways, laid out together",
       src: "/work/rainbow-rodeo/01-pin-trio.webp",
+    },
+    // The /work index card leads with the vertical crop of the same shot —
+    // doesn't cut off any of the three pins, unlike the horizontal hero
+    // above, which crops the top/bottom to fit the project page's usual
+    // landscape treatment.
+    cardImage: {
+      ratio: "2/3",
+      alt: "All three Rainbow Rodeo pin colourways, laid out together",
+      src: "/work/rainbow-rodeo/10-pin-trio-vertical.webp",
     },
     // The /work card's hover crossfade renders this with a plain
     // object-cover fill, bypassing Plate's ratio box — the default (first
