@@ -15,6 +15,7 @@ export const PROJECT_CATEGORIES = [
   "Mural",
   "Automotive",
   "3D",
+  "Hospitality",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
