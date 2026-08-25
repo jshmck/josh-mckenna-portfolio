@@ -247,7 +247,7 @@ export function WorkGallery({
               // hoverImage crossfades to another image from the same
               // project wherever one's available (getCardHoverImage).
               image={project.cardImage}
-              ratio={RATIO_CYCLE[index % RATIO_CYCLE.length]}
+              ratio={project.cardRatio ?? RATIO_CYCLE[index % RATIO_CYCLE.length]}
               caption="hover"
               motion="quiet"
               parallax

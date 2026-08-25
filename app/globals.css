@@ -281,11 +281,12 @@
   }
 }
 
-/* Project lightbox (components/work/image-stack.tsx). The backdrop fades in
-   once per open; the framed image plays one of three one-shot entrances keyed
-   off React `key` — a bouncy pop for the first image, a directional slide for
-   arrow/keyboard navigation — so paging through a gallery has some spring to
-   it instead of hard-cutting between frames. */
+/* Project lightbox (components/work/image-stack.tsx and poster-grid.tsx).
+   The backdrop fades in once per open; the framed image plays one of three
+   one-shot entrances keyed off React `key` — a bouncy pop for the first
+   image, a directional slide for arrow/keyboard navigation — so paging
+   through a gallery has some spring to it instead of hard-cutting between
+   frames. */
 @keyframes lightbox-backdrop {
   from {
     opacity: 0;
