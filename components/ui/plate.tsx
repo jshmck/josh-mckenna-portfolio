@@ -10,6 +10,8 @@ const RATIO_CLASS: Record<ImageRatio, string> = {
   "4/3": "aspect-[4/3]",
   "5/4": "aspect-[5/4]",
   "16/10": "aspect-[16/10]",
+  "12/17": "aspect-[12/17]",
+  "15/22": "aspect-[15/22]",
 };
 
 type PlateProps = {

@@ -54,6 +54,7 @@
 
   /* Motion */
   --ease-drift: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* springy overshoot — lightbox, playful UI accents */
 }
 
 /* ==========================================================================
@@ -278,6 +279,100 @@
   50% {
     transform: translateY(-14px);
   }
+}
+
+/* Project lightbox (components/work/image-stack.tsx and poster-grid.tsx).
+   The backdrop fades in once per open; the framed image plays one of three
+   one-shot entrances keyed off React `key` — a bouncy pop for the first
+   image, a directional slide for arrow/keyboard navigation — so paging
+   through a gallery has some spring to it instead of hard-cutting between
+   frames. */
+@keyframes lightbox-backdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lightbox-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) rotate(-1.5deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes lightbox-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(36px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes lightbox-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-36px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* One-shot hint that the toolbar arrows are pressable — nudges each glyph
+   twice in its own direction, a few beats after the lightbox opens, then
+   never repeats (mounted once per open, not keyed to navigation). Animates
+   the glyph span rather than the button so it doesn't fight the button's own
+   hover transform. */
+@keyframes arrow-hint-right {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30%,
+  60% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes arrow-hint-left {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30%,
+  60% {
+    transform: translateX(-4px);
+  }
+}
+
+/* The toolbar pill grows on whichever side is hosting the hovered arrow —
+   giving that button's own hover:translate room to nudge into, rather than
+   the pill leaning/squashing as a whole. :has() lets the parent react to
+   which child is being hovered. A plain eased transition, no keyframes, so
+   there's no overshoot to settle from. */
+[data-lightbox-toolbar] {
+  transition:
+    padding-left 300ms var(--ease-drift),
+    padding-right 300ms var(--ease-drift);
+}
+
+[data-lightbox-toolbar]:has([data-lightbox-dir="prev"]:hover) {
+  padding-left: 0.75rem;
+}
+
+[data-lightbox-toolbar]:has([data-lightbox-dir="next"]:hover) {
+  padding-right: 0.75rem;
 }
 
 /* Scroll reveal — driven by the data attribute the Reveal component flips.

@@ -6,7 +6,8 @@ import { notFound } from "next/navigation";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
-import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
+import { PosterGrid } from "@/components/work/poster-grid";
+import { getProject, getProjectNeighbours, projects, type Project } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
 /**
@@ -16,6 +17,51 @@ import { toWaldeckCase } from "@/lib/waldeck-case";
  */
 function toDisplayTitle(title: string) {
   return toWaldeckCase(title);
+}
+
+/** The brief + sticky credits sidebar. Shared between the default layout
+ *  (after the hero) and "grid" layout (before the gallery) so the two
+ *  placements can't drift out of sync. */
+function WriteUp({ project }: { project: Project }) {
+  return (
+    <div className="mx-auto grid max-w-frame gap-14 px-6 py-20 md:grid-cols-[1fr_260px] md:px-gutter">
+      <div className="max-w-2xl">
+        {project.brief.map((paragraph, index) => (
+          <p
+            key={index}
+            className={`type-lede text-ink-muted ${index > 0 ? "mt-6" : ""}`}
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
+
+      {/* Pins while the write-up scrolls past, per the wireframe. */}
+      <aside className="h-fit md:sticky md:top-[112px]">
+        <dl className="space-y-4">
+          {project.credits.map((credit) => (
+            <div key={credit.role}>
+              <dt className="type-label text-ink-muted">{credit.role}</dt>
+              <dd className="mt-1 font-body text-[15px] font-medium text-ink">
+                {credit.name}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        {/* Trial (la-pride only for now): small pieces stacked under the
+            credits, same lean-toward-cursor hover as the /work page's
+            top illustration row. */}
+        {project.creditsIllustrations && (
+          <div className="mt-8 flex flex-col items-start gap-6">
+            {project.creditsIllustrations.map(({ src, aspect }) => (
+              <TiltIllustration key={src} src={src} aspect={aspect} width={140} />
+            ))}
+          </div>
+        )}
+      </aside>
+    </div>
+  );
 }
 
 /** Every project is known at build time, so all detail pages prerender. */
@@ -33,7 +79,7 @@ export async function generateMetadata({
 
   return {
     title: project.title,
-    description: `${project.summary} ${project.discipline} for ${project.client}, ${project.year}.`,
+    description: `${project.summary} ${project.discipline} for ${project.client}, ${project.yearLabel ?? project.year}.`,
     openGraph: {
       title: `${project.title} — Josh McKenna`,
       description: project.summary,
@@ -54,7 +100,7 @@ export default async function ProjectPage({
 
   const meta = [
     { label: "Client", value: project.client },
-    { label: "Year", value: String(project.year) },
+    { label: "Year", value: project.yearLabel ?? String(project.year) },
     { label: "Discipline", value: project.discipline },
     { label: "Deliverables", value: project.deliverables },
   ];
@@ -119,105 +165,85 @@ export default async function ProjectPage({
         </div>
       </header>
 
+      {/* Write-up + sticky credits. In "grid" mode (Beefbar only for now)
+          this reads before the gallery instead of after — with a couple
+          dozen posters, making people scroll past the whole grid to reach
+          the write-up buries it; everywhere else the hero comes first, per
+          the wireframe. */}
+      {project.galleryLayout === "grid" && (
+        <WriteUp project={project} />
+      )}
+
       {/* Hero — heroPair (sound-of-driving only for now) renders it as a
           two-up instead of one full-width Plate, each with its own
-          caption from its own `alt`. */}
-      <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
-        {project.heroPair ? (
-          <div className="grid gap-8 md:grid-cols-2">
-            <div>
-              <Plate
-                image={project.hero}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-              />
-              <p className="type-label mt-3 text-ink-muted">
-                {project.heroCaption}
-              </p>
-            </div>
-            <div>
-              <Plate
-                image={project.heroPair}
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <p className="type-label mt-3 text-ink-muted">
-                {project.heroPair.alt}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <>
-            <Plate
-              image={project.hero}
-              sizes="(max-width: 1344px) 100vw, 1344px"
-              priority
-            />
-            <p className="type-label mt-3 text-ink-muted">
-              {project.heroCaption}
-            </p>
-          </>
-        )}
-      </div>
-
-      {/* Write-up + sticky credits */}
-      <div className="mx-auto grid max-w-frame gap-14 px-6 py-20 md:grid-cols-[1fr_260px] md:px-gutter">
-        <div className="max-w-2xl">
-          {project.brief.map((paragraph, index) => (
-            <p
-              key={index}
-              className={`type-lede text-ink-muted ${index > 0 ? "mt-6" : ""}`}
-            >
-              {paragraph}
-            </p>
-          ))}
-        </div>
-
-        {/* Pins while the write-up scrolls past, per the wireframe. */}
-        <aside className="h-fit md:sticky md:top-[112px]">
-          <dl className="space-y-4">
-            {project.credits.map((credit) => (
-              <div key={credit.role}>
-                <dt className="type-label text-ink-muted">{credit.role}</dt>
-                <dd className="mt-1 font-body text-[15px] font-medium text-ink">
-                  {credit.name}
-                </dd>
+          caption from its own `alt`. galleryLayout "grid" skips the hero
+          entirely and opens straight into every image as a grid instead —
+          see PosterGrid. */}
+      {project.galleryLayout === "grid" ? (
+        <PosterGrid images={[project.hero, ...project.gallery]} />
+      ) : (
+        <>
+          <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
+            {project.heroPair ? (
+              <div className="grid gap-8 md:grid-cols-2">
+                <div>
+                  <Plate
+                    image={project.hero}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                  <p className="type-label mt-3 text-ink-muted">
+                    {project.heroCaption}
+                  </p>
+                </div>
+                <div>
+                  <Plate
+                    image={project.heroPair}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <p className="type-label mt-3 text-ink-muted">
+                    {project.heroPair.alt}
+                  </p>
+                </div>
               </div>
-            ))}
-          </dl>
+            ) : (
+              <>
+                <Plate
+                  image={project.hero}
+                  sizes="(max-width: 1344px) 100vw, 1344px"
+                  priority
+                />
+                <p className="type-label mt-3 text-ink-muted">
+                  {project.heroCaption}
+                </p>
+              </>
+            )}
+          </div>
 
-          {/* Trial (la-pride only for now): small pieces stacked under the
-              credits, same lean-toward-cursor hover as the /work page's
-              top illustration row. */}
-          {project.creditsIllustrations && (
-            <div className="mt-8 flex flex-col items-start gap-6">
-              {project.creditsIllustrations.map(({ src, aspect }) => (
-                <TiltIllustration key={src} src={src} aspect={aspect} width={140} />
-              ))}
-            </div>
-          )}
-        </aside>
-      </div>
+          <WriteUp project={project} />
 
-      {/* Image stack — first two as a two-up, the rest full width. */}
-      <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
-        {(firstImage || secondImage) && (
-          <div className="grid gap-8 md:grid-cols-2">
-            {[firstImage, secondImage].filter(Boolean).map((image, index) => (
-              <Reveal key={image.alt} delay={index * 110}>
-                <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
+          {/* Image stack — first two as a two-up, the rest full width. */}
+          <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
+            {(firstImage || secondImage) && (
+              <div className="grid gap-8 md:grid-cols-2">
+                {[firstImage, secondImage].filter(Boolean).map((image, index) => (
+                  <Reveal key={image.alt} delay={index * 110}>
+                    <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
+                    <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
+                  </Reveal>
+                ))}
+              </div>
+            )}
+
+            {restImages.map((image) => (
+              <Reveal key={image.alt}>
+                <Plate image={image} sizes="(max-width: 1344px) 100vw, 1344px" />
                 <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
               </Reveal>
             ))}
           </div>
-        )}
-
-        {restImages.map((image) => (
-          <Reveal key={image.alt}>
-            <Plate image={image} sizes="(max-width: 1344px) 100vw, 1344px" />
-            <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-          </Reveal>
-        ))}
-      </div>
+        </>
+      )}
 
       {/* Previous / all / next — Waldeck Black + purple like the Info
           page's section titles (type-title text-accent), but at

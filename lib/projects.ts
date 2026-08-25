@@ -21,7 +21,18 @@ export const PROJECT_CATEGORIES = [
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
 
 /** Aspect ratios available to gallery images, keyed to CSS aspect-ratio. */
-export type ImageRatio = "1/1" | "2/3" | "4/5" | "3/4" | "4/3" | "5/4" | "16/10";
+export type ImageRatio =
+  | "1/1"
+  | "2/3"
+  | "4/5"
+  | "3/4"
+  | "4/3"
+  | "5/4"
+  | "16/10"
+  // Beefbar Posters' true print ratios — none of the ratios above were close
+  // enough to snap to without a visible crop or letterbox gap.
+  | "12/17"
+  | "15/22";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -49,7 +60,12 @@ export type Project = {
   slug: string;
   title: string;
   client: string;
+  /** Stays numeric even for an ongoing project — getAllProjects() sorts on
+   *  this. Use `yearLabel` to override what actually prints. */
   year: number;
+  /** Overrides the printed year, e.g. an ongoing series — "2017–Present".
+   *  Falls back to `year` when absent. */
+  yearLabel?: string;
   discipline: string;
   deliverables: string;
   /** A project can sit under more than one filter pill on /work. */
@@ -76,6 +92,14 @@ export type Project = {
    */
   cardImage?: ProjectImage;
   /**
+   * Overrides the /work and home-embedded gallery card's frame ratio —
+   * WorkGallery otherwise cycles a fixed sequence per card position for the
+   * masonry rhythm, regardless of the image's own shape, which is fine for
+   * most artwork but forces a real fixed format (Beefbar's posters) into
+   * whatever ratio its position happens to land on.
+   */
+  cardRatio?: ImageRatio;
+  /**
    * Crossfades in over the card's lead image on hover/focus. Set this to
    * curate the pick (e.g. la-pride); otherwise `getCardHoverImage` below
    * picks `heroPair` or the first gallery image automatically, so every
@@ -99,11 +123,131 @@ export type Project = {
   creditsIllustrations?: { src: string; aspect: string }[];
   /** Gallery below the write-up. First two render as a two-up row. */
   gallery: ProjectImage[];
+  /**
+   * "grid" skips the usual full-bleed hero and opens straight into a
+   * height-capped grid of every image (hero + gallery combined) instead —
+   * for a series where every piece shares a similar ratio and a single
+   * full-width hero would run too tall to see on landing. Beefbar Posters
+   * only for now.
+   */
+  galleryLayout?: "grid";
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
 };
 
 export const projects: Project[] = [
+  {
+    slug: "beefbar-posters",
+    title: "Beefbar",
+    client: "Beefbar",
+    year: 2017,
+    yearLabel: "2017–Present Day",
+    discipline: "Illustration",
+    deliverables: "Illustrated Poster & Menu Design",
+    categories: ["Hospitality", "Character"],
+    summary: "One new poster, every time Beefbar opens somewhere new. Still counting.",
+    heroCaption: "The Baku opening poster — part of Beefbar's ongoing series.",
+    brief: [
+      "With every new opening of a Beefbar restaurant around the world comes a new poster, designed by me, taking influence from the surrounding landmarks, cityscape, culture and heritage — Baku's Flame Towers and waterfront, Comporta's dunes, whatever the city actually gives you to draw. The same artwork doubles as the cover of the menu. Not every poster's made the cut here — this is a selection, not the full series.",
+      "The 'beefbar' script and the city's own name across the sheet stay fixed. Everything else comes from wherever the restaurant's landed — Comporta's just a dune path, Malta's set inside the dining room.",
+    ],
+    credits: [{ role: "Graphic Design & Illustration", name: "Josh McKenna" }],
+    galleryLayout: "grid",
+    cardRatio: "12/17",
+    // The /work card's round-corner clip cuts across whichever poster's own
+    // printed border is showing — Luxembourg's reads better there than
+    // Baku's (the hero, used everywhere else) did.
+    cardImage: {
+      ratio: "12/17",
+      alt: "Luxembourg",
+      src: "/work/beefbar-posters/05-luxembourg.webp",
+    },
+    hero: {
+      ratio: "12/17",
+      alt: "Baku",
+      src: "/work/beefbar-posters/01-baku-02.webp",
+    },
+    // Each poster's own printed border is part of the artwork, kept
+    // visible — the grid runs square corners (see PosterGrid) instead of
+    // cropping it out. Ordered chronologically, per Josh.
+    gallery: [
+      {
+        ratio: "12/17",
+        alt: "Belgrade",
+        src: "/work/beefbar-posters/03-belgrade-web.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Comporta",
+        src: "/work/beefbar-posters/04-comporta-4.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Marrakech",
+        src: "/work/beefbar-posters/06-marrakech.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Luxembourg",
+        src: "/work/beefbar-posters/05-luxembourg.webp",
+      },
+      {
+        ratio: "15/22",
+        alt: "Malta",
+        src: "/work/beefbar-posters/01-malta-city-hr.webp",
+      },
+      {
+        ratio: "15/22",
+        alt: "St Tropez",
+        src: "/work/beefbar-posters/02-beefbar-st-tropez.webp",
+      },
+      {
+        ratio: "15/22",
+        alt: "Esencia",
+        src: "/work/beefbar-posters/03-esencia.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Santorini",
+        src: "/work/beefbar-posters/11-santorini.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "New York",
+        src: "/work/beefbar-posters/09-new-york.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Kuwait",
+        src: "/work/beefbar-posters/04-kuwait.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Méribel",
+        src: "/work/beefbar-posters/07-meribel.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Dubai",
+        src: "/work/beefbar-posters/01-dubai.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Edinburgh",
+        src: "/work/beefbar-posters/02-edinburgh.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Paris",
+        src: "/work/beefbar-posters/10-paris.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Monaco",
+        src: "/work/beefbar-posters/08-monaco.webp",
+      },
+    ],
+  },
   {
     slug: "la-pride",
     title: "L.A. Pride",
