@@ -627,24 +627,24 @@ export const projects: Project[] = [
     deliverables: "Illustrated Window Display",
     categories: ["Pride", "Character", "Hospitality"],
     summary: "Eight characters celebrating Pride, wrapped across a restaurant window.",
-    heroCaption: "The finished display, live in Wagamama's Brighton window.",
+    heroCaption: "The full artwork, designed for Wagamama's Brighton window.",
     brief: [
-      "A Pride window display for Wagamama's Brighton restaurant, celebrating the city's diverse and inclusive spirit. Eight characters — a rainbow fan, a raised fist, a trans flag, a wheelchair — spread across the glass as a joyful tribute to the LGBTQIA+ community, in one of Brighton's most prominent shopfronts.",
+      "A Pride window display for Wagamama's Brighton restaurant, celebrating the city's diverse and inclusive spirit. Eight characters — a rainbow fan, a raised fist, a trans flag, a wheelchair — spread across the glass as a joyful tribute to the LGBTQIA+ community. It's stayed up as a permanent feature of the restaurant's window ever since.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Wagamama" },
     ],
     hero: {
-      ratio: "1/1",
-      alt: "The finished Pride window, installed at Wagamama Brighton",
-      src: "/work/wagamama-brighton/01-window-install.webp",
+      ratio: "16/10",
+      alt: "The full Wagamama Brighton Pride artwork",
+      src: "/work/wagamama-brighton/02-full-artwork.webp",
     },
     gallery: [
       {
-        ratio: "16/10",
-        alt: "The full artwork, as designed",
-        src: "/work/wagamama-brighton/02-full-artwork.webp",
+        ratio: "1/1",
+        alt: "The finished window, installed at Wagamama Brighton",
+        src: "/work/wagamama-brighton/01-window-install.webp",
       },
       {
         ratio: "1/1",
