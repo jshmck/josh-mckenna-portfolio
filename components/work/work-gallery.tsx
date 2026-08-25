@@ -170,8 +170,20 @@ function PrideFilterButton({
 
 /** One masonry card, sized off RATIO_CYCLE unless the project overrides it —
  *  shared between the plain masonry blocks and the bento row's narrow cell
- *  so both stay in sync with the same cardImage/hoverImage/priority logic. */
-function MasonryCard({ project, index }: { project: Project; index: number }) {
+ *  so both stay in sync with the same cardImage/hoverImage/priority logic.
+ *  `sizes` defaults to a normal third-width card; the bento row's wide cell
+ *  passes its own — it renders at roughly double that width (spans 2 of 3
+ *  columns), and requesting the narrow card's smaller source there is what
+ *  made the wide crop look soft/pixelated. */
+function MasonryCard({
+  project,
+  index,
+  sizes = "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw",
+}: {
+  project: Project;
+  index: number;
+  sizes?: string;
+}) {
   return (
     <ProjectCard
       project={project}
@@ -184,7 +196,7 @@ function MasonryCard({ project, index }: { project: Project; index: number }) {
       motion="quiet"
       parallax
       hoverImage={getCardHoverImage(project)}
-      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      sizes={sizes}
       priority={index < 3}
     />
   );
@@ -305,7 +317,11 @@ export function WorkGallery({
           // the shorter one doesn't fill the row.
           <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 lg:grid-cols-3">
             <div className="md:col-span-2">
-              <MasonryCard project={wide.project} index={wide.index} />
+              <MasonryCard
+                project={wide.project}
+                index={wide.index}
+                sizes="(max-width: 1024px) 100vw, 66vw"
+              />
             </div>
             {pairAfter && <MasonryCard project={pairAfter.project} index={pairAfter.index} />}
           </div>
