@@ -28,6 +28,7 @@ export type ImageRatio =
   | "3/4"
   | "4/3"
   | "5/4"
+  | "3/2"
   | "16/10"
   // Beefbar Posters' true print ratios — none of the ratios above were close
   // enough to snap to without a visible crop or letterbox gap.
@@ -121,16 +122,22 @@ export type Project = {
    * static header treatment.
    */
   creditsIllustrations?: { src: string; aspect: string }[];
-  /** Gallery below the write-up. First two render as a two-up row. */
+  /** Gallery below the write-up. First two render as a two-up row, unless
+   *  `galleryLayout` says otherwise. */
   gallery: ProjectImage[];
   /**
-   * "grid" skips the usual full-bleed hero and opens straight into a
-   * height-capped grid of every image (hero + gallery combined) instead —
-   * for a series where every piece shares a similar ratio and a single
-   * full-width hero would run too tall to see on landing. Beefbar Posters
-   * only for now.
+   * `"grid"` renders the whole `gallery` as a uniform, clickable two-column
+   * grid (each image opens full-size in a lightbox) instead of the default
+   * two-up-then-single-column stack — la-pride only for now, closer to how
+   * James Junk's own project page presents the same shoot.
+   *
+   * `"poster-grid"` goes further: skips the usual full-bleed hero too and
+   * opens straight into a four-column grid of every image (hero + gallery
+   * combined) — for a series where every piece shares a similar ratio and a
+   * single full-width hero would run too tall to see on landing. Beefbar
+   * Posters only for now.
    */
-  galleryLayout?: "grid";
+  galleryLayout?: "grid" | "poster-grid";
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
 };
@@ -152,7 +159,7 @@ export const projects: Project[] = [
       "The 'beefbar' script and the city's own name across the sheet stay fixed. Everything else comes from wherever the restaurant's landed — Comporta's just a dune path, Malta's set inside the dining room.",
     ],
     credits: [{ role: "Graphic Design & Illustration", name: "Josh McKenna" }],
-    galleryLayout: "grid",
+    galleryLayout: "poster-grid",
     cardRatio: "12/17",
     // The /work card's round-corner clip cuts across whichever poster's own
     // printed border is showing — Luxembourg's reads better there than
@@ -260,22 +267,27 @@ export const projects: Project[] = [
     heroCaption:
       "The main stage. The key art runs the full width of the header and repeats on both side panels.",
     brief: [
-      "LA Pride's been running for over fifty years, and this time they wanted the whole thing rebuilt: branding, wayfinding, stage and bar banners, lounges, performer socials, wristbands, merch, the lot. James Junk and I started with vintage Olympic typography and old campaign posters, then built the letters themselves out of characters — the L and the A are each made of people, stacked into the letterforms. It still had to work at every size there is, from a stage header read from the back of a field to a badge on the front of a cap.",
-      "Everything's flat colour and a single line weight, so the same drawing could go on vinyl, through a screen print, and up on a wall as a paste-up without looking like three different jobs. James Junk did the type and some of the graphics; I did the characters. It felt like a lot to be trusted with something that's been running that long.",
+      "LA Pride's been running since 1970, and by 2024 the bill included Ricky Martin, Muna and Jojo Siwa. James Junk and I got the call to rebuild the whole visual identity — branding, wayfinding, every banner on site, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there we built the letters themselves out of people, stacking characters into the L and the A. It had to hold up at every scale there is — stage-header-sized and cap-badge-sized, same drawing.",
+      "James handled the type, I drew the characters. Fifty years is a long time to be handed the keys to. Scroll on, you'll see what we did with them.",
     ],
     credits: [
-      { role: "Illustration & Graphics", name: "Josh McKenna" },
-      { role: "Graphics", name: "James Junk" },
+      {
+        role: "Creative Direction, Illustration & Graphic Design",
+        name: "Josh McKenna",
+      },
+      { role: "Graphic Design, Co-Designer", name: "James Junk" },
+      {
+        role: "Photography",
+        name: "Wes and Alex, Ashley Osborn, Polk Imaging, Dana Pleasant, Amy Hanoa",
+      },
+      { role: "Production", name: "NVE Experience Agency" },
+      { role: "Client", name: "LA Pride / Christopher Street West Association" },
     ],
     hero: {
       ratio: "16/10",
       alt: "The LA Pride 2024 main stage, key art across the header and both side panels",
       src: "/work/la-pride/01-main-stage.webp",
     },
-    creditsIllustrations: [
-      { src: "/work/la-pride/lol-shield.webp", aspect: "2160/1500" },
-      { src: "/work/la-pride/license-plate.webp", aspect: "2160/1500" },
-    ],
     cardImage: {
       ratio: "1/1",
       fit: "contain",
@@ -288,15 +300,15 @@ export const projects: Project[] = [
       src: "/work/la-pride/09-lamp-post-banner.webp",
     },
     headerIllustrations: [
-      { src: "/work/la-pride/bronco-rainbow.webp", aspect: "2700/1500" },
+      { src: "/work/la-pride/lol-shield.webp", aspect: "2160/1500" },
+      { src: "/work/la-pride/license-plate.webp", aspect: "2160/1500" },
     ],
     /**
      * Not-landscape first, because the template pairs the first two into a
      * two-up row and runs everything after them full width. A 2/3 portrait
-     * at 1344px wide is almost entirely wall. The key art lockup runs
-     * edge-to-edge — any object-cover crop clips "PRIDE" or "2024" at the
-     * sides — so it's framed to match the flyposted lineup's 2/3 height via
-     * `fit: "contain"` instead of a crop, at its own true 1/1.
+     * at 1344px wide is almost entirely wall. `ratio` is a curatorial crop,
+     * not the source's native aspect — the VIP entrance shot is landscape
+     * but declared 2/3 here so it pairs at the flyposted lineup's height.
      */
     gallery: [
       {
@@ -312,18 +324,13 @@ export const projects: Project[] = [
       },
       {
         ratio: "16/10",
-        alt: "Entrance arch — the main gate",
-        src: "/work/la-pride/11-entrance-arch.webp",
+        alt: "VIP entrance",
+        src: "/work/la-pride/17-vip-entrance.webp",
       },
       {
         ratio: "16/10",
         alt: "Wayfinding totem — main stage and food village",
         src: "/work/la-pride/05-wayfinding-totem.webp",
-      },
-      {
-        ratio: "16/10",
-        alt: "Wayfinding — entrance detail",
-        src: "/work/la-pride/12-entrance-detail.webp",
       },
       {
         ratio: "16/10",
@@ -340,7 +347,43 @@ export const projects: Project[] = [
         alt: "Vehicle wrap — the box truck",
         src: "/work/la-pride/08-truck-wrap.webp",
       },
+      {
+        ratio: "16/10",
+        alt: "The Trans Lounge signage",
+        src: "/work/la-pride/13-trans-lounge.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Lockers and water station signage",
+        src: "/work/la-pride/14-lockers-water.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "The main stage screen, running archival Pride footage",
+        src: "/work/la-pride/16-main-stage-screen.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "The main stage by day",
+        src: "/work/la-pride/19-main-stage-day.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Main stage banner, rainbow umbrella in the crowd",
+        src: "/work/la-pride/20-umbrella-shot.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Wayfinding totem, another angle",
+        src: "/work/la-pride/18-totem-angle.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "The main stage at night, before the crowd arrived",
+        src: "/work/la-pride/21-night-stage.webp",
+      },
     ],
+    galleryLayout: "grid",
     featured: true,
   },
   {
@@ -513,6 +556,64 @@ export const projects: Project[] = [
     },
     gallery: [],
     featured: true,
+  },
+  {
+    slug: "bombay-sapphire",
+    title: "Stir Creativity",
+    client: "Bombay Sapphire",
+    year: 2018,
+    discipline: "Illustration",
+    deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
+    categories: ["Mural"],
+    summary:
+      "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
+    heroCaption: "The mural, live in Bombay Sapphire's Shoreditch pop-up.",
+    brief: [
+      "Bombay Sapphire's CANVAS was a four-day pop-up in Shoreditch built around one line: Stir Creativity. I was one of fifteen artists asked to contribute, working across three pieces instead of one — a mural painted live in the window, a back-of-jacket embroidery, and fifty hand-finished bottles.",
+      "The starting point was a Grains of Paradise pod from a trip to the distillery — earthy for the first few seconds, then this fiery burst. I wanted the work to feel the same way, harvesty and celebratory at once, so the mural and the jacket both lean on the same botanical shapes and hot orange-on-blue palette.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Embroidery", name: "Lisa" },
+      { role: "Photography", name: "Rankin" },
+    ],
+    hero: {
+      ratio: "3/2",
+      alt: "The mural in Bombay Sapphire's Shoreditch CANVAS pop-up, #StirCreativity in the window",
+      src: "/work/bombay-sapphire/01-storefront.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/3",
+        alt: "The finished jacket back",
+        src: "/work/bombay-sapphire/03-jacket-flatlay.webp",
+      },
+      {
+        ratio: "4/3",
+        alt: "Embroidering the design by hand",
+        src: "/work/bombay-sapphire/04-embroidery-macro.webp",
+      },
+      {
+        ratio: "5/4",
+        alt: "Sketching the design on iPad before it went to embroidery",
+        src: "/work/bombay-sapphire/05-ipad-sketch.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Painting the mural live in the window",
+        src: "/work/bombay-sapphire/02-mural-painting.webp",
+      },
+      {
+        ratio: "4/3",
+        alt: "Fifty hand-finished bottles, ready to go",
+        src: "/work/bombay-sapphire/07-bottles-wide.webp",
+      },
+      {
+        ratio: "4/3",
+        alt: "Bottle detail — botanicals from the Grains of Paradise",
+        src: "/work/bombay-sapphire/08-bottles-macro.webp",
+      },
+    ],
   },
 ];
 

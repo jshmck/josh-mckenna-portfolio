@@ -4,8 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Plate } from "@/components/ui/plate";
-import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
+import { GalleryGrid } from "@/components/work/gallery-grid";
+import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
 import { getProject, getProjectNeighbours, projects, type Project } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
@@ -106,6 +107,7 @@ export default async function ProjectPage({
   ];
 
   const displayTitle = toDisplayTitle(project.title);
+  const headerIllustrations = project.headerIllustrations;
 
   return (
     <article>
@@ -130,14 +132,21 @@ export default async function ProjectPage({
             {/* Trial (la-pride only for now): sat on the title's own
                 baseline, anchored left right after the title and reduced
                 shy of the frame's right edge below — static, no hover
-                movement, unlike the /work page's top illustration row. */}
-            {project.headerIllustrations && (
-              <div className="hidden min-w-0 flex-1 items-end md:flex">
-                {project.headerIllustrations.map(({ src, aspect }) => (
+                movement, unlike the /work page's top illustration row.
+                Width splits evenly across however many pieces are given
+                (96% total, small gap) so a two-up like la-pride's shield
+                + plate reads as a pair sitting close together rather than
+                stranded at opposite ends of the row. */}
+            {headerIllustrations && (
+              <div className="hidden min-w-0 flex-1 items-end gap-2 md:flex">
+                {headerIllustrations.map(({ src, aspect }) => (
                   <div
                     key={src}
-                    className="relative w-[80%]"
-                    style={{ aspectRatio: aspect }}
+                    className="relative shrink-0"
+                    style={{
+                      aspectRatio: aspect,
+                      width: `${96 / headerIllustrations.length}%`,
+                    }}
                   >
                     <Image
                       src={src}
@@ -165,21 +174,21 @@ export default async function ProjectPage({
         </div>
       </header>
 
-      {/* Write-up + sticky credits. In "grid" mode (Beefbar only for now)
-          this reads before the gallery instead of after — with a couple
-          dozen posters, making people scroll past the whole grid to reach
-          the write-up buries it; everywhere else the hero comes first, per
-          the wireframe. */}
-      {project.galleryLayout === "grid" && (
+      {/* Write-up + sticky credits. In "poster-grid" mode (Beefbar only for
+          now) this reads before the gallery instead of after — with a
+          couple dozen posters, making people scroll past the whole grid to
+          reach the write-up buries it; everywhere else the hero comes
+          first, per the wireframe. */}
+      {project.galleryLayout === "poster-grid" && (
         <WriteUp project={project} />
       )}
 
       {/* Hero — heroPair (sound-of-driving only for now) renders it as a
-          two-up instead of one full-width Plate, each with its own
-          caption from its own `alt`. galleryLayout "grid" skips the hero
-          entirely and opens straight into every image as a grid instead —
-          see PosterGrid. */}
-      {project.galleryLayout === "grid" ? (
+          two-up instead of one full-width Plate, each with its own caption
+          from its own `alt`. "poster-grid" (Beefbar only for now) skips the
+          hero entirely and opens straight into every image as a grid
+          instead — see PosterGrid. */}
+      {project.galleryLayout === "poster-grid" ? (
         <PosterGrid images={[project.hero, ...project.gallery]} />
       ) : (
         <>
@@ -222,26 +231,25 @@ export default async function ProjectPage({
 
           <WriteUp project={project} />
 
-          {/* Image stack — first two as a two-up, the rest full width. */}
-          <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
-            {(firstImage || secondImage) && (
-              <div className="grid gap-8 md:grid-cols-2">
-                {[firstImage, secondImage].filter(Boolean).map((image, index) => (
-                  <Reveal key={image.alt} delay={index * 110}>
-                    <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
-                    <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-                  </Reveal>
-                ))}
-              </div>
-            )}
-
-            {restImages.map((image) => (
-              <Reveal key={image.alt}>
-                <Plate image={image} sizes="(max-width: 1344px) 100vw, 1344px" />
-                <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-              </Reveal>
-            ))}
-          </div>
+          {/* Trial (la-pride only for now, `galleryLayout: "grid"`): the
+              classic tall two-up leads (key art + flyposted lineup), then
+              everything after flows into a uniform, clickable two-column
+              grid — closer to how James Junk's own project page presents
+              the same shoot — rather than the standard gallery below.
+              Leads and grid share one lightbox/cycle via GalleryGrid's
+              `leadImages`. Every other project gets ImageStack — first two
+              as a two-up, the rest full width, every frame opening
+              full-size in its own shared lightbox. */}
+          {project.galleryLayout === "grid" ? (
+            <div className="mx-auto max-w-frame px-6 pb-20 md:px-gutter">
+              <GalleryGrid
+                leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
+                images={restImages}
+              />
+            </div>
+          ) : (
+            <ImageStack images={project.gallery} />
+          )}
         </>
       )}
 
