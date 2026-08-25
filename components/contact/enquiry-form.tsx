@@ -76,7 +76,7 @@ export function EnquiryForm() {
   if (sent) {
     return (
       <div className="rounded-3xl border border-ink p-8">
-        <h2 className="type-title text-accent">gOt it</h2>
+        <h2 className="type-title text-accent">gOt It</h2>
         <p className="type-lede mt-4 text-ink-muted">
           That&apos;s landed straight in Josh&apos;s inbox — he&apos;ll come
           back to you within a few days.
