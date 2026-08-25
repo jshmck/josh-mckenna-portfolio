@@ -618,6 +618,51 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "wagamama-brighton",
+    title: "Wagamama Brighton",
+    client: "Wagamama",
+    year: 2023,
+    discipline: "Window Display",
+    deliverables: "Illustrated Window Display",
+    categories: ["Pride", "Character", "Hospitality"],
+    summary: "Eight characters celebrating Pride, wrapped across a restaurant window.",
+    heroCaption: "The finished display, live in Wagamama's Brighton window.",
+    brief: [
+      "A Pride window display for Wagamama's Brighton restaurant, celebrating the city's diverse and inclusive spirit. Eight characters — a rainbow fan, a raised fist, a trans flag, a wheelchair — spread across the glass as a joyful tribute to the LGBTQIA+ community, in one of Brighton's most prominent shopfronts.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Wagamama" },
+    ],
+    hero: {
+      ratio: "1/1",
+      alt: "The finished Pride window, installed at Wagamama Brighton",
+      src: "/work/wagamama-brighton/01-window-install.webp",
+    },
+    gallery: [
+      {
+        ratio: "16/10",
+        alt: "The full artwork, as designed",
+        src: "/work/wagamama-brighton/02-full-artwork.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Detail — the rainbow fan",
+        src: "/work/wagamama-brighton/03-detail-purple-top.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Detail — the wide-brim hat",
+        src: "/work/wagamama-brighton/04-detail-pink-hat.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Detail — the trans flag",
+        src: "/work/wagamama-brighton/05-detail-wheelchair.webp",
+      },
+    ],
+  },
 ];
 
 /* ==========================================================================
