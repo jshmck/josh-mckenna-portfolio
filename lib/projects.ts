@@ -264,8 +264,7 @@ export const projects: Project[] = [
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
     categories: ["Pride"],
     summary: "An L and an A, built out of people, stretched across a park.",
-    heroCaption:
-      "The main stage. The key art runs the full width of the header and repeats on both side panels.",
+    heroCaption: "",
     brief: [
       "LA Pride's been running since 1970, and by 2024 the bill included Ricky Martin, Muna and Jojo Siwa. James Junk and I got the call to rebuild the whole visual identity — branding, wayfinding, every banner on site, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there we built the letters themselves out of people, stacking characters into the L and the A. It had to hold up at every scale there is — stage-header-sized and cap-badge-sized, same drawing.",
       "James handled the type, I drew the characters. Fifty years is a long time to be handed the keys to. Scroll on, you'll see what we did with them.",
@@ -284,10 +283,14 @@ export const projects: Project[] = [
       { role: "Client", name: "LA Pride / Christopher Street West Association" },
     ],
     hero: {
-      ratio: "16/10",
-      alt: "The LA Pride 2024 main stage, key art across the header and both side panels",
-      src: "/work/la-pride/01-main-stage.webp",
+      // True ratio (1.5), not the site's usual 16/10 hero — close enough
+      // that forcing 16/10 isn't necessary and 3/2 crops nothing.
+      ratio: "3/2",
+      alt: "The main stage entrance, key art across the header",
+      src: "/work/la-pride/23-key-art-stage-banner.webp",
     },
+    // The /work card leads with the logo mark itself, not a photo — the
+    // project page's own hero (above) is the photo.
     cardImage: {
       ratio: "1/1",
       fit: "contain",
@@ -354,8 +357,8 @@ export const projects: Project[] = [
       },
       {
         ratio: "16/10",
-        alt: "Lockers and water station signage",
-        src: "/work/la-pride/14-lockers-water.webp",
+        alt: "Jojo Siwa, backstage in an LA Pride lanyard",
+        src: "/work/la-pride/22-jojo-siwa-backstage.webp",
       },
       {
         ratio: "16/10",
@@ -369,8 +372,8 @@ export const projects: Project[] = [
       },
       {
         ratio: "16/10",
-        alt: "Main stage banner, rainbow umbrella in the crowd",
-        src: "/work/la-pride/20-umbrella-shot.webp",
+        alt: "The key art, over the merch tent",
+        src: "/work/la-pride/24-key-art-merch-tent.webp",
       },
       {
         ratio: "16/10",
