@@ -644,7 +644,11 @@ export const projects: Project[] = [
     // The /work index card leads with a square crop of the same shot,
     // centred on all three pins with no detail cut off — the horizontal
     // hero above crops the sides to fit the project page's usual landscape
-    // treatment.
+    // treatment. cardRatio forces the masonry grid to actually give this
+    // card a square frame — without it, WorkGallery's own ratio cycle
+    // still decides the frame shape regardless of the image supplied, and
+    // object-cover crops the square photo right back into a tall one.
+    cardRatio: "1/1",
     cardImage: {
       ratio: "1/1",
       alt: "All three Rainbow Rodeo pin colourways, laid out together",
