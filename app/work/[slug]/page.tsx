@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { Plate } from "@/components/ui/plate";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
+import { GalleryGrid } from "@/components/work/gallery-grid";
 import { ImageStack } from "@/components/work/image-stack";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
@@ -50,6 +51,7 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   const { previous, next } = getProjectNeighbours(slug);
+  const [firstImage, secondImage, ...restImages] = project.gallery;
 
   const meta = [
     { label: "Client", value: project.client },
@@ -59,6 +61,7 @@ export default async function ProjectPage({
   ];
 
   const displayTitle = toDisplayTitle(project.title);
+  const headerIllustrations = project.headerIllustrations;
 
   return (
     <article>
@@ -83,14 +86,21 @@ export default async function ProjectPage({
             {/* Trial (la-pride only for now): sat on the title's own
                 baseline, anchored left right after the title and reduced
                 shy of the frame's right edge below — static, no hover
-                movement, unlike the /work page's top illustration row. */}
-            {project.headerIllustrations && (
-              <div className="hidden min-w-0 flex-1 items-end md:flex">
-                {project.headerIllustrations.map(({ src, aspect }) => (
+                movement, unlike the /work page's top illustration row.
+                Width splits evenly across however many pieces are given
+                (96% total, small gap) so a two-up like la-pride's shield
+                + plate reads as a pair sitting close together rather than
+                stranded at opposite ends of the row. */}
+            {headerIllustrations && (
+              <div className="hidden min-w-0 flex-1 items-end gap-2 md:flex">
+                {headerIllustrations.map(({ src, aspect }) => (
                   <div
                     key={src}
-                    className="relative w-[80%]"
-                    style={{ aspectRatio: aspect }}
+                    className="relative shrink-0"
+                    style={{
+                      aspectRatio: aspect,
+                      width: `${96 / headerIllustrations.length}%`,
+                    }}
                   >
                     <Image
                       src={src}
@@ -197,9 +207,24 @@ export default async function ProjectPage({
         </aside>
       </div>
 
-      {/* Image stack — first two as a two-up, the rest full width. Every
-          frame opens full-size in a shared lightbox (ImageStack). */}
-      <ImageStack images={project.gallery} />
+      {/* Trial (la-pride only for now, `galleryLayout: "grid"`): the classic
+          tall two-up leads (key art + flyposted lineup), then everything
+          after flows into a uniform, clickable two-column grid — closer to
+          how James Junk's own project page presents the same shoot — rather
+          than the standard gallery below. Leads and grid share one
+          lightbox/cycle via GalleryGrid's `leadImages`. Every other project
+          gets ImageStack — first two as a two-up, the rest full width, every
+          frame opening full-size in its own shared lightbox. */}
+      {project.galleryLayout === "grid" ? (
+        <div className="mx-auto max-w-frame px-6 pb-20 md:px-gutter">
+          <GalleryGrid
+            leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
+            images={restImages}
+          />
+        </div>
+      ) : (
+        <ImageStack images={project.gallery} />
+      )}
 
       {/* Previous / all / next — Waldeck Black + purple like the Info
           page's section titles (type-title text-accent), but at
