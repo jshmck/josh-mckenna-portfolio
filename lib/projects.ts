@@ -33,7 +33,10 @@ export type ImageRatio =
   // Beefbar Posters' true print ratios — none of the ratios above were close
   // enough to snap to without a visible crop or letterbox gap.
   | "12/17"
-  | "15/22";
+  | "15/22"
+  // Wagamama Brighton's high-res hero export, 3333x1920 reduced — same
+  // reasoning as Beefbar's pair above.
+  | "1111/640";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -100,6 +103,17 @@ export type Project = {
    * whatever ratio its position happens to land on.
    */
   cardRatio?: ImageRatio;
+  /**
+   * Trial: breaks this card out of the normal masonry columns into a
+   * dedicated bento row spanning 2 of the grid's 3 (or 2 of 2, at md)
+   * columns, with the next visible project filling the remaining column
+   * beside it — wagamama-brighton only for now. Lets a genuinely landscape
+   * piece read as landscape instead of getting cropped into whatever
+   * portrait-leaning ratio RATIO_CYCLE would otherwise assign it. Only one
+   * project should carry this at a time; WorkGallery only special-cases the
+   * first match.
+   */
+  cardSpan?: 2;
   /**
    * Crossfades in over the card's lead image on hover/focus. Set this to
    * curate the pick (e.g. la-pride); otherwise `getCardHoverImage` below
@@ -615,6 +629,53 @@ export const projects: Project[] = [
         ratio: "4/3",
         alt: "Bottle detail — botanicals from the Grains of Paradise",
         src: "/work/bombay-sapphire/08-bottles-macro.webp",
+      },
+    ],
+  },
+  {
+    slug: "wagamama-brighton",
+    title: "Wagamama Brighton",
+    client: "Wagamama",
+    year: 2023,
+    discipline: "Window Display",
+    deliverables: "Vinyl Printed Window Display",
+    categories: ["Pride", "Character", "Hospitality"],
+    summary: "Eight characters celebrating Pride, wrapped across a restaurant window.",
+    heroCaption: "The full artwork, designed for Wagamama's Brighton window.",
+    brief: [
+      "A Pride window display for Wagamama's Brighton restaurant, celebrating the city's diverse and inclusive spirit. Eight characters spread across the glass as a joyful tribute to the LGBTQIA+ community. It's stayed up as a permanent feature of the restaurant's window ever since.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Wagamama" },
+    ],
+    cardRatio: "1111/640",
+    cardSpan: 2,
+    hero: {
+      ratio: "1111/640",
+      alt: "The full Wagamama Brighton Pride artwork",
+      src: "/work/wagamama-brighton/02-full-artwork.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "The finished window, installed at Wagamama Brighton",
+        src: "/work/wagamama-brighton/01-window-install.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Detail — the sunglasses girl",
+        src: "/work/wagamama-brighton/03-detail-purple-top.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Detail — the Wagamama cowboy",
+        src: "/work/wagamama-brighton/04-detail-pink-hat.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Detail — love is love",
+        src: "/work/wagamama-brighton/05-detail-wheelchair.webp",
       },
     ],
   },
