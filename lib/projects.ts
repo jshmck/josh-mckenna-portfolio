@@ -148,6 +148,82 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "voxi-pride",
+    title: "Voxi Pride",
+    client: "VOXI by Vodafone",
+    year: 2019,
+    discipline: "Pride Campaign",
+    deliverables: "Phone Cases · Flags · Pins · Social · Tees",
+    categories: ["Pride", "Character"],
+    summary: "Eleven characters, cut into pins, flags, cases and tees.",
+    heroCaption: "",
+    brief: [
+      "For VOXI, a side brand of Vodafone, I designed a Pride campaign and merchandise for the LGBTQIA+ community — the same set of characters, built out across phone cases, flags, pins, social posts and tees.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "VOXI by Vodafone" },
+    ],
+    hero: {
+      ratio: "16/10",
+      alt: "The full artwork for VOXI's Pride campaign",
+      src: "/work/voxi-pride/08-voxi-pride-voxi-landscape.webp",
+    },
+    // The portrait cut of the same cast is redundant with the hero on the
+    // project page (same artwork, different arrangement), so it's dropped
+    // from `gallery` and used here instead — its own true 3/4 ratio, not
+    // WorkGallery's positional RATIO_CYCLE, so the /work card frame doesn't
+    // crop it.
+    cardRatio: "3/4",
+    cardImage: {
+      ratio: "3/4",
+      alt: "Full cast — the portrait poster",
+      src: "/work/voxi-pride/09-voxi-pride-voxi.webp",
+    },
+    // Uniform two-column grid (see GalleryGrid) rather than the usual
+    // two-up-then-full-width stack — six same-shape squares read better
+    // even, and it lets the one landscape crop sit alone in its own row at
+    // the end instead of forcing a pairing that doesn't exist.
+    galleryLayout: "grid",
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "VOXI tile — the leopard print",
+        src: "/work/voxi-pride/03-voxi-pride-vox-10.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Endless Love — framed square",
+        src: "/work/voxi-pride/02-voxi-pride-vox-9.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Endless Love — the kiss",
+        src: "/work/voxi-pride/05-voxi-pride-vox-12.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "VOXI tile — the peace sign",
+        src: "/work/voxi-pride/04-voxi-pride-vox-11.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "The artwork on pin badges",
+        src: "/work/voxi-pride/06-voxi-pride-vox-13.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "VOXI × Josh McKenna",
+        src: "/work/voxi-pride/07-voxi-pride-vox-15.webp",
+      },
+      {
+        ratio: "2400/713",
+        alt: "Endless Love — the banner crop",
+        src: "/work/voxi-pride/01-voxi-pride-landscape.webp",
+      },
+    ],
+  },
+  {
     slug: "beefbar-posters",
     title: "Beefbar",
     client: "Beefbar",
