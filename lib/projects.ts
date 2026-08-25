@@ -629,7 +629,7 @@ export const projects: Project[] = [
     summary: "Eight characters celebrating Pride, wrapped across a restaurant window.",
     heroCaption: "The full artwork, designed for Wagamama's Brighton window.",
     brief: [
-      "A Pride window display for Wagamama's Brighton restaurant, celebrating the city's diverse and inclusive spirit. Eight characters — a rainbow fan, a raised fist, a trans flag, a wheelchair — spread across the glass as a joyful tribute to the LGBTQIA+ community. It's stayed up as a permanent feature of the restaurant's window ever since.",
+      "A Pride window display for Wagamama's Brighton restaurant, celebrating the city's diverse and inclusive spirit. Eight characters spread across the glass as a joyful tribute to the LGBTQIA+ community. It's stayed up as a permanent feature of the restaurant's window ever since.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
