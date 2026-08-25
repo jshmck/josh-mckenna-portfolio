@@ -33,7 +33,11 @@ export type ImageRatio =
   // Beefbar Posters' true print ratios — none of the ratios above were close
   // enough to snap to without a visible crop or letterbox gap.
   | "12/17"
-  | "15/22";
+  | "15/22"
+  // Voxi Pride's "Endless Love" banner crop — a 3.37:1 panorama with every
+  // character lined up in frame; snapping it to 16/10 would crop out most
+  // of the width. True output ratio, zero drift.
+  | "2400/713";
 
 export type ProjectImage = {
   ratio: ImageRatio;
