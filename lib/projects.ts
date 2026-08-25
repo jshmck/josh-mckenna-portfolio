@@ -33,7 +33,10 @@ export type ImageRatio =
   // Beefbar Posters' true print ratios — none of the ratios above were close
   // enough to snap to without a visible crop or letterbox gap.
   | "12/17"
-  | "15/22";
+  | "15/22"
+  // Wagamama Brighton's high-res hero export, 3333x1920 reduced — same
+  // reasoning as Beefbar's pair above.
+  | "1111/640";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -100,6 +103,17 @@ export type Project = {
    * whatever ratio its position happens to land on.
    */
   cardRatio?: ImageRatio;
+  /**
+   * Trial: breaks this card out of the normal masonry columns into a
+   * dedicated bento row spanning 2 of the grid's 3 (or 2 of 2, at md)
+   * columns, with the next visible project filling the remaining column
+   * beside it — wagamama-brighton only for now. Lets a genuinely landscape
+   * piece read as landscape instead of getting cropped into whatever
+   * portrait-leaning ratio RATIO_CYCLE would otherwise assign it. Only one
+   * project should carry this at a time; WorkGallery only special-cases the
+   * first match.
+   */
+  cardSpan?: 2;
   /**
    * Crossfades in over the card's lead image on hover/focus. Set this to
    * curate the pick (e.g. la-pride); otherwise `getCardHoverImage` below
@@ -624,7 +638,7 @@ export const projects: Project[] = [
     client: "Wagamama",
     year: 2023,
     discipline: "Window Display",
-    deliverables: "Illustrated Window Display",
+    deliverables: "Vinyl Printed Window Display",
     categories: ["Pride", "Character", "Hospitality"],
     summary: "Eight characters celebrating Pride, wrapped across a restaurant window.",
     heroCaption: "The full artwork, designed for Wagamama's Brighton window.",
@@ -635,8 +649,10 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Wagamama" },
     ],
+    cardRatio: "1111/640",
+    cardSpan: 2,
     hero: {
-      ratio: "16/10",
+      ratio: "1111/640",
       alt: "The full Wagamama Brighton Pride artwork",
       src: "/work/wagamama-brighton/02-full-artwork.webp",
     },
