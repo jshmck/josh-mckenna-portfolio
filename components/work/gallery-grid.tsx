@@ -18,9 +18,11 @@ type GalleryGridProps = {
 /** One icon slot inside the toolbar pill — no border of its own (the pill
  *  carries that), just a hover fill so each control still reads as
  *  pressable. Flex-centred with leading-none on the glyph so ✕ sits dead
- *  centre instead of drifting off the font's own metrics. */
+ *  centre instead of drifting off the font's own metrics. Same recipe as
+ *  ImageStack/PosterGrid's toolbar — kept identical across all three so the
+ *  lightbox reads as one shared piece of UI, not three different ones. */
 const LIGHTBOX_BUTTON_CLASS =
-  "flex h-9 w-9 items-center justify-center rounded-full text-canvas transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:bg-canvas/15 hover:text-accent";
+  "group flex h-9 w-9 items-center justify-center rounded-full text-canvas transition-all duration-300 ease-bounce hover:scale-110 active:scale-90 hover:bg-canvas/15 hover:text-brand active:text-brand";
 
 /**
  * Trial (la-pride only for now, via `Project.galleryLayout === "grid"`): a
@@ -32,7 +34,23 @@ const LIGHTBOX_BUTTON_CLASS =
  */
 export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  // null = fresh open (bouncy pop-in); set on every arrow/keyboard nav so the
+  // next frame slides in from the direction of travel instead of hard-cutting.
+  const [direction, setDirection] = useState<"next" | "prev" | null>(null);
   const allImages = [...leadImages, ...images];
+
+  const goNext = () => {
+    setDirection("next");
+    setOpenIndex((i) => (i === null ? i : (i + 1) % allImages.length));
+  };
+  const goPrev = () => {
+    setDirection("prev");
+    setOpenIndex((i) => (i === null ? i : (i - 1 + allImages.length) % allImages.length));
+  };
+  const openAt = (index: number) => {
+    setDirection(null);
+    setOpenIndex(index);
+  };
 
   useEffect(() => {
     if (openIndex === null) return;
@@ -41,10 +59,14 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpenIndex(null);
-      if (event.key === "ArrowRight")
+      if (event.key === "ArrowRight") {
+        setDirection("next");
         setOpenIndex((i) => (i === null ? i : (i + 1) % allImages.length));
-      if (event.key === "ArrowLeft")
+      }
+      if (event.key === "ArrowLeft") {
+        setDirection("prev");
         setOpenIndex((i) => (i === null ? i : (i - 1 + allImages.length) % allImages.length));
+      }
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -55,8 +77,15 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
   }, [openIndex, allImages.length]);
 
   const openImage = openIndex === null ? null : allImages[openIndex];
+  // The lightbox stage is a fixed size (see the JSX below) so paging never
+  // resizes the frame — only the intrinsic width/height passed to next/image
+  // still needs the real ratio, so it requests a correctly-shaped source and
+  // the browser can shrink it to fit without distorting it.
   const [ratioW, ratioH] = (openImage?.ratio ?? "1/1").split("/").map(Number);
   const openRatio = ratioW / ratioH;
+  const STAGE_LONG_EDGE = 1600;
+  const imgWidth = openRatio >= 1 ? STAGE_LONG_EDGE : Math.round(STAGE_LONG_EDGE * openRatio);
+  const imgHeight = openRatio >= 1 ? Math.round(STAGE_LONG_EDGE / openRatio) : STAGE_LONG_EDGE;
 
   return (
     <>
@@ -66,7 +95,7 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
             <Reveal key={image.alt}>
               <button
                 type="button"
-                onClick={() => setOpenIndex(index)}
+                onClick={() => openAt(index)}
                 aria-label={`Open larger view of ${image.alt}`}
                 className="group block w-full cursor-zoom-in text-left"
               >
@@ -86,7 +115,7 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
           <Reveal key={image.alt} delay={index * 60}>
             <button
               type="button"
-              onClick={() => setOpenIndex(leadImages.length + index)}
+              onClick={() => openAt(leadImages.length + index)}
               aria-label={`Open larger view of ${image.alt}`}
               className="group block w-full cursor-zoom-in text-left"
             >
@@ -105,70 +134,85 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
           role="dialog"
           aria-modal="true"
           aria-label={openImage.alt}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/90 p-6"
+          className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-6 bg-ink/90 p-6"
           onClick={() => setOpenIndex(null)}
         >
+          {/* Fixed stage — same footprint for every image in the gallery, so
+              paging never resizes the frame. Each photo keeps its own
+              aspect ratio and shrinks to fit inside via width:auto/height:
+              auto, rather than the stage reshaping to match it. Only this
+              inner wrapper remounts per navigation (key={openIndex}); the
+              stage itself never does. */}
+          <div className="relative flex h-[78vh] w-[min(95vw,1600px)] items-center justify-center">
+            {openImage.src && (
+              <div
+                key={openIndex}
+                className={
+                  direction === "next"
+                    ? "animate-[lightbox-slide-right_420ms_var(--ease-bounce)]"
+                    : direction === "prev"
+                      ? "animate-[lightbox-slide-left_420ms_var(--ease-bounce)]"
+                      : "animate-[lightbox-pop_420ms_var(--ease-bounce)]"
+                }
+                onClick={(event) => event.stopPropagation()}
+              >
+                <Image
+                  src={openImage.src}
+                  alt={openImage.alt}
+                  width={imgWidth}
+                  height={imgHeight}
+                  sizes="95vw"
+                  className="max-h-[78vh] max-w-[min(95vw,1600px)] rounded-2xl"
+                  style={{ width: "auto", height: "auto" }}
+                  priority
+                />
+              </div>
+            )}
+          </div>
+
           {/* One grouped toolbar instead of three floating circles — same
               frosted-glass pill recipe as BackToTop (bg-canvas/15 +
               backdrop-blur-md) and the same solid, fully-opaque outline
-              weight as BackToTop/the filter pills (border-ink there; a
-              solid border-canvas here, since ink-on-ink would vanish
-              against this dark backdrop). Anchored to the dialog itself,
-              not the image, so it never overlaps or floats at an image
-              edge regardless of that image's own width. */}
+              weight as BackToTop/the filter pills. Sits in normal flow
+              below the image rather than overlaid on it. */}
           <div
-            className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full border border-canvas bg-canvas/15 p-1.5 backdrop-blur-md sm:bottom-8"
+            data-lightbox-toolbar
+            className="flex flex-shrink-0 items-center gap-1 rounded-full border border-canvas bg-canvas/15 p-1.5 backdrop-blur-md"
             onClick={(event) => event.stopPropagation()}
           >
             {allImages.length > 1 && (
               <button
                 type="button"
-                onClick={() =>
-                  setOpenIndex((i) => (i === null ? i : (i - 1 + allImages.length) % allImages.length))
-                }
+                data-lightbox-dir="prev"
+                onClick={goPrev}
                 aria-label="Previous image"
-                className={LIGHTBOX_BUTTON_CLASS}
+                className={`${LIGHTBOX_BUTTON_CLASS} hover:-translate-x-1.5`}
               >
-                <span className="font-body text-lg font-bold leading-none text-accent">←</span>
+                <span className="inline-block animate-[arrow-hint-left_1.1s_ease-in-out_600ms] font-body text-lg font-bold leading-none text-canvas transition-colors duration-300 group-hover:text-brand group-active:text-brand">
+                  ←
+                </span>
               </button>
             )}
             <button
               type="button"
               onClick={() => setOpenIndex(null)}
               aria-label="Close"
-              className={LIGHTBOX_BUTTON_CLASS}
+              className={`${LIGHTBOX_BUTTON_CLASS} hover:rotate-90`}
             >
-              <span className="text-lg leading-none">✕</span>
+              <span className="inline-block text-lg leading-none">✕</span>
             </button>
             {allImages.length > 1 && (
               <button
                 type="button"
-                onClick={() => setOpenIndex((i) => (i === null ? i : (i + 1) % allImages.length))}
+                data-lightbox-dir="next"
+                onClick={goNext}
                 aria-label="Next image"
-                className={LIGHTBOX_BUTTON_CLASS}
+                className={`${LIGHTBOX_BUTTON_CLASS} hover:translate-x-1.5`}
               >
-                <span className="font-body text-lg font-bold leading-none text-accent">→</span>
+                <span className="inline-block animate-[arrow-hint-right_1.1s_ease-in-out_600ms] font-body text-lg font-bold leading-none text-canvas transition-colors duration-300 group-hover:text-brand group-active:text-brand">
+                  →
+                </span>
               </button>
-            )}
-          </div>
-
-          <div
-            className="relative rounded-2xl"
-            style={{
-              width: `min(95vw, 92vh * ${openRatio})`,
-              aspectRatio: String(openRatio),
-            }}
-            onClick={(event) => event.stopPropagation()}
-          >
-            {openImage.src && (
-              <Image
-                src={openImage.src}
-                alt={openImage.alt}
-                fill
-                sizes="95vw"
-                className="rounded-2xl object-contain"
-                priority
-              />
             )}
           </div>
         </div>
