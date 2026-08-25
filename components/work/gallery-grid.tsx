@@ -32,6 +32,15 @@ const LIGHTBOX_BUTTON_CLASS =
  * Each frame opens full-size in a lightbox, since two columns still crops
  * every shot down from its real size.
  */
+/** A panorama crop (Voxi Pride's "Endless Love" banner) reads as a strip,
+ *  not a tile, next to a square — span both columns instead of sitting
+ *  half-width. Ratio-driven rather than a per-image flag so any future
+ *  banner-shaped grid image gets the same treatment for free. */
+function isPanorama(ratio: string) {
+  const [w, h] = ratio.split("/").map(Number);
+  return w / h >= 2;
+}
+
 export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   // null = fresh open (bouncy pop-in); set on every arrow/keyboard nav so the
@@ -111,22 +120,28 @@ export function GalleryGrid({ leadImages = [], images }: GalleryGridProps) {
       )}
 
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-        {images.map((image, index) => (
-          <Reveal key={image.alt} delay={index * 60}>
-            <button
-              type="button"
-              onClick={() => openAt(leadImages.length + index)}
-              aria-label={`Open larger view of ${image.alt}`}
-              className="group block w-full cursor-zoom-in text-left"
-            >
-              <div className="overflow-hidden rounded-3xl">
-                <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.03]">
-                  <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
+        {images.map((image, index) => {
+          const wide = isPanorama(image.ratio);
+          return (
+            // `Reveal` renders the actual grid item (a plain wrapping div) —
+            // `grid-column`/col-span only affects a grid's direct children,
+            // so the span has to land here, not on the button one level in.
+            <Reveal key={image.alt} delay={index * 60} className={wide ? "sm:col-span-2" : ""}>
+              <button
+                type="button"
+                onClick={() => openAt(leadImages.length + index)}
+                aria-label={`Open larger view of ${image.alt}`}
+                className="group block w-full cursor-zoom-in text-left"
+              >
+                <div className="overflow-hidden rounded-3xl">
+                  <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.03]">
+                    <Plate image={image} sizes={wide ? "100vw" : "(max-width: 768px) 100vw, 50vw"} />
+                  </div>
                 </div>
-              </div>
-            </button>
-          </Reveal>
-        ))}
+              </button>
+            </Reveal>
+          );
+        })}
       </div>
 
       {openImage && (
