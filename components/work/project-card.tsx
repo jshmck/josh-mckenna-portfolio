@@ -62,54 +62,64 @@ export function ProjectCard({
   const baseImage = image ?? project.hero;
 
   const plate = (
-    // Scale lives on this wrapper, not on Plate alone, so the image and its
-    // overlay scale as one unit. They used to scale separately — the
-    // overlay stayed at 100% while Plate grew 1.02%, leaving a sliver of
-    // unmasked image peeking past the overlay's edge on hover.
-    <div
-      className={`relative transition-transform duration-300 ease-drift ${
-        motion === "quiet"
-          ? "group-hover:scale-[1.02] group-focus-visible:scale-[1.02]"
-          : ""
-      }`}
-    >
-      <Plate
-        image={ratio ? { ...baseImage, ratio } : baseImage}
-        sizes={sizes}
-        priority={priority}
-        radius={hoverCaption ? GALLERY_RADIUS : undefined}
-        showPlaceholderCaption={!hoverCaption}
-      />
-      {hoverCaption && hoverImage && (
-        <div
-          aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 overflow-hidden ${GALLERY_RADIUS} opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100`}
-        >
-          {hoverImage.src ? (
-            <Image
-              src={hoverImage.src}
-              alt=""
-              fill
-              sizes={sizes}
-              className="object-cover"
-            />
-          ) : (
-            <div className="h-full w-full bg-placeholder" />
-          )}
-        </div>
-      )}
-      {/* Title reveal on hover/focus — a white wash, centred title in ink,
-          no blur. */}
-      {hoverCaption && (
-        <div
-          aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 flex items-center justify-center ${GALLERY_RADIUS} p-4 text-center transition-[background-color] duration-300 group-hover:bg-canvas/85 group-focus-within:bg-canvas/85`}
-        >
-          <span className="type-label leading-none text-ink opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
-            {project.title}
-          </span>
-        </div>
-      )}
+    // Clipping and transforming live on two separate nested elements, not
+    // one. Animating a `scale()` transform on the same element that also
+    // clips via border-radius + overflow-hidden makes the browser
+    // recompute the rounded-corner clip mask while compositing the
+    // transform, which left a faint seam right at the curve, worst while
+    // the hover scale was actively animating. The outer div only clips and
+    // never transforms; the inner one only transforms.
+    <div className={`relative ${hoverCaption ? `overflow-hidden ${GALLERY_RADIUS}` : ""}`}>
+      {/* Scale lives on this wrapper, not on Plate alone, so the image and
+          its overlay scale as one unit. They used to scale separately —
+          the overlay stayed at 100% while Plate grew 1.02%, leaving a
+          sliver of unmasked image peeking past the overlay's edge on
+          hover. */}
+      <div
+        className={`relative transition-transform duration-300 ease-drift ${
+          motion === "quiet"
+            ? "will-change-transform group-hover:scale-[1.02] group-focus-visible:scale-[1.02]"
+            : ""
+        }`}
+      >
+        <Plate
+          image={ratio ? { ...baseImage, ratio } : baseImage}
+          sizes={sizes}
+          priority={priority}
+          radius={hoverCaption ? "" : undefined}
+          showPlaceholderCaption={!hoverCaption}
+        />
+        {hoverCaption && hoverImage && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100"
+          >
+            {hoverImage.src ? (
+              <Image
+                src={hoverImage.src}
+                alt=""
+                fill
+                sizes={sizes}
+                className="object-cover"
+              />
+            ) : (
+              <div className="h-full w-full bg-placeholder" />
+            )}
+          </div>
+        )}
+        {/* Title reveal on hover/focus — a white wash, centred title in ink,
+            no blur. */}
+        {hoverCaption && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-center transition-[background-color] duration-300 group-hover:bg-canvas/85 group-focus-within:bg-canvas/85"
+          >
+            <span className="type-label leading-none text-ink opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+              {project.title}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 
@@ -139,7 +149,9 @@ export function ProjectCard({
             {project.title}
           </h3>
           <p className="type-label mt-1 text-ink-muted">
-            {meta === "full" ? `${project.client} · ${project.year}` : project.year}
+            {meta === "full"
+              ? `${project.client} · ${project.yearLabel ?? project.year}`
+              : (project.yearLabel ?? project.year)}
           </p>
         </div>
       )}
