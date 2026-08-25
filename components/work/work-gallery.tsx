@@ -168,6 +168,28 @@ function PrideFilterButton({
   );
 }
 
+/** One masonry card, sized off RATIO_CYCLE unless the project overrides it —
+ *  shared between the plain masonry blocks and the bento row's narrow cell
+ *  so both stay in sync with the same cardImage/hoverImage/priority logic. */
+function MasonryCard({ project, index }: { project: Project; index: number }) {
+  return (
+    <ProjectCard
+      project={project}
+      // cardImage lets a project override its lead image (la-pride);
+      // hoverImage crossfades to another image from the same
+      // project wherever one's available (getCardHoverImage).
+      image={project.cardImage}
+      ratio={project.cardRatio ?? RATIO_CYCLE[index % RATIO_CYCLE.length]}
+      caption="hover"
+      motion="quiet"
+      parallax
+      hoverImage={getCardHoverImage(project)}
+      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      priority={index < 3}
+    />
+  );
+}
+
 export function WorkGallery({
   projects,
   categories,
@@ -182,6 +204,25 @@ export function WorkGallery({
         : projects.filter((project) => project.categories.includes(filter)),
     [filter, projects],
   );
+
+  /**
+   * A `cardSpan: 2` project breaks the masonry into three segments: the
+   * normal column flow up to that card, a dedicated 2-column bento row for
+   * it plus whichever project follows, then normal column flow resumes.
+   * Index stays global across all three segments (not reset per-segment) so
+   * RATIO_CYCLE's rhythm and the first-3 `priority` preload are unaffected
+   * by the carve-out. Falls back to a single segment when no visible
+   * project (or the active filter cuts it) carries cardSpan.
+   */
+  const indexed = visible.map((project, index) => ({ project, index }));
+  const wideIndex = indexed.findIndex(({ project }) => project.cardSpan === 2);
+  const hasWide = wideIndex !== -1;
+  const pairIndex = hasWide && wideIndex + 1 < indexed.length ? wideIndex + 1 : -1;
+
+  const before = hasWide ? indexed.slice(0, wideIndex) : indexed;
+  const wide = hasWide ? indexed[wideIndex] : null;
+  const pairAfter = pairIndex !== -1 ? indexed[pairIndex] : null;
+  const after = hasWide ? indexed.slice(pairIndex !== -1 ? pairIndex + 1 : wideIndex + 1) : [];
 
   const filters: Filter[] = ["All", ...categories];
 
@@ -237,26 +278,48 @@ export function WorkGallery({
       </div>
 
       {/* CSS multi-column gives true masonry flow and reflows cleanly when the
-          filter changes — no measuring, no layout JS. */}
-      <div className="mt-12 gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
-        {visible.map((project, index) => (
-          <div key={project.slug} className="mb-8 break-inside-avoid">
-            <ProjectCard
-              project={project}
-              // cardImage lets a project override its lead image (la-pride);
-              // hoverImage crossfades to another image from the same
-              // project wherever one's available (getCardHoverImage).
-              image={project.cardImage}
-              ratio={project.cardRatio ?? RATIO_CYCLE[index % RATIO_CYCLE.length]}
-              caption="hover"
-              motion="quiet"
-              parallax
-              hoverImage={getCardHoverImage(project)}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              priority={index < 3}
-            />
+          filter changes — no measuring, no layout JS. A cardSpan project
+          splits this into up to three stacked segments (see `before` /
+          `wide` / `after` above) rather than trying to make one container
+          do both true column-masonry AND bento spanning — CSS multi-column
+          has no partial cross-column span, only column-span: all (which
+          breaks a card out full-width, not the 2-of-3 bento look Josh
+          wanted), so the spanning card gets pulled into its own CSS Grid
+          row instead. */}
+      <div className="mt-12 space-y-8">
+        {before.length > 0 && (
+          <div className="gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
+            {before.map(({ project, index }) => (
+              <div key={project.slug} className="mb-8 break-inside-avoid">
+                <MasonryCard project={project} index={index} />
+              </div>
+            ))}
           </div>
-        ))}
+        )}
+
+        {wide && (
+          // items-start, not the grid default (stretch) — stretching would
+          // force the shorter of the two cards to distort past its own
+          // aspect-ratio to fill the taller one's row height. Left as-is,
+          // each card just keeps its own natural height even if that means
+          // the shorter one doesn't fill the row.
+          <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="md:col-span-2">
+              <MasonryCard project={wide.project} index={wide.index} />
+            </div>
+            {pairAfter && <MasonryCard project={pairAfter.project} index={pairAfter.index} />}
+          </div>
+        )}
+
+        {after.length > 0 && (
+          <div className="gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
+            {after.map(({ project, index }) => (
+              <div key={project.slug} className="mb-8 break-inside-avoid">
+                <MasonryCard project={project} index={index} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Not visible — announces the filtered count to screen readers only.
