@@ -641,14 +641,14 @@ export const projects: Project[] = [
       alt: "All three Rainbow Rodeo pin colourways, laid out together",
       src: "/work/rainbow-rodeo/01-pin-trio.webp",
     },
-    // The /work index card leads with the vertical crop of the same shot —
-    // doesn't cut off any of the three pins, unlike the horizontal hero
-    // above, which crops the top/bottom to fit the project page's usual
-    // landscape treatment.
+    // The /work index card leads with a square crop of the same shot,
+    // centred on all three pins with no detail cut off — the horizontal
+    // hero above crops the sides to fit the project page's usual landscape
+    // treatment.
     cardImage: {
-      ratio: "2/3",
+      ratio: "1/1",
       alt: "All three Rainbow Rodeo pin colourways, laid out together",
-      src: "/work/rainbow-rodeo/10-pin-trio-vertical.webp",
+      src: "/work/rainbow-rodeo/11-pin-trio-square.webp",
     },
     // The /work card's hover crossfade renders this with a plain
     // object-cover fill, bypassing Plate's ratio box — the default (first
