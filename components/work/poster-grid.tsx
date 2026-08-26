@@ -9,6 +9,10 @@ import type { ProjectImage } from "@/lib/projects";
 
 type PosterGridProps = {
   images: ProjectImage[];
+  /** Column count at the widest breakpoint — Beefbar's posters (4, the
+   *  default) vs. Rooted Journal's ten same-size spot icons, which read
+   *  better as two clean rows of five than as 4+4+2. */
+  columns?: 4 | 5;
 };
 
 /** One icon slot inside the toolbar pill — no border of its own (the pill
@@ -28,7 +32,7 @@ const LIGHTBOX_BUTTON_CLASS =
  * hard corners at an angle. Every tile opens the same shared lightbox as
  * the rest of the site, adapted from ImageStack.
  */
-export function PosterGrid({ images }: PosterGridProps) {
+export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   // null = fresh open (bouncy pop-in); set on every arrow/keyboard nav so the
   // next frame slides in from the direction of travel instead of hard-cutting.
@@ -87,9 +91,15 @@ export function PosterGrid({ images }: PosterGridProps) {
   return (
     <>
       <div className="mx-auto max-w-frame px-6 pt-12 pb-4 md:px-gutter">
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 md:gap-8">
+        <div
+          className={
+            columns === 5
+              ? "grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 md:gap-8 lg:grid-cols-5"
+              : "grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 md:gap-8"
+          }
+        >
           {images.map((image, index) => (
-            <Reveal key={image.alt} delay={(index % 4) * 90}>
+            <Reveal key={image.alt} delay={(index % columns) * 90}>
               <button
                 type="button"
                 onClick={() => openAt(index)}
@@ -99,7 +109,11 @@ export function PosterGrid({ images }: PosterGridProps) {
                 <Plate
                   image={image}
                   radius=""
-                  sizes="(max-width: 640px) 45vw, (max-width: 768px) 30vw, 22vw"
+                  sizes={
+                    columns === 5
+                      ? "(max-width: 640px) 45vw, (max-width: 768px) 30vw, (max-width: 1024px) 22vw, 18vw"
+                      : "(max-width: 640px) 45vw, (max-width: 768px) 30vw, 22vw"
+                  }
                 />
               </button>
               <p className="type-label mt-3 text-center text-ink-muted">

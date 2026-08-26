@@ -189,7 +189,10 @@ export default async function ProjectPage({
           hero entirely and opens straight into every image as a grid
           instead — see PosterGrid. */}
       {project.galleryLayout === "poster-grid" ? (
-        <PosterGrid images={[project.hero, ...project.gallery]} />
+        <PosterGrid
+          images={[project.hero, ...project.gallery]}
+          columns={project.posterGridColumns}
+        />
       ) : (
         <>
           <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">

@@ -160,6 +160,10 @@ export type Project = {
    * Posters only for now.
    */
   galleryLayout?: "grid" | "poster-grid";
+  /** `"poster-grid"` only: column count at the widest breakpoint. Defaults
+   *  to 4 (Beefbar). Rooted Journal's ten same-size spot icons read as two
+   *  clean rows of five rather than 4+4+2, so it opts into 5. */
+  posterGridColumns?: 4 | 5;
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
 };
