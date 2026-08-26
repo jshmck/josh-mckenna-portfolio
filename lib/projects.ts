@@ -253,7 +253,7 @@ export const projects: Project[] = [
     heroCaption: "Illustrated for \"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
     brief: [
       "Ten regenerative-living habits — composting, fishing responsibly, buying secondhand — needed one icon each for \"Living Regeneratively,\" a feature written by Dustin Beatty for The Rooted Journal's Spring 2025 issue. Each habit runs as its own call-out box, so every illustration had to work as a single self-contained icon rather than part of a larger scene.",
-      "Same restrained palette on every one — moss green, mustard, rust, one purple — and the same grain, so a tractor and a raised fist read as the same job rather than two different ones.",
+      "Same restrained palette across all ten — moss green, mustard, rust, one purple — and the same grain texture over every icon.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
