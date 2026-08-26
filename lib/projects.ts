@@ -259,6 +259,11 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "The Rooted Journal" },
     ],
+    // Ten small spot icons — a full-width hero or a two-column gallery
+    // blows any one of them up far past the scale they were drawn at.
+    // poster-grid (Beefbar's pattern) skips the big hero and opens
+    // straight into a dense four-column grid instead.
+    galleryLayout: "poster-grid",
     hero: {
       ratio: "1/1",
       alt: "Spot illustration — reforest",
