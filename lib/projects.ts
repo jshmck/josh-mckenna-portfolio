@@ -285,13 +285,12 @@ export const projects: Project[] = [
       alt: "Two on the bench",
       src: "/work/womp-money-bench/01-bench.webp",
     },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "Alone on the bench",
-        src: "/work/womp-money-bench/02-bench-blue-guy-02.webp",
-      },
-    ],
+    heroPair: {
+      ratio: "4/5",
+      alt: "Alone on the bench",
+      src: "/work/womp-money-bench/02-bench-blue-guy-02.webp",
+    },
+    gallery: [],
   },
   {
     slug: "womp-cmon-england",
