@@ -392,15 +392,20 @@ export const projects: Project[] = [
     client: "Personal",
     year: 2026,
     discipline: "3D Illustration",
-    deliverables: "1 Render",
+    deliverables: "1 Render · 1 Turnaround",
     categories: ["3D"],
     summary: "A cowboy hat and a set of keys, both clearly left behind.",
-    heroCaption: "",
+    heroCaption: "The Last Call hat and keyring",
     brief: [
       "Modelled in Womp, a browser-based 3D tool — a cowboy hat and a \"Last Call\" keyring.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
-    heroSize: "spot",
+    heroVideo: {
+      src: "/work/womp-last-call/02-last-call-video.mp4",
+      alt: "The Last Call hat and keyring, turning",
+      position: "pair",
+      ratio: "3/4",
+    },
     hero: {
       ratio: "4/5",
       alt: "The Last Call hat and keyring",
