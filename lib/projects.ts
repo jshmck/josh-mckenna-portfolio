@@ -476,7 +476,7 @@ export const projects: Project[] = [
   },
   {
     slug: "monocle-spot-illo",
-    title: "Ring Work",
+    title: "Sumo",
     client: "Monocle",
     year: 2018,
     discipline: "Editorial Illustration",
@@ -488,10 +488,14 @@ export const projects: Project[] = [
       "A spot illustration for Monocle — the kind of job that has to read at a few centimetres next to a column of text, so the whole wrestler collapses down to the two things you actually recognise: the topknot and the knot in the mawashi belt.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // Drawn to run small next to a column of text — the usual full-bleed
+    // hero shows it at a scale it was never meant to be seen at.
+    heroSize: "spot",
     hero: {
       ratio: "1/1",
+      fit: "contain",
       alt: "Spot illustration — sumo wrestler",
-      src: "/work/monocle-spot-illo/01-monocle-sumo-highres.webp",
+      src: "/work/monocle-spot-illo/01-monocle-sumo.webp",
     },
     gallery: [],
   },
