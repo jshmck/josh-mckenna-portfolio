@@ -198,11 +198,12 @@ export default async function ProjectPage({
         <>
           {project.heroSize !== "spot" && (
             <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
-              {/* Video leads when present — Nomad Wheels' promo film
-                  (sound, native controls) above the poster/flyer two-up,
-                  Jimny's silent turnaround standing in for the whole hero
-                  slot with nothing below it. */}
-              {project.heroVideo && (
+              {/* Video position: "top" (default, Nomad Wheels) is the main
+                  showcase leading the page; "bottom" (Pato) is supplementary,
+                  under the artwork it's showing off. Jimny (no heroPair) has
+                  no images to sit above or below, so position is moot — the
+                  video is the whole hero slot either way. */}
+              {project.heroVideo && project.heroVideo.position !== "bottom" && (
                 <div className={project.heroPair ? "mb-8" : undefined}>
                   <ProjectVideo
                     video={{
@@ -247,6 +248,17 @@ export default async function ProjectPage({
                   </p>
                 </>
               ) : null}
+              {project.heroVideo && project.heroVideo.position === "bottom" && (
+                <div className={project.heroPair ? "mt-8" : undefined}>
+                  <ProjectVideo
+                    video={{
+                      ...project.heroVideo,
+                      poster: project.heroVideo.poster ?? project.hero.src,
+                    }}
+                    sound={project.heroVideo.sound}
+                  />
+                </div>
+              )}
             </div>
           )}
 

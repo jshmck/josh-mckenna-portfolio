@@ -91,20 +91,29 @@ export type Project = {
   credits: Credit[];
   hero: ProjectImage;
   /**
-   * A clip leading the hero slot — `hero` still carries a still image
+   * A clip in the hero slot — `hero` still carries a still image
    * alongside it (used for the /work card, and as the video's poster
    * frame when `poster` isn't set). Silent clips (default, Jimny)
-   * autoplay muted on loop and nothing else renders below them;
-   * `sound: true` (Nomad Wheels) switches to native controls, no
-   * autoplay, and — if `heroPair` is set — the poster/artwork two-up
-   * renders underneath it rather than being replaced by it. `poster`
-   * overrides the thumbnail shown before playback — Nomad Wheels uses
-   * an actual frame from the film itself rather than `hero`'s
-   * illustration, since the two are different kinds of image. See
-   * components/work/project-video.tsx for the prefers-reduced-motion
-   * guard.
+   * autoplay muted on loop; `sound: true` (Nomad Wheels) switches to
+   * native controls and no autoplay instead. `position` decides where
+   * it sits relative to `heroPair`/`hero` when both are present —
+   * `"top"` (default, Nomad Wheels: the film is the main showcase) or
+   * `"bottom"` (Pato: the two renders are the artwork, the clip is
+   * supplementary). With no `heroPair` and no `hero` on the page
+   * (Jimny), position is moot — the video is the whole hero slot.
+   * `poster` overrides the thumbnail shown before playback — Nomad
+   * Wheels uses an actual frame from the film itself rather than
+   * `hero`'s illustration, since the two are different kinds of image.
+   * See components/work/project-video.tsx for the prefers-reduced-
+   * motion guard.
    */
-  heroVideo?: { src: string; alt: string; sound?: boolean; poster?: string };
+  heroVideo?: {
+    src: string;
+    alt: string;
+    sound?: boolean;
+    poster?: string;
+    position?: "top" | "bottom";
+  };
   /**
    * Trial: a second image shown side-by-side with `hero` instead of the
    * usual single full-width Plate — sound-of-driving only for now. Own
@@ -320,7 +329,7 @@ export const projects: Project[] = [
     client: "Personal",
     year: 2026,
     discipline: "3D Illustration",
-    deliverables: "1 Render",
+    deliverables: "2 Renders · 1 Turnaround",
     categories: ["3D", "Character"],
     summary: "Three legs, full confidence.",
     heroCaption: "",
@@ -328,11 +337,22 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — Pato, my three-legged dog.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
-    heroSize: "spot",
+    // Video sits below the two renders rather than leading the page —
+    // the renders are the artwork, the clip is supplementary.
+    heroVideo: {
+      src: "/work/womp-pato/03-pato-video.mp4",
+      alt: "Pato, turning",
+      position: "bottom",
+    },
     hero: {
       ratio: "4/5",
       alt: "Pato",
       src: "/work/womp-pato/01-pato.webp",
+    },
+    heroPair: {
+      ratio: "3/4",
+      alt: "Pato, from behind",
+      src: "/work/womp-pato/02-pato-back.webp",
     },
     gallery: [],
   },
