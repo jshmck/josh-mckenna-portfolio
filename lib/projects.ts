@@ -396,7 +396,7 @@ export const projects: Project[] = [
       },
       {
         ratio: "4/5",
-        alt: "Vitra × Virgil Abloh, black ground",
+        alt: "Vitra × Virgil Abloh",
         src: "/work/figma-draw-exploration/05-vblack.webp",
       },
       {
