@@ -357,17 +357,17 @@ export const projects: Project[] = [
   },
   {
     slug: "figma-draw-exploration",
-    title: "A–Z Design Icons",
+    title: "Learning Figma Draw",
     client: "Personal",
     year: 2025,
     discipline: "Illustration Series",
     deliverables: "Illustrations",
     categories: ["Character", "Automotive"],
-    summary: "Five letters into an alphabet with no client attached.",
-    heroCaption: "One of the letters explored so far — Y, the YETI cooler.",
+    summary: "A first go in a new tool, tried on whatever was sitting around the desk.",
+    heroCaption: "The YETI cooler — one of the first pieces made in Figma Draw.",
     brief: [
-      "A–Z Design Icons is self-initiated: no client, no brief. My usual process had started to feel flat, so I picked a tool I hadn't worked in before, Figma Draw, and set myself an alphabet — a brand or object per letter — to get some fun back into it.",
-      "This batch covers five letters: Underground (U), Servebots (S), Vitra (V), Yeti (Y) and BMW's Z1 (Z). The Z1 got the most attention — a second background treatment and a four-colour carousel — everything else is one pass.",
+      "This was my first real run at Figma Draw — no client, no brief, just a new tool and whatever I felt like drawing. My usual process had started to feel flat, and trying something I hadn't used before was the point as much as anything I made with it.",
+      "Never got past a handful of pieces — a cooler, a delivery bot, a chair, a car — before moving on. The BMW got the most attention, a second background and a four-colour carousel; everything else is one pass.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Full-size icons ran too large as a single hero + stacked gallery —
@@ -376,33 +376,33 @@ export const projects: Project[] = [
     galleryLayout: "poster-grid",
     hero: {
       ratio: "4/5",
-      alt: "Letter Y — the YETI cooler",
+      alt: "The YETI cooler",
       src: "/work/figma-draw-exploration/06-yeti.webp",
     },
     gallery: [
       {
         ratio: "4/5",
-        alt: "Letter U — Underground roundel",
+        alt: "Underground roundel",
         src: "/work/figma-draw-exploration/04-u.webp",
       },
       {
         ratio: "4/5",
-        alt: "Letter S — Servebots on delivery",
+        alt: "Servebots on delivery",
         src: "/work/figma-draw-exploration/02-s.webp",
       },
       {
         ratio: "4/5",
-        alt: "Letter V — Vitra, black ground",
+        alt: "Vitra, black ground",
         src: "/work/figma-draw-exploration/05-vblack.webp",
       },
       {
         ratio: "4/5",
-        alt: "Letter Z — BMW Z1, four colourways",
+        alt: "BMW Z1, four colourways",
         src: "/work/figma-draw-exploration/08-z1-carousel.webp",
       },
       {
         ratio: "4/5",
-        alt: "Letter Z — BMW Z1",
+        alt: "BMW Z1",
         src: "/work/figma-draw-exploration/07-z-1.webp",
       },
     ],
