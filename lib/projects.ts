@@ -367,6 +367,38 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "nomad-wheels-505-livery",
+    title: "505 Touring",
+    client: "Nomad Wheel Co.",
+    year: 2024,
+    discipline: "Automotive Livery",
+    deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
+    categories: ["Automotive"],
+    summary: "Livery and posters for a wheel launch, field-tested on camera in Josh's own Land Cruiser.",
+    heroCaption:
+      "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch, styled after vintage Dakar rally posters.",
+    brief: [
+      "Nomad Wheel Co. asked for a full graphic package around the launch of the 505 Touring wheel — vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. The same marks — the Nomad globe, the 505 script, the sponsor lockups for Toyo Tires and DVR — had to survive full-bleed on a print poster and cropped square for a phone screen.",
+      "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film — the closest I've come to field-testing my own artwork.",
+    ],
+    credits: [
+      { role: "Creative Direction & Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Nomad Wheel Co." },
+    ],
+    hero: {
+      ratio: "3/4",
+      alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
+      src: "/work/nomad-wheels-505-livery/02-touring-print-file-copy.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "505 Touring release event flyer",
+        src: "/work/nomad-wheels-505-livery/01-socials-02.webp",
+      },
+    ],
+  },
+  {
     slug: "voxi-pride",
     title: "Voxi Pride",
     client: "VOXI by Vodafone",
