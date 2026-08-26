@@ -357,7 +357,7 @@ export const projects: Project[] = [
   },
   {
     slug: "figma-draw-exploration",
-    title: "Learning Figma Draw",
+    title: "Figma Draw",
     client: "Personal",
     year: 2025,
     discipline: "Illustration Series",
@@ -374,6 +374,10 @@ export const projects: Project[] = [
     // poster-grid (Beefbar's pattern) instead, same reasoning as Rooted
     // Journal.
     galleryLayout: "poster-grid",
+    // Forces the /work card onto a vertical frame — RATIO_CYCLE would
+    // otherwise land it on a square or landscape slot depending on
+    // position, and every source image here is portrait.
+    cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "The YETI cooler",
@@ -392,7 +396,7 @@ export const projects: Project[] = [
       },
       {
         ratio: "4/5",
-        alt: "Vitra, black ground",
+        alt: "Vitra × Virgil Abloh, black ground",
         src: "/work/figma-draw-exploration/05-vblack.webp",
       },
       {
