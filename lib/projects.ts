@@ -97,6 +97,14 @@ export type Project = {
    */
   heroPair?: ProjectImage;
   /**
+   * Caps the hero at a narrow, centred width instead of the usual
+   * full-bleed 1344px — for a piece that was drawn to run small (a
+   * magazine spot illustration), where filling the whole page frame
+   * shows it at a scale it was never meant to be seen at. Monocle Spot
+   * Illo only for now.
+   */
+  heroSize?: "spot";
+  /**
    * Trial: overrides the /work and home-embedded gallery card's lead image
    * when it should differ from `hero` (the big image atop the project's own
    * page) — la-pride only for now, see WorkGallery. Falls back to `hero`

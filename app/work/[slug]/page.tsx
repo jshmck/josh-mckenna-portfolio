@@ -218,6 +218,20 @@ export default async function ProjectPage({
                   </p>
                 </div>
               </div>
+            ) : project.heroSize === "spot" ? (
+              // Capped narrow and centred — a piece drawn to run at a few
+              // centimetres next to magazine text looks wrong filling the
+              // whole 1344px frame.
+              <div className="mx-auto max-w-md">
+                <Plate
+                  image={project.hero}
+                  sizes="(max-width: 768px) 100vw, 448px"
+                  priority
+                />
+                <p className="type-label mt-3 text-ink-muted">
+                  {project.heroCaption}
+                </p>
+              </div>
             ) : (
               <>
                 <Plate
