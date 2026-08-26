@@ -224,18 +224,19 @@ export const projects: Project[] = [
       "A second pass in Womp on a smaller, boxier car — the same model rendered twice, in yellow and in black, each under its own coloured light rig.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // Only two images, both the same subject in two colourways — side by
+    // side reads better than a full-width hero and a lone gallery image.
     hero: {
       ratio: "4/5",
       alt: "The Twingo, in yellow",
       src: "/work/womp-twingo/01-yellow.webp",
     },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "The Twingo, in black",
-        src: "/work/womp-twingo/02-black.webp",
-      },
-    ],
+    heroPair: {
+      ratio: "4/5",
+      alt: "The Twingo, in black",
+      src: "/work/womp-twingo/02-black.webp",
+    },
+    gallery: [],
   },
   {
     slug: "womp-bench",
