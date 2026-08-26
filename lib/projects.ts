@@ -198,7 +198,7 @@ export const projects: Project[] = [
     summary: "A Jimny, lit and turned around three times to see if it held up from every angle.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — no rig, no render engine, just seeing how a car actually holds together from three angles instead of the one I'd normally settle for.",
+      "Modelled in Womp, a browser-based 3D tool — no rig, no render engine, just a car turned around three times under studio lighting.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     // Video leads the page instead of the usual image hero; `hero` still
@@ -270,7 +270,7 @@ export const projects: Project[] = [
     summary: "Two people, a bench, and a lot of loose change.",
     heroCaption: "",
     brief: [
-      "A two-figure scene in Womp — coffee cups, a bench, coins scattered mid-fall. The harder problem wasn't either character alone, it was getting two bodies to share one bench without the render reading as staged.",
+      "A two-figure scene in Womp — coffee cups, a bench, coins scattered mid-fall.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
@@ -291,7 +291,7 @@ export const projects: Project[] = [
     summary: "A pint held aloft and all the confidence of a major tournament.",
     heroCaption: "",
     brief: [
-      "A one-off character for Womp — an exaggerated torso, a pint held high, and a tiny England-flagged face doing all the actual expression.",
+      "A one-off character for Womp — an exaggerated torso, a pint held high, a tiny England-flagged face.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
@@ -331,7 +331,7 @@ export const projects: Project[] = [
     summary: "A cold drink, a green lilo, and nowhere else to be.",
     heroCaption: "",
     brief: [
-      "A character study in Womp — the whole pose had to read as fully committed to doing nothing.",
+      "A character study in Womp — a cold drink, a green pool float, a green cap.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
@@ -352,7 +352,7 @@ export const projects: Project[] = [
     summary: "A cowboy hat and a set of keys, both clearly left behind.",
     heroCaption: "",
     brief: [
-      "A still-life study in Womp — a cowboy hat and a \"Last Call\" keyring, testing softer materials and smaller props instead of a full character.",
+      "A still-life study in Womp — a cowboy hat and a \"Last Call\" keyring.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
@@ -373,7 +373,7 @@ export const projects: Project[] = [
     summary: "Mid-air, headphones on, committed to the landing.",
     heroCaption: "",
     brief: [
-      "A character caught mid-leap in Womp — the full diagonal reach was the actual test, not the pose at rest.",
+      "A character caught mid-leap in Womp — headphones on, full diagonal reach.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
