@@ -543,10 +543,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
-    summary: "The roundel, taken apart and put back together by hand.",
+    summary: "Mind the closing doors — and whatever's still in your hand.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw, a tool I hadn't used before — the London Underground roundel, red circle and blue bar, worked over by a pair of hands.",
+      "Made in Figma Draw, a tool I hadn't used before — \"mind the closing doors,\" with the Underground roundel split down the middle like the doors themselves, a hand and a bag caught right in the gap.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
