@@ -310,6 +310,23 @@ export const projects: Project[] = [
         alt: "Spot illustration — advocate",
         src: "/work/rooted-journal-editorial/10-advocate.webp",
       },
+      // Josh's own phone photos of the physical issue — placeholders until
+      // proper shots come in, per Josh.
+      {
+        ratio: "3/4",
+        alt: "The issue — Spring 2025",
+        src: "/work/rooted-journal-editorial/11-img-8613.webp",
+      },
+      {
+        ratio: "5/4",
+        alt: "As printed — pp. 166–167",
+        src: "/work/rooted-journal-editorial/12-img-8614.webp",
+      },
+      {
+        ratio: "5/4",
+        alt: "As printed — pp. 168–169",
+        src: "/work/rooted-journal-editorial/13-img-8615.webp",
+      },
     ],
   },
   {
