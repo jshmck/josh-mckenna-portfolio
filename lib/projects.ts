@@ -91,6 +91,15 @@ export type Project = {
   credits: Credit[];
   hero: ProjectImage;
   /**
+   * A silent turnaround/replay clip in place of the usual image hero —
+   * Jimny only for now. `hero` still carries a still image alongside it
+   * (used for the /work card and anywhere else a static image is
+   * needed); the video is what actually renders in the hero slot on the
+   * project's own page. See components/work/hero-video.tsx for the
+   * prefers-reduced-motion guard.
+   */
+  heroVideo?: { src: string; alt: string };
+  /**
    * Trial: a second image shown side-by-side with `hero` instead of the
    * usual single full-width Plate — sound-of-driving only for now. Own
    * caption from its own `alt`, same as the later gallery two-up.
@@ -179,34 +188,46 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "womp-suv",
-    title: "SUV",
+    slug: "womp-jimny",
+    title: "Jimny",
     client: "Personal",
     year: 2026,
     discipline: "3D Illustration",
-    deliverables: "3 Renders",
+    deliverables: "1 Turnaround · 3 Renders",
     categories: ["3D", "Automotive"],
-    summary: "One SUV, lit and turned around three times to see if it held up from every angle.",
+    summary: "A Jimny, lit and turned around three times to see if it held up from every angle.",
     heroCaption: "",
     brief: [
       "Modelled in Womp, a browser-based 3D tool — no rig, no render engine, just seeing how a car actually holds together from three angles instead of the one I'd normally settle for.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // Video leads the page instead of the usual image hero; `hero` still
+    // carries a still (used for the /work card) but doesn't render here —
+    // see HeroVideo and the Project.heroVideo doc comment.
+    heroVideo: {
+      src: "/work/womp-jimny/00-turnaround.mp4",
+      alt: "The Jimny, turning",
+    },
     hero: {
       ratio: "1/1",
-      alt: "The SUV, front three-quarter",
-      src: "/work/womp-suv/01-front.webp",
+      alt: "The Jimny, front three-quarter",
+      src: "/work/womp-jimny/01-front.webp",
     },
     gallery: [
       {
         ratio: "1/1",
-        alt: "The SUV, from the back",
-        src: "/work/womp-suv/02-back.webp",
+        alt: "The Jimny, front three-quarter",
+        src: "/work/womp-jimny/01-front.webp",
       },
       {
         ratio: "1/1",
-        alt: "The SUV, side profile",
-        src: "/work/womp-suv/03-side.webp",
+        alt: "The Jimny, from the back",
+        src: "/work/womp-jimny/02-back.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "The Jimny, side profile",
+        src: "/work/womp-jimny/03-side.webp",
       },
     ],
   },
