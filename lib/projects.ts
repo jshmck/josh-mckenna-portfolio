@@ -300,10 +300,10 @@ export const projects: Project[] = [
     discipline: "3D Illustration",
     deliverables: "1 Render",
     categories: ["3D", "Character"],
-    summary: "A pint held aloft and all the confidence of a major tournament.",
+    summary: "Made the semi-final England nearly won. Still not sure it wasn't rigged.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — an exaggerated torso, a pint held high, a tiny England-flagged face.",
+      "Modelled in Womp, a browser-based 3D tool — an exaggerated torso, a pint held high, a tiny England-flagged face, made the night of the semi-final England nearly won.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     heroSize: "spot",
