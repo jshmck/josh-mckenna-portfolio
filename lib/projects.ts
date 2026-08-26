@@ -350,7 +350,11 @@ export const projects: Project[] = [
       src: "/work/womp-pato/01-pato.webp",
     },
     heroPair: {
-      ratio: "3/4",
+      // True native ratio is 3/4, but matched to hero's 4/5 here — a
+      // ~6% crop, safe given the generous plain-background margin — so
+      // the two frames land the same size side by side instead of two
+      // different heights.
+      ratio: "4/5",
       alt: "Pato, from behind",
       src: "/work/womp-pato/02-pato-back.webp",
     },
