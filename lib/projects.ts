@@ -44,7 +44,12 @@ export type ImageRatio =
   // Womp 3D Exploration's leaping-girl render — a full diagonal reach with
   // the trailing hand already close to the frame edge; the nearest stock
   // ratio (4/5) would clip the fingers. True 1920x2160 output ratio.
-  | "8/9";
+  | "8/9"
+  // Nomad Wheels 505 Touring's /work card — a crop of the hero poster with
+  // its flat, empty top margin trimmed off, so the rounded card corners
+  // land on the dunes/truck instead of dead space. True cropped-output
+  // ratio (1800x1872 reduced), zero further drift.
+  | "25/26";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -643,6 +648,15 @@ export const projects: Project[] = [
       { role: "Creative Direction & Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Nomad Wheel Co." },
     ],
+    // The /work card leads with a tighter crop of the hero poster — the
+    // source has a generous flat, empty margin above the dunes that read
+    // as dead space against the card's rounded corners at full frame.
+    cardRatio: "25/26",
+    cardImage: {
+      ratio: "25/26",
+      alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
+      src: "/work/nomad-wheels-505-livery/03-touring-card.webp",
+    },
     hero: {
       ratio: "3/4",
       alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
