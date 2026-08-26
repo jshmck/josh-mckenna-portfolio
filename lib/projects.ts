@@ -40,7 +40,11 @@ export type ImageRatio =
   | "2400/713"
   // Wagamama Brighton's high-res hero export, 3333x1920 reduced — same
   // reasoning as Beefbar's pair above.
-  | "1111/640";
+  | "1111/640"
+  // Womp 3D Exploration's leaping-girl render — a full diagonal reach with
+  // the trailing hand already close to the frame edge; the nearest stock
+  // ratio (4/5) would clip the fingers. True 1920x2160 output ratio.
+  | "8/9";
 
 export type ProjectImage = {
   ratio: ImageRatio;
