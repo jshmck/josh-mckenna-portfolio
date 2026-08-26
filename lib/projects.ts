@@ -421,7 +421,10 @@ export const projects: Project[] = [
     galleryLayout: "poster-grid",
     posterGridColumns: 5,
     // The /work grid card leads with "plant native" rather than the hero
-    // above — Josh's call.
+    // above — Josh's call. cardRatio forces the card frame itself square
+    // to match — RATIO_CYCLE would otherwise size the frame by position,
+    // regardless of cardImage's own (already-square) ratio.
+    cardRatio: "1/1",
     cardImage: {
       ratio: "1/1",
       fit: "contain",
