@@ -195,10 +195,10 @@ export const projects: Project[] = [
     discipline: "3D Illustration",
     deliverables: "1 Turnaround · 3 Renders",
     categories: ["3D", "Automotive"],
-    summary: "A Jimny, lit and turned around three times to see if it held up from every angle.",
+    summary: "My favourite car, rendered because I wanted an excuse to model it.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — no rig, no render engine, just a car turned around three times under studio lighting.",
+      "Modelled in Womp, a browser-based 3D tool — a homage to my favourite car, the Jimny, turned around three times under studio lighting.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     // Video leads the page instead of the usual image hero; `hero` still
@@ -242,7 +242,7 @@ export const projects: Project[] = [
     summary: "Same little city car, once yellow under pink light and once black under red.",
     heroCaption: "",
     brief: [
-      "A second pass in Womp on a smaller, boxier car — the same model rendered twice, in yellow and in black, each under its own coloured light rig.",
+      "Modelled in Womp, a browser-based 3D tool — the same car rendered twice, in yellow and in black, each under its own coloured light rig.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     // Only two images, both the same subject in two colourways — side by
@@ -270,7 +270,7 @@ export const projects: Project[] = [
     summary: "Two people, a bench, and a lot of loose change.",
     heroCaption: "",
     brief: [
-      "A two-figure scene in Womp — coffee cups, a bench, coins scattered mid-fall.",
+      "Modelled in Womp, a browser-based 3D tool — two figures, coffee cups, a bench, coins scattered mid-fall.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
@@ -291,7 +291,7 @@ export const projects: Project[] = [
     summary: "A pint held aloft and all the confidence of a major tournament.",
     heroCaption: "",
     brief: [
-      "A one-off character for Womp — an exaggerated torso, a pint held high, a tiny England-flagged face.",
+      "Modelled in Womp, a browser-based 3D tool — an exaggerated torso, a pint held high, a tiny England-flagged face.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
@@ -311,7 +311,9 @@ export const projects: Project[] = [
     categories: ["3D", "Character"],
     summary: "Pato means duck. This is not a duck.",
     heroCaption: "",
-    brief: ["A character study in Womp, built more dog than the name suggests."],
+    brief: [
+      "Modelled in Womp, a browser-based 3D tool — built more dog than the name suggests.",
+    ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
       ratio: "4/5",
@@ -331,7 +333,7 @@ export const projects: Project[] = [
     summary: "A cold drink, a green lilo, and nowhere else to be.",
     heroCaption: "",
     brief: [
-      "A character study in Womp — a cold drink, a green pool float, a green cap.",
+      "Modelled in Womp, a browser-based 3D tool — a cold drink, a green pool float, a green cap.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
@@ -352,7 +354,7 @@ export const projects: Project[] = [
     summary: "A cowboy hat and a set of keys, both clearly left behind.",
     heroCaption: "",
     brief: [
-      "A still-life study in Womp — a cowboy hat and a \"Last Call\" keyring.",
+      "Modelled in Womp, a browser-based 3D tool — a cowboy hat and a \"Last Call\" keyring.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
@@ -373,7 +375,7 @@ export const projects: Project[] = [
     summary: "Mid-air, headphones on, committed to the landing.",
     heroCaption: "",
     brief: [
-      "A character caught mid-leap in Womp — headphones on, full diagonal reach.",
+      "Modelled in Womp, a browser-based 3D tool — headphones on, full diagonal reach.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     hero: {
