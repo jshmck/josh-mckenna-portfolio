@@ -92,16 +92,19 @@ export type Project = {
   hero: ProjectImage;
   /**
    * A clip leading the hero slot — `hero` still carries a still image
-   * alongside it (used for the /work card and, if `heroPair` is also
-   * set, as the video's own poster frame). Silent clips (default,
-   * Jimny) autoplay muted on loop and nothing else renders below them;
+   * alongside it (used for the /work card, and as the video's poster
+   * frame when `poster` isn't set). Silent clips (default, Jimny)
+   * autoplay muted on loop and nothing else renders below them;
    * `sound: true` (Nomad Wheels) switches to native controls, no
    * autoplay, and — if `heroPair` is set — the poster/artwork two-up
-   * renders underneath it rather than being replaced by it. See
+   * renders underneath it rather than being replaced by it. `poster`
+   * overrides the thumbnail shown before playback — Nomad Wheels uses
+   * an actual frame from the film itself rather than `hero`'s
+   * illustration, since the two are different kinds of image. See
    * components/work/project-video.tsx for the prefers-reduced-motion
    * guard.
    */
-  heroVideo?: { src: string; alt: string; sound?: boolean };
+  heroVideo?: { src: string; alt: string; sound?: boolean; poster?: string };
   /**
    * Trial: a second image shown side-by-side with `hero` instead of the
    * usual single full-width Plate — sound-of-driving only for now. Own
@@ -662,6 +665,7 @@ export const projects: Project[] = [
       src: "/work/nomad-wheels-505-livery/04-touring-promo.mp4",
       alt: "The 505 Touring launch promotional film",
       sound: true,
+      poster: "/work/nomad-wheels-505-livery/05-video-poster.webp",
     },
     hero: {
       ratio: "3/4",

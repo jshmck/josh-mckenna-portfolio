@@ -205,7 +205,10 @@ export default async function ProjectPage({
               {project.heroVideo && (
                 <div className={project.heroPair ? "mb-8" : undefined}>
                   <ProjectVideo
-                    video={{ ...project.heroVideo, poster: project.hero.src }}
+                    video={{
+                      ...project.heroVideo,
+                      poster: project.heroVideo.poster ?? project.hero.src,
+                    }}
                     sound={project.heroVideo.sound}
                   />
                 </div>
