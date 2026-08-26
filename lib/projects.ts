@@ -429,6 +429,27 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
+    slug: "monocle-spot-illo",
+    title: "Ring Work",
+    client: "Monocle",
+    year: 2018,
+    discipline: "Editorial Illustration",
+    deliverables: "1 Spot Illo",
+    categories: ["Editorial"],
+    summary: "A sumo wrestler's whole physique, reduced to a knot and a topknot.",
+    heroCaption: "The finished spot illustration, drawn for Monocle.",
+    brief: [
+      "A spot illustration for Monocle — the kind of job that has to read at a few centimetres next to a column of text, so the whole wrestler collapses down to the two things you actually recognise: the topknot and the knot in the mawashi belt.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "1/1",
+      alt: "Spot illustration — sumo wrestler",
+      src: "/work/monocle-spot-illo/01-monocle-sumo-highres.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "voxi-pride",
     title: "Voxi Pride",
     client: "VOXI by Vodafone",
