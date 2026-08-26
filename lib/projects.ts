@@ -496,58 +496,128 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "figma-draw-exploration",
-    title: "Figma Draw",
+    slug: "figma-yeti",
+    title: "Yeti",
     client: "Personal",
     year: 2025,
-    discipline: "Illustration Series",
-    deliverables: "Illustrations",
-    categories: ["Character", "Automotive"],
-    summary: "A first go in a new tool, tried on whatever was sitting around the desk.",
-    heroCaption: "The YETI cooler — one of the first pieces made in Figma Draw.",
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Character"],
+    summary: "A YETI cooler, occupied.",
+    heroCaption: "",
     brief: [
-      "This was my first real run at Figma Draw — no client, no brief, just a new tool and whatever I felt like drawing. My usual process had started to feel flat, and trying something I hadn't used before was the point as much as anything I made with it.",
-      "Never got past a handful of pieces — a cooler, a delivery bot, a chair, a car — before moving on. The BMW got the most attention, a second background and a four-colour carousel; everything else is one pass.",
+      "Made in Figma Draw, a tool I hadn't used before — a yeti figure lounging inside a YETI-brand cooler, blue duotone.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
-    // Full-size icons ran too large as a single hero + stacked gallery —
-    // poster-grid (Beefbar's pattern) instead, same reasoning as Rooted
-    // Journal.
-    galleryLayout: "poster-grid",
-    // Forces the /work card onto a vertical frame — RATIO_CYCLE would
-    // otherwise land it on a square or landscape slot depending on
-    // position, and every source image here is portrait.
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
     cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "The YETI cooler",
-      src: "/work/figma-draw-exploration/06-yeti.webp",
+      src: "/work/figma-yeti/01-yeti.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "figma-underground",
+    title: "Underground",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Editorial"],
+    summary: "The roundel, taken apart and put back together by hand.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw, a tool I hadn't used before — the London Underground roundel, red circle and blue bar, worked over by a pair of hands.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "Underground roundel",
+      src: "/work/figma-underground/01-underground.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "figma-servebots",
+    title: "Servebots",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Character"],
+    summary: "Two sidewalk delivery robots, doing their rounds.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw, a tool I hadn't used before — two sidewalk delivery robots, city skyline behind them.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "Servebots on delivery",
+      src: "/work/figma-servebots/01-servebots.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "figma-vitra-virgil",
+    title: "Vitra × Virgil Abloh",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Editorial"],
+    summary: "A chair, repeated as wallpaper, in case the first one wasn't clear enough.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw, a tool I hadn't used before — the Vitra × Virgil Abloh chair, repeated as a wordmark pattern behind it.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "Vitra × Virgil Abloh",
+      src: "/work/figma-vitra-virgil/01-vitra-virgil.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "figma-bmw-z1",
+    title: "BMW Z1",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "2 Illustrations",
+    categories: ["Automotive"],
+    summary: "One car, four colourways, and a hand reaching in to pick one.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw, a tool I hadn't used before — the BMW Z1 got the most attention of the set, a second background and a four-colour carousel.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "BMW Z1, four colourways",
+      src: "/work/figma-bmw-z1/01-carousel.webp",
     },
     gallery: [
       {
         ratio: "4/5",
-        alt: "Underground roundel",
-        src: "/work/figma-draw-exploration/04-u.webp",
-      },
-      {
-        ratio: "4/5",
-        alt: "Servebots on delivery",
-        src: "/work/figma-draw-exploration/02-s.webp",
-      },
-      {
-        ratio: "4/5",
-        alt: "Vitra × Virgil Abloh",
-        src: "/work/figma-draw-exploration/05-vblack.webp",
-      },
-      {
-        ratio: "4/5",
-        alt: "BMW Z1, four colourways",
-        src: "/work/figma-draw-exploration/08-z1-carousel.webp",
-      },
-      {
-        ratio: "4/5",
         alt: "BMW Z1",
-        src: "/work/figma-draw-exploration/07-z-1.webp",
+        src: "/work/figma-bmw-z1/02-single.webp",
       },
     ],
   },
