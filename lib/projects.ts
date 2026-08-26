@@ -322,10 +322,10 @@ export const projects: Project[] = [
     discipline: "3D Illustration",
     deliverables: "1 Render",
     categories: ["3D", "Character"],
-    summary: "Pato means duck. This is not a duck.",
+    summary: "Three legs, full confidence.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — built more dog than the name suggests.",
+      "Modelled in Womp, a browser-based 3D tool — Pato, my three-legged dog.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     heroSize: "spot",
