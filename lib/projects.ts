@@ -361,7 +361,7 @@ export const projects: Project[] = [
     client: "Personal",
     year: 2025,
     discipline: "Illustration Series",
-    deliverables: "5 Icons · 6 Exported Variants",
+    deliverables: "Illustrations",
     categories: ["Character", "Automotive"],
     summary: "Five letters into an alphabet with no client attached.",
     heroCaption: "One of the letters explored so far — Y, the YETI cooler.",
