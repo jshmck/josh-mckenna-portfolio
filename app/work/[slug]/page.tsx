@@ -195,58 +195,62 @@ export default async function ProjectPage({
         />
       ) : (
         <>
-          <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
-            {project.heroPair ? (
-              <div className="grid gap-8 md:grid-cols-2">
-                <div>
+          {project.heroSize !== "spot" && (
+            <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
+              {project.heroPair ? (
+                <div className="grid gap-8 md:grid-cols-2">
+                  <div>
+                    <Plate
+                      image={project.hero}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      priority
+                    />
+                    <p className="type-label mt-3 text-ink-muted">
+                      {project.heroCaption}
+                    </p>
+                  </div>
+                  <div>
+                    <Plate
+                      image={project.heroPair}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <p className="type-label mt-3 text-ink-muted">
+                      {project.heroPair.alt}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <>
                   <Plate
                     image={project.hero}
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 1344px) 100vw, 1344px"
                     priority
                   />
                   <p className="type-label mt-3 text-ink-muted">
                     {project.heroCaption}
                   </p>
-                </div>
-                <div>
-                  <Plate
-                    image={project.heroPair}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <p className="type-label mt-3 text-ink-muted">
-                    {project.heroPair.alt}
-                  </p>
-                </div>
-              </div>
-            ) : project.heroSize === "spot" ? (
-              // Capped narrow and centred — a piece drawn to run at a few
-              // centimetres next to magazine text looks wrong filling the
-              // whole 1344px frame.
-              <div className="mx-auto max-w-md">
-                <Plate
-                  image={project.hero}
-                  sizes="(max-width: 768px) 100vw, 448px"
-                  priority
-                />
-                <p className="type-label mt-3 text-ink-muted">
-                  {project.heroCaption}
-                </p>
-              </div>
-            ) : (
-              <>
-                <Plate
-                  image={project.hero}
-                  sizes="(max-width: 1344px) 100vw, 1344px"
-                  priority
-                />
-                <p className="type-label mt-3 text-ink-muted">
-                  {project.heroCaption}
-                </p>
-              </>
-            )}
-          </div>
+                </>
+              )}
+            </div>
+          )}
 
           <WriteUp project={project} />
+
+          {project.heroSize === "spot" && (
+            // Runs below the write-up instead of above it, capped at a
+            // modest width, no caption — a piece drawn to run at a few
+            // centimetres next to magazine text looks wrong leading the
+            // page at full-bleed size with a label under it.
+            <div className="mx-auto max-w-frame px-6 pb-4 md:px-gutter">
+              <div className="mx-auto max-w-lg">
+                <Plate
+                  image={project.hero}
+                  sizes="(max-width: 768px) 100vw, 512px"
+                  priority
+                />
+              </div>
+            </div>
+          )}
 
           {/* Trial (la-pride only for now, `galleryLayout: "grid"`): the
               classic tall two-up leads (key art + flyposted lineup), then

@@ -97,11 +97,12 @@ export type Project = {
    */
   heroPair?: ProjectImage;
   /**
-   * Caps the hero at a narrow, centred width instead of the usual
-   * full-bleed 1344px — for a piece that was drawn to run small (a
-   * magazine spot illustration), where filling the whole page frame
-   * shows it at a scale it was never meant to be seen at. Monocle Spot
-   * Illo only for now.
+   * Runs the hero below `WriteUp` instead of above it, capped at a
+   * narrow, centred width (max-w-lg) with no caption, instead of the
+   * usual full-bleed 1344px leading the page — for a piece that was
+   * drawn to run small (a magazine spot illustration), where filling
+   * the whole page frame shows it at a scale it was never meant to be
+   * seen at. Monocle Spot Illo only for now.
    */
   heroSize?: "spot";
   /**
@@ -483,9 +484,9 @@ export const projects: Project[] = [
     deliverables: "1 Spot Illo",
     categories: ["Editorial"],
     summary: "A sumo wrestler's whole physique, reduced to a knot and a topknot.",
-    heroCaption: "The finished spot illustration, drawn for Monocle.",
+    heroCaption: "",
     brief: [
-      "A spot illustration for Monocle — the kind of job that has to read at a few centimetres next to a column of text, so the whole wrestler collapses down to the two things you actually recognise: the topknot and the knot in the mawashi belt.",
+      "A spot illustration for Monocle — it ran about 4cm across with text wrapped around it, so it had to stay recognisable through just the topknot and the knotted mawashi belt.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Drawn to run small next to a column of text — the usual full-bleed
