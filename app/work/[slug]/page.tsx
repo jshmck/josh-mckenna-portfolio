@@ -198,9 +198,19 @@ export default async function ProjectPage({
         <>
           {project.heroSize !== "spot" && (
             <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
-              {project.heroVideo ? (
-                <ProjectVideo video={project.heroVideo} />
-              ) : project.heroPair ? (
+              {/* Video leads when present — Nomad Wheels' promo film
+                  (sound, native controls) above the poster/flyer two-up,
+                  Jimny's silent turnaround standing in for the whole hero
+                  slot with nothing below it. */}
+              {project.heroVideo && (
+                <div className={project.heroPair ? "mb-8" : undefined}>
+                  <ProjectVideo
+                    video={{ ...project.heroVideo, poster: project.hero.src }}
+                    sound={project.heroVideo.sound}
+                  />
+                </div>
+              )}
+              {project.heroPair ? (
                 <div className="grid gap-8 md:grid-cols-2">
                   <div>
                     <Plate
@@ -222,7 +232,7 @@ export default async function ProjectPage({
                     </p>
                   </div>
                 </div>
-              ) : (
+              ) : !project.heroVideo ? (
                 <>
                   <Plate
                     image={project.hero}
@@ -233,7 +243,7 @@ export default async function ProjectPage({
                     {project.heroCaption}
                   </p>
                 </>
-              )}
+              ) : null}
             </div>
           )}
 
@@ -273,20 +283,6 @@ export default async function ProjectPage({
             </div>
           ) : (
             <ImageStack images={project.gallery} />
-          )}
-
-          {/* A supplementary video below the gallery — Nomad Wheels'
-              promotional film only for now. Distinct from `heroVideo`:
-              the poster artwork is still the project's actual hero, this
-              is additional behind-the-scenes content, not a replacement
-              for it. */}
-          {project.video && (
-            <div className="mx-auto max-w-frame px-6 pb-20 md:px-gutter">
-              <ProjectVideo
-                video={{ ...project.video, poster: project.hero.src }}
-                sound
-              />
-            </div>
           )}
         </>
       )}

@@ -91,14 +91,17 @@ export type Project = {
   credits: Credit[];
   hero: ProjectImage;
   /**
-   * A silent turnaround/replay clip in place of the usual image hero —
-   * Jimny only for now. `hero` still carries a still image alongside it
-   * (used for the /work card and anywhere else a static image is
-   * needed); the video is what actually renders in the hero slot on the
-   * project's own page. See components/work/project-video.tsx for the
-   * prefers-reduced-motion guard.
+   * A clip leading the hero slot — `hero` still carries a still image
+   * alongside it (used for the /work card and, if `heroPair` is also
+   * set, as the video's own poster frame). Silent clips (default,
+   * Jimny) autoplay muted on loop and nothing else renders below them;
+   * `sound: true` (Nomad Wheels) switches to native controls, no
+   * autoplay, and — if `heroPair` is set — the poster/artwork two-up
+   * renders underneath it rather than being replaced by it. See
+   * components/work/project-video.tsx for the prefers-reduced-motion
+   * guard.
    */
-  heroVideo?: { src: string; alt: string };
+  heroVideo?: { src: string; alt: string; sound?: boolean };
   /**
    * Trial: a second image shown side-by-side with `hero` instead of the
    * usual single full-width Plate — sound-of-driving only for now. Own
@@ -165,13 +168,6 @@ export type Project = {
   /** Gallery below the write-up. First two render as a two-up row, unless
    *  `galleryLayout` says otherwise. */
   gallery: ProjectImage[];
-  /**
-   * A supplementary video below the gallery, with real audio and native
-   * controls (see ProjectVideo's `sound` mode) — Nomad Wheels' promo film
-   * only for now. Separate from `heroVideo`: this doesn't replace the
-   * hero artwork, it's additional behind-the-scenes content.
-   */
-  video?: { src: string; alt: string };
   /**
    * `"grid"` renders the whole `gallery` as a uniform, clickable two-column
    * grid (each image opens full-size in a lightbox) instead of the default
@@ -659,22 +655,25 @@ export const projects: Project[] = [
       alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
       src: "/work/nomad-wheels-505-livery/03-touring-card.webp",
     },
+    // Promo film leads the page (real audio, native controls — sound:
+    // true), with the poster and the flyer as a two-up underneath it
+    // rather than a full-width hero followed by a single gallery image.
+    heroVideo: {
+      src: "/work/nomad-wheels-505-livery/04-touring-promo.mp4",
+      alt: "The 505 Touring launch promotional film",
+      sound: true,
+    },
     hero: {
       ratio: "3/4",
       alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
       src: "/work/nomad-wheels-505-livery/02-touring-print-file-copy.webp",
     },
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "505 Touring release event flyer",
-        src: "/work/nomad-wheels-505-livery/01-socials-02.webp",
-      },
-    ],
-    video: {
-      src: "/work/nomad-wheels-505-livery/04-touring-promo.mp4",
-      alt: "The 505 Touring launch promotional film",
+    heroPair: {
+      ratio: "1/1",
+      alt: "505 Touring release event flyer",
+      src: "/work/nomad-wheels-505-livery/01-socials-02.webp",
     },
+    gallery: [],
   },
   {
     slug: "mr-porter-miami-invites",
