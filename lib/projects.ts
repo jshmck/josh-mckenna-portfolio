@@ -241,6 +241,74 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "rooted-journal-editorial",
+    title: "Rooted Journal",
+    client: "Rooted Journal",
+    year: 2026,
+    discipline: "Editorial Illustration",
+    deliverables: "10 Spot Illustrations",
+    categories: ["Editorial"],
+    summary: "Composting, fishing and shouting into a megaphone, drawn at the same scale.",
+    heroCaption: "The reforest icon — one of ten 1:1 spot illustrations, each built around a single action.",
+    brief: [
+      "Ten actions — mending a shirt, composting a banana peel, shouting into a megaphone — had to sit inside the same square and still read as one set from across a page. Some are a full figure mid-task, some are a single object standing in for the whole idea, so the halo of texture behind each one is doing most of the work of holding them together.",
+      "Same restrained palette on every one — moss green, mustard, rust, one purple — and the same grain, so a tractor and a raised fist read as the same job rather than two different ones.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "1/1",
+      alt: "Spot illustration — reforest",
+      src: "/work/rooted-journal-editorial/06-reforest.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "Spot illustration — support local",
+        src: "/work/rooted-journal-editorial/01-support-local.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Spot illustration — plant native",
+        src: "/work/rooted-journal-editorial/02-plant-native.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Spot illustration — preserve heirloom",
+        src: "/work/rooted-journal-editorial/07-preserve-heirloom.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Spot illustration — harvest rainwater",
+        src: "/work/rooted-journal-editorial/04-harvest-rainwater.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Spot illustration — fishing",
+        src: "/work/rooted-journal-editorial/03-fishing.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Spot illustration — buy seconds",
+        src: "/work/rooted-journal-editorial/05-buy-seconds.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Spot illustration — upcycle",
+        src: "/work/rooted-journal-editorial/09-upcycle.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Spot illustration — compost",
+        src: "/work/rooted-journal-editorial/08-compost.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Spot illustration — advocate",
+        src: "/work/rooted-journal-editorial/10-advocate.webp",
+      },
+    ],
+  },
+  {
     slug: "voxi-pride",
     title: "Voxi Pride",
     client: "VOXI by Vodafone",
