@@ -266,56 +266,81 @@ export const projects: Project[] = [
     // Ten small spot icons — a full-width hero or a two-column gallery
     // blows any one of them up far past the scale they were drawn at.
     // poster-grid (Beefbar's pattern) skips the big hero and opens
-    // straight into a dense four-column grid instead.
+    // straight into a grid instead — five columns, so the ten icons land
+    // as two clean rows with the reference photos trailing in their own
+    // partial row after.
     galleryLayout: "poster-grid",
-    hero: {
+    posterGridColumns: 5,
+    // The /work grid card leads with "plant native" rather than the hero
+    // above — Josh's call.
+    cardImage: {
       ratio: "1/1",
+      fit: "contain",
+      alt: "Spot illustration — plant native",
+      src: "/work/rooted-journal-editorial/02-plant-native.webp",
+    },
+    hero: {
+      // PNG exports (Josh replaced the original JPEG-derived set) — real
+      // alpha around each icon's halo shape, not a baked-in white square.
+      // `contain` shows the true edges against canvas instead of letting
+      // the transparent corners reveal the placeholder-blue surface.
+      ratio: "1/1",
+      fit: "contain",
       alt: "Spot illustration — reforest",
       src: "/work/rooted-journal-editorial/06-reforest.webp",
     },
     gallery: [
       {
         ratio: "1/1",
+        fit: "contain",
         alt: "Spot illustration — support local",
         src: "/work/rooted-journal-editorial/01-support-local.webp",
       },
       {
         ratio: "1/1",
+        fit: "contain",
         alt: "Spot illustration — plant native",
         src: "/work/rooted-journal-editorial/02-plant-native.webp",
       },
       {
         ratio: "1/1",
+        fit: "contain",
         alt: "Spot illustration — preserve heirloom",
         src: "/work/rooted-journal-editorial/07-preserve-heirloom.webp",
       },
       {
         ratio: "1/1",
+        fit: "contain",
         alt: "Spot illustration — harvest rainwater",
         src: "/work/rooted-journal-editorial/04-harvest-rainwater.webp",
       },
       {
         ratio: "1/1",
+        fit: "contain",
         alt: "Spot illustration — fishing",
         src: "/work/rooted-journal-editorial/03-fishing.webp",
       },
       {
         ratio: "1/1",
+        fit: "contain",
         alt: "Spot illustration — buy seconds",
         src: "/work/rooted-journal-editorial/05-buy-seconds.webp",
       },
       {
         ratio: "1/1",
+        fit: "contain",
         alt: "Spot illustration — upcycle",
         src: "/work/rooted-journal-editorial/09-upcycle.webp",
       },
       {
         ratio: "1/1",
+        fit: "contain",
         alt: "Spot illustration — compost",
         src: "/work/rooted-journal-editorial/08-compost.webp",
       },
       {
         ratio: "1/1",
+        fit: "contain",
         alt: "Spot illustration — advocate",
         src: "/work/rooted-journal-editorial/10-advocate.webp",
       },
