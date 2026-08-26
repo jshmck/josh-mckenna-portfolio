@@ -166,6 +166,81 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "womp-3d-exploration",
+    title: "Learning Womp",
+    client: "Personal",
+    year: 2026,
+    discipline: "3D Illustration",
+    deliverables: "11 Renders · 2 Vehicles · 6 Characters · 1 Still Life",
+    categories: ["3D", "Character"],
+    summary: "A new 3D tool, tried on a car, a dog, a hat and whatever else was lying around.",
+    heroCaption: "The SUV, modelled front-on — one of three angles built for this piece.",
+    brief: [
+      "Womp is a browser-based 3D tool built to get an illustrator working without learning a full pipeline first — no rigging, no render engine to fight, just a tab and a mouse. I opened it with no brief and no plan, just to see how far 2D habits carry into 3D.",
+      "Whatever I'd normally sketch, I modelled instead — a car, a dog, a stranger on a pool float, a cowboy hat someone left behind. Everything got the same moody single-light studio setup, because that's the one lighting rig I could get looking right on the first few tries.",
+    ],
+    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "1/1",
+      alt: "The SUV, modelled front-on",
+      src: "/work/womp-3d-exploration/06-front.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "Render — the SUV, from the back",
+        src: "/work/womp-3d-exploration/01-back.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Render — the SUV, side profile",
+        src: "/work/womp-3d-exploration/11-side.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Render — the Twingo, in yellow",
+        src: "/work/womp-3d-exploration/12-twingo-final.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Render — the Twingo, in black",
+        src: "/work/womp-3d-exploration/13-twingo-front.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Render — two on a bench",
+        src: "/work/womp-3d-exploration/03-bench-blue.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Render — Cmon England",
+        src: "/work/womp-3d-exploration/04-cmon-england-copy.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Render — Pato",
+        src: "/work/womp-3d-exploration/09-pato.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Render — the pool guy",
+        src: "/work/womp-3d-exploration/10-pool-guy-02.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Render — the Last Call hat",
+        src: "/work/womp-3d-exploration/07-last-call-baby.webp",
+      },
+      {
+        // True 1920x2160 ratio — the default 4/5 crop would clip the
+        // trailing hand of this figure's full diagonal reach.
+        ratio: "8/9",
+        alt: "Render — mid-air, headphones on",
+        src: "/work/womp-3d-exploration/15-untitled-1713452-screenshot-1986594.webp",
+      },
+    ],
+  },
+  {
     slug: "voxi-pride",
     title: "Voxi Pride",
     client: "VOXI by Vodafone",
