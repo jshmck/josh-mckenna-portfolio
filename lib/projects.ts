@@ -44,12 +44,7 @@ export type ImageRatio =
   // Womp 3D Exploration's leaping-girl render — a full diagonal reach with
   // the trailing hand already close to the frame edge; the nearest stock
   // ratio (4/5) would clip the fingers. True 1920x2160 output ratio.
-  | "8/9"
-  // Nomad Wheels 505 Touring's /work card — a crop of the hero poster with
-  // its flat, empty top margin trimmed off, so the rounded card corners
-  // land on the dunes/truck instead of dead space. True cropped-output
-  // ratio (1800x1872 reduced), zero further drift.
-  | "25/26";
+  | "8/9";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -100,7 +95,7 @@ export type Project = {
    * Jimny only for now. `hero` still carries a still image alongside it
    * (used for the /work card and anywhere else a static image is
    * needed); the video is what actually renders in the hero slot on the
-   * project's own page. See components/work/hero-video.tsx for the
+   * project's own page. See components/work/project-video.tsx for the
    * prefers-reduced-motion guard.
    */
   heroVideo?: { src: string; alt: string };
@@ -170,6 +165,13 @@ export type Project = {
   /** Gallery below the write-up. First two render as a two-up row, unless
    *  `galleryLayout` says otherwise. */
   gallery: ProjectImage[];
+  /**
+   * A supplementary video below the gallery, with real audio and native
+   * controls (see ProjectVideo's `sound` mode) — Nomad Wheels' promo film
+   * only for now. Separate from `heroVideo`: this doesn't replace the
+   * hero artwork, it's additional behind-the-scenes content.
+   */
+  video?: { src: string; alt: string };
   /**
    * `"grid"` renders the whole `gallery` as a uniform, clickable two-column
    * grid (each image opens full-size in a lightbox) instead of the default
@@ -651,9 +653,9 @@ export const projects: Project[] = [
     // The /work card leads with a tighter crop of the hero poster — the
     // source has a generous flat, empty margin above the dunes that read
     // as dead space against the card's rounded corners at full frame.
-    cardRatio: "25/26",
+    cardRatio: "5/4",
     cardImage: {
-      ratio: "25/26",
+      ratio: "5/4",
       alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
       src: "/work/nomad-wheels-505-livery/03-touring-card.webp",
     },
@@ -669,6 +671,10 @@ export const projects: Project[] = [
         src: "/work/nomad-wheels-505-livery/01-socials-02.webp",
       },
     ],
+    video: {
+      src: "/work/nomad-wheels-505-livery/04-touring-promo.mp4",
+      alt: "The 505 Touring launch promotional film",
+    },
   },
   {
     slug: "mr-porter-miami-invites",

@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { Plate } from "@/components/ui/plate";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { GalleryGrid } from "@/components/work/gallery-grid";
-import { HeroVideo } from "@/components/work/hero-video";
+import { ProjectVideo } from "@/components/work/project-video";
 import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
 import { getProject, getProjectNeighbours, projects, type Project } from "@/lib/projects";
@@ -199,7 +199,7 @@ export default async function ProjectPage({
           {project.heroSize !== "spot" && (
             <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
               {project.heroVideo ? (
-                <HeroVideo video={project.heroVideo} />
+                <ProjectVideo video={project.heroVideo} />
               ) : project.heroPair ? (
                 <div className="grid gap-8 md:grid-cols-2">
                   <div>
@@ -273,6 +273,20 @@ export default async function ProjectPage({
             </div>
           ) : (
             <ImageStack images={project.gallery} />
+          )}
+
+          {/* A supplementary video below the gallery — Nomad Wheels'
+              promotional film only for now. Distinct from `heroVideo`:
+              the poster artwork is still the project's actual hero, this
+              is additional behind-the-scenes content, not a replacement
+              for it. */}
+          {project.video && (
+            <div className="mx-auto max-w-frame px-6 pb-20 md:px-gutter">
+              <ProjectVideo
+                video={{ ...project.video, poster: project.hero.src }}
+                sound
+              />
+            </div>
           )}
         </>
       )}
