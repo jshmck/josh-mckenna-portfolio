@@ -632,13 +632,12 @@ export const projects: Project[] = [
       alt: "BMW Z1, four colourways",
       src: "/work/figma-bmw-z1/01-carousel.webp",
     },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "BMW Z1",
-        src: "/work/figma-bmw-z1/02-single.webp",
-      },
-    ],
+    heroPair: {
+      ratio: "4/5",
+      alt: "BMW Z1",
+      src: "/work/figma-bmw-z1/02-single.webp",
+    },
+    gallery: [],
   },
   {
     slug: "nomad-wheels-505-livery",
