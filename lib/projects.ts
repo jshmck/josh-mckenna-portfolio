@@ -450,6 +450,70 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
+    slug: "ual-welcome-booklets",
+    title: "UAL Welcome Booklets",
+    client: "University of the Arts London",
+    year: 2017,
+    yearLabel: "2017/18",
+    discipline: "Illustration",
+    deliverables: "6 Covers · 7 Interior Spots",
+    categories: ["Character", "Editorial"],
+    summary: "Six UAL colleges, six colour-ways, one shared case of first-week nerves.",
+    heroCaption: "One interior spread, reused across all six 2017/18 college editions.",
+    brief: [
+      "UAL is six separate art colleges under one umbrella, and the welcome guide had to work for all of them — the same maps, the same accommodation FAQs, the same warning not to lose your ID card, run six times in six different colour-ways so each college still felt like its own place.",
+      "The interior stayed the same guide underneath — a wayfinding map, a library page, a queue for ID cards, a market stall on the way to campus — just re-covered six ways so a fresher landing at Chelsea didn't get handed the Central Saint Martins book by mistake.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "16/10",
+      alt: "Interior spread — the market stall",
+      src: "/work/ual-welcome-booklets/13-university-of-the-arts-img-4128.webp",
+    },
+    gallery: [
+      {
+        ratio: "16/10",
+        alt: "Six college covers — the full set",
+        src: "/work/ual-welcome-booklets/09-university-of-the-arts-img-4089.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Back covers — six colour-ways",
+        src: "/work/ual-welcome-booklets/08-university-of-the-arts-img-4074.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Spines — Welcome Guide 2017/18",
+        src: "/work/ual-welcome-booklets/04-university-of-the-arts-img-4043.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Interior spread — the wayfinding map",
+        src: "/work/ual-welcome-booklets/10-university-of-the-arts-img-4111.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Interior spread — the library page",
+        src: "/work/ual-welcome-booklets/06-university-of-the-arts-img-4067.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Interior spread — moving in",
+        src: "/work/ual-welcome-booklets/05-university-of-the-arts-img-4054.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Interior spread — a student's own words",
+        src: "/work/ual-welcome-booklets/14-university-of-the-arts-img-4129.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Interior spread — the ID card queue",
+        src: "/work/ual-welcome-booklets/12-university-of-the-arts-img-4125.webp",
+      },
+    ],
+  },
+  {
     slug: "voxi-pride",
     title: "Voxi Pride",
     client: "VOXI by Vodafone",
