@@ -200,21 +200,25 @@ export default async function ProjectPage({
             <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
               {/* Video position: "top" (default, Nomad Wheels) is the main
                   showcase leading the page; "bottom" (Pato) is supplementary,
-                  under the artwork it's showing off. Jimny (no heroPair) has
-                  no images to sit above or below, so position is moot — the
-                  video is the whole hero slot either way. */}
-              {project.heroVideo && project.heroVideo.position !== "bottom" && (
-                <div className={project.heroPair ? "mb-8" : undefined}>
-                  <ProjectVideo
-                    video={{
-                      ...project.heroVideo,
-                      poster: project.heroVideo.poster ?? project.hero.src,
-                    }}
-                    sound={project.heroVideo.sound}
-                  />
-                </div>
-              )}
-              {project.heroPair ? (
+                  under the artwork it's showing off; "pair" (Last Call) sits
+                  beside the still, inside the same two-up grid heroPair
+                  would otherwise occupy. Jimny (no heroPair) has no images
+                  to sit above or below, so position is moot — the video is
+                  the whole hero slot either way. */}
+              {project.heroVideo &&
+                project.heroVideo.position !== "bottom" &&
+                project.heroVideo.position !== "pair" && (
+                  <div className={project.heroPair ? "mb-8" : undefined}>
+                    <ProjectVideo
+                      video={{
+                        ...project.heroVideo,
+                        poster: project.heroVideo.poster ?? project.hero.src,
+                      }}
+                      sound={project.heroVideo.sound}
+                    />
+                  </div>
+                )}
+              {project.heroPair || project.heroVideo?.position === "pair" ? (
                 <div className="grid gap-8 md:grid-cols-2">
                   <div>
                     <Plate
@@ -227,13 +231,28 @@ export default async function ProjectPage({
                     </p>
                   </div>
                   <div>
-                    <Plate
-                      image={project.heroPair}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <p className="type-label mt-3 text-ink-muted">
-                      {project.heroPair.alt}
-                    </p>
+                    {project.heroVideo?.position === "pair" ? (
+                      <ProjectVideo
+                        video={{
+                          ...project.heroVideo,
+                          poster: project.heroVideo.poster,
+                        }}
+                        sound={project.heroVideo.sound}
+                        ratio={project.heroVideo.ratio}
+                      />
+                    ) : (
+                      project.heroPair && (
+                        <>
+                          <Plate
+                            image={project.heroPair}
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                          />
+                          <p className="type-label mt-3 text-ink-muted">
+                            {project.heroPair.alt}
+                          </p>
+                        </>
+                      )
+                    )}
                   </div>
                 </div>
               ) : !project.heroVideo ? (

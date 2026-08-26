@@ -112,7 +112,11 @@ export type Project = {
     alt: string;
     sound?: boolean;
     poster?: string;
-    position?: "top" | "bottom";
+    /** "pair" renders the video inside the heroPair two-up, alongside
+     *  `hero`, instead of full-width above or below it. */
+    position?: "top" | "bottom" | "pair";
+    /** Defaults to 16/9. Set when the clip isn't landscape. */
+    ratio?: ImageRatio;
   };
   /**
    * Trial: a second image shown side-by-side with `hero` instead of the

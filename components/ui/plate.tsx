@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import type { ImageRatio, ProjectImage } from "@/lib/projects";
 
-const RATIO_CLASS: Record<ImageRatio, string> = {
+export const RATIO_CLASS: Record<ImageRatio, string> = {
   "1/1": "aspect-square",
   "2/3": "aspect-[2/3]",
   "4/5": "aspect-[4/5]",

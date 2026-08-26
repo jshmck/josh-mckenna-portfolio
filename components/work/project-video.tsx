@@ -2,6 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
+import { RATIO_CLASS } from "@/components/ui/plate";
+import type { ImageRatio } from "@/lib/projects";
+
 type ProjectVideoProps = {
   video: { src: string; alt: string; poster?: string };
   /**
@@ -13,6 +16,13 @@ type ProjectVideoProps = {
    * technically allowed.
    */
   sound?: boolean;
+  /**
+   * Defaults to 16/9 (most clips so far are landscape screen recordings).
+   * Reuses Plate's own ImageRatio scale — Last Call's clip is a portrait
+   * 3/4 phone recording, and forcing that into a 16:9 box would crop out
+   * most of it.
+   */
+  ratio?: ImageRatio;
   className?: string;
 };
 
@@ -24,7 +34,12 @@ type ProjectVideoProps = {
  * motion. Sound clips never autoplay in the first place, so no guard is
  * needed there.
  */
-export function ProjectVideo({ video, sound = false, className }: ProjectVideoProps) {
+export function ProjectVideo({
+  video,
+  sound = false,
+  ratio,
+  className,
+}: ProjectVideoProps) {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -46,7 +61,7 @@ export function ProjectVideo({ video, sound = false, className }: ProjectVideoPr
       src={video.src}
       poster={video.poster}
       aria-label={video.alt}
-      className={`aspect-video w-full rounded-3xl object-cover ${className ?? ""}`}
+      className={`${ratio ? RATIO_CLASS[ratio] : "aspect-video"} w-full rounded-3xl object-cover ${className ?? ""}`}
       muted={!sound}
       loop={!sound}
       controls={sound}
