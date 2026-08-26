@@ -404,7 +404,7 @@ export const projects: Project[] = [
       src: "/work/womp-last-call/02-last-call-video.mp4",
       alt: "The Last Call hat and keyring, turning",
       position: "pair",
-      ratio: "3/4",
+      ratio: "4/5",
     },
     hero: {
       ratio: "4/5",
