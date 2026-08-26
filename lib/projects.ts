@@ -309,6 +309,64 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "figma-draw-exploration",
+    title: "A–Z Design Icons",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration Series",
+    deliverables: "5 Icons · 8 Exported Variants",
+    categories: ["Character", "Automotive"],
+    summary: "Five letters into an alphabet with no client attached.",
+    heroCaption: "One of the letters explored so far — Y, the YETI cooler.",
+    brief: [
+      "A–Z Design Icons is self-initiated: no client, no brief. My usual process had started to feel flat, so I picked a tool I hadn't worked in before, Figma Draw, and set myself an alphabet — a brand or object per letter — to get some fun back into it.",
+      "This batch covers five letters: Underground (U), Servebots (S), Vitra (V), Yeti (Y) and BMW's Z1 (Z). The Z1 got the most attention — two background treatments and a four-colour carousel — everything else is one pass.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "4/5",
+      alt: "Letter Y — the YETI cooler",
+      src: "/work/figma-draw-exploration/06-yeti.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "Letter U — Underground roundel, white",
+        src: "/work/figma-draw-exploration/03-u-white.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Letter U — Underground roundel, blue",
+        src: "/work/figma-draw-exploration/04-u.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Letter S — Servebots on delivery",
+        src: "/work/figma-draw-exploration/02-s.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Letter V — Vitra, black ground",
+        src: "/work/figma-draw-exploration/05-vblack.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Letter Z — BMW Z1, four colourways",
+        src: "/work/figma-draw-exploration/08-z1-carousel.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Letter Z — BMW Z1, grey ground",
+        src: "/work/figma-draw-exploration/07-z-1.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Letter Z — BMW Z1, green ground",
+        src: "/work/figma-draw-exploration/09-z1.webp",
+      },
+    ],
+  },
+  {
     slug: "voxi-pride",
     title: "Voxi Pride",
     client: "VOXI by Vodafone",
