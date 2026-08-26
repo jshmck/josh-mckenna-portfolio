@@ -399,6 +399,36 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "mr-porter-miami-invites",
+    title: "Mr Porter Invites",
+    client: "Mr Porter",
+    year: 2021,
+    discipline: "Event Invitation",
+    deliverables: "2 Invitations",
+    categories: ["Hospitality", "Automotive"],
+    summary: "Same building, same car, same palm trees — just moved the sun.",
+    heroCaption: "The day and night invitation designs for the same Mr Porter Miami event.",
+    brief: [
+      "Mr Porter needed two invitations for the same Miami event — a day one and a night one — so the same street had to survive two completely different lighting states. The building, the car, the palms and the skyline across the water all stay fixed; only the light changes, from a bleached midday blue to a moody teal with the windows lit.",
+      "Both versions hide one small scene that isn't about the building at all — a couple framed in a lit window at night, someone dozing in the back of the car by day. Neither is the point of the piece, but they're the reason you look twice.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Mr Porter" },
+    ],
+    hero: {
+      ratio: "3/4",
+      alt: "Mr Porter Miami invite — night",
+      src: "/work/mr-porter-miami-invites/01-mr-porter-miami-night.webp",
+    },
+    heroPair: {
+      ratio: "3/4",
+      alt: "Mr Porter Miami invite — day",
+      src: "/work/mr-porter-miami-invites/02-mr-porter-mr-miami-day.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "voxi-pride",
     title: "Voxi Pride",
     client: "VOXI by Vodafone",
