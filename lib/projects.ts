@@ -114,10 +114,11 @@ export type Project = {
   /**
    * Runs the hero below `WriteUp` instead of above it, capped at a
    * narrow, centred width (max-w-lg) with no caption, instead of the
-   * usual full-bleed 1344px leading the page — for a piece that was
-   * drawn to run small (a magazine spot illustration), where filling
-   * the whole page frame shows it at a scale it was never meant to be
-   * seen at. Monocle Spot Illo only for now.
+   * usual full-bleed 1344px leading the page. Originally for a piece
+   * drawn to run small (Monocle's magazine spot illustration); now the
+   * default for any true single-image project (a handful of the Womp
+   * 3D and Figma Draw pieces) — a lone image still reads oversized at
+   * full-bleed with nothing else on the page to balance it against.
    */
   heroSize?: "spot";
   /**
@@ -306,6 +307,7 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — an exaggerated torso, a pint held high, a tiny England-flagged face.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    heroSize: "spot",
     hero: {
       ratio: "4/5",
       alt: "Cmon England",
@@ -327,6 +329,7 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — built more dog than the name suggests.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    heroSize: "spot",
     hero: {
       ratio: "4/5",
       alt: "Pato",
@@ -348,6 +351,7 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — a cold drink, a green pool float, a green cap.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    heroSize: "spot",
     hero: {
       ratio: "4/5",
       alt: "The pool guy",
@@ -369,6 +373,7 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — a cowboy hat and a \"Last Call\" keyring.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    heroSize: "spot",
     hero: {
       ratio: "4/5",
       alt: "The Last Call hat and keyring",
@@ -390,6 +395,7 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — headphones on, full diagonal reach.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    heroSize: "spot",
     hero: {
       // True 1920x2160 ratio — the default 4/5 crop would clip the
       // trailing hand of this figure's full diagonal reach.
@@ -521,6 +527,7 @@ export const projects: Project[] = [
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
+    heroSize: "spot",
     hero: {
       ratio: "4/5",
       alt: "The YETI cooler",
@@ -545,6 +552,7 @@ export const projects: Project[] = [
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
+    heroSize: "spot",
     hero: {
       ratio: "4/5",
       alt: "Underground roundel",
@@ -569,6 +577,7 @@ export const projects: Project[] = [
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
+    heroSize: "spot",
     hero: {
       ratio: "4/5",
       alt: "Servebots on delivery",
@@ -593,6 +602,7 @@ export const projects: Project[] = [
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
+    heroSize: "spot",
     hero: {
       ratio: "4/5",
       alt: "Vitra × Virgil Abloh",
