@@ -293,41 +293,116 @@
    element's own box, not its container. Flattened to an ellipse (190px
    horizontal, 80px vertical) rather than a circle — a single-line title is
    wide and short, so a circular swing would carry the sticker far above and
-   below the text instead of hugging it. Pure CSS, so the sitewide
+   below the text instead of hugging it.
+
+   24 stops at 15° increments (generated, not hand-placed — see the rotate
+   values tracking sin(angle) for the gentle lean) run on `linear` (set where
+   this keyframe is invoked, not here), not `ease-in-out`: an 8-stop path on
+   ease-in-out decelerates into and re-accelerates out of every one of those
+   8 points, which reads as a pulse/stutter rather than a glide. Enough
+   points at a constant speed makes the straight-line interpolation between
+   them read as one continuous curve instead. Pure CSS, so the sitewide
    prefers-reduced-motion rule neutralises it on its own. */
 @keyframes orbit-loop {
-  0%,
-  100% {
+  0% {
     translate: calc(-50% + 190px) -50%;
     rotate: 0deg;
   }
+  4.167% {
+    translate: calc(-50% + 184px) calc(-50% + 21px);
+    rotate: 1.3deg;
+  }
+  8.333% {
+    translate: calc(-50% + 165px) calc(-50% + 40px);
+    rotate: 2.5deg;
+  }
   12.5% {
     translate: calc(-50% + 134px) calc(-50% + 57px);
-    rotate: 6deg;
+    rotate: 3.5deg;
+  }
+  16.667% {
+    translate: calc(-50% + 95px) calc(-50% + 69px);
+    rotate: 4.3deg;
+  }
+  20.833% {
+    translate: calc(-50% + 49px) calc(-50% + 77px);
+    rotate: 4.8deg;
   }
   25% {
     translate: -50% calc(-50% + 80px);
-    rotate: 0deg;
+    rotate: 5deg;
+  }
+  29.167% {
+    translate: calc(-50% - 49px) calc(-50% + 77px);
+    rotate: 4.8deg;
+  }
+  33.333% {
+    translate: calc(-50% - 95px) calc(-50% + 69px);
+    rotate: 4.3deg;
   }
   37.5% {
     translate: calc(-50% - 134px) calc(-50% + 57px);
-    rotate: -6deg;
+    rotate: 3.5deg;
+  }
+  41.667% {
+    translate: calc(-50% - 165px) calc(-50% + 40px);
+    rotate: 2.5deg;
+  }
+  45.833% {
+    translate: calc(-50% - 184px) calc(-50% + 21px);
+    rotate: 1.3deg;
   }
   50% {
     translate: calc(-50% - 190px) -50%;
     rotate: 0deg;
   }
+  54.167% {
+    translate: calc(-50% - 184px) calc(-50% - 21px);
+    rotate: -1.3deg;
+  }
+  58.333% {
+    translate: calc(-50% - 165px) calc(-50% - 40px);
+    rotate: -2.5deg;
+  }
   62.5% {
     translate: calc(-50% - 134px) calc(-50% - 57px);
-    rotate: 6deg;
+    rotate: -3.5deg;
+  }
+  66.667% {
+    translate: calc(-50% - 95px) calc(-50% - 69px);
+    rotate: -4.3deg;
+  }
+  70.833% {
+    translate: calc(-50% - 49px) calc(-50% - 77px);
+    rotate: -4.8deg;
   }
   75% {
     translate: -50% calc(-50% - 80px);
-    rotate: 0deg;
+    rotate: -5deg;
+  }
+  79.167% {
+    translate: calc(-50% + 49px) calc(-50% - 77px);
+    rotate: -4.8deg;
+  }
+  83.333% {
+    translate: calc(-50% + 95px) calc(-50% - 69px);
+    rotate: -4.3deg;
   }
   87.5% {
     translate: calc(-50% + 134px) calc(-50% - 57px);
-    rotate: -6deg;
+    rotate: -3.5deg;
+  }
+  91.667% {
+    translate: calc(-50% + 165px) calc(-50% - 40px);
+    rotate: -2.5deg;
+  }
+  95.833% {
+    translate: calc(-50% + 184px) calc(-50% - 21px);
+    rotate: -1.3deg;
+  }
+  100% {
+    translate: calc(-50% + 190px) -50%;
+    rotate: 0deg;
   }
 }
 

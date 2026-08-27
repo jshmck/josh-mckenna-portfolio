@@ -138,7 +138,7 @@ export default async function ProjectPage({
               {project.floatingObject && (
                 <div
                   aria-hidden="true"
-                  className="absolute left-1/2 top-1/2 hidden w-32 animate-[orbit-loop_18s_ease-in-out_infinite] md:block lg:w-44"
+                  className="absolute left-1/2 top-1/2 hidden w-32 animate-[orbit-loop_18s_linear_infinite] md:block lg:w-44"
                   style={{ aspectRatio: project.floatingObject.aspect }}
                 >
                   <Image
