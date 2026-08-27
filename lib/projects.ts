@@ -208,6 +208,28 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "womp-first-3d-character",
+    title: "First 3D Character",
+    client: "Personal",
+    year: 2026,
+    discipline: "3D Illustration",
+    deliverables: "1 Render",
+    categories: ["3D", "Character"],
+    summary: "A beanie, a moustache, an earring — the first character built in Womp.",
+    heroCaption: "",
+    brief: [
+      "Modelled in Womp, a browser-based 3D tool — a beanie hat, a grey moustache, an earring, and a matching pair of oversized ears. The first character I built in Womp, before Pato, Jimny or Last Call.",
+    ],
+    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    heroSize: "spot",
+    hero: {
+      ratio: "1/1",
+      alt: "A beanie, a moustache, an earring",
+      src: "/work/womp-first-3d-character/01-blue-face.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "womp-jimny",
     title: "Jimny",
     client: "Personal",
