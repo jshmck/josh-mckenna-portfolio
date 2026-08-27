@@ -946,6 +946,11 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Covers · Inside Pages · Spots · Maps",
     categories: ["Character", "Editorial"],
+    // True hero ratio — landscape (1.6), and RATIO_CYCLE never assigns
+    // anything wider than 1.25, so without this override the /work card
+    // would crop the spread significantly no matter which cycle position
+    // it landed on. Same fix as Bombay Sapphire below.
+    cardRatio: "16/10",
     summary: "Six UAL colleges, six colour-ways, one shared case of first-week nerves.",
     heroCaption: "One interior spread, reused across all six 2017/18 college editions.",
     brief: [
@@ -1365,6 +1370,11 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
     categories: ["Mural"],
+    // True hero ratio — landscape (1.5), and RATIO_CYCLE never assigns
+    // anything wider than 1.25, so without this override the /work card
+    // would crop the storefront significantly no matter which cycle
+    // position it landed on. Same fix as UAL Booklets above.
+    cardRatio: "3/2",
     summary:
       "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
     heroCaption: "The mural, live in Bombay Sapphire's Shoreditch pop-up.",
