@@ -260,6 +260,38 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "vogue-sun-tan",
+    title: "Tanning Tips",
+    client: "Vogue Magazine",
+    year: 2018,
+    discipline: "Editorial Illustration",
+    deliverables: "3 Spot Illustrations",
+    categories: ["Editorial"],
+    summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
+    heroCaption: "The first of a three-part series on tanning safely.",
+    brief: [
+      "I created a three-part editorial illustration series for Vogue Magazine, focusing on how to tan safely. The artwork visually guides readers through essential sun protection tips, including applying SPF, seeking shade during peak hours, and incorporating protective clothing and accessories.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "16/10",
+      alt: "Applying sunscreen, hat pulled low against the sun.",
+      src: "/work/vogue-sun-tan/01-vogue-sun-1-print.webp",
+    },
+    gallery: [
+      {
+        ratio: "16/10",
+        alt: "A fine mist of tanning oil in the afternoon light.",
+        src: "/work/vogue-sun-tan/02-vogue-sun-2-print.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Face down on the sand, out of the midday sun.",
+        src: "/work/vogue-sun-tan/03-vogue-sun-3-print.webp",
+      },
+    ],
+  },
+  {
     slug: "instagram-sticker",
     title: "Pride Sticker",
     client: "Instagram",
