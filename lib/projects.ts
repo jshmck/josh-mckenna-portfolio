@@ -218,7 +218,7 @@ export const projects: Project[] = [
     summary: "A beanie, a moustache, an earring — the first character built in Womp.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — a beanie hat, a grey moustache, an earring, and a matching pair of oversized ears. The first character I built in Womp, before Pato, Jimny or Last Call.",
+      "Modelled in Womp, a browser-based 3D tool — a beanie hat, a grey moustache, an earring, and a matching pair of oversized ears. The first character I built in 3D, before Pato, Jimny or Last Call — wanting to push my 2D character features into three dimensions.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     heroSize: "spot",
