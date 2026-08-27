@@ -267,6 +267,12 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "3 Spot Illustrations",
     categories: ["Editorial"],
+    // True hero ratio — landscape (1.6), and RATIO_CYCLE never assigns
+    // anything wider than 1.25, so without this the /work card would
+    // crop it into whatever portrait-leaning box its position landed on.
+    // Also clears LANDSCAPE_SPAN_RATIO (1.3), so it spans two columns
+    // automatically — same fix as UAL Booklets and Bombay Sapphire.
+    cardRatio: "16/10",
     summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
     heroCaption: "The first of a three-part series on tanning safely.",
     brief: [
