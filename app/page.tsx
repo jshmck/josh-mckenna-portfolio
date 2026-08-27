@@ -42,11 +42,17 @@ export default function HomePage() {
           </Reveal>
 
           <Parallax speed={0.85}>
+            {/* Beefbar's Monte Carlo poster — restaurant posters and cars
+                in one image, matching the copy beside it. Replaces the
+                Pride-crowd signature illustration per Josh. True poster
+                ratio (12/17), not the old image's 4/3 — force-fitting a
+                portrait poster into a landscape box would crop out the
+                "beefbar" script and the MONTE-CARLO lockup at top/bottom. */}
             <Plate
               image={{
-                ratio: "4/3",
-                alt: "Josh's signature crowd illustration — a Pride march",
-                src: "/illustrations/signature-pride.png",
+                ratio: "12/17",
+                alt: "Beefbar's Monte Carlo poster — two supercars outside the Casino de Monte-Carlo",
+                src: "/work/beefbar-posters/01-monte-carlo-no-border.webp",
               }}
               sizes="(max-width: 768px) 100vw, 45vw"
             />

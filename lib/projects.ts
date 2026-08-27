@@ -914,7 +914,7 @@ export const projects: Project[] = [
     deliverables: "Illustrated Poster & Menu Design",
     categories: ["Hospitality", "Character"],
     summary: "One new poster, every time Beefbar opens somewhere new. Still counting.",
-    heroCaption: "The Baku opening poster — part of Beefbar's ongoing series.",
+    heroCaption: "The Monte Carlo poster — Beefbar's flagship, part of the ongoing series.",
     brief: [
       "With every new opening of a Beefbar restaurant around the world comes a new poster, designed by me, taking influence from the surrounding landmarks, cityscape, culture and heritage — Baku's Flame Towers and waterfront, Comporta's dunes, whatever the city actually gives you to draw. The same artwork doubles as the cover of the menu. Not every poster's made the cut here — this is a selection, not the full series.",
       "The 'beefbar' script and the city's own name across the sheet stay fixed. Everything else comes from wherever the restaurant's landed — Comporta's just a dune path, Malta's set inside the dining room.",
@@ -924,21 +924,32 @@ export const projects: Project[] = [
     cardRatio: "12/17",
     // The /work card's round-corner clip cuts across whichever poster's own
     // printed border is showing — Luxembourg's reads better there than
-    // Baku's (the hero, used everywhere else) did.
+    // Baku's did. Monte Carlo (the hero, used everywhere else) is a
+    // no-border export, so it never had that problem, but Josh hasn't
+    // asked for the card to change — leaving Luxembourg's override in place.
     cardImage: {
       ratio: "12/17",
       alt: "Luxembourg",
       src: "/work/beefbar-posters/05-luxembourg.webp",
     },
+    // True ratio (1358×1920 = 0.7073) snaps far closer to 12/17 (0.7059)
+    // than to the ingester's auto-picked 3/4 (0.75, a 5.9% crop) — 12/17
+    // also matches every other poster in this grid.
     hero: {
       ratio: "12/17",
-      alt: "Baku",
-      src: "/work/beefbar-posters/01-baku-02.webp",
+      alt: "Monte Carlo",
+      src: "/work/beefbar-posters/01-monte-carlo-no-border.webp",
     },
     // Each poster's own printed border is part of the artwork, kept
     // visible — the grid runs square corners (see PosterGrid) instead of
-    // cropping it out. Ordered chronologically, per Josh.
+    // cropping it out. Ordered chronologically, per Josh — Baku moved down
+    // here (was the hero) when Monte Carlo became the flagship.
     gallery: [
+      {
+        ratio: "12/17",
+        alt: "Baku",
+        src: "/work/beefbar-posters/01-baku-02.webp",
+      },
       {
         ratio: "12/17",
         alt: "Belgrade",
