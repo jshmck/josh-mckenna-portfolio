@@ -340,7 +340,11 @@ export default async function ProjectPage({
               />
             </div>
           ) : (
-            <ImageStack images={project.gallery} />
+            <ImageStack
+              images={project.gallery}
+              galleryVideo={project.galleryVideo}
+              galleryGif={project.galleryGif}
+            />
           )}
         </>
       )}

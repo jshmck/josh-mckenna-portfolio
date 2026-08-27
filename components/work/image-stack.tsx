@@ -1,15 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 
-import { Plate } from "@/components/ui/plate";
+import { Plate, RATIO_CLASS } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
-import type { ProjectImage } from "@/lib/projects";
+import { ProjectVideo } from "@/components/work/project-video";
+import type { ImageRatio, ProjectImage } from "@/lib/projects";
 
 type ImageStackProps = {
   /** First two render as a two-up row; everything after runs full width. */
   images: ProjectImage[];
+  /** Trial (Instagram Sticker only): a silent video inserted mid-gallery,
+   *  outside the lightbox's photo-cycle. See Project.galleryVideo. */
+  galleryVideo?: { src: string; alt: string; sound?: boolean; afterIndex: number };
+  /** Trial (Instagram Sticker only): an animated GIF inserted mid-gallery,
+   *  bypassing Plate via next/image's `unoptimized` mode so the animation
+   *  survives. See Project.galleryGif. */
+  galleryGif?: { src: string; alt: string; ratio: ImageRatio; afterIndex: number };
 };
 
 /** One icon slot inside the toolbar pill — no border of its own (the pill
@@ -33,7 +41,7 @@ function isPortrait(ratio: string) {
  * full-size in a shared lightbox with prev/next cycling across the whole
  * gallery, since the grid crops every shot down from its real size.
  */
-export function ImageStack({ images }: ImageStackProps) {
+export function ImageStack({ images, galleryVideo, galleryGif }: ImageStackProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   // null = fresh open (bouncy pop-in); set on every arrow/keyboard nav so the
   // next frame slides in from the direction of travel instead of hard-cutting.
@@ -91,6 +99,23 @@ export function ImageStack({ images }: ImageStackProps) {
   return (
     <>
       <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
+        {galleryGif && galleryGif.afterIndex === 0 && (
+          <Reveal>
+            <div
+              className={`relative overflow-hidden rounded-3xl ${RATIO_CLASS[galleryGif.ratio]}`}
+            >
+              <Image
+                src={galleryGif.src}
+                alt={galleryGif.alt}
+                fill
+                unoptimized
+                className="object-cover"
+              />
+            </div>
+            <p className="type-label mt-3 text-ink-muted">{galleryGif.alt}</p>
+          </Reveal>
+        )}
+
         {(firstImage || secondImage) && (
           <div className="grid gap-8 md:grid-cols-2">
             {[firstImage, secondImage].filter(Boolean).map((image, index) => (
@@ -112,24 +137,36 @@ export function ImageStack({ images }: ImageStackProps) {
         {restImages.map((image, index) => {
           const portrait = isPortrait(image.ratio);
           return (
-            <Reveal key={image.alt} className={portrait ? "mx-auto max-w-lg" : undefined}>
-              <button
-                type="button"
-                onClick={() => openAt(index + 2)}
-                aria-label={`Open larger view of ${image.alt}`}
-                className="block w-full cursor-zoom-in text-left"
-              >
-                <Plate
-                  image={image}
-                  sizes={
-                    portrait
-                      ? "(max-width: 768px) 100vw, 512px"
-                      : "(max-width: 1344px) 100vw, 1344px"
-                  }
-                />
-              </button>
-              <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-            </Reveal>
+            <Fragment key={image.alt}>
+              <Reveal className={portrait ? "mx-auto max-w-lg" : undefined}>
+                <button
+                  type="button"
+                  onClick={() => openAt(index + 2)}
+                  aria-label={`Open larger view of ${image.alt}`}
+                  className="block w-full cursor-zoom-in text-left"
+                >
+                  <Plate
+                    image={image}
+                    sizes={
+                      portrait
+                        ? "(max-width: 768px) 100vw, 512px"
+                        : "(max-width: 1344px) 100vw, 1344px"
+                    }
+                  />
+                </button>
+                <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
+              </Reveal>
+
+              {galleryVideo && galleryVideo.afterIndex === index + 3 && (
+                <Reveal>
+                  <ProjectVideo
+                    video={{ src: galleryVideo.src, alt: galleryVideo.alt }}
+                    sound={galleryVideo.sound}
+                  />
+                  <p className="type-label mt-3 text-ink-muted">{galleryVideo.alt}</p>
+                </Reveal>
+              )}
+            </Fragment>
           );
         })}
       </div>
