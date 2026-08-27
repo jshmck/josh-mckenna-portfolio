@@ -260,6 +260,34 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "womp-bum-selfie",
+    title: "Bum Selfie",
+    client: "Personal",
+    year: 2026,
+    discipline: "3D Illustration",
+    deliverables: "1 Render · 1 Turnaround",
+    categories: ["3D", "Character"],
+    summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
+    heroCaption: "",
+    brief: [
+      "Modelled in Womp, a browser-based 3D tool — a glossy figure bent double, taking a selfie of its own backside.",
+    ],
+    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "1/1",
+      alt: "Bum selfie",
+      src: "/work/womp-bum-selfie/01-bum-selfie-final.webp",
+    },
+    // Video sits below the hero rather than leading the page — the render
+    // is the artwork, the clip is supplementary. Same reasoning as Pato.
+    heroVideo: {
+      src: "/work/womp-bum-selfie/02-bum-selfie-video.mp4",
+      alt: "The bum selfie, turning",
+      position: "bottom",
+    },
+    gallery: [],
+  },
+  {
     slug: "instagram-sticker",
     title: "Pride Sticker",
     client: "Instagram",
