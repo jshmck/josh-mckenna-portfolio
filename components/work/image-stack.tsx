@@ -100,7 +100,10 @@ export function ImageStack({ images, galleryVideo, galleryGif }: ImageStackProps
     <>
       <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
         {galleryGif && galleryGif.afterIndex === 0 && (
-          <Reveal>
+          // Capped to max-w-lg (512px) — the source GIF is only 1080px
+          // native, so stretching it to the frame's full 1344px width
+          // would upscale it past its real resolution and blur.
+          <Reveal className="mx-auto max-w-lg">
             <div
               className={`relative overflow-hidden rounded-3xl ${RATIO_CLASS[galleryGif.ratio]}`}
             >
@@ -132,6 +135,16 @@ export function ImageStack({ images, galleryVideo, galleryGif }: ImageStackProps
               </Reveal>
             ))}
           </div>
+        )}
+
+        {galleryVideo && galleryVideo.afterIndex === 2 && (
+          <Reveal>
+            <ProjectVideo
+              video={{ src: galleryVideo.src, alt: galleryVideo.alt }}
+              sound={galleryVideo.sound}
+            />
+            <p className="type-label mt-3 text-ink-muted">{galleryVideo.alt}</p>
+          </Reveal>
         )}
 
         {restImages.map((image, index) => {

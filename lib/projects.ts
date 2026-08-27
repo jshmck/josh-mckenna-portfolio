@@ -262,13 +262,17 @@ export const projects: Project[] = [
     categories: ["Pride", "Mural", "Character", "Icons"],
     featured: true,
     summary:
-      "A Pride sticker for Instagram Stories, meant to last a month. It stayed live for five years.",
+      "I created an iconic Pride sticker for Instagram Stories: a sassy, muscular bloke in red high heels. Meant to last a month, it stayed live for five years, used by millions and turned into a symbol of queer culture and self-expression.",
     heroCaption: "The original character design, created for Instagram's 2017 Pride sticker set.",
     brief: [
-      "In 2017, Jeffrey Gerson, then Instagram's Senior Product Marketing Lead, found a piece I'd done on David Hockney in the queer magazine Hello Mr and got in touch. Instagram wanted a sticker celebrating Pride for a new Stories sticker set, alongside other LGBTQ+ artists — Carra Sykes, Andy Simmonds, Cute Brute and José Antonio Roda — live throughout Pride month.",
-      "I drew a sassy, muscular bloke in red high heels, built to read clearly at sticker size — a couple of centimetres on a phone screen. Bold shapes, a simple palette, tongue-in-cheek, true to my own experience of masculinity and Pride. Meant to last a month, it stayed embedded in the app for five years and was used by millions, including — unexpectedly — Michelle Obama.",
-      "It went well beyond the app: a 10ft float at Sydney Mardi Gras, murals at Trafalgar Square and Meta's head offices, an Instagram takeover of British Vogue's account, a feature in a Gestalten book, and public talks I still give today.",
-      "Almost a decade on, I still get messages from people thanking me for it — Jonathan Van Ness has talked about it on Queer Eye. It opened the door to years of Pride and charity work that followed, including a project Mel C put her name behind. Not bad for a sticker that was only meant to last a month.",
+      "In 2017, Jeffrey Gerson, then Instagram's Senior Product Marketing Lead, found my work in queer mag Hello Mr, a piece I'd done on David Hockney, and reached out.",
+      "Instagram wanted a sticker that celebrated Pride using queer iconography as part of a new sticker set for Stories, with other LGBTQ+ artists (Carra Sykes, Andy Simmonds, Cute Brute and José Antonio Roda), available throughout Pride month.",
+      "So I created a sassy, muscular bloke in red high heels, designed to read clearly at sticker size, a couple of cm on a phone screen. The artwork reflects where my style was at that point: bold shapes, a simple palette, diverse characters, a tongue-in-cheek sense of humour. It's true to masculinity and sexuality, my real lived experience and personal take on Pride.",
+      "Its popularity meant it stayed embedded in the app for five years. Millions used it, including celebrities I never expected to see sharing my art (Michelle Obama!).",
+      "What started as a small icon on a phone screen went way beyond the app: a 10ft-high float at Sydney Mardi Gras, murals at Trafalgar Square and Meta's head offices, an Instagram takeover of Vogue's account, a feature in a Gestalten book and public talks I'm still giving today. It was mad.",
+      "Almost a decade on, it's still doing work. I've had hundreds, maybe thousands, of messages from folk thanking me for representing them in my work. Everybody posted it, referenced it, used it as their own way of feeling fierce and self-expression (Jonathan Van Ness talks about this on Queer Eye!).",
+      "It opened the door to years of Pride and charity work that followed, including a project Mel C from the Spice Girls put her name behind.",
+      "Not bad for a sticker that was only meant to last a month.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -279,11 +283,17 @@ export const projects: Project[] = [
       ratio: "1/1",
       alt: "The Instagram Pride sticker character",
       src: "/work/instagram-sticker/03-instagram-sticker.webp",
+      // Transparent PNG — cover's default bg-placeholder surface (brand
+      // blue) would show through the transparent margin around the
+      // figure. contain uses bg-canvas instead, the same fix real
+      // artwork with transparency always needs (see Plate).
+      fit: "contain",
     },
     // GIF leads the gallery (afterIndex: 0, before the two-up pair) — the
-    // sticker's own animation, right after the write-up. Video sits after
-    // the two Mardi Gras stills (afterIndex: 3 = after gallery[2]), keeping
-    // that whole beat — float photo, float detail, footage — together.
+    // sticker's own animation, right after the write-up. Video sits right
+    // after the two-up pair (afterIndex: 2 = after gallery[0] and [1]),
+    // keeping the whole Mardi Gras beat — float photo, float detail,
+    // footage — together before Sticker Set breaks to a new subject.
     galleryGif: {
       src: "/work/instagram-sticker/10-sticker-animation.gif",
       alt: "The move behind the sticker.",
@@ -294,14 +304,13 @@ export const projects: Project[] = [
       src: "/work/instagram-sticker/09-mardi-gras-video.mp4",
       alt: "Footage from the Sydney Mardi Gras parade, courtesy of Pedestrian TV.",
       sound: true,
-      afterIndex: 3,
+      afterIndex: 2,
     },
+    // Mardi Gras 2019 + Detail lead as the two-up pair — both 3/4, so the
+    // row lands the same height on both sides (same fix Pato's two hero
+    // frames needed). Sticker Set (16/9) would have mismatched badly
+    // against either, so it runs full width instead, right after.
     gallery: [
-      {
-        ratio: "16/9",
-        alt: "The sticker as it appeared within the Pride set.",
-        src: "/work/instagram-sticker/05-sticker-set.webp",
-      },
       {
         ratio: "3/4",
         alt: "The character reimagined as a 10ft-high float, watched by an estimated 500,000 spectators at the Sydney Mardi Gras parade.",
@@ -311,6 +320,11 @@ export const projects: Project[] = [
         ratio: "3/4",
         alt: "Close-up of the float lit up at night during the parade.",
         src: "/work/instagram-sticker/07-sydney-mardi-gras-2.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "The sticker as it appeared within the Pride set.",
+        src: "/work/instagram-sticker/05-sticker-set.webp",
       },
       {
         ratio: "9/16",
