@@ -19,6 +19,14 @@ type ImageStackProps = {
 const LIGHTBOX_BUTTON_CLASS =
   "group flex h-9 w-9 items-center justify-center rounded-full text-canvas transition-all duration-300 ease-bounce hover:scale-110 active:scale-90 hover:bg-canvas/15 hover:text-brand active:text-brand";
 
+/** Josh's vertical pieces are drawn to run small — full-bleed at the frame's
+ *  1344px width blows a portrait illustration up far past its designed
+ *  scale. Same cap `heroSize: "spot"` uses for a portrait hero. */
+function isPortrait(ratio: string) {
+  const [w, h] = ratio.split("/").map(Number);
+  return h > w;
+}
+
 /**
  * The gallery below a project's write-up — first two as a two-up row, the
  * rest full width, each with its own caption underneath. Every frame opens
@@ -101,19 +109,29 @@ export function ImageStack({ images }: ImageStackProps) {
           </div>
         )}
 
-        {restImages.map((image, index) => (
-          <Reveal key={image.alt}>
-            <button
-              type="button"
-              onClick={() => openAt(index + 2)}
-              aria-label={`Open larger view of ${image.alt}`}
-              className="block w-full cursor-zoom-in text-left"
-            >
-              <Plate image={image} sizes="(max-width: 1344px) 100vw, 1344px" />
-            </button>
-            <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-          </Reveal>
-        ))}
+        {restImages.map((image, index) => {
+          const portrait = isPortrait(image.ratio);
+          return (
+            <Reveal key={image.alt} className={portrait ? "mx-auto max-w-lg" : undefined}>
+              <button
+                type="button"
+                onClick={() => openAt(index + 2)}
+                aria-label={`Open larger view of ${image.alt}`}
+                className="block w-full cursor-zoom-in text-left"
+              >
+                <Plate
+                  image={image}
+                  sizes={
+                    portrait
+                      ? "(max-width: 768px) 100vw, 512px"
+                      : "(max-width: 1344px) 100vw, 1344px"
+                  }
+                />
+              </button>
+              <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
+            </Reveal>
+          );
+        })}
       </div>
 
       {openImage && (
