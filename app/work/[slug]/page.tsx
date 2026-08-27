@@ -288,34 +288,36 @@ export default async function ProjectPage({
             // modest width, no caption — a piece drawn to run at a few
             // centimetres next to magazine text looks wrong leading the
             // page at full-bleed size with a label under it.
-            <div className="relative mx-auto max-w-frame px-6 pb-4 md:px-gutter">
-              <div className="mx-auto max-w-lg">
+            <div className="mx-auto max-w-frame px-6 pb-4 md:px-gutter">
+              <div className="relative mx-auto max-w-lg">
                 <Plate
                   image={project.hero}
                   sizes="(max-width: 768px) 100vw, 512px"
                   priority
                 />
-              </div>
 
-              {/* Trial (First 3D Character only for now): the same cut-out
-                  bobbing in the homepage hero, floating in the frame's
-                  own margin beside the spot hero. Hidden below md — that
-                  margin doesn't exist once the hero runs full width. */}
-              {project.floatingObject && (
-                <div
-                  aria-hidden="true"
-                  className="absolute right-6 top-1/2 hidden w-28 -translate-y-1/2 animate-[bob_4s_ease-in-out_infinite] md:block lg:right-20 lg:w-36"
-                  style={{ aspectRatio: project.floatingObject.aspect }}
-                >
-                  <Image
-                    src={project.floatingObject.src}
-                    alt=""
-                    fill
-                    sizes="144px"
-                    className="object-contain"
-                  />
-                </div>
-              )}
+                {/* Trial (First 3D Character only for now): the same
+                    cut-out bobbing in the homepage hero, circling the
+                    spot hero like a sticker orbiting a quote card. Needs
+                    the wide margin `orbit-loop` swings into, so it's
+                    hidden below md rather than fighting for room beside
+                    a hero that's already full-width on mobile. */}
+                {project.floatingObject && (
+                  <div
+                    aria-hidden="true"
+                    className="absolute left-1/2 top-1/2 hidden w-32 animate-[orbit-loop_18s_ease-in-out_infinite] md:block lg:w-44"
+                    style={{ aspectRatio: project.floatingObject.aspect }}
+                  >
+                    <Image
+                      src={project.floatingObject.src}
+                      alt=""
+                      fill
+                      sizes="176px"
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           )}
 

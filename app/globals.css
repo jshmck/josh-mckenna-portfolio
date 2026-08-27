@@ -281,6 +281,52 @@
   }
 }
 
+/* A sticker loosely circling a piece of art — First 3D Character's floating
+   cut-out (app/work/[slug]/page.tsx). Anchored at the hero's centre point
+   (left: 50%; top: 50%) then carried around it on the standalone `translate`/
+   `rotate` properties, Tailwind v4's split rather than the bundled `transform`
+   shorthand — same split components/ui/tilt-illustration.tsx uses, so this
+   doesn't fight any transform a hover state might add later. The -50%/-50%
+   baked into every stop re-centres the element on itself before the orbit
+   offset is added, since `translate` percentages are relative to the
+   element's own box, not its container. Pure CSS, so the sitewide
+   prefers-reduced-motion rule neutralises it on its own. */
+@keyframes orbit-loop {
+  0%,
+  100% {
+    translate: calc(-50% + 190px) -50%;
+    rotate: 0deg;
+  }
+  12.5% {
+    translate: calc(-50% + 134px) calc(-50% + 134px);
+    rotate: 6deg;
+  }
+  25% {
+    translate: -50% calc(-50% + 190px);
+    rotate: 0deg;
+  }
+  37.5% {
+    translate: calc(-50% - 134px) calc(-50% + 134px);
+    rotate: -6deg;
+  }
+  50% {
+    translate: calc(-50% - 190px) -50%;
+    rotate: 0deg;
+  }
+  62.5% {
+    translate: calc(-50% - 134px) calc(-50% - 134px);
+    rotate: 6deg;
+  }
+  75% {
+    translate: -50% calc(-50% - 190px);
+    rotate: 0deg;
+  }
+  87.5% {
+    translate: calc(-50% + 134px) calc(-50% - 134px);
+    rotate: -6deg;
+  }
+}
+
 /* Project lightbox (components/work/image-stack.tsx and poster-grid.tsx).
    The backdrop fades in once per open; the framed image plays one of three
    one-shot entrances keyed off React `key` — a bouncy pop for the first
