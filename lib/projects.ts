@@ -256,6 +256,14 @@ export type Project = {
   posterGridColumns?: 4 | 5;
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
+  /**
+   * Trial: sorts before every non-pinned project, lowest rank first —
+   * Tanning Tips only for now. getAllProjects() otherwise sorts strictly
+   * by year descending, which would sink a genuinely old piece (2018) to
+   * the bottom of /work regardless of how much Josh wants it visible.
+   * Ties (or the default, unset) fall back to the normal year sort.
+   */
+  pinnedRank?: number;
 };
 
 export const projects: Project[] = [
@@ -264,6 +272,9 @@ export const projects: Project[] = [
     title: "Tanning Tips",
     client: "Vogue Magazine",
     year: 2018,
+    // Sorts to the very front of /work regardless of year — Josh wants
+    // this one prominent despite being older than most of the rest.
+    pinnedRank: 1,
     discipline: "Editorial Illustration",
     deliverables: "3 Spot Illustrations",
     categories: ["Editorial"],
@@ -1504,9 +1515,15 @@ export const projects: Project[] = [
    Access helpers — pages should use these, never `projects` directly.
    ========================================================================== */
 
-/** Newest first. */
+/** Newest first, except any pinnedRank project sorts to the front first
+ *  (lowest rank first) — see Project.pinnedRank. */
 export function getAllProjects(): Project[] {
-  return [...projects].sort((a, b) => b.year - a.year);
+  return [...projects].sort((a, b) => {
+    const rankA = a.pinnedRank ?? Infinity;
+    const rankB = b.pinnedRank ?? Infinity;
+    if (rankA !== rankB) return rankA - rankB;
+    return b.year - a.year;
+  });
 }
 
 export function getProject(slug: string): Project | undefined {
