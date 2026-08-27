@@ -303,14 +303,14 @@ export default async function ProjectPage({
             </div>
           )}
 
-          <WriteUp project={project} />
-
           {project.heroSize === "spot" && (
-            // Runs below the write-up instead of above it, capped at a
-            // modest width, no caption — a piece drawn to run at a few
-            // centimetres next to magazine text looks wrong leading the
-            // page at full-bleed size with a label under it.
-            <div className="mx-auto max-w-frame px-6 pb-4 md:px-gutter">
+            // Leads the page same as every other project's key art, per
+            // Josh — moved above the write-up (was below) so single-image
+            // projects read the same order as LA Pride etc. Still capped
+            // to a modest width and uncaptioned: a piece drawn to run at
+            // a few centimetres next to magazine text looks wrong blown
+            // up to full frame width with a label under it.
+            <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
               <div className="mx-auto max-w-lg">
                 <Plate
                   image={project.hero}
@@ -320,6 +320,8 @@ export default async function ProjectPage({
               </div>
             </div>
           )}
+
+          <WriteUp project={project} />
 
           {/* Trial (la-pride only for now, `galleryLayout: "grid"`): the
               classic tall two-up leads (key art + flyposted lineup), then
