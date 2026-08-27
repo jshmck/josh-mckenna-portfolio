@@ -24,15 +24,23 @@ type Filter = ProjectCategory | "All";
  * Ratio rhythm for the masonry columns. Cycling a fixed sequence rather than
  * randomising keeps the grid's staggered look identical between server and
  * client renders — random heights would hydrate mismatched.
+ *
+ * Two close values, not the six-wide spread this used to cycle through
+ * (4/5, 3/4, 1/1, 5/4, 3/4, 4/5) — that ranged a full 0.75-1.25, and next
+ * to each other in a masonry grid the effect read as uneven rather than
+ * intentionally staggered. 4/5 and 1/1 still gives every card without its
+ * own cardRatio a real rhythm, just a calmer one. Pieces with a genuine
+ * landscape or tall-portrait shape keep cropping nothing — they set their
+ * own cardRatio and skip this cycle entirely, same as before.
  */
-const RATIO_CYCLE: ImageRatio[] = ["4/5", "3/4", "1/1", "5/4", "3/4", "4/5"];
+const RATIO_CYCLE: ImageRatio[] = ["4/5", "1/1"];
 
 /**
  * Any card at or past this width/height spans two masonry columns instead
  * of one — a true landscape image forced into a single narrow column
- * (RATIO_CYCLE tops out at 5/4 = 1.25) would run either badly cropped or
- * absurdly tall. 1.3 sits just above that ceiling, so nothing in the
- * normal cycle crosses it by accident; only a genuinely landscape
+ * (RATIO_CYCLE tops out at 1/1 = 1) would run either badly cropped or
+ * absurdly tall. 1.3 sits comfortably above that ceiling, so nothing in
+ * the normal cycle crosses it by accident; only a genuinely landscape
  * cardRatio (UAL Booklets 16/10 = 1.6, Bombay Sapphire 3/2 = 1.5,
  * Wagamama Brighton 1111/640 ≈ 1.74) does.
  */
