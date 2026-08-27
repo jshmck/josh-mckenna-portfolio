@@ -277,7 +277,11 @@ export function WorkGallery({
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Filter work by discipline">
+      <div
+        className="flex flex-wrap justify-center gap-2"
+        role="group"
+        aria-label="Filter work by discipline"
+      >
         {filters.map((option) => {
           const active = filter === option;
 
