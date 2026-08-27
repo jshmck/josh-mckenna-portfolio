@@ -1272,11 +1272,11 @@ export const projects: Project[] = [
     discipline: "Festival Identity",
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
     categories: ["Pride"],
-    // True ratio of the new lockup cardImage (2700×2160 = 1.25 exactly) —
-    // RATIO_CYCLE tops out at 1.25 too, so this rarely bites, but pins it
-    // explicitly rather than leaving it to chance which cycle slot lands
-    // here (a slightly-off ratio would crop "PRIDE 2024" at the edges).
-    cardRatio: "5/4",
+    // True ratio of the lockup cardImage (2700×2700, a true square crop of
+    // the same artwork) — pinned explicitly rather than leaving it to
+    // chance which cycle slot lands here (a slightly-off ratio would crop
+    // "PRIDE 2024" at the edges).
+    cardRatio: "1/1",
     summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption: "",
     brief: [
@@ -1307,11 +1307,11 @@ export const projects: Project[] = [
     // project page's own hero (above) is the photo. Solid lime-green
     // background, not the transparent key-art lockup this replaced — cover
     // fit needs no contain/canvas-letterbox workaround, and cardRatio holds
-    // the frame at the art's true 5/4 so "PRIDE 2024" isn't cropped.
+    // the frame at the art's true 1/1 so "PRIDE 2024" isn't cropped.
     cardImage: {
-      ratio: "5/4",
+      ratio: "1/1",
       alt: "The LA Pride 2024 lockup",
-      src: "/work/la-pride/01-la-pride.webp",
+      src: "/work/la-pride/01-la-pride-1x1.webp",
     },
     cardHoverImage: {
       ratio: "2/3",
