@@ -297,10 +297,20 @@ export function WorkGallery({
           has no partial cross-column span, only column-span: all (which
           breaks a card out full-width, not the 2-of-3 bento look Josh
           wanted), so the spanning card gets pulled into its own CSS Grid
-          row instead. */}
+          row instead.
+
+          column-fill: auto, not the balance default — balance pre-computes
+          an "ideal" equal height per column before it knows every card's
+          real rendered height, and when a card (blocked by break-inside-
+          avoid below) doesn't fit the leftover space in its target column,
+          the browser pushes it to the next column and leaves the gap it
+          would've filled sitting empty. auto just fills columns straight
+          through in source order instead of chasing equal height, which
+          reads slightly less "balanced" at a glance but never leaves a
+          gap like that. */}
       <div className="mt-12 space-y-8">
         {before.length > 0 && (
-          <div className="gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
+          <div className="gap-8 [column-fill:auto] columns-1 md:columns-2 lg:columns-3">
             {before.map(({ project, index }) => (
               <div key={project.slug} className="mb-8 break-inside-avoid">
                 <MasonryCard project={project} index={index} />
@@ -328,7 +338,7 @@ export function WorkGallery({
         )}
 
         {after.length > 0 && (
-          <div className="gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
+          <div className="gap-8 [column-fill:auto] columns-1 md:columns-2 lg:columns-3">
             {after.map(({ project, index }) => (
               <div key={project.slug} className="mb-8 break-inside-avoid">
                 <MasonryCard project={project} index={index} />
