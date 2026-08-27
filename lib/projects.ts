@@ -69,6 +69,15 @@ export type ProjectImage = {
    * behind real artwork.
    */
   fit?: "cover" | "contain";
+  /**
+   * Set to `false` to skip the visible caption ImageStack prints under a
+   * gallery image, while keeping `alt` for accessibility — trial, wired
+   * up in ImageStack's row-grouped images only so far (Instagram
+   * Sticker's LA row: Venice Beach keeps its caption, the two supporting
+   * shots either side don't need to repeat "part of the same LA series").
+   * Defaults to true.
+   */
+  caption?: boolean;
 };
 
 export type Credit = {
@@ -263,7 +272,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "instagram-sticker",
-    title: "Instagram Pride Sticker",
+    title: "Pride Sticker",
     client: "Instagram",
     year: 2017,
     yearLabel: "2017–2022",
@@ -355,11 +364,13 @@ export const projects: Project[] = [
         ratio: "9/16",
         alt: "The character on top of a liquor store sign, part of the same LA series.",
         src: "/work/instagram-sticker/01-02.webp",
+        caption: false,
       },
       {
         ratio: "9/16",
         alt: "The character balanced on a vintage Jeep, part of the same LA series.",
         src: "/work/instagram-sticker/02-05.webp",
+        caption: false,
       },
       {
         ratio: "4/5",

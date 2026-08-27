@@ -183,7 +183,9 @@ export function ImageStack({
                           sizes={span.count === 3 ? "(max-width: 640px) 100vw, 33vw" : "(max-width: 640px) 100vw, 50vw"}
                         />
                       </button>
-                      <p className="type-label mt-3 text-ink-muted">{spanImage.alt}</p>
+                      {spanImage.caption !== false && (
+                        <p className="type-label mt-3 text-ink-muted">{spanImage.alt}</p>
+                      )}
                     </div>
                   ))}
                 </div>
