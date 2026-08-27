@@ -376,28 +376,6 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
-    slug: "womp-pool-guy",
-    title: "Pool Guy",
-    client: "Personal",
-    year: 2026,
-    discipline: "3D Illustration",
-    deliverables: "1 Render",
-    categories: ["3D", "Character"],
-    summary: "A cold drink, a green lilo, and nowhere else to be.",
-    heroCaption: "",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool — a cold drink, a green pool float, a green cap.",
-    ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
-    heroSize: "spot",
-    hero: {
-      ratio: "4/5",
-      alt: "The pool guy",
-      src: "/work/womp-pool-guy/01-pool-guy.webp",
-    },
-    gallery: [],
-  },
-  {
     slug: "womp-last-call",
     title: "Last Call",
     client: "Personal",
