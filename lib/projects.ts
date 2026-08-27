@@ -273,17 +273,17 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — a glossy figure bent double, taking a selfie of its own backside.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // Both this and heroPair are genuinely 1920x2160 (8/9) — a cleaner,
+    // less grainy re-render of the same pose than the original hero, and
+    // it happens to share heroPair's exact true ratio, so no crop
+    // compromise is needed to land the two frames the same size.
     hero: {
-      ratio: "1/1",
+      ratio: "8/9",
       alt: "Bum selfie",
-      src: "/work/womp-bum-selfie/01-bum-selfie-final.webp",
+      src: "/work/womp-bum-selfie/01-orang.webp",
     },
-    // True ratio is 8/9 (1920x2160), but matched to hero's 1/1 here — an
-    // 11% crop, safe given the generous plain-background margin — so the
-    // two frames land the same size side by side instead of two
-    // different heights. Same fix Pato and Last Call needed.
     heroPair: {
-      ratio: "1/1",
+      ratio: "8/9",
       alt: "Bum selfie, head-on",
       src: "/work/womp-bum-selfie/02-bum-selfie-front.webp",
     },
