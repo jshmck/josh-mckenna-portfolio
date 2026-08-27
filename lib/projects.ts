@@ -911,14 +911,17 @@ export const projects: Project[] = [
       { role: "Creative Direction & Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Nomad Wheel Co." },
     ],
-    // The /work card leads with a tighter crop of the hero poster — the
-    // source has a generous flat, empty margin above the dunes that read
-    // as dead space against the card's rounded corners at full frame.
-    cardRatio: "5/4",
+    // The /work card leads with a tighter crop of the hero poster, zoomed
+    // in past the source's flat empty sky margin so no dead space or edge
+    // artefact shows against the card's rounded corners. Re-cropped from
+    // the original 10800x14400 print file (not the downscaled hero webp)
+    // for a clean 4/5 portrait — the source has plenty of resolution to
+    // spare.
+    cardRatio: "4/5",
     cardImage: {
-      ratio: "5/4",
+      ratio: "4/5",
       alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
-      src: "/work/nomad-wheels-505-livery/03-touring-card.webp",
+      src: "/work/nomad-wheels-505-livery/06-touring-card-portrait.webp",
     },
     // Promo film leads the page (real audio, native controls — sound:
     // true), with the poster and the flyer as a two-up underneath it
