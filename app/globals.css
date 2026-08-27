@@ -281,15 +281,19 @@
   }
 }
 
-/* A sticker loosely circling a piece of art — First 3D Character's floating
-   cut-out (app/work/[slug]/page.tsx). Anchored at the hero's centre point
-   (left: 50%; top: 50%) then carried around it on the standalone `translate`/
-   `rotate` properties, Tailwind v4's split rather than the bundled `transform`
+/* A sticker looping a piece of text — First 3D Character's floating cut-out,
+   circling the h1 (app/work/[slug]/page.tsx) the way an Instagram sticker
+   loops a quote card. Anchored at the title's centre point (left: 50%; top:
+   50%) then carried around it on the standalone `translate`/`rotate`
+   properties, Tailwind v4's split rather than the bundled `transform`
    shorthand — same split components/ui/tilt-illustration.tsx uses, so this
    doesn't fight any transform a hover state might add later. The -50%/-50%
    baked into every stop re-centres the element on itself before the orbit
    offset is added, since `translate` percentages are relative to the
-   element's own box, not its container. Pure CSS, so the sitewide
+   element's own box, not its container. Flattened to an ellipse (190px
+   horizontal, 80px vertical) rather than a circle — a single-line title is
+   wide and short, so a circular swing would carry the sticker far above and
+   below the text instead of hugging it. Pure CSS, so the sitewide
    prefers-reduced-motion rule neutralises it on its own. */
 @keyframes orbit-loop {
   0%,
@@ -298,15 +302,15 @@
     rotate: 0deg;
   }
   12.5% {
-    translate: calc(-50% + 134px) calc(-50% + 134px);
+    translate: calc(-50% + 134px) calc(-50% + 57px);
     rotate: 6deg;
   }
   25% {
-    translate: -50% calc(-50% + 190px);
+    translate: -50% calc(-50% + 80px);
     rotate: 0deg;
   }
   37.5% {
-    translate: calc(-50% - 134px) calc(-50% + 134px);
+    translate: calc(-50% - 134px) calc(-50% + 57px);
     rotate: -6deg;
   }
   50% {
@@ -314,15 +318,15 @@
     rotate: 0deg;
   }
   62.5% {
-    translate: calc(-50% - 134px) calc(-50% - 134px);
+    translate: calc(-50% - 134px) calc(-50% - 57px);
     rotate: 6deg;
   }
   75% {
-    translate: -50% calc(-50% - 190px);
+    translate: -50% calc(-50% - 80px);
     rotate: 0deg;
   }
   87.5% {
-    translate: calc(-50% + 134px) calc(-50% - 134px);
+    translate: calc(-50% + 134px) calc(-50% - 57px);
     rotate: -6deg;
   }
 }

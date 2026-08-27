@@ -126,9 +126,31 @@ export default async function ProjectPage({
           </p>
 
           <div className="mt-6 flex items-end gap-2">
-            <h1 className="type-display max-w-4xl shrink-0 leading-[1.1] text-accent">
-              {displayTitle}
-            </h1>
+            <div className="relative shrink-0">
+              <h1 className="type-display max-w-4xl leading-[1.1] text-accent">
+                {displayTitle}
+              </h1>
+
+              {/* Trial (First 3D Character only for now): the same cut-out
+                  that bobs in the homepage hero, circling the title like a
+                  sticker looping a quote card. Hidden below md — no room
+                  for `orbit-loop`'s swing once the header stacks tighter. */}
+              {project.floatingObject && (
+                <div
+                  aria-hidden="true"
+                  className="absolute left-1/2 top-1/2 hidden w-32 animate-[orbit-loop_18s_ease-in-out_infinite] md:block lg:w-44"
+                  style={{ aspectRatio: project.floatingObject.aspect }}
+                >
+                  <Image
+                    src={project.floatingObject.src}
+                    alt=""
+                    fill
+                    sizes="176px"
+                    className="object-contain"
+                  />
+                </div>
+              )}
+            </div>
 
             {/* Trial (la-pride only for now): sat on the title's own
                 baseline, anchored left right after the title and reduced
@@ -289,34 +311,12 @@ export default async function ProjectPage({
             // centimetres next to magazine text looks wrong leading the
             // page at full-bleed size with a label under it.
             <div className="mx-auto max-w-frame px-6 pb-4 md:px-gutter">
-              <div className="relative mx-auto max-w-lg">
+              <div className="mx-auto max-w-lg">
                 <Plate
                   image={project.hero}
                   sizes="(max-width: 768px) 100vw, 512px"
                   priority
                 />
-
-                {/* Trial (First 3D Character only for now): the same
-                    cut-out bobbing in the homepage hero, circling the
-                    spot hero like a sticker orbiting a quote card. Needs
-                    the wide margin `orbit-loop` swings into, so it's
-                    hidden below md rather than fighting for room beside
-                    a hero that's already full-width on mobile. */}
-                {project.floatingObject && (
-                  <div
-                    aria-hidden="true"
-                    className="absolute left-1/2 top-1/2 hidden w-32 animate-[orbit-loop_18s_ease-in-out_infinite] md:block lg:w-44"
-                    style={{ aspectRatio: project.floatingObject.aspect }}
-                  >
-                    <Image
-                      src={project.floatingObject.src}
-                      alt=""
-                      fill
-                      sizes="176px"
-                      className="object-contain"
-                    />
-                  </div>
-                )}
               </div>
             </div>
           )}
