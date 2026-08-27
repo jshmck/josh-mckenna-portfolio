@@ -323,23 +323,27 @@ export const projects: Project[] = [
       src: "/work/instagram-sticker/09-mardi-gras-video.mp4",
       alt: "Footage from the Sydney Mardi Gras parade, courtesy of Pedestrian TV.",
       sound: true,
-      afterIndex: 2,
+      afterIndex: 3,
     },
-    // Mardi Gras 2019 + Detail lead as the two-up pair — both 3/4, so the
-    // row lands the same height on both sides (same fix Pato's two hero
-    // frames needed). Sticker Set (16/9) would have mismatched badly
-    // against either, so it runs full width instead, right after.
-    //
-    // gallerySpans groups two sets that would otherwise stack awkwardly
-    // as full-width singles: the three LA composites (indices 3-5, all
-    // true 9/16 phone-portrait shots — same fix Venice already needed)
-    // share one row, and the book feature + Meta mural (indices 6-7,
-    // both 4/5) — the two "lonely" single-image features — pair up too.
+    // Sticker Set (16/9) leads as a standalone single, above the float, per
+    // Josh — it can't sit in a two-up pair with either Mardi Gras photo
+    // (3/4) without mismatching heights, so gallerySpans skips the default
+    // "first two auto-pair" and takes manual control of the whole layout
+    // from index 0: Mardi Gras 2019 + Detail pair at indices 1-2, the three
+    // LA composites (indices 3-5, all true 9/16) share a row, and the book
+    // feature + Meta mural (indices 6-7, both 4/5) — the two "lonely"
+    // single-image features — pair up too.
     gallerySpans: [
+      { startIndex: 1, count: 2 },
       { startIndex: 3, count: 3 },
       { startIndex: 6, count: 2 },
     ],
     gallery: [
+      {
+        ratio: "16/9",
+        alt: "The sticker as it appeared within the Pride set.",
+        src: "/work/instagram-sticker/05-sticker-set.webp",
+      },
       {
         ratio: "3/4",
         alt: "The character reimagined as a 10ft-high float, watched by an estimated 500,000 spectators at the Sydney Mardi Gras parade.",
@@ -349,11 +353,6 @@ export const projects: Project[] = [
         ratio: "3/4",
         alt: "Close-up of the float lit up at night during the parade.",
         src: "/work/instagram-sticker/07-sydney-mardi-gras-2.webp",
-      },
-      {
-        ratio: "16/9",
-        alt: "The sticker as it appeared within the Pride set.",
-        src: "/work/instagram-sticker/05-sticker-set.webp",
       },
       {
         ratio: "9/16",

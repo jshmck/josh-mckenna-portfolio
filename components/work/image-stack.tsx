@@ -9,7 +9,9 @@ import { ProjectVideo } from "@/components/work/project-video";
 import type { ImageRatio, ProjectImage } from "@/lib/projects";
 
 type ImageStackProps = {
-  /** First two render as a two-up row; everything after runs full width. */
+  /** First two render as a two-up row and everything after runs full
+   *  width, unless `gallerySpans` is set — then it takes full manual
+   *  control of the layout from index 0 instead. */
   images: ProjectImage[];
   /** Trial (Instagram Sticker only): a silent video inserted mid-gallery,
    *  outside the lightbox's photo-cycle. See Project.galleryVideo. */
@@ -54,7 +56,15 @@ export function ImageStack({
   // null = fresh open (bouncy pop-in); set on every arrow/keyboard nav so the
   // next frame slides in from the direction of travel instead of hard-cutting.
   const [direction, setDirection] = useState<"next" | "prev" | null>(null);
+  // Defining any gallerySpans opts a project out of the default "first two
+  // auto-pair" convenience — it's taking manual control of the layout from
+  // index 0 instead (Instagram Sticker: a standalone single leads, then a
+  // span-defined pair, not the hardcoded first-two). Every other project
+  // passes no gallerySpans, so this is always false there and nothing changes.
+  const manualLayout = gallerySpans.length > 0;
   const [firstImage, secondImage, ...restImages] = images;
+  const loopImages = manualLayout ? images : restImages;
+  const indexOffset = manualLayout ? 0 : 2;
 
   const goNext = () => {
     setDirection("next");
@@ -127,7 +137,7 @@ export function ImageStack({
           </Reveal>
         )}
 
-        {(firstImage || secondImage) && (
+        {!manualLayout && (firstImage || secondImage) && (
           <div className="grid gap-8 md:grid-cols-2">
             {[firstImage, secondImage].filter(Boolean).map((image, index) => (
               <Reveal key={image.alt} delay={index * 110}>
@@ -145,18 +155,8 @@ export function ImageStack({
           </div>
         )}
 
-        {galleryVideo && galleryVideo.afterIndex === 2 && (
-          <Reveal>
-            <ProjectVideo
-              video={{ src: galleryVideo.src, alt: galleryVideo.alt }}
-              sound={galleryVideo.sound}
-            />
-            <p className="type-label mt-3 text-ink-muted">{galleryVideo.alt}</p>
-          </Reveal>
-        )}
-
-        {restImages.map((image, index) => {
-          const fullIndex = index + 2;
+        {loopImages.map((image, index) => {
+          const fullIndex = index + indexOffset;
 
           // Already rendered as part of an earlier row — skip.
           const inLaterSpan = gallerySpans.some(
@@ -166,30 +166,42 @@ export function ImageStack({
 
           const span = gallerySpans.find((s) => s.startIndex === fullIndex);
           if (span) {
-            const spanImages = restImages.slice(index, index + span.count);
+            const spanImages = loopImages.slice(index, index + span.count);
             return (
-              <Reveal key={image.alt}>
-                <div className={`grid grid-cols-1 gap-8 ${span.count === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
-                  {spanImages.map((spanImage, i) => (
-                    <div key={spanImage.alt}>
-                      <button
-                        type="button"
-                        onClick={() => openAt(fullIndex + i)}
-                        aria-label={`Open larger view of ${spanImage.alt}`}
-                        className="block w-full cursor-zoom-in text-left"
-                      >
-                        <Plate
-                          image={spanImage}
-                          sizes={span.count === 3 ? "(max-width: 640px) 100vw, 33vw" : "(max-width: 640px) 100vw, 50vw"}
-                        />
-                      </button>
-                      {spanImage.caption !== false && (
-                        <p className="type-label mt-3 text-ink-muted">{spanImage.alt}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
+              <Fragment key={image.alt}>
+                <Reveal>
+                  <div className={`grid grid-cols-1 gap-8 ${span.count === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+                    {spanImages.map((spanImage, i) => (
+                      <div key={spanImage.alt}>
+                        <button
+                          type="button"
+                          onClick={() => openAt(fullIndex + i)}
+                          aria-label={`Open larger view of ${spanImage.alt}`}
+                          className="block w-full cursor-zoom-in text-left"
+                        >
+                          <Plate
+                            image={spanImage}
+                            sizes={span.count === 3 ? "(max-width: 640px) 100vw, 33vw" : "(max-width: 640px) 100vw, 50vw"}
+                          />
+                        </button>
+                        {spanImage.caption !== false && (
+                          <p className="type-label mt-3 text-ink-muted">{spanImage.alt}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </Reveal>
+
+                {galleryVideo && galleryVideo.afterIndex === fullIndex + span.count && (
+                  <Reveal>
+                    <ProjectVideo
+                      video={{ src: galleryVideo.src, alt: galleryVideo.alt }}
+                      sound={galleryVideo.sound}
+                    />
+                    <p className="type-label mt-3 text-ink-muted">{galleryVideo.alt}</p>
+                  </Reveal>
+                )}
+              </Fragment>
             );
           }
 
@@ -199,7 +211,7 @@ export function ImageStack({
               <Reveal className={portrait ? "mx-auto max-w-lg" : undefined}>
                 <button
                   type="button"
-                  onClick={() => openAt(index + 2)}
+                  onClick={() => openAt(fullIndex)}
                   aria-label={`Open larger view of ${image.alt}`}
                   className="block w-full cursor-zoom-in text-left"
                 >
@@ -215,7 +227,7 @@ export function ImageStack({
                 <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
               </Reveal>
 
-              {galleryVideo && galleryVideo.afterIndex === index + 3 && (
+              {galleryVideo && galleryVideo.afterIndex === fullIndex + 1 && (
                 <Reveal>
                   <ProjectVideo
                     video={{ src: galleryVideo.src, alt: galleryVideo.alt }}
