@@ -16,6 +16,7 @@ export const PROJECT_CATEGORIES = [
   "Automotive",
   "3D",
   "Hospitality",
+  "Icons",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
@@ -44,7 +45,14 @@ export type ImageRatio =
   // Womp 3D Exploration's leaping-girl render — a full diagonal reach with
   // the trailing hand already close to the frame edge; the nearest stock
   // ratio (4/5) would clip the fingers. True 1920x2160 output ratio.
-  | "8/9";
+  | "8/9"
+  // Instagram Sticker's Venice Beach photo — a standard phone-portrait
+  // shot (1134x2016, true 9:16). Nearest existing ratio (3/4) would have
+  // cropped 28.7%, risking the figure's raised arm at the top of frame.
+  | "9/16"
+  // Instagram Sticker's Sticker Set photo — true 16:9, no existing ratio
+  // came within 10% without a visible side crop.
+  | "16/9";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -190,6 +198,34 @@ export type Project = {
    * anything beside a hero that's already full-width on mobile.
    */
   floatingObject?: { src: string; aspect: string };
+  /**
+   * Trial: a silent video inserted mid-gallery — Instagram Sticker's Mardi
+   * Gras footage only for now. Doesn't join the lightbox's click-to-enlarge
+   * cycle (ImageStack's `images` stays pure photos); rendered as its own
+   * block in normal scroll flow, positioned by `afterIndex` (0 = before
+   * every gallery image, 1 = after `gallery[0]`, etc — same indexing as
+   * `gallery` itself, not `restImages`).
+   */
+  galleryVideo?: {
+    src: string;
+    alt: string;
+    sound?: boolean;
+    afterIndex: number;
+  };
+  /**
+   * Trial: an animated GIF inserted mid-gallery — Instagram Sticker's
+   * original sticker animation only for now. Next's image optimizer
+   * freezes GIFs to their first frame, so this bypasses Plate and renders
+   * via next/image's `unoptimized` mode instead, which serves the source
+   * bytes as-is and keeps the animation. Same `afterIndex` indexing as
+   * `galleryVideo`.
+   */
+  galleryGif?: {
+    src: string;
+    alt: string;
+    ratio: ImageRatio;
+    afterIndex: number;
+  };
   /** Gallery below the write-up. First two render as a two-up row, unless
    *  `galleryLayout` says otherwise. */
   gallery: ProjectImage[];
@@ -215,6 +251,89 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "instagram-sticker",
+    title: "Instagram Pride Sticker",
+    client: "Instagram",
+    year: 2017,
+    yearLabel: "2017–2022",
+    discipline: "Pride Campaign",
+    deliverables: "Sticker Set · Mural · Parade Float",
+    categories: ["Pride", "Mural", "Character", "Icons"],
+    featured: true,
+    summary:
+      "A Pride sticker for Instagram Stories, meant to last a month. It stayed live for five years.",
+    heroCaption: "The original character design, created for Instagram's 2017 Pride sticker set.",
+    brief: [
+      "In 2017, Jeffrey Gerson, then Instagram's Senior Product Marketing Lead, found a piece I'd done on David Hockney in the queer magazine Hello Mr and got in touch. Instagram wanted a sticker celebrating Pride for a new Stories sticker set, alongside other LGBTQ+ artists — Carra Sykes, Andy Simmonds, Cute Brute and José Antonio Roda — live throughout Pride month.",
+      "I drew a sassy, muscular bloke in red high heels, built to read clearly at sticker size — a couple of centimetres on a phone screen. Bold shapes, a simple palette, tongue-in-cheek, true to my own experience of masculinity and Pride. Meant to last a month, it stayed embedded in the app for five years and was used by millions, including — unexpectedly — Michelle Obama.",
+      "It went well beyond the app: a 10ft float at Sydney Mardi Gras, murals at Trafalgar Square and Meta's head offices, an Instagram takeover of British Vogue's account, a feature in a Gestalten book, and public talks I still give today.",
+      "Almost a decade on, I still get messages from people thanking me for it — Jonathan Van Ness has talked about it on Queer Eye. It opened the door to years of Pride and charity work that followed, including a project Mel C put her name behind. Not bad for a sticker that was only meant to last a month.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Senior Product Marketing Lead", name: "Jeffrey Gerson" },
+      { role: "Video Footage — Sydney Mardi Gras", name: "Pedestrian TV" },
+    ],
+    hero: {
+      ratio: "1/1",
+      alt: "The Instagram Pride sticker character",
+      src: "/work/instagram-sticker/03-instagram-sticker.webp",
+    },
+    // GIF leads the gallery (afterIndex: 0, before the two-up pair) — the
+    // sticker's own animation, right after the write-up. Video sits after
+    // the two Mardi Gras stills (afterIndex: 3 = after gallery[2]), keeping
+    // that whole beat — float photo, float detail, footage — together.
+    galleryGif: {
+      src: "/work/instagram-sticker/10-sticker-animation.gif",
+      alt: "The move behind the sticker.",
+      ratio: "1/1",
+      afterIndex: 0,
+    },
+    galleryVideo: {
+      src: "/work/instagram-sticker/09-mardi-gras-video.mp4",
+      alt: "Footage from the Sydney Mardi Gras parade, courtesy of Pedestrian TV.",
+      sound: true,
+      afterIndex: 3,
+    },
+    gallery: [
+      {
+        ratio: "16/9",
+        alt: "The sticker as it appeared within the Pride set.",
+        src: "/work/instagram-sticker/05-sticker-set.webp",
+      },
+      {
+        ratio: "3/4",
+        alt: "The character reimagined as a 10ft-high float, watched by an estimated 500,000 spectators at the Sydney Mardi Gras parade.",
+        src: "/work/instagram-sticker/06-sydney-mardi-gras-1.webp",
+      },
+      {
+        ratio: "3/4",
+        alt: "Close-up of the float lit up at night during the parade.",
+        src: "/work/instagram-sticker/07-sydney-mardi-gras-2.webp",
+      },
+      {
+        ratio: "9/16",
+        alt: "The character placed on Venice Beach's Pride-painted lifeguard tower, part of a personal series of the character around LA.",
+        src: "/work/instagram-sticker/01-06.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "The project and interview feature in Mr Hudson Explores, published by Gestalten.",
+        src: "/work/instagram-sticker/04-mr-hudson-explores.webp",
+      },
+      {
+        ratio: "5/4",
+        alt: "Instagram takeover of British Vogue's account, where the mural at Trafalgar Square appeared behind me as I read out #kindcomments from the Pride sticker set's marketing campaign.",
+        src: "/work/instagram-sticker/08-vogue-takeover.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "The same three figures, painted inside Meta's head offices.",
+        src: "/work/instagram-sticker/02-facebook-mural-cropped.webp",
+      },
+    ],
+  },
   {
     slug: "womp-first-3d-character",
     title: "First 3D Character",
@@ -1156,7 +1275,6 @@ export const projects: Project[] = [
       },
     ],
     galleryLayout: "grid",
-    featured: true,
   },
   {
     slug: "night-bus",
