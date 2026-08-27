@@ -284,8 +284,8 @@ export const projects: Project[] = [
     // different heights. Same fix Pato and Last Call needed.
     heroPair: {
       ratio: "1/1",
-      alt: "Bum selfie, from the side",
-      src: "/work/womp-bum-selfie/02-bum-selfie-side.webp",
+      alt: "Bum selfie, head-on",
+      src: "/work/womp-bum-selfie/02-bum-selfie-front.webp",
     },
     // Video sits below the pair rather than leading the page — the
     // renders are the artwork, the clip is supplementary. Same reasoning
