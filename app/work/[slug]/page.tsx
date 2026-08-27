@@ -237,6 +237,7 @@ export default async function ProjectPage({
                         poster: project.heroVideo.poster ?? project.hero.src,
                       }}
                       sound={project.heroVideo.sound}
+                      ratio={project.heroVideo.ratio}
                     />
                   </div>
                 )}
@@ -297,6 +298,7 @@ export default async function ProjectPage({
                       poster: project.heroVideo.poster ?? project.hero.src,
                     }}
                     sound={project.heroVideo.sound}
+                    ratio={project.heroVideo.ratio}
                   />
                 </div>
               )}

@@ -265,7 +265,7 @@ export const projects: Project[] = [
     client: "Personal",
     year: 2026,
     discipline: "3D Illustration",
-    deliverables: "1 Render · 1 Turnaround",
+    deliverables: "2 Renders · 1 Turnaround",
     categories: ["3D", "Character"],
     summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
     heroCaption: "",
@@ -278,12 +278,26 @@ export const projects: Project[] = [
       alt: "Bum selfie",
       src: "/work/womp-bum-selfie/01-bum-selfie-final.webp",
     },
-    // Video sits below the hero rather than leading the page — the render
-    // is the artwork, the clip is supplementary. Same reasoning as Pato.
+    // True ratio is 8/9 (1920x2160), but matched to hero's 1/1 here — an
+    // 11% crop, safe given the generous plain-background margin — so the
+    // two frames land the same size side by side instead of two
+    // different heights. Same fix Pato and Last Call needed.
+    heroPair: {
+      ratio: "1/1",
+      alt: "Bum selfie, from the side",
+      src: "/work/womp-bum-selfie/02-bum-selfie-side.webp",
+    },
+    // Video sits below the pair rather than leading the page — the
+    // renders are the artwork, the clip is supplementary. Same reasoning
+    // as Pato.
     heroVideo: {
-      src: "/work/womp-bum-selfie/02-bum-selfie-video.mp4",
+      src: "/work/womp-bum-selfie/03-bum-selfie-video.mp4",
       alt: "The bum selfie, turning",
       position: "bottom",
+      // True 1078x1438 ratio ≈ 0.75 — without this it defaults to
+      // aspect-video (16:9), cropping this portrait clip hard to fit a
+      // much wider box.
+      ratio: "3/4",
     },
     gallery: [],
   },
