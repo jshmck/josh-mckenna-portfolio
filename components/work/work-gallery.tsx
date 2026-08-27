@@ -27,6 +27,17 @@ type Filter = ProjectCategory | "All";
  */
 const RATIO_CYCLE: ImageRatio[] = ["4/5", "3/4", "1/1", "5/4", "3/4", "4/5"];
 
+/**
+ * Any card at or past this width/height spans two masonry columns instead
+ * of one — a true landscape image forced into a single narrow column
+ * (RATIO_CYCLE tops out at 5/4 = 1.25) would run either badly cropped or
+ * absurdly tall. 1.3 sits just above that ceiling, so nothing in the
+ * normal cycle crosses it by accident; only a genuinely landscape
+ * cardRatio (UAL Booklets 16/10 = 1.6, Bombay Sapphire 3/2 = 1.5,
+ * Wagamama Brighton 1111/640 ≈ 1.74) does.
+ */
+const LANDSCAPE_SPAN_RATIO = 1.3;
+
 /** Top-of-page illustration row, /work only (see showIllustrations
  *  above). Lives here rather than in app/work/page.tsx because it used
  *  to react to the active filter category -- that per-category logic
@@ -229,25 +240,6 @@ export function WorkGallery({
     [filter, projects],
   );
 
-  /**
-   * A `cardSpan: 2` project breaks the masonry into three segments: the
-   * normal column flow up to that card, a dedicated 2-column bento row for
-   * it plus whichever project follows, then normal column flow resumes.
-   * Index stays global across all three segments (not reset per-segment) so
-   * RATIO_CYCLE's rhythm and the first-3 `priority` preload are unaffected
-   * by the carve-out. Falls back to a single segment when no visible
-   * project (or the active filter cuts it) carries cardSpan.
-   */
-  const indexed = visible.map((project, index) => ({ project, index }));
-  const wideIndex = indexed.findIndex(({ project }) => project.cardSpan === 2);
-  const hasWide = wideIndex !== -1;
-  const pairIndex = hasWide && wideIndex + 1 < indexed.length ? wideIndex + 1 : -1;
-
-  const before = hasWide ? indexed.slice(0, wideIndex) : indexed;
-  const wide = hasWide ? indexed[wideIndex] : null;
-  const pairAfter = pairIndex !== -1 ? indexed[pairIndex] : null;
-  const after = hasWide ? indexed.slice(pairIndex !== -1 ? pairIndex + 1 : wideIndex + 1) : [];
-
   const filters: Filter[] = ["All", ...categories];
 
   return (
@@ -305,49 +297,33 @@ export function WorkGallery({
           ratio, see that component's doc comment) — replaced a CSS
           multi-column attempt that left occasional large gaps, since
           column-fill: balance estimates column heights before it knows
-          any card's real size. A cardSpan project splits this into up to
-          three stacked segments (see `before` / `wide` / `after` above)
-          rather than trying to make one container do both true masonry
-          AND bento spanning — the spanning card gets pulled into its own
-          CSS Grid row instead. */}
-      <div className="mt-12 space-y-8">
-        {before.length > 0 && (
-          <MasonryGrid
-            items={before.map(({ project, index }) => ({
+          any card's real size. Landscape cards (ratio ≥ LANDSCAPE_SPAN_RATIO)
+          span two columns automatically — MasonryGrid's bin-packer handles
+          spanning items natively, so this needed no separate bento-row
+          carve-out the way the old cardSpan flag did. */}
+      <div className="mt-12">
+        <MasonryGrid
+          items={visible.map((project, index) => {
+            const ratio = ratioToNumber(effectiveCardRatio(project, index));
+            const span = ratio >= LANDSCAPE_SPAN_RATIO ? 2 : 1;
+            return {
               key: project.slug,
-              ratio: ratioToNumber(effectiveCardRatio(project, index)),
-              node: <MasonryCard project={project} index={index} />,
-            }))}
-          />
-        )}
-
-        {wide && (
-          // items-start, not the grid default (stretch) — stretching would
-          // force the shorter of the two cards to distort past its own
-          // aspect-ratio to fill the taller one's row height. Left as-is,
-          // each card just keeps its own natural height even if that means
-          // the shorter one doesn't fill the row.
-          <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <div className="md:col-span-2">
-              <MasonryCard
-                project={wide.project}
-                index={wide.index}
-                sizes="(max-width: 1024px) 100vw, 66vw"
-              />
-            </div>
-            {pairAfter && <MasonryCard project={pairAfter.project} index={pairAfter.index} />}
-          </div>
-        )}
-
-        {after.length > 0 && (
-          <MasonryGrid
-            items={after.map(({ project, index }) => ({
-              key: project.slug,
-              ratio: ratioToNumber(effectiveCardRatio(project, index)),
-              node: <MasonryCard project={project} index={index} />,
-            }))}
-          />
-        )}
+              ratio,
+              span,
+              node: (
+                <MasonryCard
+                  project={project}
+                  index={index}
+                  sizes={
+                    span === 2
+                      ? "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 66vw"
+                      : undefined
+                  }
+                />
+              ),
+            };
+          })}
+        />
       </div>
 
       {/* Not visible — announces the filtered count to screen readers only.

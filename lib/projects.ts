@@ -167,17 +167,6 @@ export type Project = {
    */
   cardRatio?: ImageRatio;
   /**
-   * Trial: breaks this card out of the normal masonry columns into a
-   * dedicated bento row spanning 2 of the grid's 3 (or 2 of 2, at md)
-   * columns, with the next visible project filling the remaining column
-   * beside it — wagamama-brighton only for now. Lets a genuinely landscape
-   * piece read as landscape instead of getting cropped into whatever
-   * portrait-leaning ratio RATIO_CYCLE would otherwise assign it. Only one
-   * project should carry this at a time; WorkGallery only special-cases the
-   * first match.
-   */
-  cardSpan?: 2;
-  /**
    * Crossfades in over the card's lead image on hover/focus. Set this to
    * curate the pick (e.g. la-pride); otherwise `getCardHoverImage` below
    * picks `heroPair` or the first gallery image automatically, so every
@@ -1443,7 +1432,6 @@ export const projects: Project[] = [
       { role: "Client", name: "Wagamama" },
     ],
     cardRatio: "1111/640",
-    cardSpan: 2,
     hero: {
       ratio: "1111/640",
       alt: "The full Wagamama Brighton Pride artwork",
