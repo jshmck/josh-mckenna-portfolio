@@ -257,11 +257,13 @@ export type Project = {
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
   /**
-   * Trial: sorts before every non-pinned project, lowest rank first —
-   * Tanning Tips only for now. getAllProjects() otherwise sorts strictly
-   * by year descending, which would sink a genuinely old piece (2018) to
-   * the bottom of /work regardless of how much Josh wants it visible.
-   * Ties (or the default, unset) fall back to the normal year sort.
+   * Sorts before every non-pinned project, lowest rank first —
+   * Josh's own curated lead-in to /work, independent of year.
+   * getAllProjects() otherwise sorts strictly by year descending, which
+   * would sink a genuinely old piece (Beefbar and Pride Sticker both
+   * predate 2018) to the bottom regardless of how much Josh wants it
+   * visible. Ties (or the default, unset) fall back to the normal year
+   * sort — every unpinned project keeps sorting exactly as before.
    */
   pinnedRank?: number;
 };
@@ -314,6 +316,7 @@ export const projects: Project[] = [
     client: "Instagram",
     year: 2017,
     yearLabel: "2017–2022",
+    pinnedRank: 8,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set · Mural · Parade Float",
     categories: ["Pride", "Mural", "Character", "Icons"],
@@ -642,6 +645,7 @@ export const projects: Project[] = [
     title: "Living Regeneratively",
     client: "The Rooted Journal",
     year: 2025,
+    pinnedRank: 2,
     yearLabel: "Spring 2025",
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
@@ -747,6 +751,7 @@ export const projects: Project[] = [
     title: "Yeti",
     client: "Personal",
     year: 2025,
+    pinnedRank: 4,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Character"],
@@ -955,9 +960,10 @@ export const projects: Project[] = [
     title: "Sumo",
     client: "Monocle",
     year: 2018,
+    pinnedRank: 7,
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
-    categories: ["Editorial"],
+    categories: ["Editorial", "Icons"],
     summary: "A sumo wrestler's whole physique, reduced to a knot and a topknot.",
     heroCaption: "",
     brief: [
@@ -1126,6 +1132,7 @@ export const projects: Project[] = [
     client: "Beefbar",
     year: 2017,
     yearLabel: "2017–Present Day",
+    pinnedRank: 9,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
     categories: ["Hospitality", "Character"],
@@ -1245,6 +1252,7 @@ export const projects: Project[] = [
     title: "L.A. Pride",
     client: "City of Los Angeles",
     year: 2024,
+    pinnedRank: 6,
     discipline: "Festival Identity",
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
     categories: ["Pride"],
@@ -1378,6 +1386,7 @@ export const projects: Project[] = [
     title: "The Sound of Driving",
     client: "Personal",
     year: 2026,
+    pinnedRank: 3,
     discipline: "Editorial Illustration",
     deliverables: "Key Art · Magazine Mockup",
     categories: ["Automotive", "Editorial"],
@@ -1468,6 +1477,7 @@ export const projects: Project[] = [
     title: "Wagamama Brighton",
     client: "Wagamama",
     year: 2023,
+    pinnedRank: 5,
     discipline: "Window Display",
     deliverables: "Vinyl Printed Window Display",
     categories: ["Pride", "Character", "Hospitality"],
