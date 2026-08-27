@@ -29,27 +29,41 @@ import { navLinks } from "@/lib/site";
  * from the first pixel of scroll, same as `fixed` was. What actually
  * fixed the header-over-content smudge was the frost threshold below.
  *
- * Always 88px, never shrinks — a compact height used to kick in past
- * 120px of scroll, but chasing the visual side effects of animating a
- * fixed-position element's height kept surfacing new bugs for one motion
- * detail Josh wasn't attached to keeping. What scrolling still changes:
- * past 24px of scroll (back below 4px to undo — hysteresis, so it doesn't
- * flicker at the boundary on trackpad rubber-banding) the header picks up
- * a hairline bottom border and the same colourless frosted-glass treatment
- * as the hero's floating-object hover cards (bg-canvas/15 +
- * backdrop-blur-md). Unscrolled, it's fully transparent. Small fixed px
- * values, not viewport-relative — Josh wants the frost on the first
- * scroll gesture, not once you're meaningfully deep into the page. A
+ * The <header> itself is always 88px and never shrinks, and never carries
+ * a border or background any more — that's all on <nav> now (below). A
+ * compact header height used to kick in past 120px of scroll, but chasing
+ * the visual side effects of animating a fixed-position element's height
+ * kept surfacing new bugs for one motion detail Josh wasn't attached to
+ * keeping.
+ *
+ * What scrolling changes: past 24px of scroll (back below 4px to undo —
+ * hysteresis, so it doesn't flicker at the boundary on trackpad
+ * rubber-banding), <nav> — not <header> — picks up a full border-hairline,
+ * bg-canvas/15 and backdrop-blur-md (the same colourless frosted-glass
+ * treatment as the hero's floating-object hover cards), and reshapes from
+ * the resting edge-to-edge bar into a centered, content-hugging,
+ * rounded-full pill (first pass at the "floating pill" idea Josh wants to
+ * keep exploring — see the project memory). Because only the pill itself
+ * carries the frost now, content behind the header is blurred directly
+ * behind the pill and reads completely normally everywhere else across
+ * the 88px band — nothing else about the frost logic changed, same
+ * thresholds, same hysteresis, same trigger. Unscrolled, <nav> is fully
+ * transparent, no border, no background, exactly as it always was. Small
+ * fixed px values, not viewport-relative — Josh wants the frost on the
+ * first scroll gesture, not once you're meaningfully deep into the page. A
  * mid-range threshold (120px, tried previously) happened to land exactly
  * where Work's illustration row sits (~120-235px), so frost switching on
  * coincided visually with that row passing under the header. Near-zero
  * doesn't have that problem — frost is already on well before any
  * near-top content reaches the header.
  *
- * Link text is 14px, jM is 22px — bumped up in two passes from an
+ * Link text is 14px resting, jM 22px — both bumped further (15/17px links,
+ * 24/28px jM) in the scrolled/pill state, part of the pill idea itself:
+ * Josh wants the pill's type to read larger than the resting bar's, not
+ * just reshaped. Resting sizes bumped up in two earlier passes from an
  * original 11px/text-lg that read too small on larger screens, since
- * max-w-frame caps the bar's width but nothing scaled the type up to
- * fill more of it.
+ * max-w-frame caps the bar's width but nothing scaled the type up to fill
+ * more of it.
  *
  * On "/" only, the active highlight is also scroll-position-driven: the
  * homepage embeds the real Work gallery inline (see app/page.tsx's
@@ -174,20 +188,32 @@ export function Nav() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
+  // First pass at the "floating pill" idea (see memory/project notes) --
+  // unscrolled is untouched, byte-for-byte the same edge-to-edge
+  // transparent bar as before. Only the scrolled/frosted state's shape
+  // changes: instead of that same bar gaining a bottom border + blur, it
+  // shrinks to a centered, content-hugging pill with the same border-
+  // hairline + bg-canvas/15 backdrop-blur-md treatment, just on a rounded
+  // shape instead of a full-width one. No second/extra state -- the frost
+  // toggle (scrolled true/false) is exactly the same logic as before, only
+  // the classes attached to it changed shape. The header itself now only
+  // reserves layout height and centers its child; it never carries a
+  // border or background of its own any more, so content behind it is only
+  // ever obscured directly behind the pill, not across the full width.
   return (
     <>
-      <header
-        className={`sticky top-0 z-40 h-[88px] border-b transition-colors duration-300 ${
-          scrolled
-            ? "border-hairline bg-canvas/15 backdrop-blur-md"
-            : "border-transparent bg-transparent"
-        }`}
-      >
+      <header className="sticky top-0 z-40 flex h-[88px] items-center justify-center">
         <nav
           aria-label="Primary"
-          className="mx-auto flex h-full max-w-frame items-center justify-between px-6 md:px-gutter"
+          className={`mx-auto flex items-center transition-all duration-300 ease-in-out ${
+            scrolled
+              ? "w-fit max-w-[calc(100%-2rem)] justify-center gap-6 rounded-full border border-hairline bg-canvas/15 px-6 py-2.5 backdrop-blur-md md:gap-12 md:px-10 md:py-3"
+              : "h-full w-full max-w-frame justify-between px-6 md:px-gutter"
+          }`}
         >
-          <div className="flex items-center gap-6 md:gap-10">
+          <div
+            className={`flex items-center ${scrolled ? "gap-6 md:gap-12" : "gap-6 md:gap-10"}`}
+          >
             {/* Home link -- always routes to "/", every page, every state.
                 Small enough to not reintroduce the wordiness "Home" was cut
                 for, brand-blue per the wordmark colour rule, real lowercase
@@ -208,17 +234,24 @@ export function Nav() {
                 already on doesn't trigger Next's own navigation-scroll-
                 restoration (no route change actually happens), so clicking
                 jM while already on "/" did nothing if you'd scrolled down.
-                Every primary nav link gets the same treatment now. */}
+                Every primary nav link gets the same treatment now.
+
+                Bigger in the scrolled/pill state (24/28px vs the resting
+                22px) -- part of the pill idea itself, not a side effect. */}
             <Link
               href="/"
               aria-label="Josh McKenna — home"
               onClick={() => scrollToTopIfCurrent("/")}
-              className="font-display text-[22px] font-waldeck-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125"
+              className={`font-display font-waldeck-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 ${
+                scrolled ? "text-[24px] md:text-[28px]" : "text-[22px]"
+              }`}
             >
               jM
             </Link>
 
-            <ul className="flex items-center gap-5 md:gap-8">
+            <ul
+              className={`flex items-center ${scrolled ? "gap-6 md:gap-10" : "gap-5 md:gap-8"}`}
+            >
               {navLinks.map((link) => (
                 <li key={link.href}>
                   {/* Scale bounce on top of the existing bold+purple --
@@ -231,7 +264,9 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`inline-block font-body text-[14px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
+                    className={`inline-block font-body transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
+                      scrolled ? "text-[15px] md:text-[17px]" : "text-[14px]"
+                    } ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
@@ -244,13 +279,17 @@ export function Nav() {
             </ul>
           </div>
 
-          <ul className="ml-5 flex shrink-0 items-center gap-5 md:ml-8 md:gap-8">
+          <ul
+            className={`flex shrink-0 items-center gap-5 md:gap-8 ${scrolled ? "" : "ml-5 md:ml-8"}`}
+          >
             <li>
               <Link
                 href="/shop"
                 aria-current={isActive("/shop") ? "page" : undefined}
                 onClick={() => scrollToTopIfCurrent("/shop")}
-                className={`inline-block font-body text-[14px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
+                className={`inline-block font-body transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift ${
+                  scrolled ? "text-[15px] md:text-[17px]" : "text-[14px]"
+                } ${
                   isActive("/shop")
                     ? "font-bold text-accent"
                     : "text-ink hover:font-bold hover:text-accent"
