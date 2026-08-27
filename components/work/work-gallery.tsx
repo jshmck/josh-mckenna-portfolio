@@ -24,15 +24,23 @@ type Filter = ProjectCategory | "All";
  * Ratio rhythm for the masonry columns. Cycling a fixed sequence rather than
  * randomising keeps the grid's staggered look identical between server and
  * client renders — random heights would hydrate mismatched.
+ *
+ * Two close values, not the six-wide spread this used to cycle through
+ * (4/5, 3/4, 1/1, 5/4, 3/4, 4/5) — that ranged a full 0.75-1.25, and next
+ * to each other in a masonry grid the effect read as uneven rather than
+ * intentionally staggered. 4/5 and 1/1 still gives every card without its
+ * own cardRatio a real rhythm, just a calmer one. Pieces with a genuine
+ * landscape or tall-portrait shape keep cropping nothing — they set their
+ * own cardRatio and skip this cycle entirely, same as before.
  */
-const RATIO_CYCLE: ImageRatio[] = ["4/5", "3/4", "1/1", "5/4", "3/4", "4/5"];
+const RATIO_CYCLE: ImageRatio[] = ["4/5", "1/1"];
 
 /**
  * Any card at or past this width/height spans two masonry columns instead
  * of one — a true landscape image forced into a single narrow column
- * (RATIO_CYCLE tops out at 5/4 = 1.25) would run either badly cropped or
- * absurdly tall. 1.3 sits just above that ceiling, so nothing in the
- * normal cycle crosses it by accident; only a genuinely landscape
+ * (RATIO_CYCLE tops out at 1/1 = 1) would run either badly cropped or
+ * absurdly tall. 1.3 sits comfortably above that ceiling, so nothing in
+ * the normal cycle crosses it by accident; only a genuinely landscape
  * cardRatio (UAL Booklets 16/10 = 1.6, Bombay Sapphire 3/2 = 1.5,
  * Wagamama Brighton 1111/640 ≈ 1.74) does.
  */
@@ -43,21 +51,19 @@ const LANDSCAPE_SPAN_RATIO = 1.3;
  *  to react to the active filter category -- that per-category logic
  *  was tried and reverted, but the row stayed here since this is still
  *  the natural place to key it off `filter` once real per-category art
- *  exists. Same pair regardless of filter for now.
+ *  exists. Same regardless of filter for now.
  *
- *  height is a clamp(), not a flat 115 -- at a flat height the pair's
- *  combined width (twingo ~236px + ipad ~168px + the row's gap) doesn't
- *  fit a phone-width container and wraps to two lines. clamp's preferred
- *  value (20vw) only drops below its 115px ceiling under ~575px of
- *  viewport width, so every breakpoint this project treats as "desktop"
- *  renders at exactly 115px, identical to before -- only phones shrink,
- *  continuously rather than snapping at a breakpoint. */
+ *  Was a pair (green Twingo + iPad) -- Josh dropped the Twingo once the
+ *  row moved to a centered layout to match the nav/filter pills; a single
+ *  centered illustration reads cleaner there than a pair would.
+ *
+ *  height is a clamp(), not a flat 115 -- at a flat height ipad's width
+ *  doesn't fit a phone-width container and wraps. clamp's preferred value
+ *  (20vw) only drops below its 115px ceiling under ~575px of viewport
+ *  width, so every breakpoint this project treats as "desktop" renders at
+ *  exactly 115px, identical to before -- only phones shrink, continuously
+ *  rather than snapping at a breakpoint. */
 const ILLUSTRATIONS = [
-  {
-    src: "/illustrations/twingo-green-final.png",
-    aspect: "1350/656",
-    height: "clamp(60px, 20vw, 115px)",
-  },
   {
     src: "/illustrations/ipad.png",
     aspect: "961/655",
@@ -191,6 +197,14 @@ function ratioToNumber(ratio: ImageRatio): number {
   return w / h;
 }
 
+/** True when the card's actual rendered image (same fallback ProjectCard
+ *  itself uses: cardImage, else hero) is a Plate `fit: "contain"` letterbox
+ *  — see MasonryGrid's transparency-adjacency rule for why this matters. */
+function isCardTransparent(project: Project): boolean {
+  const image = project.cardImage ?? project.hero;
+  return image.fit === "contain";
+}
+
 /** One masonry card, sized off RATIO_CYCLE unless the project overrides it —
  *  shared between the plain masonry blocks and the bento row's narrow cell
  *  so both stay in sync with the same cardImage/hoverImage/priority logic.
@@ -254,14 +268,18 @@ export function WorkGallery({
           into WorkGallery made it start showing up on Home's embedded
           gallery too, which it never did before. */}
       {showIllustrations && (
-        <div className="mb-10 flex flex-nowrap items-end gap-4 sm:gap-6">
+        <div className="mb-10 flex flex-nowrap items-end justify-center gap-4 sm:gap-6">
           {ILLUSTRATIONS.map(({ src, aspect, height }) => (
             <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
           ))}
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Filter work by discipline">
+      <div
+        className="flex flex-wrap justify-center gap-2"
+        role="group"
+        aria-label="Filter work by discipline"
+      >
         {filters.map((option) => {
           const active = filter === option;
 
@@ -300,7 +318,11 @@ export function WorkGallery({
           any card's real size. Landscape cards (ratio ≥ LANDSCAPE_SPAN_RATIO)
           span two columns automatically — MasonryGrid's bin-packer handles
           spanning items natively, so this needed no separate bento-row
-          carve-out the way the old cardSpan flag did. */}
+          carve-out the way the old cardSpan flag did. `transparent` feeds
+          MasonryGrid's other hard rule: two fit:"contain" cards (real-alpha
+          art letterboxed on canvas) never seat side by side, since both
+          surfaces match the page background and the seam between them
+          disappears. */}
       <div className="mt-12">
         <MasonryGrid
           items={visible.map((project, index) => {
@@ -310,6 +332,7 @@ export function WorkGallery({
               key: project.slug,
               ratio,
               span,
+              transparent: isCardTransparent(project),
               node: (
                 <MasonryCard
                   project={project}

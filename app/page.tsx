@@ -42,17 +42,19 @@ export default function HomePage() {
           </Reveal>
 
           <Parallax speed={0.85}>
-            {/* Beefbar's Monte Carlo poster — restaurant posters and cars
-                in one image, matching the copy beside it. Replaces the
-                Pride-crowd signature illustration per Josh. True poster
-                ratio (12/17), not the old image's 4/3 — force-fitting a
-                portrait poster into a landscape box would crop out the
-                "beefbar" script and the MONTE-CARLO lockup at top/bottom. */}
+            {/* Monte Carlo poster — a car and cityscape in one image,
+                matching the copy beside it. Unbranded version (no "beefbar"
+                script, no "Born In") — this one's for Home, not the Beefbar
+                project itself, so its own project page still leads with the
+                branded two-car poster. True poster ratio (12/17), not the
+                ingester's auto-picked 3/4 — same reasoning as the file it
+                replaces: 1920×2716 snaps closer to 12/17 (0.7059) than 3/4
+                (0.75, a 6% crop). */}
             <Plate
               image={{
                 ratio: "12/17",
-                alt: "Beefbar's Monte Carlo poster — two supercars outside the Casino de Monte-Carlo",
-                src: "/work/beefbar-posters/01-monte-carlo-no-border.webp",
+                alt: "Monte Carlo poster — a Lamborghini Miura outside the Casino de Monte-Carlo",
+                src: "/work/beefbar-posters/01-monte-carlo-lamb.webp",
               }}
               sizes="(max-width: 768px) 100vw, 45vw"
             />

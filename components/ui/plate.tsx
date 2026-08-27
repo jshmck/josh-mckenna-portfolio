@@ -14,7 +14,7 @@ export const RATIO_CLASS: Record<ImageRatio, string> = {
   "12/17": "aspect-[12/17]",
   "15/22": "aspect-[15/22]",
   "2400/713": "aspect-[2400/713]",
-  "1111/640": "aspect-[1111/640]",
+  "1063/640": "aspect-[1063/640]",
   "8/9": "aspect-[8/9]",
   "9/16": "aspect-[9/16]",
   "16/9": "aspect-[16/9]",

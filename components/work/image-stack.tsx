@@ -116,7 +116,7 @@ export function ImageStack({
 
   return (
     <>
-      <div className="mx-auto max-w-frame space-y-8 px-6 pb-20 md:px-gutter">
+      <div className="mx-auto max-w-frame space-y-8 px-6 pb-28 md:px-gutter">
         {galleryGif && galleryGif.afterIndex === 0 && (
           // Capped to max-w-lg (512px) — the source GIF is only 1080px
           // native, so stretching it to the frame's full 1344px width

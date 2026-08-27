@@ -333,7 +333,7 @@ export default async function ProjectPage({
               as a two-up, the rest full width, every frame opening
               full-size in its own shared lightbox. */}
           {project.galleryLayout === "grid" ? (
-            <div className="mx-auto max-w-frame px-6 pb-20 md:px-gutter">
+            <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
               <GalleryGrid
                 leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
                 images={restImages}
@@ -376,7 +376,7 @@ export default async function ProjectPage({
             uneven width, flex-wrap can drop just the last one onto its
             own line at narrow widths instead of wrapping the whole row.
             A fixed 3-column grid guarantees each link its own slot. */}
-        <div className="mx-auto grid max-w-frame grid-cols-3 items-center gap-4 px-6 py-10 md:px-gutter">
+        <div className="mx-auto grid max-w-frame grid-cols-3 items-center gap-4 px-6 py-16 md:px-gutter">
           {/* font-bold/text-lg arrows -- kept even after reverting the
               text to font-waldeck-medium, since Helvetica Bold next to
               Waldeck Medium still reads better than the original thin default.

@@ -39,9 +39,11 @@ export type ImageRatio =
   // character lined up in frame; snapping it to 16/10 would crop out most
   // of the width. True output ratio, zero drift.
   | "2400/713"
-  // Wagamama Brighton's high-res hero export, 3333x1920 reduced — same
-  // reasoning as Beefbar's pair above.
-  | "1111/640"
+  // Wagamama Brighton's website export, 3189x1920 reduced — same
+  // reasoning as Beefbar's pair above. Tuned by Josh to land close to
+  // 1.66:1 so the card matches a neighbouring 4/5 card's height in the
+  // masonry grid (see MasonryGrid's LANDSCAPE_SPAN_RATIO math).
+  | "1063/640"
   // Womp 3D Exploration's leaping-girl render — a full diagonal reach with
   // the trailing hand already close to the frame edge; the nearest stock
   // ratio (4/5) would clip the fingers. True 1920x2160 output ratio.
@@ -256,15 +258,68 @@ export type Project = {
   posterGridColumns?: 4 | 5;
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
+  /**
+   * Sorts before every non-pinned project, lowest rank first —
+   * Josh's own curated lead-in to /work, independent of year.
+   * getAllProjects() otherwise sorts strictly by year descending, which
+   * would sink a genuinely old piece (Beefbar and Pride Sticker both
+   * predate 2018) to the bottom regardless of how much Josh wants it
+   * visible. Ties (or the default, unset) fall back to the normal year
+   * sort — every unpinned project keeps sorting exactly as before.
+   */
+  pinnedRank?: number;
 };
 
 export const projects: Project[] = [
+  {
+    slug: "vogue-sun-tan",
+    title: "Tanning Tips",
+    client: "Vogue Magazine",
+    year: 2018,
+    // Pinned to the middle of /work's curated block, regardless of year
+    // — Josh wants this one prominent despite being older than most of
+    // the rest, just not leading the page.
+    pinnedRank: 8,
+    discipline: "Editorial Illustration",
+    deliverables: "3 Spot Illustrations",
+    categories: ["Editorial"],
+    // True hero ratio — landscape (1.6), and RATIO_CYCLE never assigns
+    // anything wider than 1.25, so without this the /work card would
+    // crop it into whatever portrait-leaning box its position landed on.
+    // Also clears LANDSCAPE_SPAN_RATIO (1.3), so it spans two columns
+    // automatically — same fix as UAL Booklets and Bombay Sapphire.
+    cardRatio: "16/10",
+    summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
+    heroCaption: "The first of a three-part series on tanning safely.",
+    brief: [
+      "I created a three-part editorial illustration series for Vogue Magazine, focusing on how to tan safely. The artwork visually guides readers through essential sun protection tips, including applying SPF, seeking shade during peak hours, and incorporating protective clothing and accessories.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "16/10",
+      alt: "Applying sunscreen, hat pulled low against the sun.",
+      src: "/work/vogue-sun-tan/01-vogue-sun-1-print.webp",
+    },
+    gallery: [
+      {
+        ratio: "16/10",
+        alt: "A fine mist of tanning oil in the afternoon light.",
+        src: "/work/vogue-sun-tan/02-vogue-sun-2-print.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Face down on the sand, out of the midday sun.",
+        src: "/work/vogue-sun-tan/03-vogue-sun-3-print.webp",
+      },
+    ],
+  },
   {
     slug: "instagram-sticker",
     title: "Pride Sticker",
     client: "Instagram",
     year: 2017,
     yearLabel: "2017–2022",
+    pinnedRank: 3,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set · Mural · Parade Float",
     categories: ["Pride", "Mural", "Character", "Icons"],
@@ -296,6 +351,14 @@ export const projects: Project[] = [
       // figure. contain uses bg-canvas instead, the same fix real
       // artwork with transparency always needs (see Plate).
       fit: "contain",
+    },
+    // /work card only — same character on a solid lavender fill instead of
+    // the hero's transparent PNG, so the card needs no contain/canvas-
+    // letterbox workaround. The project page's own hero above is untouched.
+    cardImage: {
+      ratio: "1/1",
+      alt: "The Instagram Pride sticker character",
+      src: "/work/instagram-sticker/01-instagram-sticker-bg2.webp",
     },
     // GIF leads the gallery (afterIndex: 0, before the two-up pair) — the
     // sticker's own animation, right after the write-up. Video sits right
@@ -407,6 +470,7 @@ export const projects: Project[] = [
     title: "Jimny",
     client: "Personal",
     year: 2026,
+    pinnedRank: 15,
     discipline: "3D Illustration",
     deliverables: "1 Turnaround · 3 Renders",
     categories: ["3D", "Automotive"],
@@ -479,6 +543,7 @@ export const projects: Project[] = [
     title: "Money Bench",
     client: "Personal",
     year: 2026,
+    pinnedRank: 11,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
     categories: ["3D", "Character", "Editorial"],
@@ -542,6 +607,7 @@ export const projects: Project[] = [
     title: "Last Call",
     client: "Personal",
     year: 2026,
+    pinnedRank: 12,
     discipline: "3D Illustration",
     deliverables: "1 Render · 1 Turnaround",
     categories: ["3D"],
@@ -593,6 +659,7 @@ export const projects: Project[] = [
     title: "Living Regeneratively",
     client: "The Rooted Journal",
     year: 2025,
+    pinnedRank: 4,
     yearLabel: "Spring 2025",
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
@@ -615,16 +682,15 @@ export const projects: Project[] = [
     // partial row after.
     galleryLayout: "poster-grid",
     posterGridColumns: 5,
-    // The /work grid card leads with "plant native" rather than the hero
-    // above — Josh's call. cardRatio forces the card frame itself square
-    // to match — RATIO_CYCLE would otherwise size the frame by position,
-    // regardless of cardImage's own (already-square) ratio.
+    // The /work grid card leads with its own standalone illustration, not
+    // any of the ten spot icons below — Josh's call. Solid brown
+    // background, so no contain/canvas-letterbox workaround needed here
+    // either. cardRatio forces the card frame itself square to match.
     cardRatio: "1/1",
     cardImage: {
       ratio: "1/1",
-      fit: "contain",
-      alt: "Spot illustration — plant native",
-      src: "/work/rooted-journal-editorial/02-plant-native.webp",
+      alt: "A woman kneeling among wildflowers",
+      src: "/work/rooted-journal-editorial/01-rooted-journal2.webp",
     },
     hero: {
       // PNG exports (Josh replaced the original JPEG-derived set) — real
@@ -698,6 +764,7 @@ export const projects: Project[] = [
     title: "Yeti",
     client: "Personal",
     year: 2025,
+    pinnedRank: 2,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Character"],
@@ -723,6 +790,7 @@ export const projects: Project[] = [
     title: "Underground",
     client: "Personal",
     year: 2025,
+    pinnedRank: 13,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
@@ -798,6 +866,7 @@ export const projects: Project[] = [
     title: "BMW Z1",
     client: "Personal",
     year: 2025,
+    pinnedRank: 14,
     discipline: "Illustration",
     deliverables: "2 Illustrations",
     categories: ["Automotive"],
@@ -827,12 +896,13 @@ export const projects: Project[] = [
     title: "505 Touring",
     client: "Nomad Wheel Co.",
     year: 2024,
+    pinnedRank: 10,
     discipline: "Automotive Livery",
     deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
     categories: ["Automotive"],
     summary: "Livery and posters for a wheel launch, field-tested on camera in Josh's own Land Cruiser.",
     heroCaption:
-      "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch, styled after vintage Dakar rally posters.",
+      "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch, styled after vintage Dakar rally posters (and my actual Land Cruiser — yep that's me driving).",
     brief: [
       "Nomad Wheel Co. asked for a full graphic package around the launch of the 505 Touring wheel — vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. The same marks — the Nomad globe, the 505 script, the sponsor lockups for Toyo Tires and DVR — had to survive full-bleed on a print poster and cropped square for a phone screen.",
       "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film — the closest I've come to field-testing my own artwork.",
@@ -841,15 +911,10 @@ export const projects: Project[] = [
       { role: "Creative Direction & Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Nomad Wheel Co." },
     ],
-    // The /work card leads with a tighter crop of the hero poster — the
-    // source has a generous flat, empty margin above the dunes that read
-    // as dead space against the card's rounded corners at full frame.
-    cardRatio: "5/4",
-    cardImage: {
-      ratio: "5/4",
-      alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
-      src: "/work/nomad-wheels-505-livery/03-touring-card.webp",
-    },
+    // Josh's own re-crop, a true 4/5 with no empty margin — used as-is for
+    // both the /work card and the project page's own hero, so no separate
+    // cardImage override is needed (ProjectCard falls back to hero).
+    cardRatio: "4/5",
     // Promo film leads the page (real audio, native controls — sound:
     // true), with the poster and the flyer as a two-up underneath it
     // rather than a full-width hero followed by a single gallery image.
@@ -860,9 +925,9 @@ export const projects: Project[] = [
       poster: "/work/nomad-wheels-505-livery/05-video-poster.webp",
     },
     hero: {
-      ratio: "3/4",
+      ratio: "4/5",
       alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
-      src: "/work/nomad-wheels-505-livery/02-touring-print-file-copy.webp",
+      src: "/work/nomad-wheels-505-livery/01-nomad-505.webp",
     },
     heroPair: {
       ratio: "1/1",
@@ -906,9 +971,10 @@ export const projects: Project[] = [
     title: "Sumo",
     client: "Monocle",
     year: 2018,
+    pinnedRank: 16,
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
-    categories: ["Editorial"],
+    categories: ["Editorial", "Icons"],
     summary: "A sumo wrestler's whole physique, reduced to a knot and a topknot.",
     heroCaption: "",
     brief: [
@@ -918,11 +984,13 @@ export const projects: Project[] = [
     // Drawn to run small next to a column of text — the usual full-bleed
     // hero shows it at a scale it was never meant to be seen at.
     heroSize: "spot",
+    // Solid teal background, not the old transparent export — cover fit
+    // needs no contain/canvas-letterbox workaround. Last of the /work
+    // pinned set's transparent-bg cards to get one.
     hero: {
       ratio: "1/1",
-      fit: "contain",
       alt: "Spot illustration — sumo wrestler",
-      src: "/work/monocle-spot-illo/01-monocle-sumo.webp",
+      src: "/work/monocle-spot-illo/01-monocle-sumo-26.webp",
     },
     gallery: [],
   },
@@ -1077,6 +1145,7 @@ export const projects: Project[] = [
     client: "Beefbar",
     year: 2017,
     yearLabel: "2017–Present Day",
+    pinnedRank: 7,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
     categories: ["Hospitality", "Character"],
@@ -1196,9 +1265,15 @@ export const projects: Project[] = [
     title: "L.A. Pride",
     client: "City of Los Angeles",
     year: 2024,
+    pinnedRank: 5,
     discipline: "Festival Identity",
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
     categories: ["Pride"],
+    // True ratio of the lockup cardImage (2700×2700, a true square crop of
+    // the same artwork) — pinned explicitly rather than leaving it to
+    // chance which cycle slot lands here (a slightly-off ratio would crop
+    // "PRIDE 2024" at the edges).
+    cardRatio: "1/1",
     summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption: "",
     brief: [
@@ -1226,12 +1301,14 @@ export const projects: Project[] = [
       src: "/work/la-pride/23-key-art-stage-banner.webp",
     },
     // The /work card leads with the logo mark itself, not a photo — the
-    // project page's own hero (above) is the photo.
+    // project page's own hero (above) is the photo. Solid lime-green
+    // background, not the transparent key-art lockup this replaced — cover
+    // fit needs no contain/canvas-letterbox workaround, and cardRatio holds
+    // the frame at the art's true 1/1 so "PRIDE 2024" isn't cropped.
     cardImage: {
       ratio: "1/1",
-      fit: "contain",
-      alt: "The key art lockup",
-      src: "/work/la-pride/04-key-art-lockup.webp",
+      alt: "The LA Pride 2024 lockup",
+      src: "/work/la-pride/01-la-pride-1x1.webp",
     },
     cardHoverImage: {
       ratio: "2/3",
@@ -1329,6 +1406,7 @@ export const projects: Project[] = [
     title: "The Sound of Driving",
     client: "Personal",
     year: 2026,
+    pinnedRank: 6,
     discipline: "Editorial Illustration",
     deliverables: "Key Art · Magazine Mockup",
     categories: ["Automotive", "Editorial"],
@@ -1356,6 +1434,7 @@ export const projects: Project[] = [
     title: "Stir Creativity",
     client: "Bombay Sapphire",
     year: 2018,
+    pinnedRank: 9,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
     categories: ["Mural"],
@@ -1419,6 +1498,7 @@ export const projects: Project[] = [
     title: "Wagamama Brighton",
     client: "Wagamama",
     year: 2023,
+    pinnedRank: 1,
     discipline: "Window Display",
     deliverables: "Vinyl Printed Window Display",
     categories: ["Pride", "Character", "Hospitality"],
@@ -1431,11 +1511,11 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Wagamama" },
     ],
-    cardRatio: "1111/640",
+    cardRatio: "1063/640",
     hero: {
-      ratio: "1111/640",
+      ratio: "1063/640",
       alt: "The full Wagamama Brighton Pride artwork",
-      src: "/work/wagamama-brighton/02-full-artwork.webp",
+      src: "/work/wagamama-brighton/01-wagamama-brighton-website.webp",
     },
     gallery: [
       {
@@ -1466,9 +1546,15 @@ export const projects: Project[] = [
    Access helpers — pages should use these, never `projects` directly.
    ========================================================================== */
 
-/** Newest first. */
+/** Newest first, except any pinnedRank project sorts to the front first
+ *  (lowest rank first) — see Project.pinnedRank. */
 export function getAllProjects(): Project[] {
-  return [...projects].sort((a, b) => b.year - a.year);
+  return [...projects].sort((a, b) => {
+    const rankA = a.pinnedRank ?? Infinity;
+    const rankB = b.pinnedRank ?? Infinity;
+    if (rankA !== rankB) return rankA - rankB;
+    return b.year - a.year;
+  });
 }
 
 export function getProject(slug: string): Project | undefined {
