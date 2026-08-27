@@ -208,13 +208,13 @@ export function Nav() {
       <header className="sticky top-0 z-40 flex h-[88px] items-start justify-center">
         <nav
           aria-label="Primary"
-          className={`mx-auto mt-5 flex w-fit max-w-[calc(100%-2rem)] items-center justify-center gap-6 rounded-full border px-6 py-2.5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:gap-12 md:px-10 md:py-3 ${
+          className={`mx-auto mt-5 flex w-fit max-w-[calc(100%-2rem)] items-center justify-center gap-10 rounded-full border px-6 py-2.5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:gap-20 md:px-10 md:py-3 ${
             scrolled
               ? "animate-[nav-pill-pop_500ms_var(--ease-bounce)] border-hairline bg-canvas/15 backdrop-blur-md"
               : "border-transparent bg-transparent"
           }`}
         >
-          <div className="flex items-center gap-6 md:gap-12">
+          <div className="flex items-center gap-10 md:gap-20">
             {/* Home link -- always routes to "/", every page, every state.
                 Small enough to not reintroduce the wordiness "Home" was cut
                 for, brand-blue per the wordmark colour rule, real lowercase
