@@ -306,28 +306,6 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
-    slug: "womp-cmon-england",
-    title: "Cmon England",
-    client: "Personal",
-    year: 2026,
-    discipline: "3D Illustration",
-    deliverables: "1 Render",
-    categories: ["3D", "Character"],
-    summary: "Made the semi-final England nearly won. Still not sure it wasn't rigged.",
-    heroCaption: "",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool — an exaggerated torso, a pint held high, a tiny England-flagged face, made the night of the semi-final England nearly won.",
-    ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
-    heroSize: "spot",
-    hero: {
-      ratio: "4/5",
-      alt: "Cmon England",
-      src: "/work/womp-cmon-england/01-cmon-england.webp",
-    },
-    gallery: [],
-  },
-  {
     slug: "womp-pato",
     title: "Pato",
     client: "Personal",
