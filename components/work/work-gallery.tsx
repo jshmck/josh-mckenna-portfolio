@@ -51,21 +51,19 @@ const LANDSCAPE_SPAN_RATIO = 1.3;
  *  to react to the active filter category -- that per-category logic
  *  was tried and reverted, but the row stayed here since this is still
  *  the natural place to key it off `filter` once real per-category art
- *  exists. Same pair regardless of filter for now.
+ *  exists. Same regardless of filter for now.
  *
- *  height is a clamp(), not a flat 115 -- at a flat height the pair's
- *  combined width (twingo ~236px + ipad ~168px + the row's gap) doesn't
- *  fit a phone-width container and wraps to two lines. clamp's preferred
- *  value (20vw) only drops below its 115px ceiling under ~575px of
- *  viewport width, so every breakpoint this project treats as "desktop"
- *  renders at exactly 115px, identical to before -- only phones shrink,
- *  continuously rather than snapping at a breakpoint. */
+ *  Was a pair (green Twingo + iPad) -- Josh dropped the Twingo once the
+ *  row moved to a centered layout to match the nav/filter pills; a single
+ *  centered illustration reads cleaner there than a pair would.
+ *
+ *  height is a clamp(), not a flat 115 -- at a flat height ipad's width
+ *  doesn't fit a phone-width container and wraps. clamp's preferred value
+ *  (20vw) only drops below its 115px ceiling under ~575px of viewport
+ *  width, so every breakpoint this project treats as "desktop" renders at
+ *  exactly 115px, identical to before -- only phones shrink, continuously
+ *  rather than snapping at a breakpoint. */
 const ILLUSTRATIONS = [
-  {
-    src: "/illustrations/twingo-green-final.png",
-    aspect: "1350/656",
-    height: "clamp(60px, 20vw, 115px)",
-  },
   {
     src: "/illustrations/ipad.png",
     aspect: "961/655",
@@ -270,7 +268,7 @@ export function WorkGallery({
           into WorkGallery made it start showing up on Home's embedded
           gallery too, which it never did before. */}
       {showIllustrations && (
-        <div className="mb-10 flex flex-nowrap items-end gap-4 sm:gap-6">
+        <div className="mb-10 flex flex-nowrap items-end justify-center gap-4 sm:gap-6">
           {ILLUSTRATIONS.map(({ src, aspect, height }) => (
             <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
           ))}
