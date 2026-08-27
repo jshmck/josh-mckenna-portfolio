@@ -182,6 +182,14 @@ export type Project = {
    * static header treatment.
    */
   creditsIllustrations?: { src: string; aspect: string }[];
+  /**
+   * Trial: a single decorative cut-out that bobs gently beside the
+   * `heroSize: "spot"` hero — First 3D Character only for now, reusing the
+   * same transparent PNG already drifting in the homepage hero. Purely
+   * decorative (no alt), hidden below md since there's no room to float
+   * anything beside a hero that's already full-width on mobile.
+   */
+  floatingObject?: { src: string; aspect: string };
   /** Gallery below the write-up. First two render as a two-up row, unless
    *  `galleryLayout` says otherwise. */
   gallery: ProjectImage[];
@@ -222,6 +230,9 @@ export const projects: Project[] = [
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     heroSize: "spot",
+    // Same cut-out already drifting in the homepage hero (id: "ambient-1")
+    // — reused here rather than re-exported, so the two stay pixel-identical.
+    floatingObject: { src: "/illustrations/objects/face.png", aspect: "0.795" },
     hero: {
       ratio: "1/1",
       alt: "A beanie, a moustache, an earring",

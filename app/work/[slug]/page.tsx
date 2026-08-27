@@ -288,7 +288,7 @@ export default async function ProjectPage({
             // modest width, no caption — a piece drawn to run at a few
             // centimetres next to magazine text looks wrong leading the
             // page at full-bleed size with a label under it.
-            <div className="mx-auto max-w-frame px-6 pb-4 md:px-gutter">
+            <div className="relative mx-auto max-w-frame px-6 pb-4 md:px-gutter">
               <div className="mx-auto max-w-lg">
                 <Plate
                   image={project.hero}
@@ -296,6 +296,26 @@ export default async function ProjectPage({
                   priority
                 />
               </div>
+
+              {/* Trial (First 3D Character only for now): the same cut-out
+                  bobbing in the homepage hero, floating in the frame's
+                  own margin beside the spot hero. Hidden below md — that
+                  margin doesn't exist once the hero runs full width. */}
+              {project.floatingObject && (
+                <div
+                  aria-hidden="true"
+                  className="absolute right-6 top-1/2 hidden w-28 -translate-y-1/2 animate-[bob_4s_ease-in-out_infinite] md:block lg:right-20 lg:w-36"
+                  style={{ aspectRatio: project.floatingObject.aspect }}
+                >
+                  <Image
+                    src={project.floatingObject.src}
+                    alt=""
+                    fill
+                    sizes="144px"
+                    className="object-contain"
+                  />
+                </div>
+              )}
             </div>
           )}
 
