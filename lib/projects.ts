@@ -902,7 +902,7 @@ export const projects: Project[] = [
     categories: ["Automotive"],
     summary: "Livery and posters for a wheel launch, field-tested on camera in Josh's own Land Cruiser.",
     heroCaption:
-      "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch, styled after vintage Dakar rally posters.",
+      "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch, styled after vintage Dakar rally posters (and my actual Land Cruiser — yep that's me driving).",
     brief: [
       "Nomad Wheel Co. asked for a full graphic package around the launch of the 505 Touring wheel — vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. The same marks — the Nomad globe, the 505 script, the sponsor lockups for Toyo Tires and DVR — had to survive full-bleed on a print poster and cropped square for a phone screen.",
       "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film — the closest I've come to field-testing my own artwork.",
@@ -911,18 +911,10 @@ export const projects: Project[] = [
       { role: "Creative Direction & Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Nomad Wheel Co." },
     ],
-    // The /work card leads with a tighter crop of the hero poster, zoomed
-    // in past the source's flat empty sky margin so no dead space or edge
-    // artefact shows against the card's rounded corners. Re-cropped from
-    // the original 10800x14400 print file (not the downscaled hero webp)
-    // for a clean 4/5 portrait — the source has plenty of resolution to
-    // spare.
+    // Josh's own re-crop, a true 4/5 with no empty margin — used as-is for
+    // both the /work card and the project page's own hero, so no separate
+    // cardImage override is needed (ProjectCard falls back to hero).
     cardRatio: "4/5",
-    cardImage: {
-      ratio: "4/5",
-      alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
-      src: "/work/nomad-wheels-505-livery/06-touring-card-portrait.webp",
-    },
     // Promo film leads the page (real audio, native controls — sound:
     // true), with the poster and the flyer as a two-up underneath it
     // rather than a full-width hero followed by a single gallery image.
@@ -933,9 +925,9 @@ export const projects: Project[] = [
       poster: "/work/nomad-wheels-505-livery/05-video-poster.webp",
     },
     hero: {
-      ratio: "3/4",
+      ratio: "4/5",
       alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
-      src: "/work/nomad-wheels-505-livery/02-touring-print-file-copy.webp",
+      src: "/work/nomad-wheels-505-livery/01-nomad-505.webp",
     },
     heroPair: {
       ratio: "1/1",
