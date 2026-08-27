@@ -980,11 +980,13 @@ export const projects: Project[] = [
     // Drawn to run small next to a column of text — the usual full-bleed
     // hero shows it at a scale it was never meant to be seen at.
     heroSize: "spot",
+    // Solid teal background, not the old transparent export — cover fit
+    // needs no contain/canvas-letterbox workaround. Last of the /work
+    // pinned set's transparent-bg cards to get one.
     hero: {
       ratio: "1/1",
-      fit: "contain",
       alt: "Spot illustration — sumo wrestler",
-      src: "/work/monocle-spot-illo/01-monocle-sumo.webp",
+      src: "/work/monocle-spot-illo/01-monocle-sumo-26.webp",
     },
     gallery: [],
   },
