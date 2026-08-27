@@ -350,6 +350,14 @@ export const projects: Project[] = [
       // artwork with transparency always needs (see Plate).
       fit: "contain",
     },
+    // /work card only — same character on a solid lavender fill instead of
+    // the hero's transparent PNG, so the card needs no contain/canvas-
+    // letterbox workaround. The project page's own hero above is untouched.
+    cardImage: {
+      ratio: "1/1",
+      alt: "The Instagram Pride sticker character",
+      src: "/work/instagram-sticker/01-instagram-sticker-bg.webp",
+    },
     // GIF leads the gallery (afterIndex: 0, before the two-up pair) — the
     // sticker's own animation, right after the write-up. Video sits right
     // after the two-up pair (afterIndex: 2 = after gallery[0] and [1]),
