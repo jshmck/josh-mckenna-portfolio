@@ -191,6 +191,14 @@ function ratioToNumber(ratio: ImageRatio): number {
   return w / h;
 }
 
+/** True when the card's actual rendered image (same fallback ProjectCard
+ *  itself uses: cardImage, else hero) is a Plate `fit: "contain"` letterbox
+ *  — see MasonryGrid's transparency-adjacency rule for why this matters. */
+function isCardTransparent(project: Project): boolean {
+  const image = project.cardImage ?? project.hero;
+  return image.fit === "contain";
+}
+
 /** One masonry card, sized off RATIO_CYCLE unless the project overrides it —
  *  shared between the plain masonry blocks and the bento row's narrow cell
  *  so both stay in sync with the same cardImage/hoverImage/priority logic.
@@ -300,7 +308,11 @@ export function WorkGallery({
           any card's real size. Landscape cards (ratio ≥ LANDSCAPE_SPAN_RATIO)
           span two columns automatically — MasonryGrid's bin-packer handles
           spanning items natively, so this needed no separate bento-row
-          carve-out the way the old cardSpan flag did. */}
+          carve-out the way the old cardSpan flag did. `transparent` feeds
+          MasonryGrid's other hard rule: two fit:"contain" cards (real-alpha
+          art letterboxed on canvas) never seat side by side, since both
+          surfaces match the page background and the seam between them
+          disappears. */}
       <div className="mt-12">
         <MasonryGrid
           items={visible.map((project, index) => {
@@ -310,6 +322,7 @@ export function WorkGallery({
               key: project.slug,
               ratio,
               span,
+              transparent: isCardTransparent(project),
               node: (
                 <MasonryCard
                   project={project}

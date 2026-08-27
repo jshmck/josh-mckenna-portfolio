@@ -33,6 +33,13 @@ export type MasonryItem = {
   /** Columns wide. 2 renders across two adjacent columns (clamped to 1
    *  whenever there's only a single column to give it). Defaults to 1. */
   span?: 1 | 2;
+  /** True when the card's own image renders on the canvas surface (Plate's
+   *  `fit: "contain"` letterbox) rather than filling the frame — two of
+   *  these side by side both show the same page-background colour, so the
+   *  seam between them disappears and the pair reads as one big empty gap.
+   *  See pack()'s adjacency check, which refuses to seat one of these next
+   *  to another. */
+  transparent?: boolean;
   node: React.ReactNode;
 };
 
@@ -52,6 +59,41 @@ type Placement = {
  *  `pack()` below. Large enough to find a good filler for a stalled 2-span
  *  item without turning this into a full reorder of the whole grid. */
 const LOOKAHEAD = 6;
+
+type Packed = {
+  key: string;
+  node: React.ReactNode;
+  col: number;
+  span: number;
+  top: number;
+  height: number;
+  transparent?: boolean;
+};
+
+function verticallyOverlaps(aTop: number, aHeight: number, bTop: number, bHeight: number): boolean {
+  return aTop < bTop + bHeight && bTop < aTop + aHeight;
+}
+
+/** True if seating a transparent item at (start..start+span, top..top+height)
+ *  would put it directly beside another already-placed transparent item —
+ *  same row band, neighbouring column. Only the immediate left/right
+ *  neighbour columns matter; two transparent cards stacked in the same
+ *  column read as separate cards (there's a real gap between them), only
+ *  side-by-side is the failure mode. */
+function seatsAdjacentTransparent(
+  placed: Packed[],
+  start: number,
+  span: number,
+  top: number,
+  height: number,
+): boolean {
+  const neighbours = [start - 1, start + span];
+  return placed.some((p) => {
+    if (!p.transparent) return false;
+    if (!verticallyOverlaps(top, height, p.top, p.height)) return false;
+    return neighbours.includes(p.col) || (p.span === 2 && neighbours.includes(p.col + 1));
+  });
+}
 
 /**
  * Bin-packs `items` into `columnCount` columns, returning each one's
@@ -73,24 +115,28 @@ const LOOKAHEAD = 6;
  * each other when doing so actually closes a gap. Original order (the
  * pinned rank Josh set) is the default; it only yields when strictly
  * placing in order would strand a column.
+ *
+ * A second, harder constraint sits on top: a `transparent` item (Plate's
+ * `fit: "contain"` letterbox, matching the page background) is never
+ * seated directly beside another transparent item — two of those next to
+ * each other read as one big empty hole, not two cards. Candidates that
+ * would violate it are excluded from the dead-space comparison entirely,
+ * not just penalised, so gap-avoidance can't override it — unless every
+ * candidate in the window would violate it, in which case the rule yields
+ * rather than stalling the layout.
  */
-function pack(
-  items: MasonryItem[],
-  columnCount: number,
-): { key: string; node: React.ReactNode; col: number; span: number; top: number; height: number }[] {
+function pack(items: MasonryItem[], columnCount: number): Packed[] {
   const columnHeights = new Array(columnCount).fill(0);
   const remaining = [...items];
-  const placements: { key: string; node: React.ReactNode; col: number; span: number; top: number; height: number }[] = [];
+  const placements: Packed[] = [];
 
   while (remaining.length > 0) {
-    let pickIndex = 0;
-    let pickScore = Infinity;
-    let pickStart = 0;
-    let pickTop = 0;
-
     const windowSize = Math.min(remaining.length, LOOKAHEAD);
+    const candidates = [];
+
     for (let i = 0; i < windowSize; i++) {
-      const span = Math.min(remaining[i].span ?? 1, columnCount);
+      const item = remaining[i];
+      const span = Math.min(item.span ?? 1, columnCount);
 
       let bestStart = 0;
       let bestTop = Infinity;
@@ -102,27 +148,40 @@ function pack(
         }
       }
 
+      const widthPx = span * ASSUMED_COLUMN_WIDTH + (span - 1) * GAP;
+      const heightPx = widthPx / item.ratio;
       const deadSpace = bestTop - Math.min(...columnHeights);
-      // Dead space dominates the score; queue position only breaks ties
-      // between options that leave the same (usually zero) dead space.
-      const score = deadSpace * 1000 + i;
-      if (score < pickScore) {
-        pickScore = score;
-        pickIndex = i;
-        pickStart = bestStart;
-        pickTop = bestTop;
-      }
+      const blocked =
+        item.transparent && seatsAdjacentTransparent(placements, bestStart, span, bestTop, heightPx);
+
+      candidates.push({ i, start: bestStart, top: bestTop, height: heightPx, span, deadSpace, blocked });
     }
 
-    const [item] = remaining.splice(pickIndex, 1);
-    const span = Math.min(item.span ?? 1, columnCount);
-    const widthPx = span * ASSUMED_COLUMN_WIDTH + (span - 1) * GAP;
-    const heightPx = widthPx / item.ratio;
+    // Prefer candidates that don't violate the transparency rule; only
+    // fall back to a violating one if every option in the window would.
+    const allowed = candidates.filter((c) => !c.blocked);
+    const pool = allowed.length > 0 ? allowed : candidates;
 
-    placements.push({ key: item.key, node: item.node, col: pickStart, span, top: pickTop, height: heightPx });
+    let pick = pool[0];
+    for (const c of pool) {
+      // Dead space dominates the score; queue position only breaks ties
+      // between options that leave the same (usually zero) dead space.
+      if (c.deadSpace * 1000 + c.i < pick.deadSpace * 1000 + pick.i) pick = c;
+    }
 
-    for (let c = pickStart; c < pickStart + span; c++) {
-      columnHeights[c] = pickTop + heightPx + GAP;
+    const [item] = remaining.splice(pick.i, 1);
+    placements.push({
+      key: item.key,
+      node: item.node,
+      col: pick.start,
+      span: pick.span,
+      top: pick.top,
+      height: pick.height,
+      transparent: item.transparent,
+    });
+
+    for (let c = pick.start; c < pick.start + pick.span; c++) {
+      columnHeights[c] = pick.top + pick.height + GAP;
     }
   }
 
