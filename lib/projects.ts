@@ -922,16 +922,12 @@ export const projects: Project[] = [
     credits: [{ role: "Graphic Design & Illustration", name: "Josh McKenna" }],
     galleryLayout: "poster-grid",
     cardRatio: "12/17",
-    // The /work card's round-corner clip cuts across whichever poster's own
-    // printed border is showing — Luxembourg's reads better there than
-    // Baku's did. Monte Carlo (the hero, used everywhere else) is a
-    // no-border export, so it never had that problem, but Josh hasn't
-    // asked for the card to change — leaving Luxembourg's override in place.
-    cardImage: {
-      ratio: "12/17",
-      alt: "Luxembourg",
-      src: "/work/beefbar-posters/05-luxembourg.webp",
-    },
+    // No cardImage override — used to be Luxembourg, because the /work
+    // card's round-corner clip cut across whichever poster's own printed
+    // border was showing and Baku's (the hero then) read badly there.
+    // Monte Carlo (the hero now) is a no-border export, so it doesn't have
+    // that problem; the /work card falls back to hero (getCardHoverImage,
+    // lib/projects.ts) with no override needed.
     // True ratio (1358×1920 = 0.7073) snaps far closer to 12/17 (0.7059)
     // than to the ingester's auto-picked 3/4 (0.75, a 5.9% crop) — 12/17
     // also matches every other poster in this grid.
@@ -942,9 +938,15 @@ export const projects: Project[] = [
     },
     // Each poster's own printed border is part of the artwork, kept
     // visible — the grid runs square corners (see PosterGrid) instead of
-    // cropping it out. Ordered chronologically, per Josh — Baku moved down
-    // here (was the hero) when Monte Carlo became the flagship.
+    // cropping it out. Luxembourg leads (was the cardImage override, still
+    // deserves prominence) so it lands second overall, right after Monte
+    // Carlo the hero; everything after that stays chronological, per Josh.
     gallery: [
+      {
+        ratio: "12/17",
+        alt: "Luxembourg",
+        src: "/work/beefbar-posters/05-luxembourg.webp",
+      },
       {
         ratio: "12/17",
         alt: "Baku",
@@ -964,11 +966,6 @@ export const projects: Project[] = [
         ratio: "12/17",
         alt: "Marrakech",
         src: "/work/beefbar-posters/06-marrakech.webp",
-      },
-      {
-        ratio: "12/17",
-        alt: "Luxembourg",
-        src: "/work/beefbar-posters/05-luxembourg.webp",
       },
       {
         ratio: "15/22",
