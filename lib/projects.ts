@@ -226,6 +226,16 @@ export type Project = {
     ratio: ImageRatio;
     afterIndex: number;
   };
+  /**
+   * Trial: groups `count` consecutive `gallery` images (starting at
+   * `startIndex`, a plain index into `gallery` — not the "after N shown"
+   * counting `galleryVideo`/`galleryGif` use) into one CSS grid row
+   * instead of stacking them as full-width singles — Instagram Sticker
+   * only for now (three LA composites sharing one row; the book feature
+   * and the Meta mural, otherwise stranded as "lonely" single images,
+   * paired together).
+   */
+  gallerySpans?: { startIndex: number; count: number }[];
   /** Gallery below the write-up. First two render as a two-up row, unless
    *  `galleryLayout` says otherwise. */
   gallery: ProjectImage[];
@@ -310,6 +320,16 @@ export const projects: Project[] = [
     // row lands the same height on both sides (same fix Pato's two hero
     // frames needed). Sticker Set (16/9) would have mismatched badly
     // against either, so it runs full width instead, right after.
+    //
+    // gallerySpans groups two sets that would otherwise stack awkwardly
+    // as full-width singles: the three LA composites (indices 3-5, all
+    // true 9/16 phone-portrait shots — same fix Venice already needed)
+    // share one row, and the book feature + Meta mural (indices 6-7,
+    // both 4/5) — the two "lonely" single-image features — pair up too.
+    gallerySpans: [
+      { startIndex: 3, count: 3 },
+      { startIndex: 6, count: 2 },
+    ],
     gallery: [
       {
         ratio: "3/4",
@@ -332,19 +352,29 @@ export const projects: Project[] = [
         src: "/work/instagram-sticker/01-06.webp",
       },
       {
+        ratio: "9/16",
+        alt: "The character on top of a liquor store sign, part of the same LA series.",
+        src: "/work/instagram-sticker/01-02.webp",
+      },
+      {
+        ratio: "9/16",
+        alt: "The character balanced on a vintage Jeep, part of the same LA series.",
+        src: "/work/instagram-sticker/02-05.webp",
+      },
+      {
         ratio: "4/5",
         alt: "The project and interview feature in Mr Hudson Explores, published by Gestalten.",
         src: "/work/instagram-sticker/04-mr-hudson-explores.webp",
       },
       {
-        ratio: "5/4",
-        alt: "Instagram takeover of British Vogue's account, where the mural at Trafalgar Square appeared behind me as I read out #kindcomments from the Pride sticker set's marketing campaign.",
-        src: "/work/instagram-sticker/08-vogue-takeover.webp",
-      },
-      {
         ratio: "4/5",
         alt: "The same three figures, painted inside Meta's head offices.",
         src: "/work/instagram-sticker/02-facebook-mural-cropped.webp",
+      },
+      {
+        ratio: "5/4",
+        alt: "Instagram takeover of British Vogue's account, where the mural at Trafalgar Square appeared behind me as I read out #kindcomments from the Pride sticker set's marketing campaign.",
+        src: "/work/instagram-sticker/08-vogue-takeover.webp",
       },
     ],
   },

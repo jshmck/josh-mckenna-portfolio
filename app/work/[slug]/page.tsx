@@ -344,6 +344,7 @@ export default async function ProjectPage({
               images={project.gallery}
               galleryVideo={project.galleryVideo}
               galleryGif={project.galleryGif}
+              gallerySpans={project.gallerySpans}
             />
           )}
         </>

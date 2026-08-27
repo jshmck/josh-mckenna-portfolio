@@ -18,6 +18,9 @@ type ImageStackProps = {
    *  bypassing Plate via next/image's `unoptimized` mode so the animation
    *  survives. See Project.galleryGif. */
   galleryGif?: { src: string; alt: string; ratio: ImageRatio; afterIndex: number };
+  /** Trial (Instagram Sticker only): groups consecutive images into one
+   *  row instead of stacking them. See Project.gallerySpans. */
+  gallerySpans?: { startIndex: number; count: number }[];
 };
 
 /** One icon slot inside the toolbar pill — no border of its own (the pill
@@ -41,7 +44,12 @@ function isPortrait(ratio: string) {
  * full-size in a shared lightbox with prev/next cycling across the whole
  * gallery, since the grid crops every shot down from its real size.
  */
-export function ImageStack({ images, galleryVideo, galleryGif }: ImageStackProps) {
+export function ImageStack({
+  images,
+  galleryVideo,
+  galleryGif,
+  gallerySpans = [],
+}: ImageStackProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   // null = fresh open (bouncy pop-in); set on every arrow/keyboard nav so the
   // next frame slides in from the direction of travel instead of hard-cutting.
@@ -148,6 +156,41 @@ export function ImageStack({ images, galleryVideo, galleryGif }: ImageStackProps
         )}
 
         {restImages.map((image, index) => {
+          const fullIndex = index + 2;
+
+          // Already rendered as part of an earlier row — skip.
+          const inLaterSpan = gallerySpans.some(
+            (span) => fullIndex > span.startIndex && fullIndex < span.startIndex + span.count,
+          );
+          if (inLaterSpan) return null;
+
+          const span = gallerySpans.find((s) => s.startIndex === fullIndex);
+          if (span) {
+            const spanImages = restImages.slice(index, index + span.count);
+            return (
+              <Reveal key={image.alt}>
+                <div className={`grid grid-cols-1 gap-8 ${span.count === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+                  {spanImages.map((spanImage, i) => (
+                    <div key={spanImage.alt}>
+                      <button
+                        type="button"
+                        onClick={() => openAt(fullIndex + i)}
+                        aria-label={`Open larger view of ${spanImage.alt}`}
+                        className="block w-full cursor-zoom-in text-left"
+                      >
+                        <Plate
+                          image={spanImage}
+                          sizes={span.count === 3 ? "(max-width: 640px) 100vw, 33vw" : "(max-width: 640px) 100vw, 50vw"}
+                        />
+                      </button>
+                      <p className="type-label mt-3 text-ink-muted">{spanImage.alt}</p>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
+            );
+          }
+
           const portrait = isPortrait(image.ratio);
           return (
             <Fragment key={image.alt}>
