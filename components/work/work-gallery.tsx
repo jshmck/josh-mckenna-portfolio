@@ -299,18 +299,21 @@ export function WorkGallery({
           wanted), so the spanning card gets pulled into its own CSS Grid
           row instead.
 
-          column-fill: auto, not the balance default — balance pre-computes
-          an "ideal" equal height per column before it knows every card's
-          real rendered height, and when a card (blocked by break-inside-
-          avoid below) doesn't fit the leftover space in its target column,
-          the browser pushes it to the next column and leaves the gap it
-          would've filled sitting empty. auto just fills columns straight
-          through in source order instead of chasing equal height, which
-          reads slightly less "balanced" at a glance but never leaves a
-          gap like that. */}
+          column-fill stays the balance default — tried auto here to kill
+          an occasional gap (balance pre-computes an "ideal" equal column
+          height before it knows every card's real rendered height, and a
+          card blocked by break-inside-avoid that doesn't fit the leftover
+          space gets pushed to the next column, leaving that gap sitting
+          empty), but auto only distributes across multiple columns when
+          the container has an explicit height to fill against — this
+          grid's height is however tall its content is, so auto just piled
+          every card into the first column and left the other two empty.
+          balance's occasional gap is the accepted cost of staying
+          JS-free; a real fix means measuring rendered card heights, which
+          is a masonry-library-or-equivalent-JS job, not a CSS one. */}
       <div className="mt-12 space-y-8">
         {before.length > 0 && (
-          <div className="gap-8 [column-fill:auto] columns-1 md:columns-2 lg:columns-3">
+          <div className="gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
             {before.map(({ project, index }) => (
               <div key={project.slug} className="mb-8 break-inside-avoid">
                 <MasonryCard project={project} index={index} />
@@ -338,7 +341,7 @@ export function WorkGallery({
         )}
 
         {after.length > 0 && (
-          <div className="gap-8 [column-fill:auto] columns-1 md:columns-2 lg:columns-3">
+          <div className="gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
             {after.map(({ project, index }) => (
               <div key={project.slug} className="mb-8 break-inside-avoid">
                 <MasonryCard project={project} index={index} />
