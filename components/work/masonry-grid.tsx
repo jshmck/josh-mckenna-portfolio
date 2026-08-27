@@ -48,17 +48,97 @@ type Placement = {
   width: string;
 };
 
+/** Items considered at each step when deciding what to place next — see
+ *  `pack()` below. Large enough to find a good filler for a stalled 2-span
+ *  item without turning this into a full reorder of the whole grid. */
+const LOOKAHEAD = 6;
+
+/**
+ * Bin-packs `items` into `columnCount` columns, returning each one's
+ * column-relative (start, top, height) in px at ASSUMED_COLUMN_WIDTH.
+ *
+ * Doesn't just walk `items` in strict order and place each one wherever it
+ * currently fits best — a first-fit pass like that has a real failure
+ * mode once 2-span cards are mixed in: a 2-span card can only start once
+ * *both* columns it needs have caught up, so if it's next in the queue
+ * while one column is still short, that column sits empty waiting for it
+ * even though a later 1-span card would have filled the wait perfectly.
+ * That's not a hypothetical — it's exactly what /work's pinned order
+ * produced (a 2-span card stranding a shorter column behind it).
+ *
+ * Instead, at each step this looks at the next `LOOKAHEAD` not-yet-placed
+ * items and scores each by how much *dead space* placing it now would
+ * leave elsewhere (its start height minus the shortest column's current
+ * height) — ties broken by queue position, so items only jump ahead of
+ * each other when doing so actually closes a gap. Original order (the
+ * pinned rank Josh set) is the default; it only yields when strictly
+ * placing in order would strand a column.
+ */
+function pack(
+  items: MasonryItem[],
+  columnCount: number,
+): { key: string; node: React.ReactNode; col: number; span: number; top: number; height: number }[] {
+  const columnHeights = new Array(columnCount).fill(0);
+  const remaining = [...items];
+  const placements: { key: string; node: React.ReactNode; col: number; span: number; top: number; height: number }[] = [];
+
+  while (remaining.length > 0) {
+    let pickIndex = 0;
+    let pickScore = Infinity;
+    let pickStart = 0;
+    let pickTop = 0;
+
+    const windowSize = Math.min(remaining.length, LOOKAHEAD);
+    for (let i = 0; i < windowSize; i++) {
+      const span = Math.min(remaining[i].span ?? 1, columnCount);
+
+      let bestStart = 0;
+      let bestTop = Infinity;
+      for (let start = 0; start <= columnCount - span; start++) {
+        const rangeHeight = Math.max(...columnHeights.slice(start, start + span));
+        if (rangeHeight < bestTop) {
+          bestTop = rangeHeight;
+          bestStart = start;
+        }
+      }
+
+      const deadSpace = bestTop - Math.min(...columnHeights);
+      // Dead space dominates the score; queue position only breaks ties
+      // between options that leave the same (usually zero) dead space.
+      const score = deadSpace * 1000 + i;
+      if (score < pickScore) {
+        pickScore = score;
+        pickIndex = i;
+        pickStart = bestStart;
+        pickTop = bestTop;
+      }
+    }
+
+    const [item] = remaining.splice(pickIndex, 1);
+    const span = Math.min(item.span ?? 1, columnCount);
+    const widthPx = span * ASSUMED_COLUMN_WIDTH + (span - 1) * GAP;
+    const heightPx = widthPx / item.ratio;
+
+    placements.push({ key: item.key, node: item.node, col: pickStart, span, top: pickTop, height: heightPx });
+
+    for (let c = pickStart; c < pickStart + span; c++) {
+      columnHeights[c] = pickTop + heightPx + GAP;
+    }
+  }
+
+  return placements;
+}
+
 /**
  * True masonry: bin-packs cards into N columns from each card's already-
- * known aspect ratio, always placing the next card into whichever column
- * (or, for a 2-span card, whichever adjacent column pair) is currently
- * shortest — instead of CSS multi-column's `column-fill: balance`, which
- * estimates an "ideal" column height before it knows any card's real size.
- * When a tall card there (held to `break-inside-avoid`) doesn't fit that
- * estimate, the browser pushes it to the next column and leaves the gap it
- * would've filled sitting empty. That can't happen here — packing is
- * driven by a value we already have, not a guess the browser has to make
- * blind.
+ * known aspect ratio (see `pack()` above for how it avoids stranding a
+ * column behind a stalled 2-span card) — instead of CSS multi-column's
+ * `column-fill: balance`, which estimates an "ideal" column height before
+ * it knows any card's real size. When a tall card there (held to
+ * `break-inside-avoid`) doesn't fit that estimate, the browser pushes it
+ * to the next column and leaves the gap it would've filled sitting empty.
+ * That can't happen here — packing is driven by values we already have,
+ * not a guess the browser has to make blind.
  *
  * Renders via absolute positioning rather than N independent flex columns
  * — a 2-span card straddles two columns, so no single column's own flex
@@ -84,41 +164,21 @@ export function MasonryGrid({ items }: MasonryGridProps) {
     return () => window.removeEventListener("resize", update);
   }, []);
 
+  const packed = pack(items, columnCount);
+  const placements: Placement[] = packed.map((p) => ({
+    key: p.key,
+    node: p.node,
+    top: p.top,
+    left: `calc((100% - ${(columnCount - 1) * GAP}px) / ${columnCount} * ${p.col} + ${p.col * GAP}px)`,
+    width: `calc((100% - ${(columnCount - 1) * GAP}px) / ${columnCount} * ${p.span} + ${(p.span - 1) * GAP}px)`,
+  }));
+
   const columnHeights = new Array(columnCount).fill(0);
-  const placements: Placement[] = [];
-
-  for (const item of items) {
-    const span = Math.min(item.span ?? 1, columnCount);
-
-    // Find whichever run of `span` adjacent columns has the smallest
-    // shared starting height (the tallest of the two, for a 2-span item,
-    // since its top edge has to clear both).
-    let bestStart = 0;
-    let bestHeight = Infinity;
-    for (let start = 0; start <= columnCount - span; start++) {
-      const rangeHeight = Math.max(...columnHeights.slice(start, start + span));
-      if (rangeHeight < bestHeight) {
-        bestHeight = rangeHeight;
-        bestStart = start;
-      }
-    }
-
-    const widthPx = span * ASSUMED_COLUMN_WIDTH + (span - 1) * GAP;
-    const heightPx = widthPx / item.ratio;
-
-    placements.push({
-      key: item.key,
-      node: item.node,
-      top: bestHeight,
-      left: `calc((100% - ${(columnCount - 1) * GAP}px) / ${columnCount} * ${bestStart} + ${bestStart * GAP}px)`,
-      width: `calc((100% - ${(columnCount - 1) * GAP}px) / ${columnCount} * ${span} + ${(span - 1) * GAP}px)`,
-    });
-
-    for (let c = bestStart; c < bestStart + span; c++) {
-      columnHeights[c] = bestHeight + heightPx + GAP;
+  for (const p of packed) {
+    for (let c = p.col; c < p.col + p.span; c++) {
+      columnHeights[c] = Math.max(columnHeights[c], p.top + p.height + GAP);
     }
   }
-
   const containerHeight = Math.max(0, Math.max(...columnHeights) - GAP);
 
   return (
