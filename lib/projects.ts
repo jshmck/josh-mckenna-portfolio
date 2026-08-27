@@ -356,7 +356,7 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "1/1",
       alt: "The Instagram Pride sticker character",
-      src: "/work/instagram-sticker/01-instagram-sticker-bg.webp",
+      src: "/work/instagram-sticker/01-instagram-sticker-bg2.webp",
     },
     // GIF leads the gallery (afterIndex: 0, before the two-up pair) — the
     // sticker's own animation, right after the write-up. Video sits right
@@ -688,7 +688,7 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "1/1",
       alt: "A woman kneeling among wildflowers",
-      src: "/work/rooted-journal-editorial/01-rooted-journal.webp",
+      src: "/work/rooted-journal-editorial/01-rooted-journal2.webp",
     },
     hero: {
       // PNG exports (Josh replaced the original JPEG-derived set) — real
