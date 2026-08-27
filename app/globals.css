@@ -500,6 +500,27 @@
   padding-right: 0.75rem;
 }
 
+/* Nav pill (components/site/nav.tsx) — a one-shot overshoot scale for the
+   moment the pill frosts in on scroll. The header never remounts, so this
+   isn't keyed off React `key` like the lightbox pops above; it replays
+   because Tailwind's animate-[...] utility is only present in the
+   scrolled className branch, so the browser sees a fresh animation-name
+   each time `scrolled` flips false→true, which is enough to restart it.
+   Reverting to resting has no animation — a plain settle back, not a
+   second bounce, same asymmetric-in-only pattern as the lightbox arrow
+   hint above. */
+@keyframes nav-pill-pop {
+  0% {
+    transform: scale(0.94);
+  }
+  55% {
+    transform: scale(1.035);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* Scroll reveal — driven by the data attribute the Reveal component flips.
    Hidden is the CSS default so there is no flash of visible content. Both
    escape hatches below are pure CSS, so content can never be stranded
