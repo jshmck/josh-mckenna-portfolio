@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { MasonryGrid } from "@/components/work/masonry-grid";
 import { ProjectCard } from "@/components/work/project-card";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { getCardHoverImage } from "@/lib/projects";
@@ -168,6 +169,17 @@ function PrideFilterButton({
   );
 }
 
+/** Same ratio a card actually renders at — shared with MasonryGrid's
+ *  bin-packing below so the packed heights match the real cards exactly. */
+function effectiveCardRatio(project: Project, index: number): ImageRatio {
+  return project.cardRatio ?? RATIO_CYCLE[index % RATIO_CYCLE.length];
+}
+
+function ratioToNumber(ratio: ImageRatio): number {
+  const [w, h] = ratio.split("/").map(Number);
+  return w / h;
+}
+
 /** One masonry card, sized off RATIO_CYCLE unless the project overrides it —
  *  shared between the plain masonry blocks and the bento row's narrow cell
  *  so both stay in sync with the same cardImage/hoverImage/priority logic.
@@ -191,7 +203,7 @@ function MasonryCard({
       // hoverImage crossfades to another image from the same
       // project wherever one's available (getCardHoverImage).
       image={project.cardImage}
-      ratio={project.cardRatio ?? RATIO_CYCLE[index % RATIO_CYCLE.length]}
+      ratio={effectiveCardRatio(project, index)}
       caption="hover"
       motion="quiet"
       parallax
@@ -289,37 +301,24 @@ export function WorkGallery({
         })}
       </div>
 
-      {/* CSS multi-column gives true masonry flow and reflows cleanly when the
-          filter changes — no measuring, no layout JS. A cardSpan project
-          splits this into up to three stacked segments (see `before` /
-          `wide` / `after` above) rather than trying to make one container
-          do both true column-masonry AND bento spanning — CSS multi-column
-          has no partial cross-column span, only column-span: all (which
-          breaks a card out full-width, not the 2-of-3 bento look Josh
-          wanted), so the spanning card gets pulled into its own CSS Grid
-          row instead.
-
-          column-fill stays the balance default — tried auto here to kill
-          an occasional gap (balance pre-computes an "ideal" equal column
-          height before it knows every card's real rendered height, and a
-          card blocked by break-inside-avoid that doesn't fit the leftover
-          space gets pushed to the next column, leaving that gap sitting
-          empty), but auto only distributes across multiple columns when
-          the container has an explicit height to fill against — this
-          grid's height is however tall its content is, so auto just piled
-          every card into the first column and left the other two empty.
-          balance's occasional gap is the accepted cost of staying
-          JS-free; a real fix means measuring rendered card heights, which
-          is a masonry-library-or-equivalent-JS job, not a CSS one. */}
+      {/* True masonry via MasonryGrid (bin-packed from each card's known
+          ratio, see that component's doc comment) — replaced a CSS
+          multi-column attempt that left occasional large gaps, since
+          column-fill: balance estimates column heights before it knows
+          any card's real size. A cardSpan project splits this into up to
+          three stacked segments (see `before` / `wide` / `after` above)
+          rather than trying to make one container do both true masonry
+          AND bento spanning — the spanning card gets pulled into its own
+          CSS Grid row instead. */}
       <div className="mt-12 space-y-8">
         {before.length > 0 && (
-          <div className="gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
-            {before.map(({ project, index }) => (
-              <div key={project.slug} className="mb-8 break-inside-avoid">
-                <MasonryCard project={project} index={index} />
-              </div>
-            ))}
-          </div>
+          <MasonryGrid
+            items={before.map(({ project, index }) => ({
+              key: project.slug,
+              ratio: ratioToNumber(effectiveCardRatio(project, index)),
+              node: <MasonryCard project={project} index={index} />,
+            }))}
+          />
         )}
 
         {wide && (
@@ -341,13 +340,13 @@ export function WorkGallery({
         )}
 
         {after.length > 0 && (
-          <div className="gap-8 [column-fill:balance] columns-1 md:columns-2 lg:columns-3">
-            {after.map(({ project, index }) => (
-              <div key={project.slug} className="mb-8 break-inside-avoid">
-                <MasonryCard project={project} index={index} />
-              </div>
-            ))}
-          </div>
+          <MasonryGrid
+            items={after.map(({ project, index }) => ({
+              key: project.slug,
+              ratio: ratioToNumber(effectiveCardRatio(project, index)),
+              node: <MasonryCard project={project} index={index} />,
+            }))}
+          />
         )}
       </div>
 
