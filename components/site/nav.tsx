@@ -102,7 +102,9 @@ import { CartIcon } from "@/components/ui/social-icons";
  * flanking it, then eased back down one notch to 17/22px, "just a smidge
  * smaller." jM was 24/28px text at the same two breakpoints before it
  * became an image -- h-8/9 at first (roughly the old text's footprint),
- * then bumped to h-10/11 per Josh: "make it bigger."
+ * bumped to h-10/11 ("make it bigger"), then to h-11/14 again along with
+ * the jM/Cart circles themselves growing (h-14/16 -> h-16/20) "to better
+ * match the centre nav."
  *
  * On "/" only, the active highlight is also scroll-position-driven: the
  * homepage embeds the real Work gallery inline (see app/page.tsx's
@@ -263,7 +265,7 @@ export function Nav() {
               href="/"
               aria-label="Josh McKenna — home"
               onClick={() => scrollToTopIfCurrent("/")}
-              className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
+              className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-20 md:w-20 ${frostClass}`}
             >
               {/* Home link -- always routes to "/", every page, every
                   state. Josh's own jM logomark now (public/icons/
@@ -303,11 +305,11 @@ export function Nav() {
                 src="/icons/jm-logomark.png"
                 alt=""
                 aria-hidden="true"
-                width={96}
-                height={96}
-                sizes="44px"
+                width={112}
+                height={112}
+                sizes="56px"
                 priority
-                className="h-10 w-10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-11 md:w-11"
+                className="h-11 w-11 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14"
               />
             </Link>
           </div>
@@ -315,13 +317,16 @@ export function Nav() {
           {/* Main pill -- centered in the grid's middle column, which
               stays genuinely viewport-centered because both flanking
               columns are equal `1fr` tracks regardless of jM/Cart's own
-              width. Sized to clearly outsize jM/Cart's 56/64px circles
-              (py-5/md:py-6 + text-[17px]/md:text-[22px] lands the pill
-              noticeably taller at both breakpoints) -- Josh: "increase
-              the size of the nav bar so it's bigger than the jM and
-              cart... it should be the main focus." Previously the
-              circles were incidentally *taller* than the pill (56/64px
-              vs a ~40/48px pill), backwards from what he wanted. Text
+              width. Originally sized to clearly outsize jM/Cart's
+              (then-)56/64px circles (py-5/md:py-6 + text-[17px]/
+              md:text-[22px] lands the pill noticeably taller at both
+              breakpoints) -- Josh: "increase the size of the nav bar so
+              it's bigger than the jM and cart... it should be the main
+              focus." Previously the circles were incidentally *taller*
+              than the pill (56/64px vs a ~40/48px pill), backwards from
+              what he wanted -- the pill got bigger to fix that, then the
+              circles grew too (now 64/80px, see jM/Cart below) "to
+              better match the centre nav." Text
               nudged back down slightly from an initial 18/24px -- "I
               like it but just a smidge smaller." */}
           <div
@@ -363,11 +368,11 @@ export function Nav() {
               aria-current={isActive("/shop") ? "page" : undefined}
               aria-label="Cart"
               onClick={() => scrollToTopIfCurrent("/shop")}
-              className={`group flex h-14 w-14 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
+              className={`group flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-20 md:w-20 ${frostClass}`}
             >
               {/* group-hover (keyed to the circle <Link> above, via
                   `group`), not a plain hover: on the icon itself -- the
-                  icon glyph is only 20/24px inside a 56/64px circle, so a
+                  icon glyph is much smaller than the circle, so a
                   self-only hover: left most of the circle's area unable
                   to trigger it. Same split as jM above otherwise (circle
                   stays put, only the mark inside it moves) and the same
@@ -380,7 +385,7 @@ export function Nav() {
                   (cart.png -> cart-hover.png) is also group-hover-driven
                   off this same circle now, for the same reason. */}
               <CartIcon
-                className={`h-5 w-5 transition-[color,transform] duration-200 ease-in-out group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift md:h-6 md:w-6 ${
+                className={`h-6 w-6 transition-[color,transform] duration-200 ease-in-out group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift md:h-7 md:w-7 ${
                   isActive("/shop") ? "text-accent" : "text-ink"
                 }`}
               />
