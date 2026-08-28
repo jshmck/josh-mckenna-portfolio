@@ -383,9 +383,21 @@ export function Nav() {
               circles grew too (now 64/80px, see jM/Cart below) "to
               better match the centre nav." Text
               nudged back down slightly from an initial 18/24px -- "I
-              like it but just a smidge smaller." */}
+              like it but just a smidge smaller."
+
+              has-[a:hover]/has-[a:active] make the pill itself bounce
+              too when any word inside it is hovered/tapped, not just the
+              word -- "can the words affect the pill a bit more? like the
+              way jM does to it's own circle," per Josh. jM/Cart get that
+              for free because the hovered element and the bouncing
+              element are the same node (the circle *is* the Link); the
+              pill and its words are two different nodes, so the pill
+              needs :has() to notice a descendant's hover/active state
+              and react itself. Same nav-pill-hover keyframe as
+              everything else here, so the whole nav shares one bounce
+              vocabulary -- CSS handles the trigger, no JS state needed. */}
           <div
-            className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:gap-10 md:px-12 md:py-6 ${frostClass}`}
+            className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out has-[a:hover]:animate-[nav-pill-hover_650ms_ease-in-out] has-[a:active]:animate-[nav-pill-hover_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
           >
             <ul className="flex items-center gap-6 md:gap-10">
               {navLinks.map((link) => (
