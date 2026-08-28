@@ -138,11 +138,18 @@ export type Project = {
     ratio?: ImageRatio;
   };
   /**
-   * Trial: a second image shown side-by-side with `hero` instead of the
-   * usual single full-width Plate — sound-of-driving only for now. Own
-   * caption from its own `alt`, same as the later gallery two-up.
+   * A second image shown side-by-side with `hero` instead of the usual
+   * single full-width Plate — sound-of-driving, the Womp pairs and BMW Z1.
+   * Own caption from its own `alt`, same as the later gallery two-up,
+   * unless `hideHeroCaptions` turns it off.
    */
   heroPair?: ProjectImage;
+  /**
+   * Suppresses the caption paragraph(s) under `hero`/`heroPair` — BMW Z1
+   * only for now, where the alt text ("BMW Z1") added nothing the title
+   * above it didn't already say.
+   */
+  hideHeroCaptions?: boolean;
   /**
    * Runs the hero below `WriteUp` instead of above it, capped at a
    * narrow, centred width (max-w-lg) with no caption, instead of the
@@ -877,6 +884,8 @@ export const projects: Project[] = [
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
+    // Neither alt adds anything past the title above them.
+    hideHeroCaptions: true,
     hero: {
       ratio: "4/5",
       alt: "BMW Z1, four colourways",
