@@ -151,34 +151,57 @@ export function FigmaIcon({ size = 20 }: IconProps = {}) {
   );
 }
 
-/** Nav's Cart circle (components/site/nav.tsx) -- Josh's own icon,
- *  public/icons/cart.png, replacing the placeholder bag outline this
- *  used to render inline. Rendered as a CSS mask (background-color:
+const CART_MASK_BASE = {
+  maskSize: "contain",
+  maskRepeat: "no-repeat",
+  maskPosition: "center",
+  WebkitMaskSize: "contain",
+  WebkitMaskRepeat: "no-repeat",
+  WebkitMaskPosition: "center",
+} as const;
+
+/** Nav's Cart circle (components/site/nav.tsx) -- Josh's own icons,
+ *  public/icons/cart.png and cart-hover.png (the same glyph with an item
+ *  sitting in the basket), replacing the placeholder bag outline this
+ *  used to render inline. Each rendered as a CSS mask (background-color:
  *  currentColor, masked to the PNG's shape) rather than a plain <img>
  *  specifically so it keeps responding to the parent's colour classes --
  *  the nav swaps this between text-ink and text-accent on /shop's active
  *  state, which a flat <img> can't do; a raster image has no
  *  `currentColor` to inherit the way an inline SVG's `fill`/`stroke`
  *  does. `-webkit-` prefixed mask properties alongside the unprefixed
- *  ones since Safari still requires them. Takes `className` rather than
- *  the `size` prop every other icon here uses -- the nav needs it to
- *  size up at the md: breakpoint along with the rest of the pill's type,
- *  which a fixed numeric size can't do. */
+ *  ones since Safari still requires them.
+ *
+ *  The two states crossfade on hover (group-hover, so the outer span
+ *  needs to be the hovered/`group` element -- it is, `className` lands
+ *  the size/position/hover:scale/hover:text-brand classes straight on
+ *  it) rather than swapping the mask URL outright -- same "swap the
+ *  artwork itself on hover via a second absolutely-positioned layer"
+ *  technique already used for ProjectCard's hoverImage crossfade, kept
+ *  consistent rather than inventing a second pattern. cart-hover.png
+ *  is deliberately NOT wired to any real "items in cart" state -- this
+ *  is a static site with no cart persistence to key that off, so it's a
+ *  hover-only cue for now; revisit if real commerce state ever exists
+ *  (see DESIGN.md's open commerce-channel decision).
+ *
+ *  Takes `className` rather than the `size` prop every other icon here
+ *  uses -- the nav needs it to size up at the md: breakpoint along with
+ *  the rest of the pill's type, which a fixed numeric size can't do. */
 export function CartIcon({ className }: { className?: string }) {
   return (
-    <span
-      aria-hidden="true"
-      className={`inline-block bg-current ${className ?? ""}`}
-      style={{
-        maskImage: "url(/icons/cart.png)",
-        maskSize: "contain",
-        maskRepeat: "no-repeat",
-        maskPosition: "center",
-        WebkitMaskImage: "url(/icons/cart.png)",
-        WebkitMaskSize: "contain",
-        WebkitMaskRepeat: "no-repeat",
-        WebkitMaskPosition: "center",
-      }}
-    />
+    <span aria-hidden="true" className={`group relative inline-block ${className ?? ""}`}>
+      <span
+        className="absolute inset-0 bg-current transition-opacity duration-200 ease-in-out group-hover:opacity-0"
+        style={{ maskImage: "url(/icons/cart.png)", WebkitMaskImage: "url(/icons/cart.png)", ...CART_MASK_BASE }}
+      />
+      <span
+        className="absolute inset-0 bg-current opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
+        style={{
+          maskImage: "url(/icons/cart-hover.png)",
+          WebkitMaskImage: "url(/icons/cart-hover.png)",
+          ...CART_MASK_BASE,
+        }}
+      />
+    </span>
   );
 }
