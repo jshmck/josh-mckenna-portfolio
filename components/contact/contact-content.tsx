@@ -1,38 +1,24 @@
 import { EnquiryForm } from "@/components/contact/enquiry-form";
 import { Reveal } from "@/components/ui/reveal";
-import {
-  BehanceIcon,
-  FigmaIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  ThreadsIcon,
-  XIcon,
-} from "@/components/ui/social-icons";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { siteConfig } from "@/lib/site";
 
-const DEFAULT_ICON_SIZE = 20;
-
-const socials = [
-  { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon },
-  { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon },
-  { label: "X", href: siteConfig.x.url, Icon: XIcon },
-  { label: "LinkedIn", href: siteConfig.linkedin.url, Icon: LinkedInIcon },
-  // Behance's mark is naturally wider than the others (its own proportions,
-  // not a square glyph like the rest) — sized down a touch so it doesn't
-  // read heavier than its neighbours at the same height.
-  { label: "Behance", href: siteConfig.behance.url, Icon: BehanceIcon, size: 16 },
-  { label: "Figma", href: siteConfig.figma.url, Icon: FigmaIcon },
-];
-
 /**
- * The actual Contact page body — intro, direct/agency emails, socials,
+ * The actual Contact page body — intro, direct/agency emails,
  * illustration and the enquiry form. Used by app/contact/page.tsx. Kept
  * as its own component (rather than folded into the page) since it used
  * to also be embedded at the end of Info — that merge was removed per
  * Josh, but the split is still a reasonable seam if a similar embed is
  * wanted again later. The caller owns its own page-level heading
  * (sr-only or otherwise) — this component starts at the intro paragraph.
+ *
+ * No social icon row here any more — it duplicated the sitewide footer's
+ * (same icons, same links, nearly identical styling), which renders on
+ * every page including this one via the root layout. Removed the copy
+ * here rather than teaching Footer to hide itself on "/contact", since
+ * Footer's own doc comment already establishes it as the canonical,
+ * every-page way to reach Josh's socials — this page duplicating that
+ * was the odd one out, not Footer.
  */
 export function ContactContent() {
   return (
@@ -40,8 +26,8 @@ export function ContactContent() {
       <div>
         {/* Same fade + rise as Info's intro paragraph -- was missing here,
             so this text just appeared instantly instead of springing up
-            like the rest of the site. Covers the intro through the social
-            icons -- everything in this column that's text/links, not just
+            like the rest of the site. Covers the intro through the agency
+            email -- everything in this column that's text/links, not just
             the paragraph -- as one group rather than each piece firing on
             its own. */}
         <Reveal>
@@ -72,22 +58,6 @@ export function ContactContent() {
               {siteConfig.agencyEmail}
             </a>
           </div>
-
-          <ul className="mt-6 flex items-center gap-4">
-            {socials.map(({ label, href, Icon, size }) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={label}
-                  className="inline-block text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-accent hover:duration-300 hover:ease-drift"
-                >
-                  <Icon size={size ?? DEFAULT_ICON_SIZE} />
-                </a>
-              </li>
-            ))}
-          </ul>
         </Reveal>
 
         {/* Same treatment as Work/Info's illustrations -- next/image
