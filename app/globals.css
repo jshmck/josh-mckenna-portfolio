@@ -500,24 +500,55 @@
   padding-right: 0.75rem;
 }
 
-/* Nav pill (components/site/nav.tsx) — a one-shot overshoot scale for the
-   moment the pill frosts in on scroll. The header never remounts, so this
-   isn't keyed off React `key` like the lightbox pops above; it replays
-   because Tailwind's animate-[...] utility is only present in the
-   scrolled className branch, so the browser sees a fresh animation-name
-   each time `scrolled` flips false→true, which is enough to restart it.
-   Reverting to resting has no animation — a plain settle back, not a
-   second bounce, same asymmetric-in-only pattern as the lightbox arrow
-   hint above. */
+/* Nav pill/circles (components/site/nav.tsx) — a one-shot "stuck, then
+   unstuck" settle for the moment they frost in on scroll. Josh's brief:
+   "there's some weight to the nav bars... they got stuck as you start to
+   scroll, then they get unstuck and bounce a little. liquid, gloopy
+   vibe." Not literal shape-fusion (see the SVG-goo-filter revert
+   elsewhere in this file's history — filter + backdrop-filter on the
+   same element doesn't compose safely) — the liquid/gloopy read comes
+   from squash-and-stretch instead, the classic animation-principles
+   technique: non-uniform scaleX/scaleY rather than a single uniform
+   scale, so the shape briefly deforms like a soft body instead of just
+   growing/shrinking as a rigid rectangle. Four beats: a downward tug +
+   squash (the "stuck" moment, held briefly rather than eased straight
+   through, since a hold is what reads as resistance/weight), a release
+   that overshoots up and stretches, a smaller reverse overshoot
+   settling back down, then rest. animation-timing-function is a plain
+   ease-in-out (not var(--ease-bounce), used elsewhere for hover pops) —
+   the overshoot here is already authored into the keyframe positions
+   themselves, so layering another bouncy easing on top would compound
+   into something closer to chaotic than liquid.
+
+   The header never remounts, so this isn't keyed off React `key` like
+   the lightbox pops above; it replays because Tailwind's animate-[...]
+   utility is only present in the scrolled className branch, so the
+   browser sees a fresh animation-name each time `scrolled` flips
+   false→true — i.e. every time you start scrolling down past the
+   threshold, not just once. Reverting to resting has no animation — a
+   plain settle back, not a second bounce, same asymmetric-in-only
+   pattern as the lightbox arrow hint above. */
 @keyframes nav-pill-pop {
   0% {
-    transform: scale(0.94);
+    transform: translateY(0) scale(1, 1);
   }
-  55% {
-    transform: scale(1.035);
+  12% {
+    /* the "stuck" moment — weight pulling it down, squashed wide/short
+       like a soft body resisting */
+    transform: translateY(4px) scale(1.05, 0.9);
+  }
+  40% {
+    /* unstuck — springs past rest, stretched tall/narrow */
+    transform: translateY(-3px) scale(0.96, 1.08);
+  }
+  65% {
+    transform: translateY(1px) scale(1.02, 0.97);
+  }
+  85% {
+    transform: translateY(-0.5px) scale(0.995, 1.01);
   }
   100% {
-    transform: scale(1);
+    transform: translateY(0) scale(1, 1);
   }
 }
 

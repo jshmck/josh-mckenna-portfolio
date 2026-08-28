@@ -72,10 +72,14 @@ import { CartIcon } from "@/components/ui/social-icons";
  * undo — hysteresis, so it doesn't flicker at the boundary on trackpad
  * rubber-banding), all three shapes pick up border-hairline, bg-canvas/15
  * and backdrop-blur-md (the same colourless frosted-glass treatment as
- * the hero's floating-object hover cards) plus a quick overshoot-scale pop
- * (`nav-pill-pop` keyframe, globals.css, var(--ease-bounce)). The pop
- * only plays going in; reverting to resting has no animation, matching
- * the lightbox arrow-hint's asymmetric-in-only pattern. Because only
+ * the hero's floating-object hover cards) plus a one-shot "stuck, then
+ * unstuck" squash-and-stretch settle (`nav-pill-pop` keyframe,
+ * globals.css — see its own doc comment for the full breakdown; Josh's
+ * brief was "there's some weight to the nav bars... they got stuck as
+ * you start to scroll, then they get unstuck and bounce a little.
+ * liquid, gloopy vibe"). The settle only plays going in; reverting to
+ * resting has no animation, matching the lightbox arrow-hint's
+ * asymmetric-in-only pattern. Because only
  * these shapes ever carry the frost, content behind the header is
  * blurred directly behind them and reads completely normally everywhere
  * else across the 88px band. Small fixed px scroll thresholds, not
@@ -245,10 +249,13 @@ export function Nav() {
   // no longer reads as sensible. No replacement animation yet.
   //
   // frostClass is shared across all three shapes so the frost (border
-  // colour, background, blur, the one-shot pop) stays byte-identical
-  // between them.
+  // colour, background, blur, the one-shot "stuck, then unstuck" settle)
+  // stays byte-identical between them -- all three squash/stretch/settle
+  // in lockstep, not staggered. 650ms, up from an original 500ms flat
+  // scale-pop -- the new keyframe (globals.css) needs the extra room to
+  // read as a hold-then-release rather than a single quick pop.
   const frostClass = scrolled
-    ? "animate-[nav-pill-pop_500ms_var(--ease-bounce)] border-hairline bg-canvas/15 backdrop-blur-md"
+    ? "animate-[nav-pill-pop_650ms_ease-in-out] border-hairline bg-canvas/15 backdrop-blur-md"
     : "border-transparent bg-transparent";
 
   return (
