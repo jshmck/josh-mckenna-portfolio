@@ -172,15 +172,19 @@ const CART_MASK_BASE = {
  *  does. `-webkit-` prefixed mask properties alongside the unprefixed
  *  ones since Safari still requires them.
  *
- *  The two states crossfade on hover (group-hover, so the outer span
- *  needs to be the hovered/`group` element -- it is, `className` lands
- *  the size/position/hover:scale/hover:text-brand classes straight on
- *  it) rather than swapping the mask URL outright -- same "swap the
- *  artwork itself on hover via a second absolutely-positioned layer"
- *  technique already used for ProjectCard's hoverImage crossfade, kept
- *  consistent rather than inventing a second pattern. cart-hover.png
- *  is deliberately NOT wired to any real "items in cart" state -- this
- *  is a static site with no cart persistence to key that off, so it's a
+ *  The two states crossfade on hover (group-hover) -- but the `group`
+ *  lives on the circle <Link> in nav.tsx, not on this component's own
+ *  span. This icon is only 20/24px inside a much bigger 56/64px circle,
+ *  so scoping `group` to the icon's own tiny box left most of the
+ *  circle's area unable to trigger the hover at all; the circle is the
+ *  group now, and both this crossfade and the icon's own hover:scale
+ *  (set via `className`, see nav.tsx) key off it. Crossfading a second
+ *  absolutely-positioned layer rather than swapping the mask URL
+ *  outright is the same "swap the artwork itself on hover" technique
+ *  already used for ProjectCard's hoverImage crossfade, kept consistent
+ *  rather than inventing a second pattern. cart-hover.png is
+ *  deliberately NOT wired to any real "items in cart" state -- this is a
+ *  static site with no cart persistence to key that off, so it's a
  *  hover-only cue for now; revisit if real commerce state ever exists
  *  (see DESIGN.md's open commerce-channel decision).
  *
@@ -189,7 +193,7 @@ const CART_MASK_BASE = {
  *  the rest of the pill's type, which a fixed numeric size can't do. */
 export function CartIcon({ className }: { className?: string }) {
   return (
-    <span aria-hidden="true" className={`group relative inline-block ${className ?? ""}`}>
+    <span aria-hidden="true" className={`relative inline-block ${className ?? ""}`}>
       <span
         className="absolute inset-0 bg-current transition-opacity duration-200 ease-in-out group-hover:opacity-0"
         style={{ maskImage: "url(/icons/cart.png)", WebkitMaskImage: "url(/icons/cart.png)", ...CART_MASK_BASE }}

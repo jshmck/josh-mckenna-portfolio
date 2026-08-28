@@ -363,18 +363,24 @@ export function Nav() {
               aria-current={isActive("/shop") ? "page" : undefined}
               aria-label="Cart"
               onClick={() => scrollToTopIfCurrent("/shop")}
-              className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
+              className={`group flex h-14 w-14 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
             >
-              {/* hover:scale-110 + hover:text-brand on the icon itself,
-                  not the circle -- same split as jM above (circle stays
-                  put, the mark inside it moves) and the same recipe as
-                  the footer's social icons (transition-[color,transform]
-                  duration-200 ease-in-out, hover:duration-300
-                  hover:ease-drift). Blue specifically (text-brand), not
-                  text-accent -- purple is reserved for the active-page
-                  state, this is a distinct hover cue. */}
+              {/* group-hover (keyed to the circle <Link> above, via
+                  `group`), not a plain hover: on the icon itself -- the
+                  icon glyph is only 20/24px inside a 56/64px circle, so a
+                  self-only hover: left most of the circle's area unable
+                  to trigger it. Same split as jM above otherwise (circle
+                  stays put, only the mark inside it moves) and the same
+                  transition recipe as the footer's social icons
+                  (transition-[color,transform] duration-200 ease-in-out,
+                  group-hover:duration-300 group-hover:ease-drift). Blue
+                  specifically (text-brand), not text-accent -- purple is
+                  reserved for the active-page state, this is a distinct
+                  hover cue. CartIcon's own internal crossfade
+                  (cart.png -> cart-hover.png) is also group-hover-driven
+                  off this same circle now, for the same reason. */}
               <CartIcon
-                className={`h-5 w-5 transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-brand hover:duration-300 hover:ease-drift md:h-6 md:w-6 ${
+                className={`h-5 w-5 transition-[color,transform] duration-200 ease-in-out group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift md:h-6 md:w-6 ${
                   isActive("/shop") ? "text-accent" : "text-ink"
                 }`}
               />
