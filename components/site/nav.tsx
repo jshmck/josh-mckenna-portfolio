@@ -1,72 +1,110 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { navLinks } from "@/lib/site";
+import { CartIcon } from "@/components/ui/social-icons";
 
 /**
- * Fixed nav — a small "jM" wordmark (the home link) then Work/Shop/Info/
- * Contact on the left, Cart alone on the far right. The wordmark reuses
- * the same lowercase-j quirk as the homepage hero's "jOSH" (see
- * drifting-hero.tsx) rather than getting its own pattern invented — it's
- * always brand-blue and doesn't participate in isActive() below, since a
- * logo mark reads as "go home," not as a page-state indicator the way the
- * text links do. Client-side only for `usePathname` and
- * the scroll-driven frost state; the active link (purple, bold) is the
- * other piece of state here.
+ * Floating nav, three separate shapes sharing one frost treatment: a jM
+ * circle (home link) pinned to the left edge of the content frame, the
+ * Work/Shop/Info/Contact pill genuinely centered in the viewport, a Cart
+ * circle (placeholder icon, see CartIcon) pinned to the right edge,
+ * mirroring jM. Client-side only for `usePathname` and the scroll-driven
+ * frost state; the active link (purple, bold) is the other piece of
+ * state here.
+ *
+ * Five passes to get here, each change driven by Josh watching the
+ * previous one live:
+ *   1. One long pill, scrolled-only — resting state kept the old
+ *      edge-to-edge/justify-between bar.
+ *   2. Resting state reworked to match the pill's centered layout and
+ *      larger type too — position/size/layout became identical in both
+ *      states, `scrolled` only toggling frost chrome.
+ *   3. A single centered jM broke the "logo sits top-left" convention,
+ *      so it split into three shapes (circles) instead of one pill —
+ *      jM/Cart still sat close to the main pill though, plus an SVG goo
+ *      filter meant to fuse them together on mount broke backdrop-blur
+ *      across the entire page in a real browser (see git history) and
+ *      was reverted.
+ *   4. jM/Cart moved to a real 3-column grid so they sit at the content
+ *      frame's actual left/right edges, not just left of centre — and
+ *      briefly reshaped from circles into asymmetric blobs ("the circles
+ *      look a bit too perfect, can there be an odd gloopy frost shape?").
+ *      The mount slide-in animation from pass 3 was dropped here too:
+ *      with jM/Cart now genuinely far from the main pill, motion implying
+ *      they'd travelled in from it stopped making sense — Josh's own
+ *      observation.
+ *   5. (current) Blobs reverted back to plain circles, per Josh — no
+ *      reason given, just "put them back to circle." Grid layout and
+ *      dropped animation from pass 4 both stayed.
  *
  * `position: sticky`, not `fixed` — sits in normal document flow, so a
- * spacer div is no longer needed to reserve its space (removed). This
- * used to be `fixed` specifically to avoid a `sticky` header's height-
- * change forcing a reflow on every frame of an animated resize -- but the
- * header no longer resizes at all (below), so that concern doesn't apply
- * and `sticky` is simpler. It does NOT, on its own, stop content from
- * scrolling underneath it: a sticky element only stays in-flow while
- * scrollY is less than its own offset from the top of the document, which
- * for the very first element on the page is 0 -- it's effectively pinned
- * from the first pixel of scroll, same as `fixed` was. What actually
- * fixed the header-over-content smudge was the frost threshold below.
+ * spacer div is no longer needed to reserve its space. This used to be
+ * `fixed` specifically to avoid a `sticky` header's height-change forcing
+ * a reflow on every frame of an animated resize -- but the header no
+ * longer resizes at all, so that concern doesn't apply and `sticky` is
+ * simpler. It does NOT, on its own, stop content from scrolling
+ * underneath it: a sticky element only stays in-flow while scrollY is
+ * less than its own offset from the top of the document, which for the
+ * very first element on the page is 0 -- it's effectively pinned from the
+ * first pixel of scroll, same as `fixed` was. What actually fixed the
+ * header-over-content smudge was the frost threshold below.
  *
  * The <header> itself is always 88px, never shrinks, and never carries a
- * border or background — that's all on <nav> now, which is *always* a
- * rounded-full, content-hugging pill (`w-fit`, centered), not just once
- * scrolled. First pass (since reworked) made the pill shape scrolled-only
- * and kept the resting bar in its old edge-to-edge/justify-between form;
- * Josh's correction after seeing it live was that the resting state should
- * match the pill's centered layout and larger type too. So position, size
- * and content layout are now identical in both states — `scrolled` only
- * toggles the frost chrome itself (border colour, background, blur) plus a
- * one-shot pop animation, nothing structural. `items-start` on <header>
- * plus `mt-5` on <nav> sits the pill a bit below the very top of the 88px
- * band rather than dead-centered — "bring it lower a little," per Josh,
- * after the first pass centered it exactly. `border` (not `border-b`) is
- * present at rest too, colour transparent — same width always, so frost
- * never causes a layout shift when it toggles on.
+ * border or background — that's all on the three shapes now, sharing one
+ * `frostClass` string so they never drift out of sync with each other.
+ * <nav> is a `grid-cols-[1fr_auto_1fr]` spanning max-w-frame (the site's
+ * usual content width) rather than a flex row with a gap — jM and Cart
+ * sit in the two `1fr` tracks (`justify-self-start`/`-end`), the main
+ * pill in the `auto` middle track, which stays centred in the viewport
+ * regardless of jM/Cart's own width since both flanking tracks are equal.
+ * `items-start` on <header> plus `mt-5` on <nav> sits the row a bit below
+ * the very top of the 88px band rather than dead-centered — "bring it
+ * lower a little," per Josh. Each shape's `border` is present at rest too,
+ * colour transparent — same width always, so frost never causes a layout
+ * shift when it toggles on.
  *
  * What scrolling still changes: past 24px of scroll (back below 4px to
  * undo — hysteresis, so it doesn't flicker at the boundary on trackpad
- * rubber-banding), the pill picks up border-hairline, bg-canvas/15 and
- * backdrop-blur-md (the same colourless frosted-glass treatment as the
- * hero's floating-object hover cards) plus a quick overshoot-scale pop
- * (`nav-pill-pop` keyframe, globals.css, var(--ease-bounce) — "a pop or
- * bounce element," per Josh). The pop only plays going in; reverting to
- * resting has no animation, matching the lightbox arrow-hint's
- * asymmetric-in-only pattern. Because only the pill itself ever carries
- * the frost, content behind the header is blurred directly behind the
- * pill and reads completely normally everywhere else across the 88px
- * band. Small fixed px scroll thresholds, not viewport-relative — Josh
- * wants the frost on the first scroll gesture, not once you're
- * meaningfully deep into the page. A mid-range threshold (120px, tried
- * previously) happened to land exactly where Work's illustration row sits
- * (~120-235px), so frost switching on coincided visually with that row
- * passing under the header. Near-zero doesn't have that problem — frost
- * is already on well before any near-top content reaches the header.
+ * rubber-banding), all three shapes pick up border-hairline, bg-canvas/15
+ * and backdrop-blur-md (the same colourless frosted-glass treatment as
+ * the hero's floating-object hover cards) plus a quick overshoot-scale pop
+ * (`nav-pill-pop` keyframe, globals.css, var(--ease-bounce)). The pop
+ * only plays going in; reverting to resting has no animation, matching
+ * the lightbox arrow-hint's asymmetric-in-only pattern. Because only
+ * these shapes ever carry the frost, content behind the header is
+ * blurred directly behind them and reads completely normally everywhere
+ * else across the 88px band. Small fixed px scroll thresholds, not
+ * viewport-relative — Josh wants the frost on the first scroll gesture,
+ * not once you're meaningfully deep into the page. A mid-range threshold
+ * (120px, tried previously) happened to land exactly where Work's
+ * illustration row sits (~120-235px), so frost switching on coincided
+ * visually with that row passing under the header. Near-zero doesn't have
+ * that problem — frost is already on well before any near-top content
+ * reaches the header.
  *
- * Link text 15/17px, jM 24/28px, in both states now (Josh: "will also
- * have to be centred and larger size to match") — up from an original
- * 14px/22px that only applied at rest before this pass unified them.
+ * jM/Cart are plain `rounded-full` circles again (pass 4's asymmetric-
+ * border-radius blob shape was reverted). The literal liquid-fuse-on-
+ * scroll look Josh originally asked for ("gloop") is still an open want,
+ * not abandoned — doing it safely would mean isolating that merge effect
+ * onto a separate solid-fill layer behind the real (backdrop-blurred)
+ * shapes, never combining `filter` and `backdrop-filter` on the same
+ * element (see pass 3's revert, above, for why that combination broke).
+ *
+ * Link text 17/22px in both states -- was 14px resting-only, then 15/17px
+ * unified across both states, then bumped to 18/24px along with the
+ * pill's own padding (py-5/6, up from py-2.5/3) so the main pill reads as
+ * the nav's biggest, most prominent shape rather than the two circles
+ * flanking it, then eased back down one notch to 17/22px, "just a smidge
+ * smaller." jM was 24/28px text at the same two breakpoints before it
+ * became an image -- h-8/9 at first (roughly the old text's footprint),
+ * bumped to h-10/11 ("make it bigger"), then to h-11/14 again along with
+ * the jM/Cart circles themselves growing (h-14/16 -> h-16/20) "to better
+ * match the centre nav."
  *
  * On "/" only, the active highlight is also scroll-position-driven: the
  * homepage embeds the real Work gallery inline (see app/page.tsx's
@@ -191,60 +229,109 @@ export function Nav() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  // Second pass at the "floating pill" idea (see memory/project notes).
-  // Josh's correction after seeing the first pass: the resting bar should
-  // match the pill's centered layout and bigger type too, not stay in the
-  // old edge-to-edge/justify-between shape -- so the content layout, gaps
-  // and type sizes below are now identical in both states. The ONLY thing
-  // `scrolled` still toggles is the frost chrome itself (border colour,
-  // background, blur) plus the one-shot pop animation -- not shape, not
-  // position, not size. border is always present at the same width
-  // (border-transparent at rest) so the frost never causes a layout
-  // shift when it appears. mt-5 (was center-of-header in the first pass,
-  // per Josh: "bring it lower a little") sits the pill a bit below the
-  // very top of the 88px header band rather than dead center.
+  // Fourth pass at the "floating pill" idea (see memory/project notes).
+  // Josh's reaction after seeing the three-shape split live: jM/Cart still
+  // read too close to the main pill to feel like real corner marks. Moved
+  // from "three flex children with a big gap" to a genuine 3-column grid
+  // (1fr / auto / 1fr) spanning the site's usual max-w-frame content
+  // width -- jM and Cart now sit at the actual left/right edges of that
+  // frame, the same edges the very first (pre-pill) nav had them at,
+  // while the middle column's `1fr` tracks being equal width keeps the
+  // main pill genuinely centered in the viewport regardless of jM/Cart's
+  // own size. Also dropped the mount slide-in animation the previous pass
+  // had on jM/Cart (sliding in "from the main pill") -- Josh's own
+  // observation once they moved to the true edges: with that much
+  // distance between them now, motion implying they came from the pill
+  // no longer reads as sensible. No replacement animation yet.
+  //
+  // frostClass is shared across all three shapes so the frost (border
+  // colour, background, blur, the one-shot pop) stays byte-identical
+  // between them.
+  const frostClass = scrolled
+    ? "animate-[nav-pill-pop_500ms_var(--ease-bounce)] border-hairline bg-canvas/15 backdrop-blur-md"
+    : "border-transparent bg-transparent";
+
   return (
     <>
       <header className="sticky top-0 z-40 flex h-[88px] items-start justify-center">
         <nav
           aria-label="Primary"
-          className={`mx-auto mt-5 flex w-fit max-w-[calc(100%-2rem)] items-center justify-center gap-10 rounded-full border px-6 py-2.5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:gap-20 md:px-10 md:py-3 ${
-            scrolled
-              ? "animate-[nav-pill-pop_500ms_var(--ease-bounce)] border-hairline bg-canvas/15 backdrop-blur-md"
-              : "border-transparent bg-transparent"
-          }`}
+          className="mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 md:px-gutter"
         >
-          <div className="flex items-center gap-10 md:gap-20">
-            {/* Home link -- always routes to "/", every page, every state.
-                Small enough to not reintroduce the wordiness "Home" was cut
-                for, brand-blue per the wordmark colour rule, real lowercase
-                j (not font-variant-caps) matching the hero's "jOSH" — see
-                the file doc comment above. Same BackToTop-family easing as
-                every pill/chip/button on the site (duration-500
-                ease-[cubic-bezier(0.34,1.56,0.64,1)]), but bigger and with a
-                tilt -- jM is the one brand mark, not a utility pill, so it
-                gets a more pronounced version of the same bounce rather
-                than the exact scale-105. active: mirrors hover: exactly --
-                touch devices never trigger Tailwind's hover: variant (it's
-                scoped to @media (hover: hover) precisely so a tap doesn't
-                leave a stuck hover state), so without this a tap here would
-                have no visible feedback at all, just the navigation.
-
-                The explicit scroll-to-top (scrollToTopIfCurrent below)
-                handles a Next.js quirk: a <Link> to the route you're
-                already on doesn't trigger Next's own navigation-scroll-
-                restoration (no route change actually happens), so clicking
-                jM while already on "/" did nothing if you'd scrolled down.
-                Every primary nav link gets the same treatment now. */}
+          {/* jM circle -- pinned to the frame's left edge (justify-self:
+              start), the same edge the pre-pill nav always had it at. */}
+          <div className="justify-self-start">
             <Link
               href="/"
               aria-label="Josh McKenna — home"
               onClick={() => scrollToTopIfCurrent("/")}
-              className="font-display text-[24px] font-waldeck-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:text-[28px]"
+              className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-20 md:w-20 ${frostClass}`}
             >
-              jM
-            </Link>
+              {/* Home link -- always routes to "/", every page, every
+                  state. Josh's own jM logomark now (public/icons/
+                  jm-logomark.png), replacing the styled "jM" text this
+                  used to render -- a transparent PNG, already brand-blue
+                  baked into the artwork, so no CartIcon-style
+                  currentColor masking is needed here (jM's colour never
+                  changes; Cart's does, between text-ink and text-accent).
+                  next/image with explicit width/height rather than Plate
+                  -- the same drifting-hero-cutout exception CLAUDE.md
+                  already carves out for transparent-PNG marks that
+                  aren't framed artwork, just applied to a second, much
+                  smaller case. width/height (72) are a fixed intrinsic
+                  size for Next's optimizer, not the rendered size --
+                  className's h-8/h-9 controls what actually shows, same
+                  pattern as sizing any next/image via CSS. Same
+                  BackToTop-family easing as every pill/chip/button on
+                  the site (duration-500
+                  ease-[cubic-bezier(0.34,1.56,0.64,1)]), but bigger and
+                  with a tilt -- jM is the one brand mark, not a utility
+                  pill, so it gets a more pronounced version of the same
+                  bounce rather than the exact scale-105. active: mirrors
+                  hover: exactly -- touch devices never trigger Tailwind's
+                  hover: variant (it's scoped to @media (hover: hover)
+                  precisely so a tap doesn't leave a stuck hover state),
+                  so without this a tap here would have no visible
+                  feedback at all, just the navigation.
 
+                  The explicit scroll-to-top (scrollToTopIfCurrent below)
+                  handles a Next.js quirk: a <Link> to the route you're
+                  already on doesn't trigger Next's own navigation-scroll-
+                  restoration (no route change actually happens), so
+                  clicking jM while already on "/" did nothing if you'd
+                  scrolled down. Every primary nav link gets the same
+                  treatment now. */}
+              <Image
+                src="/icons/jm-logomark.png"
+                alt=""
+                aria-hidden="true"
+                width={112}
+                height={112}
+                sizes="56px"
+                priority
+                className="h-11 w-11 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14"
+              />
+            </Link>
+          </div>
+
+          {/* Main pill -- centered in the grid's middle column, which
+              stays genuinely viewport-centered because both flanking
+              columns are equal `1fr` tracks regardless of jM/Cart's own
+              width. Originally sized to clearly outsize jM/Cart's
+              (then-)56/64px circles (py-5/md:py-6 + text-[17px]/
+              md:text-[22px] lands the pill noticeably taller at both
+              breakpoints) -- Josh: "increase the size of the nav bar so
+              it's bigger than the jM and cart... it should be the main
+              focus." Previously the circles were incidentally *taller*
+              than the pill (56/64px vs a ~40/48px pill), backwards from
+              what he wanted -- the pill got bigger to fix that, then the
+              circles grew too (now 64/80px, see jM/Cart below) "to
+              better match the centre nav." Text
+              nudged back down slightly from an initial 18/24px -- "I
+              like it but just a smidge smaller." */}
+          <div
+            className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:gap-10 md:px-12 md:py-6 ${frostClass}`}
+          >
             <ul className="flex items-center gap-6 md:gap-10">
               {navLinks.map((link) => (
                 <li key={link.href}>
@@ -258,7 +345,7 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`inline-block font-body text-[15px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift md:text-[17px] ${
+                    className={`inline-block font-body text-[17px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift md:text-[22px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
@@ -271,22 +358,39 @@ export function Nav() {
             </ul>
           </div>
 
-          <ul className="flex shrink-0 items-center gap-5 md:gap-8">
-            <li>
-              <Link
-                href="/shop"
-                aria-current={isActive("/shop") ? "page" : undefined}
-                onClick={() => scrollToTopIfCurrent("/shop")}
-                className={`inline-block font-body text-[15px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift md:text-[17px] ${
-                  isActive("/shop")
-                    ? "font-bold text-accent"
-                    : "text-ink hover:font-bold hover:text-accent"
+          {/* Cart circle -- mirrors jM: pinned to the frame's right edge
+              (justify-self: end), same size, same frost. Josh's own bag
+              icon now (public/icons/cart.png via CartIcon), not the
+              placeholder outline this used to render. */}
+          <div className="justify-self-end">
+            <Link
+              href="/shop"
+              aria-current={isActive("/shop") ? "page" : undefined}
+              aria-label="Cart"
+              onClick={() => scrollToTopIfCurrent("/shop")}
+              className={`group flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-20 md:w-20 ${frostClass}`}
+            >
+              {/* group-hover (keyed to the circle <Link> above, via
+                  `group`), not a plain hover: on the icon itself -- the
+                  icon glyph is much smaller than the circle, so a
+                  self-only hover: left most of the circle's area unable
+                  to trigger it. Same split as jM above otherwise (circle
+                  stays put, only the mark inside it moves) and the same
+                  transition recipe as the footer's social icons
+                  (transition-[color,transform] duration-200 ease-in-out,
+                  group-hover:duration-300 group-hover:ease-drift). Blue
+                  specifically (text-brand), not text-accent -- purple is
+                  reserved for the active-page state, this is a distinct
+                  hover cue. CartIcon's own internal crossfade
+                  (cart.png -> cart-hover.png) is also group-hover-driven
+                  off this same circle now, for the same reason. */}
+              <CartIcon
+                className={`h-6 w-6 transition-[color,transform] duration-200 ease-in-out group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift md:h-7 md:w-7 ${
+                  isActive("/shop") ? "text-accent" : "text-ink"
                 }`}
-              >
-                Cart
-              </Link>
-            </li>
-          </ul>
+              />
+            </Link>
+          </div>
         </nav>
       </header>
     </>
