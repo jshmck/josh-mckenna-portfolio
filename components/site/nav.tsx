@@ -77,9 +77,12 @@ import { CartIcon } from "@/components/ui/social-icons";
  * globals.css — see its own doc comment for the full breakdown; Josh's
  * brief was "there's some weight to the nav bars... they got stuck as
  * you start to scroll, then they get unstuck and bounce a little.
- * liquid, gloopy vibe"). The settle only plays going in; reverting to
- * resting has no animation, matching the lightbox arrow-hint's
- * asymmetric-in-only pattern. Because only
+ * liquid, gloopy vibe"). Reverting to resting plays its own matching
+ * settle too now (`nav-pill-landing`, a separate identically-shaped
+ * keyframe -- see its doc comment in globals.css for why it can't just
+ * reuse nav-pill-pop's name) -- "as if the nav bars have hit the top of
+ * the page and bounced," per Josh, gated so it never fires on initial
+ * page load, only on a genuine scrolled-back-to-top. Because only
  * these shapes ever carry the frost, content behind the header is
  * blurred directly behind them and reads completely normally everywhere
  * else across the 88px band. Small fixed px scroll thresholds, not
@@ -133,6 +136,17 @@ export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
+  // Latches true the first time `scrolled` goes true, so the landing bounce
+  // below (nav-pill-landing) never fires on initial page load -- only once
+  // there's been a real frost-in to "land" back down from. State, not a
+  // ref: React's compiler-backed lint (react-hooks/refs) now flags reading
+  // or writing ref.current during render, since a ref mutation there isn't
+  // guaranteed to survive a discarded/replayed render the way a state
+  // update is. Set via the same "adjust state during render" pattern as
+  // prevPathname below, rather than in an effect, which would trail a
+  // frame behind and risk the very first return-to-top after a fresh page
+  // load missing its bounce.
+  const [hasFrostedOnce, setHasFrostedOnce] = useState(false);
 
   // Nav never unmounts across a client-side route change (it lives in the
   // root layout), so `scrolled` could otherwise keep carrying the
@@ -143,12 +157,17 @@ export function Nav() {
   // trail a frame behind and risk a one-frame flash of frost on the new
   // page). Bypasses the update()/scroll-listener path below entirely, so
   // there's no dependency on a 'scroll' event actually firing to correct
-  // it.
+  // it. hasFrostedOnce resets here too, on the same schedule, so
+  // navigating to a fresh page never plays a landing bounce on its own --
+  // only an actual scroll-triggered return to the top does.
   const [prevPathname, setPrevPathname] = useState(pathname);
   if (pathname !== prevPathname) {
     setPrevPathname(pathname);
     setScrolled(false);
+    setHasFrostedOnce(false);
   }
+
+  if (scrolled && !hasFrostedOnce) setHasFrostedOnce(true);
 
   useEffect(() => {
     let raf = 0;
@@ -254,9 +273,22 @@ export function Nav() {
   // in lockstep, not staggered. 650ms, up from an original 500ms flat
   // scale-pop -- the new keyframe (globals.css) needs the extra room to
   // read as a hold-then-release rather than a single quick pop.
+  //
+  // The resting branch plays its own bounce too now -- nav-pill-landing,
+  // "as if the nav bars have hit the top of the page and bounced," per
+  // Josh -- gated behind hasFrostedOnce so it never plays on first mount,
+  // only on a genuine scrolled-back-to-top transition. It has to be a
+  // second, distinctly-named keyframe rather than reusing nav-pill-pop:
+  // an animation only replays when the browser sees animation-name
+  // actually change value, and alternating between two different names
+  // on every scrolled flip (pop going down, landing coming back up) is
+  // what makes it replay reliably in both directions, indefinitely --
+  // reusing one name would only ever fire on the first transition.
   const frostClass = scrolled
     ? "animate-[nav-pill-pop_650ms_ease-in-out] border-hairline bg-canvas/15 backdrop-blur-md"
-    : "border-transparent bg-transparent";
+    : hasFrostedOnce
+      ? "animate-[nav-pill-landing_650ms_ease-in-out] border-transparent bg-transparent"
+      : "border-transparent bg-transparent";
 
   return (
     <>
@@ -401,16 +433,20 @@ export function Nav() {
                   hover cue. CartIcon's own internal crossfade
                   (cart.png -> cart-hover.png) is also group-hover-driven
                   off this same circle now, for the same reason.
-                  group-hover:-rotate-6 is jM's own "sideways fun" tilt
+                  group-hover:rotate-6 is jM's own "sideways fun" tilt
                   (hover:-rotate-6 on its image), applied here too per
-                  Josh so both marks share the same playful wobble.
+                  Josh so both marks share the same playful wobble --
+                  mirrored to the opposite direction (positive, not
+                  negative) since jM sits on the left and Cart on the
+                  right; tilting the same way as jM read wrong, per
+                  Josh, tilting outward/away from center reads right.
                   group-active: mirrors every group-hover: here for the
                   same touch-accessibility reason jM's active: does --
                   Cart didn't have this before; added it now while
                   already touching this hover treatment rather than
                   leaving the gap. */}
               <CartIcon
-                className={`h-6 w-6 transition-[color,transform] duration-200 ease-in-out group-hover:-rotate-6 group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift group-active:-rotate-6 group-active:scale-110 group-active:text-brand md:h-7 md:w-7 ${
+                className={`h-6 w-6 transition-[color,transform] duration-200 ease-in-out group-hover:rotate-6 group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift group-active:rotate-6 group-active:scale-110 group-active:text-brand md:h-7 md:w-7 ${
                   isActive("/shop") ? "text-accent" : "text-ink"
                 }`}
               />

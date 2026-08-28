@@ -552,6 +552,41 @@
   }
 }
 
+/* Same shape as nav-pill-pop above, deliberately duplicated rather than
+   shared -- this is the return-to-top counterpart, played on the resting
+   (unfrosted) shapes once scroll carries them back past the frost
+   threshold. Josh: "add that same gloop effect when you return to the top
+   of the page as if the nav bars have hit the top of the page and
+   bounced." A genuinely separate @keyframes (not just re-using
+   nav-pill-pop's name on the resting branch) matters here: a CSS animation
+   only restarts when the computed animation-name value actually changes,
+   so alternating between two distinctly-named keyframes on every
+   scrolled/resting flip is what makes this replay every single time you
+   scroll down and back up, in both directions, indefinitely -- reusing one
+   name would only ever fire on the very first transition. See
+   components/site/nav.tsx's frostClass for the hasFrostedOnce gate that
+   keeps this from playing on initial page load. */
+@keyframes nav-pill-landing {
+  0% {
+    transform: translateY(0) scale(1, 1);
+  }
+  12% {
+    transform: translateY(4px) scale(1.05, 0.9);
+  }
+  40% {
+    transform: translateY(-3px) scale(0.96, 1.08);
+  }
+  65% {
+    transform: translateY(1px) scale(1.02, 0.97);
+  }
+  85% {
+    transform: translateY(-0.5px) scale(0.995, 1.01);
+  }
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+}
+
 /* Scroll reveal — driven by the data attribute the Reveal component flips.
    Hidden is the CSS default so there is no flash of visible content. Both
    escape hatches below are pure CSS, so content can never be stranded
