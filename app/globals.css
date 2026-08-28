@@ -624,32 +624,34 @@
   }
 }
 
-/* Half-amplitude nav-pill-hover, for the pill container's has-[a:hover]
-   reaction only (components/site/nav.tsx) -- moving the cursor from one
-   nav word to the next crosses a real gap between them, so :has(a:hover)
-   flickers false-then-true-again and restarts this every crossing. At full
-   nav-pill-hover strength that repeated restart read as glitchy -- Josh:
-   "scale back the effect a little, it starts to bug a little when going
-   from one word to the other." Same shape and timing, every delta just
-   roughly halved, so a rapid restart is a gentle wobble instead of a
-   visible snap. The words' own hover (still full nav-pill-hover) and
-   jM/Cart aren't touched -- neither of those retriggers this way, so
-   neither needed softening. */
+/* Quarter-amplitude nav-pill-hover, for the pill container's
+   has-[a:hover] reaction only (components/site/nav.tsx) -- moving the
+   cursor from one nav word to the next crosses a real gap between them,
+   so :has(a:hover) flickers false-then-true-again and restarts this every
+   crossing. Josh flagged the restart itself reading as glitchy twice --
+   once at full nav-pill-hover strength ("scale back the effect a little,
+   it starts to bug a little when going from one word to the other"),
+   then again after an initial halving ("it's still a little jittery
+   sometimes, lets reduce it a little") -- so this is now roughly a
+   quarter of nav-pill-hover's original deltas, same shape and timing.
+   The words' own hover (still full nav-pill-hover) and jM/Cart aren't
+   touched -- neither of those retriggers this way, so neither needed
+   softening. */
 @keyframes nav-pill-hover-soft {
   0% {
     transform: translateY(0) scale(1, 1);
   }
   12% {
-    transform: translateY(2px) scale(1.025, 0.95);
+    transform: translateY(1px) scale(1.0125, 0.975);
   }
   40% {
-    transform: translateY(-1.5px) scale(0.98, 1.04);
+    transform: translateY(-0.75px) scale(0.99, 1.02);
   }
   65% {
-    transform: translateY(0.5px) scale(1.01, 0.985);
+    transform: translateY(0.25px) scale(1.005, 0.9925);
   }
   85% {
-    transform: translateY(-0.25px) scale(0.9975, 1.005);
+    transform: translateY(-0.125px) scale(0.99875, 1.0025);
   }
   100% {
     transform: translateY(0) scale(1, 1);
