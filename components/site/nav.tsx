@@ -299,19 +299,28 @@ export function Nav() {
         >
           {/* jM circle -- pinned to the frame's left edge (justify-self:
               start), the same edge the pre-pill nav always had it at.
-              hover:/active: animate the same nav-pill-pop squash-and-
-              stretch the scroll-in frost uses (globals.css) -- "apply
-              that same gloopy bounce when you hover over the nav
-              buttons too," per Josh. Unconditional (outside frostClass,
-              which only covers the scroll-driven state) so it plays on
-              every fresh hover/tap regardless of whether the pill is
-              currently frosted or not. */}
+              hover:/active: animate the same squash-and-stretch shape the
+              scroll-in frost uses (globals.css) -- "apply that same
+              gloopy bounce when you hover over the nav buttons too," per
+              Josh -- but its own distinctly-named keyframe,
+              nav-pill-hover, not a reuse of nav-pill-pop: reusing it
+              meant hovering while frosted asked for the same
+              animation-name the frosted base class already had applied,
+              so the browser saw no change and never replayed it ("when
+              the frost pill is activated (on hover) the movement is not
+              as animate or fun," per Josh). A third distinct name always
+              differs from whatever the base is currently playing, so it
+              retriggers every hover regardless of scroll state.
+              Unconditional (outside frostClass, which only covers the
+              scroll-driven state) so it plays on every fresh hover/tap
+              regardless of whether the pill is currently frosted or
+              not. */}
           <div className="justify-self-start">
             <Link
               href="/"
               aria-label="Josh McKenna — home"
               onClick={() => scrollToTopIfCurrent("/")}
-              className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-pop_650ms_ease-in-out] active:animate-[nav-pill-pop_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
+              className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
             >
               {/* Home link -- always routes to "/", every page, every
                   state. Josh's own jM logomark now (public/icons/
@@ -381,17 +390,25 @@ export function Nav() {
             <ul className="flex items-center gap-6 md:gap-10">
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  {/* Scale bounce on top of the existing bold+purple --
-                      same asymmetric easing as jM/project-nav: smooth
-                      ease-drift growing into the hover, cleaner
-                      ease-in-out reverting. inline-block so the scale
-                      transform actually renders (inline elements can
-                      ignore it in some browsers). */}
+                  {/* Same nav-pill-hover squash-and-stretch as jM/Cart's
+                      circles, not the plain hover:scale-105 this used to
+                      have -- "apply that effect to the hover of the
+                      words in the centre nav too," per Josh, once he saw
+                      it on the circles. active: mirrors hover: for the
+                      same touch-accessibility reason jM/Cart's does
+                      (Tailwind's hover: variant never fires on a tap).
+                      inline-block so the animation's transform actually
+                      renders (inline elements can ignore it in some
+                      browsers). transition-[color,font-weight] only now
+                      -- transform is driven by the keyframe, not a CSS
+                      transition, so it's dropped from this list rather
+                      than fighting the animation for control of the
+                      property. */}
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`inline-block font-body text-[17px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift md:text-[22px] ${
+                    className={`inline-block font-body text-[17px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:text-[22px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
@@ -406,8 +423,9 @@ export function Nav() {
 
           {/* Cart circle -- mirrors jM: pinned to the frame's right edge
               (justify-self: end), same size, same frost, same
-              hover:/active: nav-pill-pop bulge (see jM's comment above
-              -- unconditional, plays on every fresh hover/tap regardless
+              hover:/active: nav-pill-hover bulge (see jM's comment above
+              for why it's its own keyframe, not nav-pill-pop --
+              unconditional, plays on every fresh hover/tap regardless
               of scroll/frost state). Josh's own bag icon now
               (public/icons/cart.png via CartIcon), not the placeholder
               outline this used to render. */}
@@ -417,7 +435,7 @@ export function Nav() {
               aria-current={isActive("/shop") ? "page" : undefined}
               aria-label="Cart"
               onClick={() => scrollToTopIfCurrent("/shop")}
-              className={`group flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-pop_650ms_ease-in-out] active:animate-[nav-pill-pop_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
+              className={`group flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
             >
               {/* group-hover (keyed to the circle <Link> above, via
                   `group`), not a plain hover: on the icon itself -- the

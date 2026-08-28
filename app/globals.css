@@ -587,6 +587,43 @@
   }
 }
 
+/* Same shape again, third copy -- this one's for hover/active on jM, Cart
+   and the centre nav links (components/site/nav.tsx). Needed as its own
+   name, not a reuse of nav-pill-pop or nav-pill-landing: jM/Cart originally
+   pointed their hover:/active: at nav-pill-pop directly, which worked fine
+   at rest (base animation-name was "none," so hovering was a real change)
+   but went dead the moment the pill was frosted -- the frosted base class
+   already sets animation-name to nav-pill-pop, so hovering asked for the
+   exact same value and the browser never saw a change to restart from.
+   Josh noticed: "when the frost pill is activated (on hover) the movement
+   is not as animate or fun." A third distinct name sidesteps the problem
+   entirely -- hovering always differs from whatever the base is currently
+   playing (none, nav-pill-pop, or nav-pill-landing), so it retriggers
+   every time, regardless of scroll state. Also now applied to the
+   Work/Shop/Info/Contact links themselves, replacing their old plain
+   hover:scale-105 -- "apply that effect to the hover of the words in the
+   centre nav too," per Josh. */
+@keyframes nav-pill-hover {
+  0% {
+    transform: translateY(0) scale(1, 1);
+  }
+  12% {
+    transform: translateY(4px) scale(1.05, 0.9);
+  }
+  40% {
+    transform: translateY(-3px) scale(0.96, 1.08);
+  }
+  65% {
+    transform: translateY(1px) scale(1.02, 0.97);
+  }
+  85% {
+    transform: translateY(-0.5px) scale(0.995, 1.01);
+  }
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+}
+
 /* Scroll reveal — driven by the data attribute the Reveal component flips.
    Hidden is the CSS default so there is no flash of visible content. Both
    escape hatches below are pure CSS, so content can never be stranded
