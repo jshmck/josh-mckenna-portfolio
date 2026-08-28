@@ -94,9 +94,11 @@ import { CartIcon } from "@/components/ui/social-icons";
  * shapes, never combining `filter` and `backdrop-filter` on the same
  * element (see pass 3's revert, above, for why that combination broke).
  *
- * Link text 15/17px, jM 24/28px, in both states — up from an original
- * 14px/22px that only applied at rest before an earlier pass unified
- * them.
+ * Link text 18/24px, jM 24/28px, in both states. Was 14px/22px resting-
+ * only, then 15/17px unified across both states, then bumped again here
+ * along with the pill's own padding (py-5/6, up from py-2.5/3) so the
+ * main pill reads as the nav's biggest, most prominent shape rather than
+ * the two circles flanking it.
  *
  * On "/" only, the active highlight is also scroll-position-driven: the
  * homepage embeds the real Work gallery inline (see app/page.tsx's
@@ -291,9 +293,15 @@ export function Nav() {
           {/* Main pill -- centered in the grid's middle column, which
               stays genuinely viewport-centered because both flanking
               columns are equal `1fr` tracks regardless of jM/Cart's own
-              width. */}
+              width. Sized to clearly outsize jM/Cart's 56/64px circles
+              (py-5/md:py-6 + text-[18px]/md:text-[24px] lands the pill
+              noticeably taller at both breakpoints) -- Josh: "increase
+              the size of the nav bar so it's bigger than the jM and
+              cart... it should be the main focus." Previously the
+              circles were incidentally *taller* than the pill (56/64px
+              vs a ~40/48px pill), backwards from what he wanted. */}
           <div
-            className={`flex items-center gap-6 rounded-full border px-6 py-2.5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:gap-10 md:px-10 md:py-3 ${frostClass}`}
+            className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:gap-10 md:px-12 md:py-6 ${frostClass}`}
           >
             <ul className="flex items-center gap-6 md:gap-10">
               {navLinks.map((link) => (
@@ -308,7 +316,7 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`inline-block font-body text-[15px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift md:text-[17px] ${
+                    className={`inline-block font-body text-[18px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift md:text-[24px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
