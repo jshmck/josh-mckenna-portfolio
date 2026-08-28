@@ -333,10 +333,9 @@ export function Nav() {
           </div>
 
           {/* Cart circle -- mirrors jM: pinned to the frame's right edge
-              (justify-self: end), same size, same frost. Placeholder bag
-              icon, not final art -- Josh is drawing the real one; swap
-              CartIcon's <path> for his artwork when it's ready, nothing
-              else here should need to change. */}
+              (justify-self: end), same size, same frost. Josh's own bag
+              icon now (public/icons/cart.png via CartIcon), not the
+              placeholder outline this used to render. */}
           <div className="justify-self-end">
             <Link
               href="/shop"

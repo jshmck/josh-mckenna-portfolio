@@ -151,28 +151,34 @@ export function FigmaIcon({ size = 20 }: IconProps = {}) {
   );
 }
 
-/** Placeholder for the nav's Cart circle (components/site/nav.tsx) --
- *  Josh is drawing the real mark; swap the <path> below for his artwork
- *  when it's ready, nothing else about the icon's usage should need to
- *  change. Plain bag outline, stroke-based rather than this file's usual
- *  fill-traced convention, since there's no real design to trace yet.
- *  Takes `className` rather than the `size` prop every other icon here
- *  uses -- the nav needs it to size up at the md: breakpoint along with
- *  the rest of the pill's type, which a fixed numeric size can't do. */
+/** Nav's Cart circle (components/site/nav.tsx) -- Josh's own icon,
+ *  public/icons/cart.png, replacing the placeholder bag outline this
+ *  used to render inline. Rendered as a CSS mask (background-color:
+ *  currentColor, masked to the PNG's shape) rather than a plain <img>
+ *  specifically so it keeps responding to the parent's colour classes --
+ *  the nav swaps this between text-ink and text-accent on /shop's active
+ *  state, which a flat <img> can't do; a raster image has no
+ *  `currentColor` to inherit the way an inline SVG's `fill`/`stroke`
+ *  does. `-webkit-` prefixed mask properties alongside the unprefixed
+ *  ones since Safari still requires them. Takes `className` rather than
+ *  the `size` prop every other icon here uses -- the nav needs it to
+ *  size up at the md: breakpoint along with the rest of the pill's type,
+ *  which a fixed numeric size can't do. */
 export function CartIcon({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <span
       aria-hidden="true"
-      className={className}
-    >
-      <path d="M6 8h12l-1 12a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1L6 8Z" />
-      <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-    </svg>
+      className={`inline-block bg-current ${className ?? ""}`}
+      style={{
+        maskImage: "url(/icons/cart.png)",
+        maskSize: "contain",
+        maskRepeat: "no-repeat",
+        maskPosition: "center",
+        WebkitMaskImage: "url(/icons/cart.png)",
+        WebkitMaskSize: "contain",
+        WebkitMaskRepeat: "no-repeat",
+        WebkitMaskPosition: "center",
+      }}
+    />
   );
 }
