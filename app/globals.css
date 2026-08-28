@@ -530,7 +530,7 @@
    moves them through that close range. Plays once on mount (no `scrolled`
    gating — CSS animations run automatically on first paint), unlike
    nav-pill-pop above which is scroll-triggered. */
-@keyframes nav-gloop-left {
+@keyframes nav-circle-slide-left {
   from {
     transform: translateX(32px);
   }
@@ -539,7 +539,7 @@
   }
 }
 
-@keyframes nav-gloop-right {
+@keyframes nav-circle-slide-right {
   from {
     transform: translateX(-32px);
   }

@@ -8,12 +8,12 @@ import { navLinks } from "@/lib/site";
 import { CartIcon } from "@/components/ui/social-icons";
 
 /**
- * Floating nav, three separate shapes sharing one frost/goo treatment: a
- * jM circle (home link) on the left, the Work/Shop/Info/Contact pill in
- * the middle, a Cart circle (placeholder icon, see CartIcon) on the
- * right, mirroring jM. Client-side only for `usePathname` and the
- * scroll-driven frost state; the active link (purple, bold) is the other
- * piece of state here.
+ * Floating nav, three separate shapes sharing one frost treatment: a jM
+ * circle (home link) on the left, the Work/Shop/Info/Contact pill in the
+ * middle, a Cart circle (placeholder icon, see CartIcon) on the right,
+ * mirroring jM. Client-side only for `usePathname` and the scroll-driven
+ * frost state; the active link (purple, bold) is the other piece of
+ * state here.
  *
  * This went through three shapes before landing here, each change driven
  * by Josh watching the previous one live:
@@ -70,15 +70,20 @@ import { CartIcon } from "@/components/ui/social-icons";
  * reaches the header.
  *
  * jM and Cart also share a second, independent animation: a one-shot
- * "gloop" on mount (`nav-gloop-left`/`nav-gloop-right`, globals.css),
- * pulling each circle in from overlapping the main pill out to its
- * resting spot, rendered through an SVG goo filter (`#nav-goo`, defined
- * inline just above <nav>) that fuses nearby rounded shapes into one
- * blob and lets them separate cleanly — "gloop outwards from the main
- * pill," per Josh. This is the least battle-tested piece of the whole
- * component: the goo filter's blur/contrast values are the standard
- * starting point for this effect, not tuned against the real thing, and
- * no browser was available to see it move before shipping this pass.
+ * slide-and-settle on mount (`nav-circle-slide-left`/`nav-circle-slide-right`,
+ * globals.css), pulling each circle in from overlapping the main pill out
+ * to its resting spot on var(--ease-bounce) — the bouncy motion half of
+ * "gloop outwards from the main pill," per Josh. An earlier version of
+ * this also ran the three shapes through an SVG goo filter to make them
+ * visually fuse and split like liquid, not just slide -- reverted (see
+ * git history) after it broke backdrop-blur across the entire page in a
+ * real browser, not just the nav: SVG `filter` and `backdrop-filter`
+ * stacked on the same element don't compose safely, at least not the way
+ * that pass combined them. The literal liquid-merge look is still an open
+ * want, not abandoned -- it would need the merge effect isolated onto a
+ * separate solid-fill layer behind the real (backdrop-blurred) pill/
+ * circles, never touching backdrop-filter directly, which is a bigger
+ * change than a first pass.
  *
  * Link text 15/17px, jM 24/28px, in both states — up from an original
  * 14px/22px that only applied at rest before an earlier pass unified
@@ -230,49 +235,21 @@ export function Nav() {
   return (
     <>
       <header className="sticky top-0 z-40 flex h-[88px] items-start justify-center">
-        {/* Hidden goo filter, defined once and referenced by the wrapper
-            below via [filter:url(#nav-goo)] -- the classic "gooey" SVG
-            recipe (heavy blur, then a contrast-boosting colour matrix that
-            crushes the blur's soft alpha gradient back to a hard edge).
-            Two shapes rendered under this filter read as one fused blob
-            wherever they overlap or sit close enough for their blur
-            radii to touch, and as two ordinary rounded shapes once they're
-            far enough apart -- which is what makes the entrance animation
-            below ("gloop outwards," Josh's words) actually look like a
-            liquid split rather than two circles just sliding into place.
-            stdDeviation/matrix values are the standard starting point for
-            this effect, not yet tuned against the real thing -- no
-            browser available this session to see it move. */}
-        <svg aria-hidden="true" className="absolute h-0 w-0">
-          <defs>
-            <filter id="nav-goo">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-              <feColorMatrix
-                in="blur"
-                mode="matrix"
-                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -8"
-                result="goo"
-              />
-              <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-            </filter>
-          </defs>
-        </svg>
-
         <nav
           aria-label="Primary"
-          className="mx-auto mt-5 flex w-fit max-w-[calc(100%-2rem)] items-center gap-10 md:gap-20 [filter:url(#nav-goo)]"
+          className="mx-auto mt-5 flex w-fit max-w-[calc(100%-2rem)] items-center gap-10 md:gap-20"
         >
-          {/* jM circle -- gloops in from the right (toward the main pill)
-              on mount, once, per Josh: "make the two circles kind of
-              gloop outwards from the main pill." Plain settle after that,
-              same asymmetric-in-only pattern as the frost pop and the
-              lightbox arrow hint elsewhere in the codebase -- this isn't
-              a repeating idle animation. */}
+          {/* jM circle -- slides in from the right (toward the main pill)
+              on mount, once, with a bounce. Plain settle after that, same
+              asymmetric-in-only pattern as the frost pop and the lightbox
+              arrow hint elsewhere in the codebase -- this isn't a
+              repeating idle animation. No goo/fuse effect any more (see
+              the file doc comment) -- just the slide. */}
           <Link
             href="/"
             aria-label="Josh McKenna — home"
             onClick={() => scrollToTopIfCurrent("/")}
-            className={`flex h-14 w-14 shrink-0 animate-[nav-gloop-left_700ms_var(--ease-bounce)] items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
+            className={`flex h-14 w-14 shrink-0 animate-[nav-circle-slide-left_700ms_var(--ease-bounce)] items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
           >
             {/* Home link -- always routes to "/", every page, every state.
                 Small enough to not reintroduce the wordiness "Home" was cut
@@ -331,7 +308,7 @@ export function Nav() {
             </ul>
           </div>
 
-          {/* Cart circle -- mirrors jM: same size, same frost, gloops in
+          {/* Cart circle -- mirrors jM: same size, same frost, slides in
               from the left (toward the main pill) on mount. Placeholder
               bag icon, not final art -- Josh is drawing the real one;
               swap CartIcon's <path> for his artwork when it's ready,
@@ -341,7 +318,7 @@ export function Nav() {
             aria-current={isActive("/shop") ? "page" : undefined}
             aria-label="Cart"
             onClick={() => scrollToTopIfCurrent("/shop")}
-            className={`flex h-14 w-14 shrink-0 animate-[nav-gloop-right_700ms_var(--ease-bounce)] items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
+            className={`flex h-14 w-14 shrink-0 animate-[nav-circle-slide-right_700ms_var(--ease-bounce)] items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
           >
             <CartIcon
               className={`h-5 w-5 transition-colors duration-200 ease-in-out md:h-6 md:w-6 ${
