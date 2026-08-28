@@ -266,13 +266,20 @@ export function Nav() {
           className="mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 md:px-gutter"
         >
           {/* jM circle -- pinned to the frame's left edge (justify-self:
-              start), the same edge the pre-pill nav always had it at. */}
+              start), the same edge the pre-pill nav always had it at.
+              hover:/active: animate the same nav-pill-pop squash-and-
+              stretch the scroll-in frost uses (globals.css) -- "apply
+              that same gloopy bounce when you hover over the nav
+              buttons too," per Josh. Unconditional (outside frostClass,
+              which only covers the scroll-driven state) so it plays on
+              every fresh hover/tap regardless of whether the pill is
+              currently frosted or not. */}
           <div className="justify-self-start">
             <Link
               href="/"
               aria-label="Josh McKenna — home"
               onClick={() => scrollToTopIfCurrent("/")}
-              className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-20 md:w-20 ${frostClass}`}
+              className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-pop_650ms_ease-in-out] active:animate-[nav-pill-pop_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
             >
               {/* Home link -- always routes to "/", every page, every
                   state. Josh's own jM logomark now (public/icons/
@@ -366,16 +373,19 @@ export function Nav() {
           </div>
 
           {/* Cart circle -- mirrors jM: pinned to the frame's right edge
-              (justify-self: end), same size, same frost. Josh's own bag
-              icon now (public/icons/cart.png via CartIcon), not the
-              placeholder outline this used to render. */}
+              (justify-self: end), same size, same frost, same
+              hover:/active: nav-pill-pop bulge (see jM's comment above
+              -- unconditional, plays on every fresh hover/tap regardless
+              of scroll/frost state). Josh's own bag icon now
+              (public/icons/cart.png via CartIcon), not the placeholder
+              outline this used to render. */}
           <div className="justify-self-end">
             <Link
               href="/shop"
               aria-current={isActive("/shop") ? "page" : undefined}
               aria-label="Cart"
               onClick={() => scrollToTopIfCurrent("/shop")}
-              className={`group flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-20 md:w-20 ${frostClass}`}
+              className={`group flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-pop_650ms_ease-in-out] active:animate-[nav-pill-pop_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
             >
               {/* group-hover (keyed to the circle <Link> above, via
                   `group`), not a plain hover: on the icon itself -- the
@@ -390,9 +400,17 @@ export function Nav() {
                   reserved for the active-page state, this is a distinct
                   hover cue. CartIcon's own internal crossfade
                   (cart.png -> cart-hover.png) is also group-hover-driven
-                  off this same circle now, for the same reason. */}
+                  off this same circle now, for the same reason.
+                  group-hover:-rotate-6 is jM's own "sideways fun" tilt
+                  (hover:-rotate-6 on its image), applied here too per
+                  Josh so both marks share the same playful wobble.
+                  group-active: mirrors every group-hover: here for the
+                  same touch-accessibility reason jM's active: does --
+                  Cart didn't have this before; added it now while
+                  already touching this hover treatment rather than
+                  leaving the gap. */}
               <CartIcon
-                className={`h-6 w-6 transition-[color,transform] duration-200 ease-in-out group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift md:h-7 md:w-7 ${
+                className={`h-6 w-6 transition-[color,transform] duration-200 ease-in-out group-hover:-rotate-6 group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift group-active:-rotate-6 group-active:scale-110 group-active:text-brand md:h-7 md:w-7 ${
                   isActive("/shop") ? "text-accent" : "text-ink"
                 }`}
               />
