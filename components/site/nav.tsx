@@ -101,8 +101,8 @@ import { CartIcon } from "@/components/ui/social-icons";
  * the nav's biggest, most prominent shape rather than the two circles
  * flanking it, then eased back down one notch to 17/22px, "just a smidge
  * smaller." jM was 24/28px text at the same two breakpoints before it
- * became an image (h-8/9 logomark now, sized to roughly the same visual
- * footprint as the old text).
+ * became an image -- h-8/9 at first (roughly the old text's footprint),
+ * then bumped to h-10/11 per Josh: "make it bigger."
  *
  * On "/" only, the active highlight is also scroll-position-driven: the
  * homepage embeds the real Work gallery inline (see app/page.tsx's
@@ -303,11 +303,11 @@ export function Nav() {
                 src="/icons/jm-logomark.png"
                 alt=""
                 aria-hidden="true"
-                width={72}
-                height={72}
-                sizes="36px"
+                width={96}
+                height={96}
+                sizes="44px"
                 priority
-                className="h-8 w-8 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-9 md:w-9"
+                className="h-10 w-10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-11 md:w-11"
               />
             </Link>
           </div>
