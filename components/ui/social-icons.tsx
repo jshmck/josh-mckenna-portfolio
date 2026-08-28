@@ -16,9 +16,9 @@ const MASK_BASE = {
   WebkitMaskPosition: "center",
 } as const;
 
-/** Shared by every icon below except Figma (still hand-coded, see its
- *  own comment) and Cart (its own component, nav.tsx-specific, needs a
- *  hover crossfade these don't). Rendered as a CSS mask
+/** Shared by every icon below except Cart (its own component,
+ *  nav.tsx-specific, needs a hover crossfade these don't). Rendered as a
+ *  CSS mask
  *  (background-color: currentColor, masked to the PNG's shape) rather
  *  than a plain <img> so it keeps responding to the parent link's
  *  colour classes (hover:text-accent etc.) -- a raster image has no
@@ -71,37 +71,12 @@ export function BehanceIcon({ size = 20 }: IconProps = {}) {
   return <MaskIcon src="/icons/behance.png" size={size} />;
 }
 
-/** Links to Josh's Figma profile/community page. Still the original
- *  hand-coded SVG (traced from Josh's Figma icon set, Website Ref node
- *  193:325) -- no replacement PNG was provided alongside the rest of
- *  this batch, so this one's untouched. */
+/** Links to Josh's Figma profile/community page. Was the last hand-coded
+ *  SVG left in this file (no PNG for it in the first icon-replacement
+ *  batch); Josh added figma.png in a follow-up drop, so it's on the same
+ *  MaskIcon treatment as everything else here now. */
 export function FigmaIcon({ size = 20 }: IconProps = {}) {
-  const w = 9.58627;
-  const h = 13.5791;
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} width={(size * w) / h} height={size} aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M5.59102 3.99455V9.58558H2.79551C1.25168 9.58558 5.34806e-05 8.33388 0 6.79007C0 5.2462 1.25165 3.99455 2.79551 3.99455H5.59102ZM1.59642 6.79007C1.59647 7.45221 2.13336 7.98916 2.79551 7.98916H3.99461V5.59097H2.79551C2.13332 5.59097 1.59642 6.12788 1.59642 6.79007Z"
-      />
-      <path
-        fill="currentColor"
-        d="M3.99461 9.5845H2.79551C2.13332 9.5845 1.59642 10.1214 1.59642 10.7836C1.59647 11.4457 2.13336 11.9827 2.79551 11.9827C3.45762 11.9826 3.99455 11.4457 3.99461 10.7836V9.5845ZM5.59102 10.7836C5.59097 12.3274 4.3393 13.579 2.79551 13.5791C1.25168 13.5791 5.34806e-05 12.3274 0 10.7836C0 9.23973 1.25165 7.98808 2.79551 7.98808H5.59102V10.7836Z"
-      />
-      <path
-        fill="currentColor"
-        d="M5.59102 0V5.59102H2.79551C1.25168 5.59102 5.34806e-05 4.33933 0 2.79551C0 1.25165 1.25165 0 2.79551 0H5.59102ZM1.59642 2.79551C1.59647 3.45765 2.13336 3.99461 2.79551 3.99461H3.99461V1.59642H2.79551C2.13332 1.59642 1.59642 2.13332 1.59642 2.79551Z"
-      />
-      <path
-        fill="currentColor"
-        d="M3.99508 0V5.59102H6.79059C8.33443 5.59102 9.58605 4.33933 9.58611 2.79551C9.58611 1.25165 8.33446 0 6.79059 0H3.99508ZM7.98969 2.79551C7.98963 3.45765 7.45275 3.99461 6.79059 3.99461H5.5915V1.59642H6.79059C7.45278 1.59642 7.98969 2.13332 7.98969 2.79551Z"
-      />
-      <path
-        fill="currentColor"
-        d="M5.5915 6.79007C5.5915 6.12791 6.12845 5.59102 6.79059 5.59097C7.45278 5.59097 7.98969 6.12788 7.98969 6.79007C7.98963 7.45221 7.45275 7.98916 6.79059 7.98916C6.12849 7.98911 5.59155 7.45217 5.5915 6.79007ZM3.99508 6.79007C3.99514 8.33385 5.24681 9.58552 6.79059 9.58558C8.33442 9.58558 9.58605 8.33388 9.58611 6.79007C9.58611 5.2462 8.33446 3.99455 6.79059 3.99455C5.24678 3.99461 3.99508 5.24623 3.99508 6.79007Z"
-      />
-    </svg>
-  );
+  return <MaskIcon src="/icons/figma.png" size={size} />;
 }
 
 /** Nav's Cart circle (components/site/nav.tsx) -- Josh's own icons,
