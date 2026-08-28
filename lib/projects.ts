@@ -592,10 +592,8 @@ export const projects: Project[] = [
       src: "/work/womp-pato/01-pato.webp",
     },
     heroPair: {
-      // True native ratio is 3/4, but matched to hero's 4/5 here — a
-      // ~6% crop, safe given the generous plain-background margin — so
-      // the two frames land the same size side by side instead of two
-      // different heights.
+      // Josh recropped the render itself to 4/5, matching hero — no
+      // CSS crop needed to land the two frames at the same size.
       ratio: "4/5",
       alt: "Pato, from behind",
       src: "/work/womp-pato/02-pato-back.webp",
