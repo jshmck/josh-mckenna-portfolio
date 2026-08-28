@@ -385,27 +385,33 @@ export function Nav() {
               nudged back down slightly from an initial 18/24px -- "I
               like it but just a smidge smaller."
 
-              has-[a:hover]/has-[a:active] make the pill itself bounce
-              too when any word inside it is hovered/tapped, not just the
-              word -- "can the words affect the pill a bit more? like the
-              way jM does to it's own circle," per Josh. jM/Cart get that
-              for free because the hovered element and the bouncing
-              element are the same node (the circle *is* the Link); the
-              pill and its words are two different nodes, so the pill
-              needs :has() to notice a descendant's hover/active state
-              and react itself. nav-pill-hover-soft, not the full
-              nav-pill-hover the words themselves use -- moving the
-              cursor from one word to the next crosses a real gap
-              between them, so :has(a:hover) flickers off-then-on and
-              restarts this on every crossing; at full strength that
-              repeated restart read as glitchy ("it starts to bug a
-              little when going from one word to the other," per Josh),
-              dialed down again after that first pass still felt
-              jittery. Quarter-amplitude now, same shape (globals.css),
-              so a rapid restart is a gentle wobble instead of a visible
-              snap. */}
+              hover:/active: make the pill itself bounce too when
+              hovered/tapped anywhere within it, not just the word under
+              the cursor -- "can the words affect the pill a bit more?
+              like the way jM does to it's own circle," per Josh. First
+              cut used has-[a:hover] to react specifically to a *word's*
+              hover state, since the pill and its words are two
+              different nodes and jM/Cart's self-bounce (circle *is* the
+              Link) doesn't apply directly here -- but moving the cursor
+              from one word to the next crosses the real gap between
+              them, so :has(a:hover) dropped out and back in on every
+              crossing, restarting the animation each time ("it starts
+              to bug a little when going from one word to the other," /
+              "it's still a little jittery sometimes" after dialing the
+              amplitude down twice). The actual fix wasn't amplitude, it
+              was the trigger: plain hover:/active: on the pill itself,
+              same mechanism as jM/Cart, fires once and stays true for as
+              long as the cursor is anywhere inside the pill's own box --
+              including the gaps between words -- so there's no
+              off-then-on cycle crossing between them, matching Josh's
+              own read of the bug ("shouldn't be an on and off
+              sequence"). Kept at nav-pill-hover-soft's reduced
+              amplitude regardless, rather than restoring full strength
+              now that the flicker's gone -- Josh asked to scale it back
+              twice before the cause was clear; worth leaving it quieter
+              unless he asks for more. */}
           <div
-            className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out has-[a:hover]:animate-[nav-pill-hover-soft_650ms_ease-in-out] has-[a:active]:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
+            className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
           >
             <ul className="flex items-center gap-6 md:gap-10">
               {navLinks.map((link) => (
