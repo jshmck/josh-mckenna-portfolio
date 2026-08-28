@@ -11,12 +11,15 @@ const RESTING_OFFSET = 32;
  * the filter chips' Waldeck styling it used before: centred in the
  * viewport instead of pinned to the right edge, font-body instead of
  * Waldeck uppercase (matching the header's own Work/Shop/Info/Contact
- * words), and the real nav-pill-hover squash-and-stretch keyframe
- * (globals.css) on hover/tap instead of a plain hover:scale-105 — "the
- * same gloopy bounce," per Josh. Frosted-glass surface (bg-canvas/15 +
- * backdrop-blur-md) and the black outline (not the blue hairline token, so
- * it reads as neutral at rest rather than pre-empting the brand-blue
- * active state) both carry over unchanged.
+ * words), sized to match the main pill (px-8/12 py-5/6, text-[17px]/[22px])
+ * rather than its own small chip scale, the blue hairline outline the main
+ * pill wears once frosted (not the black neutral outline this used to have
+ * — BackToTop is only ever visible well past the frost threshold, so it
+ * can just wear that state permanently instead of transitioning into it),
+ * and the real nav-pill-hover squash-and-stretch keyframe (globals.css) on
+ * hover/tap instead of a plain hover:scale-105 — "the same gloopy bounce,"
+ * per Josh. Frosted-glass surface (bg-canvas/15 + backdrop-blur-md)
+ * carries over unchanged.
  *
  * `translate` and `scale` are listed explicitly in the transition, not
  * `transform` — the hover keyframe animates `transform` directly, and
@@ -85,13 +88,13 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
-      className={`fixed bottom-8 left-1/2 z-30 -translate-x-1/2 rounded-full border border-ink bg-canvas/15 px-4 py-2 font-body text-[11px] text-ink backdrop-blur-md transition-[color,border-color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:border-brand hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:border-brand active:bg-brand active:text-canvas ${
+      className={`fixed bottom-8 left-1/2 z-30 -translate-x-1/2 rounded-full border border-hairline bg-canvas/15 px-8 py-5 font-body text-[17px] text-ink backdrop-blur-md transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas md:px-12 md:py-6 md:text-[22px] ${
         visible
           ? "translate-y-0 scale-100 opacity-100"
           : "pointer-events-none translate-y-4 scale-50 opacity-0"
       }`}
     >
-      Back to top
+      Back to Top
     </button>
   );
 }
