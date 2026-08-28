@@ -429,12 +429,30 @@ export function Nav() {
                       -- transform is driven by the keyframe, not a CSS
                       transition, so it's dropped from this list rather
                       than fighting the animation for control of the
-                      property. */}
+                      property.
+
+                      px-2 py-1.5 -mx-2 -my-1.5 grows the actual
+                      hoverable box past the glyphs themselves, without
+                      moving anything visually -- padding enlarges the
+                      box, the matching negative margin pulls its outer
+                      edges back to where they'd sit without the padding,
+                      so neighbouring words keep the same visual gap
+                      while each word's hit area now reaches into part of
+                      that gap. Same "twittering" as the pill's own fix
+                      above, one node down: a tight hit box right at the
+                      text's edges means small mouse jitter flickers in
+                      and out of :hover and keeps restarting the bounce
+                      -- "can you make the area where the mouse hovers
+                      over the words a little bit larger so they engage
+                      sooner? ... there is some buggy twittering," per
+                      Josh. gap-6/gap-10 (24/40px) leaves easily enough
+                      room for 8px of padding either side without two
+                      words' extended hit areas ever touching. */}
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`inline-block font-body text-[17px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:text-[22px] ${
+                    className={`-mx-2 -my-1.5 inline-block px-2 py-1.5 font-body text-[17px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:text-[22px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
