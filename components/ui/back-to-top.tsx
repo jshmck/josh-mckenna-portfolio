@@ -6,33 +6,34 @@ import { useEffect, useRef, useState } from "react";
 const RESTING_OFFSET = 32;
 
 /**
- * Floating "back to top" pill for long, unpaginated grids (Work). Same
- * Waldeck font and pill shape as the filter chips, and now the same
- * rest/hover/active colour progression too (black outline -> brand
- * outline+text on hover -> filled brand/canvas on active) — but with a
- * frosted-glass surface (bg-canvas/15 + backdrop-blur-md) matching the nav
- * header instead of the chip's flat canvas fill. Tried a plain
- * shadow-lg/bg-ink pill first, but it was the only shadow anywhere on the
- * site (everything else is flat colour/outline), so it came off in favour
- * of this. Black border, not the blue hairline token, so it reads as a
- * neutral outline at rest rather than pre-empting the brand-blue active
- * state. Plain CSS `uppercase`, not toWaldeckCase() -- tried the
- * lowercase quirk here too, but at this scale it read as a mistake
- * rather than a deliberate brand detail, same call already made for the
- * filter chips and the project prev/next nav.
+ * Floating "back to top" pill for long, unpaginated grids (Work). Now
+ * carries the same nav-pill treatment as the header (nav.tsx) rather than
+ * the filter chips' Waldeck styling it used before: centred in the
+ * viewport instead of pinned to the right edge, font-body instead of
+ * Waldeck uppercase (matching the header's own Work/Shop/Info/Contact
+ * words), and the real nav-pill-hover squash-and-stretch keyframe
+ * (globals.css) on hover/tap instead of a plain hover:scale-105 — "the
+ * same gloopy bounce," per Josh. Frosted-glass surface (bg-canvas/15 +
+ * backdrop-blur-md) and the black outline (not the blue hairline token, so
+ * it reads as neutral at rest rather than pre-empting the brand-blue
+ * active state) both carry over unchanged.
+ *
+ * `translate` and `scale` are listed explicitly in the transition, not
+ * `transform` — the hover keyframe animates `transform` directly, and
+ * Tailwind v4's translate/scale/rotate are independent CSS properties from
+ * `transform` itself, so the mount pop-in/out (which only ever touches
+ * translate/scale) and the hover bounce (which only ever touches
+ * transform) never fight for the same property.
  *
  * Appears once the page has scrolled past one viewport height and smooth-
  * scrolls to top on click. Omits an explicit `behavior` from `scrollTo` so
  * the global `scroll-behavior` CSS rule (and its reduced-motion override)
  * decides smooth vs instant, rather than duplicating that logic here.
  *
- * Pops in rather than just fading — scale + a small rise, eased with the
- * same overshoot/bounce curve the jM logo's hover/tap bounce uses
- * (nav.tsx), so it reads as an established site motion rather than a
- * one-off. The global
+ * Pops in rather than just fading — scale + a small rise. The global
  * prefers-reduced-motion rule in globals.css (transition-duration:
- * 0.01ms !important) neutralises the bounce automatically, no extra guard
- * needed here.
+ * 0.01ms !important) neutralises both the pop-in and the hover keyframe
+ * automatically, no extra guard needed here.
  *
  * Fixed to the viewport at rest, but docks 32px above the footer's top edge
  * once the footer scrolls into view, rather than sitting on top of it. That
@@ -84,7 +85,7 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
-      className={`font-display fixed bottom-8 right-8 z-30 rounded-full border border-ink bg-canvas/15 px-4 py-2 text-[11px] font-waldeck-medium uppercase tracking-[0.02em] text-ink backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas ${
+      className={`fixed bottom-8 left-1/2 z-30 -translate-x-1/2 rounded-full border border-ink bg-canvas/15 px-4 py-2 font-body text-[11px] text-ink backdrop-blur-md transition-[color,border-color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:border-brand hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:border-brand active:bg-brand active:text-canvas ${
         visible
           ? "translate-y-0 scale-100 opacity-100"
           : "pointer-events-none translate-y-4 scale-50 opacity-0"
