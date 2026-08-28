@@ -393,11 +393,17 @@ export function Nav() {
               element are the same node (the circle *is* the Link); the
               pill and its words are two different nodes, so the pill
               needs :has() to notice a descendant's hover/active state
-              and react itself. Same nav-pill-hover keyframe as
-              everything else here, so the whole nav shares one bounce
-              vocabulary -- CSS handles the trigger, no JS state needed. */}
+              and react itself. nav-pill-hover-soft, not the full
+              nav-pill-hover the words themselves use -- moving the
+              cursor from one word to the next crosses a real gap
+              between them, so :has(a:hover) flickers off-then-on and
+              restarts this on every crossing; at full strength that
+              repeated restart read as glitchy ("it starts to bug a
+              little when going from one word to the other," per Josh).
+              Half-amplitude, same shape (globals.css), so a rapid
+              restart is a gentle wobble instead of a visible snap. */}
           <div
-            className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out has-[a:hover]:animate-[nav-pill-hover_650ms_ease-in-out] has-[a:active]:animate-[nav-pill-hover_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
+            className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out has-[a:hover]:animate-[nav-pill-hover-soft_650ms_ease-in-out] has-[a:active]:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
           >
             <ul className="flex items-center gap-6 md:gap-10">
               {navLinks.map((link) => (
