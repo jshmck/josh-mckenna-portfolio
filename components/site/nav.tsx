@@ -344,8 +344,16 @@ export function Nav() {
               onClick={() => scrollToTopIfCurrent("/shop")}
               className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
             >
+              {/* hover:scale-110 + hover:text-brand on the icon itself,
+                  not the circle -- same split as jM above (circle stays
+                  put, the mark inside it moves) and the same recipe as
+                  the footer's social icons (transition-[color,transform]
+                  duration-200 ease-in-out, hover:duration-300
+                  hover:ease-drift). Blue specifically (text-brand), not
+                  text-accent -- purple is reserved for the active-page
+                  state, this is a distinct hover cue. */}
               <CartIcon
-                className={`h-5 w-5 transition-colors duration-200 ease-in-out md:h-6 md:w-6 ${
+                className={`h-5 w-5 transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-brand hover:duration-300 hover:ease-drift md:h-6 md:w-6 ${
                   isActive("/shop") ? "text-accent" : "text-ink"
                 }`}
               />
