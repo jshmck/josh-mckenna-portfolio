@@ -9,14 +9,14 @@ import { CartIcon } from "@/components/ui/social-icons";
 
 /**
  * Floating nav, three separate shapes sharing one frost treatment: a jM
- * blob (home link) pinned to the left edge of the content frame, the
+ * circle (home link) pinned to the left edge of the content frame, the
  * Work/Shop/Info/Contact pill genuinely centered in the viewport, a Cart
- * blob (placeholder icon, see CartIcon) pinned to the right edge,
+ * circle (placeholder icon, see CartIcon) pinned to the right edge,
  * mirroring jM. Client-side only for `usePathname` and the scroll-driven
  * frost state; the active link (purple, bold) is the other piece of
  * state here.
  *
- * Four passes to get here, each change driven by Josh watching the
+ * Five passes to get here, each change driven by Josh watching the
  * previous one live:
  *   1. One long pill, scrolled-only — resting state kept the old
  *      edge-to-edge/justify-between bar.
@@ -29,14 +29,17 @@ import { CartIcon } from "@/components/ui/social-icons";
  *      filter meant to fuse them together on mount broke backdrop-blur
  *      across the entire page in a real browser (see git history) and
  *      was reverted.
- *   4. (current) jM/Cart moved to a real 3-column grid so they sit at
- *      the content frame's actual left/right edges, not just left of
- *      centre — and reshaped from plain circles into asymmetric blobs
- *      ("the circles look a bit too perfect, can there be an odd gloopy
- *      frost shape?"). The mount slide-in animation from pass 3 was
- *      dropped: with jM/Cart now genuinely far from the main pill,
- *      motion implying they'd travelled in from it stopped making
- *      sense — Josh's own observation.
+ *   4. jM/Cart moved to a real 3-column grid so they sit at the content
+ *      frame's actual left/right edges, not just left of centre — and
+ *      briefly reshaped from circles into asymmetric blobs ("the circles
+ *      look a bit too perfect, can there be an odd gloopy frost shape?").
+ *      The mount slide-in animation from pass 3 was dropped here too:
+ *      with jM/Cart now genuinely far from the main pill, motion implying
+ *      they'd travelled in from it stopped making sense — Josh's own
+ *      observation.
+ *   5. (current) Blobs reverted back to plain circles, per Josh — no
+ *      reason given, just "put them back to circle." Grid layout and
+ *      dropped animation from pass 4 both stayed.
  *
  * `position: sticky`, not `fixed` — sits in normal document flow, so a
  * spacer div is no longer needed to reserve its space. This used to be
@@ -83,14 +86,13 @@ import { CartIcon } from "@/components/ui/social-icons";
  * that problem — frost is already on well before any near-top content
  * reaches the header.
  *
- * jM/Cart's blob shape (JM_BLOB/CART_BLOB below) is a plain CSS asymmetric
- * border-radius, no SVG involved — deliberately, after pass 3's SVG goo
- * filter broke backdrop-filter compositing across the whole page. The
- * literal liquid-fuse-on-scroll look Josh originally asked for is still
- * an open want, not abandoned; doing it safely would mean isolating that
- * merge effect onto a separate solid-fill layer behind the real
- * (backdrop-blurred) shapes, never combining `filter` and
- * `backdrop-filter` on the same element. Bigger change than a shape swap.
+ * jM/Cart are plain `rounded-full` circles again (pass 4's asymmetric-
+ * border-radius blob shape was reverted). The literal liquid-fuse-on-
+ * scroll look Josh originally asked for ("gloop") is still an open want,
+ * not abandoned — doing it safely would mean isolating that merge effect
+ * onto a separate solid-fill layer behind the real (backdrop-blurred)
+ * shapes, never combining `filter` and `backdrop-filter` on the same
+ * element (see pass 3's revert, above, for why that combination broke).
  *
  * Link text 15/17px, jM 24/28px, in both states — up from an original
  * 14px/22px that only applied at rest before an earlier pass unified
@@ -241,26 +243,6 @@ export function Nav() {
     ? "animate-[nav-pill-pop_500ms_var(--ease-bounce)] border-hairline bg-canvas/15 backdrop-blur-md"
     : "border-transparent bg-transparent";
 
-  // jM/Cart are no longer plain circles -- Josh: "the circles look a bit
-  // too perfect, can there be an odd gloopy frost shape?" An irregular,
-  // hand-drawn-feeling blob instead, via the classic asymmetric multi-
-  // value border-radius trick (each corner a different %, horizontal and
-  // vertical radii set separately) -- no SVG filter involved this time,
-  // so none of the backdrop-filter-stacking risk that broke the last
-  // attempt. Inline style rather than a Tailwind arbitrary class: the
-  // compound "H H H H / V V V V" border-radius syntax mixes spaces and a
-  // slash in a way that's easy to get subtly wrong translating into
-  // Tailwind's bracket-and-underscore arbitrary-value encoding, and
-  // there's no dynamic/conditional reason it needs to be a class here.
-  // CART_BLOB is JM_BLOB's corners swapped left-right -- an approximate
-  // mirror, not a mathematically exact one; "mirror" was Josh's word for
-  // the overall composition (jM left, Cart right), not a spec for pixel-
-  // identical blob geometry. Unrefined starting shape, like every other
-  // number in this file right now -- no browser available to tune it
-  // against the real thing.
-  const JM_BLOB = "63% 37% 54% 46% / 45% 53% 47% 55%";
-  const CART_BLOB = "37% 63% 46% 54% / 53% 45% 55% 47%";
-
   return (
     <>
       <header className="sticky top-0 z-40 flex h-[88px] items-start justify-center">
@@ -268,15 +250,14 @@ export function Nav() {
           aria-label="Primary"
           className="mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 md:px-gutter"
         >
-          {/* jM blob -- pinned to the frame's left edge (justify-self:
+          {/* jM circle -- pinned to the frame's left edge (justify-self:
               start), the same edge the pre-pill nav always had it at. */}
           <div className="justify-self-start">
             <Link
               href="/"
               aria-label="Josh McKenna — home"
               onClick={() => scrollToTopIfCurrent("/")}
-              style={{ borderRadius: JM_BLOB }}
-              className={`flex h-14 w-14 shrink-0 items-center justify-center border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
+              className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
             >
               {/* Home link -- always routes to "/", every page, every
                   state. Small enough to not reintroduce the wordiness
@@ -340,20 +321,18 @@ export function Nav() {
             </ul>
           </div>
 
-          {/* Cart blob -- mirrors jM: pinned to the frame's right edge
-              (justify-self: end), same size, same frost, blob-mirrored
-              shape. Placeholder bag icon, not final art -- Josh is
-              drawing the real one; swap CartIcon's <path> for his
-              artwork when it's ready, nothing else here should need to
-              change. */}
+          {/* Cart circle -- mirrors jM: pinned to the frame's right edge
+              (justify-self: end), same size, same frost. Placeholder bag
+              icon, not final art -- Josh is drawing the real one; swap
+              CartIcon's <path> for his artwork when it's ready, nothing
+              else here should need to change. */}
           <div className="justify-self-end">
             <Link
               href="/shop"
               aria-current={isActive("/shop") ? "page" : undefined}
               aria-label="Cart"
               onClick={() => scrollToTopIfCurrent("/shop")}
-              style={{ borderRadius: CART_BLOB }}
-              className={`flex h-14 w-14 shrink-0 items-center justify-center border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
+              className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
             >
               <CartIcon
                 className={`h-5 w-5 transition-colors duration-200 ease-in-out md:h-6 md:w-6 ${
