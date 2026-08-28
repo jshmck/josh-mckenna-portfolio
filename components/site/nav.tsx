@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -94,12 +95,14 @@ import { CartIcon } from "@/components/ui/social-icons";
  * shapes, never combining `filter` and `backdrop-filter` on the same
  * element (see pass 3's revert, above, for why that combination broke).
  *
- * Link text 17/22px, jM 24/28px, in both states. Was 14px/22px resting-
- * only, then 15/17px unified across both states, then bumped to 18/24px
- * along with the pill's own padding (py-5/6, up from py-2.5/3) so the
- * main pill reads as the nav's biggest, most prominent shape rather than
- * the two circles flanking it -- then eased back down one notch to
- * 17/22px, "just a smidge smaller."
+ * Link text 17/22px in both states -- was 14px resting-only, then 15/17px
+ * unified across both states, then bumped to 18/24px along with the
+ * pill's own padding (py-5/6, up from py-2.5/3) so the main pill reads as
+ * the nav's biggest, most prominent shape rather than the two circles
+ * flanking it, then eased back down one notch to 17/22px, "just a smidge
+ * smaller." jM was 24/28px text at the same two breakpoints before it
+ * became an image (h-8/9 logomark now, sized to roughly the same visual
+ * footprint as the old text).
  *
  * On "/" only, the active highlight is also scroll-position-driven: the
  * homepage embeds the real Work gallery inline (see app/page.tsx's
@@ -263,20 +266,31 @@ export function Nav() {
               className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
             >
               {/* Home link -- always routes to "/", every page, every
-                  state. Small enough to not reintroduce the wordiness
-                  "Home" was cut for, brand-blue per the wordmark colour
-                  rule, real lowercase j (not font-variant-caps) matching
-                  the hero's "jOSH" — see the file doc comment above. Same
-                  BackToTop-family easing as every pill/chip/button on the
-                  site (duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]),
-                  but bigger and with a tilt -- jM is the one brand mark,
-                  not a utility pill, so it gets a more pronounced version
-                  of the same bounce rather than the exact scale-105.
-                  active: mirrors hover: exactly -- touch devices never
-                  trigger Tailwind's hover: variant (it's scoped to
-                  @media (hover: hover) precisely so a tap doesn't leave a
-                  stuck hover state), so without this a tap here would have
-                  no visible feedback at all, just the navigation.
+                  state. Josh's own jM logomark now (public/icons/
+                  jm-logomark.png), replacing the styled "jM" text this
+                  used to render -- a transparent PNG, already brand-blue
+                  baked into the artwork, so no CartIcon-style
+                  currentColor masking is needed here (jM's colour never
+                  changes; Cart's does, between text-ink and text-accent).
+                  next/image with explicit width/height rather than Plate
+                  -- the same drifting-hero-cutout exception CLAUDE.md
+                  already carves out for transparent-PNG marks that
+                  aren't framed artwork, just applied to a second, much
+                  smaller case. width/height (72) are a fixed intrinsic
+                  size for Next's optimizer, not the rendered size --
+                  className's h-8/h-9 controls what actually shows, same
+                  pattern as sizing any next/image via CSS. Same
+                  BackToTop-family easing as every pill/chip/button on
+                  the site (duration-500
+                  ease-[cubic-bezier(0.34,1.56,0.64,1)]), but bigger and
+                  with a tilt -- jM is the one brand mark, not a utility
+                  pill, so it gets a more pronounced version of the same
+                  bounce rather than the exact scale-105. active: mirrors
+                  hover: exactly -- touch devices never trigger Tailwind's
+                  hover: variant (it's scoped to @media (hover: hover)
+                  precisely so a tap doesn't leave a stuck hover state),
+                  so without this a tap here would have no visible
+                  feedback at all, just the navigation.
 
                   The explicit scroll-to-top (scrollToTopIfCurrent below)
                   handles a Next.js quirk: a <Link> to the route you're
@@ -285,9 +299,16 @@ export function Nav() {
                   clicking jM while already on "/" did nothing if you'd
                   scrolled down. Every primary nav link gets the same
                   treatment now. */}
-              <span className="font-display text-[24px] font-waldeck-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:text-[28px]">
-                jM
-              </span>
+              <Image
+                src="/icons/jm-logomark.png"
+                alt=""
+                aria-hidden="true"
+                width={72}
+                height={72}
+                sizes="36px"
+                priority
+                className="h-8 w-8 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-9 md:w-9"
+              />
             </Link>
           </div>
 
