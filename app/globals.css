@@ -521,33 +521,6 @@
   }
 }
 
-/* jM/Cart circles (components/site/nav.tsx) — a one-shot mount animation
-   pulling each circle in from an overlapping position toward the main
-   pill, then out to its resting flanking spot. The visual "gloop" itself
-   isn't this keyframe — it comes from the SVG goo filter applied to their
-   shared parent (see nav.tsx) reading the two shapes as fused wherever
-   they're close together; this keyframe only supplies the motion that
-   moves them through that close range. Plays once on mount (no `scrolled`
-   gating — CSS animations run automatically on first paint), unlike
-   nav-pill-pop above which is scroll-triggered. */
-@keyframes nav-circle-slide-left {
-  from {
-    transform: translateX(32px);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes nav-circle-slide-right {
-  from {
-    transform: translateX(-32px);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
 /* Scroll reveal — driven by the data attribute the Reveal component flips.
    Hidden is the CSS default so there is no flash of visible content. Both
    escape hatches below are pure CSS, so content can never be stranded

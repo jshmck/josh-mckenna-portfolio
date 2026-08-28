@@ -9,25 +9,34 @@ import { CartIcon } from "@/components/ui/social-icons";
 
 /**
  * Floating nav, three separate shapes sharing one frost treatment: a jM
- * circle (home link) on the left, the Work/Shop/Info/Contact pill in the
- * middle, a Cart circle (placeholder icon, see CartIcon) on the right,
+ * blob (home link) pinned to the left edge of the content frame, the
+ * Work/Shop/Info/Contact pill genuinely centered in the viewport, a Cart
+ * blob (placeholder icon, see CartIcon) pinned to the right edge,
  * mirroring jM. Client-side only for `usePathname` and the scroll-driven
  * frost state; the active link (purple, bold) is the other piece of
  * state here.
  *
- * This went through three shapes before landing here, each change driven
- * by Josh watching the previous one live:
+ * Four passes to get here, each change driven by Josh watching the
+ * previous one live:
  *   1. One long pill, scrolled-only — resting state kept the old
  *      edge-to-edge/justify-between bar.
  *   2. Resting state reworked to match the pill's centered layout and
  *      larger type too — position/size/layout became identical in both
  *      states, `scrolled` only toggling frost chrome.
- *   3. (current) A single centered jM broke the "logo sits top-left"
- *      convention, so it split into three shapes — jM gets its own
- *      identity as a distinct clickable circle instead of blending into
- *      a row of nav links, without literally relocating to the page
- *      corner (Josh's call: he preferred keeping it centered over
- *      anchoring it top-left).
+ *   3. A single centered jM broke the "logo sits top-left" convention,
+ *      so it split into three shapes (circles) instead of one pill —
+ *      jM/Cart still sat close to the main pill though, plus an SVG goo
+ *      filter meant to fuse them together on mount broke backdrop-blur
+ *      across the entire page in a real browser (see git history) and
+ *      was reverted.
+ *   4. (current) jM/Cart moved to a real 3-column grid so they sit at
+ *      the content frame's actual left/right edges, not just left of
+ *      centre — and reshaped from plain circles into asymmetric blobs
+ *      ("the circles look a bit too perfect, can there be an odd gloopy
+ *      frost shape?"). The mount slide-in animation from pass 3 was
+ *      dropped: with jM/Cart now genuinely far from the main pill,
+ *      motion implying they'd travelled in from it stopped making
+ *      sense — Josh's own observation.
  *
  * `position: sticky`, not `fixed` — sits in normal document flow, so a
  * spacer div is no longer needed to reserve its space. This used to be
@@ -44,6 +53,11 @@ import { CartIcon } from "@/components/ui/social-icons";
  * The <header> itself is always 88px, never shrinks, and never carries a
  * border or background — that's all on the three shapes now, sharing one
  * `frostClass` string so they never drift out of sync with each other.
+ * <nav> is a `grid-cols-[1fr_auto_1fr]` spanning max-w-frame (the site's
+ * usual content width) rather than a flex row with a gap — jM and Cart
+ * sit in the two `1fr` tracks (`justify-self-start`/`-end`), the main
+ * pill in the `auto` middle track, which stays centred in the viewport
+ * regardless of jM/Cart's own width since both flanking tracks are equal.
  * `items-start` on <header> plus `mt-5` on <nav> sits the row a bit below
  * the very top of the 88px band rather than dead-centered — "bring it
  * lower a little," per Josh. Each shape's `border` is present at rest too,
@@ -69,21 +83,14 @@ import { CartIcon } from "@/components/ui/social-icons";
  * that problem — frost is already on well before any near-top content
  * reaches the header.
  *
- * jM and Cart also share a second, independent animation: a one-shot
- * slide-and-settle on mount (`nav-circle-slide-left`/`nav-circle-slide-right`,
- * globals.css), pulling each circle in from overlapping the main pill out
- * to its resting spot on var(--ease-bounce) — the bouncy motion half of
- * "gloop outwards from the main pill," per Josh. An earlier version of
- * this also ran the three shapes through an SVG goo filter to make them
- * visually fuse and split like liquid, not just slide -- reverted (see
- * git history) after it broke backdrop-blur across the entire page in a
- * real browser, not just the nav: SVG `filter` and `backdrop-filter`
- * stacked on the same element don't compose safely, at least not the way
- * that pass combined them. The literal liquid-merge look is still an open
- * want, not abandoned -- it would need the merge effect isolated onto a
- * separate solid-fill layer behind the real (backdrop-blurred) pill/
- * circles, never touching backdrop-filter directly, which is a bigger
- * change than a first pass.
+ * jM/Cart's blob shape (JM_BLOB/CART_BLOB below) is a plain CSS asymmetric
+ * border-radius, no SVG involved — deliberately, after pass 3's SVG goo
+ * filter broke backdrop-filter compositing across the whole page. The
+ * literal liquid-fuse-on-scroll look Josh originally asked for is still
+ * an open want, not abandoned; doing it safely would mean isolating that
+ * merge effect onto a separate solid-fill layer behind the real
+ * (backdrop-blurred) shapes, never combining `filter` and
+ * `backdrop-filter` on the same element. Bigger change than a shape swap.
  *
  * Link text 15/17px, jM 24/28px, in both states — up from an original
  * 14px/22px that only applied at rest before an earlier pass unified
@@ -212,73 +219,98 @@ export function Nav() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  // Third pass at the "floating pill" idea (see memory/project notes).
-  // Josh's next reaction after the unified single pill: a single centered
-  // jM broke the near-universal "logo sits top-left, click for home"
-  // convention. Split into three separate shapes instead of one long pill
-  // -- jM in its own circle on the left, the nav links in the main pill,
-  // Cart (a placeholder icon for now, Josh is drawing the real one) in a
-  // mirrored circle on the right. jM is still centered rather than
-  // anchored to the true page corner -- Josh chose this over the
-  // logo-in-the-corner alternative -- but it now at least reads as its
-  // own distinct, clickable mark instead of being absorbed into a row of
-  // nav links.
+  // Fourth pass at the "floating pill" idea (see memory/project notes).
+  // Josh's reaction after seeing the three-shape split live: jM/Cart still
+  // read too close to the main pill to feel like real corner marks. Moved
+  // from "three flex children with a big gap" to a genuine 3-column grid
+  // (1fr / auto / 1fr) spanning the site's usual max-w-frame content
+  // width -- jM and Cart now sit at the actual left/right edges of that
+  // frame, the same edges the very first (pre-pill) nav had them at,
+  // while the middle column's `1fr` tracks being equal width keeps the
+  // main pill genuinely centered in the viewport regardless of jM/Cart's
+  // own size. Also dropped the mount slide-in animation the previous pass
+  // had on jM/Cart (sliding in "from the main pill") -- Josh's own
+  // observation once they moved to the true edges: with that much
+  // distance between them now, motion implying they came from the pill
+  // no longer reads as sensible. No replacement animation yet.
   //
   // frostClass is shared across all three shapes so the frost (border
   // colour, background, blur, the one-shot pop) stays byte-identical
-  // between them -- previously one pill, now three, but still exactly the
-  // same frost logic and thresholds as every earlier pass.
+  // between them.
   const frostClass = scrolled
     ? "animate-[nav-pill-pop_500ms_var(--ease-bounce)] border-hairline bg-canvas/15 backdrop-blur-md"
     : "border-transparent bg-transparent";
+
+  // jM/Cart are no longer plain circles -- Josh: "the circles look a bit
+  // too perfect, can there be an odd gloopy frost shape?" An irregular,
+  // hand-drawn-feeling blob instead, via the classic asymmetric multi-
+  // value border-radius trick (each corner a different %, horizontal and
+  // vertical radii set separately) -- no SVG filter involved this time,
+  // so none of the backdrop-filter-stacking risk that broke the last
+  // attempt. Inline style rather than a Tailwind arbitrary class: the
+  // compound "H H H H / V V V V" border-radius syntax mixes spaces and a
+  // slash in a way that's easy to get subtly wrong translating into
+  // Tailwind's bracket-and-underscore arbitrary-value encoding, and
+  // there's no dynamic/conditional reason it needs to be a class here.
+  // CART_BLOB is JM_BLOB's corners swapped left-right -- an approximate
+  // mirror, not a mathematically exact one; "mirror" was Josh's word for
+  // the overall composition (jM left, Cart right), not a spec for pixel-
+  // identical blob geometry. Unrefined starting shape, like every other
+  // number in this file right now -- no browser available to tune it
+  // against the real thing.
+  const JM_BLOB = "63% 37% 54% 46% / 45% 53% 47% 55%";
+  const CART_BLOB = "37% 63% 46% 54% / 53% 45% 55% 47%";
 
   return (
     <>
       <header className="sticky top-0 z-40 flex h-[88px] items-start justify-center">
         <nav
           aria-label="Primary"
-          className="mx-auto mt-5 flex w-fit max-w-[calc(100%-2rem)] items-center gap-10 md:gap-20"
+          className="mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 md:px-gutter"
         >
-          {/* jM circle -- slides in from the right (toward the main pill)
-              on mount, once, with a bounce. Plain settle after that, same
-              asymmetric-in-only pattern as the frost pop and the lightbox
-              arrow hint elsewhere in the codebase -- this isn't a
-              repeating idle animation. No goo/fuse effect any more (see
-              the file doc comment) -- just the slide. */}
-          <Link
-            href="/"
-            aria-label="Josh McKenna — home"
-            onClick={() => scrollToTopIfCurrent("/")}
-            className={`flex h-14 w-14 shrink-0 animate-[nav-circle-slide-left_700ms_var(--ease-bounce)] items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
-          >
-            {/* Home link -- always routes to "/", every page, every state.
-                Small enough to not reintroduce the wordiness "Home" was cut
-                for, brand-blue per the wordmark colour rule, real lowercase
-                j (not font-variant-caps) matching the hero's "jOSH" — see
-                the file doc comment above. Same BackToTop-family easing as
-                every pill/chip/button on the site (duration-500
-                ease-[cubic-bezier(0.34,1.56,0.64,1)]), but bigger and with a
-                tilt -- jM is the one brand mark, not a utility pill, so it
-                gets a more pronounced version of the same bounce rather
-                than the exact scale-105. active: mirrors hover: exactly --
-                touch devices never trigger Tailwind's hover: variant (it's
-                scoped to @media (hover: hover) precisely so a tap doesn't
-                leave a stuck hover state), so without this a tap here would
-                have no visible feedback at all, just the navigation.
+          {/* jM blob -- pinned to the frame's left edge (justify-self:
+              start), the same edge the pre-pill nav always had it at. */}
+          <div className="justify-self-start">
+            <Link
+              href="/"
+              aria-label="Josh McKenna — home"
+              onClick={() => scrollToTopIfCurrent("/")}
+              style={{ borderRadius: JM_BLOB }}
+              className={`flex h-14 w-14 shrink-0 items-center justify-center border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
+            >
+              {/* Home link -- always routes to "/", every page, every
+                  state. Small enough to not reintroduce the wordiness
+                  "Home" was cut for, brand-blue per the wordmark colour
+                  rule, real lowercase j (not font-variant-caps) matching
+                  the hero's "jOSH" — see the file doc comment above. Same
+                  BackToTop-family easing as every pill/chip/button on the
+                  site (duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]),
+                  but bigger and with a tilt -- jM is the one brand mark,
+                  not a utility pill, so it gets a more pronounced version
+                  of the same bounce rather than the exact scale-105.
+                  active: mirrors hover: exactly -- touch devices never
+                  trigger Tailwind's hover: variant (it's scoped to
+                  @media (hover: hover) precisely so a tap doesn't leave a
+                  stuck hover state), so without this a tap here would have
+                  no visible feedback at all, just the navigation.
 
-                The explicit scroll-to-top (scrollToTopIfCurrent below)
-                handles a Next.js quirk: a <Link> to the route you're
-                already on doesn't trigger Next's own navigation-scroll-
-                restoration (no route change actually happens), so clicking
-                jM while already on "/" did nothing if you'd scrolled down.
-                Every primary nav link gets the same treatment now. */}
-            <span className="font-display text-[24px] font-waldeck-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:text-[28px]">
-              jM
-            </span>
-          </Link>
+                  The explicit scroll-to-top (scrollToTopIfCurrent below)
+                  handles a Next.js quirk: a <Link> to the route you're
+                  already on doesn't trigger Next's own navigation-scroll-
+                  restoration (no route change actually happens), so
+                  clicking jM while already on "/" did nothing if you'd
+                  scrolled down. Every primary nav link gets the same
+                  treatment now. */}
+              <span className="font-display text-[24px] font-waldeck-black text-brand transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:text-[28px]">
+                jM
+              </span>
+            </Link>
+          </div>
 
-          {/* Main pill -- unchanged from the previous pass other than no
-              longer also carrying jM. */}
+          {/* Main pill -- centered in the grid's middle column, which
+              stays genuinely viewport-centered because both flanking
+              columns are equal `1fr` tracks regardless of jM/Cart's own
+              width. */}
           <div
             className={`flex items-center gap-6 rounded-full border px-6 py-2.5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:gap-10 md:px-10 md:py-3 ${frostClass}`}
           >
@@ -308,24 +340,28 @@ export function Nav() {
             </ul>
           </div>
 
-          {/* Cart circle -- mirrors jM: same size, same frost, slides in
-              from the left (toward the main pill) on mount. Placeholder
-              bag icon, not final art -- Josh is drawing the real one;
-              swap CartIcon's <path> for his artwork when it's ready,
-              nothing else here should need to change. */}
-          <Link
-            href="/shop"
-            aria-current={isActive("/shop") ? "page" : undefined}
-            aria-label="Cart"
-            onClick={() => scrollToTopIfCurrent("/shop")}
-            className={`flex h-14 w-14 shrink-0 animate-[nav-circle-slide-right_700ms_var(--ease-bounce)] items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
-          >
-            <CartIcon
-              className={`h-5 w-5 transition-colors duration-200 ease-in-out md:h-6 md:w-6 ${
-                isActive("/shop") ? "text-accent" : "text-ink"
-              }`}
-            />
-          </Link>
+          {/* Cart blob -- mirrors jM: pinned to the frame's right edge
+              (justify-self: end), same size, same frost, blob-mirrored
+              shape. Placeholder bag icon, not final art -- Josh is
+              drawing the real one; swap CartIcon's <path> for his
+              artwork when it's ready, nothing else here should need to
+              change. */}
+          <div className="justify-self-end">
+            <Link
+              href="/shop"
+              aria-current={isActive("/shop") ? "page" : undefined}
+              aria-label="Cart"
+              onClick={() => scrollToTopIfCurrent("/shop")}
+              style={{ borderRadius: CART_BLOB }}
+              className={`flex h-14 w-14 shrink-0 items-center justify-center border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:h-16 md:w-16 ${frostClass}`}
+            >
+              <CartIcon
+                className={`h-5 w-5 transition-colors duration-200 ease-in-out md:h-6 md:w-6 ${
+                  isActive("/shop") ? "text-accent" : "text-ink"
+                }`}
+              />
+            </Link>
+          </div>
         </nav>
       </header>
     </>
