@@ -72,7 +72,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
   const openImage = openIndex === null ? null : images[openIndex];
   const [ratioW, ratioH] = (openImage?.ratio ?? "1/1").split("/").map(Number);
   const openRatio = ratioW / ratioH;
-  const STAGE_LONG_EDGE = 1800;
+  const STAGE_LONG_EDGE = 2000;
   const imgWidth = openRatio >= 1 ? STAGE_LONG_EDGE : Math.round(STAGE_LONG_EDGE * openRatio);
   const imgHeight = openRatio >= 1 ? Math.round(STAGE_LONG_EDGE / openRatio) : STAGE_LONG_EDGE;
 
@@ -112,7 +112,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
           className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-ink/90 p-4"
           onClick={() => setOpenIndex(null)}
         >
-          <div className="relative flex h-[84vh] w-[min(96vw,1800px)] items-center justify-center">
+          <div className="relative flex h-[calc(100vh-100px)] w-[min(97vw,2000px)] items-center justify-center">
             {openImage.src && (
               <div
                 key={openIndex}
@@ -130,8 +130,8 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
                   alt={openImage.alt}
                   width={imgWidth}
                   height={imgHeight}
-                  sizes="96vw"
-                  className="max-h-[84vh] max-w-[min(96vw,1800px)] rounded-2xl"
+                  sizes="97vw"
+                  className="max-h-[calc(100vh-100px)] max-w-[min(97vw,2000px)] rounded-2xl"
                   style={{ width: "auto", height: "auto" }}
                   priority
                 />
