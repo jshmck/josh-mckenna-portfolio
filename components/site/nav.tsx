@@ -94,11 +94,12 @@ import { CartIcon } from "@/components/ui/social-icons";
  * shapes, never combining `filter` and `backdrop-filter` on the same
  * element (see pass 3's revert, above, for why that combination broke).
  *
- * Link text 18/24px, jM 24/28px, in both states. Was 14px/22px resting-
- * only, then 15/17px unified across both states, then bumped again here
+ * Link text 17/22px, jM 24/28px, in both states. Was 14px/22px resting-
+ * only, then 15/17px unified across both states, then bumped to 18/24px
  * along with the pill's own padding (py-5/6, up from py-2.5/3) so the
  * main pill reads as the nav's biggest, most prominent shape rather than
- * the two circles flanking it.
+ * the two circles flanking it -- then eased back down one notch to
+ * 17/22px, "just a smidge smaller."
  *
  * On "/" only, the active highlight is also scroll-position-driven: the
  * homepage embeds the real Work gallery inline (see app/page.tsx's
@@ -294,12 +295,14 @@ export function Nav() {
               stays genuinely viewport-centered because both flanking
               columns are equal `1fr` tracks regardless of jM/Cart's own
               width. Sized to clearly outsize jM/Cart's 56/64px circles
-              (py-5/md:py-6 + text-[18px]/md:text-[24px] lands the pill
+              (py-5/md:py-6 + text-[17px]/md:text-[22px] lands the pill
               noticeably taller at both breakpoints) -- Josh: "increase
               the size of the nav bar so it's bigger than the jM and
               cart... it should be the main focus." Previously the
               circles were incidentally *taller* than the pill (56/64px
-              vs a ~40/48px pill), backwards from what he wanted. */}
+              vs a ~40/48px pill), backwards from what he wanted. Text
+              nudged back down slightly from an initial 18/24px -- "I
+              like it but just a smidge smaller." */}
           <div
             className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:gap-10 md:px-12 md:py-6 ${frostClass}`}
           >
@@ -316,7 +319,7 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`inline-block font-body text-[18px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift md:text-[24px] ${
+                    className={`inline-block font-body text-[17px] transition-[color,font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:duration-300 hover:ease-drift md:text-[22px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
