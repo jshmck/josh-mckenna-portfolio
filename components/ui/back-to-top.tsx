@@ -2,11 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/** Resting distance from the viewport bottom, px — matches Tailwind's bottom-14.
- *  Was bottom-8 (32px) — bumped for more breathing room above whatever content
- *  or footer it's docking against, "some room between project and the
- *  button," per Josh. */
-const RESTING_OFFSET = 56;
+/**
+ * Resting distance from the viewport bottom, px — matches Tailwind's
+ * bottom-11. Chosen so the docked gap above the button (last grid image to
+ * button top) and below it (button bottom to the footer's top edge) come
+ * out equal, not just "some room" — "can the gap between project and the
+ * gap between the footer bar be equal," per Josh. That symmetry only holds
+ * at one specific button height, since the space between the grid's own
+ * bottom padding and the footer is fixed regardless of the button's size:
+ * (that fixed space − button height) / 2. Recompute this if the pill's
+ * padding/text size or the grid's own bottom padding (pb-32, /work and the
+ * home-embedded gallery) ever change again.
+ */
+const RESTING_OFFSET = 44;
 
 /**
  * Floating "back to top" pill for long, unpaginated grids (Work). Now
@@ -22,7 +30,10 @@ const RESTING_OFFSET = 56;
  * and the real nav-pill-hover squash-and-stretch keyframe (globals.css) on
  * hover/tap instead of a plain hover:scale-105 — "the same gloopy bounce,"
  * per Josh. Frosted-glass surface (bg-canvas/15 + backdrop-blur-md)
- * carries over unchanged.
+ * carries over unchanged. Waldeck Black/uppercase was tried in place of
+ * font-body (matching the site's other pill chips instead of the nav) and
+ * reverted — "for continuity, back to top has to be in Helvetica to match
+ * the nav bar," per Josh.
  *
  * `translate` and `scale` are listed explicitly in the transition, not
  * `transform` — the keyframe bounces below animate `transform` directly,
@@ -128,7 +139,7 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
-      className={`fixed bottom-14 left-1/2 z-30 -translate-x-1/2 rounded-full border border-hairline bg-canvas/15 px-8 py-5 font-display font-waldeck-black uppercase tracking-[0.02em] text-[17px] text-ink backdrop-blur-md transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas md:px-12 md:py-6 md:text-[22px] ${bounceClass} ${
+      className={`fixed bottom-11 left-1/2 z-30 -translate-x-1/2 rounded-full border border-hairline bg-canvas/15 px-6 py-4 font-body text-[15px] text-ink backdrop-blur-md transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas md:px-8 md:py-5 md:text-[18px] ${bounceClass} ${
         visible
           ? "translate-y-0 scale-100 opacity-100"
           : "pointer-events-none translate-y-4 scale-50 opacity-0"
