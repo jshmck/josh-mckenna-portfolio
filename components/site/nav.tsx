@@ -359,7 +359,7 @@ export function Nav() {
               href="/"
               aria-label="Josh McKenna — home"
               onClick={() => scrollToTopIfCurrent("/")}
-              className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
             >
               {/* Home link -- always routes to "/", every page, every
                   state. Josh's own jM logomark now (public/icons/
@@ -403,7 +403,7 @@ export function Nav() {
                 height={112}
                 sizes="56px"
                 priority
-                className="h-11 w-11 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14"
+                className="h-5 w-5 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14"
               />
             </Link>
           </div>
@@ -450,9 +450,9 @@ export function Nav() {
               twice before the cause was clear; worth leaving it quieter
               unless he asks for more. */}
           <div
-            className={`flex items-center gap-6 rounded-full border px-8 py-5 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
+            className={`flex items-center gap-3 rounded-full border px-3 py-2 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
           >
-            <ul className="flex items-center gap-6 md:gap-10">
+            <ul className="flex items-center gap-3 md:gap-10">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   {/* Same nav-pill-hover squash-and-stretch as jM/Cart's
@@ -470,28 +470,35 @@ export function Nav() {
                       than fighting the animation for control of the
                       property.
 
-                      px-2 py-1.5 -mx-2 -my-1.5 grows the actual
-                      hoverable box past the glyphs themselves, without
-                      moving anything visually -- padding enlarges the
-                      box, the matching negative margin pulls its outer
-                      edges back to where they'd sit without the padding,
-                      so neighbouring words keep the same visual gap
-                      while each word's hit area now reaches into part of
-                      that gap. Same "twittering" as the pill's own fix
-                      above, one node down: a tight hit box right at the
-                      text's edges means small mouse jitter flickers in
-                      and out of :hover and keeps restarting the bounce
-                      -- "can you make the area where the mouse hovers
-                      over the words a little bit larger so they engage
-                      sooner? ... there is some buggy twittering," per
-                      Josh. gap-6/gap-10 (24/40px) leaves easily enough
-                      room for 8px of padding either side without two
-                      words' extended hit areas ever touching. */}
+                      px-1/md:px-2 py-1/md:py-1.5 with matching negative
+                      margins grows the actual hoverable box past the
+                      glyphs themselves, without moving anything visually
+                      -- padding enlarges the box, the matching negative
+                      margin pulls its outer edges back to where they'd
+                      sit without the padding, so neighbouring words keep
+                      the same visual gap while each word's hit area now
+                      reaches into part of that gap. Same "twittering" as
+                      the pill's own fix above, one node down: a tight hit
+                      box right at the text's edges means small mouse
+                      jitter flickers in and out of :hover and keeps
+                      restarting the bounce -- "can you make the area
+                      where the mouse hovers over the words a little bit
+                      larger so they engage sooner? ... there is some
+                      buggy twittering," per Josh. gap-3/gap-10 (12/40px)
+                      leaves enough room for the smaller mobile padding
+                      (4px each side) without two words' extended hit
+                      areas ever touching, same clearance ratio as the
+                      desktop gap-10/px-2 pairing. Mobile shrunk the whole
+                      nav bar to stop it overflowing narrow phone
+                      viewports -- "the nav bar and two circles either
+                      side seem too large and they go off screen," per
+                      Josh -- md: restores the original desktop sizing
+                      throughout this pill and both circles. */}
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`-mx-2 -my-1.5 inline-block px-2 py-1.5 font-body text-[17px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:text-[22px] ${
+                    className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[12px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
@@ -518,7 +525,7 @@ export function Nav() {
               aria-current={isActive("/shop") ? "page" : undefined}
               aria-label="Cart"
               onClick={() => scrollToTopIfCurrent("/shop")}
-              className={`group flex h-16 w-16 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
+              className={`group flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
             >
               {/* group-hover (keyed to the circle <Link> above, via
                   `group`), not a plain hover: on the icon itself -- the
@@ -547,7 +554,7 @@ export function Nav() {
                   already touching this hover treatment rather than
                   leaving the gap. */}
               <CartIcon
-                className={`h-6 w-6 transition-[color,transform] duration-200 ease-in-out group-hover:rotate-6 group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift group-active:rotate-6 group-active:scale-110 group-active:text-brand md:h-7 md:w-7 ${
+                className={`h-4 w-4 transition-[color,transform] duration-200 ease-in-out group-hover:rotate-6 group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift group-active:rotate-6 group-active:scale-110 group-active:text-brand md:h-7 md:w-7 ${
                   isActive("/shop") ? "text-accent" : "text-ink"
                 }`}
               />
