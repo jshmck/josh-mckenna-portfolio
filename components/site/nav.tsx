@@ -147,6 +147,11 @@ export function Nav() {
   // frame behind and risk the very first return-to-top after a fresh page
   // load missing its bounce.
   const [hasFrostedOnce, setHasFrostedOnce] = useState(false);
+  // Whether scroll has reached the very bottom of the page -- "make the
+  // bounce thing happen when I hit the bottom too," per Josh. Reuses the
+  // exact same nav-pill-landing keyframe the top-of-page return already
+  // plays, just on a different trigger.
+  const [atBottom, setAtBottom] = useState(false);
 
   // Nav never unmounts across a client-side route change (it lives in the
   // root layout), so `scrolled` could otherwise keep carrying the
@@ -165,6 +170,7 @@ export function Nav() {
     setPrevPathname(pathname);
     setScrolled(false);
     setHasFrostedOnce(false);
+    setAtBottom(false);
   }
 
   if (scrolled && !hasFrostedOnce) setHasFrostedOnce(true);
@@ -185,11 +191,23 @@ export function Nav() {
     // near-top content reaches the header.
     const FROST_ENTER = 24;
     const FROST_EXIT = 4;
+    // Same hysteresis idea as the frost threshold above, at the opposite
+    // end of the page -- overscroll/rubber-banding right at the bottom
+    // edge would otherwise flicker a single threshold in and out.
+    const BOTTOM_ENTER = 4;
+    const BOTTOM_EXIT = 40;
     const update = () => {
       queued = false;
       setScrolled((current) => {
         if (current) return window.scrollY > FROST_EXIT;
         return window.scrollY > FROST_ENTER;
+      });
+
+      const distanceFromBottom =
+        document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+      setAtBottom((current) => {
+        if (current) return distanceFromBottom < BOTTOM_EXIT;
+        return distanceFromBottom <= BOTTOM_ENTER;
       });
 
       // The embedded Work gallery on "/" has no route of its own, so its
@@ -284,8 +302,29 @@ export function Nav() {
   // on every scrolled flip (pop going down, landing coming back up) is
   // what makes it replay reliably in both directions, indefinitely --
   // reusing one name would only ever fire on the first transition.
+  //
+  // Same nav-pill-landing bounce also plays at the *bottom* of the page
+  // now, even while still scrolled/frosted -- "make the fun bounce thing
+  // happen when I hit the bottom too," per Josh. atBottom overrides which
+  // animation the scrolled branch requests (landing instead of pop) purely
+  // by swapping the name; since nav-pill-pop already finished playing by
+  // the time you've scrolled all the way down, switching to a different
+  // name still counts as a change and fires. Scrolling back up off the
+  // bottom (still frosted) flips it back to nav-pill-pop, which — same
+  // logic — plays again too, a small bounce on the way off the bottom
+  // edge, not just onto it.
+  // Trial (2nd pass): a flat blend-mode ring read as a plain thin outline,
+  // not glass -- "not quite a cooler highlight or glassy reflective state,"
+  // per Josh. Real glass reads as reflective from an *asymmetric* highlight
+  // (bright along the top inner edge where light catches it, near-invisible
+  // at the bottom), not a uniform ring -- the classic inset-shadow
+  // glassmorphism technique, not a border at all. backdrop-saturate-150
+  // alongside it so the blurred colour underneath actually reads as richer
+  // colour, not just softened -- closer to "mimics the colour it's passing
+  // over" than a white ring ever was, since it's the real backdrop colour
+  // showing through more vividly rather than a synthetic overlay tint.
   const frostClass = scrolled
-    ? "animate-[nav-pill-pop_650ms_ease-in-out] border-hairline bg-canvas/15 backdrop-blur-md"
+    ? `${atBottom ? "animate-[nav-pill-landing_650ms_ease-in-out]" : "animate-[nav-pill-pop_650ms_ease-in-out]"} border-transparent bg-canvas/15 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3)] backdrop-blur-md backdrop-saturate-150`
     : hasFrostedOnce
       ? "animate-[nav-pill-landing_650ms_ease-in-out] border-transparent bg-transparent"
       : "border-transparent bg-transparent";

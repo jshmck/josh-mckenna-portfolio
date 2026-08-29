@@ -23,17 +23,24 @@ const RESTING_OFFSET = 44;
  * viewport instead of pinned to the right edge, font-body instead of
  * Waldeck uppercase (matching the header's own Work/Shop/Info/Contact
  * words), sized to match the main pill (px-8/12 py-5/6, text-[17px]/[22px])
- * rather than its own small chip scale, the blue hairline outline the main
- * pill wears once frosted (not the black neutral outline this used to have
- * — BackToTop is only ever visible well past the frost threshold, so it
- * can just wear that state permanently instead of transitioning into it),
- * and the real nav-pill-hover squash-and-stretch keyframe (globals.css) on
- * hover/tap instead of a plain hover:scale-105 — "the same gloopy bounce,"
- * per Josh. Frosted-glass surface (bg-canvas/15 + backdrop-blur-md)
- * carries over unchanged. Waldeck Black/uppercase was tried in place of
- * font-body (matching the site's other pill chips instead of the nav) and
- * reverted — "for continuity, back to top has to be in Helvetica to match
- * the nav bar," per Josh.
+ * rather than its own small chip scale, and the real nav-pill-hover
+ * squash-and-stretch keyframe (globals.css) on hover/tap instead of a plain
+ * hover:scale-105 — "the same gloopy bounce," per Josh. Frosted-glass
+ * surface (bg-canvas/15 + backdrop-blur-md) carries over unchanged. Waldeck
+ * Black/uppercase was tried in place of font-body (matching the site's
+ * other pill chips instead of the nav) and reverted — "for continuity,
+ * back to top has to be in Helvetica to match the nav bar," per Josh.
+ *
+ * The edge itself went through two tries. First a flat border colour
+ * (black, then the blue hairline token once frosted), then a blend-mode
+ * ring meant to react to whatever's behind it — reverted, it just read as
+ * a plain thin outline, "not quite a cooler highlight or glassy reflective
+ * state." Now an asymmetric inset shadow instead of a border at all
+ * (bright along the top inner edge, faint at the bottom, the standard
+ * glassmorphism light-catching-the-rim technique) plus
+ * backdrop-saturate-150 so the blurred colour underneath reads richer
+ * rather than just softened — same treatment as nav.tsx's frostClass, kept
+ * in sync with it.
  *
  * `translate` and `scale` are listed explicitly in the transition, not
  * `transform` — the keyframe bounces below animate `transform` directly,
@@ -139,7 +146,7 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
-      className={`fixed bottom-11 left-1/2 z-30 -translate-x-1/2 rounded-full border border-hairline bg-canvas/15 px-6 py-4 font-body text-[15px] text-ink backdrop-blur-md transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas md:px-8 md:py-5 md:text-[18px] ${bounceClass} ${
+      className={`fixed bottom-11 left-1/2 z-30 -translate-x-1/2 rounded-full border border-transparent bg-canvas/15 px-6 py-4 font-body text-[15px] text-ink shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3)] backdrop-blur-md backdrop-saturate-150 transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas md:px-8 md:py-5 md:text-[18px] ${bounceClass} ${
         visible
           ? "translate-y-0 scale-100 opacity-100"
           : "pointer-events-none translate-y-4 scale-50 opacity-0"
