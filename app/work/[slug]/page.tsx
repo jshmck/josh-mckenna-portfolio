@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { Plate } from "@/components/ui/plate";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { GalleryGrid } from "@/components/work/gallery-grid";
+import { HeroLightbox } from "@/components/work/hero-lightbox";
 import { ProjectVideo } from "@/components/work/project-video";
 import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
@@ -206,11 +207,14 @@ export default async function ProjectPage({
         <WriteUp project={project} />
       )}
 
-      {/* Hero — heroPair (sound-of-driving only for now) renders it as a
-          two-up instead of one full-width Plate, each with its own caption
-          from its own `alt`. "poster-grid" (Beefbar only for now) skips the
-          hero entirely and opens straight into every image as a grid
-          instead — see PosterGrid. */}
+      {/* Hero — heroPair renders it as a two-up instead of one full-width
+          Plate. Every hero image opens in the same click-to-enlarge
+          lightbox as the gallery below it, via HeroLightbox; `hero`'s
+          caption is `heroCaption`, `heroPair`'s is its own `alt` (they
+          aren't the same string on every project — see Sound of Driving).
+          "poster-grid" (Beefbar only for now) skips the hero entirely and
+          opens straight into every image as a grid instead — see
+          PosterGrid. */}
       {project.galleryLayout === "poster-grid" ? (
         <PosterGrid
           images={[project.hero, ...project.gallery]}
@@ -241,19 +245,17 @@ export default async function ProjectPage({
                   </div>
                 )}
               {project.heroPair || project.heroVideo?.position === "pair" ? (
-                <div className="grid gap-8 md:grid-cols-2">
-                  <div>
-                    <Plate
-                      image={project.hero}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      priority
-                    />
-                    <p className="type-label mt-3 text-ink-muted">
-                      {project.heroCaption}
-                    </p>
-                  </div>
-                  <div>
-                    {project.heroVideo?.position === "pair" ? (
+                project.heroVideo?.position === "pair" ? (
+                  <div className="grid gap-8 md:grid-cols-2">
+                    <div>
+                      <HeroLightbox
+                        images={[project.hero]}
+                        captions={[project.heroCaption]}
+                        hideCaptions={project.hideHeroCaptions}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                    <div>
                       <ProjectVideo
                         video={{
                           ...project.heroVideo,
@@ -262,32 +264,23 @@ export default async function ProjectPage({
                         sound={project.heroVideo.sound}
                         ratio={project.heroVideo.ratio}
                       />
-                    ) : (
-                      project.heroPair && (
-                        <>
-                          <Plate
-                            image={project.heroPair}
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                          />
-                          <p className="type-label mt-3 text-ink-muted">
-                            {project.heroPair.alt}
-                          </p>
-                        </>
-                      )
-                    )}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  project.heroPair && (
+                    <HeroLightbox
+                      images={[project.hero, project.heroPair]}
+                      captions={[project.heroCaption, project.heroPair.alt]}
+                      hideCaptions={project.hideHeroCaptions}
+                    />
+                  )
+                )
               ) : !project.heroVideo ? (
-                <>
-                  <Plate
-                    image={project.hero}
-                    sizes="(max-width: 1344px) 100vw, 1344px"
-                    priority
-                  />
-                  <p className="type-label mt-3 text-ink-muted">
-                    {project.heroCaption}
-                  </p>
-                </>
+                <HeroLightbox
+                  images={[project.hero]}
+                  captions={[project.heroCaption]}
+                  hideCaptions={project.hideHeroCaptions}
+                />
               ) : null}
               {project.heroVideo && project.heroVideo.position === "bottom" && (
                 <div className={project.heroPair ? "mt-8" : undefined}>

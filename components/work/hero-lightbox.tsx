@@ -4,38 +4,32 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { Plate } from "@/components/ui/plate";
-import { Reveal } from "@/components/ui/reveal";
 import type { ProjectImage } from "@/lib/projects";
 
-type PosterGridProps = {
+type HeroLightboxProps = {
+  /** One image renders full-width; two render as the existing side-by-side
+   *  two-up, each opening the same lightbox cycle as the other. */
   images: ProjectImage[];
-  /** Column count at the widest breakpoint — Beefbar's posters (4, the
-   *  default) vs. Rooted Journal's ten same-size spot icons, which read
-   *  better as two clean rows of five than as 4+4+2. */
-  columns?: 4 | 5;
+  /** Caption text per image, same length/order as `images` — the first
+   *  slot's caption is `project.heroCaption`, not `hero.alt` (they read
+   *  differently on projects like Sound of Driving), so this can't just
+   *  fall back to each image's own alt. */
+  captions: string[];
+  hideCaptions?: boolean;
+  sizes?: string;
 };
 
-/** One icon slot inside the toolbar pill — no border of its own (the pill
- *  carries that), just a hover fill so each control still reads as
- *  pressable. Flex-centred with leading-none on the glyph so ✕ sits dead
- *  centre instead of drifting off the font's own metrics. */
+/** Same recipe as GalleryGrid/ImageStack/PosterGrid's toolbar — kept
+ *  identical across all four so the lightbox reads as one shared piece of
+ *  UI, not four different ones. */
 const LIGHTBOX_BUTTON_CLASS =
   "group flex h-9 w-9 items-center justify-center rounded-full text-canvas transition-all duration-300 ease-bounce hover:scale-110 active:scale-90 hover:bg-canvas/15 hover:text-brand active:text-brand";
 
-/**
- * Opens a project page straight into a grid instead of the usual full-bleed
- * hero — for a series where every piece shares a similar (usually portrait)
- * ratio, so a single full-width hero would run far taller than the
- * viewport. Four columns, square corners rather than the sitewide
- * rounded-3xl — every poster in this series has its own printed border
- * baked into the artwork, and rounding would clip across that border's
- * hard corners at an angle. Every tile opens the same shared lightbox as
- * the rest of the site, adapted from ImageStack.
- */
-export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
+/** Click-to-enlarge for the project hero / heroPair images — the one image
+ *  slot on a project page that didn't already open in a lightbox, unlike
+ *  the gallery, poster grid and image stack below it. */
+export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: HeroLightboxProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  // null = fresh open (bouncy pop-in); set on every arrow/keyboard nav so the
-  // next frame slides in from the direction of travel instead of hard-cutting.
   const [direction, setDirection] = useState<"next" | "prev" | null>(null);
 
   const goNext = () => {
@@ -58,11 +52,11 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpenIndex(null);
-      if (event.key === "ArrowRight") {
+      if (event.key === "ArrowRight" && images.length > 1) {
         setDirection("next");
         setOpenIndex((i) => (i === null ? i : (i + 1) % images.length));
       }
-      if (event.key === "ArrowLeft") {
+      if (event.key === "ArrowLeft" && images.length > 1) {
         setDirection("prev");
         setOpenIndex((i) => (i === null ? i : (i - 1 + images.length) % images.length));
       }
@@ -76,12 +70,6 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
   }, [openIndex, images.length]);
 
   const openImage = openIndex === null ? null : images[openIndex];
-  // fill + object-contain (tried first) stretches every image up to fill
-  // the stage regardless of its real resolution — fine for the big TIFF
-  // exports, but it upscaled New York's much lower-res source into visible
-  // pixelation. Sizing off the file's own natural dimensions instead (capped
-  // by the stage, never enlarged past it) trades uniform stage-filling for
-  // never blowing up a source past what it actually has — Josh's call.
   const [ratioW, ratioH] = (openImage?.ratio ?? "1/1").split("/").map(Number);
   const openRatio = ratioW / ratioH;
   const STAGE_LONG_EDGE = 2000;
@@ -90,38 +78,30 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
 
   return (
     <>
-      <div className="mx-auto max-w-frame px-6 pt-12 pb-28 md:px-gutter">
-        <div
-          className={
-            columns === 5
-              ? "grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 md:gap-8 lg:grid-cols-5"
-              : "grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 md:gap-8"
-          }
-        >
-          {images.map((image, index) => (
-            <Reveal key={image.alt} delay={(index % columns) * 90}>
-              <button
-                type="button"
-                onClick={() => openAt(index)}
-                aria-label={`Open larger view of ${image.alt}`}
-                className="block w-full cursor-zoom-in text-left"
-              >
-                <Plate
-                  image={image}
-                  radius=""
-                  sizes={
-                    columns === 5
-                      ? "(max-width: 640px) 45vw, (max-width: 768px) 30vw, (max-width: 1024px) 22vw, 18vw"
-                      : "(max-width: 640px) 45vw, (max-width: 768px) 30vw, 22vw"
-                  }
-                />
-              </button>
-              <p className="type-label mt-3 text-center text-ink-muted">
-                {image.alt}
-              </p>
-            </Reveal>
-          ))}
-        </div>
+      <div className={images.length > 1 ? "grid gap-8 md:grid-cols-2" : undefined}>
+        {images.map((image, index) => (
+          <div key={image.alt}>
+            <button
+              type="button"
+              onClick={() => openAt(index)}
+              aria-label={`Open larger view of ${image.alt}`}
+              className="group block w-full cursor-zoom-in text-left"
+            >
+              <div className="overflow-hidden rounded-3xl">
+                <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.02]">
+                  <Plate
+                    image={image}
+                    sizes={sizes ?? (images.length > 1 ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 1344px) 100vw, 1344px")}
+                    priority={index === 0}
+                  />
+                </div>
+              </div>
+            </button>
+            {!hideCaptions && (
+              <p className="type-label mt-3 text-ink-muted">{captions[index]}</p>
+            )}
+          </div>
+        ))}
       </div>
 
       {openImage && (
@@ -132,13 +112,6 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
           className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-ink/90 p-4"
           onClick={() => setOpenIndex(null)}
         >
-          {/* Fixed stage — same footprint for every image, so paging never
-              resizes the frame. Each photo keeps its own aspect ratio and
-              shrinks (never enlarges) to fit inside via width:auto/height:
-              auto, rather than the stage reshaping to match it. Only this
-              inner wrapper remounts per navigation (key={openIndex}); the
-              stage itself never does. Square corners here too, matching
-              the grid — the poster's own printed border stays intact. */}
           <div className="relative flex h-[calc(100vh-100px)] w-[min(97vw,2000px)] items-center justify-center">
             {openImage.src && (
               <div
@@ -158,7 +131,7 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
                   width={imgWidth}
                   height={imgHeight}
                   sizes="97vw"
-                  className="max-h-[calc(100vh-100px)] max-w-[min(97vw,2000px)]"
+                  className="max-h-[calc(100vh-100px)] max-w-[min(97vw,2000px)] rounded-2xl"
                   style={{ width: "auto", height: "auto" }}
                   priority
                 />
@@ -166,10 +139,6 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
             )}
           </div>
 
-          {/* One grouped toolbar instead of three floating circles — same
-              frosted-glass pill recipe as BackToTop (bg-canvas/15 +
-              backdrop-blur-md). Sits in normal flow below the image rather
-              than overlaid on it. */}
           <div
             data-lightbox-toolbar
             className="flex flex-shrink-0 items-center gap-1 rounded-full border border-canvas bg-canvas/15 p-1.5 backdrop-blur-md"
