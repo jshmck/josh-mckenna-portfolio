@@ -119,9 +119,14 @@ export default function AboutPage() {
           plus a separate rich-card version of the same events. Real event
           names, placeholder photos/video and captions until Josh sends the
           real assets over (same "visible until real content lands"
-          pattern Plate uses everywhere else on the site). */}
+          pattern Plate uses everywhere else on the site).
+          pb-32, not this page's usual pb-28 — matches /work and the
+          home-embedded gallery's own bottom padding, both of which
+          BackToTop's docking offset was calibrated against. Using pb-28
+          here left too little room and the pill overlapped the last row's
+          caption text. */}
       <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
           <h2 className="type-title text-accent">TALkS AND FeAtUReS</h2>
           <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
