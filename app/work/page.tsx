@@ -14,7 +14,7 @@ export default function WorkPage() {
   const projects = getAllProjects();
 
   return (
-    <div className="mx-auto max-w-frame px-6 pb-20 pt-8 md:px-gutter">
+    <div className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
       {/* No visible title — Josh wants the gallery to be the page, not a
           labelled section. A screen-reader-only h1 keeps the page's
           heading structure intact; the browser tab title still says
