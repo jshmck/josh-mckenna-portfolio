@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/** Resting distance from the viewport bottom, px — matches Tailwind's bottom-8. */
-const RESTING_OFFSET = 32;
+/** Resting distance from the viewport bottom, px — matches Tailwind's bottom-14.
+ *  Was bottom-8 (32px) — bumped for more breathing room above whatever content
+ *  or footer it's docking against, "some room between project and the
+ *  button," per Josh. */
+const RESTING_OFFSET = 56;
 
 /**
  * Floating "back to top" pill for long, unpaginated grids (Work). Now
@@ -125,7 +128,7 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
-      className={`fixed bottom-8 left-1/2 z-30 -translate-x-1/2 rounded-full border border-hairline bg-canvas/15 px-8 py-5 font-body text-[17px] text-ink backdrop-blur-md transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas md:px-12 md:py-6 md:text-[22px] ${bounceClass} ${
+      className={`fixed bottom-14 left-1/2 z-30 -translate-x-1/2 rounded-full border border-hairline bg-canvas/15 px-8 py-5 font-display font-waldeck-black uppercase tracking-[0.02em] text-[17px] text-ink backdrop-blur-md transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas md:px-12 md:py-6 md:text-[22px] ${bounceClass} ${
         visible
           ? "translate-y-0 scale-100 opacity-100"
           : "pointer-events-none translate-y-4 scale-50 opacity-0"
