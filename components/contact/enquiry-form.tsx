@@ -18,8 +18,12 @@ import { toWaldeckCase } from "@/lib/waldeck-case";
 
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
+// text-[16px] on mobile, not text-[15px] -- iOS Safari auto-zooms the whole
+// page on focus for any input under 16px, which reads as the form being
+// broken on a phone even though nothing is visually wrong. md: restores the
+// original 15px now that desktop has no such threshold.
 const FIELD =
-  "mt-2 w-full rounded-md border border-ink bg-canvas px-3 py-2.5 font-body text-[15px] text-ink transition-colors placeholder:text-ink-muted focus:border-brand focus:outline-none";
+  "mt-2 w-full rounded-md border border-ink bg-canvas px-3 py-2.5 font-body text-[16px] text-ink transition-colors placeholder:text-ink-muted focus:border-brand focus:outline-none md:text-[15px]";
 
 export function EnquiryForm() {
   const [sent, setSent] = useState(false);
