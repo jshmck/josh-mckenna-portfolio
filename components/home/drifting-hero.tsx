@@ -17,9 +17,12 @@ import { useEffect, useRef } from "react";
  * Geometry is expressed as fractions of the container, so the whole thing
  * scales with the viewport and stays resolution-independent.
  *
- * Grab-and-throw: any object can be picked up with the mouse (pointerType
- * === "mouse" only — touch is left alone entirely, so nothing here fights
- * page-scroll on mobile) and dragged around the frame. Each object carries a
+ * Grab-and-throw: any object can be picked up with the mouse or a touch and
+ * dragged around the frame — "playable hero illos on mobile," per Josh.
+ * Touch needed Tailwind's `touch-none` (touch-action: none) on the object
+ * itself, not the frame, so only a touch that actually starts on an object
+ * is claimed for dragging; every other touch on the page (the gaps between
+ * objects, the rest of the page) still scrolls normally. Each object carries a
  * `mode` — "orbit" (its normal path), "dragging" (tracks the pointer 1:1),
  * "released" (free physics after letting go), or "landing" (a brief final
  * blend, see below). On release it inherits the velocity of the last
@@ -488,7 +491,9 @@ export function DriftingHero() {
       const object = state[i];
 
       const onDragStart = (event: PointerEvent) => {
-        if (event.pointerType !== "mouse" || event.button !== 0) return;
+        // Touch's own `button` is always 0, so this only ever rejects a
+        // non-primary mouse button -- both mouse and touch fall through.
+        if (event.pointerType === "mouse" && event.button !== 0) return;
         event.preventDefault();
         node.setPointerCapture(event.pointerId);
         object.mode = "dragging";
@@ -1008,7 +1013,7 @@ export function DriftingHero() {
               onPointerMove={handlePointerMove(index)}
               onPointerLeave={handlePointerLeave(index)}
               aria-hidden="true"
-              className="group absolute left-0 top-0 z-0 cursor-grab will-change-transform hover:z-20 focus-within:z-20"
+              className="group absolute left-0 top-0 z-0 cursor-grab touch-none will-change-transform hover:z-20 focus-within:z-20"
               style={{
                 width: `${object.width * 100}cqw`,
                 transform: `translate3d(${seed.x * 100}cqw, ${seed.y * 100}cqh, 0)`,
