@@ -458,9 +458,9 @@ export function Nav() {
               twice before the cause was clear; worth leaving it quieter
               unless he asks for more. */}
           <div
-            className={`flex items-center gap-2 rounded-full border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
+            className={`flex items-center gap-3 rounded-full border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
           >
-            <ul className="flex items-center gap-2 md:gap-10">
+            <ul className="flex items-center gap-3 md:gap-10">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   {/* Same nav-pill-hover squash-and-stretch as jM/Cart's
@@ -492,7 +492,7 @@ export function Nav() {
                       restarting the bounce -- "can you make the area
                       where the mouse hovers over the words a little bit
                       larger so they engage sooner? ... there is some
-                      buggy twittering," per Josh. gap-2/gap-10 (8/40px)
+                      buggy twittering," per Josh. gap-3/gap-10 (12/40px)
                       leaves enough room for the smaller mobile padding
                       (4px each side) without two words' extended hit areas
                       ever touching. Mobile went through several rounds:
@@ -500,26 +500,30 @@ export function Nav() {
                       viewports ("the nav bar and two circles either side
                       seem too large and they go off screen"), sized back
                       up once that read as too small and matched to
-                      back-to-top's mobile scale ("needs to read closer to
-                      the current back to top button"), given more room
-                      around the edge words and between them once Josh saw
-                      it live ("nav bar needs more space at edges on side
-                      of the words work and contact... spacing between nav
-                      bar words needs to increase for user ease of
-                      clicking"), then increased once more on both counts
-                      the following night ("just increase the edge of the
-                      centre nav pill... and slightly increase the jM and
-                      cart circles"). Link text has eased down twice along
-                      the way (15px -> 14px -> 13px) purely to keep making
-                      room for each round of extra edge/word/circle
-                      spacing at 320px -- that budget is exact, essentially
-                      zero slack left, so any further increase here needs
-                      something else to shrink first. jM/Cart's circle
-                      size (h-[53px]/w-[53px] below) started out picked to
-                      land on this pill's own rendered height exactly --
-                      "prefer to be same height," per Josh -- then nudged
-                      slightly past it ("slightly increase the jM and cart
-                      circles to better match the centre nav pill") rather
+                      back-to-top's mobile scale, given more room around
+                      the edge words and between them once Josh saw it
+                      live, increased again on both counts the following
+                      night, then text/gap increased once more after that
+                      still read "a little too small and close together."
+                      Link text and the word gap both shrank repeatedly
+                      through these rounds purely to keep fitting a strict
+                      320px budget (15px -> 14px -> 13px, back up to 15px
+                      here; gap-6 -> ... -> gap-2, back up to gap-3) --
+                      each round of "make X bigger" was paid for by
+                      shrinking something else to stay under that width,
+                      which is why the same numbers kept bouncing instead
+                      of settling. This pass breaks that cycle: 320px
+                      (iPhone 5/SE-1st-gen, discontinued years ago) is left
+                      to overflow slightly rather than shrinking legible
+                      text again -- verified 360px (the common Android
+                      floor) and 375px+ both still fit cleanly, which
+                      covers every device actually in use today. jM/Cart's
+                      circle size (h-[53px]/w-[53px] below) started out
+                      picked to land on this pill's own rendered height
+                      exactly -- "prefer to be same height," per Josh --
+                      then nudged slightly past it ("slightly increase the
+                      jM and cart circles to better match the centre nav
+                      pill") rather
                       than staying pinned to an exact match. md: restores
                       the original desktop sizing throughout this pill and
                       both circles regardless. */}
@@ -527,7 +531,7 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[13px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
+                    className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
