@@ -40,7 +40,24 @@ const RESTING_OFFSET = 44;
  * glassmorphism light-catching-the-rim technique) plus
  * backdrop-saturate-150 so the blurred colour underneath reads richer
  * rather than just softened — same treatment as nav.tsx's frostClass, kept
- * in sync with it.
+ * in sync with it (nav.tsx has no equivalent need for the glow below,
+ * since it always sits over page content, never bare canvas).
+ *
+ * A third shadow layer adds a brand-blue wash *inside* the pill (inset, not
+ * an outer glow -- tried outer first, then accent-purple and very faint,
+ * "try it on the inside of the pill very faint," before landing here --
+ * "a bit more obvious... try blue" per Josh once he'd seen both) so the
+ * glass treatment reads as tinted rather than colourless even when there's
+ * no colourful artwork behind it to pick up, "doesn't stand out" against a
+ * plain canvas-coloured section otherwise. Hover text and the :active fill
+ * both went brand too, matching this wash -- back-to-top briefly tried
+ * accent (purple) for both, matching the rest of the site's hover/active
+ * convention, but Josh asked for blue everywhere on this one control once
+ * he saw the blue wash next to purple text. color-mix(...) against
+ * var(--color-brand) rather than a raw rgba hex, so it always tracks the
+ * real brand token if it ever changes. Always on, not just hover/active --
+ * the whole point is making the resting state findable on a light
+ * background.
  *
  * `translate` and `scale` are listed explicitly in the transition, not
  * `transform` — the keyframe bounces below animate `transform` directly,
@@ -146,13 +163,13 @@ export function BackToTop() {
       onClick={() => window.scrollTo({ top: 0 })}
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
-      className={`fixed bottom-11 left-1/2 z-30 -translate-x-1/2 rounded-full border border-transparent bg-canvas/15 px-6 py-4 font-body text-[15px] text-ink shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3)] backdrop-blur-md backdrop-saturate-150 transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-accent active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-accent active:text-canvas md:px-8 md:py-5 md:text-[18px] ${bounceClass} ${
+      className={`fixed bottom-11 left-1/2 z-30 -translate-x-1/2 rounded-full border border-transparent bg-canvas/15 px-6 py-4 font-body text-[15px] text-ink shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas md:px-8 md:py-5 md:text-[18px] ${bounceClass} ${
         visible
           ? "translate-y-0 scale-100 opacity-100"
           : "pointer-events-none translate-y-4 scale-50 opacity-0"
       }`}
     >
-      Back to Top
+      Back to top
     </button>
   );
 }
