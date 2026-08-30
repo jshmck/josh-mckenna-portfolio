@@ -18,7 +18,7 @@ export default function HomePage() {
 
       {/* Who Josh is */}
       <section>
-        <div className="mx-auto grid max-w-frame gap-16 px-6 pb-16 pt-16 md:grid-cols-2 md:items-center md:px-gutter">
+        <div className="mx-auto grid max-w-frame gap-16 px-6 pb-24 pt-16 md:grid-cols-2 md:items-center md:px-gutter md:pb-16">
           <Reveal>
             <h2 className="type-heading text-ink">
               London-based illustrator working across character design, LGBTQ+
@@ -41,7 +41,16 @@ export default function HomePage() {
             </Link>
           </Reveal>
 
-          <Parallax speed={0.85}>
+          {/* maxOffset caps how far the parallax drift can carry the poster
+              from its layout position -- unbounded (the default) let it
+              drift far enough on mobile, where this stacks directly above
+              Selected Clients with less surrounding whitespace than the
+              two-column desktop layout, to cover that section's heading
+              mid-scroll -- "i like the dynamic scroll but it covers this
+              up," per Josh. See Parallax's own doc comment: exactly the
+              "tight gaps... detach and overlap a neighbour" case it warns
+              about. */}
+          <Parallax speed={0.85} maxOffset={48}>
             {/* Monte Carlo poster — a car and cityscape in one image,
                 matching the copy beside it. Unbranded version (no "beefbar"
                 script, no "Born In") — this one's for Home, not the Beefbar
