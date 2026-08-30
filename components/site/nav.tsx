@@ -323,8 +323,16 @@ export function Nav() {
   // colour, not just softened -- closer to "mimics the colour it's passing
   // over" than a white ring ever was, since it's the real backdrop colour
   // showing through more vividly rather than a synthetic overlay tint.
+  // A third, brand-blue inset wash rides alongside the two white highlight
+  // layers -- back-to-top.tsx got this first ("doesn't stand out" against a
+  // plain canvas background, then "try blue" once accent-purple was tried),
+  // ported here so mobile and desktop share the same tinted-glass look
+  // rather than back-to-top being the only frosted surface with colour in
+  // it. Same colour-mix(...) against var(--color-brand) approach, no raw
+  // hex. Lives only in the `scrolled` branch, same as the white highlights
+  // -- resting state has no surface at all to tint.
   const frostClass = scrolled
-    ? `${atBottom ? "animate-[nav-pill-landing_650ms_ease-in-out]" : "animate-[nav-pill-pop_650ms_ease-in-out]"} border-transparent bg-canvas/15 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3)] backdrop-blur-md backdrop-saturate-150`
+    ? `${atBottom ? "animate-[nav-pill-landing_650ms_ease-in-out]" : "animate-[nav-pill-pop_650ms_ease-in-out]"} border-transparent bg-canvas/15 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150`
     : hasFrostedOnce
       ? "animate-[nav-pill-landing_650ms_ease-in-out] border-transparent bg-transparent"
       : "border-transparent bg-transparent";
@@ -359,7 +367,7 @@ export function Nav() {
               href="/"
               aria-label="Josh McKenna — home"
               onClick={() => scrollToTopIfCurrent("/")}
-              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
+              className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
             >
               {/* Home link -- always routes to "/", every page, every
                   state. Josh's own jM logomark now (public/icons/
@@ -450,7 +458,7 @@ export function Nav() {
               twice before the cause was clear; worth leaving it quieter
               unless he asks for more. */}
           <div
-            className={`flex items-center gap-2 rounded-full border px-2 py-4 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
+            className={`flex items-center gap-2 rounded-full border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
           >
             <ul className="flex items-center gap-2 md:gap-10">
               {navLinks.map((link) => (
@@ -486,25 +494,40 @@ export function Nav() {
                       larger so they engage sooner? ... there is some
                       buggy twittering," per Josh. gap-2/gap-10 (8/40px)
                       leaves enough room for the smaller mobile padding
-                      (4px each side) without two words' extended hit
-                      areas ever touching. Mobile shrunk the whole nav bar
-                      to stop it overflowing narrow phone viewports first
-                      -- "the nav bar and two circles either side seem too
-                      large and they go off screen," per Josh -- then
-                      sized back up once that read as too small, this
-                      time matched to back-to-top's own mobile scale
-                      (text-[15px], py-4 -- back-to-top.tsx) rather than
-                      picked freehand, per Josh: "needs to read closer to
-                      the current back to top button." Gap/padding here
-                      stayed tight to fit that larger text at 320px
-                      without overflowing. md: restores the original
-                      desktop sizing throughout this pill and both
-                      circles regardless. */}
+                      (4px each side) without two words' extended hit areas
+                      ever touching. Mobile went through several rounds:
+                      shrunk first to stop it overflowing narrow phone
+                      viewports ("the nav bar and two circles either side
+                      seem too large and they go off screen"), sized back
+                      up once that read as too small and matched to
+                      back-to-top's mobile scale ("needs to read closer to
+                      the current back to top button"), given more room
+                      around the edge words and between them once Josh saw
+                      it live ("nav bar needs more space at edges on side
+                      of the words work and contact... spacing between nav
+                      bar words needs to increase for user ease of
+                      clicking"), then increased once more on both counts
+                      the following night ("just increase the edge of the
+                      centre nav pill... and slightly increase the jM and
+                      cart circles"). Link text has eased down twice along
+                      the way (15px -> 14px -> 13px) purely to keep making
+                      room for each round of extra edge/word/circle
+                      spacing at 320px -- that budget is exact, essentially
+                      zero slack left, so any further increase here needs
+                      something else to shrink first. jM/Cart's circle
+                      size (h-[53px]/w-[53px] below) started out picked to
+                      land on this pill's own rendered height exactly --
+                      "prefer to be same height," per Josh -- then nudged
+                      slightly past it ("slightly increase the jM and cart
+                      circles to better match the centre nav pill") rather
+                      than staying pinned to an exact match. md: restores
+                      the original desktop sizing throughout this pill and
+                      both circles regardless. */}
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
+                    className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[13px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
@@ -531,7 +554,7 @@ export function Nav() {
               aria-current={isActive("/shop") ? "page" : undefined}
               aria-label="Cart"
               onClick={() => scrollToTopIfCurrent("/shop")}
-              className={`group flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
+              className={`group flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
             >
               {/* group-hover (keyed to the circle <Link> above, via
                   `group`), not a plain hover: on the icon itself -- the
