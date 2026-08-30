@@ -14,7 +14,14 @@ function getColumnCount() {
   return 1;
 }
 
-const GAP = 32; // px, matches gap-8
+/** px between cards. Tighter at a single column -- "padding closer for work
+ *  project image frames on mobile," per Josh: 32px (matching desktop's
+ *  gap-8) read as too much air once cards are stacked one-per-row instead
+ *  of sitting in a multi-column grid, where the same gap also has to read
+ *  as the space *between* columns, not just above/below a card. */
+function getGap(columnCount: number) {
+  return columnCount === 1 ? 16 : 32;
+}
 
 /** Stand-in column width for converting a ratio into a comparable height —
  *  see the component doc comment for why the actual on-screen pixel width
@@ -125,7 +132,7 @@ function seatsAdjacentTransparent(
  * candidate in the window would violate it, in which case the rule yields
  * rather than stalling the layout.
  */
-function pack(items: MasonryItem[], columnCount: number): Packed[] {
+function pack(items: MasonryItem[], columnCount: number, gap: number): Packed[] {
   const columnHeights = new Array(columnCount).fill(0);
   const remaining = [...items];
   const placements: Packed[] = [];
@@ -148,7 +155,7 @@ function pack(items: MasonryItem[], columnCount: number): Packed[] {
         }
       }
 
-      const widthPx = span * ASSUMED_COLUMN_WIDTH + (span - 1) * GAP;
+      const widthPx = span * ASSUMED_COLUMN_WIDTH + (span - 1) * gap;
       const heightPx = widthPx / item.ratio;
       const deadSpace = bestTop - Math.min(...columnHeights);
       const blocked =
@@ -181,7 +188,7 @@ function pack(items: MasonryItem[], columnCount: number): Packed[] {
     });
 
     for (let c = pick.start; c < pick.start + pick.span; c++) {
-      columnHeights[c] = pick.top + pick.height + GAP;
+      columnHeights[c] = pick.top + pick.height + gap;
     }
   }
 
@@ -223,22 +230,23 @@ export function MasonryGrid({ items }: MasonryGridProps) {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const packed = pack(items, columnCount);
+  const gap = getGap(columnCount);
+  const packed = pack(items, columnCount, gap);
   const placements: Placement[] = packed.map((p) => ({
     key: p.key,
     node: p.node,
     top: p.top,
-    left: `calc((100% - ${(columnCount - 1) * GAP}px) / ${columnCount} * ${p.col} + ${p.col * GAP}px)`,
-    width: `calc((100% - ${(columnCount - 1) * GAP}px) / ${columnCount} * ${p.span} + ${(p.span - 1) * GAP}px)`,
+    left: `calc((100% - ${(columnCount - 1) * gap}px) / ${columnCount} * ${p.col} + ${p.col * gap}px)`,
+    width: `calc((100% - ${(columnCount - 1) * gap}px) / ${columnCount} * ${p.span} + ${(p.span - 1) * gap}px)`,
   }));
 
   const columnHeights = new Array(columnCount).fill(0);
   for (const p of packed) {
     for (let c = p.col; c < p.col + p.span; c++) {
-      columnHeights[c] = Math.max(columnHeights[c], p.top + p.height + GAP);
+      columnHeights[c] = Math.max(columnHeights[c], p.top + p.height + gap);
     }
   }
-  const containerHeight = Math.max(0, Math.max(...columnHeights) - GAP);
+  const containerHeight = Math.max(0, Math.max(...columnHeights) - gap);
 
   return (
     <div className="relative" style={{ height: containerHeight }}>
