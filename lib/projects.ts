@@ -293,6 +293,37 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "boat-international",
+    title: "Here Comes the Sun",
+    client: "Boat International",
+    year: 2024,
+    yearLabel: "December 2024",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Editorial"],
+    summary: "A dayboat, tethered to a sun of its own.",
+    heroCaption: "For Boat International's December 2024 feature on solar-powered yachts.",
+    brief: [
+      "Boat International commissioned this for a piece by Sam Fortescue on solar tech finally reaching mid-sized yachts — the 12- to 24-metre range that's always been stuck between too much power-hungry kit and not enough battery capacity to run it quietly. The brief needed one image to sell that shift: a boat at anchor, running on nothing but the sun.",
+      "The sun itself became the illustration's own solar panel, tethered to the boat like a balloon — the whole idea in one image, rather than just a boat with panels bolted on.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Boat International" },
+    ],
+    hero: {
+      ratio: "4/5",
+      alt: "A dayboat at anchor, tethered to a sun-shaped solar balloon.",
+      src: "/work/boat-international/01-boat-international.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "The spread on the printed page.",
+      src: "/work/boat-international/02-boat-international-mockup.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "step-journal",
     title: "Step Journal",
     client: "STEP Journal",
