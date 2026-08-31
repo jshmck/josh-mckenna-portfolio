@@ -1050,7 +1050,7 @@ export const projects: Project[] = [
       },
       {
         ratio: "3/2",
-        alt: "Front covers — six colour-ways",
+        alt: "Covers — six colour-ways",
         src: "/work/ual-welcome-booklets/03-university-of-the-arts-img-4074.webp",
       },
       {
