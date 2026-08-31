@@ -1016,7 +1016,7 @@ export const projects: Project[] = [
     // it landed on. Same fix as Bombay Sapphire below.
     cardRatio: "16/10",
     summary: "Six UAL colleges, six colour-ways, one shared case of first-week nerves.",
-    heroCaption: "One interior spread, reused across all six 2017/18 college editions.",
+    heroCaption: "One interior spread, reused across all six 2017/18 uni editions.",
     brief: [
       "UAL is six separate art colleges under one umbrella, and the welcome guide had to work for all of them — the same maps, the same accommodation FAQs, the same warning not to lose your ID card, run six times in six different colour-ways so each college still felt like its own place.",
       "The interior stayed the same guide underneath — a wayfinding map, a library page, a queue for ID cards, a market stall on the way to campus — just re-covered six ways so a fresher landing at Chelsea didn't get handed the Central Saint Martins book by mistake.",
@@ -1027,15 +1027,24 @@ export const projects: Project[] = [
       alt: "Interior spread — the market stall",
       src: "/work/ual-welcome-booklets/13-university-of-the-arts-img-4128.webp",
     },
+    // ID card queue bumped up from last -- "bump the last pic of the ID
+    // card up higher in the project," per Josh -- to lead the interior
+    // pages, right after the covers/spines cluster. Two captions
+    // corrected here too, both wrong about what the photo actually
+    // shows: the "back covers" shot is the fanned FRONT covers (the
+    // "Your creative future starts here" cover text is plainly visible),
+    // and the "wayfinding map" shot is a flat grid of all six covers —
+    // no map in it at all. "'interior spread' is incorrect, those are
+    // the covers," per Josh.
     gallery: [
       {
         ratio: "16/10",
-        alt: "Six college covers — the full set",
+        alt: "Six uni covers — the full set",
         src: "/work/ual-welcome-booklets/09-university-of-the-arts-img-4089.webp",
       },
       {
         ratio: "16/10",
-        alt: "Back covers — six colour-ways",
+        alt: "Front covers — six colour-ways",
         src: "/work/ual-welcome-booklets/08-university-of-the-arts-img-4074.webp",
       },
       {
@@ -1045,8 +1054,13 @@ export const projects: Project[] = [
       },
       {
         ratio: "16/10",
-        alt: "Interior spread — the wayfinding map",
+        alt: "Six covers — laid flat",
         src: "/work/ual-welcome-booklets/10-university-of-the-arts-img-4111.webp",
+      },
+      {
+        ratio: "16/10",
+        alt: "Interior spread — the ID card queue",
+        src: "/work/ual-welcome-booklets/12-university-of-the-arts-img-4125.webp",
       },
       {
         ratio: "16/10",
@@ -1062,11 +1076,6 @@ export const projects: Project[] = [
         ratio: "16/10",
         alt: "Interior spread — a student's own words",
         src: "/work/ual-welcome-booklets/14-university-of-the-arts-img-4129.webp",
-      },
-      {
-        ratio: "16/10",
-        alt: "Interior spread — the ID card queue",
-        src: "/work/ual-welcome-booklets/12-university-of-the-arts-img-4125.webp",
       },
     ],
   },
