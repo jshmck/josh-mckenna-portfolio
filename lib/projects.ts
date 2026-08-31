@@ -1022,20 +1022,23 @@ export const projects: Project[] = [
       "The interior stayed the same guide underneath — a wayfinding map, a library page, a queue for ID cards, a market stall on the way to campus — just re-covered six ways so a fresher landing at Chelsea didn't get handed the Central Saint Martins book by mistake.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // Hero landed on the ID card queue after two rounds -- first the
+    // market stall (its own "Interior spread" caption was accurate, so
+    // it was kept when the "Spines or six covers" option was reversed),
+    // then swapped again per Josh: "swap the interior spread id queue as
+    // the hero." Market stall moved into the gallery in its place,
+    // alongside the other genuine interior spreads.
     hero: {
       ratio: "16/10",
-      alt: "Interior spread — the market stall",
-      src: "/work/ual-welcome-booklets/13-university-of-the-arts-img-4128.webp",
+      alt: "Interior spread — the ID card queue",
+      src: "/work/ual-welcome-booklets/12-university-of-the-arts-img-4125.webp",
     },
-    // ID card queue bumped up from last -- "bump the last pic of the ID
-    // card up higher in the project," per Josh -- to lead the interior
-    // pages, right after the covers/spines cluster. Two captions
-    // corrected here too, both wrong about what the photo actually
-    // shows: the "back covers" shot is the fanned FRONT covers (the
-    // "Your creative future starts here" cover text is plainly visible),
-    // and the "wayfinding map" shot is a flat grid of all six covers —
-    // no map in it at all. "'interior spread' is incorrect, those are
-    // the covers," per Josh.
+    // Two captions corrected here, both wrong about what the photo
+    // actually shows: the "back covers" shot is the fanned FRONT covers
+    // (the "Your creative future starts here" cover text is plainly
+    // visible), and the "wayfinding map" shot is a flat grid of all six
+    // covers — no map in it at all. "'interior spread' is incorrect,
+    // those are the covers," per Josh.
     gallery: [
       {
         ratio: "16/10",
@@ -1059,8 +1062,8 @@ export const projects: Project[] = [
       },
       {
         ratio: "16/10",
-        alt: "Interior spread — the ID card queue",
-        src: "/work/ual-welcome-booklets/12-university-of-the-arts-img-4125.webp",
+        alt: "Interior spread — the market stall",
+        src: "/work/ual-welcome-booklets/13-university-of-the-arts-img-4128.webp",
       },
       {
         ratio: "16/10",
