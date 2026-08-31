@@ -673,7 +673,6 @@ export const projects: Project[] = [
     heroCaption: "Illustrated for \"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
     brief: [
       "Ten regenerative-living habits — composting, fishing responsibly, buying secondhand — needed one icon each for \"Living Regeneratively,\" a feature written by Dustin Beatty for The Rooted Journal's Spring 2025 issue. Each habit runs as its own call-out box, so every illustration had to work as a single self-contained icon rather than part of a larger scene.",
-      "Same restrained palette across all ten — moss green, mustard, rust, one purple — and the same grain texture over every icon.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -1189,8 +1188,8 @@ export const projects: Project[] = [
     summary: "One new poster, every time Beefbar opens somewhere new. Still counting.",
     heroCaption: "The Monte Carlo poster — Beefbar's flagship, part of the ongoing series.",
     brief: [
-      "With every new opening of a Beefbar restaurant around the world comes a new poster, designed by me, taking influence from the surrounding landmarks, cityscape, culture and heritage — Baku's Flame Towers and waterfront, Comporta's dunes, whatever the city actually gives you to draw. The same artwork doubles as the cover of the menu. Not every poster's made the cut here — this is a selection, not the full series.",
-      "The 'beefbar' script and the city's own name across the sheet stay fixed. Everything else comes from wherever the restaurant's landed — Comporta's just a dune path, Malta's set inside the dining room.",
+      "Every new Beefbar opening gets a poster, designed by me — one per city, taking cues from whatever's actually there: Baku's Flame Towers, Comporta's dunes, the local landmarks and culture. The same artwork doubles as the menu cover. This is a selection, not the full series.",
+      "Only the 'beefbar' script and the city's name stay fixed across every poster. Everything else comes from the place itself — Malta's is set inside the dining room instead of out on the street.",
     ],
     credits: [{ role: "Graphic Design & Illustration", name: "Josh McKenna" }],
     galleryLayout: "poster-grid",
