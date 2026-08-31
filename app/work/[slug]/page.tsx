@@ -327,7 +327,7 @@ export default async function ProjectPage({
               as a two-up, the rest full width, every frame opening
               full-size in its own shared lightbox. */}
           {project.galleryLayout === "grid" ? (
-            <div className="mx-auto max-w-frame px-6 pb-28 md:px-gutter">
+            <div className="mx-auto max-w-frame px-6 pb-40 md:px-gutter">
               <GalleryGrid
                 leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
                 images={restImages}

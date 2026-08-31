@@ -116,7 +116,11 @@ export function ImageStack({
 
   return (
     <>
-      <div className="mx-auto max-w-frame space-y-8 px-6 pb-28 md:px-gutter">
+      {/* pb-28 -> pb-40 -- Back to Top's pills float at a fixed distance
+          from the viewport bottom, so scrolling to the end of a gallery
+          used to land the last caption almost flush against them.
+          "Make sure there's room under the project," per Josh. */}
+      <div className="mx-auto max-w-frame space-y-8 px-6 pb-40 md:px-gutter">
         {galleryGif && galleryGif.afterIndex === 0 && (
           // Capped to max-w-lg (512px) — the source GIF is only 1080px
           // native, so stretching it to the frame's full 1344px width
@@ -205,10 +209,10 @@ export function ImageStack({
             );
           }
 
-          const portrait = isPortrait(image.ratio);
+          const capped = isPortrait(image.ratio) || image.small;
           return (
             <Fragment key={image.alt}>
-              <Reveal className={portrait ? "mx-auto max-w-lg" : undefined}>
+              <Reveal className={capped ? "mx-auto max-w-lg" : undefined}>
                 <button
                   type="button"
                   onClick={() => openAt(fullIndex)}
@@ -218,7 +222,7 @@ export function ImageStack({
                   <Plate
                     image={image}
                     sizes={
-                      portrait
+                      capped
                         ? "(max-width: 768px) 100vw, 512px"
                         : "(max-width: 1344px) 100vw, 1344px"
                     }

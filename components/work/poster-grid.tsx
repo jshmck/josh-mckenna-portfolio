@@ -90,7 +90,9 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
 
   return (
     <>
-      <div className="mx-auto max-w-frame px-6 pt-12 pb-28 md:px-gutter">
+      {/* pb-28 -> pb-40, matching ImageStack/GalleryGrid -- see their own
+          comment on this same change. */}
+      <div className="mx-auto max-w-frame px-6 pt-12 pb-40 md:px-gutter">
         <div
           className={
             columns === 5
