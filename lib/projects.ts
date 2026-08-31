@@ -1022,8 +1022,8 @@ export const projects: Project[] = [
     summary: "Six UAL colleges, six colour-ways, one shared case of first-week nerves.",
     heroCaption: "One interior spread, reused across all six 2017–2020 college editions.",
     brief: [
-      "UAL is six separate art colleges under one umbrella, and the welcome guide had to work for all of them — the same maps, the same accommodation FAQs, the same warning not to lose your ID card, run six times in six different colour-ways so each college still felt like its own place.",
-      "The interior stayed the same guide underneath — a wayfinding map, a library page, a queue for ID cards, a market stall on the way to campus — just re-covered six ways so a fresher landing at Chelsea didn't get handed the Central Saint Martins book by mistake.",
+      "UAL is six separate colleges, and the welcome guide had to work for all of them at once — one set of content, run six times in six colour-ways, so a fresher landing at Chelsea didn't get handed Central Saint Martins' copy by mistake.",
+      "Same drawings throughout: a wayfinding map, campus-life spots, the ID card queue. Ran for four editions, 2017 to 2020.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Full reshoot -- "replace all images with these new ones," from a
