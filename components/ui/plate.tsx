@@ -25,8 +25,8 @@ type PlateProps = {
   image: ProjectImage;
   /** `strong` is the warmer taupe used for interactive objects. */
   tone?: "ambient" | "strong";
-  /** Corner radius utility. Defaults to the sitewide rounded-3xl, matching
-   *  the Work gallery cards — every framed image sitewide uses this radius. */
+  /** Corner radius utility. Defaults to the sitewide frame radius (see the
+   *  default value below) — every framed image sitewide uses this. */
   radius?: string;
   /** Hide the placeholder's own centred alt-text caption — for callers that
    *  render their own caption over the same spot (e.g. the Work gallery's
@@ -49,7 +49,16 @@ type PlateProps = {
 export function Plate({
   image,
   tone = "ambient",
-  radius = "rounded-3xl",
+  // rounded-3xl (24px) -> a custom 32px -- "what about the radius of the
+  // frames on the site to match the circles," per Josh. Not a literal
+  // rounded-full match: on a small square (the nav circles) rounded-full's
+  // radius caps at exactly half the box's height either way, but on a wide
+  // rectangular frame it caps at half the *shorter* side, turning the
+  // frame into a stadium/pill shape rather than a rounded rectangle --
+  // a much bigger visual change than "rounder to feel related to the
+  // nav." This is a deliberate step toward that read without going fully
+  // circular.
+  radius = "rounded-[32px]",
   showPlaceholderCaption = true,
   className = "",
   sizes = "(max-width: 768px) 100vw, 50vw",
