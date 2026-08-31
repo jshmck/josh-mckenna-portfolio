@@ -87,7 +87,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
               aria-label={`Open larger view of ${image.alt}`}
               className="group block w-full cursor-zoom-in text-left"
             >
-              <div className="overflow-hidden rounded-[40px]">
+              <div className={`overflow-hidden ${image.square ? "" : "rounded-[40px]"}`}>
                 <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.02]">
                   <Plate
                     image={image}

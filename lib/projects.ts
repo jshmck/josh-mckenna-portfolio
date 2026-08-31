@@ -58,7 +58,11 @@ export type ImageRatio =
   // Instagram Sticker's Vogue takeover screenshot — a two-panel Instagram
   // Stories composite, true 1496x1334. Nearest existing ratio (5/4) cropped
   // "SOUND ON" and other edge detail; this is a near-exact match instead.
-  | "9/8";
+  | "9/8"
+  // Mr Porter Invites' new day/night artwork — true 1414x2000 (a near-exact
+  // 1/√2, ISO-paper proportions). Nearest existing ratio (3/4) cropped
+  // noticeably.
+  | "707/1000";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -94,6 +98,16 @@ export type ProjectImage = {
    * (no one-off layout, just the existing small-image path).
    */
   small?: boolean;
+  /**
+   * Square corners instead of the sitewide rounded frame, for artwork
+   * that already has its own border treatment baked in — same reasoning
+   * as poster-grid's square corners for Beefbar. Read per-image in
+   * HeroLightbox, so `hero` and `heroPair` need it set on both to read as
+   * a matched pair rather than one square, one rounded. Wired up for Mr
+   * Porter Invites so far, per Josh: "remove the curved frame radius for
+   * these (like beefbar)."
+   */
+  square?: boolean;
 };
 
 export type Credit = {
@@ -294,7 +308,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "boat-international",
-    title: "Here Comes the Sun",
+    title: "Boat Int.",
     client: "Boat International",
     year: 2024,
     yearLabel: "December 2024",
@@ -304,8 +318,7 @@ export const projects: Project[] = [
     summary: "A dayboat, tethered to a sun of its own.",
     heroCaption: "For Boat International's December 2024 feature on solar-powered yachts.",
     brief: [
-      "Boat International commissioned this for a piece by Sam Fortescue on solar tech finally reaching mid-sized yachts — the 12- to 24-metre range that's always been stuck between too much power-hungry kit and not enough battery capacity to run it quietly. The brief needed one image to sell that shift: a boat at anchor, running on nothing but the sun.",
-      "The sun itself became the illustration's own solar panel, tethered to the boat like a balloon — the whole idea in one image, rather than just a boat with panels bolted on.",
+      "Boat International commissioned this for a piece by Sam Fortescue on solar tech finally reaching mid-sized yachts — the 12- to 24-metre range that's always been stuck between too much power-hungry kit and not enough battery capacity to run it quietly.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -1037,15 +1050,37 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Mr Porter" },
     ],
+    // True 707/1000 ratio (a near-exact 1/√2, ISO-paper proportions) —
+    // 3/4 would have cropped noticeably. Square corners, not the sitewide
+    // rounded frame — "remove the curved frame radius for these (like
+    // beefbar)," per Josh: these have their own border treatment baked
+    // into the artwork the same way Beefbar's posters do, and rounding
+    // would clip across it.
     hero: {
-      ratio: "3/4",
+      ratio: "707/1000",
       alt: "Mr Porter Miami invite — night",
-      src: "/work/mr-porter-miami-invites/01-mr-porter-miami-night.webp",
+      src: "/work/mr-porter-miami-invites/01-mr-porter-night.webp",
+      square: true,
     },
     heroPair: {
-      ratio: "3/4",
+      ratio: "707/1000",
       alt: "Mr Porter Miami invite — day",
-      src: "/work/mr-porter-miami-invites/02-mr-porter-mr-miami-day.webp",
+      src: "/work/mr-porter-miami-invites/02-mr-porter-day.webp",
+      square: true,
+    },
+    // Card preview gets its own day/night pair, cropped to 4/5 rather
+    // than the hero's true ratio — "in the gallery preview I have
+    // included day cover and night cover to be used... put it in a 4-5
+    // frame," per Josh. Night crossfades in on hover (getCardHoverImage).
+    cardImage: {
+      ratio: "4/5",
+      alt: "Mr Porter Miami invite — day",
+      src: "/work/mr-porter-miami-invites/04-mr-porter-day-cover.webp",
+    },
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "Mr Porter Miami invite — night",
+      src: "/work/mr-porter-miami-invites/03-mr-porter-night-cover.webp",
     },
     gallery: [],
   },
