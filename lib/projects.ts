@@ -458,7 +458,7 @@ export const projects: Project[] = [
     summary: "A beanie, a moustache, an earring — the first character built in Womp.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — a beanie hat, a grey moustache, an earring, and a matching pair of oversized ears. The first character I built in 3D, before Pato, Jimny or Last Call — wanting to push my 2D character features into three dimensions.",
+      "Modelled in Womp, a browser-based 3D tool — the first character I built in 3D, before Pato, Jimny or Last Call. Wanted to push my 2D character features into three dimensions.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     heroSize: "spot",
@@ -484,7 +484,7 @@ export const projects: Project[] = [
     summary: "My favourite car, rendered because I wanted an excuse to model it.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — a homage to my favourite car, the Jimny, turned around three times under studio lighting.",
+      "Modelled in Womp, a browser-based 3D tool — a gloopy, wompy homage to my favourite car, the Jimny, turned around three times under studio lighting.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     // Video leads the page instead of the usual image hero; `hero` still
@@ -528,7 +528,8 @@ export const projects: Project[] = [
     summary: "Same little city car, once yellow under pink light and once black under red.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — the same car rendered twice, in yellow and in black, each under its own coloured light rig.",
+      "Modelled in Womp, a browser-based 3D tool — my own take on the Renault Twingo, a remix of the MK1 and the new Twingo EV, with side vents and chunky arches nodding to the Renaultsport Espace and the turbo era.",
+      "Same car rendered twice — yellow under pink light, black under red.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     // Only two images, both the same subject in two colourways — side by
@@ -554,7 +555,7 @@ export const projects: Project[] = [
     discipline: "3D Illustration",
     deliverables: "2 Renders",
     categories: ["3D", "Character", "Editorial"],
-    summary: "Two people, a bench, and a lot of loose change.",
+    summary: "Tapping into the coffee fund.",
     heroCaption: "",
     brief: [
       "Modelled in Womp, a browser-based 3D tool — coffee cups, a bench, coins scattered mid-fall, in two versions: one with company, one alone.",
@@ -616,7 +617,7 @@ export const projects: Project[] = [
     discipline: "3D Illustration",
     deliverables: "1 Render · 1 Turnaround",
     categories: ["3D"],
-    summary: "A cowboy hat and a set of keys, both clearly left behind.",
+    summary: "Last call at the bar for this lost cowboy.",
     heroCaption: "The Last Call hat and keyring",
     brief: [
       "Modelled in Womp, a browser-based 3D tool — a cowboy hat and a \"Last Call\" keyring.",
@@ -775,7 +776,7 @@ export const projects: Project[] = [
     summary: "A YETI cooler, occupied.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw, a tool I hadn't used before — a yeti figure lounging inside a YETI-brand cooler, blue duotone.",
+      "Made in Figma Draw — a yeti figure lounging inside a YETI-brand cooler, blue duotone.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -801,7 +802,7 @@ export const projects: Project[] = [
     summary: "Mind the closing doors — and whatever's still in your hand.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw, a tool I hadn't used before — \"mind the closing doors,\" with the Underground roundel split down the middle like the doors themselves, a hand and a bag caught right in the gap.",
+      "Made in Figma Draw — \"mind the closing doors,\" with the Underground roundel split down the middle like the doors themselves, a hand and a bag caught right in the gap.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -826,7 +827,7 @@ export const projects: Project[] = [
     summary: "Two sidewalk delivery robots, doing their rounds.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw, a tool I hadn't used before — two sidewalk delivery robots, city skyline behind them.",
+      "Made in Figma Draw — two sidewalk delivery robots, city skyline behind them.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -851,7 +852,7 @@ export const projects: Project[] = [
     summary: "A chair, repeated as wallpaper, in case the first one wasn't clear enough.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw, a tool I hadn't used before — the Vitra × Virgil Abloh chair, repeated as a wordmark pattern behind it.",
+      "Made in Figma Draw — the Vitra × Virgil Abloh chair, repeated as a wordmark pattern behind it.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -874,10 +875,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "2 Illustrations",
     categories: ["Automotive"],
-    summary: "One car, four colourways, and a hand reaching in to pick one.",
+    summary: "A niche favourite, picked for doors that drop straight into the sill.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw, a tool I hadn't used before — the BMW Z1 got the most attention of the set, a second background and a four-colour carousel.",
+      "Made in Figma Draw — the BMW Z1 got the most attention of the set, a second background and a four-colour carousel.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
