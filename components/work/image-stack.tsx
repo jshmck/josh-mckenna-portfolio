@@ -127,7 +127,7 @@ export function ImageStack({
           // would upscale it past its real resolution and blur.
           <Reveal className="mx-auto max-w-lg">
             <div
-              className={`relative overflow-hidden rounded-3xl ${RATIO_CLASS[galleryGif.ratio]}`}
+              className={`relative overflow-hidden rounded-[40px] ${RATIO_CLASS[galleryGif.ratio]}`}
             >
               <Image
                 src={galleryGif.src}

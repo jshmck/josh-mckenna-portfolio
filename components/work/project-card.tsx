@@ -5,8 +5,13 @@ import { Parallax } from "@/components/ui/parallax";
 import { Plate } from "@/components/ui/plate";
 import type { Project, ProjectImage } from "@/lib/projects";
 
-/** Shared between the image and its hover overlay so they stay in sync. */
-const GALLERY_RADIUS = "rounded-3xl";
+/** Shared between the image and its hover overlay so they stay in sync.
+ *  Matches Plate's own default frame radius (see plate.tsx) -- this
+ *  outer clip wrapper exists only to keep the hover-scale animation from
+ *  fighting Plate's own radius+overflow-hidden for the same element, so
+ *  the two have to be kept in sync by hand rather than sharing one value
+ *  automatically. */
+const GALLERY_RADIUS = "rounded-[40px]";
 
 type ProjectCardProps = {
   project: Project;

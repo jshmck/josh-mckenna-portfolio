@@ -124,7 +124,7 @@ export function DecomposeSequence() {
                   fragmentRefs.current[index] = node;
                 }}
                 aria-hidden="true"
-                className="absolute rounded-3xl bg-placeholder will-change-transform"
+                className="absolute rounded-[40px] bg-placeholder will-change-transform"
                 style={{
                   width: `${fragment.width * 100}%`,
                   aspectRatio: String(fragment.ratio),
