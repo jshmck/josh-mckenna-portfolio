@@ -317,7 +317,7 @@ export const projects: Project[] = [
       src: "/work/step-journal/01-step-journal.webp",
     },
     heroPair: {
-      ratio: "1/1",
+      ratio: "4/5",
       alt: "The cover on the printed issue.",
       src: "/work/step-journal/02-step-journal-cover-mockup.webp",
     },
