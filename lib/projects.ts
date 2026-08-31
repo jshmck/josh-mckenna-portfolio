@@ -1010,11 +1010,15 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Covers · Inside Pages · Spots · Maps",
     categories: ["Character", "Editorial"],
-    // True hero ratio — landscape (1.6), and RATIO_CYCLE never assigns
-    // anything wider than 1.25, so without this override the /work card
-    // would crop the spread significantly no matter which cycle position
-    // it landed on. Same fix as Bombay Sapphire below.
-    cardRatio: "16/10",
+    // True photo ratio — landscape (1.5, 3:2), and RATIO_CYCLE never
+    // assigns anything wider than 1.25, so without this override the
+    // /work card would crop the spread significantly no matter which
+    // cycle position it landed on. Same fix as Bombay Sapphire below.
+    // Was 16/10 (1.6) against the first photo set; the "Blue BG" reshoot
+    // that replaced every image here is natively 3:2, not 16:10 — 3/2 is
+    // an exact match (zero crop), so this moved with it rather than
+    // forcing the old 6.45%-drift snap onto different source photos.
+    cardRatio: "3/2",
     summary: "Six UAL colleges, six colour-ways, one shared case of first-week nerves.",
     heroCaption: "One interior spread, reused across all six 2017/18 college editions.",
     brief: [
@@ -1022,63 +1026,82 @@ export const projects: Project[] = [
       "The interior stayed the same guide underneath — a wayfinding map, a library page, a queue for ID cards, a market stall on the way to campus — just re-covered six ways so a fresher landing at Chelsea didn't get handed the Central Saint Martins book by mistake.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
-    // Hero landed on the ID card queue after two rounds -- first the
-    // market stall (its own "Interior spread" caption was accurate, so
-    // it was kept when the "Spines or six covers" option was reversed),
-    // then swapped again per Josh: "swap the interior spread id queue as
-    // the hero." Market stall moved into the gallery in its place,
-    // alongside the other genuine interior spreads.
+    // Full reshoot -- "replace all images with these new ones," from a
+    // folder Josh named "Blue BG." Hero stays the ID card queue (kept
+    // "the same," per Josh) but now points at that reshoot's own version
+    // of the page. Map gets its own dedicated photo for the first time
+    // (previously the closest thing was a flat grid of covers wrongly
+    // captioned as the map) and leads the gallery -- "I want map to be
+    // featured second, then the covers etc after." Two new pages this
+    // round too: individual cover pairs shot against a blue backdrop
+    // (Wimbledon/LCC/CSM each next to the shared "Your creative future
+    // starts here" cover), and a new interior spread covering
+    // Commonplace, Events and Arts SU.
     hero: {
-      ratio: "16/10",
+      ratio: "3/2",
       alt: "Interior spread — the ID card queue",
-      src: "/work/ual-welcome-booklets/12-university-of-the-arts-img-4125.webp",
+      src: "/work/ual-welcome-booklets/01-university-of-the-arts-img-4125.webp",
     },
-    // Two captions corrected here, both wrong about what the photo
-    // actually shows: the "back covers" shot is the fanned FRONT covers
-    // (the "Your creative future starts here" cover text is plainly
-    // visible), and the "wayfinding map" shot is a flat grid of all six
-    // covers — no map in it at all. "'interior spread' is incorrect,
-    // those are the covers," per Josh.
     gallery: [
       {
-        ratio: "16/10",
-        alt: "Six college covers — the full set",
-        src: "/work/ual-welcome-booklets/09-university-of-the-arts-img-4089.webp",
+        ratio: "3/2",
+        alt: "Interior spread — the wayfinding map",
+        src: "/work/ual-welcome-booklets/02-map.webp",
       },
       {
-        ratio: "16/10",
+        ratio: "3/2",
         alt: "Front covers — six colour-ways",
-        src: "/work/ual-welcome-booklets/08-university-of-the-arts-img-4074.webp",
+        src: "/work/ual-welcome-booklets/03-university-of-the-arts-img-4074.webp",
       },
       {
-        ratio: "16/10",
-        alt: "Spines — Welcome Guide 2017/18",
-        src: "/work/ual-welcome-booklets/04-university-of-the-arts-img-4043.webp",
-      },
-      {
-        ratio: "16/10",
+        ratio: "3/2",
         alt: "Six covers — laid flat",
-        src: "/work/ual-welcome-booklets/10-university-of-the-arts-img-4111.webp",
+        src: "/work/ual-welcome-booklets/04-university-of-the-arts-img-4111.webp",
       },
       {
-        ratio: "16/10",
+        ratio: "3/2",
+        alt: "Wimbledon College of Arts, next to the shared cover design",
+        src: "/work/ual-welcome-booklets/05-university-of-the-arts-img-4037.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "London College of Communication, next to the shared cover design",
+        src: "/work/ual-welcome-booklets/06-university-of-the-arts-img-4038.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Central Saint Martins, next to the shared cover design",
+        src: "/work/ual-welcome-booklets/07-university-of-the-arts-img-4040.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Spines — Welcome Guide 2017/18",
+        src: "/work/ual-welcome-booklets/08-university-of-the-arts-img-4043.webp",
+      },
+      {
+        ratio: "3/2",
         alt: "Interior spread — the market stall",
-        src: "/work/ual-welcome-booklets/13-university-of-the-arts-img-4128.webp",
+        src: "/work/ual-welcome-booklets/09-university-of-the-arts-img-4128.webp",
       },
       {
-        ratio: "16/10",
+        ratio: "3/2",
         alt: "Interior spread — the library page",
-        src: "/work/ual-welcome-booklets/06-university-of-the-arts-img-4067.webp",
+        src: "/work/ual-welcome-booklets/10-university-of-the-arts-img-4067.webp",
       },
       {
-        ratio: "16/10",
+        ratio: "3/2",
         alt: "Interior spread — moving in",
-        src: "/work/ual-welcome-booklets/05-university-of-the-arts-img-4054.webp",
+        src: "/work/ual-welcome-booklets/11-university-of-the-arts-img-4054.webp",
       },
       {
-        ratio: "16/10",
+        ratio: "3/2",
+        alt: "Interior spread — Commonplace, Events and Arts SU",
+        src: "/work/ual-welcome-booklets/12-university-of-the-arts-img-4071.webp",
+      },
+      {
+        ratio: "3/2",
         alt: "Interior spread — a student's own words",
-        src: "/work/ual-welcome-booklets/14-university-of-the-arts-img-4129.webp",
+        src: "/work/ual-welcome-booklets/13-university-of-the-arts-img-4129.webp",
       },
     ],
   },
