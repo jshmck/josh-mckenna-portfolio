@@ -1065,11 +1065,6 @@ export const projects: Project[] = [
       },
       {
         ratio: "3/2",
-        alt: "London College of Communication, next to the shared cover design",
-        src: "/work/ual-welcome-booklets/06-university-of-the-arts-img-4038.webp",
-      },
-      {
-        ratio: "3/2",
         alt: "Central Saint Martins, next to the shared cover design",
         src: "/work/ual-welcome-booklets/07-university-of-the-arts-img-4040.webp",
       },
