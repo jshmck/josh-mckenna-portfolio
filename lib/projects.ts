@@ -824,10 +824,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Character"],
-    summary: "Two sidewalk delivery robots, doing their rounds.",
+    summary: "LA's chaotic sidewalk bots, forever stalling out halfway across a crossing.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw — two sidewalk delivery robots, city skyline behind them.",
+      "Made in Figma Draw — a nod to Serve Robotics' sidewalk delivery bots, the chaotic little things that tear up LA's pavements and stop dead halfway along a crossing.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
