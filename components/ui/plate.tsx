@@ -49,16 +49,16 @@ type PlateProps = {
 export function Plate({
   image,
   tone = "ambient",
-  // rounded-3xl (24px) -> a custom 32px -- "what about the radius of the
-  // frames on the site to match the circles," per Josh. Not a literal
-  // rounded-full match: on a small square (the nav circles) rounded-full's
-  // radius caps at exactly half the box's height either way, but on a wide
+  // rounded-3xl (24px) -> a custom 40px -- "the radius of the frames on
+  // the site to match the circles," per Josh. Not a literal rounded-full
+  // match: on a small square (the nav circles) rounded-full's radius caps
+  // at exactly half the box's height either way, but on a wide
   // rectangular frame it caps at half the *shorter* side, turning the
-  // frame into a stadium/pill shape rather than a rounded rectangle --
-  // a much bigger visual change than "rounder to feel related to the
-  // nav." This is a deliberate step toward that read without going fully
-  // circular.
-  radius = "rounded-[32px]",
+  // frame into a stadium/pill shape rather than a rounded rectangle. 40px
+  // is instead the circles' own real radius at rest -- h-20 (80px) under
+  // rounded-full is exactly 40px -- so frames share the literal corner
+  // curvature without going fully circular themselves.
+  radius = "rounded-[40px]",
   showPlaceholderCaption = true,
   className = "",
   sizes = "(max-width: 768px) 100vw, 50vw",
