@@ -111,7 +111,16 @@ import { CartIcon } from "@/components/ui/social-icons";
  * became an image -- h-8/9 at first (roughly the old text's footprint),
  * bumped to h-10/11 ("make it bigger"), then to h-11/14 again along with
  * the jM/Cart circles themselves growing (h-14/16 -> h-16/20) "to better
- * match the centre nav."
+ * match the centre nav." Desktop pill padding (py-5/6) was later replaced
+ * outright with a fixed md:h-20 -- "match the radius of the corners to
+ * the circles... make sure the height of the centre nav bar is the same
+ * as the circles," per Josh. Padding alone only ever landed close (a
+ * couple of px off depending on line-height), which meant rounded-full's
+ * corner radius (always exactly half the box's own height) was a couple
+ * of px off too, however close the heights got. A literal shared height
+ * makes both guarantees exact instead of approximate. md:py-0 on the
+ * pill since h-20 now owns the height outright, items-center still
+ * centres the text inside it.
  *
  * On "/" only, the active highlight is also scroll-position-driven: the
  * homepage embeds the real Work gallery inline (see app/page.tsx's
@@ -458,7 +467,7 @@ export function Nav() {
               twice before the cause was clear; worth leaving it quieter
               unless he asks for more. */}
           <div
-            className={`flex items-center gap-3 rounded-full border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:gap-10 md:px-12 md:py-6 ${frostClass}`}
+            className={`flex items-center gap-3 rounded-full border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${frostClass}`}
           >
             <ul className="flex items-center gap-3 md:gap-10">
               {navLinks.map((link) => (
