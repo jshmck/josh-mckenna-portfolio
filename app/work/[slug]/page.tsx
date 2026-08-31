@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { BackToTop } from "@/components/ui/back-to-top";
 import { Plate } from "@/components/ui/plate";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { GalleryGrid } from "@/components/work/gallery-grid";
@@ -441,6 +442,13 @@ export default async function ProjectPage({
           )}
         </div>
       </nav>
+
+      {/* Same Previous/Next as the footer nav above, but reachable without
+          scrolling past the whole gallery first -- on a long one (Beefbar's
+          17 images), the footer nav could be a lot of scrolling away.
+          "Let's try it in the back to top nav bar - next and previous,"
+          per Josh. See BackToTop's own doc comment for the rest. */}
+      <BackToTop previous={previous} next={next} />
     </article>
   );
 }
