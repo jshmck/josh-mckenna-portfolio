@@ -54,7 +54,11 @@ export type ImageRatio =
   | "9/16"
   // Instagram Sticker's Sticker Set photo — true 16:9, no existing ratio
   // came within 10% without a visible side crop.
-  | "16/9";
+  | "16/9"
+  // Instagram Sticker's Vogue takeover screenshot — a two-panel Instagram
+  // Stories composite, true 1496x1334. Nearest existing ratio (5/4) cropped
+  // "SOUND ON" and other edge detail; this is a near-exact match instead.
+  | "9/8";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -80,6 +84,16 @@ export type ProjectImage = {
    * Defaults to true.
    */
   caption?: boolean;
+  /**
+   * Caps a standalone gallery image to the same max-w-lg (512px) width
+   * ImageStack already gives portrait pieces, regardless of this image's
+   * own orientation. Wired up for a low-resolution 2017 screenshot
+   * (Instagram Sticker's Vogue takeover) that read too large and betrayed
+   * its source quality at the gallery's normal full-frame width — "make
+   * it smaller on the page," per Josh, "and still retain the grid rules"
+   * (no one-off layout, just the existing small-image path).
+   */
+  small?: boolean;
 };
 
 export type Credit = {
@@ -441,7 +455,8 @@ export const projects: Project[] = [
         src: "/work/instagram-sticker/02-facebook-mural-cropped.webp",
       },
       {
-        ratio: "5/4",
+        ratio: "9/8",
+        small: true,
         alt: "Instagram takeover of British Vogue's account, where the mural at Trafalgar Square appeared behind me as I read out #kindcomments from the Pride sticker set's marketing campaign.",
         src: "/work/instagram-sticker/08-vogue-takeover.webp",
       },
