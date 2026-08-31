@@ -293,6 +293,37 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "step-journal",
+    title: "Step Journal",
+    client: "STEP Journal",
+    year: 2019,
+    yearLabel: "August/September 2019",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Cover Illustration",
+    categories: ["Editorial"],
+    summary: "One house, cut open to show every tax lurking inside.",
+    heroCaption: "The cover for STEP Journal's August/September 2019 issue, Volume 27/Issue 7.",
+    brief: [
+      "STEP Journal's cover story was about the tax complexity buried in owning property — capital gains, inheritance, income tax, all stacking up in ways most owners never see coming. The brief needed one image that read that complexity at a glance, for an audience of trust and estate professionals who already know the subject cold.",
+      "A knife cuts straight through the house, exposing it like a cross-section — each layer labelled with the tax that applies to it.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "STEP Journal" },
+    ],
+    hero: {
+      ratio: "4/5",
+      alt: "A house sliced open by a knife, its layers labelled with capital gains, inheritance and income tax.",
+      src: "/work/step-journal/01-step-journal.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "The cover on the printed issue.",
+      src: "/work/step-journal/02-step-journal-cover-mockup.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "vogue-sun-tan",
     title: "Tanning Tips",
     client: "Vogue Magazine",
