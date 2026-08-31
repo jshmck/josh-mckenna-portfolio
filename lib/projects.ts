@@ -954,8 +954,7 @@ export const projects: Project[] = [
     summary: "Same building, same car, same palm trees — just moved the sun.",
     heroCaption: "The day and night invitation designs for the same Mr Porter Miami event.",
     brief: [
-      "Mr Porter needed two invitations for the same Miami event — a day one and a night one — so the same street had to survive two completely different lighting states. The building, the car, the palms and the skyline across the water all stay fixed; only the light changes, from a bleached midday blue to a moody teal with the windows lit.",
-      "Both versions hide one small scene that isn't about the building at all — a couple framed in a lit window at night, someone dozing in the back of the car by day. Neither is the point of the piece, but they're the reason you look twice.",
+      "Mr Porter needed two invitations for the same Miami event — one for day, one for night.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
