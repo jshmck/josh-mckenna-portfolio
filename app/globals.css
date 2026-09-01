@@ -481,25 +481,6 @@
   }
 }
 
-/* The toolbar pill grows on whichever side is hosting the hovered arrow —
-   giving that button's own hover:translate room to nudge into, rather than
-   the pill leaning/squashing as a whole (tried, read as too much bounce).
-   :has() lets the parent react to which child is being hovered. A plain
-   eased transition, no keyframes, so there's no overshoot to settle from. */
-[data-lightbox-toolbar] {
-  transition:
-    padding-left 300ms var(--ease-drift),
-    padding-right 300ms var(--ease-drift);
-}
-
-[data-lightbox-toolbar]:has([data-lightbox-dir="prev"]:hover) {
-  padding-left: 0.75rem;
-}
-
-[data-lightbox-toolbar]:has([data-lightbox-dir="next"]:hover) {
-  padding-right: 0.75rem;
-}
-
 /* Nav pill/circles (components/site/nav.tsx) — a one-shot "stuck, then
    unstuck" settle for the moment they frost in on scroll. Josh's brief:
    "there's some weight to the nav bars... they got stuck as you start to

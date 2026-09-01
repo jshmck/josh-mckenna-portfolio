@@ -12,17 +12,20 @@ function ratioToNumber(ratio: string) {
 
 /** Same recipe across every lightbox on the site — kept in one place so
  *  hover/press states, spacing and the frosted pill can't drift between
- *  HeroLightbox, ImageStack, GalleryGrid and PosterGrid. Hover/tap play
- *  the header pills' own nav-pill-hover squash-and-stretch (globals.css)
- *  rather than the plain scale-110/scale-90 pop this used before — "give
- *  the same nav bubble bounce ... as the nav bars to the lightbox
- *  navigation too," per Josh. The directional translate/rotate accents on
- *  each button still ride on top: Tailwind v4's translate/rotate are
- *  independent CSS properties from the `transform` the keyframe animates,
- *  so they compose instead of fighting (same reasoning as BackToTop's
- *  transition list). */
+ *  HeroLightbox, ImageStack, GalleryGrid and PosterGrid. A byte-for-byte
+ *  clone of nav.tsx's word class — same 15/22px font-body at regular
+ *  weight ("same thickness as the text in the nav bars," per Josh), same
+ *  bold-on-hover, same nav-pill-hover squash-and-stretch, same enlarged
+ *  hit box via padding + matching negative margins — with the colours
+ *  adapted: text-canvas at rest, not text-ink-muted, since these sit on
+ *  the lightbox's dark ink/90 backdrop, and brand blue on hover/tap
+ *  ("lets have the hover colour blue," per Josh), a deliberate departure
+ *  from the nav words' accent purple. The old circle-button chrome
+ *  (h-9 w-9, hover bg wash, directional translate/rotate accents) is
+ *  gone with the rest of the bespoke styling — "make it all match," per
+ *  Josh, and the nav words have none of it. */
 const LIGHTBOX_BUTTON_CLASS =
-  "group flex h-9 w-9 items-center justify-center rounded-full text-canvas transition-all duration-300 ease-bounce hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] hover:bg-canvas/15 hover:text-brand active:text-brand";
+  "-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] text-canvas transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:font-bold hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:font-bold active:text-brand md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px]";
 
 /** Tracks the viewport size live (mount + resize) so the stage can size
  *  itself in real pixels rather than through nested CSS var()/calc()/min()
@@ -86,12 +89,22 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]", fit = "unifo
   const stageMaxRatio = Math.max(1, ...images.map((image) => ratioToNumber(image.ratio)));
 
   // Real pixel values, computed from a live-measured viewport — same
-  // 97vw/2000px width cap and 100vh-100px height cap as the stage below,
-  // just resolved in JS so every frame in the cycle is capped by the exact
+  // 97vw/2000px width cap and height reserve as the stage below, just
+  // resolved in JS so every frame in the cycle is capped by the exact
   // same numbers instead of each one re-deriving them independently.
+  // The reserve covers everything under the image: the toolbar (now the
+  // nav pill's own md:h-20 = 80px, up from the old 48px circle row —
+  // "better match the lightbox nav to the centre nav bar," per Josh),
+  // the gap-4 and the dialog's p-4, plus the same 4px slack the old
+  // 100px figure carried. Two values because the toolbar itself is two
+  // heights: ~47px below md (15px text + py-3), 80px from md up — one
+  // flat 132px would shrink every phone-sized image for a toolbar
+  // height that only exists on desktop. 768 is Tailwind's md, the same
+  // breakpoint the toolbar's own md: classes switch at.
+  const stageReserve = viewport && viewport.width >= 768 ? 132 : 100;
   const widthCapPx = viewport ? Math.min(viewport.width * 0.97, 2000) : 2000;
   const heightCapPx = viewport
-    ? Math.min(viewport.height - 100, widthCapPx / stageMaxRatio)
+    ? Math.min(viewport.height - stageReserve, widthCapPx / stageMaxRatio)
     : undefined;
 
   // "uniform" pins the rendered height outright instead of capping it.
@@ -124,7 +137,7 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]", fit = "unifo
       className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-ink/90 p-4"
       onClick={close}
     >
-      <div className="relative flex h-[calc(100vh-100px)] w-[min(97vw,2000px)] items-center justify-center">
+      <div className="relative flex h-[calc(100vh-100px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-132px)]">
         {openImage.src && (
           <div
             key={openIndex}
@@ -151,34 +164,49 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]", fit = "unifo
         )}
       </div>
 
-      {/* One grouped toolbar instead of three floating circles — the full
-          nav/BackToTop frost treatment now, not the flat white border it
-          had before: asymmetric inset highlight (bright top rim, faint
-          bottom — the glass-catching-light technique), brand-blue inset
-          wash, backdrop-blur + saturate. Kept byte-identical with nav.tsx's
-          frostClass / BackToTop's PILL_BASE shadow stack so the three never
-          drift. Bounces like the nav pills too: nav-pill-pop as its resting
-          class (plays once per lightbox open — the toolbar mounts with the
-          dialog, so mount *is* its appearing moment), nav-pill-hover-soft
-          when hovered/tapped anywhere in the pill (the main nav pill's own
-          quarter-amplitude container bounce; the buttons inside play full
-          nav-pill-hover themselves, mirroring pill vs words in nav.tsx).
-          Sits in normal flow below the image rather than overlaid on it. */}
+      {/* One grouped toolbar instead of three floating circles — a clone
+          of nav.tsx's centre pill, not just a cousin of it: same frost
+          (the asymmetric inset rim, brand-blue wash, blur + saturate —
+          kept byte-identical with frostClass / BackToTop's PILL_BASE so
+          the three never drift), same container metrics (gap-3 px-3.5
+          py-3, md:h-20 md:gap-10 md:px-12 — the literal shared height
+          nav.tsx uses so rounded-full's corner radius comes out the
+          same), and the same bounce split: nav-pill-pop as its resting
+          class (plays once per lightbox open — the toolbar mounts with
+          the dialog, so mount *is* its appearing moment),
+          nav-pill-hover-soft when hovered/tapped anywhere in the pill,
+          full nav-pill-hover on the glyphs themselves, mirroring pill vs
+          words in the nav. The md:h-20 upsizing is what the stage's
+          132px md reserve above pays for. Sits in normal flow below the
+          image rather than overlaid on it. */}
       <div
         data-lightbox-toolbar
-        className="flex flex-shrink-0 animate-[nav-pill-pop_650ms_ease-in-out] items-center gap-1 rounded-full border border-transparent bg-canvas/15 p-1.5 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out]"
+        className="flex flex-shrink-0 animate-[nav-pill-pop_650ms_ease-in-out] items-center gap-3 rounded-full border border-transparent bg-canvas/15 px-3.5 py-3 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0"
         onClick={(event) => event.stopPropagation()}
       >
+        {/* "<" / ">" glyphs, not "←"/"→" — "change the arrows from arrows
+            to < and >," per Josh — rendered exactly like a nav word:
+            regular weight at rest, bold + accent on hover/tap, colour and
+            weight inherited by the inner span so there's only one source
+            of truth for the state. The span still exists purely to carry
+            the one-shot arrow-hint nudge on its own transform, off the
+            button's, which the hover keyframe animates. The spans size up
+            past the inherited word scale (20/30px vs 15/22px) because
+            Helvetica's </> glyphs only occupy about half their em box —
+            at the word size they rendered visibly smaller than the ✕
+            ("a little too small," per Josh). Interim treatment: Josh may
+            draw custom chevrons like the cart/social icon set, which
+            would swap in via the MaskIcon pipeline (social-icons.tsx). */}
         {images.length > 1 && (
           <button
             type="button"
             data-lightbox-dir="prev"
             onClick={goPrev}
             aria-label="Previous image"
-            className={`${LIGHTBOX_BUTTON_CLASS} hover:-translate-x-1.5`}
+            className={LIGHTBOX_BUTTON_CLASS}
           >
-            <span className="inline-block animate-[arrow-hint-left_1.1s_ease-in-out_600ms] font-body text-lg font-bold leading-none text-canvas transition-colors duration-300 group-hover:text-brand group-active:text-brand">
-              ←
+            <span className="inline-block text-[20px] animate-[arrow-hint-left_1.1s_ease-in-out_600ms] md:text-[30px]">
+              {"<"}
             </span>
           </button>
         )}
@@ -186,9 +214,9 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]", fit = "unifo
           type="button"
           onClick={close}
           aria-label="Close"
-          className={`${LIGHTBOX_BUTTON_CLASS} hover:rotate-90`}
+          className={LIGHTBOX_BUTTON_CLASS}
         >
-          <span className="inline-block text-lg leading-none">✕</span>
+          ✕
         </button>
         {images.length > 1 && (
           <button
@@ -196,10 +224,10 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]", fit = "unifo
             data-lightbox-dir="next"
             onClick={goNext}
             aria-label="Next image"
-            className={`${LIGHTBOX_BUTTON_CLASS} hover:translate-x-1.5`}
+            className={LIGHTBOX_BUTTON_CLASS}
           >
-            <span className="inline-block animate-[arrow-hint-right_1.1s_ease-in-out_600ms] font-body text-lg font-bold leading-none text-canvas transition-colors duration-300 group-hover:text-brand group-active:text-brand">
-              →
+            <span className="inline-block text-[20px] animate-[arrow-hint-right_1.1s_ease-in-out_600ms] md:text-[30px]">
+              {">"}
             </span>
           </button>
         )}
