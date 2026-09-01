@@ -495,12 +495,11 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "3 Spot Illustrations",
     categories: ["Editorial"],
-    // True hero ratio — landscape (1.6), and RATIO_CYCLE never assigns
-    // anything wider than 1.25, so without this the /work card would
-    // crop it into whatever portrait-leaning box its position landed on.
-    // Also clears LANDSCAPE_SPAN_RATIO (1.3), so it spans two columns
-    // automatically — same fix as UAL Booklets and Bombay Sapphire.
-    cardRatio: "16/10",
+    // Standardized to 16/9 with the other landscape /work cards, not the
+    // hero's true 1.6 — still clears LANDSCAPE_SPAN_RATIO (1.3) either way,
+    // so it spans two columns automatically, same as UAL Booklets and
+    // Bombay Sapphire.
+    cardRatio: "16/9",
     summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
     heroCaption: "The first of a three-part series on tanning safely.",
     brief: [
@@ -1252,15 +1251,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Covers · Inside Pages · Spots · Maps",
     categories: ["Character", "Editorial"],
-    // True photo ratio — landscape (1.5, 3:2), and RATIO_CYCLE never
-    // assigns anything wider than 1.25, so without this override the
-    // /work card would crop the spread significantly no matter which
-    // cycle position it landed on. Same fix as Bombay Sapphire below.
-    // Was 16/10 (1.6) against the first photo set; the "Blue BG" reshoot
-    // that replaced every image here is natively 3:2, not 16:10 — 3/2 is
-    // an exact match (zero crop), so this moved with it rather than
-    // forcing the old 6.45%-drift snap onto different source photos.
-    cardRatio: "3/2",
+    // Standardized to 16/9 with the other landscape /work cards, not the
+    // photo's true 3/2 — checked against the actual spread, nothing
+    // essential is cropped. Same fix as Bombay Sapphire below.
+    cardRatio: "16/9",
     summary: "Six UAL colleges, six colour-ways, one shared case of first-week nerves.",
     heroCaption: "One interior spread, reused across all six 2017–2020 college editions.",
     brief: [
@@ -1717,11 +1711,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
     categories: ["Mural"],
-    // True hero ratio — landscape (1.5), and RATIO_CYCLE never assigns
-    // anything wider than 1.25, so without this override the /work card
-    // would crop the storefront significantly no matter which cycle
-    // position it landed on. Same fix as UAL Booklets above.
-    cardRatio: "3/2",
+    // Standardized to 16/9 with the other landscape /work cards, not the
+    // hero's true 1.5 — checked against the actual storefront shot,
+    // nothing essential is cropped. Same fix as UAL Booklets above.
+    cardRatio: "16/9",
     summary:
       "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
     heroCaption: "The mural, live in Bombay Sapphire's Shoreditch pop-up.",
@@ -1790,7 +1783,10 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Wagamama" },
     ],
-    cardRatio: "1063/640",
+    // Standardized to 16/9 with the other landscape /work cards, not the
+    // artwork's true 1063/640 (1.66) — only the card frame; hero below
+    // keeps the real ratio.
+    cardRatio: "16/9",
     hero: {
       ratio: "1063/640",
       alt: "The full Wagamama Brighton Pride artwork",
