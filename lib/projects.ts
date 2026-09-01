@@ -1486,7 +1486,7 @@ export const projects: Project[] = [
   },
   {
     slug: "rooted-journal-editorial",
-    title: "Living Regeneratively",
+    title: "Rooted Journal",
     client: "The Rooted Journal",
     year: 2025,
     pinnedRank: 5,
