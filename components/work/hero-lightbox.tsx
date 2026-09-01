@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import Image from "next/image";
 
 import { Plate, RATIO_CLASS } from "@/components/ui/plate";
@@ -84,9 +84,35 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
   // not just `small` ones — matching ratios already get equal heights for
   // free from the ordinary grid, so this only changes anything when it
   // needs to.
+  const allSmall = images.length > 1 && images.every((image) => image.small);
   const ratiosMismatched = images.length > 1 && images[0].ratio !== images[1].ratio;
-  const heightMatchedPair = images.length > 1 && (images.every((image) => image.small) || ratiosMismatched);
-  const pairHeight = images.every((image) => image.small) ? "h-64 sm:h-96" : "h-96 sm:h-[42rem]";
+  const heightMatchedPair = images.length > 1 && (allSmall || ratiosMismatched);
+
+  // A fixed height (the original approach) only works across a narrow band
+  // of ratio combinations — Away's 4/5-beside-250/291 pair fit fine at a
+  // tall fixed height, but a landscape 3/2 hero beside a portrait 172/273
+  // article screenshot (WSJ) wanted so much combined width at that same
+  // height that the second image wrapped onto its own line, defeating the
+  // "side by side" point entirely. Deriving height from the pair's combined
+  // width instead — GAP_PX + h*ratio0 + h*ratio1 = TARGET_WIDTH, solved for
+  // h — keeps any two-ratio combination fitting one row at a consistent
+  // total width, rather than a consistent height that only sometimes fits.
+  const GAP_PX = 16;
+  const parseRatio = (ratio: string) => {
+    const [w, h] = ratio.split("/").map(Number);
+    return w / h;
+  };
+  const pairRatioSum =
+    images.length > 1 ? parseRatio(images[0].ratio) + parseRatio(images[1].ratio) : 0;
+  const pairStyle: CSSProperties | undefined =
+    heightMatchedPair && !allSmall && pairRatioSum > 0
+      ? {
+          height: `clamp(${Math.round((320 - GAP_PX) / pairRatioSum)}px, 50vw, ${Math.round(
+            (1200 - GAP_PX) / pairRatioSum,
+          )}px)`,
+        }
+      : undefined;
+  const pairHeight = allSmall ? "h-64 sm:h-96" : undefined;
 
   return (
     <>
@@ -109,11 +135,12 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
             // than the image itself.
             className={
               heightMatchedPair
-                ? `${pairHeight} ${RATIO_CLASS[image.ratio]}`
+                ? `${pairHeight ?? ""} ${RATIO_CLASS[image.ratio]}`
                 : image.small
                   ? "mx-auto w-full max-w-lg"
                   : undefined
             }
+            style={heightMatchedPair ? pairStyle : undefined}
           >
             <button
               type="button"
