@@ -323,7 +323,7 @@ export const projects: Project[] = [
     summary: "A rainbow ribbon, cut to fit every Wagamama window in the UK.",
     heroCaption: "\"Proud Beyond Pride\" — Wagamama's UK-wide Pride window vinyl, 2022.",
     brief: [
-      "For Pride month 2022, Wagamama wanted one Pride window design that could run across every UK restaurant at once — the same artwork, resized and cropped differently at each site's own glass, from a full corner window at Marble Arch to a narrower run at Old Street.",
+      "For Pride month 2022, Wagamama wanted one Pride window design that could run across every UK restaurant at once — the same artwork, resized and cropped differently at each site's own glass, from a full corner window at Marble Arch to an equally huge run at Old Street.",
       "A lineup of characters waves across the glass on a rainbow ribbon, with \"PROUD beyond PRIDE\" cut through the middle in bold script — built to hold up whether it's stretched across three panes or cropped down to a sandwich board on the pavement outside.",
     ],
     credits: [
@@ -342,23 +342,24 @@ export const projects: Project[] = [
       alt: "The full \"Proud Beyond Pride\" artwork",
       src: "/work/wagamama-proud-beyond-pride/01-full.webp",
     },
+    // Opts out of the default two-up pairing — Josh wants these one after
+    // another, full width, in this order, not the first two side by side.
+    gallerySpans: [{ startIndex: 0, count: 1 }],
     gallery: [
       {
         ratio: "3/2",
         alt: "The window at Wagamama's Old Street",
         src: "/work/wagamama-proud-beyond-pride/04-old-street.webp",
       },
-      // Portrait stays in the paired first two, not the trailing full-width
-      // single — object-cover would crop it to a letterbox strip there.
-      {
-        ratio: "2/3",
-        alt: "The sandwich board outside Wagamama's Old Street",
-        src: "/work/wagamama-proud-beyond-pride/02-sandwich-board.webp",
-      },
       {
         ratio: "3/2",
         alt: "The window at Wagamama's Marble Arch",
         src: "/work/wagamama-proud-beyond-pride/03-marble-arch.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "The sandwich board outside Wagamama's Old Street",
+        src: "/work/wagamama-proud-beyond-pride/02-sandwich-board.webp",
       },
     ],
   },
