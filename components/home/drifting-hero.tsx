@@ -112,11 +112,11 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "work",
-    src: "/illustrations/objects/car.png",
+    src: "/illustrations/objects/car-super-n.png",
     alt: "",
-    /* 0.3 -> 0.24 per Josh -- the blue Honda, smaller. */
+    /* 0.3 -> 0.24 per Josh -- swapped from the blue Honda to the purple Super N. */
     width: 0.24,
-    aspect: 1.991,
+    aspect: 1.936,
     angle: rad(320),
     rx: 0.3,
     ry: 0.31,
