@@ -349,6 +349,7 @@ export const projects: Project[] = [
     categories: ["Hospitality", "Automotive"],
     summary: "Three hotels, three vintage travel posters, one coastline.",
     heroCaption: "A set of travel posters for three Costa Smeralda hotels — Cala di Volpe, Romazzino and Cervo — 2022.",
+    hideHeroCaptions: true,
     brief: [
       "Costa Smeralda commissioned a set of vintage-style travel posters, one per hotel — Hotel Cala di Volpe, Hotel Romazzino and Hotel Cervo.",
     ],
@@ -356,18 +357,18 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Costa Smeralda" },
     ],
-    // No-border crops, specifically for the /work card — Cala di Volpe
-    // leads, Romazzino swaps in on hover.
+    // No-border crops, specifically for the /work card — Romazzino leads,
+    // Cala di Volpe swaps in on hover.
     cardRatio: "4/5",
     cardImage: {
       ratio: "4/5",
-      alt: "Hotel Cala di Volpe",
-      src: "/work/costa-smeralda/01-cala-di-volpe-no-border.webp",
+      alt: "Hotel Romazzino",
+      src: "/work/costa-smeralda/02-romazzino-no-border.webp",
     },
     cardHoverImage: {
       ratio: "4/5",
-      alt: "Hotel Romazzino",
-      src: "/work/costa-smeralda/02-romazzino-no-border.webp",
+      alt: "Hotel Cala di Volpe",
+      src: "/work/costa-smeralda/01-cala-di-volpe-no-border.webp",
     },
     // All three side by side, each keeping its own printed border — square
     // corners rather than the sitewide rounded frame, same reasoning as
@@ -380,7 +381,10 @@ export const projects: Project[] = [
       square: true,
     },
     heroPair: {
-      ratio: "4/5",
+      // True ratio updated to match Cala di Volpe's — Josh re-exported
+      // Romazzino specifically so all three posters would match height on
+      // the project page.
+      ratio: "3/4",
       alt: "Hotel Romazzino",
       src: "/work/costa-smeralda/02-romazzino.webp",
       square: true,
