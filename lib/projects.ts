@@ -306,6 +306,18 @@ export type Project = {
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
   /**
+   * The card's own artwork is close enough to `--color-accent` (the nav's
+   * active-link colour) that the purple "Work" text nearly disappears when
+   * the fixed nav scrolls directly over this card on /work — Atlanta
+   * Magazine's card background is the first real case. Flags the card in
+   * work-gallery.tsx with a `data-nav-contrast="light"` attribute; nav.tsx
+   * watches for that attribute intersecting its own fixed position and
+   * swaps the active link to white only while it's in view, everywhere
+   * else on the site keeps the normal purple (which reads fine against
+   * cream, blue, pink — every other case checked so far).
+   */
+  navContrastLight?: boolean;
+  /**
    * Sorts before every non-pinned project, lowest rank first —
    * Josh's own curated lead-in to /work, independent of year.
    * getAllProjects() otherwise sorts strictly by year descending, which
@@ -511,6 +523,10 @@ export const projects: Project[] = [
     client: "Atlanta Magazine",
     year: 2022,
     pinnedRank: 3,
+    // The purple gradient background is close enough to the nav's own
+    // accent purple that "Work" nearly disappears when the fixed nav
+    // scrolls over this card — see the field's own doc comment.
+    navContrastLight: true,
     yearLabel: "October 2022",
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",

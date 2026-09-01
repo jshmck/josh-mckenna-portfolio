@@ -145,6 +145,12 @@ export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
+  // True while a `[data-nav-contrast="light"]` card (Atlanta Magazine's
+  // purple /work card, see Project.navContrastLight) sits under the fixed
+  // pill — swaps the active link from accent-purple to white only for that
+  // window, since purple reads fine against everything else on the site
+  // and only fails against its own colour specifically.
+  const [overLightBg, setOverLightBg] = useState(false);
   // Latches true the first time `scrolled` goes true, so the landing bounce
   // below (nav-pill-landing) never fires on initial page load -- only once
   // there's been a real frost-in to "land" back down from. State, not a
@@ -233,6 +239,17 @@ export function Nav() {
       } else {
         setHomeWorkActive(false);
       }
+
+      // Header's own resting height — same band the frost/merge thresholds
+      // above are tuned against ("just past the 88px header").
+      const NAV_HEIGHT = 88;
+      const contrastCards = document.querySelectorAll('[data-nav-contrast="light"]');
+      let overLight = false;
+      contrastCards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        if (rect.top < NAV_HEIGHT && rect.bottom > 0) overLight = true;
+      });
+      setOverLightBg(overLight);
     };
 
     const onScroll = () => {
@@ -542,8 +559,12 @@ export function Nav() {
                     onClick={() => scrollToTopIfCurrent(link.href)}
                     className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
-                        ? "font-bold text-accent"
-                        : "text-ink-muted hover:font-bold hover:text-accent"
+                        ? overLightBg
+                          ? "font-bold text-canvas"
+                          : "font-bold text-accent"
+                        : overLightBg
+                          ? "text-ink-muted hover:font-bold hover:text-canvas"
+                          : "text-ink-muted hover:font-bold hover:text-accent"
                     }`}
                   >
                     {link.label}

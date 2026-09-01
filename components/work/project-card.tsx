@@ -132,6 +132,10 @@ export function ProjectCard({
     <Link
       href={`/work/${project.slug}`}
       aria-label={hoverCaption ? project.title : undefined}
+      // Read by nav.tsx's scroll listener — swaps the active "Work" link to
+      // white while this card sits under the fixed nav. See
+      // Project.navContrastLight's doc comment.
+      data-nav-contrast={project.navContrastLight ? "light" : undefined}
       className={`group block transition-transform duration-300 ease-drift ${
         motion === "lift" ? "hover:-translate-y-1.5 focus-visible:-translate-y-1.5" : ""
       }`}
