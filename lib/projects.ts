@@ -1717,7 +1717,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Vitra × Virgil Abloh",
-      src: "/work/figma-vitra-virgil/01-vitgr-hr.webp",
+      src: "/work/figma-vitra-virgil/01-vitgr-hr2.webp",
     },
     gallery: [],
   },
