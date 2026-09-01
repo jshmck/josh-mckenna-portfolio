@@ -1532,7 +1532,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Underground roundel",
-      src: "/work/figma-underground/01-underground.webp",
+      src: "/work/figma-underground/01-underground-final.webp",
     },
     gallery: [],
   },
