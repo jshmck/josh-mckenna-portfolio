@@ -307,6 +307,48 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "atlanta-magazine",
+    title: "Alphabet Soup",
+    client: "Atlanta Magazine",
+    year: 2022,
+    yearLabel: "October 2022",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Pride", "Editorial"],
+    summary: "Every letter of the acronym, spelled out so nobody has to ask twice.",
+    heroCaption: "For Atlanta Magazine's October 2022 feature \"Alphabet Soup,\" written by Taylor Alxndr.",
+    brief: [
+      "Atlanta Magazine's October 2022 issue ran a piece by Taylor Alxndr explaining the growing LGBTQIA2+ acronym letter by letter, for readers who wanted to keep up but didn't know where to start. The illustration needed to hold the whole term at once, legibly, rather than breaking it into ten separate icons.",
+      "The acronym itself became the artwork — each letter built as its own piece of type, with figures posed in and around the lettering rather than illustrated separately underneath it.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Writer", name: "Taylor Alxndr" },
+      { role: "Client", name: "Atlanta Magazine" },
+    ],
+    // The artwork itself is a wide 16/9 wordmark banner — force the /work
+    // grid card to the same landscape shape instead of RATIO_CYCLE's default
+    // portrait, so the card isn't cropping down a wide piece.
+    cardRatio: "16/9",
+    cardImage: {
+      ratio: "16/9",
+      alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
+      src: "/work/atlanta-magazine/01-lgbtqiqa.webp",
+    },
+    hero: {
+      ratio: "16/9",
+      alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
+      src: "/work/atlanta-magazine/01-lgbtqiqa.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "The spread on the printed page.",
+        src: "/work/atlanta-magazine/02-magazine.webp",
+      },
+    ],
+  },
+  {
     slug: "coca-cola-moments",
     title: "Coca-Cola Moments",
     client: "Coca-Cola",
