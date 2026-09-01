@@ -342,9 +342,9 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        ratio: "4/5",
+        ratio: "4/3",
         alt: "The spread on the printed page.",
-        src: "/work/atlanta-magazine/02-magazine.webp",
+        src: "/work/atlanta-magazine/02-magazine-landscape.webp",
       },
     ],
   },
