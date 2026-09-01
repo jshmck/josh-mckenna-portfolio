@@ -339,6 +339,13 @@ export const projects: Project[] = [
     },
     gallery: [
       {
+        ratio: "3/2",
+        alt: "The window at Wagamama's Old Street",
+        src: "/work/wagamama-proud-beyond-pride/04-old-street.webp",
+      },
+      // Portrait stays in the paired first two, not the trailing full-width
+      // single — object-cover would crop it to a letterbox strip there.
+      {
         ratio: "2/3",
         alt: "The sandwich board outside Wagamama's Old Street",
         src: "/work/wagamama-proud-beyond-pride/02-sandwich-board.webp",
@@ -347,11 +354,6 @@ export const projects: Project[] = [
         ratio: "3/2",
         alt: "The window at Wagamama's Marble Arch",
         src: "/work/wagamama-proud-beyond-pride/03-marble-arch.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "The window at Wagamama's Old Street",
-        src: "/work/wagamama-proud-beyond-pride/04-old-street.webp",
       },
     ],
   },
