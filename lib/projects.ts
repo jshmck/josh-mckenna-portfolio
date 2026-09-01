@@ -347,10 +347,13 @@ export const projects: Project[] = [
       alt: "The full sticker set",
       src: "/work/away-pride-stickers/02-sticker-set.webp",
     },
+    // True ratio (2000x2328, reduced 250/291) — the reshoot's crop is no
+    // longer an exact 4/5.
     heroPair: {
-      ratio: "4/5",
+      ratio: "250/291",
       alt: "The sticker set, applied to Away luggage",
       src: "/work/away-pride-stickers/01-sticker-luggage.webp",
+      caption: false,
     },
     gallery: [],
   },
