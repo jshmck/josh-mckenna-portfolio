@@ -1570,7 +1570,8 @@ export const projects: Project[] = [
     deliverables: "1 Illustration",
     categories: ["Editorial"],
     summary: "A chair, repeated as wallpaper, in case the first one wasn't clear enough.",
-    heroCaption: "A tribute to a great design collaboration — Vitra × Virgil Abloh, 2025.",
+    heroCaption:
+      "A tribute to a great design collaboration — Vitra × Virgil Abloh, 2025. The perspex shell got a liquid-glass treatment, done the week Apple's own take on it landed.",
     brief: [
       "Made in Figma Draw — the Vitra × Virgil Abloh chair, repeated as a wordmark pattern behind it.",
     ],
@@ -1582,7 +1583,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Vitra × Virgil Abloh",
-      src: "/work/figma-vitra-virgil/01-vitra-virgil-green.webp",
+      src: "/work/figma-vitra-virgil/01-vitra-virgil-liquid-glass.webp",
     },
     gallery: [],
   },
