@@ -320,7 +320,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "wsj-airpods-rich",
-    title: "WSJ - Airpods",
+    title: "WSJ",
     client: "The Wall Street Journal",
     year: 2019,
     yearLabel: "February 2019",
@@ -329,8 +329,9 @@ export const projects: Project[] = [
     categories: ["Editorial"],
     summary: "Three ears, three AirPods, one dollar coin doing the talking.",
     heroCaption: "For \"Do AirPods Make You Look Rich? These Millennials Think So,\" by Jacob Gallagher, WSJ, February 2019.",
+    hideHeroCaptions: true,
     brief: [
-      "Jacob Gallagher's piece was about AirPods becoming a status symbol on sight — a $159 pair of headphones read as wealth from across a subway platform, whether or not that was true. The brief needed that legibility-at-a-glance built into the image itself: three ears in a row, a dollar coin the only other prop in frame.",
+      "Jacob Gallagher's piece was about AirPods becoming a status symbol on sight — a $159 pair of headphones read as wealth from across a subway platform, whether or not that was true.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
