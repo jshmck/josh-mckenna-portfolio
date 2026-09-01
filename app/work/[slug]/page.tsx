@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BackToTop } from "@/components/ui/back-to-top";
-import { Plate } from "@/components/ui/plate";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { GalleryGrid } from "@/components/work/gallery-grid";
 import { HeroLightbox } from "@/components/work/hero-lightbox";
@@ -338,16 +337,19 @@ export default async function ProjectPage({
             // projects read the same order as LA Pride etc. Still capped
             // to a modest width and uncaptioned: a piece drawn to run at
             // a few centimetres next to magazine text looks wrong blown
-            // up to full frame width with a label under it.
+            // up to full frame width with a label under it. Click-to-
+            // enlarge via HeroLightbox, same as every other hero image on
+            // the site — captions stay off (captions=[""]) since this slot
+            // was always meant to read uncaptioned.
             <div
               className="mx-auto max-w-frame px-6 pt-12 md:px-gutter"
               data-nav-contrast={project.navContrastLight ? "light" : undefined}
             >
               <div className="mx-auto max-w-lg">
-                <Plate
-                  image={project.hero}
+                <HeroLightbox
+                  images={[project.hero]}
+                  captions={[""]}
                   sizes="(max-width: 768px) 100vw, 512px"
-                  priority
                 />
               </div>
             </div>
