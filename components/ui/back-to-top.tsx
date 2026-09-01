@@ -60,11 +60,18 @@ type BackToTopProps = {
  * proceed or go back between projects - the longer ones already have but
  * i want them on each project," per Josh. They still play the pill bounce
  * on their own appearing moment (mount, since load *is* their appearance
- * now) and share the docking landing with the centre pill. Both carry one
- * fixed width (w-32, centred text) instead of sizing to their own word —
- * "make the 'previous' and 'next' bubbles the same size (not just the
- * size of the word)," per Josh; "Previous" vs "Next" otherwise renders
- * two visibly different pills.
+ * now) and share the docking landing with the centre pill. Both are
+ * identical fixed-size circles (h-14 w-14) holding a "<"/">" chevron at
+ * the lightbox toolbar's own 30px glyph scale — "replace the previous
+ * and next project buttons with chevrons too," per Josh, with his own
+ * illustrated icons to swap in for every chevron on the site later
+ * ("i can replace them all tomorrow"). They launched as worded pills
+ * ("Previous"/"Next"), which went through an equal-width w-32 pass first
+ * ("make the 'previous' and 'next' bubbles the same size (not just the
+ * size of the word)," per Josh) — a constraint the identical circles now
+ * satisfy by construction. Chevrons hover bold + brand blue, matching
+ * the lightbox toolbar's chevrons rather than the worded pills' plain
+ * colour swap.
  *
  * Carries the same nav-pill treatment as the header rather than the filter
  * chips' Waldeck styling it used before: centred in the viewport instead
@@ -237,9 +244,9 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
           ref={previousRef}
           href={`/work/${previous.slug}`}
           aria-label="Previous project"
-          className={`${SIDE_PILL} left-6 hidden w-32 py-4 text-center text-[16px] md:left-gutter md:block`}
+          className={`${SIDE_PILL} left-6 hidden h-14 w-14 items-center justify-center text-[30px] hover:font-bold md:left-gutter md:flex`}
         >
-          Previous
+          {"<"}
         </Link>
       )}
 
@@ -259,9 +266,9 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
           ref={nextRef}
           href={`/work/${next.slug}`}
           aria-label="Next project"
-          className={`${SIDE_PILL} right-6 hidden w-32 py-4 text-center text-[16px] md:right-gutter md:block`}
+          className={`${SIDE_PILL} right-6 hidden h-14 w-14 items-center justify-center text-[30px] hover:font-bold md:right-gutter md:flex`}
         >
-          Next
+          {">"}
         </Link>
       )}
     </>
