@@ -262,13 +262,18 @@ export type Project = {
     afterIndex: number;
   };
   /**
-   * Trial: groups `count` consecutive `gallery` images (starting at
-   * `startIndex`, a plain index into `gallery` — not the "after N shown"
-   * counting `galleryVideo`/`galleryGif` use) into one CSS grid row
-   * instead of stacking them as full-width singles — Instagram Sticker
-   * only for now (three LA composites sharing one row; the book feature
-   * and the Meta mural, otherwise stranded as "lonely" single images,
-   * paired together).
+   * Groups `count` consecutive `gallery` images (starting at `startIndex`,
+   * a plain index into `gallery` — not the "after N shown" counting
+   * `galleryVideo`/`galleryGif` use) into one CSS grid row instead of
+   * stacking them as full-width singles.
+   *
+   * Any entry at all — even one — also opts the whole gallery out of the
+   * default "first two images pair into a two-up row" behaviour, since
+   * that default only applies when `gallerySpans` is empty. `count: 1`
+   * uses exactly that: it doesn't group anything (falls through to a
+   * plain full-width single, not a half-empty grid), it just exists to
+   * flip that switch — for a gallery that should run one image after
+   * another, full width, in the order given.
    */
   gallerySpans?: { startIndex: number; count: number }[];
   /** Gallery below the write-up. First two render as a two-up row, unless

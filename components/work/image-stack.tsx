@@ -208,7 +208,10 @@ export function ImageStack({
           );
           if (inLaterSpan) return null;
 
-          const span = gallerySpans.find((s) => s.startIndex === fullIndex);
+          // count: 1 opts an image out of the default two-up pairing
+          // without actually grouping it with anything — falls through to
+          // the plain full-width single below instead of a half-empty grid.
+          const span = gallerySpans.find((s) => s.startIndex === fullIndex && s.count > 1);
           if (span) {
             const spanImages = loopImages.slice(index, index + span.count);
             return (
