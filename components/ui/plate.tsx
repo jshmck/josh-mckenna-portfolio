@@ -51,16 +51,18 @@ type PlateProps = {
 export function Plate({
   image,
   tone = "ambient",
-  // rounded-3xl (24px) -> a custom 40px -- "the radius of the frames on
-  // the site to match the circles," per Josh. Not a literal rounded-full
-  // match: on a small square (the nav circles) rounded-full's radius caps
-  // at exactly half the box's height either way, but on a wide
-  // rectangular frame it caps at half the *shorter* side, turning the
-  // frame into a stadium/pill shape rather than a rounded rectangle. 40px
-  // is instead the circles' own real radius at rest -- h-20 (80px) under
-  // rounded-full is exactly 40px -- so frames share the literal corner
-  // curvature without going fully circular themselves.
-  radius = "rounded-[40px]",
+  // rounded-3xl (24px) -> the sitewide frame radius token -- "the radius
+  // of the frames on the site to match the circles," per Josh. Not a
+  // literal rounded-full match: on a small square (the nav circles)
+  // rounded-full's radius caps at exactly half the box's height either
+  // way, but on a wide rectangular frame it caps at half the *shorter*
+  // side, turning the frame into a stadium/pill shape rather than a
+  // rounded rectangle. rounded-frame is instead the circles' own real
+  // radius at rest -- half their diameter at each breakpoint (26.5px
+  // below md, 40px from md up; see --radius-frame in globals.css) -- so
+  // frames share the literal corner curvature without going fully
+  // circular themselves.
+  radius = "rounded-frame",
   showPlaceholderCaption = true,
   className = "",
   sizes = "(max-width: 768px) 100vw, 50vw",

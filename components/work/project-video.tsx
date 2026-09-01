@@ -61,7 +61,7 @@ export function ProjectVideo({
       src={video.src}
       poster={video.poster}
       aria-label={video.alt}
-      className={`${ratio ? RATIO_CLASS[ratio] : "aspect-video"} w-full rounded-[40px] object-cover ${className ?? ""}`}
+      className={`${ratio ? RATIO_CLASS[ratio] : "aspect-video"} w-full rounded-frame object-cover ${className ?? ""}`}
       muted={!sound}
       loop={!sound}
       controls={sound}

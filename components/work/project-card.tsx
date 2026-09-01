@@ -11,7 +11,7 @@ import type { Project, ProjectImage } from "@/lib/projects";
  *  fighting Plate's own radius+overflow-hidden for the same element, so
  *  the two have to be kept in sync by hand rather than sharing one value
  *  automatically. */
-const GALLERY_RADIUS = "rounded-[40px]";
+const GALLERY_RADIUS = "rounded-frame";
 
 type ProjectCardProps = {
   project: Project;

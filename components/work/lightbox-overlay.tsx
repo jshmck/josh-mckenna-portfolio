@@ -49,7 +49,7 @@ function useViewportSize() {
 
 type LightboxOverlayProps = {
   state: LightboxState;
-  /** rounded-[40px] everywhere on the site, matching every other frame —
+  /** rounded-frame everywhere on the site, matching every other frame —
    *  PosterGrid passes "" instead: its posters carry their own printed
    *  border baked into the artwork, and rounding would clip across that
    *  border's hard corners at an angle. */
@@ -70,7 +70,7 @@ type LightboxOverlayProps = {
  *  `stageMaxRatio` below), so a landscape frame doesn't look shrunken next
  *  to a square or portrait one. Only the inner wrapper remounts per
  *  navigation (key={openIndex}); the stage itself never does. */
-export function LightboxOverlay({ state, radius = "rounded-[40px]", fit = "uniform" }: LightboxOverlayProps) {
+export function LightboxOverlay({ state, radius = "rounded-frame", fit = "uniform" }: LightboxOverlayProps) {
   const { openImage, openIndex, direction, images, close, goPrev, goNext } = state;
   const viewport = useViewportSize();
 

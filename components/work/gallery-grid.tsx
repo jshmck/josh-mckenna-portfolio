@@ -50,7 +50,7 @@ export function GalleryGrid({ leadImages = [], images, indexOffset = 0 }: Galler
                 aria-label={`Open larger view of ${image.alt}`}
                 className="group block w-full cursor-zoom-in text-left"
               >
-                <div className="overflow-hidden rounded-[40px]">
+                <div className="overflow-hidden rounded-frame">
                   <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.03]">
                     <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
                   </div>
@@ -75,7 +75,7 @@ export function GalleryGrid({ leadImages = [], images, indexOffset = 0 }: Galler
                 aria-label={`Open larger view of ${image.alt}`}
                 className="group block w-full cursor-zoom-in text-left"
               >
-                <div className="overflow-hidden rounded-[40px]">
+                <div className="overflow-hidden rounded-frame">
                   <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.03]">
                     <Plate image={image} sizes={wide ? "100vw" : "(max-width: 768px) 100vw, 50vw"} />
                   </div>

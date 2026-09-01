@@ -19,7 +19,7 @@ type PosterGridProps = {
  * hero — for a series where every piece shares a similar (usually portrait)
  * ratio, so a single full-width hero would run far taller than the
  * viewport. Four columns, square corners rather than the sitewide
- * rounded-[40px] — every poster in this series has its own printed border
+ * rounded-frame — every poster in this series has its own printed border
  * baked into the artwork, and rounding would clip across that border's
  * hard corners at an angle. Every tile opens the same shared lightbox
  * chrome as the rest of the site (LightboxOverlay), just square-cornered;

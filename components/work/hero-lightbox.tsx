@@ -104,7 +104,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
             className={`group block cursor-zoom-in text-left ${heightMatchedRow ? "h-full" : "w-full"}`}
           >
             <div
-              className={`overflow-hidden ${heightMatchedRow ? "h-full" : ""} ${image.square ? "" : "rounded-[40px]"}`}
+              className={`overflow-hidden ${heightMatchedRow ? "h-full" : ""} ${image.square ? "" : "rounded-frame"}`}
             >
               <div
                 className={`transition-transform duration-300 ease-drift group-hover:scale-[1.02] ${heightMatchedRow ? "h-full" : ""}`}

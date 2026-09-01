@@ -79,7 +79,7 @@ export function EnquiryForm() {
 
   if (sent) {
     return (
-      <div className="rounded-[40px] border border-ink p-8">
+      <div className="rounded-frame border border-ink p-8">
         <h2 className="type-title text-accent">gOt It</h2>
         <p className="type-lede mt-4 text-ink-muted">
           Thanks for getting in touch.
@@ -92,7 +92,7 @@ export function EnquiryForm() {
     <form
       onSubmit={submit}
       noValidate
-      className="relative rounded-[40px] border border-ink p-6 md:p-8"
+      className="relative rounded-frame border border-ink p-6 md:p-8"
     >
       <h2 className="type-title text-accent">SAy HeLLO</h2>
 
