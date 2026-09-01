@@ -123,7 +123,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
                 </div>
               </div>
             </button>
-            {!hideCaptions && (
+            {!hideCaptions && captions[index] && (
               <p className="type-label mt-3 text-ink-muted">{captions[index]}</p>
             )}
           </div>

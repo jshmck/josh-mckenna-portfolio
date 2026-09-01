@@ -62,7 +62,10 @@ export type ImageRatio =
   // Mr Porter Invites' new day/night artwork — true 1414x2000 (a near-exact
   // 1/√2, ISO-paper proportions). Nearest existing ratio (3/4) cropped
   // noticeably.
-  | "707/1000";
+  | "707/1000"
+  // Away's suitcase mockup reshoot — true 2000x2328 (reduced 250/291).
+  // Nearest existing ratio (4/5) would have cropped 7%.
+  | "250/291";
 
 export type ProjectImage = {
   ratio: ImageRatio;
