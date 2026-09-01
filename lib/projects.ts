@@ -847,7 +847,6 @@ export const projects: Project[] = [
     heroCaption: "For Atlanta Magazine's October 2022 feature \"Alphabet Soup,\" written by Taylor Alxndr.",
     brief: [
       "Atlanta Magazine's October 2022 issue ran a piece by Taylor Alxndr explaining the growing LGBTQIA2+ acronym letter by letter, for readers who wanted to keep up but didn't know where to start. The illustration needed to hold the whole term at once, legibly, rather than breaking it into ten separate icons.",
-      "The acronym itself became the artwork — each letter built as its own piece of type, with figures posed in and around the lettering rather than illustrated separately underneath it.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
