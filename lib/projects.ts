@@ -342,7 +342,7 @@ export const projects: Project[] = [
     summary: "Four couples in a wreath, holding the wordmark together.",
     heroCaption: "A brand mark for the London LGBTQ+ Community Centre, 2019.",
     brief: [
-      "The London LGBTQ+ Community Centre needed a mark that put people, not just a symbol, at the centre of the identity — four couples drawn in a loose wreath around the wordmark, on the brand's own purple.",
+      "The London LGBTQ+ Community Centre needed a mark that put people, not just a symbol, at the centre of the identity — four couples drawn in a loose wreath around the wordmark.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
