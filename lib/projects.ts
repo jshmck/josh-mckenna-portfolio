@@ -566,21 +566,23 @@ export const projects: Project[] = [
       "I created a three-part editorial illustration series for Vogue Magazine, focusing on how to tan safely. The artwork visually guides readers through essential sun protection tips, including applying SPF, seeking shade during peak hours, and incorporating protective clothing and accessories.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // True ratio (1.5), not the old 16/10 — Josh's refreshed exports are
+    // natively 3:2, same fix as UAL Booklets' reshoot.
     hero: {
-      ratio: "16/10",
+      ratio: "3/2",
       alt: "Applying sunscreen, hat pulled low against the sun.",
-      src: "/work/vogue-sun-tan/01-vogue-sun-1-print.webp",
+      src: "/work/vogue-sun-tan/01-vogue-sun-1.webp",
     },
     gallery: [
       {
-        ratio: "16/10",
+        ratio: "3/2",
         alt: "A fine mist of tanning oil in the afternoon light.",
-        src: "/work/vogue-sun-tan/02-vogue-sun-2-print.webp",
+        src: "/work/vogue-sun-tan/02-vogue-sun-2.webp",
       },
       {
-        ratio: "16/10",
+        ratio: "3/2",
         alt: "Face down on the sand, out of the midday sun.",
-        src: "/work/vogue-sun-tan/03-vogue-sun-3-print.webp",
+        src: "/work/vogue-sun-tan/03-vogue-sun-3.webp",
       },
     ],
   },
