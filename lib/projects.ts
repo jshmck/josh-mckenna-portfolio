@@ -373,6 +373,11 @@ export const projects: Project[] = [
       { role: "Agency", name: "Momentum" },
       { role: "Client", name: "Coca-Cola" },
     ],
+    // Every source image here is a true 1/1 square — pin the /work card to
+    // match instead of leaving it to RATIO_CYCLE's alternation, which can
+    // land it on 4/5 depending on array position (see the same fix on
+    // monocle-spot-illo).
+    cardRatio: "1/1",
     // Source files were only recovered at web resolution (1276x1276) --
     // capped to the same max-w-lg small path Instagram Sticker's Vogue
     // takeover uses, sitewide, rather than let them run full-frame and
@@ -432,6 +437,9 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Boat International" },
     ],
+    // The artwork is a true 4/5, not RATIO_CYCLE's default alternation —
+    // same fix as monocle-spot-illo and coca-cola-moments.
+    cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "A dayboat at anchor, tethered to a sun-shaped solar balloon.",
