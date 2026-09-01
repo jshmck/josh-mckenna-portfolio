@@ -76,12 +76,17 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
   const imgWidth = openRatio >= 1 ? STAGE_LONG_EDGE : Math.round(STAGE_LONG_EDGE * openRatio);
   const imgHeight = openRatio >= 1 ? Math.round(STAGE_LONG_EDGE / openRatio) : STAGE_LONG_EDGE;
 
-  // Two small images of different ratios (e.g. a 1/1 mockup beside a 4/5
-  // flat set) can't both hit the same height through a shared max-width —
-  // width-capping only matches height when the ratios already do. This
-  // sizes the pair by a shared height instead, letting each Plate's own
-  // aspect-ratio derive its width.
-  const heightMatchedPair = images.length > 1 && images.every((image) => image.small);
+  // Two images of different ratios (e.g. a 4/5 flat set beside a 250/291
+  // mockup) can't both hit the same height through a shared max-width or
+  // column width — those only match height when the ratios already do.
+  // This sizes the pair by a shared height instead, letting each Plate's
+  // own aspect-ratio derive its width. Runs for any mismatched-ratio pair,
+  // not just `small` ones — matching ratios already get equal heights for
+  // free from the ordinary grid, so this only changes anything when it
+  // needs to.
+  const ratiosMismatched = images.length > 1 && images[0].ratio !== images[1].ratio;
+  const heightMatchedPair = images.length > 1 && (images.every((image) => image.small) || ratiosMismatched);
+  const pairHeight = images.every((image) => image.small) ? "h-64 sm:h-96" : "h-80 sm:h-[34rem]";
 
   return (
     <>
@@ -97,9 +102,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
         {images.map((image, index) => (
           <div
             key={image.alt}
-            className={
-              heightMatchedPair ? "h-64 sm:h-96" : image.small ? "mx-auto w-full max-w-lg" : undefined
-            }
+            className={heightMatchedPair ? pairHeight : image.small ? "mx-auto w-full max-w-lg" : undefined}
           >
             <button
               type="button"
