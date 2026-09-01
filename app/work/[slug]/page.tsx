@@ -336,6 +336,21 @@ export default async function ProjectPage({
             </div>
           )}
 
+          {project.videoRow && (
+            // Small side by side, not full-width — a real deliverable
+            // (Tilda Rice's three packaging animations) that still needs
+            // showing without the usual single-heroVideo prominence.
+            <div className="mx-auto max-w-frame px-6 pb-12 md:px-gutter">
+              <div className="flex flex-wrap justify-center gap-4">
+                {project.videoRow.map((video) => (
+                  <div key={video.src} className="w-full max-w-[220px]">
+                    <ProjectVideo video={video} sound={video.sound} ratio="1/1" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <WriteUp project={project} />
 
           {/* Trial (la-pride only for now, `galleryLayout: "grid"`): the

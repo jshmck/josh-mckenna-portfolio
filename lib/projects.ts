@@ -189,6 +189,16 @@ export type Project = {
    */
   heroThird?: ProjectImage;
   /**
+   * Multiple video clips shown small, side by side — Tilda Rice's three
+   * packaging animations, which Josh wanted included (a real deliverable)
+   * but not blown up full-width the way a single heroVideo runs. Distinct
+   * from `heroVideo` (one clip, full-size) and `galleryVideo` (one clip
+   * inserted mid-gallery) — neither supports more than one clip. Renders
+   * above the write-up, same position `hero` normally would. All same
+   * silent-autoplay / reduced-motion handling as ProjectVideo elsewhere.
+   */
+  videoRow?: { src: string; alt: string; poster?: string; sound?: boolean }[];
+  /**
    * Suppresses the caption paragraph(s) under `hero`/`heroPair` — BMW Z1
    * only for now, where the alt text ("BMW Z1") added nothing the title
    * above it didn't already say.
