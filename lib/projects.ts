@@ -352,6 +352,49 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "tilda-rice",
+    title: "Tilda Rice",
+    client: "Tilda",
+    year: 2022,
+    discipline: "Illustration",
+    deliverables: "3 Animated Ads",
+    categories: ["Character", "Icons"],
+    summary: "Three rice pouches, three flavours, three animations.",
+    heroCaption: "Illustration for three animated Tilda Rice ads — Katsu Curry, Indonesian Fried Rice and Masala — 2022.",
+    brief: [
+      "Tilda commissioned illustration work for a set of three animated ads, one per flavour — Katsu Curry, Indonesian Fried Rice and Masala — brought to life by animation studio Rave Growl via agency Havas.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Animation", name: "Rave Growl" },
+      { role: "Agency", name: "Havas" },
+      { role: "Client", name: "Tilda" },
+    ],
+    hero: {
+      ratio: "3/4",
+      alt: "Tilda Katsu Curry Rice packaging",
+      src: "/work/tilda-rice/01-microsoftteams-image-63.webp",
+    },
+    // Small side by side, not full-width — see Project.videoRow.
+    videoRow: [
+      { src: "/work/tilda-rice/katsu.mp4", alt: "Katsu Curry Rice animation", sound: true },
+      { src: "/work/tilda-rice/fried-rice.mp4", alt: "Indonesian Fried Rice animation", sound: true },
+      { src: "/work/tilda-rice/masala.mp4", alt: "Masala Rice animation", sound: true },
+    ],
+    gallery: [
+      {
+        ratio: "3/4",
+        alt: "Tilda Indonesian Fried Rice packaging",
+        src: "/work/tilda-rice/02-microsoftteams-image-64.webp",
+      },
+      {
+        ratio: "3/4",
+        alt: "Tilda Masala Rice packaging",
+        src: "/work/tilda-rice/03-microsoftteams-image-65.webp",
+      },
+    ],
+  },
+  {
     slug: "california-magazine",
     title: "California Magazine",
     client: "California Magazine",
