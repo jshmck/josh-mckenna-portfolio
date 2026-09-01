@@ -76,57 +76,58 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
   const imgWidth = openRatio >= 1 ? STAGE_LONG_EDGE : Math.round(STAGE_LONG_EDGE * openRatio);
   const imgHeight = openRatio >= 1 ? Math.round(STAGE_LONG_EDGE / openRatio) : STAGE_LONG_EDGE;
 
-  // Two images of different ratios (e.g. a 4/5 flat set beside a 250/291
-  // mockup) can't both hit the same height through a shared max-width or
-  // column width — those only match height when the ratios already do.
-  // This sizes the pair by a shared height instead, letting each Plate's
-  // own aspect-ratio derive its width. Runs for any mismatched-ratio pair,
-  // not just `small` ones — matching ratios already get equal heights for
-  // free from the ordinary grid, so this only changes anything when it
-  // needs to.
-  // Exactly two images only — three (Costa Smeralda) always uses a plain
-  // grid-cols-3 instead, matching column width rather than a shared height.
-  const allSmall = images.length === 2 && images.every((image) => image.small);
-  const ratiosMismatched = images.length === 2 && images[0].ratio !== images[1].ratio;
-  const heightMatchedPair = images.length === 2 && (allSmall || ratiosMismatched);
+  // Images of different ratios (e.g. a 4/5 flat set beside a 250/291
+  // mockup, or Costa Smeralda's three posters) can't all hit the same
+  // height through a shared max-width or column width — those only match
+  // height when the ratios already do. This sizes the whole row by a
+  // shared height instead, letting each Plate's own aspect-ratio derive
+  // its width. Runs for any mismatched-ratio set, not just `small` ones —
+  // matching ratios already get equal heights for free from the ordinary
+  // grid, so this only changes anything when it needs to. Generalized to
+  // any image count (not just pairs) for Costa Smeralda's three posters.
+  const allSmall = images.length > 1 && images.every((image) => image.small);
+  const ratiosMismatched =
+    images.length > 1 && images.some((image) => image.ratio !== images[0].ratio);
+  const heightMatchedRow = images.length > 1 && (allSmall || ratiosMismatched);
 
   // A fixed height (the original approach) only works across a narrow band
   // of ratio combinations — Away's 4/5-beside-250/291 pair fit fine at a
   // tall fixed height, but a landscape 3/2 hero beside a portrait 172/273
   // article screenshot (WSJ) wanted so much combined width at that same
   // height that the second image wrapped onto its own line, defeating the
-  // "side by side" point entirely. Deriving height from the pair's combined
-  // width instead — GAP_PX + h*ratio0 + h*ratio1 = TARGET_WIDTH, solved for
-  // h — keeps any two-ratio combination fitting one row at a consistent
+  // "side by side" point entirely. Deriving height from the row's combined
+  // width instead — GAP_PX * (n-1) + h*sum(ratios) = TARGET_WIDTH, solved
+  // for h — keeps any ratio combination fitting one row at a consistent
   // total width, rather than a consistent height that only sometimes fits.
   const GAP_PX = 16;
   const parseRatio = (ratio: string) => {
     const [w, h] = ratio.split("/").map(Number);
     return w / h;
   };
-  const pairRatioSum =
-    images.length > 1 ? parseRatio(images[0].ratio) + parseRatio(images[1].ratio) : 0;
-  const pairStyle: CSSProperties | undefined =
-    heightMatchedPair && !allSmall && pairRatioSum > 0
+  const rowRatioSum =
+    images.length > 1 ? images.reduce((sum, image) => sum + parseRatio(image.ratio), 0) : 0;
+  const rowGap = GAP_PX * Math.max(0, images.length - 1);
+  const rowStyle: CSSProperties | undefined =
+    heightMatchedRow && !allSmall && rowRatioSum > 0
       ? {
-          height: `clamp(${Math.round((320 - GAP_PX) / pairRatioSum)}px, 50vw, ${Math.round(
-            (1200 - GAP_PX) / pairRatioSum,
+          height: `clamp(${Math.round((320 - rowGap) / rowRatioSum)}px, 50vw, ${Math.round(
+            (1200 - rowGap) / rowRatioSum,
           )}px)`,
         }
       : undefined;
-  const pairHeight = allSmall ? "h-64 sm:h-96" : undefined;
+  const rowHeight = allSmall ? "h-64 sm:h-96" : undefined;
 
   return (
     <>
       <div
         className={
-          images.length === 3
-            ? "grid gap-8 md:grid-cols-3"
-            : images.length > 1
-              ? heightMatchedPair
-                ? "flex flex-wrap justify-center gap-4"
+          images.length > 1
+            ? heightMatchedRow
+              ? "flex flex-wrap justify-center gap-4"
+              : images.length === 3
+                ? "grid gap-8 md:grid-cols-3"
                 : "grid gap-8 md:grid-cols-2"
-              : undefined
+            : undefined
         }
       >
         {images.map((image, index) => (
@@ -138,25 +139,25 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
             // its widest child, and a long caption line is often wider
             // than the image itself.
             className={
-              heightMatchedPair
-                ? `${pairHeight ?? ""} ${RATIO_CLASS[image.ratio]}`
+              heightMatchedRow
+                ? `${rowHeight ?? ""} ${RATIO_CLASS[image.ratio]}`
                 : image.small
                   ? "mx-auto w-full max-w-lg"
                   : undefined
             }
-            style={heightMatchedPair ? pairStyle : undefined}
+            style={heightMatchedRow ? rowStyle : undefined}
           >
             <button
               type="button"
               onClick={() => openAt(index)}
               aria-label={`Open larger view of ${image.alt}`}
-              className={`group block cursor-zoom-in text-left ${heightMatchedPair ? "h-full" : "w-full"}`}
+              className={`group block cursor-zoom-in text-left ${heightMatchedRow ? "h-full" : "w-full"}`}
             >
               <div
-                className={`overflow-hidden ${heightMatchedPair ? "h-full" : ""} ${image.square ? "" : "rounded-[40px]"}`}
+                className={`overflow-hidden ${heightMatchedRow ? "h-full" : ""} ${image.square ? "" : "rounded-[40px]"}`}
               >
                 <div
-                  className={`transition-transform duration-300 ease-drift group-hover:scale-[1.02] ${heightMatchedPair ? "h-full" : ""}`}
+                  className={`transition-transform duration-300 ease-drift group-hover:scale-[1.02] ${heightMatchedRow ? "h-full" : ""}`}
                 >
                   <Plate
                     image={image}
@@ -170,7 +171,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
                     }
                     priority={index === 0}
                     radius={image.square ? "" : undefined}
-                    className={heightMatchedPair ? "h-full" : undefined}
+                    className={heightMatchedRow ? "h-full" : undefined}
                   />
                 </div>
               </div>
