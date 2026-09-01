@@ -1754,6 +1754,31 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
+    slug: "figma-rimowa",
+    title: "Rimowa",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Character"],
+    summary: "One hand for the case, one for the content.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw — the ribbed aluminium Rimowa, dragged flat-out by someone who still found a hand for the selfie.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    heroSize: "spot",
+    hero: {
+      ratio: "4/5",
+      alt: "The Rimowa, at speed",
+      src: "/work/figma-rimowa/01-rimowa2.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "nomad-wheels-505-livery",
     title: "505 Touring",
     client: "Nomad Wheel Co.",
@@ -2190,11 +2215,11 @@ export const projects: Project[] = [
     discipline: "Festival Identity",
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
     categories: ["Pride"],
-    // True ratio of the lockup cardImage (2700×2700, a true square crop of
-    // the same artwork) — pinned explicitly rather than leaving it to
-    // chance which cycle slot lands here (a slightly-off ratio would crop
-    // "PRIDE 2024" at the edges).
-    cardRatio: "1/1",
+    // True ratio of the lockup cardImage (a 4/5 export of the same
+    // artwork) — pinned explicitly rather than leaving it to chance which
+    // cycle slot lands here (a slightly-off ratio would crop "PRIDE 2024"
+    // at the edges).
+    cardRatio: "4/5",
     summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption: "",
     brief: [
@@ -2227,9 +2252,9 @@ export const projects: Project[] = [
     // fit needs no contain/canvas-letterbox workaround, and cardRatio holds
     // the frame at the art's true 1/1 so "PRIDE 2024" isn't cropped.
     cardImage: {
-      ratio: "1/1",
+      ratio: "4/5",
       alt: "The LA Pride 2024 lockup",
-      src: "/work/la-pride/01-la-pride-1x1.webp",
+      src: "/work/la-pride/01-la-pride-4x5.webp",
     },
     cardHoverImage: {
       ratio: "2/3",
