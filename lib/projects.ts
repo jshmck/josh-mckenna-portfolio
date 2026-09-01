@@ -40,11 +40,6 @@ export type ImageRatio =
   // character lined up in frame; snapping it to 16/10 would crop out most
   // of the width. True output ratio, zero drift.
   | "2400/713"
-  // Wagamama Brighton's website export, 3189x1920 reduced — same
-  // reasoning as Beefbar's pair above. Tuned by Josh to land close to
-  // 1.66:1 so the card matches a neighbouring 4/5 card's height in the
-  // masonry grid (see MasonryGrid's LANDSCAPE_SPAN_RATIO math).
-  | "1063/640"
   // Womp 3D Exploration's leaping-girl render — a full diagonal reach with
   // the trailing hand already close to the frame edge; the nearest stock
   // ratio (4/5) would clip the fingers. True 1920x2160 output ratio.
@@ -794,12 +789,12 @@ export const projects: Project[] = [
       { role: "Installation Photography", name: "Peter O'Sullivan" },
       { role: "Client", name: "Wagamama" },
     ],
-    // Standardized to 16/9 with the other landscape /work cards, not the
-    // artwork's true 1063/640 (1.66) — only the card frame; hero below
-    // keeps the real ratio.
+    // Card and hero share 16/9 now — Josh's clearer re-export of the
+    // Brighton artwork (Sep 2026) is natively 3413x1920, retiring the
+    // 1063/640 crop (and its ImageRatio member) the hero used to carry.
     cardRatio: "16/9",
     hero: {
-      ratio: "1063/640",
+      ratio: "16/9",
       alt: "The full Wagamama Brighton Pride artwork",
       src: "/work/wagamama-pride/01-full.webp",
     },
