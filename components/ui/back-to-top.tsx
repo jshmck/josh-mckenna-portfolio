@@ -73,6 +73,22 @@ type BackToTopProps = {
  * the lightbox toolbar's chevrons rather than the worded pills' plain
  * colour swap.
  *
+ * Each circle sits fully inside the frame's content edge, its outer
+ * edge on the exact vertical guide the header's jM/Cart circles hang
+ * from (frame centring margin + gutter) — the bottom trio shares the
+ * top trio's alignment, not just its shapes. This went through a
+ * straddle trial first (centre on the image's edge line, half in the
+ * outer margin) after Josh floated moving them "outside the images";
+ * seeing that live, he called it back inside instead — "inside the
+ * image in line with jM and cart circles". Fully-outside was assessed
+ * and dropped along the way: the outer strip is only the 44px gutter
+ * below ~1344px viewports, narrower than the circle itself. The calc
+ * reproduces the header's own geometry — (100vw - min(100vw, frame))/2,
+ * zero below 1344px, plus the gutter — using the real
+ * --container-frame/--spacing-gutter tokens so it tracks them if they
+ * ever change. (100vw vs classic scrollbars skews this a few px on
+ * Windows; imperceptibly off the guide there.)
+ *
  * Carries the same nav-pill treatment as the header rather than the filter
  * chips' Waldeck styling it used before: centred in the viewport instead
  * of pinned to the right edge, font-body instead of Waldeck uppercase
@@ -244,7 +260,7 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
           ref={previousRef}
           href={`/work/${previous.slug}`}
           aria-label="Previous project"
-          className={`${SIDE_PILL} left-6 hidden h-14 w-14 items-center justify-center text-[30px] hover:font-bold md:left-gutter md:flex`}
+          className={`${SIDE_PILL} left-[calc((100vw-min(100vw,var(--container-frame)))/2+var(--spacing-gutter))] hidden h-14 w-14 items-center justify-center text-[30px] hover:font-bold md:flex`}
         >
           {"<"}
         </Link>
@@ -266,7 +282,7 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
           ref={nextRef}
           href={`/work/${next.slug}`}
           aria-label="Next project"
-          className={`${SIDE_PILL} right-6 hidden h-14 w-14 items-center justify-center text-[30px] hover:font-bold md:right-gutter md:flex`}
+          className={`${SIDE_PILL} right-[calc((100vw-min(100vw,var(--container-frame)))/2+var(--spacing-gutter))] hidden h-14 w-14 items-center justify-center text-[30px] hover:font-bold md:flex`}
         >
           {">"}
         </Link>
