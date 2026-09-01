@@ -223,7 +223,24 @@ export default async function ProjectPage({
         />
       ) : (
         <>
-          {project.heroSize !== "spot" && (
+          {project.videoRow && (
+            // Same grid-cols-3 recipe as a 3-count gallerySpans row (see
+            // ImageStack) — same outer max-w-frame/gutter container, same
+            // gap-8 — so the video frames land at the same width as the
+            // packaging photos below them, not an arbitrary smaller cap.
+            // Sits above `hero` — see Project.videoRow.
+            <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+                {project.videoRow.map((video) => (
+                  <div key={video.src}>
+                    <ProjectVideo video={video} sound={video.sound} ratio="1/1" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {project.heroSize !== "spot" && !project.heroHiddenOnPage && (
             <div
               className="mx-auto max-w-frame px-6 pt-12 md:px-gutter"
               // Read by nav.tsx — see Project.navContrastLight's doc comment.
@@ -315,7 +332,7 @@ export default async function ProjectPage({
             </div>
           )}
 
-          {project.heroSize === "spot" && (
+          {project.heroSize === "spot" && !project.heroHiddenOnPage && (
             // Leads the page same as every other project's key art, per
             // Josh — moved above the write-up (was below) so single-image
             // projects read the same order as LA Pride etc. Still capped
@@ -332,21 +349,6 @@ export default async function ProjectPage({
                   sizes="(max-width: 768px) 100vw, 512px"
                   priority
                 />
-              </div>
-            </div>
-          )}
-
-          {project.videoRow && (
-            // Small side by side, not full-width — a real deliverable
-            // (Tilda Rice's three packaging animations) that still needs
-            // showing without the usual single-heroVideo prominence.
-            <div className="mx-auto max-w-frame px-6 pb-12 md:px-gutter">
-              <div className="flex flex-wrap justify-center gap-4">
-                {project.videoRow.map((video) => (
-                  <div key={video.src} className="w-full max-w-[220px]">
-                    <ProjectVideo video={video} sound={video.sound} ratio="1/1" />
-                  </div>
-                ))}
               </div>
             </div>
           )}

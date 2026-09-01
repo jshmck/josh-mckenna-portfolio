@@ -194,10 +194,20 @@ export type Project = {
    * but not blown up full-width the way a single heroVideo runs. Distinct
    * from `heroVideo` (one clip, full-size) and `galleryVideo` (one clip
    * inserted mid-gallery) — neither supports more than one clip. Renders
-   * above the write-up, same position `hero` normally would. All same
-   * silent-autoplay / reduced-motion handling as ProjectVideo elsewhere.
+   * at the very top of the page, above `hero` (unlike `hero`, which it sits
+   * above even when `heroHiddenOnPage` keeps `hero` out of the page body
+   * entirely). All same silent-autoplay / reduced-motion handling as
+   * ProjectVideo elsewhere.
    */
   videoRow?: { src: string; alt: string; poster?: string; sound?: boolean }[];
+  /**
+   * Keeps `hero` out of its usual top-of-page slot entirely — `hero` is
+   * still required (it's the /work card thumbnail and the OG image) but
+   * isn't repeated in the page body. Tilda Rice only for now: Josh wanted
+   * the three product photos to read together as one group, after the
+   * write-up, rather than one of them singled out above the videos.
+   */
+  heroHiddenOnPage?: boolean;
   /**
    * Suppresses the caption paragraph(s) under `hero`/`heroPair` — BMW Z1
    * only for now, where the alt text ("BMW Z1") added nothing the title
