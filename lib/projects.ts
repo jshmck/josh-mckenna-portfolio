@@ -65,7 +65,11 @@ export type ImageRatio =
   | "707/1000"
   // Away's suitcase mockup reshoot — true 2000x2328 (reduced 250/291).
   // Nearest existing ratio (4/5) would have cropped 7%.
-  | "250/291";
+  | "250/291"
+  // WSJ AirPods article screenshot — true 1376x2184 (reduced 172/273).
+  // Nearest existing ratio (3/4) would have cropped the masthead or the
+  // body copy.
+  | "172/273";
 
 export type ProjectImage = {
   ratio: ImageRatio;
@@ -314,6 +318,37 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "wsj-airpods-rich",
+    title: "Do AirPods Make You Look Rich?",
+    client: "The Wall Street Journal",
+    year: 2019,
+    yearLabel: "February 2019",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Editorial"],
+    summary: "Three ears, three AirPods, one dollar coin doing the talking.",
+    heroCaption: "For \"Do AirPods Make You Look Rich? These Millennials Think So,\" by Jacob Gallagher, WSJ, February 2019.",
+    brief: [
+      "Jacob Gallagher's piece was about AirPods becoming a status symbol on sight — a $159 pair of headphones read as wealth from across a subway platform, whether or not that was true. The brief needed that legibility-at-a-glance built into the image itself: three ears in a row, a dollar coin the only other prop in frame.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Writer", name: "Jacob Gallagher" },
+      { role: "Client", name: "The Wall Street Journal" },
+    ],
+    hero: {
+      ratio: "3/2",
+      alt: "Three ears in a row, each wearing an AirPod",
+      src: "/work/wsj-airpods-rich/01-illustration.webp",
+    },
+    heroPair: {
+      ratio: "172/273",
+      alt: "The piece as it ran on WSJ.com",
+      src: "/work/wsj-airpods-rich/02-article.webp",
+    },
+    gallery: [],
+  },
   {
     slug: "ace-tate-logo",
     title: "Ace & Tate",
