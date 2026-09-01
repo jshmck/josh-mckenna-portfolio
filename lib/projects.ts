@@ -1186,41 +1186,39 @@ export const projects: Project[] = [
     summary: "My favourite car, rendered because I wanted an excuse to model it.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — a gloopy, wompy homage to my favourite car, the Jimny, turned around three times under studio lighting.",
+      "Modelled in Womp, a browser-based 3D tool — a gloopy, wompy homage to my favourite car, the Jimny.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     // Not the true 1/1 — Josh's call, 4/5 reads better here than the
     // RATIO_CYCLE-by-chance square did. Pinned explicitly either way.
     cardRatio: "4/5",
-    // Video leads the page instead of the usual image hero; `hero` still
-    // carries a still (used for the /work card) but doesn't render here —
-    // see HeroVideo and the Project.heroVideo doc comment.
+    // Closes the page instead of leading it — see the "outro" case in
+    // Project.heroVideo's position doc comment. `hero` still carries a
+    // still (used for the /work card).
     heroVideo: {
       src: "/work/womp-jimny/00-turnaround.mp4",
       alt: "The Jimny, turning",
+      position: "outro",
     },
+    // Three renders side by side up top, captions off — see heroThird's
+    // doc comment.
+    hideHeroCaptions: true,
     hero: {
       ratio: "1/1",
       alt: "The Jimny, front three-quarter",
-      src: "/work/womp-jimny/01-front.webp",
+      src: "/work/womp-jimny/02-front.webp",
     },
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "The Jimny, front three-quarter",
-        src: "/work/womp-jimny/01-front.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "The Jimny, from the back",
-        src: "/work/womp-jimny/02-back.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "The Jimny, side profile",
-        src: "/work/womp-jimny/03-side.webp",
-      },
-    ],
+    heroPair: {
+      ratio: "1/1",
+      alt: "The Jimny, from the back",
+      src: "/work/womp-jimny/01-back.webp",
+    },
+    heroThird: {
+      ratio: "1/1",
+      alt: "The Jimny, side profile",
+      src: "/work/womp-jimny/03-side.webp",
+    },
+    gallery: [],
   },
   {
     slug: "womp-twingo",
