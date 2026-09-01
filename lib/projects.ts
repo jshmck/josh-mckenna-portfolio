@@ -590,39 +590,9 @@ export const projects: Project[] = [
     },
     gallery: [],
   },
-  {
-    slug: "london-lgbtq-centre",
-    title: "LGBTQ Centre",
-    client: "London LGBTQ+ Community Centre",
-    year: 2019,
-    discipline: "Illustration",
-    deliverables: "Brand Mark",
-    categories: ["Pride", "Character", "Logo"],
-    summary: "Four couples in a wreath, holding the wordmark together.",
-    heroCaption: "A brand mark for the London LGBTQ+ Community Centre, 2019.",
-    brief: [
-      "The London LGBTQ+ Community Centre needed a mark that put people, not just a symbol, at the centre of the identity — four couples drawn in a loose wreath around the wordmark.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "London LGBTQ+ Community Centre" },
-    ],
-    // The card falls back to this purple hero now that the white colourway
-    // (which used to lead the card specifically to sidestep this) is gone —
-    // same nav-purple collision as Atlanta Magazine's card, same fix.
-    navContrastLight: true,
-    cardRatio: "1/1",
-    // A small brand mark, not a full illustration — same "runs small"
-    // treatment as Sumo and Downward Trend, rather than the usual
-    // full-bleed hero scale.
-    heroSize: "spot",
-    hero: {
-      ratio: "1/1",
-      alt: "The brand mark, four couples in a wreath around the wordmark",
-      src: "/work/london-lgbtq-centre/01-purple.webp",
-    },
-    gallery: [],
-  },
+  // LGBTQ Centre lived here — archived to lib/archived-projects.ts per
+  // Josh ("don't want it displayed rn"), not deleted; see that file for
+  // the restore path.
   {
     slug: "wsj-airpods-rich",
     title: "WSJ",
