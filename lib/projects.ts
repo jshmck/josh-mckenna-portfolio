@@ -322,23 +322,34 @@ export const projects: Project[] = [
     summary: "Two couples, a rainbow and a sunbather, sized to fit on a suitcase.",
     heroCaption: "A set of five Pride stickers, available in Away's stores throughout Pride month, 2019.",
     brief: [
-      "Away commissioned a set of five Pride stickers, available in-store throughout Pride month 2019 — sized to work on their aluminium luggage shells, small enough that a handful could sit together on one case without crowding it.",
-      "Five separate scenes rather than one continuous design, so shoppers could pick and mix: two couples, a rainbow, a woman on a pool float, a man taking a lounger selfie.",
+      "Away commissioned a set of five Pride stickers, available in-store throughout Pride month 2019 — designed to go anywhere, but it looked great on their aluminium luggage.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Away" },
     ],
-    hero: {
-      ratio: "1/1",
-      alt: "The sticker set, applied to Away luggage",
-      src: "/work/away-pride-stickers/01-mockup.webp",
+    // The /work card leads with the flat sticker set, not the low-res
+    // suitcase mockup.
+    cardRatio: "4/5",
+    cardImage: {
+      ratio: "4/5",
+      alt: "The full sticker set",
+      src: "/work/away-pride-stickers/02-sticker-set.webp",
     },
+    // Sticker set leads, full width — it's vector-flat and scales cleanly.
+    hero: {
+      ratio: "4/5",
+      alt: "The full sticker set",
+      src: "/work/away-pride-stickers/02-sticker-set.webp",
+    },
+    // Mockup is low-res — kept small and secondary rather than blown up
+    // beside the hero, where the resolution gap would show.
     gallery: [
       {
-        ratio: "4/5",
-        alt: "The full sticker set",
-        src: "/work/away-pride-stickers/02-sticker-set.webp",
+        ratio: "1/1",
+        alt: "The sticker set, applied to Away luggage",
+        src: "/work/away-pride-stickers/01-mockup.webp",
+        small: true,
       },
     ],
   },
