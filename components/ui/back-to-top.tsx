@@ -17,6 +17,17 @@ import { useEffect, useRef, useState } from "react";
  */
 const RESTING_OFFSET = 44;
 
+/** Mobile-only resting offset — "can the project nav chevrons and back to
+ *  top live lower down than they currently are?" per Josh, phone-only
+ *  (desktop's 44px stays the symmetric-gap value above). 24px, not all
+ *  the way to the true edge, so the pill still clears an iPhone's home-
+ *  indicator gesture strip rather than sitting under it. */
+const MOBILE_RESTING_OFFSET = 24;
+
+/** Tailwind's md, matching every other breakpoint check in this file's
+ *  own sibling (nav.tsx uses the same 768 implicitly via its md: classes). */
+const MOBILE_BREAKPOINT = 768;
+
 type ProjectNeighbour = {
   slug: string;
 };
@@ -225,7 +236,9 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
 
       const footerVisible = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top);
       setDocked(footerVisible > 0);
-      const bottom = `${Math.max(RESTING_OFFSET, footerVisible + RESTING_OFFSET)}px`;
+      const restingOffset =
+        window.innerWidth < MOBILE_BREAKPOINT ? MOBILE_RESTING_OFFSET : RESTING_OFFSET;
+      const bottom = `${Math.max(restingOffset, footerVisible + restingOffset)}px`;
       if (centerRef.current) centerRef.current.style.bottom = bottom;
       if (previousRef.current) previousRef.current.style.bottom = bottom;
       if (nextRef.current) nextRef.current.style.bottom = bottom;
@@ -261,7 +274,7 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
     ? "translate-y-0 scale-100 opacity-100"
     : "pointer-events-none translate-y-4 scale-50 opacity-0";
 
-  const PILL_BASE = `fixed bottom-11 z-30 rounded-full border border-transparent bg-canvas/15 font-body text-ink shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas`;
+  const PILL_BASE = `fixed bottom-6 md:bottom-11 z-30 rounded-full border border-transparent bg-canvas/15 font-body text-ink shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas`;
 
   const PILL = `${PILL_BASE} ${bounceClass} ${visibility}`;
 
