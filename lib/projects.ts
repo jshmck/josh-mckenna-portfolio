@@ -366,6 +366,29 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "palm-springs",
+    title: "Palm Springs",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "Key Art",
+    categories: ["Automotive"],
+    summary: "A carport doing its one job, in Palm Springs.",
+    heroCaption: "",
+    brief: [
+      "No brief — just an excuse to draw a mid-century carport roofline against the San Jacinto mountains, with a two-tone convertible parked underneath.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "Palm Springs — a mid-century carport",
+      src: "/work/palm-springs/01-palm-springs.webp",
+    },
+    gallery: [],
+    featured: true,
+  },
+  {
     slug: "tilda-rice",
     title: "Tilda Rice",
     client: "Tilda",
