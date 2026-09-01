@@ -1041,6 +1041,12 @@ export const projects: Project[] = [
     discipline: "Event Invitation",
     deliverables: "2 Invitations",
     categories: ["Hospitality", "Automotive"],
+    // Overrides effectiveCardRatio's RATIO_CYCLE fallback -- without this
+    // the /work grid was landing this card on a square slot regardless of
+    // cardImage's own declared ratio (ProjectCard's `ratio` prop always
+    // wins over the image's own, so both need to agree). "Need to be
+    // 4-5," per Josh.
+    cardRatio: "4/5",
     summary: "Same building, same car, same palm trees — just moved the sun.",
     heroCaption: "The day and night invitation designs for the same Mr Porter Miami event.",
     brief: [
@@ -1071,16 +1077,17 @@ export const projects: Project[] = [
     // Card preview gets its own day/night pair, cropped to 4/5 rather
     // than the hero's true ratio — "in the gallery preview I have
     // included day cover and night cover to be used... put it in a 4-5
-    // frame," per Josh. Night crossfades in on hover (getCardHoverImage).
+    // frame," per Josh. Night leads at rest, day crossfades in on hover
+    // (getCardHoverImage) — "need to be... the night image," per Josh.
     cardImage: {
-      ratio: "4/5",
-      alt: "Mr Porter Miami invite — day",
-      src: "/work/mr-porter-miami-invites/04-mr-porter-day-cover.webp",
-    },
-    cardHoverImage: {
       ratio: "4/5",
       alt: "Mr Porter Miami invite — night",
       src: "/work/mr-porter-miami-invites/03-mr-porter-night-cover.webp",
+    },
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "Mr Porter Miami invite — day",
+      src: "/work/mr-porter-miami-invites/04-mr-porter-day-cover.webp",
     },
     gallery: [],
   },

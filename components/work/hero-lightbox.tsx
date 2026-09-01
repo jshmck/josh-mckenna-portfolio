@@ -93,6 +93,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
                     image={image}
                     sizes={sizes ?? (images.length > 1 ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 1344px) 100vw, 1344px")}
                     priority={index === 0}
+                    radius={image.square ? "" : undefined}
                   />
                 </div>
               </div>
