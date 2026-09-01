@@ -10,7 +10,8 @@ import { HeroLightbox } from "@/components/work/hero-lightbox";
 import { ProjectVideo } from "@/components/work/project-video";
 import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
-import { getProject, getProjectNeighbours, projects, type Project } from "@/lib/projects";
+import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
+import { getProject, getProjectNeighbours, projects, type Project, type ProjectImage } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
 /**
@@ -110,6 +111,26 @@ export default async function ProjectPage({
 
   const displayTitle = toDisplayTitle(project.title);
   const headerIllustrations = project.headerIllustrations;
+
+  // The exact set of images HeroLightbox renders below, computed once so it
+  // can double as the front slice of ProjectLightboxProvider's combined
+  // cycle — see the render logic beneath for how each case (heroThird,
+  // heroPair, heroVideo "pair", spot, hidden) picks its own images prop;
+  // this mirrors that same set of cases so the two can never drift apart.
+  const heroPairIsVideo = project.heroVideo?.position === "pair";
+  const heroLightboxImages: ProjectImage[] = project.heroHiddenOnPage
+    ? []
+    : project.heroSize === "spot"
+      ? [project.hero]
+      : heroPairIsVideo
+        ? [project.hero]
+        : project.heroPair
+          ? project.heroThird
+            ? [project.hero, project.heroPair, project.heroThird]
+            : [project.hero, project.heroPair]
+          : project.heroVideo
+            ? []
+            : [project.hero];
 
   return (
     <article>
@@ -221,7 +242,7 @@ export default async function ProjectPage({
           columns={project.posterGridColumns}
         />
       ) : (
-        <>
+        <ProjectLightboxProvider images={[...heroLightboxImages, ...project.gallery]}>
           {project.videoRow && (
             // Same grid-cols-3 recipe as a 3-count gallerySpans row (see
             // ImageStack) — same outer max-w-frame/gutter container, same
@@ -270,7 +291,7 @@ export default async function ProjectPage({
                   <div className="grid gap-8 md:grid-cols-2">
                     <div>
                       <HeroLightbox
-                        images={[project.hero]}
+                        images={heroLightboxImages}
                         captions={[project.heroCaption]}
                         hideCaptions={project.hideHeroCaptions}
                         sizes="(max-width: 768px) 100vw, 50vw"
@@ -291,7 +312,7 @@ export default async function ProjectPage({
                   project.heroPair &&
                   (project.heroThird ? (
                     <HeroLightbox
-                      images={[project.hero, project.heroPair, project.heroThird]}
+                      images={heroLightboxImages}
                       captions={[
                         project.heroCaption,
                         project.heroPair.caption === false ? "" : project.heroPair.alt,
@@ -301,7 +322,7 @@ export default async function ProjectPage({
                     />
                   ) : (
                     <HeroLightbox
-                      images={[project.hero, project.heroPair]}
+                      images={heroLightboxImages}
                       captions={[
                         project.heroCaption,
                         project.heroPair.caption === false ? "" : project.heroPair.alt,
@@ -312,7 +333,7 @@ export default async function ProjectPage({
                 )
               ) : !project.heroVideo ? (
                 <HeroLightbox
-                  images={[project.hero]}
+                  images={heroLightboxImages}
                   captions={[project.heroCaption]}
                   hideCaptions={project.hideHeroCaptions}
                 />
@@ -347,7 +368,7 @@ export default async function ProjectPage({
             >
               <div className="mx-auto max-w-lg">
                 <HeroLightbox
-                  images={[project.hero]}
+                  images={heroLightboxImages}
                   captions={[""]}
                   sizes="(max-width: 768px) 100vw, 512px"
                 />
@@ -386,17 +407,19 @@ export default async function ProjectPage({
               <GalleryGrid
                 leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
                 images={restImages}
+                indexOffset={heroLightboxImages.length}
               />
             </div>
           ) : (
             <ImageStack
               images={project.gallery}
+              indexOffset={heroLightboxImages.length}
               galleryVideo={project.galleryVideo}
               galleryGif={project.galleryGif}
               gallerySpans={project.gallerySpans}
             />
           )}
-        </>
+        </ProjectLightboxProvider>
       )}
 
       {/* The old Previous/All Work/Next footer nav is gone -- Back to Top
