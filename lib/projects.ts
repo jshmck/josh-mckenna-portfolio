@@ -313,7 +313,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "wagamama-proud-beyond-pride",
-    title: "Proud Beyond Pride",
+    title: "Wagamama",
     client: "Wagamama",
     year: 2022,
     pinnedRank: 2,
