@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import { Plate } from "@/components/ui/plate";
+import { Plate, RATIO_CLASS } from "@/components/ui/plate";
 import type { ProjectImage } from "@/lib/projects";
 
 type HeroLightboxProps = {
@@ -86,7 +86,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
   // needs to.
   const ratiosMismatched = images.length > 1 && images[0].ratio !== images[1].ratio;
   const heightMatchedPair = images.length > 1 && (images.every((image) => image.small) || ratiosMismatched);
-  const pairHeight = images.every((image) => image.small) ? "h-64 sm:h-96" : "h-80 sm:h-[34rem]";
+  const pairHeight = images.every((image) => image.small) ? "h-64 sm:h-96" : "h-96 sm:h-[42rem]";
 
   return (
     <>
@@ -94,7 +94,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
         className={
           images.length > 1
             ? heightMatchedPair
-              ? "flex flex-wrap justify-center gap-8"
+              ? "flex flex-wrap justify-center gap-4"
               : "grid gap-8 md:grid-cols-2"
             : undefined
         }
@@ -102,7 +102,18 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
         {images.map((image, index) => (
           <div
             key={image.alt}
-            className={heightMatchedPair ? pairHeight : image.small ? "mx-auto w-full max-w-lg" : undefined}
+            // The aspect-ratio class here (matching the image's own) is
+            // what keeps the caption below from forcing this wrapper wider
+            // than the image — without it, a flex item shrink-wraps to fit
+            // its widest child, and a long caption line is often wider
+            // than the image itself.
+            className={
+              heightMatchedPair
+                ? `${pairHeight} ${RATIO_CLASS[image.ratio]}`
+                : image.small
+                  ? "mx-auto w-full max-w-lg"
+                  : undefined
+            }
           >
             <button
               type="button"
