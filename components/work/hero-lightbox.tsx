@@ -76,24 +76,49 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
   const imgWidth = openRatio >= 1 ? STAGE_LONG_EDGE : Math.round(STAGE_LONG_EDGE * openRatio);
   const imgHeight = openRatio >= 1 ? Math.round(STAGE_LONG_EDGE / openRatio) : STAGE_LONG_EDGE;
 
+  // Two small images of different ratios (e.g. a 1/1 mockup beside a 4/5
+  // flat set) can't both hit the same height through a shared max-width —
+  // width-capping only matches height when the ratios already do. This
+  // sizes the pair by a shared height instead, letting each Plate's own
+  // aspect-ratio derive its width.
+  const heightMatchedPair = images.length > 1 && images.every((image) => image.small);
+
   return (
     <>
-      <div className={images.length > 1 ? "grid gap-8 md:grid-cols-2" : undefined}>
+      <div
+        className={
+          images.length > 1
+            ? heightMatchedPair
+              ? "flex flex-wrap justify-center gap-8"
+              : "grid gap-8 md:grid-cols-2"
+            : undefined
+        }
+      >
         {images.map((image, index) => (
-          <div key={image.alt} className={image.small ? "mx-auto max-w-lg" : undefined}>
+          <div
+            key={image.alt}
+            className={
+              heightMatchedPair ? "h-64 sm:h-96" : image.small ? "mx-auto w-full max-w-lg" : undefined
+            }
+          >
             <button
               type="button"
               onClick={() => openAt(index)}
               aria-label={`Open larger view of ${image.alt}`}
-              className="group block w-full cursor-zoom-in text-left"
+              className={`group block cursor-zoom-in text-left ${heightMatchedPair ? "h-full" : "w-full"}`}
             >
-              <div className={`overflow-hidden ${image.square ? "" : "rounded-[40px]"}`}>
-                <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.02]">
+              <div
+                className={`overflow-hidden ${heightMatchedPair ? "h-full" : ""} ${image.square ? "" : "rounded-[40px]"}`}
+              >
+                <div
+                  className={`transition-transform duration-300 ease-drift group-hover:scale-[1.02] ${heightMatchedPair ? "h-full" : ""}`}
+                >
                   <Plate
                     image={image}
                     sizes={sizes ?? (images.length > 1 ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 1344px) 100vw, 1344px")}
                     priority={index === 0}
                     radius={image.square ? "" : undefined}
+                    className={heightMatchedPair ? "h-full" : undefined}
                   />
                 </div>
               </div>
