@@ -1380,59 +1380,62 @@ export const projects: Project[] = [
       { role: "Client", name: "VOXI by Vodafone" },
     ],
     hero: {
-      ratio: "16/10",
-      alt: "The full artwork for VOXI's Pride campaign",
-      src: "/work/voxi-pride/08-voxi-pride-voxi-landscape.webp",
+      // True ratio (3.3657), not the site's usual 16/10 — the "Endless
+      // Love" banner crop of the full cast.
+      ratio: "2400/713",
+      alt: "The full \"Endless Love\" banner artwork for VOXI's Pride campaign",
+      src: "/work/voxi-pride/01-banner.webp",
     },
-    // 4/5, not the true 3/4 (0.77) — checked against the portrait poster:
-    // the crop is minor enough that nothing gets clipped, so no need for a
-    // new export.
+    // True ratio (0.7998) — a fresh 4/5 export, replacing the old 3/4
+    // portrait poster crop.
     cardRatio: "4/5",
     cardImage: {
       ratio: "4/5",
-      alt: "Full cast — the portrait poster",
-      src: "/work/voxi-pride/09-voxi-pride-voxi.webp",
+      alt: "Full cast, cropped for the card",
+      src: "/work/voxi-pride/02-card.webp",
+    },
+    // Explicit, not getCardHoverImage's default (first gallery image) —
+    // Josh wants the phone case as the /work hover swap specifically.
+    cardHoverImage: {
+      ratio: "1/1",
+      alt: "VOXI × Josh McKenna, on a phone case",
+      src: "/work/voxi-pride/07-phone.webp",
     },
     // Uniform two-column grid (see GalleryGrid) rather than the usual
-    // two-up-then-full-width stack — six same-shape squares read better
-    // even, and it lets the one landscape crop sit alone in its own row at
-    // the end instead of forcing a pairing that doesn't exist.
+    // two-up-then-full-width stack — six true-square images read better
+    // even, and it puts the two merch shots (phone case, pins) in their
+    // own row at the end instead of mixed in with the artwork.
     galleryLayout: "grid",
     gallery: [
       {
         ratio: "1/1",
-        alt: "VOXI tile — the leopard print",
-        src: "/work/voxi-pride/03-voxi-pride-vox-10.webp",
-      },
-      {
-        ratio: "1/1",
         alt: "Endless Love — framed square",
-        src: "/work/voxi-pride/02-voxi-pride-vox-9.webp",
+        src: "/work/voxi-pride/03-vox-9.webp",
       },
       {
         ratio: "1/1",
-        alt: "Endless Love — the kiss",
-        src: "/work/voxi-pride/05-voxi-pride-vox-12.webp",
+        alt: "VOXI tile — the leopard print",
+        src: "/work/voxi-pride/04-vox-10.webp",
       },
       {
         ratio: "1/1",
         alt: "VOXI tile — the peace sign",
-        src: "/work/voxi-pride/04-voxi-pride-vox-11.webp",
+        src: "/work/voxi-pride/05-vox-11.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Endless Love — the kiss",
+        src: "/work/voxi-pride/06-vox-12.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "VOXI × Josh McKenna, on a phone case",
+        src: "/work/voxi-pride/07-phone.webp",
       },
       {
         ratio: "1/1",
         alt: "The artwork on pin badges",
-        src: "/work/voxi-pride/06-voxi-pride-vox-13.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "VOXI × Josh McKenna",
-        src: "/work/voxi-pride/07-voxi-pride-vox-15.webp",
-      },
-      {
-        ratio: "2400/713",
-        alt: "Endless Love — the banner crop",
-        src: "/work/voxi-pride/01-voxi-pride-landscape.webp",
+        src: "/work/voxi-pride/08-pins.webp",
       },
     ],
   },
