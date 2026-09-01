@@ -1205,6 +1205,11 @@ export const projects: Project[] = [
     client: "Monocle",
     year: 2018,
     pinnedRank: 15,
+    // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
+    // square export, and leaving this to the cycle meant a pinnedRank
+    // reorder elsewhere could silently flip this card's parity and crop it
+    // into 4/5 with no change to this project's own fields at all.
+    cardRatio: "1/1",
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
     categories: ["Editorial", "Icons"],
