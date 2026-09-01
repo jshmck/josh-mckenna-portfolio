@@ -1068,6 +1068,43 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "opto-markets-2019",
+    title: "The Markets in 2019",
+    client: "CMC Markets",
+    year: 2019,
+    yearLabel: "OPTO Issue 03, Jan/Feb 2019",
+    discipline: "Editorial Illustration",
+    deliverables: "Cover + 2 Opener Illustrations",
+    categories: ["Editorial"],
+    summary: "Two oversized numerals, packed with everything trading in 2019.",
+    heroCaption: "One of two opener illustrations for OPTO's Issue 03 cover story, \"The Markets in 2019,\" CMC Markets, Jan/Feb 2019.",
+    brief: [
+      "CMC Markets commissioned the cover and two opener illustrations for OPTO magazine's Issue 03 cover story, \"The Markets in 2019\" — trading intelligence on what was coming next across retail, cars, tech, media, banks, AI & AR, cannabis, medtech, fintech and esports, with a sector's icons built into the oversized \"2019\" numerals themselves.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "CMC Markets" },
+    ],
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "The '2019' opener, packed with delivery drones, self-driving cars and social platform icons",
+      src: "/work/opto-markets-2019/02-opener-1-final.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "The second '2019' opener, packed with cannabis, gaming and fintech icons",
+      src: "/work/opto-markets-2019/03-opener-2-final.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
+        src: "/work/opto-markets-2019/01-front-cover.webp",
+      },
+    ],
+  },
+  {
     slug: "vogue-sun-tan",
     title: "Tanning Tips",
     client: "Vogue Magazine",
