@@ -1563,26 +1563,22 @@ export const projects: Project[] = [
   },
   {
     slug: "figma-vitra-virgil",
-    title: "Vitra × Virgil Abloh",
+    title: "Vitra",
     client: "Personal",
     year: 2025,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
     summary: "A chair, repeated as wallpaper, in case the first one wasn't clear enough.",
-    heroCaption:
-      "A tribute to a great design collaboration — Vitra × Virgil Abloh, 2025. The perspex shell got a liquid-glass treatment, done the week Apple's own take on it landed.",
+    heroCaption: "A tribute to a great design collaboration — Vitra × Virgil Abloh, 2025.",
     brief: [
-      "Made in Figma Draw — the Vitra × Virgil Abloh chair, repeated as a wordmark pattern behind it.",
+      "Made in Figma Draw — the Vitra × Virgil Abloh chair, repeated as a wordmark pattern behind it. The perspex shell got a liquid-glass treatment, done the same week Apple's own take on it landed.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
-    // Was heroSize: "spot" — that mode caps the hero to a narrow max-w-lg
-    // box and force-hides its caption (captions=[""] in page.tsx), which
-    // fought both a caption Josh wanted and a bigger lightbox view. Full-
-    // bleed like every other project's hero.
+    heroSize: "spot",
     hero: {
       ratio: "4/5",
       alt: "Vitra × Virgil Abloh",
