@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import type { LightboxState } from "@/components/work/lightbox-core";
@@ -16,6 +16,26 @@ function ratioToNumber(ratio: string) {
 const LIGHTBOX_BUTTON_CLASS =
   "group flex h-9 w-9 items-center justify-center rounded-full text-canvas transition-all duration-300 ease-bounce hover:scale-110 active:scale-90 hover:bg-canvas/15 hover:text-brand active:text-brand";
 
+/** Tracks the viewport size live (mount + resize) so the stage can size
+ *  itself in real pixels rather than through nested CSS var()/calc()/min()
+ *  — that combination turned out unreliable in the field (consistent in
+ *  every automated test at every viewport size, but not in at least one
+ *  real browser session), so the shared-height math now happens in JS
+ *  where it's directly inspectable, instead of trusting the CSS engine to
+ *  resolve a custom property through several layers of nested functions. */
+function useViewportSize() {
+  const [size, setSize] = useState<{ width: number; height: number } | null>(null);
+
+  useEffect(() => {
+    const update = () => setSize({ width: window.innerWidth, height: window.innerHeight });
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  return size;
+}
+
 type LightboxOverlayProps = {
   state: LightboxState;
   /** rounded-[40px] everywhere on the site, matching every other frame —
@@ -23,19 +43,25 @@ type LightboxOverlayProps = {
    *  border baked into the artwork, and rounding would clip across that
    *  border's hard corners at an angle. */
   radius?: string;
+  /** "uniform" (default) forces every frame in the cycle to the exact
+   *  shared height, even if that upscales a lower-res source. "natural"
+   *  never enlarges past the file's own pixels — PosterGrid's mode,
+   *  preserving Josh's earlier call for Beefbar's low-res New York
+   *  poster (see PosterGrid's own comment). */
+  fit?: "uniform" | "natural";
 };
 
 /** The click-to-enlarge dialog shared by every image lightbox on the site.
  *  Fixed stage — same footprint for every image, so paging never resizes
  *  the frame. Every photo in the cycle also renders at the same HEIGHT as
  *  every other, not just the same stage — capped to whatever height still
- *  lets the widest-ratio image in this cycle fit the width budget
- *  (`--stage-max-ratio`, computed once from the whole `images` set below),
- *  so a landscape frame doesn't look shrunken next to a square or portrait
- *  one. Only the inner wrapper remounts per navigation (key={openIndex});
- *  the stage itself never does. */
-export function LightboxOverlay({ state, radius = "rounded-[40px]" }: LightboxOverlayProps) {
+ *  lets the widest-ratio image in this cycle fit the width budget (see
+ *  `stageMaxRatio` below), so a landscape frame doesn't look shrunken next
+ *  to a square or portrait one. Only the inner wrapper remounts per
+ *  navigation (key={openIndex}); the stage itself never does. */
+export function LightboxOverlay({ state, radius = "rounded-[40px]", fit = "uniform" }: LightboxOverlayProps) {
   const { openImage, openIndex, direction, images, close, goPrev, goNext } = state;
+  const viewport = useViewportSize();
 
   if (!openImage) return null;
 
@@ -50,7 +76,37 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]" }: LightboxOv
   // independently maximising into the stage and landing at whatever height
   // its own ratio happens to produce.
   const stageMaxRatio = Math.max(1, ...images.map((image) => ratioToNumber(image.ratio)));
-  const stageStyle = { "--stage-max-ratio": stageMaxRatio } as CSSProperties;
+
+  // Real pixel values, computed from a live-measured viewport — same
+  // 97vw/2000px width cap and 100vh-100px height cap as the stage below,
+  // just resolved in JS so every frame in the cycle is capped by the exact
+  // same numbers instead of each one re-deriving them independently.
+  const widthCapPx = viewport ? Math.min(viewport.width * 0.97, 2000) : 2000;
+  const heightCapPx = viewport
+    ? Math.min(viewport.height - 100, widthCapPx / stageMaxRatio)
+    : undefined;
+
+  // "uniform" pins the rendered height outright instead of capping it.
+  // Capping alone (max-height + width/height:auto) lets the browser fall
+  // back to each file's srcset-derived intrinsic size whenever the cap
+  // doesn't bind — and that intrinsic size varies per file and per device
+  // pixel ratio (next/image's srcset keeps its width descriptors even when
+  // a source file is smaller than the candidate it's serving), which is
+  // exactly the "every image is a different size" bug on Retina screens.
+  // An explicit height leaves the browser nothing to derive: same height
+  // for every frame, width following the image's own ratio via
+  // width:auto. maxWidth stays on as a guard for the widest frame, where
+  // sub-percent drift between declared and true ratio could otherwise
+  // poke past the stage.
+  const imageStyle =
+    fit === "uniform" && heightCapPx
+      ? { width: "auto" as const, height: Math.round(heightCapPx), maxWidth: widthCapPx }
+      : {
+          width: "auto" as const,
+          height: "auto" as const,
+          maxWidth: widthCapPx,
+          maxHeight: heightCapPx,
+        };
 
   return (
     <div
@@ -60,10 +116,7 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]" }: LightboxOv
       className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-ink/90 p-4"
       onClick={close}
     >
-      <div
-        className="relative flex h-[calc(100vh-100px)] w-[min(97vw,2000px)] items-center justify-center"
-        style={stageStyle}
-      >
+      <div className="relative flex h-[calc(100vh-100px)] w-[min(97vw,2000px)] items-center justify-center">
         {openImage.src && (
           <div
             key={openIndex}
@@ -82,8 +135,8 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]" }: LightboxOv
               width={imgWidth}
               height={imgHeight}
               sizes="97vw"
-              className={`max-h-[min(calc(100vh-100px),calc(min(97vw,2000px)/var(--stage-max-ratio)))] max-w-[min(97vw,2000px)] ${radius}`}
-              style={{ width: "auto", height: "auto" }}
+              className={radius}
+              style={imageStyle}
               priority
             />
           </div>
