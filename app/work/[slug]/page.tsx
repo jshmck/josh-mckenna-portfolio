@@ -12,6 +12,7 @@ import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectSwipeNav } from "@/components/work/project-swipe-nav";
+import { ProjectTitle } from "@/components/work/project-title";
 import { getProject, getProjectNeighbours, projects, type Project, type ProjectImage } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
@@ -117,8 +118,10 @@ export default async function ProjectPage({
   // anyway, so titles read inconsistently phone to phone. "The project
   // name needs to be on two lines," per Josh. Breaking before the last
   // word (not one-word-per-line) keeps three-word titles ("The Gay
-  // Divide") to exactly two lines as well. The <br> is md:hidden, so
-  // desktop still renders the title as one run.
+  // Divide") to exactly two lines as well. The split is computed here but
+  // rendered by ProjectTitle (a client component — see its own doc
+  // comment), which also shrinks the font if either resulting line is
+  // still too wide for the viewport.
   const displayTitleWords = displayTitle.split(" ");
   const displayTitleHead = displayTitleWords.slice(0, -1).join(" ");
   const displayTitleLast = displayTitleWords[displayTitleWords.length - 1];
@@ -161,17 +164,11 @@ export default async function ProjectPage({
 
           <div className="mt-6 flex items-end gap-2">
             <div className="relative shrink-0">
-              <h1 className="type-display max-w-4xl leading-[1.1] text-accent">
-                {displayTitleWords.length > 1 ? (
-                  <>
-                    {displayTitleHead}{" "}
-                    <br className="md:hidden" />
-                    {displayTitleLast}
-                  </>
-                ) : (
-                  displayTitle
-                )}
-              </h1>
+              <ProjectTitle
+                head={displayTitleHead}
+                last={displayTitleLast}
+                className="type-display max-w-4xl leading-[1.1] text-accent"
+              />
 
               {/* Trial (First 3D Character only for now): the same cut-out
                   that bobs in the homepage hero, circling the title like a
