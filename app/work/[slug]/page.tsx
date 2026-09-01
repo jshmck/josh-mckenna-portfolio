@@ -250,12 +250,12 @@ export default async function ProjectPage({
                   showcase leading the page; "bottom" (Pato) is supplementary,
                   under the artwork it's showing off; "pair" (Last Call) sits
                   beside the still, inside the same two-up grid heroPair
-                  would otherwise occupy. Jimny (no heroPair) has no images
-                  to sit above or below, so position is moot — the video is
-                  the whole hero slot either way. */}
+                  would otherwise occupy; "outro" (Jimny) renders after the
+                  write-up instead — see the block below WriteUp. */}
               {project.heroVideo &&
                 project.heroVideo.position !== "bottom" &&
-                project.heroVideo.position !== "pair" && (
+                project.heroVideo.position !== "pair" &&
+                project.heroVideo.position !== "outro" && (
                   <div className={project.heroPair ? "mb-8" : undefined}>
                     <ProjectVideo
                       video={{
@@ -354,6 +354,21 @@ export default async function ProjectPage({
           )}
 
           <WriteUp project={project} />
+
+          {project.heroVideo?.position === "outro" && (
+            // Closes the page instead of opening it — see the "outro"
+            // case in Project.heroVideo's position doc comment.
+            <div className="mx-auto max-w-frame px-6 pb-12 md:px-gutter">
+              <ProjectVideo
+                video={{
+                  ...project.heroVideo,
+                  poster: project.heroVideo.poster ?? project.hero.src,
+                }}
+                sound={project.heroVideo.sound}
+                ratio={project.heroVideo.ratio}
+              />
+            </div>
+          )}
 
           {/* Trial (la-pride only for now, `galleryLayout: "grid"`): the
               classic tall two-up leads (key art + flyposted lineup), then

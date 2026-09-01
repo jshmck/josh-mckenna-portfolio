@@ -168,8 +168,12 @@ export type Project = {
     sound?: boolean;
     poster?: string;
     /** "pair" renders the video inside the heroPair two-up, alongside
-     *  `hero`, instead of full-width above or below it. */
-    position?: "top" | "bottom" | "pair";
+     *  `hero`, instead of full-width above or below it. "outro" moves it
+     *  out of the hero block entirely, rendering it after the write-up
+     *  instead — Jimny only for now, where the three renders lead the page
+     *  (via hero/heroPair/heroThird) and the turnaround clip reads as a
+     *  closer rather than the opener. */
+    position?: "top" | "bottom" | "pair" | "outro";
     /** Defaults to 16/9. Set when the clip isn't landscape. */
     ratio?: ImageRatio;
   };
