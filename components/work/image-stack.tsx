@@ -142,12 +142,18 @@ export function ImageStack({
         )}
 
         {!manualLayout && (firstImage || secondImage) && (
-          <div className="grid gap-8 md:grid-cols-2">
+          <div
+            className={
+              firstImage?.small || secondImage?.small
+                ? "flex flex-wrap justify-center gap-8"
+                : "grid gap-8 md:grid-cols-2"
+            }
+          >
             {[firstImage, secondImage].filter(Boolean).map((image, index) => (
               <Reveal
                 key={image.alt}
                 delay={index * 110}
-                className={image.small ? "mx-auto w-full max-w-lg" : undefined}
+                className={image.small ? "w-full max-w-lg" : undefined}
               >
                 <button
                   type="button"
@@ -155,16 +161,46 @@ export function ImageStack({
                   aria-label={`Open larger view of ${image.alt}`}
                   className="block w-full cursor-zoom-in text-left"
                 >
-                  <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
+                  <Plate image={image} sizes={image.small ? "(max-width: 768px) 100vw, 512px" : "(max-width: 768px) 100vw, 50vw"} />
                 </button>
-                <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
+                {image.caption !== false && (
+                  <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
+                )}
               </Reveal>
             ))}
           </div>
         )}
 
-        {loopImages.map((image, index) => {
+        {/* Consecutive `small` singles (not already claimed by a
+            gallerySpan or interrupted by galleryVideo) pair up two at a
+            time instead of each running full-width alone — "put images
+            side by side if they're small," per Josh. Computed once
+            up front as a set of "already paired, skip on your own
+            iteration" indices, since a plain .map can't look behind
+            itself mid-render. */}
+        {(() => {
+          const pairedAway = new Set<number>();
+          for (let i = 0; i < loopImages.length; i++) {
+            const fullIndex = i + indexOffset;
+            if (pairedAway.has(fullIndex)) continue;
+            const inSpan = gallerySpans.some(
+              (span) => fullIndex >= span.startIndex && fullIndex < span.startIndex + span.count,
+            );
+            if (inSpan) continue;
+            const next = loopImages[i + 1];
+            const nextFullIndex = fullIndex + 1;
+            const nextInSpan = gallerySpans.some((span) => span.startIndex === nextFullIndex);
+            const videoBreak = galleryVideo?.afterIndex === fullIndex;
+            if (loopImages[i].small && next?.small && !nextInSpan && !videoBreak) {
+              pairedAway.add(nextFullIndex);
+            }
+          }
+
+          return loopImages.map((image, index) => {
           const fullIndex = index + indexOffset;
+
+          // Consumed by the previous iteration's small-pair below — skip.
+          if (pairedAway.has(fullIndex)) return null;
 
           // Already rendered as part of an earlier row — skip.
           const inLaterSpan = gallerySpans.some(
@@ -213,6 +249,31 @@ export function ImageStack({
             );
           }
 
+          if (pairedAway.has(fullIndex + 1)) {
+            const next = loopImages[index + 1];
+            return (
+              <Reveal key={image.alt}>
+                <div className="flex flex-wrap justify-center gap-8">
+                  {[image, next].map((pairImage, i) => (
+                    <div key={pairImage.alt} className="w-full max-w-lg">
+                      <button
+                        type="button"
+                        onClick={() => openAt(fullIndex + i)}
+                        aria-label={`Open larger view of ${pairImage.alt}`}
+                        className="block w-full cursor-zoom-in text-left"
+                      >
+                        <Plate image={pairImage} sizes="(max-width: 768px) 100vw, 512px" />
+                      </button>
+                      {pairImage.caption !== false && (
+                        <p className="type-label mt-3 text-ink-muted">{pairImage.alt}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
+            );
+          }
+
           const capped = isPortrait(image.ratio) || image.small;
           return (
             <Fragment key={image.alt}>
@@ -246,7 +307,8 @@ export function ImageStack({
               )}
             </Fragment>
           );
-        })}
+          });
+        })()}
       </div>
 
       {openImage && (

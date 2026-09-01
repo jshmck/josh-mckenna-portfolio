@@ -314,10 +314,15 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "5 Icons",
     categories: ["Character", "Icons"],
-    summary: "A hot dog, a pool day, a pizza slice — Coke turns up in all of them.",
+    summary: "A hot dog, a bottle, a pizza slice — Coke turns up in all of them.",
     heroCaption: "One of five \"everyday moments\" icons made for Coca-Cola, 2022.",
+    // No visible captions on this one -- "Poolside" turned out to be a
+    // wrong guess at what one of these actually shows, and rather than
+    // fix the wording, Josh asked to just drop captions here entirely.
+    // alt text stays for accessibility.
+    hideHeroCaptions: true,
     brief: [
-      "Commissioned via Momentum for Coca-Cola — a set of everyday moments (lunch, a pool day, a slice with friends) with the drink folded into each scene rather than posed as the hero shot.",
+      "Commissioned via Momentum for Coca-Cola — a set of everyday moments, each one built around capturing a genuine Coke moment rather than posing the drink as the hero shot.",
       "Five square icons, one flat style throughout, so they'd run interchangeably across social.",
     ],
     credits: [
@@ -341,24 +346,28 @@ export const projects: Project[] = [
         alt: "A hot dog and a Coca-Cola Zero Sugar, on a napkin",
         src: "/work/coca-cola-moments/01-01.webp",
         small: true,
+        caption: false,
       },
       {
         ratio: "1/1",
         alt: "Mid-sip",
         src: "/work/coca-cola-moments/03-03.webp",
         small: true,
+        caption: false,
       },
       {
         ratio: "1/1",
-        alt: "Poolside",
+        alt: "A sunny afternoon",
         src: "/work/coca-cola-moments/04-04.webp",
         small: true,
+        caption: false,
       },
       {
         ratio: "1/1",
         alt: "Pizza night",
         src: "/work/coca-cola-moments/05-05.webp",
         small: true,
+        caption: false,
       },
     ],
   },
