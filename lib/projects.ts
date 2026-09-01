@@ -332,6 +332,55 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "costa-smeralda",
+    title: "Costa Smeralda",
+    client: "Costa Smeralda",
+    year: 2022,
+    discipline: "Illustration",
+    deliverables: "3 Posters",
+    categories: ["Hospitality", "Automotive"],
+    summary: "Three hotels, three vintage travel posters, one coastline.",
+    heroCaption: "A set of travel posters for three Costa Smeralda hotels — Cala di Volpe, Romazzino and Cervo — 2022.",
+    brief: [
+      "Costa Smeralda commissioned a set of vintage-style travel posters, one per hotel — Hotel Cala di Volpe, Hotel Romazzino and Hotel Cervo — each keeping its own layout and palette rather than sharing a single template.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Costa Smeralda" },
+    ],
+    // Cala di Volpe leads the /work card; Romazzino swaps in on hover.
+    cardRatio: "3/4",
+    cardImage: {
+      ratio: "3/4",
+      alt: "Hotel Cala di Volpe",
+      src: "/work/costa-smeralda/01-cala-di-volpe.webp",
+    },
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "Hotel Romazzino",
+      src: "/work/costa-smeralda/02-romazzino.webp",
+    },
+    hero: {
+      ratio: "3/4",
+      alt: "Hotel Cala di Volpe",
+      src: "/work/costa-smeralda/01-cala-di-volpe.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "Hotel Romazzino",
+      src: "/work/costa-smeralda/02-romazzino.webp",
+    },
+    gallery: [
+      {
+        // True ratio (0.7072) — closer to 12/17 than the 3/4 this would
+        // otherwise snap to.
+        ratio: "12/17",
+        alt: "Hotel Cervo",
+        src: "/work/costa-smeralda/03-cervo.webp",
+      },
+    ],
+  },
+  {
     slug: "london-lgbtq-centre",
     title: "LGBTQ Centre",
     client: "London LGBTQ+ Community Centre",
