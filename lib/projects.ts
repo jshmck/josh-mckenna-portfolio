@@ -307,6 +307,53 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "coca-cola-moments",
+    title: "Coca-Cola Moments",
+    client: "Coca-Cola",
+    year: 2022,
+    discipline: "Illustration",
+    deliverables: "5 Icons",
+    categories: ["Character", "Icons"],
+    summary: "A hot dog, a pool day, a pizza slice — Coke turns up in all of them.",
+    heroCaption: "One of five \"everyday moments\" icons made for Coca-Cola, 2022.",
+    brief: [
+      "Commissioned via Momentum for Coca-Cola — a set of everyday moments (lunch, a pool day, a slice with friends) with the drink folded into each scene rather than posed as the hero shot.",
+      "Five square icons, one flat style throughout, so they'd run interchangeably across social.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Agency", name: "Momentum" },
+      { role: "Client", name: "Coca-Cola" },
+    ],
+    hero: {
+      ratio: "1/1",
+      alt: "A hot dog and a Coca-Cola Zero Sugar, on a napkin",
+      src: "/work/coca-cola-moments/01-01.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "The bottle",
+        src: "/work/coca-cola-moments/02-02.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Mid-sip",
+        src: "/work/coca-cola-moments/03-03.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Poolside",
+        src: "/work/coca-cola-moments/04-04.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Pizza night",
+        src: "/work/coca-cola-moments/05-05.webp",
+      },
+    ],
+  },
+  {
     slug: "boat-international",
     title: "Boat Int.",
     client: "Boat International",
