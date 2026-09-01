@@ -56,26 +56,29 @@
      the enquiry form) — always half the nav circles' current diameter, so
      frames share the circles' literal corner curvature without going
      fully stadium-shaped themselves ("the radius of the frames on the
-     site to match the circles," per Josh). The circles are h-[53px]
-     below md and h-20 (80px) from md up (nav.tsx), so this token is
-     26.5px on phones and 40px on desktop — see the md override just
-     below the @theme block. */
-  --radius-frame: 26.5px;
+     site to match the circles," per Josh). 40px is the web value the
+     site has always run (half the h-20 desktop circles) and stays the
+     token's base — "i am only asking you to work on mobile," per Josh —
+     with phones the only override (26.5px, half the h-[53px] mobile
+     circles), just below the @theme block. */
+  --radius-frame: 40px;
 
   /* Motion */
   --ease-drift: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* springy overshoot — lightbox, playful UI accents */
 }
 
-/* --radius-frame switches with the nav circles' own size breakpoint
-   (nav.tsx: h-[53px] md:h-20), so `rounded-frame` corners match the
-   circles at every viewport, not just desktop. Overriding the variable —
-   not generating a second utility — keeps every rounded-frame call site
-   responsive for free; Tailwind v4 utilities read the live var. 48rem is
-   Tailwind's md, the same breakpoint the circles resize at. */
-@media (min-width: 48rem) {
+/* Mobile-only: --radius-frame drops to the mobile nav circles' own
+   radius below md (nav.tsx: h-[53px], so 26.5px), the same breakpoint
+   the circles themselves resize at — "the radius needs to match the nav
+   bar circles," per Josh, scoped to mobile only. From 48rem (Tailwind's
+   md) up, the token's base 40px applies untouched, so web renders
+   exactly as it always has. Overriding the variable — not generating a
+   second utility — keeps every rounded-frame call site responsive for
+   free; Tailwind v4 utilities read the live var. */
+@media (width < 48rem) {
   :root {
-    --radius-frame: 40px;
+    --radius-frame: 26.5px;
   }
 }
 
