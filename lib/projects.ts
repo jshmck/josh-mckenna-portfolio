@@ -1069,7 +1069,7 @@ export const projects: Project[] = [
   },
   {
     slug: "opto-markets-2019",
-    title: "The Markets in 2019",
+    title: "OPTO Mag",
     client: "CMC Markets",
     year: 2019,
     yearLabel: "OPTO Issue 03, Jan/Feb 2019",
