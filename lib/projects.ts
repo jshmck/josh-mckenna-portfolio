@@ -333,7 +333,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "london-lgbtq-centre",
-    title: "London LGBTQ+ Community Centre",
+    title: "LGBTQ Centre",
     client: "London LGBTQ+ Community Centre",
     year: 2019,
     discipline: "Illustration",
