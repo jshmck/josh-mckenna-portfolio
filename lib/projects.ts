@@ -1692,7 +1692,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Servebots on delivery",
-      src: "/work/figma-servebots/01-servebots-hr.webp",
+      src: "/work/figma-servebots/01-servebots-hr2.webp",
     },
     gallery: [],
   },
