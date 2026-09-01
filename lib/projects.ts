@@ -367,7 +367,7 @@ export const projects: Project[] = [
     client: "Tilda",
     year: 2022,
     discipline: "Illustration",
-    deliverables: "3 Animated Ads",
+    deliverables: "Illustrations for Animation",
     categories: ["Character", "Icons"],
     summary: "Three rice pouches, three flavours, three animations.",
     heroCaption: "Illustration for three animated Tilda Rice ads — Katsu Curry, Indonesian Fried Rice and Masala — 2022.",
@@ -381,26 +381,38 @@ export const projects: Project[] = [
       { role: "Client", name: "Tilda" },
     ],
     hero: {
-      ratio: "3/4",
-      alt: "Tilda Katsu Curry Rice packaging",
-      src: "/work/tilda-rice/01-microsoftteams-image-63.webp",
+      ratio: "1/1",
+      alt: "Tilda Indonesian Fried Rice packaging",
+      src: "/work/tilda-rice/01-fried-rice.webp",
     },
-    // Small side by side, not full-width — see Project.videoRow.
+    // Sits above the write-up, hero stays out of the page body — see
+    // Project.videoRow and Project.heroHiddenOnPage. `hero` still picks the
+    // /work gallery card's thumbnail (see ProjectCard's baseImage) even
+    // though it doesn't render on the project page itself.
+    heroHiddenOnPage: true,
     videoRow: [
       { src: "/work/tilda-rice/katsu.mp4", alt: "Katsu Curry Rice animation", sound: true },
       { src: "/work/tilda-rice/fried-rice.mp4", alt: "Indonesian Fried Rice animation", sound: true },
       { src: "/work/tilda-rice/masala.mp4", alt: "Masala Rice animation", sound: true },
     ],
+    // All three product photos in one row, not the default two-up-then-single
+    // stack — see Project.gallerySpans.
+    gallerySpans: [{ startIndex: 0, count: 3 }],
     gallery: [
       {
-        ratio: "3/4",
-        alt: "Tilda Indonesian Fried Rice packaging",
-        src: "/work/tilda-rice/02-microsoftteams-image-64.webp",
+        ratio: "1/1",
+        alt: "Tilda Katsu Curry Rice packaging",
+        src: "/work/tilda-rice/02-katsu-curry.webp",
       },
       {
-        ratio: "3/4",
+        ratio: "1/1",
+        alt: "Tilda Indonesian Fried Rice packaging",
+        src: "/work/tilda-rice/01-fried-rice.webp",
+      },
+      {
+        ratio: "1/1",
         alt: "Tilda Masala Rice packaging",
-        src: "/work/tilda-rice/03-microsoftteams-image-65.webp",
+        src: "/work/tilda-rice/03-masala-rice.webp",
       },
     ],
   },
