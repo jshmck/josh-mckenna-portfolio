@@ -1041,22 +1041,23 @@ export const projects: Project[] = [
     cardRatio: "1/1",
     cardImage: {
       ratio: "1/1",
-      alt: "A mechanic in pink heels rises through a car's open sunroof, wrenches in hand",
+      alt: "A mechanic, living his truth in pink heels",
       src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01.webp",
     },
-    // True ratio 1.3339 (3000x2249) — close enough to 4/3 (1.3333) to snap
+    // True ratio 1.7637 (4000x2268) — close enough to 16/9 (1.7778) to snap
     // with no visible crop. Full-width, no heroPair, so the spread reads
     // as wide as the site's usual two-up hero grid instead of one column
-    // of it — per Josh, the spread should lead the page.
+    // of it — per Josh, the spread should lead the page. Replaced the
+    // original flat export with Josh's mockup-shadow render.
     hero: {
-      ratio: "4/3",
+      ratio: "16/9",
       alt: "The Gay Divide spread, opening page",
-      src: "/work/weapons-of-reason-gay-divide/02-spread-page.webp",
+      src: "/work/weapons-of-reason-gay-divide/01-spread-final.webp",
     },
     gallery: [
       {
         ratio: "1/1",
-        alt: "A mechanic in pink heels rises through a car's open sunroof, wrenches in hand",
+        alt: "A mechanic, living his truth in pink heels",
         src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01.webp",
       },
       {
