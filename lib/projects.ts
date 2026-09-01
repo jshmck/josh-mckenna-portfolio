@@ -612,54 +612,70 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
-    slug: "wagamama-proud-beyond-pride",
-    title: "Wagamama",
+    // Merged with the former wagamama-brighton project — two Wagamama Pride
+    // window commissions a year apart, character work similar enough
+    // between them that they read better as one project than two. Brighton
+    // (2023, the stronger piece) leads as hero; the 2022 UK-wide "Proud
+    // Beyond Pride" vinyl and its installation photos moved into the
+    // gallery, along with one kept Brighton detail shot (the other three —
+    // close-up character crops, the most repetitive part — were dropped).
+    slug: "wagamama-pride",
+    title: "Wagamama Pride",
     client: "Wagamama",
-    year: 2022,
-    pinnedRank: 2,
+    year: 2023,
+    yearLabel: "2022–2023",
+    pinnedRank: 1,
     discipline: "Pride Campaign",
-    deliverables: "Vinyl Window Display — UK-wide",
+    deliverables: "Vinyl Window Display",
     categories: ["Pride", "Character", "Hospitality"],
-    summary: "A rainbow ribbon, cut to fit every Wagamama window in the UK.",
-    heroCaption: "\"Proud Beyond Pride\" — Wagamama's UK-wide Pride window vinyl, 2022.",
+    summary: "Two Pride windows, one restaurant chain, a year apart.",
+    heroCaption: "The full artwork, designed for Wagamama's Brighton window, 2023.",
     brief: [
-      "For Pride month 2022, Wagamama wanted one Pride window design that could run across every UK restaurant at once — the same artwork, resized and cropped differently at each site's own glass, from a full corner window at Marble Arch to an equally huge run at Old Street.",
-      "A lineup of characters waves across the glass on a rainbow ribbon, with \"PROUD beyond PRIDE\" cut through the middle in bold script — built to hold up whether it's stretched across three panes or cropped down to a sandwich board on the pavement outside.",
+      "For Pride month 2022, Wagamama wanted one window design that could run across every UK restaurant at once — the same artwork, resized and cropped differently at each site's own glass, from a full corner window at Marble Arch to an equally huge run at Old Street.",
+      "The year after, Wagamama's Brighton restaurant got its own dedicated window — eight characters spread across the glass as a joyful tribute to the city's diverse and inclusive spirit. It's stayed up as a permanent feature ever since.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Installation Photography", name: "Peter O'Sullivan" },
       { role: "Client", name: "Wagamama" },
     ],
+    // Standardized to 16/9 with the other landscape /work cards, not the
+    // artwork's true 1063/640 (1.66) — only the card frame; hero below
+    // keeps the real ratio.
     cardRatio: "16/9",
-    cardImage: {
-      ratio: "16/9",
-      alt: "The full \"Proud Beyond Pride\" artwork",
-      src: "/work/wagamama-proud-beyond-pride/01-full.webp",
-    },
     hero: {
-      ratio: "16/9",
-      alt: "The full \"Proud Beyond Pride\" artwork",
-      src: "/work/wagamama-proud-beyond-pride/01-full.webp",
+      ratio: "1063/640",
+      alt: "The full Wagamama Brighton Pride artwork",
+      src: "/work/wagamama-pride/01-full.webp",
     },
-    // Opts out of the default two-up pairing — Josh wants these one after
-    // another, full width, in this order, not the first two side by side.
+    // Opts out of the default two-up pairing — one after another, full
+    // width, in this order, rather than pairing mismatched ratios.
     gallerySpans: [{ startIndex: 0, count: 1 }],
     gallery: [
       {
+        ratio: "16/9",
+        alt: "The full \"Proud Beyond Pride\" artwork",
+        src: "/work/wagamama-pride/02-proud-beyond-pride-full.webp",
+      },
+      {
         ratio: "3/2",
         alt: "The window at Wagamama's Old Street",
-        src: "/work/wagamama-proud-beyond-pride/04-old-street.webp",
+        src: "/work/wagamama-pride/03-old-street.webp",
       },
       {
         ratio: "3/2",
         alt: "The window at Wagamama's Marble Arch",
-        src: "/work/wagamama-proud-beyond-pride/03-marble-arch.webp",
+        src: "/work/wagamama-pride/04-marble-arch.webp",
       },
       {
         ratio: "2/3",
         alt: "The sandwich board outside Wagamama's Old Street",
-        src: "/work/wagamama-proud-beyond-pride/02-sandwich-board.webp",
+        src: "/work/wagamama-pride/05-sandwich-board.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "The finished window, installed at Wagamama Brighton",
+        src: "/work/wagamama-pride/06-window-install.webp",
       },
     ],
   },
@@ -2155,56 +2171,6 @@ export const projects: Project[] = [
         ratio: "4/3",
         alt: "Bottle detail — botanicals from the Grains of Paradise",
         src: "/work/bombay-sapphire/08-bottles-macro.webp",
-      },
-    ],
-  },
-  {
-    slug: "wagamama-brighton",
-    title: "Wagamama Brighton",
-    client: "Wagamama",
-    year: 2023,
-    pinnedRank: 1,
-    discipline: "Window Display",
-    deliverables: "Vinyl Printed Window Display",
-    categories: ["Pride", "Character", "Hospitality"],
-    summary: "Eight characters celebrating Pride, wrapped across a restaurant window.",
-    heroCaption: "The full artwork, designed for Wagamama's Brighton window.",
-    brief: [
-      "A Pride window display for Wagamama's Brighton restaurant, celebrating the city's diverse and inclusive spirit. Eight characters spread across the glass as a joyful tribute to the LGBTQIA+ community. It's stayed up as a permanent feature of the restaurant's window ever since.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "Wagamama" },
-    ],
-    // Standardized to 16/9 with the other landscape /work cards, not the
-    // artwork's true 1063/640 (1.66) — only the card frame; hero below
-    // keeps the real ratio.
-    cardRatio: "16/9",
-    hero: {
-      ratio: "1063/640",
-      alt: "The full Wagamama Brighton Pride artwork",
-      src: "/work/wagamama-brighton/01-wagamama-brighton-website.webp",
-    },
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "The finished window, installed at Wagamama Brighton",
-        src: "/work/wagamama-brighton/01-window-install.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Detail — the sunglasses girl",
-        src: "/work/wagamama-brighton/03-detail-purple-top.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Detail — the Wagamama cowboy",
-        src: "/work/wagamama-brighton/04-detail-pink-hat.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Detail — love is love",
-        src: "/work/wagamama-brighton/05-detail-wheelchair.webp",
       },
     ],
   },
