@@ -210,13 +210,20 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]", fit = "unifo
             </span>
           </button>
         )}
+        {/* × (U+00D7), not ✕ (U+2715) — Helvetica has no U+2715, so it
+            rendered from a fallback face whose stroke didn't match the
+            chevrons' ("the weight of the chevrons is different to the
+            x," per Josh). The multiplication sign is a real glyph in the
+            same face as </> and, at the same 20/30px, math operators
+            share the face's stroke weight by design — matched for free,
+            no per-glyph size tuning to maintain. */}
         <button
           type="button"
           onClick={close}
           aria-label="Close"
           className={LIGHTBOX_BUTTON_CLASS}
         >
-          ✕
+          <span className="inline-block text-[20px] md:text-[30px]">×</span>
         </button>
         {images.length > 1 && (
           <button
