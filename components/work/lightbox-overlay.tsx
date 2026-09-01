@@ -12,9 +12,17 @@ function ratioToNumber(ratio: string) {
 
 /** Same recipe across every lightbox on the site — kept in one place so
  *  hover/press states, spacing and the frosted pill can't drift between
- *  HeroLightbox, ImageStack, GalleryGrid and PosterGrid. */
+ *  HeroLightbox, ImageStack, GalleryGrid and PosterGrid. Hover/tap play
+ *  the header pills' own nav-pill-hover squash-and-stretch (globals.css)
+ *  rather than the plain scale-110/scale-90 pop this used before — "give
+ *  the same nav bubble bounce ... as the nav bars to the lightbox
+ *  navigation too," per Josh. The directional translate/rotate accents on
+ *  each button still ride on top: Tailwind v4's translate/rotate are
+ *  independent CSS properties from the `transform` the keyframe animates,
+ *  so they compose instead of fighting (same reasoning as BackToTop's
+ *  transition list). */
 const LIGHTBOX_BUTTON_CLASS =
-  "group flex h-9 w-9 items-center justify-center rounded-full text-canvas transition-all duration-300 ease-bounce hover:scale-110 active:scale-90 hover:bg-canvas/15 hover:text-brand active:text-brand";
+  "group flex h-9 w-9 items-center justify-center rounded-full text-canvas transition-all duration-300 ease-bounce hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] hover:bg-canvas/15 hover:text-brand active:text-brand";
 
 /** Tracks the viewport size live (mount + resize) so the stage can size
  *  itself in real pixels rather than through nested CSS var()/calc()/min()
@@ -143,14 +151,22 @@ export function LightboxOverlay({ state, radius = "rounded-[40px]", fit = "unifo
         )}
       </div>
 
-      {/* One grouped toolbar instead of three floating circles — same
-          frosted-glass pill recipe as BackToTop (bg-canvas/15 +
-          backdrop-blur-md) and the same solid, fully-opaque outline weight
-          as BackToTop/the filter pills. Sits in normal flow below the
-          image rather than overlaid on it. */}
+      {/* One grouped toolbar instead of three floating circles — the full
+          nav/BackToTop frost treatment now, not the flat white border it
+          had before: asymmetric inset highlight (bright top rim, faint
+          bottom — the glass-catching-light technique), brand-blue inset
+          wash, backdrop-blur + saturate. Kept byte-identical with nav.tsx's
+          frostClass / BackToTop's PILL_BASE shadow stack so the three never
+          drift. Bounces like the nav pills too: nav-pill-pop as its resting
+          class (plays once per lightbox open — the toolbar mounts with the
+          dialog, so mount *is* its appearing moment), nav-pill-hover-soft
+          when hovered/tapped anywhere in the pill (the main nav pill's own
+          quarter-amplitude container bounce; the buttons inside play full
+          nav-pill-hover themselves, mirroring pill vs words in nav.tsx).
+          Sits in normal flow below the image rather than overlaid on it. */}
       <div
         data-lightbox-toolbar
-        className="flex flex-shrink-0 items-center gap-1 rounded-full border border-canvas bg-canvas/15 p-1.5 backdrop-blur-md"
+        className="flex flex-shrink-0 animate-[nav-pill-pop_650ms_ease-in-out] items-center gap-1 rounded-full border border-transparent bg-canvas/15 p-1.5 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out]"
         onClick={(event) => event.stopPropagation()}
       >
         {images.length > 1 && (
