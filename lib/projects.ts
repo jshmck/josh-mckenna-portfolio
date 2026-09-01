@@ -320,7 +320,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "wsj-airpods-rich",
-    title: "Do AirPods Make You Look Rich?",
+    title: "WSJ - Airpods",
     client: "The Wall Street Journal",
     year: 2019,
     yearLabel: "February 2019",
