@@ -648,9 +648,9 @@ export const projects: Project[] = [
       alt: "The full Wagamama Brighton Pride artwork",
       src: "/work/wagamama-pride/01-full.webp",
     },
-    // Opts out of the default two-up pairing — one after another, full
-    // width, in this order, rather than pairing mismatched ratios.
-    gallerySpans: [{ startIndex: 0, count: 1 }],
+    // The first three run one after another, full width; the last two —
+    // both documentary installation shots — pair up instead, per Josh.
+    gallerySpans: [{ startIndex: 3, count: 2 }],
     gallery: [
       {
         ratio: "16/9",
