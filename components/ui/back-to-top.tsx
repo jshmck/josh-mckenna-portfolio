@@ -45,12 +45,18 @@ type BackToTopProps = {
  * once he'd seen the merged version. This mirrors the header's own
  * left/centre/right pattern (nav.tsx: jM circle, the Work/Shop/Info/
  * Contact pill, Cart circle — three separate shapes, one shared frost
- * treatment) rather than inventing a new layout. Previous/Next only render
- * at md and up — three independently-positioned pills at once is exactly
- * the kind of layout this site has repeatedly fought to keep from
- * overlapping at narrow widths (see nav.tsx's own mobile-sizing history),
- * so mobile keeps just the centre pill rather than risking three pills
- * colliding on a 375px screen.
+ * treatment) rather than inventing a new layout. Previous/Next used to
+ * render at md and up only, out of the site's long-running fear of three
+ * independently-positioned pills colliding at narrow widths (see nav.tsx's
+ * own mobile-sizing history) — reversed per Josh ("introduce the chevron
+ * 'next' project navigation to mobile too"): on mobile they take the
+ * header circles' own 53px size at the same left-6/right-6 content edge
+ * the header's px-6 puts jM and Cart at, which leaves ~15px clear of the
+ * centre pill even at 320px. Their chevron glyphs also play a repeating
+ * outward "beckon" nudge below md (chevron-beckon-left/-right,
+ * globals.css) — there's no hover on a phone to discover them with, and
+ * the nudge doubles as the hint that the projects themselves swipe from
+ * one to the next (see ProjectSwipeNav, fed by these same neighbours).
  *
  * Unlike the centre pill, Previous/Next don't wait for the one-viewport
  * scroll threshold — they're visible from load on every project page.
@@ -61,7 +67,8 @@ type BackToTopProps = {
  * i want them on each project," per Josh. They still play the pill bounce
  * on their own appearing moment (mount, since load *is* their appearance
  * now) and share the docking landing with the centre pill. Both are
- * identical fixed-size circles (h-14 w-14) holding a "<"/">" chevron at
+ * identical fixed-size circles (53px below md — the header circles' own
+ * mobile size — h-14 from md up) holding a "<"/">" chevron near
  * the lightbox toolbar's own 30px glyph scale — "replace the previous
  * and next project buttons with chevrons too," per Josh, with his own
  * illustrated icons to swap in for every chevron on the site later
@@ -87,7 +94,10 @@ type BackToTopProps = {
  * zero below 1344px, plus the gutter — using the real
  * --container-frame/--spacing-gutter tokens so it tracks them if they
  * ever change. (100vw vs classic scrollbars skews this a few px on
- * Windows; imperceptibly off the guide there.)
+ * Windows; imperceptibly off the guide there.) The calc only applies from
+ * md up: below md the header runs px-6, not px-gutter, so the mobile
+ * classes pin left-6/right-6 instead — the same 24px edge jM and Cart
+ * actually sit at there.
  *
  * Carries the same nav-pill treatment as the header rather than the filter
  * chips' Waldeck styling it used before: centred in the viewport instead
@@ -260,9 +270,11 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
           ref={previousRef}
           href={`/work/${previous.slug}`}
           aria-label="Previous project"
-          className={`${SIDE_PILL} left-[calc((100vw-min(100vw,var(--container-frame)))/2+var(--spacing-gutter))] hidden h-14 w-14 items-center justify-center text-[30px] hover:font-bold md:flex`}
+          className={`${SIDE_PILL} left-6 flex h-[53px] w-[53px] items-center justify-center text-[28px] hover:font-bold md:left-[calc((100vw-min(100vw,var(--container-frame)))/2+var(--spacing-gutter))] md:h-14 md:w-14 md:text-[30px]`}
         >
-          {"<"}
+          <span className="inline-block max-md:animate-[chevron-beckon-left_6s_ease-in-out_2s_infinite]">
+            {"<"}
+          </span>
         </Link>
       )}
 
@@ -282,9 +294,11 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
           ref={nextRef}
           href={`/work/${next.slug}`}
           aria-label="Next project"
-          className={`${SIDE_PILL} right-[calc((100vw-min(100vw,var(--container-frame)))/2+var(--spacing-gutter))] hidden h-14 w-14 items-center justify-center text-[30px] hover:font-bold md:flex`}
+          className={`${SIDE_PILL} right-6 flex h-[53px] w-[53px] items-center justify-center text-[28px] hover:font-bold md:right-[calc((100vw-min(100vw,var(--container-frame)))/2+var(--spacing-gutter))] md:h-14 md:w-14 md:text-[30px]`}
         >
-          {">"}
+          <span className="inline-block max-md:animate-[chevron-beckon-right_6s_ease-in-out_2s_infinite]">
+            {">"}
+          </span>
         </Link>
       )}
     </>

@@ -503,6 +503,47 @@
   }
 }
 
+/* Mobile beckon on the project pages' Previous/Next chevrons
+   (back-to-top.tsx) — two quick pushes outward in the first ~1.5s of a
+   6s cycle, then a long rest, repeating. Cousin of the one-shot
+   arrow-hint above, but infinite: on a phone there's no hover state to
+   discover the circles with, and the nudge doubles as the cue that the
+   projects themselves swipe from one to the next (ProjectSwipeNav).
+   Lives on the glyph span, not the circle, so it never fights
+   SIDE_PILL's own nav-pill-pop/-landing transforms — the same
+   glyph-vs-button split the lightbox toolbar's hint uses. The global
+   prefers-reduced-motion rule above clamps it to a single 0.01ms run,
+   so no extra guard is needed. */
+@keyframes chevron-beckon-right {
+  0%,
+  24%,
+  100% {
+    transform: translateX(0);
+  }
+  6%,
+  18% {
+    transform: translateX(6px);
+  }
+  12% {
+    transform: translateX(1px);
+  }
+}
+
+@keyframes chevron-beckon-left {
+  0%,
+  24%,
+  100% {
+    transform: translateX(0);
+  }
+  6%,
+  18% {
+    transform: translateX(-6px);
+  }
+  12% {
+    transform: translateX(-1px);
+  }
+}
+
 /* Nav pill/circles (components/site/nav.tsx) — a one-shot "stuck, then
    unstuck" settle for the moment they frost in on scroll. Josh's brief:
    "there's some weight to the nav bars... they got stuck as you start to
