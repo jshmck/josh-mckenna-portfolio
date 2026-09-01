@@ -796,7 +796,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "16/9",
       alt: "The full Wagamama Brighton Pride artwork",
-      src: "/work/wagamama-pride/01-full.webp",
+      src: "/work/wagamama-pride/01-full-hr.webp",
     },
     // The first three run one after another, full width; the last two —
     // both documentary installation shots — pair up instead, per Josh.
@@ -805,7 +805,7 @@ export const projects: Project[] = [
       {
         ratio: "16/9",
         alt: "The full \"Proud Beyond Pride\" artwork",
-        src: "/work/wagamama-pride/02-proud-beyond-pride-full.webp",
+        src: "/work/wagamama-pride/02-proud-beyond-pride-full-hr.webp",
       },
       {
         ratio: "3/2",
@@ -1037,7 +1037,7 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "1/1",
       alt: "A mechanic, living his truth in pink heels",
-      src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01.webp",
+      src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01-hr.webp",
     },
     // True ratio 1.7637 (4000x2268) — close enough to 16/9 (1.7778) to snap
     // with no visible crop. Full-width, no heroPair, so the spread reads
@@ -1047,13 +1047,13 @@ export const projects: Project[] = [
     hero: {
       ratio: "16/9",
       alt: "The Gay Divide spread, opening page",
-      src: "/work/weapons-of-reason-gay-divide/01-spread-final.webp",
+      src: "/work/weapons-of-reason-gay-divide/01-spread-final-hr.webp",
     },
     gallery: [
       {
         ratio: "1/1",
         alt: "A mechanic, living his truth in pink heels",
-        src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01.webp",
+        src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01-hr.webp",
       },
       {
         ratio: "1/1",
@@ -1198,7 +1198,7 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "1/1",
       alt: "The Instagram Pride sticker character",
-      src: "/work/instagram-sticker/01-instagram-sticker-bg2.webp",
+      src: "/work/instagram-sticker/01-instagram-sticker-bg2-hr.webp",
     },
     // GIF leads the gallery (afterIndex: 0, before the two-up pair) — the
     // sticker's own animation, right after the write-up. Video sits right
@@ -1234,7 +1234,7 @@ export const projects: Project[] = [
       {
         ratio: "16/9",
         alt: "The sticker as it appeared within the Pride set.",
-        src: "/work/instagram-sticker/05-sticker-set.webp",
+        src: "/work/instagram-sticker/05-sticker-set-hr.webp",
       },
       {
         ratio: "3/4",
@@ -1641,7 +1641,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "The YETI cooler",
-      src: "/work/figma-yeti/01-yeti.webp",
+      src: "/work/figma-yeti/01-yeti-hr.webp",
     },
     gallery: [],
   },
@@ -1667,7 +1667,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Underground roundel",
-      src: "/work/figma-underground/01-underground-final.webp",
+      src: "/work/figma-underground/01-underground-final-hr.webp",
     },
     gallery: [],
   },
@@ -1692,7 +1692,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Servebots on delivery",
-      src: "/work/figma-servebots/01-servebots.webp",
+      src: "/work/figma-servebots/01-servebots-hr.webp",
     },
     gallery: [],
   },
@@ -1717,7 +1717,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Vitra × Virgil Abloh",
-      src: "/work/figma-vitra-virgil/01-vitgr.webp",
+      src: "/work/figma-vitra-virgil/01-vitgr-hr.webp",
     },
     gallery: [],
   },
@@ -1744,7 +1744,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "BMW Z1, four colourways",
-      src: "/work/figma-bmw-z1/01-carousel.webp",
+      src: "/work/figma-bmw-z1/01-carousel-hr.webp",
     },
     heroPair: {
       ratio: "4/5",
@@ -2343,7 +2343,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "\"Have EVs Killed the Sound of Driving?\" — the finished key art",
-      src: "/work/sound-of-driving/03-final.webp",
+      src: "/work/sound-of-driving/03-final-hr.webp",
     },
     heroPair: {
       ratio: "4/5",
