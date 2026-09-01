@@ -315,15 +315,17 @@ export type Project = {
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
   /**
-   * The card's own artwork is close enough to `--color-accent` (the nav's
+   * The artwork itself is close enough to `--color-accent` (the nav's
    * active-link colour) that the purple "Work" text nearly disappears when
-   * the fixed nav scrolls directly over this card on /work — Atlanta
-   * Magazine's card background is the first real case. Flags the card in
-   * work-gallery.tsx with a `data-nav-contrast="light"` attribute; nav.tsx
-   * watches for that attribute intersecting its own fixed position and
-   * swaps the active link to white only while it's in view, everywhere
-   * else on the site keeps the normal purple (which reads fine against
-   * cream, blue, pink — every other case checked so far).
+   * the fixed nav scrolls directly over it — Atlanta Magazine's card
+   * background is the first real case. Flags both the /work card
+   * (project-card.tsx) and, since California Magazine's hero has the same
+   * problem on its own project page, the project page's own hero wrapper
+   * (app/work/[slug]/page.tsx) with a `data-nav-contrast="light"`
+   * attribute; nav.tsx watches for that attribute intersecting its own
+   * fixed position and swaps the active link to white only while it's in
+   * view, everywhere else on the site keeps the normal purple (which reads
+   * fine against cream, blue, pink — every other case checked so far).
    */
   navContrastLight?: boolean;
   /**

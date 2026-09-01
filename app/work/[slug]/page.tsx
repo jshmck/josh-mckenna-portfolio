@@ -224,7 +224,11 @@ export default async function ProjectPage({
       ) : (
         <>
           {project.heroSize !== "spot" && (
-            <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
+            <div
+              className="mx-auto max-w-frame px-6 pt-12 md:px-gutter"
+              // Read by nav.tsx — see Project.navContrastLight's doc comment.
+              data-nav-contrast={project.navContrastLight ? "light" : undefined}
+            >
               {/* Video position: "top" (default, Nomad Wheels) is the main
                   showcase leading the page; "bottom" (Pato) is supplementary,
                   under the artwork it's showing off; "pair" (Last Call) sits
@@ -318,7 +322,10 @@ export default async function ProjectPage({
             // to a modest width and uncaptioned: a piece drawn to run at
             // a few centimetres next to magazine text looks wrong blown
             // up to full frame width with a label under it.
-            <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
+            <div
+              className="mx-auto max-w-frame px-6 pt-12 md:px-gutter"
+              data-nav-contrast={project.navContrastLight ? "light" : undefined}
+            >
               <div className="mx-auto max-w-lg">
                 <Plate
                   image={project.hero}
