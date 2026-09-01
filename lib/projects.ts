@@ -327,7 +327,6 @@ export const projects: Project[] = [
     heroCaption: "For \"Downward Trend,\" Sophie Grove's piece on the decline of the high heel, Monocle, October 2018.",
     brief: [
       "A spot illustration for Monocle, alongside Sophie Grove's piece on high heels falling out of fashion — runways and front rows moving toward flats and trainers as comfort and practicality took over from a shoe once built on status and restriction.",
-      "The heel itself is the illustration: drawn mid-snap, cracking clean through under its own weight.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
