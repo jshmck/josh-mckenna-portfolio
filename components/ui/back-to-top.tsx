@@ -168,7 +168,15 @@ type BackToTopProps = {
  * through.
  *
  * The centre pill appears once the page has scrolled past one viewport
- * height (Previous/Next are always on — see above). It smooth-scrolls to
+ * height — capped at half the page's own available scroll, because the
+ * one-viewport gate assumes a page long enough to ever get there: a short
+ * project (Mr Porter is a two-up hero, a one-line brief and no gallery)
+ * tops out under one viewport of scroll on a tall display, so the pill
+ * could never appear — "mr porter needs a back to top button as other
+ * longer projects have," per Josh. Long pages clear one viewport before
+ * half their scroll, so their timing is untouched; a page with no scroll
+ * at all still never shows it (scrollY can't exceed half of zero).
+ * (Previous/Next are always on — see above.) It smooth-scrolls to
  * top on click; Previous/Next just navigate. Omits
  * an explicit `behavior` from `scrollTo` so the global `scroll-behavior`
  * CSS rule (and its reduced-motion override) decides smooth vs instant,
@@ -205,7 +213,12 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
 
     const update = () => {
       queued = false;
-      setVisible(window.scrollY > window.innerHeight);
+      // Threshold capped at half the available scroll — see the doc
+      // comment ("mr porter needs a back to top button"). Re-read every
+      // frame rather than cached: scrollHeight moves as images load.
+      const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setVisible(window.scrollY > Math.min(window.innerHeight, maxScroll / 2));
 
       const footer = document.querySelector("footer");
       if (!footer) return;
