@@ -84,9 +84,11 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
   // not just `small` ones — matching ratios already get equal heights for
   // free from the ordinary grid, so this only changes anything when it
   // needs to.
-  const allSmall = images.length > 1 && images.every((image) => image.small);
-  const ratiosMismatched = images.length > 1 && images[0].ratio !== images[1].ratio;
-  const heightMatchedPair = images.length > 1 && (allSmall || ratiosMismatched);
+  // Exactly two images only — three (Costa Smeralda) always uses a plain
+  // grid-cols-3 instead, matching column width rather than a shared height.
+  const allSmall = images.length === 2 && images.every((image) => image.small);
+  const ratiosMismatched = images.length === 2 && images[0].ratio !== images[1].ratio;
+  const heightMatchedPair = images.length === 2 && (allSmall || ratiosMismatched);
 
   // A fixed height (the original approach) only works across a narrow band
   // of ratio combinations — Away's 4/5-beside-250/291 pair fit fine at a
@@ -118,11 +120,13 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
     <>
       <div
         className={
-          images.length > 1
-            ? heightMatchedPair
-              ? "flex flex-wrap justify-center gap-4"
-              : "grid gap-8 md:grid-cols-2"
-            : undefined
+          images.length === 3
+            ? "grid gap-8 md:grid-cols-3"
+            : images.length > 1
+              ? heightMatchedPair
+                ? "flex flex-wrap justify-center gap-4"
+                : "grid gap-8 md:grid-cols-2"
+              : undefined
         }
       >
         {images.map((image, index) => (
@@ -156,7 +160,14 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
                 >
                   <Plate
                     image={image}
-                    sizes={sizes ?? (images.length > 1 ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 1344px) 100vw, 1344px")}
+                    sizes={
+                      sizes ??
+                      (images.length === 3
+                        ? "(max-width: 768px) 100vw, 33vw"
+                        : images.length > 1
+                          ? "(max-width: 768px) 100vw, 50vw"
+                          : "(max-width: 1344px) 100vw, 1344px")
+                    }
                     priority={index === 0}
                     radius={image.square ? "" : undefined}
                     className={heightMatchedPair ? "h-full" : undefined}

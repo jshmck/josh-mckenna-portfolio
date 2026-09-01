@@ -268,7 +268,18 @@ export default async function ProjectPage({
                     </div>
                   </div>
                 ) : (
-                  project.heroPair && (
+                  project.heroPair &&
+                  (project.heroThird ? (
+                    <HeroLightbox
+                      images={[project.hero, project.heroPair, project.heroThird]}
+                      captions={[
+                        project.heroCaption,
+                        project.heroPair.caption === false ? "" : project.heroPair.alt,
+                        project.heroThird.caption === false ? "" : project.heroThird.alt,
+                      ]}
+                      hideCaptions={project.hideHeroCaptions}
+                    />
+                  ) : (
                     <HeroLightbox
                       images={[project.hero, project.heroPair]}
                       captions={[
@@ -277,7 +288,7 @@ export default async function ProjectPage({
                       ]}
                       hideCaptions={project.hideHeroCaptions}
                     />
-                  )
+                  ))
                 )
               ) : !project.heroVideo ? (
                 <HeroLightbox

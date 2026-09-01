@@ -181,6 +181,14 @@ export type Project = {
    */
   heroPair?: ProjectImage;
   /**
+   * A third image alongside `hero`/`heroPair`, all three side by side —
+   * Costa Smeralda's three posters, none of them a "pair" plus an
+   * afterthought. Requires `heroPair` to also be set; HeroLightbox ignores
+   * a lone `heroThird` without it. Own caption from its own `alt`, same as
+   * `heroPair`.
+   */
+  heroThird?: ProjectImage;
+  /**
    * Suppresses the caption paragraph(s) under `hero`/`heroPair` — BMW Z1
    * only for now, where the alt text ("BMW Z1") added nothing the title
    * above it didn't already say.
