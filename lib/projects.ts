@@ -471,6 +471,9 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "STEP Journal" },
     ],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // happened to also give 4/5, but only by chance of array position.
+    cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "A house sliced open by a knife, its layers labelled with capital gains, inheritance and income tax.",
@@ -669,6 +672,9 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — the first character I built in 3D, before Pato, Jimny or Last Call. Wanted to push my 2D character features into three dimensions.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // happened to also give 1/1, but only by chance of array position.
+    cardRatio: "1/1",
     heroSize: "spot",
     // Same cut-out already drifting in the homepage hero (id: "ambient-1")
     // — reused here rather than re-exported, so the two stay pixel-identical.
@@ -695,6 +701,9 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — a gloopy, wompy homage to my favourite car, the Jimny, turned around three times under studio lighting.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // Not the true 1/1 — Josh's call, 4/5 reads better here than the
+    // RATIO_CYCLE-by-chance square did. Pinned explicitly either way.
+    cardRatio: "4/5",
     // Video leads the page instead of the usual image hero; `hero` still
     // carries a still (used for the /work card) but doesn't render here —
     // see HeroVideo and the Project.heroVideo doc comment.
@@ -740,6 +749,9 @@ export const projects: Project[] = [
       "Same car rendered twice — yellow under pink light, black under red.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // happened to also give 4/5, but only by chance of array position.
+    cardRatio: "4/5",
     // Only two images, both the same subject in two colourways — side by
     // side reads better than a full-width hero and a lone gallery image.
     hero: {
@@ -769,6 +781,9 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — coffee cups, a bench, coins scattered mid-fall, in two versions: one with company, one alone.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // was giving this 1/1 by chance.
+    cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "Two on the bench",
@@ -795,6 +810,9 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — Pato, my three-legged dog.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // True ratio — was silently cropping to 1/1 via RATIO_CYCLE's chance
+    // assignment; the actual renders are 4/5.
+    cardRatio: "4/5",
     // Video sits below the two renders rather than leading the page —
     // the renders are the artwork, the clip is supplementary.
     heroVideo: {
@@ -831,6 +849,9 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — a cowboy hat and a \"Last Call\" keyring.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // happened to also give 4/5, but only by chance of array position.
+    cardRatio: "4/5",
     heroVideo: {
       src: "/work/womp-last-call/02-last-call-video.mp4",
       alt: "The Last Call hat and keyring, turning",
@@ -858,6 +879,11 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — headphones on, full diagonal reach.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // True ratio — was silently cropping to 4/5 via RATIO_CYCLE's chance
+    // assignment, clipping the figure's trailing hand exactly like the
+    // hero comment below warns against. One of the deliberate odd ones,
+    // like Beefbar and Voxi Pride.
+    cardRatio: "8/9",
     heroSize: "spot",
     hero: {
       // True 1920x2160 ratio — the default 4/5 crop would clip the
@@ -1358,14 +1384,12 @@ export const projects: Project[] = [
       alt: "The full artwork for VOXI's Pride campaign",
       src: "/work/voxi-pride/08-voxi-pride-voxi-landscape.webp",
     },
-    // The portrait cut of the same cast is redundant with the hero on the
-    // project page (same artwork, different arrangement), so it's dropped
-    // from `gallery` and used here instead — its own true 3/4 ratio, not
-    // WorkGallery's positional RATIO_CYCLE, so the /work card frame doesn't
-    // crop it.
-    cardRatio: "3/4",
+    // 4/5, not the true 3/4 (0.77) — checked against the portrait poster:
+    // the crop is minor enough that nothing gets clipped, so no need for a
+    // new export.
+    cardRatio: "4/5",
     cardImage: {
-      ratio: "3/4",
+      ratio: "4/5",
       alt: "Full cast — the portrait poster",
       src: "/work/voxi-pride/09-voxi-pride-voxi.webp",
     },
@@ -1689,6 +1713,9 @@ export const projects: Project[] = [
       "An editorial about the debate between rumbling exhaust notes and the futuristic hum of instant torque.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // was giving this 1/1 by chance.
+    cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "\"Have EVs Killed the Sound of Driving?\" — the finished key art",
