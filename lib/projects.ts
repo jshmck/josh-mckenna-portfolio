@@ -1103,6 +1103,14 @@ export const projects: Project[] = [
         src: "/work/opto-markets-2019/01-front-cover.webp",
       },
     ],
+    // Explicit, not getCardHoverImage's default (heroPair wins first, so
+    // it'd swap in the second opener) — Josh wants the cover as the
+    // /work hover swap specifically.
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
+      src: "/work/opto-markets-2019/01-front-cover.webp",
+    },
   },
   {
     slug: "vogue-sun-tan",
