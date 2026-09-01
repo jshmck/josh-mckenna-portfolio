@@ -340,6 +340,30 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "kiehls-trevor-project",
+    title: "Kiehl's",
+    client: "Kiehl's Since 1851",
+    year: 2023,
+    discipline: "Pride Campaign",
+    deliverables: "Packaging · Parade Float",
+    categories: ["Pride", "Character"],
+    summary: "A Pride parade, wrapped around a jar of face cream.",
+    heroCaption: "Limited-edition packaging for Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
+    brief: [
+      "Kiehl's Since 1851 commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project — a parade scene built into limited-edition packaging across Kiehl's product line, with the same artwork on a float in the New York City Pride parade. A portion of proceeds from the products went to The Trevor Project.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Kiehl's Since 1851" },
+    ],
+    hero: {
+      ratio: "1/1",
+      alt: "Limited-edition Kiehl's Ultra Facial Cream, Pride campaign packaging",
+      src: "/work/kiehls-trevor-project/01-kiehls-trevor-project-face-cream-ultra-facial-cream.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "costa-smeralda",
     title: "Costa Smeralda",
     client: "Costa Smeralda",
