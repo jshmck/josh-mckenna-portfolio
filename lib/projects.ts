@@ -17,6 +17,7 @@ export const PROJECT_CATEGORIES = [
   "3D",
   "Hospitality",
   "Icons",
+  "Logo",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
@@ -330,6 +331,45 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "london-lgbtq-centre",
+    title: "London LGBTQ+ Community Centre",
+    client: "London LGBTQ+ Community Centre",
+    year: 2019,
+    discipline: "Illustration",
+    deliverables: "Brand Mark",
+    categories: ["Pride", "Character", "Logo"],
+    summary: "Four couples in a wreath, holding the wordmark together.",
+    heroCaption: "A brand mark for the London LGBTQ+ Community Centre, 2019.",
+    brief: [
+      "The London LGBTQ+ Community Centre needed a mark that put people, not just a symbol, at the centre of the identity — four couples drawn in a loose wreath around the wordmark, in two colourways, one on the brand's purple, one on white.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "London LGBTQ+ Community Centre" },
+    ],
+    // The white colourway leads the /work card — its own background is
+    // close to the site's accent purple (same collision as Atlanta
+    // Magazine's card), so leading with white sidesteps it rather than
+    // needing navContrastLight here too.
+    cardRatio: "1/1",
+    cardImage: {
+      ratio: "1/1",
+      alt: "The mark, white colourway",
+      src: "/work/london-lgbtq-centre/02-white.webp",
+    },
+    hero: {
+      ratio: "1/1",
+      alt: "The mark, on the brand's purple",
+      src: "/work/london-lgbtq-centre/01-purple.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "The mark, white colourway",
+      src: "/work/london-lgbtq-centre/02-white.webp",
+    },
+    gallery: [],
+  },
   {
     slug: "wsj-airpods-rich",
     title: "WSJ",
