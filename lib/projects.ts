@@ -409,7 +409,7 @@ export const projects: Project[] = [
     year: 2019,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Character", "Icons"],
+    categories: ["Character", "Icons", "Logo"],
     summary: "The ampersand, sat cross-legged and fully aware of it.",
     heroCaption: "For \"re/viewed,\" Ace & Tate's series inviting illustrators to reinterpret their logo, 2019.",
     brief: [
@@ -419,6 +419,9 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Ace & Tate" },
     ],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, same
+    // fix as Sumo/Boat Int./Coca-Cola earlier this session.
+    cardRatio: "1/1",
     hero: {
       ratio: "1/1",
       alt: "A seated figure, built from the Ace & Tate ampersand",
