@@ -1019,6 +1019,45 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
+    slug: "weapons-of-reason-gay-divide",
+    title: "The Gay Divide",
+    client: "Weapons of Reason",
+    year: 2019,
+    yearLabel: "The Inequality Issue, 2019",
+    discipline: "Editorial Illustration",
+    deliverables: "Editorial Illustration",
+    categories: ["Editorial", "Pride"],
+    summary: "A mechanic, rising from under the hood in heels.",
+    heroCaption: "Illustrated for \"The Gay Divide,\" Weapons of Reason's The Inequality Issue, 2019.",
+    brief: [
+      "Weapons of Reason commissioned illustration for \"The Gay Divide,\" a feature in The Inequality Issue on how the LGB+ pay gap may have its roots in homophobic bullying and a lack of LGBTQ+ education in schools — following two people's experiences of how that bullying shaped the classes they took, the subjects they could focus on and the careers they went on to pursue.",
+      "The brief asked for ruthlessly simple, iconic concepts within Weapons of Reason's prescribed 19-colour palette — each piece limited to 2–5 of those colours to keep a consistent brand feel across the issue.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Words", name: "Jamie Broadway" },
+      { role: "Client", name: "Weapons of Reason" },
+    ],
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "A mechanic in pink heels rises through a car's open sunroof, wrenches in hand",
+      src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "The spread, held open and read in print",
+      src: "/work/weapons-of-reason-gay-divide/01-ins-post-arrive-2.webp",
+    },
+    gallery: [
+      {
+        ratio: "5/4",
+        alt: "The Gay Divide spread, opening page",
+        src: "/work/weapons-of-reason-gay-divide/02-spread-page.webp",
+      },
+    ],
+  },
+  {
     slug: "vogue-sun-tan",
     title: "Tanning Tips",
     client: "Vogue Magazine",
