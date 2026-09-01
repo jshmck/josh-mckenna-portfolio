@@ -342,31 +342,25 @@ export const projects: Project[] = [
     summary: "Four couples in a wreath, holding the wordmark together.",
     heroCaption: "A brand mark for the London LGBTQ+ Community Centre, 2019.",
     brief: [
-      "The London LGBTQ+ Community Centre needed a mark that put people, not just a symbol, at the centre of the identity — four couples drawn in a loose wreath around the wordmark, in two colourways, one on the brand's purple, one on white.",
+      "The London LGBTQ+ Community Centre needed a mark that put people, not just a symbol, at the centre of the identity — four couples drawn in a loose wreath around the wordmark, on the brand's own purple.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "London LGBTQ+ Community Centre" },
     ],
-    // The white colourway leads the /work card — its own background is
-    // close to the site's accent purple (same collision as Atlanta
-    // Magazine's card), so leading with white sidesteps it rather than
-    // needing navContrastLight here too.
+    // The card falls back to this purple hero now that the white colourway
+    // (which used to lead the card specifically to sidestep this) is gone —
+    // same nav-purple collision as Atlanta Magazine's card, same fix.
+    navContrastLight: true,
     cardRatio: "1/1",
-    cardImage: {
-      ratio: "1/1",
-      alt: "The mark, white colourway",
-      src: "/work/london-lgbtq-centre/02-white.webp",
-    },
+    // A small brand mark, not a full illustration — same "runs small"
+    // treatment as Sumo and Downward Trend, rather than the usual
+    // full-bleed hero scale.
+    heroSize: "spot",
     hero: {
       ratio: "1/1",
-      alt: "The mark, on the brand's purple",
+      alt: "The brand mark, four couples in a wreath around the wordmark",
       src: "/work/london-lgbtq-centre/01-purple.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "The mark, white colourway",
-      src: "/work/london-lgbtq-centre/02-white.webp",
     },
     gallery: [],
   },
