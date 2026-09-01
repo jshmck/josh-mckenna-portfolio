@@ -80,7 +80,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
     <>
       <div className={images.length > 1 ? "grid gap-8 md:grid-cols-2" : undefined}>
         {images.map((image, index) => (
-          <div key={image.alt}>
+          <div key={image.alt} className={image.small ? "mx-auto max-w-lg" : undefined}>
             <button
               type="button"
               onClick={() => openAt(index)}

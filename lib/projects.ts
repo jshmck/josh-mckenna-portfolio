@@ -325,31 +325,40 @@ export const projects: Project[] = [
       { role: "Agency", name: "Momentum" },
       { role: "Client", name: "Coca-Cola" },
     ],
+    // Source files were only recovered at web resolution (1276x1276) --
+    // capped to the same max-w-lg small path Instagram Sticker's Vogue
+    // takeover uses, sitewide, rather than let them run full-frame and
+    // betray it. "Low-res so make them all smaller," per Josh.
     hero: {
       ratio: "1/1",
-      alt: "A hot dog and a Coca-Cola Zero Sugar, on a napkin",
-      src: "/work/coca-cola-moments/01-01.webp",
+      alt: "The bottle",
+      src: "/work/coca-cola-moments/02-02.webp",
+      small: true,
     },
     gallery: [
       {
         ratio: "1/1",
-        alt: "The bottle",
-        src: "/work/coca-cola-moments/02-02.webp",
+        alt: "A hot dog and a Coca-Cola Zero Sugar, on a napkin",
+        src: "/work/coca-cola-moments/01-01.webp",
+        small: true,
       },
       {
         ratio: "1/1",
         alt: "Mid-sip",
         src: "/work/coca-cola-moments/03-03.webp",
+        small: true,
       },
       {
         ratio: "1/1",
         alt: "Poolside",
         src: "/work/coca-cola-moments/04-04.webp",
+        small: true,
       },
       {
         ratio: "1/1",
         alt: "Pizza night",
         src: "/work/coca-cola-moments/05-05.webp",
+        small: true,
       },
     ],
   },

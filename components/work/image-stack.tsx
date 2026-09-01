@@ -144,7 +144,11 @@ export function ImageStack({
         {!manualLayout && (firstImage || secondImage) && (
           <div className="grid gap-8 md:grid-cols-2">
             {[firstImage, secondImage].filter(Boolean).map((image, index) => (
-              <Reveal key={image.alt} delay={index * 110}>
+              <Reveal
+                key={image.alt}
+                delay={index * 110}
+                className={image.small ? "mx-auto w-full max-w-lg" : undefined}
+              >
                 <button
                   type="button"
                   onClick={() => openAt(index)}
