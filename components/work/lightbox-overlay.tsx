@@ -1,9 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import type { LightboxState } from "@/components/work/lightbox-core";
+
+/** Same thresholds as ProjectSwipeNav (components/work/project-swipe-nav.tsx)
+ *  — kept as separate constants rather than a shared import since the two
+ *  gestures live on genuinely different surfaces (this one paging through
+ *  a single project's own images; that one moving between projects) and
+ *  have no reason to be forced to the same numbers if either needs tuning
+ *  later. */
+const SWIPE_DISTANCE = 64;
+const SWIPE_DOMINANCE = 1.5;
 
 function ratioToNumber(ratio: string) {
   const [w, h] = ratio.split("/").map(Number);
@@ -74,6 +83,37 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   const { openImage, openIndex, direction, images, close, goPrev, goNext } = state;
   const viewport = useViewportSize();
 
+  // Touch paging — "Lightbox has to be swipable on mobile," per Josh.
+  // Same release-only decision as ProjectSwipeNav (no drag-follow inside
+  // the lightbox; goPrev/goNext already have their own slide-in
+  // animation via `direction`, so a swipe just needs to trigger that,
+  // not draw its own). A ref, not state — this is gesture bookkeeping
+  // between two touch events, never rendered, so it doesn't need to be
+  // state React tracks.
+  const touchRef = useRef<{ x: number; y: number } | null>(null);
+
+  const onTouchStart = (event: React.TouchEvent) => {
+    // Starting on the toolbar itself is excluded — a tap-and-slight-drag
+    // on a button shouldn't also register as a page-swipe underneath it.
+    const target = event.target as Element;
+    touchRef.current = target.closest("[data-lightbox-toolbar]")
+      ? null
+      : { x: event.touches[0].clientX, y: event.touches[0].clientY };
+  };
+
+  const onTouchEnd = (event: React.TouchEvent) => {
+    const start = touchRef.current;
+    touchRef.current = null;
+    if (!start || images.length < 2) return;
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    if (Math.abs(deltaX) < SWIPE_DISTANCE) return;
+    if (Math.abs(deltaX) < Math.abs(deltaY) * SWIPE_DOMINANCE) return;
+    if (deltaX < 0) goNext();
+    else goPrev();
+  };
+
   if (!openImage) return null;
 
   const openRatio = ratioToNumber(openImage.ratio);
@@ -103,8 +143,28 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   // breakpoint the toolbar's own md: classes switch at.
   const stageReserve = viewport && viewport.width >= 768 ? 132 : 100;
   const widthCapPx = viewport ? Math.min(viewport.width * 0.97, 2000) : 2000;
+  // Below md, the shared-cycle ratio above stops being a helpful ceiling
+  // and starts being a bug: a single wide outlier elsewhere in the same
+  // project (Pride Sticker's 16/9 sticker-set shot, say) forces every
+  // *portrait* image in that cycle down to whatever height the outlier
+  // implies at mobile's own narrow width budget — divide a ~380px width
+  // by a 1.78 ratio and the shared ceiling is ~212px, so a 9/16 photo
+  // renders barely bigger than a thumbnail. "make sure lightbox opens
+  // fully on mobile," per Josh. Desktop's widthCapPx is generous enough
+  // (up to 2000px) that the same math never crushes an image this badly,
+  // so the cycle-wide ceiling stays there, keeping the "frame doesn't
+  // resize between images" behaviour the comment above describes intact
+  // where it actually works. Below md, size from the image that's
+  // actually open instead — the frame can resize between images now, but
+  // an image that fills the screen beats one that reads as broken.
+  // No Math.max(1, …) floor on the mobile branch, unlike stageMaxRatio
+  // above — a portrait openRatio *below* 1 is exactly what should widen
+  // the resulting box (dividing by a smaller ratio yields a taller
+  // heightCapPx), which is the whole point for a 9/16 photo; flooring it
+  // to 1 here would just reproduce a smaller version of the same bug.
+  const heightRatio = viewport && viewport.width < 768 ? openRatio : stageMaxRatio;
   const heightCapPx = viewport
-    ? Math.min(viewport.height - stageReserve, widthCapPx / stageMaxRatio)
+    ? Math.min(viewport.height - stageReserve, widthCapPx / heightRatio)
     : undefined;
 
   // "uniform" pins the rendered height outright instead of capping it.
@@ -136,6 +196,11 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
       aria-label={openImage.alt}
       className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-ink/90 p-4"
       onClick={close}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onTouchCancel={() => {
+        touchRef.current = null;
+      }}
     >
       <div className="relative flex h-[calc(100vh-100px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-132px)]">
         {openImage.src && (
@@ -181,7 +246,12 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
           image rather than overlaid on it. */}
       <div
         data-lightbox-toolbar
-        className="flex flex-shrink-0 animate-[nav-pill-pop_650ms_ease-in-out] items-center gap-3 rounded-full border border-transparent bg-canvas/15 px-3.5 py-3 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0"
+        // Mobile gap/padding widened (gap-3→gap-8, px-3.5→px-8) — "the nav
+        // bar for mobile on lightbox needs to be wider and more spacing
+        // between buttons," per Josh; the tight 12px gap read as cramped
+        // next to the header/BackToTop pills' own more generous mobile
+        // sizing. Desktop's md:gap-10/md:px-12 untouched.
+        className="flex flex-shrink-0 animate-[nav-pill-pop_650ms_ease-in-out] items-center gap-8 rounded-full border border-transparent bg-canvas/15 px-8 py-3 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0"
         onClick={(event) => event.stopPropagation()}
       >
         {/* "<" / ">" glyphs, not "←"/"→" — "change the arrows from arrows
