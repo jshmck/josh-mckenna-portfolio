@@ -315,6 +315,37 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "monocle-downward-trend",
+    title: "Downward Trend",
+    client: "Monocle",
+    year: 2018,
+    yearLabel: "October 2018, Issue 117",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Spot Illo",
+    categories: ["Editorial"],
+    summary: "A stiletto heel, cracking under its own weight.",
+    heroCaption: "For \"Downward Trend,\" Sophie Grove's piece on the decline of the high heel, Monocle, October 2018.",
+    brief: [
+      "A spot illustration for Monocle, alongside Sophie Grove's piece on high heels falling out of fashion — runways and front rows moving toward flats and trainers as comfort and practicality took over from a shoe once built on status and restriction.",
+      "The heel itself is the illustration: drawn mid-snap, cracking clean through under its own weight.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Writer", name: "Sophie Grove" },
+      { role: "Client", name: "Monocle" },
+    ],
+    // Drawn to run small next to a column of text, same as Sumo — the
+    // usual full-bleed hero shows it at a scale it was never meant to be
+    // seen at.
+    heroSize: "spot",
+    hero: {
+      ratio: "4/5",
+      alt: "A stiletto heel, cracked clean through",
+      src: "/work/monocle-downward-trend/01-monocle-heel-snap.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "away-pride-stickers",
     title: "Away",
     client: "Away",
