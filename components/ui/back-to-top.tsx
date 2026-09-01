@@ -52,6 +52,20 @@ type BackToTopProps = {
  * so mobile keeps just the centre pill rather than risking three pills
  * colliding on a 375px screen.
  *
+ * Unlike the centre pill, Previous/Next don't wait for the one-viewport
+ * scroll threshold — they're visible from load on every project page.
+ * Gating them on scroll meant short projects (a spot hero and a couple of
+ * images never scroll a full viewport) had no way to reach the
+ * neighbouring projects at all — "every project needs a nav bar to
+ * proceed or go back between projects - the longer ones already have but
+ * i want them on each project," per Josh. They still play the pill bounce
+ * on their own appearing moment (mount, since load *is* their appearance
+ * now) and share the docking landing with the centre pill. Both carry one
+ * fixed width (w-32, centred text) instead of sizing to their own word —
+ * "make the 'previous' and 'next' bubbles the same size (not just the
+ * size of the word)," per Josh; "Previous" vs "Next" otherwise renders
+ * two visibly different pills.
+ *
  * Carries the same nav-pill treatment as the header rather than the filter
  * chips' Waldeck styling it used before: centred in the viewport instead
  * of pinned to the right edge, font-body instead of Waldeck uppercase
@@ -120,8 +134,9 @@ type BackToTopProps = {
  * exact reasoning nav.tsx's own doc comment on nav-pill-landing walks
  * through.
  *
- * Appears once the page has scrolled past one viewport height. The centre
- * pill smooth-scrolls to top on click; Previous/Next just navigate. Omits
+ * The centre pill appears once the page has scrolled past one viewport
+ * height (Previous/Next are always on — see above). It smooth-scrolls to
+ * top on click; Previous/Next just navigate. Omits
  * an explicit `behavior` from `scrollTo` so the global `scroll-behavior`
  * CSS rule (and its reduced-motion override) decides smooth vs instant,
  * rather than duplicating that logic here.
@@ -200,7 +215,20 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
     ? "translate-y-0 scale-100 opacity-100"
     : "pointer-events-none translate-y-4 scale-50 opacity-0";
 
-  const PILL = `fixed bottom-11 z-30 rounded-full border border-transparent bg-canvas/15 font-body text-ink shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas ${bounceClass} ${visibility}`;
+  const PILL_BASE = `fixed bottom-11 z-30 rounded-full border border-transparent bg-canvas/15 font-body text-ink shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 transition-[color,background-color,translate,scale,opacity] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas`;
+
+  const PILL = `${PILL_BASE} ${bounceClass} ${visibility}`;
+
+  // Previous/Next never hide (see the doc comment above), so their bounce
+  // skips the `visible` branch: nav-pill-pop is their resting class — it
+  // plays once at mount, their actual appearing moment — swapping to
+  // nav-pill-landing and back as docking toggles, the same two-name
+  // alternation that keeps the dock/undock bounce retriggering.
+  const SIDE_PILL = `${PILL_BASE} ${
+    docked
+      ? "animate-[nav-pill-landing_650ms_ease-in-out]"
+      : "animate-[nav-pill-pop_650ms_ease-in-out]"
+  }`;
 
   return (
     <>
@@ -209,8 +237,7 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
           ref={previousRef}
           href={`/work/${previous.slug}`}
           aria-label="Previous project"
-          tabIndex={visible ? 0 : -1}
-          className={`${PILL} left-6 hidden px-6 py-4 text-[16px] md:left-gutter md:block`}
+          className={`${SIDE_PILL} left-6 hidden w-32 py-4 text-center text-[16px] md:left-gutter md:block`}
         >
           Previous
         </Link>
@@ -232,8 +259,7 @@ export function BackToTop({ previous, next }: BackToTopProps = {}) {
           ref={nextRef}
           href={`/work/${next.slug}`}
           aria-label="Next project"
-          tabIndex={visible ? 0 : -1}
-          className={`${PILL} right-6 hidden px-6 py-4 text-[16px] md:right-gutter md:block`}
+          className={`${SIDE_PILL} right-6 hidden w-32 py-4 text-center text-[16px] md:right-gutter md:block`}
         >
           Next
         </Link>
