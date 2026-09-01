@@ -1579,11 +1579,14 @@ export const projects: Project[] = [
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
-    heroSize: "spot",
+    // Was heroSize: "spot" — that mode caps the hero to a narrow max-w-lg
+    // box and force-hides its caption (captions=[""] in page.tsx), which
+    // fought both a caption Josh wanted and a bigger lightbox view. Full-
+    // bleed like every other project's hero.
     hero: {
       ratio: "4/5",
       alt: "Vitra × Virgil Abloh",
-      src: "/work/figma-vitra-virgil/01-vitra-virgil-liquid-glass.webp",
+      src: "/work/figma-vitra-virgil/01-vitra-virgil-liquid-glass-v2.webp",
     },
     gallery: [],
   },
