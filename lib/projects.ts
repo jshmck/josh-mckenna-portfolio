@@ -2250,7 +2250,7 @@ export const projects: Project[] = [
     // project page's own hero (above) is the photo. Solid lime-green
     // background, not the transparent key-art lockup this replaced — cover
     // fit needs no contain/canvas-letterbox workaround, and cardRatio holds
-    // the frame at the art's true 1/1 so "PRIDE 2024" isn't cropped.
+    // the frame at the art's true 4/5 so "PRIDE 2024" isn't cropped.
     cardImage: {
       ratio: "4/5",
       alt: "The LA Pride 2024 lockup",
