@@ -342,6 +342,34 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "california-magazine",
+    title: "California Magazine",
+    client: "California Magazine",
+    year: 2019,
+    // The purple background is close enough to the nav's own accent purple
+    // that "Work" nearly disappears when the fixed nav scrolls over this
+    // card or hero — same fix as Atlanta Magazine and LGBTQ Centre.
+    navContrastLight: true,
+    discipline: "Editorial Illustration",
+    deliverables: "Half-Page Illustration",
+    categories: ["Editorial"],
+    summary: "An egg, nested in a bed of California poppies.",
+    heroCaption: "A half-page illustration for California Magazine, on the state's growing fertility industry, 2019.",
+    brief: [
+      "A half-page illustration for California Magazine, running alongside a piece on the state becoming a hub for fertility development — an egg held in a bed of California poppies, the state flower.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "California Magazine" },
+    ],
+    hero: {
+      ratio: "4/5",
+      alt: "An egg, nested in California poppies",
+      src: "/work/california-magazine/01-california-mag.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "kiehls-trevor-project",
     title: "Kiehl's",
     client: "Kiehl's",
