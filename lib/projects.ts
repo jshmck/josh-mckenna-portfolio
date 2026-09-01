@@ -315,6 +315,36 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "ace-tate-logo",
+    title: "Ace & Tate",
+    client: "Ace & Tate",
+    year: 2019,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Character", "Icons"],
+    summary: "The ampersand, sat cross-legged and fully aware of it.",
+    heroCaption: "For \"re/viewed,\" Ace & Tate's series inviting illustrators to reinterpret their logo, 2019.",
+    brief: [
+      "Ace & Tate asked me to reinterpret their logo for \"re/viewed,\" a series putting the brand mark in different illustrators' hands. At the time I was drawing voluptuous, feminine characters almost exclusively, so the brief became: find her inside the ampersand.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Ace & Tate" },
+    ],
+    hero: {
+      ratio: "1/1",
+      alt: "A seated figure, built from the Ace & Tate ampersand",
+      src: "/work/ace-tate-logo/01-illustration.webp",
+    },
+    gallery: [
+      {
+        ratio: "16/9",
+        alt: "The Ace & Tate wordmark",
+        src: "/work/ace-tate-logo/02-logo.webp",
+      },
+    ],
+  },
+  {
     slug: "monocle-downward-trend",
     title: "Downward Trend",
     client: "Monocle",
