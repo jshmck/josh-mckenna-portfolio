@@ -336,22 +336,20 @@ export const projects: Project[] = [
       alt: "The full sticker set",
       src: "/work/away-pride-stickers/02-sticker-set.webp",
     },
-    // Sticker set leads, full width — it's vector-flat and scales cleanly.
+    // Both true 4/5 now that the mockup's been re-exported at high res —
+    // paired side by side, full column width (not `small`, per Josh — the
+    // resolution isn't a concern anymore, so no reason to cap them).
     hero: {
       ratio: "4/5",
       alt: "The full sticker set",
       src: "/work/away-pride-stickers/02-sticker-set.webp",
     },
-    // Mockup is low-res — kept small and secondary rather than blown up
-    // beside the hero, where the resolution gap would show.
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "The sticker set, applied to Away luggage",
-        src: "/work/away-pride-stickers/01-mockup.webp",
-        small: true,
-      },
-    ],
+    heroPair: {
+      ratio: "4/5",
+      alt: "The sticker set, applied to Away luggage",
+      src: "/work/away-pride-stickers/01-sticker-luggage.webp",
+    },
+    gallery: [],
   },
   {
     slug: "wagamama-proud-beyond-pride",
