@@ -11,6 +11,7 @@ import { ProjectVideo } from "@/components/work/project-video";
 import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
+import { ProjectSwipeNav } from "@/components/work/project-swipe-nav";
 import { getProject, getProjectNeighbours, projects, type Project, type ProjectImage } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
@@ -431,6 +432,10 @@ export default async function ProjectPage({
           anyway," per Josh -- rather than move it, it came out entirely.
           See BackToTop's own doc comment for the rest of this history. */}
       <BackToTop previous={previous} next={next} />
+
+      {/* Touch swipe left/right = the same next/previous navigation as the
+          circles above — see ProjectSwipeNav's doc comment. */}
+      <ProjectSwipeNav previousSlug={previous?.slug} nextSlug={next?.slug} />
     </article>
   );
 }
