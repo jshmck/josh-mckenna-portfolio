@@ -361,6 +361,58 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "bum-selfie",
+    title: "Bum Selfie",
+    client: "Cake Boy Magazine",
+    year: 2020,
+    discipline: "Editorial Illustration",
+    deliverables: "2 illustrations",
+    categories: ["Editorial", "Pride"],
+    summary: "Two attempts at an angle a phone was never built for.",
+    heroCaption: "",
+    brief: [
+      "Cake Boy magazine wanted a two-part illustration for a feature on the different ways to photograph your own arsehole — technique over vanity, apparently.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "4/5",
+      alt: "An updated version",
+      src: "/work/bum-selfie/02-butt-selfie-2.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "The original",
+        src: "/work/bum-selfie/01-bum-selfie-4-5.webp",
+      },
+    ],
+    featured: false,
+  },
+  {
+    slug: "perineum-sunning",
+    title: "Perineum Sunning",
+    client: "Personal",
+    year: 2020,
+    discipline: "Illustration",
+    deliverables: "Key Art",
+    categories: ["Character"],
+    summary: "Working on an even tan, one way or another.",
+    heroCaption: "",
+    brief: [
+      "2020's wellness trend of the moment was perineum sunning — thirty seconds of direct sun, no shade, for the vitamin D nobody could actually measure.",
+      "No brief, no clinical backing — just the pose, drawn straight enough that you can decide for yourself whether it's worth doing.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "Sunbathing, from an unusual angle",
+      src: "/work/perineum-sunning/01-perineum-sunning.webp",
+    },
+    gallery: [],
+    featured: false,
+  },
+  {
     slug: "palm-springs",
     title: "Palm Springs",
     client: "Personal",
@@ -482,6 +534,7 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "California Magazine" },
     ],
+    cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "An egg, nested in California poppies",
@@ -1296,6 +1349,7 @@ export const projects: Project[] = [
     heroCaption: "Who wants this as a resin collectible?!",
     brief: [
       "Modelled in Womp, a browser-based 3D tool — a glossy figure bent double, taking a selfie of its own backside.",
+      "A 3D take on [Bum Selfie](/work/bum-selfie), the flat illustration it started from.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     // 4/5 across all three frames in the row — per Josh, over each

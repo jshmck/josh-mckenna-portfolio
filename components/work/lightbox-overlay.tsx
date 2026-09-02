@@ -106,34 +106,108 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   const viewport = useViewportSize();
 
   // Touch paging — "Lightbox has to be swipable on mobile," per Josh.
-  // Same release-only decision as ProjectSwipeNav (no drag-follow inside
-  // the lightbox; goPrev/goNext already have their own slide-in
-  // animation via `direction`, so a swipe just needs to trigger that,
-  // not draw its own). A ref, not state — this is gesture bookkeeping
-  // between two touch events, never rendered, so it doesn't need to be
+  // Same release-only decision as ProjectSwipeNav for the horizontal case
+  // (no drag-follow; goPrev/goNext already have their own slide-in
+  // animation via `direction`, so a swipe just needs to trigger that, not
+  // draw its own). A ref, not state — this is gesture bookkeeping between
+  // touch events, never rendered on its own, so it doesn't need to be
   // state React tracks.
   const touchRef = useRef<{ x: number; y: number } | null>(null);
+  // Which axis this drag committed to, decided once the touch has moved
+  // far enough to tell — swipe-down-to-close needs a live drag-follow
+  // (pull the frame with your thumb, fade it out, release to dismiss —
+  // "allow a pull to close... swipe the image down and it closes the
+  // window," per Josh, reported after the dialog got stuck on mobile with
+  // no way to dismiss it) but horizontal paging doesn't, so the two can't
+  // share one branch. Locked on first significant move so a diagonal
+  // finger drift mid-gesture can't flip from one to the other.
+  const dragAxisRef = useRef<"vertical" | "horizontal" | null>(null);
+  const dragImageRef = useRef<HTMLDivElement>(null);
+  const PULL_TO_CLOSE_DISTANCE = 120;
+
+  const resetDragTransform = (animate: boolean) => {
+    const el = dragImageRef.current;
+    if (!el) return;
+    el.style.transition = animate
+      ? "transform 250ms var(--ease-drift, ease-out), opacity 250ms ease-out"
+      : "none";
+    el.style.transform = "";
+    el.style.opacity = "";
+  };
 
   const onTouchStart = (event: React.TouchEvent) => {
     // Starting on a control is excluded — a tap-and-slight-drag on a
-    // button shouldn't also register as a page-swipe underneath it.
+    // button shouldn't also register as a page-swipe/pull underneath it.
     const target = event.target as Element;
     touchRef.current = target.closest("[data-lightbox-control]")
       ? null
       : { x: event.touches[0].clientX, y: event.touches[0].clientY };
+    dragAxisRef.current = null;
+  };
+
+  const onTouchMove = (event: React.TouchEvent) => {
+    const start = touchRef.current;
+    if (!start) return;
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+
+    if (dragAxisRef.current === null) {
+      if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) return;
+      // Only a downward drag claims the vertical axis — an upward flick
+      // (or any horizontal-dominant move) falls through to page-swiping.
+      dragAxisRef.current =
+        deltaY > 0 && Math.abs(deltaY) > Math.abs(deltaX) * SWIPE_DOMINANCE
+          ? "vertical"
+          : "horizontal";
+    }
+
+    if (dragAxisRef.current !== "vertical") return;
+
+    const el = dragImageRef.current;
+    if (!el) return;
+    const drag = Math.max(0, deltaY);
+    el.style.transition = "none";
+    el.style.transform = `translateY(${drag}px)`;
+    el.style.opacity = `${Math.max(0.35, 1 - drag / 400)}`;
   };
 
   const onTouchEnd = (event: React.TouchEvent) => {
     const start = touchRef.current;
+    const axis = dragAxisRef.current;
     touchRef.current = null;
-    if (!start || images.length < 2) return;
+    dragAxisRef.current = null;
+    if (!start) return;
     const touch = event.changedTouches[0];
     const deltaX = touch.clientX - start.x;
     const deltaY = touch.clientY - start.y;
+
+    if (axis === "vertical") {
+      if (deltaY > PULL_TO_CLOSE_DISTANCE) {
+        const el = dragImageRef.current;
+        if (el) {
+          el.style.transition = "transform 200ms ease-in, opacity 200ms ease-in";
+          el.style.transform = `translateY(${deltaY + 120}px)`;
+          el.style.opacity = "0";
+        }
+        window.setTimeout(close, 200);
+      } else {
+        resetDragTransform(true);
+      }
+      return;
+    }
+
+    if (images.length < 2) return;
     if (Math.abs(deltaX) < SWIPE_DISTANCE) return;
     if (Math.abs(deltaX) < Math.abs(deltaY) * SWIPE_DOMINANCE) return;
     if (deltaX < 0) goNext();
     else goPrev();
+  };
+
+  const onTouchCancel = () => {
+    touchRef.current = null;
+    dragAxisRef.current = null;
+    resetDragTransform(true);
   };
 
   if (!openImage) return null;
@@ -259,15 +333,15 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
       className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] items-center justify-center bg-canvas/95 p-4 max-md:backdrop-blur-md max-md:backdrop-saturate-150"
       onClick={close}
       onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
-      onTouchCancel={() => {
-        touchRef.current = null;
-      }}
+      onTouchCancel={onTouchCancel}
     >
       <div className="relative flex h-[calc(100vh-72px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-96px)]">
         {openImage.src && (
           <div
             key={openIndex}
+            ref={dragImageRef}
             className={
               direction === "next"
                 ? "animate-[lightbox-slide-right_420ms_var(--ease-bounce)]"

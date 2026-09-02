@@ -22,6 +22,27 @@ function toDisplayTitle(title: string) {
   return toWaldeckCase(title);
 }
 
+/** Splits a brief paragraph on a single `[label](/href)` cross-link — the
+ *  only markdown this field supports, for pointing between related project
+ *  pages (e.g. a 3D piece referencing the flat illustration it's based on). */
+function renderBriefParagraph(paragraph: string) {
+  const match = paragraph.match(/^([\s\S]*)\[(.+?)\]\((\/[^)]+)\)([\s\S]*)$/);
+  if (!match) return paragraph;
+  const [, before, label, href, after] = match;
+  return (
+    <>
+      {before}
+      <Link
+        href={href}
+        className="underline underline-offset-2 hover:text-accent"
+      >
+        {label}
+      </Link>
+      {after}
+    </>
+  );
+}
+
 /** The brief + sticky credits sidebar. Shared between the default layout
  *  (after the hero) and "grid" layout (before the gallery) so the two
  *  placements can't drift out of sync. */
@@ -34,7 +55,7 @@ function WriteUp({ project }: { project: Project }) {
             key={index}
             className={`type-lede text-ink-muted ${index > 0 ? "mt-6" : ""}`}
           >
-            {paragraph}
+            {renderBriefParagraph(paragraph)}
           </p>
         ))}
       </div>
