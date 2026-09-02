@@ -10,6 +10,18 @@ import type { Project } from "@/lib/projects";
  *  completed swipe rather than springing back. */
 const COMPLETE_DISTANCE = 96;
 
+/** The persistent nav (nav.tsx: `h-[88px]`, sticky, shared across every
+ *  route from the root layout) is never duplicated inside the peek — it's
+ *  already on screen throughout the swipe, right where it always is. The
+ *  real page's own content sits in normal flow *below* it, but the peek
+ *  is `position: fixed`, so without this offset its content started
+ *  filling from true y=0 instead — "the next project is higher up than
+ *  the current project so when it fully slides in it creates a jump,"
+ *  per Josh. Reserving the same 88px here is what makes the peek's
+ *  content land exactly where the same content lands once real
+ *  navigation completes and it's back in normal flow under the nav. */
+const NAV_HEIGHT = 88;
+
 /** The horizontal delta must beat the vertical delta by this factor before
  *  a touch is captured as a horizontal drag at all — same dominance test
  *  as the lightbox's own swipe (lightbox-overlay.tsx), so a vertical
@@ -185,6 +197,18 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       el.style.transform = `translate3d(${translate}px, ${lift}px, 0) scale(${scale})`;
       el.style.opacity = "1";
     };
+    // The peek containers below carry `origin-top` for this scale() call
+    // specifically — CSS's default transform-origin is the element's own
+    // *centre*, so scaling a peek from 0.94 toward 1 was pulling its top
+    // edge downward by (1-scale)/2 of its own height (~20px at rest) on
+    // top of any of the numbers above, independent of `lift`. That read
+    // as "the next project is higher up than the current project so when
+    // it fully slides in it creates a jump," per Josh — confirmed
+    // directly (getComputedStyle(peek).transformOrigin was reporting the
+    // container's literal centre point). Anchoring the origin to the top
+    // edge instead means scaling never moves that edge at all, so the
+    // peek's content lands at exactly its final position throughout the
+    // reveal, not just once scale reaches 1.
 
     const resetPeek = (el: HTMLDivElement | null, direction: "previous" | "next", animate: boolean) => {
       if (!el) return;
@@ -310,12 +334,22 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
   return (
     <div ref={containerRef} className="relative overflow-x-hidden">
       {previous && (
-        <div ref={previousPeekRef} data-stack-peek="previous" className="fixed inset-0 z-0">
+        <div
+          ref={previousPeekRef}
+          data-stack-peek="previous"
+          className="fixed inset-x-0 bottom-0 z-0 origin-top"
+          style={{ top: NAV_HEIGHT }}
+        >
           <StackPeek project={previous} />
         </div>
       )}
       {next && (
-        <div ref={nextPeekRef} data-stack-peek="next" className="fixed inset-0 z-0">
+        <div
+          ref={nextPeekRef}
+          data-stack-peek="next"
+          className="fixed inset-x-0 bottom-0 z-0 origin-top"
+          style={{ top: NAV_HEIGHT }}
+        >
           <StackPeek project={next} />
         </div>
       )}
@@ -330,8 +364,24 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           perf hint is the fix: the first real `transform` write already
           happens synchronously in the touchmove handler, well before any
           paint, so there's nothing will-change would have preloaded in
-          time to matter anyway. */}
-      <div ref={slabRef} className="relative z-10 bg-canvas">
+          time to matter anyway.
+
+          shadow-[...]: a soft, generous drop shadow all the way around
+          the slab -- "possible to add a shadow or a frost behind the
+          current project so it looks separate to the next? make all
+          this work for previous and next," per Josh. One symmetric
+          shadow (not a directional one keyed to drag direction) covers
+          both without extra logic: containerRef's own overflow-x-hidden
+          clips it flush against the slab at rest (nothing bleeds off the
+          viewport edge when the slab exactly fills it), so it only ever
+          becomes visible once the slab has actually translated away and
+          the shadow's own region scrolls into the container's now-clipped
+          view -- automatically on whichever edge is exposed, left or
+          right, previous or next. */}
+      <div
+        ref={slabRef}
+        className="relative z-10 bg-canvas shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
+      >
         {children}
       </div>
     </div>
