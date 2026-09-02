@@ -587,33 +587,40 @@ export function ProjectContent({ project }: { project: Project }) {
         {/* End-of-project nav, desktop only, all in normal flow -- the
             answer to "i need help deciding how to switch to next project
             when you're on it - on web," with "all inline, nothing
-            fixed" as the chosen shape: once you've reached the end of
-            the gallery, the next project is offered right there (the
-            classic portfolio end-of-page teaser), alongside the subtle
-            inline successor to the retired BackToTop pill. Hidden below
-            md -- mobile navigates by swipe (advertised by the dot strip
-            up top) and iOS's status-bar tap covers scroll-to-top, per
-            Josh. The teaser title runs through the same Waldeck-casing
-            treatment as the page's own display h1, in the section-title
-            accent, with the arrow nudging right on hover -- Waldeck
-            Black has no bolder weight to swap to, so motion is the
-            hover cue here. */}
-        <div className="mx-auto hidden max-w-frame items-end justify-between gap-8 px-6 pb-20 md:flex md:px-gutter">
+            fixed" as the chosen shape. Hidden below md -- mobile
+            navigates by swipe (advertised by the dot strip up top) and
+            iOS's status-bar tap covers scroll-to-top, per Josh.
+
+            Plain caption words only. The first cut paired the NEXT
+            PROJECT eyebrow with the destination's title in big Waldeck
+            type-title + a hover-nudging arrow (the classic portfolio
+            end-of-page teaser) -- "drop the project name and arrow,
+            introduce previous project wording too but the small text is
+            good," per Josh: the whole row runs at type-label now, both
+            directions offered, everything in the same caption voice as
+            BACK TO TOP on the left. Hover is the breadcrumb Work link's
+            own scale + bold, kept identical across all three so the
+            row reads as one family. */}
+        <div className="mx-auto hidden max-w-frame items-center justify-between gap-8 px-6 pb-20 md:flex md:px-gutter">
           <BackToTopLink />
-          {next && (
-            <Link href={`/work/${next.slug}`} className="group text-right">
-              <span className="type-label block text-ink">Next project</span>
-              <span className="type-title mt-2 block text-accent">
-                {toDisplayTitle(next.title)}{" "}
-                <span
-                  aria-hidden="true"
-                  className="inline-block transition-transform duration-300 ease-drift group-hover:translate-x-2"
-                >
-                  →
-                </span>
-              </span>
-            </Link>
-          )}
+          <div className="flex items-center gap-10">
+            {previous && (
+              <Link
+                href={`/work/${previous.slug}`}
+                className="type-label inline-block text-ink transition-[font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:font-bold hover:duration-300 hover:ease-drift"
+              >
+                Previous project
+              </Link>
+            )}
+            {next && (
+              <Link
+                href={`/work/${next.slug}`}
+                className="type-label inline-block text-ink transition-[font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:font-bold hover:duration-300 hover:ease-drift"
+              >
+                Next project
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>
