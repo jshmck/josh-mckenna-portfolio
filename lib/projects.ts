@@ -2045,6 +2045,9 @@ export const projects: Project[] = [
       ratio: "2400/713",
       alt: "The full \"Endless Love\" banner artwork for VOXI's Pride campaign",
       src: "/work/voxi-pride/01-banner.webp",
+      // Too narrow (short) a strip for the sitewide rounded frame to read
+      // right — square corners instead, per Josh.
+      square: true,
     },
     // True ratio (0.7998) — a fresh 4/5 export, replacing the old 3/4
     // portrait poster crop.
