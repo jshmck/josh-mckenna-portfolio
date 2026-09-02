@@ -478,7 +478,7 @@ export function Nav() {
                 height={112}
                 sizes="56px"
                 priority
-                className="h-7 w-7 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14"
+                className="h-10 w-10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14"
               />
             </Link>
           </div>
