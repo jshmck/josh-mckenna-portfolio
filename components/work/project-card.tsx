@@ -141,12 +141,19 @@ export function ProjectCard({
       }`}
     >
       {parallax ? (
-        // Clamped well inside the grid's mb-8 (32px) gap between cards —
-        // unbounded parallax let far-from-centre images drift 70px+ and
-        // visually detach from their own layout position, overlapping
-        // neighbours. Gentler speed too, since the clamp does most of the
-        // limiting for anything more than a little off-centre.
-        <Parallax speed={0.92} maxOffset={12}>
+        // Clamped well inside the masonry's 32px desktop gap between
+        // cards — unbounded parallax let far-from-centre images drift
+        // 70px+ and visually detach from their own layout position,
+        // overlapping neighbours. Gentler speed too, since the clamp
+        // does most of the limiting for anything more than a little
+        // off-centre. mobileMaxOffset 2: the single-column gap is 8px
+        // and adjacent cards straddling the viewport centre converge by
+        // up to 2×clamp, so 12px of drift meant real overlap mid-scroll
+        // — "i dont want them to overlap as you scroll though so set a
+        // minimum padding," per Josh. 8 − 2×2 guarantees 4px of visual
+        // padding at every scroll position while keeping a whisper of
+        // the drift.
+        <Parallax speed={0.92} maxOffset={12} mobileMaxOffset={2}>
           {plate}
         </Parallax>
       ) : (

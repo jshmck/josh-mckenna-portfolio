@@ -17,6 +17,19 @@ type ParallaxProps = {
    * from its own layout position and overlap a neighbour.
    */
   maxOffset?: number;
+  /**
+   * Tighter clamp below md (768px), when set. Elements drift *toward* the
+   * viewport centre (see the offset math below), so two vertically
+   * adjacent parallaxed elements straddling the centre CONVERGE — by up
+   * to 2×clamp combined. A gap that comfortably absorbs that on desktop
+   * can be smaller than it on a phone: the work gallery's 8px mobile gap
+   * against the cards' 12px clamp meant up to 16px of genuine overlap
+   * mid-scroll ("i dont want them to overlap as you scroll though so set
+   * a minimum padding," per Josh). The guaranteed minimum visual padding
+   * between neighbours is gap − 2×(effective clamp) — callers with tight
+   * mobile gaps set this so that number stays positive.
+   */
+  mobileMaxOffset?: number;
   className?: string;
 };
 
@@ -31,6 +44,7 @@ export function Parallax({
   children,
   speed = 0.85,
   maxOffset = Infinity,
+  mobileMaxOffset,
   className = "",
 }: ParallaxProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -41,15 +55,22 @@ export function Parallax({
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    // Checked per frame rather than once — rotation/resize across the md
+    // boundary should swap clamps without needing its own listener; the
+    // cached query object makes the per-frame read effectively free.
+    const mobileQuery = window.matchMedia("(max-width: 767px)");
+
     let raf = 0;
     let queued = false;
 
     const update = () => {
       queued = false;
+      const cap =
+        mobileMaxOffset !== undefined && mobileQuery.matches ? mobileMaxOffset : maxOffset;
       const rect = node.getBoundingClientRect();
       // Distance of the element's centre from the viewport's centre.
       const offset = rect.top + rect.height / 2 - window.innerHeight / 2;
-      const clamped = Math.max(-maxOffset, Math.min(maxOffset, offset * (speed - 1)));
+      const clamped = Math.max(-cap, Math.min(cap, offset * (speed - 1)));
       node.style.transform = `translate3d(0, ${clamped}px, 0)`;
     };
 
@@ -68,7 +89,7 @@ export function Parallax({
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [speed, maxOffset]);
+  }, [speed, maxOffset, mobileMaxOffset]);
 
   return (
     <div ref={ref} className={`will-change-transform ${className}`}>
