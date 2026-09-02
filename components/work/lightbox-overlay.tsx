@@ -20,25 +20,22 @@ function ratioToNumber(ratio: string) {
   return w / h;
 }
 
-/** Same recipe across every lightbox on the site — kept in one place so
- *  hover/press states, spacing and the frosted pill can't drift between
- *  HeroLightbox, ImageStack, GalleryGrid and PosterGrid. A byte-for-byte
- *  clone of nav.tsx's word class — same 15/22px font-body at regular
- *  weight ("same thickness as the text in the nav bars," per Josh), same
- *  bold-on-hover, same nav-pill-hover squash-and-stretch, same enlarged
- *  hit box via padding + matching negative margins — with brand blue on
- *  hover/tap ("lets have the hover colour blue," per Josh), a deliberate
- *  departure from the nav words' accent purple. text-ink-muted at rest,
- *  not text-canvas -- the backdrop itself used to be dark (bg-ink/90),
- *  which needed light text; now that it's canvas-coloured (see the
- *  backdrop's own comment below), the same near-black used on every
- *  other pill on the site (nav.tsx, BackToTop) reads correctly here
- *  too. The old circle-button chrome (h-9 w-9, hover bg wash,
- *  directional translate/rotate accents) is gone with the rest of the
- *  bespoke styling — "make it all match," per Josh, and the nav words
- *  have none of it. */
+/** Shared by every lightbox control (close, prev, next) so hover/press
+ *  states can't drift between HeroLightbox, ImageStack, GalleryGrid and
+ *  PosterGrid. Bare glyphs now, no container and no frost -- "lightbox
+ *  nav bar needs rethinking too - no frost bubble... I dont want the
+ *  bubbly frost nav bars to live anywhere but the header," per Josh,
+ *  retiring the toolbar pill (a byte-for-byte clone of the header's
+ *  centre pill, nav-pill bounces and all) this class used to style.
+ *  Mono, matching the breadcrumb line's own < > arrows so every bare
+ *  chevron on the site speaks one caption voice; ink at rest on the
+ *  canvas backdrop; brand blue + a small scale on hover/tap ("lets have
+ *  the hover colour blue," per Josh -- kept from the pill era, it's a
+ *  colour choice, not pill chrome). p-3 grows each tap target well past
+ *  the glyph; the absolute positions below place the padded box, so no
+ *  negative margins are needed to compensate. */
 const LIGHTBOX_BUTTON_CLASS =
-  "-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] text-ink-muted transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:font-bold hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:font-bold active:text-brand md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px]";
+  "p-3 font-mono text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-brand hover:duration-300 hover:ease-drift active:scale-110 active:text-brand";
 
 /** Tracks the viewport size live (mount + resize) so the stage can size
  *  itself in real pixels rather than through nested CSS var()/calc()/min()
@@ -118,10 +115,10 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   const touchRef = useRef<{ x: number; y: number } | null>(null);
 
   const onTouchStart = (event: React.TouchEvent) => {
-    // Starting on the toolbar itself is excluded — a tap-and-slight-drag
-    // on a button shouldn't also register as a page-swipe underneath it.
+    // Starting on a control is excluded — a tap-and-slight-drag on a
+    // button shouldn't also register as a page-swipe underneath it.
     const target = event.target as Element;
-    touchRef.current = target.closest("[data-lightbox-toolbar]")
+    touchRef.current = target.closest("[data-lightbox-control]")
       ? null
       : { x: event.touches[0].clientX, y: event.touches[0].clientY };
   };
@@ -157,16 +154,14 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   // 97vw/2000px width cap and height reserve as the stage below, just
   // resolved in JS so every frame in the cycle is capped by the exact
   // same numbers instead of each one re-deriving them independently.
-  // The reserve covers everything under the image: the toolbar (now the
-  // nav pill's own md:h-20 = 80px, up from the old 48px circle row —
-  // "better match the lightbox nav to the centre nav bar," per Josh),
-  // the gap-4 and the dialog's p-4, plus the same 4px slack the old
-  // 100px figure carried. Two values because the toolbar itself is two
-  // heights: ~47px below md (15px text + py-3), 80px from md up — one
-  // flat 132px would shrink every phone-sized image for a toolbar
-  // height that only exists on desktop. 768 is Tailwind's md, the same
-  // breakpoint the toolbar's own md: classes switch at.
-  const stageReserve = viewport && viewport.width >= 768 ? 132 : 100;
+  // The reserve shrank when the bottom toolbar pill was retired (the
+  // controls are bare glyphs overlaid at the corners/edges now, taking
+  // no vertical band of their own): mobile keeps room for the dialog's
+  // p-4 plus the small counter under the image, desktop just the p-4
+  // and breathing room so a tall image doesn't crowd the top-right ×.
+  // 768 is Tailwind's md, the same breakpoint the controls' own md:
+  // classes switch at.
+  const stageReserve = viewport && viewport.width >= 768 ? 96 : 72;
   const widthCapPx = viewport ? Math.min(viewport.width * 0.97, 2000) : 2000;
   // Below md, the shared-cycle ratio above stops being a helpful ceiling
   // and starts being a bug: a single wide outlier elsewhere in the same
@@ -250,19 +245,18 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
       aria-label={openImage.alt}
       // max-md:backdrop-blur -- "frost dark background when in lightbox,"
       // per Josh, mobile only for now. Same blur/saturate recipe as every
-      // other frosted surface sitewide (nav.tsx's frostClass, BackToTop's
-      // PILL_BASE) so the backdrop reads as the same glass treatment
-      // rather than a one-off. bg-canvas/95, not bg-ink/90 -- "i think the
-      // black or grey background is a bit off brand - should we do the
-      // same (almost) white as site wide?" per Josh, after seeing a dark
-      // backdrop read as a jarring departure from the rest of the site's
-      // one consistent "Sugar White" surface. Still translucent (/95, not
-      // opaque), so backdrop-blur still has real page content behind it
-      // to soften rather than becoming a no-op -- a plain solid fill
-      // would make it one. LIGHTBOX_BUTTON_CLASS's rest colour switched
-      // from text-canvas to text-ink-muted alongside this, for the same
-      // reason -- see its own comment.
-      className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-canvas/95 p-4 max-md:backdrop-blur-md max-md:backdrop-saturate-150"
+      // other frosted surface sitewide (nav.tsx's frostClass) so the
+      // backdrop reads as the same glass treatment rather than a one-off.
+      // bg-canvas/95, not bg-ink/90 -- "i think the black or grey
+      // background is a bit off brand - should we do the same (almost)
+      // white as site wide?" per Josh, after seeing a dark backdrop read
+      // as a jarring departure from the rest of the site's one consistent
+      // "Sugar White" surface. Still translucent (/95, not opaque), so
+      // backdrop-blur still has real page content behind it to soften
+      // rather than becoming a no-op -- a plain solid fill would make it
+      // one. The stage heights match stageReserve above (72 below md,
+      // 96 from md up) -- see its comment for what each reserve covers.
+      className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] items-center justify-center bg-canvas/95 p-4 max-md:backdrop-blur-md max-md:backdrop-saturate-150"
       onClick={close}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
@@ -270,7 +264,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
         touchRef.current = null;
       }}
     >
-      <div className="relative flex h-[calc(100vh-100px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-132px)]">
+      <div className="relative flex h-[calc(100vh-72px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-96px)]">
         {openImage.src && (
           <div
             key={openIndex}
@@ -297,86 +291,80 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
         )}
       </div>
 
-      {/* One grouped toolbar instead of three floating circles — a clone
-          of nav.tsx's centre pill, not just a cousin of it: same frost
-          (the asymmetric inset rim, brand-blue wash, blur + saturate —
-          kept byte-identical with frostClass / BackToTop's PILL_BASE so
-          the three never drift), same container metrics (gap-3 px-3.5
-          py-3, md:h-20 md:gap-10 md:px-12 — the literal shared height
-          nav.tsx uses so rounded-full's corner radius comes out the
-          same), and the same bounce split: nav-pill-pop as its resting
-          class (plays once per lightbox open — the toolbar mounts with
-          the dialog, so mount *is* its appearing moment),
-          nav-pill-hover-soft when hovered/tapped anywhere in the pill,
-          full nav-pill-hover on the glyphs themselves, mirroring pill vs
-          words in the nav. The md:h-20 upsizing is what the stage's
-          132px md reserve above pays for. Sits in normal flow below the
-          image rather than overlaid on it. */}
-      <div
-        data-lightbox-toolbar
-        // Mobile gap/padding widened (gap-3→gap-8, px-3.5→px-8) — "the nav
-        // bar for mobile on lightbox needs to be wider and more spacing
-        // between buttons," per Josh; the tight 12px gap read as cramped
-        // next to the header/BackToTop pills' own more generous mobile
-        // sizing. Desktop's md:gap-10/md:px-12 untouched.
-        className="flex flex-shrink-0 animate-[nav-pill-pop_650ms_ease-in-out] items-center gap-8 rounded-full border border-transparent bg-canvas/15 px-8 py-3 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0"
-        onClick={(event) => event.stopPropagation()}
-      >
-        {/* "<" / ">" glyphs, not "←"/"→" — "change the arrows from arrows
-            to < and >," per Josh — rendered exactly like a nav word:
-            regular weight at rest, bold + accent on hover/tap, colour and
-            weight inherited by the inner span so there's only one source
-            of truth for the state. The span still exists purely to carry
-            the one-shot arrow-hint nudge on its own transform, off the
-            button's, which the hover keyframe animates. The spans size up
-            past the inherited word scale (20/30px vs 15/22px) because
-            Helvetica's </> glyphs only occupy about half their em box —
-            at the word size they rendered visibly smaller than the ✕
-            ("a little too small," per Josh). Interim treatment: Josh may
-            draw custom chevrons like the cart/social icon set, which
-            would swap in via the MaskIcon pipeline (social-icons.tsx). */}
-        {images.length > 1 && (
+      {/* Bare controls at the standard lightbox positions, replacing the
+          frosted toolbar pill (a clone of the header's centre pill) --
+          "lightbox nav bar needs rethinking too - no frost bubble," per
+          Josh, with corners + edges as the chosen layout: × top-right
+          (where every lightbox puts it), < > vertically centred at the
+          screen edges from md up, and below md -- where paging is the
+          swipe gesture this dialog already handles -- just a small mono
+          counter under the image instead of arrows. All plain ink
+          glyphs on the light backdrop, no containers, no nav-pill
+          bounces (that motion belongs to the header's frost language).
+
+          Glyph notes carried over from the pill era: "<" / ">" not
+          arrows ("change the arrows from arrows to < and >," per Josh);
+          × is U+00D7, not U+2715 -- the mono face has the former, and
+          math operators share the face's stroke weight by design so the
+          three glyphs match for free. The inner spans exist purely to
+          carry the one-shot arrow-hint nudge on their own transform,
+          off the button's, which the hover scale animates. Every
+          control stopPropagation()s so the dialog's own click-anywhere
+          close doesn't also fire; data-lightbox-control keeps a touch
+          that starts on a control from doubling as a page-swipe (see
+          onTouchStart above). */}
+      {images.length > 1 && (
+        <>
           <button
             type="button"
             data-lightbox-dir="prev"
-            onClick={goPrev}
+            data-lightbox-control
+            onClick={(event) => {
+              event.stopPropagation();
+              goPrev();
+            }}
             aria-label="Previous image"
-            className={LIGHTBOX_BUTTON_CLASS}
+            className={`${LIGHTBOX_BUTTON_CLASS} absolute left-3 top-1/2 hidden -translate-y-1/2 md:block`}
           >
-            <span className="inline-block text-[20px] animate-[arrow-hint-left_1.1s_ease-in-out_600ms] md:text-[30px]">
+            <span className="inline-block text-[30px] animate-[arrow-hint-left_1.1s_ease-in-out_600ms]">
               {"<"}
             </span>
           </button>
-        )}
-        {/* × (U+00D7), not ✕ (U+2715) — Helvetica has no U+2715, so it
-            rendered from a fallback face whose stroke didn't match the
-            chevrons' ("the weight of the chevrons is different to the
-            x," per Josh). The multiplication sign is a real glyph in the
-            same face as </> and, at the same 20/30px, math operators
-            share the face's stroke weight by design — matched for free,
-            no per-glyph size tuning to maintain. */}
-        <button
-          type="button"
-          onClick={close}
-          aria-label="Close"
-          className={LIGHTBOX_BUTTON_CLASS}
-        >
-          <span className="inline-block text-[20px] md:text-[30px]">×</span>
-        </button>
-        {images.length > 1 && (
           <button
             type="button"
             data-lightbox-dir="next"
-            onClick={goNext}
+            data-lightbox-control
+            onClick={(event) => {
+              event.stopPropagation();
+              goNext();
+            }}
             aria-label="Next image"
-            className={LIGHTBOX_BUTTON_CLASS}
+            className={`${LIGHTBOX_BUTTON_CLASS} absolute right-3 top-1/2 hidden -translate-y-1/2 md:block`}
           >
-            <span className="inline-block text-[20px] animate-[arrow-hint-right_1.1s_ease-in-out_600ms] md:text-[30px]">
+            <span className="inline-block text-[30px] animate-[arrow-hint-right_1.1s_ease-in-out_600ms]">
               {">"}
             </span>
           </button>
-        )}
-      </div>
+          {/* Position counter, mobile only -- with the arrows gone below
+              md there's otherwise no cue that the gallery pages at all;
+              "1 / 12" is the caption-voice hint that a swipe has
+              somewhere to go, cousin of the breadcrumb dot strip. */}
+          {openIndex !== null && (
+            <p className="type-label absolute bottom-6 left-1/2 -translate-x-1/2 text-ink md:hidden">
+              {openIndex + 1} / {images.length}
+            </p>
+          )}
+        </>
+      )}
+      <button
+        type="button"
+        data-lightbox-control
+        onClick={close}
+        aria-label="Close"
+        className={`${LIGHTBOX_BUTTON_CLASS} absolute right-3 top-3`}
+      >
+        <span className="inline-block text-[22px] md:text-[30px]">×</span>
+      </button>
     </div>,
     document.body,
   );
