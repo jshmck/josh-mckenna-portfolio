@@ -203,18 +203,26 @@ export function ProjectContent({ project }: { project: Project }) {
     // image still respects the corner) and the canvas fill. Structurally
     // immune to the bug rather than chasing which specific combination
     // of properties triggers it.
-    // mb-10 completes the inset -- "the bottom of a project card sits on
-    // the footer line - give it some space," per Josh: without a bottom
-    // margin the card's edge ran flush into the footer's border-t,
-    // breaking the floating read on the one edge where the margin was
-    // missing. Deliberately much deeper than the mt-3/mx-3 on the other
-    // three sides, and tuned in three passes (12px matching the others,
-    // then 24 -- "i need a little more room" -- then 40: "increase
-    // space between project and footer line") -- the shadow's downward
-    // throw fills part of the gap, and the footer's own curtain reveal
-    // reads better with real air between the card's corner and the
-    // hairline.
-    <div className="max-md:mx-3 max-md:mt-3 max-md:mb-10 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
+    // No bottom margin, deliberately -- the card's shadowed edge IS the
+    // curtain's edge. A bottom gap went through four passes (0 -> 12 ->
+    // 24 -> 40px, each per Josh while the footer still sat statically
+    // below the card), but once the footer became the curtain reveal, a
+    // margin here turned into a bug: main's opaque background paints
+    // under a child's margin too, so the gap rode along below the card
+    // as a card-coloured white apron -- invisible over canvas, but
+    // squarely covering the footer's icons mid-reveal, right under the
+    // card's shadow ("bottom of a project card hovering over the social
+    // icons in the footer and a white block under the shadow of the
+    // card is covering the icons," per Josh, after two earlier reports
+    // circled the same block: "the white is covering the t&c" and
+    // "still solid under the shadow"). With the margin gone, main ends
+    // exactly at the card's edge, the reveal starts at the rounded
+    // corner, and the only thing cast over the footer is the shadow --
+    // the same layered read as the card sliding under the nav at the
+    // top. Air between the card's corner and the footer's content now
+    // comes from the footer's own top padding, not from an apron on
+    // this side of the curtain.
+    <div className="max-md:mx-3 max-md:mt-3 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
       <div className="max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas">
         <header className="py-16 md:py-[60px]">
           <div className="mx-auto max-w-frame px-6 md:px-gutter">
