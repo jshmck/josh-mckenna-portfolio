@@ -11,7 +11,7 @@ import { ProjectVideo } from "@/components/work/project-video";
 import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
-import { ProjectSwipeNav } from "@/components/work/project-swipe-nav";
+import { ProjectStackSwipe } from "@/components/work/project-stack-swipe";
 import { ProjectTitle } from "@/components/work/project-title";
 import { getProject, getProjectNeighbours, projects, type Project, type ProjectImage } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
@@ -149,6 +149,7 @@ export default async function ProjectPage({
 
   return (
     <article>
+      <ProjectStackSwipe previous={previous} next={next}>
       <header className="py-16 md:py-[60px]">
         <div className="mx-auto max-w-frame px-6 md:px-gutter">
           <p className="type-label text-ink">
@@ -438,6 +439,7 @@ export default async function ProjectPage({
           )}
         </ProjectLightboxProvider>
       )}
+      </ProjectStackSwipe>
 
       {/* The old Previous/All Work/Next footer nav is gone -- Back to Top
           now covers Previous/Next (reachable without scrolling past the
@@ -446,12 +448,12 @@ export default async function ProjectPage({
           sitting in the exact same docked spot as the pill below, getting
           covered by it. "The new back to top covers the all work text
           anyway," per Josh -- rather than move it, it came out entirely.
-          See BackToTop's own doc comment for the rest of this history. */}
+          See BackToTop's own doc comment for the rest of this history.
+          Outside ProjectStackSwipe deliberately -- these are `position:
+          fixed`, and a `transform` on an ancestor (the swipe slab) would
+          turn that into "fixed relative to the transformed ancestor"
+          instead of the viewport, breaking their own dock/undock math. */}
       <BackToTop previous={previous} next={next} />
-
-      {/* Touch swipe left/right = the same next/previous navigation as the
-          circles above — see ProjectSwipeNav's doc comment. */}
-      <ProjectSwipeNav previousSlug={previous?.slug} nextSlug={next?.slug} />
     </article>
   );
 }
