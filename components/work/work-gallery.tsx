@@ -134,15 +134,21 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * hover: variant compiles to @media (hover: hover), deliberately excluding
  * coarse-pointer devices so a tap never leaves a stuck hover state. That
  * meant the flag never showed at all on mobile, and a filter pill has no
- * natural "hover to discover" moment on touch anyway. Fix: on
- * pointer-coarse devices (real @media (pointer: coarse), unrelated to
- * hover), the rings + panning rainbow fill play once automatically a
- * moment after the page loads (pride-intro/rainbow-pan-intro keyframes,
- * globals.css) instead of waiting on interaction, then settle back to the
- * plain resting pill — a one-shot "there's more here" preview rather than
- * a permanently-different mobile state. Fine-pointer devices are
- * untouched: pointer-coarse: never matches a mouse, so desktop's
- * hover-only behaviour is unchanged.
+ * natural "hover to discover" moment on touch anyway. First fix: on
+ * pointer-coarse devices, the rings + panning rainbow fill played once
+ * automatically a moment after the page loaded (the old pride-intro/
+ * rainbow-pan-intro/pride-border-intro keyframes, since removed from
+ * globals.css) — reverted, "I think it needs to happen on press," per
+ * Josh: playing on load read as a glitch/flash rather than a deliberate
+ * reveal, and gave no way to see it again afterwards short of reloading.
+ * Now `pointer-coarse:group-active:` (and the button's own
+ * `pointer-coarse:active:` for the border) plays the exact same reveal
+ * hover already does on a fine pointer, but keyed to a touch-and-hold
+ * instead — press, see the flag; release, it's gone, repeatable any
+ * number of times. Stacked with pointer-coarse: throughout so fine-
+ * pointer devices are untouched: pointer-coarse: never matches a mouse,
+ * and a mouse click-and-hold already shows the identical reveal via
+ * hover: regardless, so nothing here changes desktop's behaviour.
  */
 function PrideFilterButton({
   active,
@@ -159,27 +165,27 @@ function PrideFilterButton({
       className={`font-display group relative overflow-hidden rounded-full border px-4 py-2 text-[11px] font-waldeck-medium uppercase tracking-[0.02em] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
         active
           ? "border-transparent bg-brand text-canvas"
-          : "border-ink text-ink-muted hover:border-[#F7A0C4] hover:text-ink pointer-coarse:animate-[pride-border-intro_2.4s_ease-in-out_500ms_1]"
+          : "border-ink text-ink-muted hover:border-[#F7A0C4] hover:text-ink pointer-coarse:active:border-[#F7A0C4] pointer-coarse:active:text-ink"
       }`}
     >
       {PRIDE_RINGS.map((color, i) => (
         <span
           key={color}
           aria-hidden="true"
-          className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-coarse:animate-[pride-intro_2.4s_ease-in-out_500ms_1]"
+          className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-coarse:group-active:opacity-100"
           style={{ inset: `${i * 2}px`, backgroundColor: color }}
         />
       ))}
       <span
         aria-hidden="true"
-        className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:animate-[rainbow-pan_1.5s_linear_infinite] group-hover:opacity-100 pointer-coarse:animate-[rainbow-pan-intro_2.4s_ease-in-out_500ms_1]"
+        className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:animate-[rainbow-pan_1.5s_linear_infinite] group-hover:opacity-100 pointer-coarse:group-active:animate-[rainbow-pan_1.5s_linear_infinite] pointer-coarse:group-active:opacity-100"
         style={{
           inset: `${PRIDE_RINGS.length * 2}px`,
           background: prideStripeGradient,
           backgroundSize: "100% 200%",
         }}
       />
-      <span className="relative z-10 transition-colors duration-300 group-hover:text-black">
+      <span className="relative z-10 transition-colors duration-300 group-hover:text-black pointer-coarse:group-active:text-black">
         Pride
       </span>
     </button>

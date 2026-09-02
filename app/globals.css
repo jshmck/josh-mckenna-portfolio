@@ -236,63 +236,6 @@
   }
 }
 
-/* One-shot preview of the Pride pill's flag treatment for touch devices,
-   which never see the hover-driven reveal above (work-gallery.tsx's
-   pointer-coarse: usage) -- fades the rings in, holds, fades back out.
-   Single run (see the animation-iteration-count in the Tailwind class
-   that references this), so it plays once as the page loads rather than
-   looping. */
-@keyframes pride-intro {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  20%,
-  70% {
-    opacity: 1;
-  }
-}
-
-/* Same one-shot preview as pride-intro, for the rainbow fill layer --
-   combines the opacity flash with a background-position pan so the fill
-   itself visibly moves during its moment on screen instead of sitting
-   static. */
-@keyframes rainbow-pan-intro {
-  0% {
-    opacity: 0;
-    background-position: 0% 0%;
-  }
-  20% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-    background-position: 0% 150%;
-  }
-  100% {
-    opacity: 0;
-    background-position: 0% 200%;
-  }
-}
-
-/* Same one-shot window as pride-intro/rainbow-pan-intro, but for the
-   Pride pill's own border -- without this the button's plain border-ink
-   stayed solid black through the whole preview, cutting a harsh line
-   across the rainbow reveal underneath it (the same problem the hover
-   state's border colour swap already solved on desktop, just missing
-   here for the mobile intro). Swaps to the ring's own pink for the same
-   stretch the rings/fill are visible, then back. */
-@keyframes pride-border-intro {
-  0%,
-  100% {
-    border-color: var(--color-ink);
-  }
-  20%,
-  70% {
-    border-color: #f7a0c4;
-  }
-}
-
 /* Gentle vertical bob — the 404 page's lost illustration. Pure CSS, so the
    sitewide prefers-reduced-motion rule above neutralises it on its own;
    no JS early-return needed. */
