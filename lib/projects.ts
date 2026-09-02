@@ -613,6 +613,9 @@ export const projects: Project[] = [
       { role: "Writer", name: "Jacob Gallagher" },
       { role: "Client", name: "The Wall Street Journal" },
     ],
+    // Pinned, not left to RATIO_CYCLE — per Josh, the /work card can't land
+    // on 4/5 for this one.
+    cardRatio: "1/1",
     hero: {
       ratio: "3/2",
       alt: "Three ears in a row, each wearing an AirPod",
