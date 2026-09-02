@@ -373,7 +373,7 @@ export const projects: Project[] = [
     deliverables: "2 illustrations · 2 icons",
     categories: ["Icons", "Editorial"],
     summary: "Two bikes, each drawn twice — once for looking, once for tapping.",
-    heroCaption: "",
+    heroCaption: "Lime bike — the covered frame",
     brief: [
       "No brief — just an excuse to draw the Lime bike properly, twice over: once at full size, and once redrawn at icon scale, where the wordmark goes, the frame becomes a single stroke and the green basket does all the identifying.",
     ],
