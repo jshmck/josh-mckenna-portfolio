@@ -167,6 +167,15 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     ? Math.min(viewport.height - stageReserve, widthCapPx / heightRatio)
     : undefined;
 
+  // Mirrors the inline frame's own square-corner treatment (see
+  // ProjectImage.square in lib/projects.ts, and HeroLightbox's
+  // `image.square ? "" : "rounded-frame"`) — without this the enlarged
+  // view still rounded a frame that reads square everywhere else on the
+  // page. "mr porter mobile no rounded corners on lightbox," per Josh,
+  // mobile only for now — max-md: rather than dropping rounded-frame
+  // outright, so desktop's lightbox is untouched until he says otherwise.
+  const effectiveRadius = openImage.square ? `max-md:rounded-none ${radius}` : radius;
+
   // "uniform" pins the rendered height outright instead of capping it.
   // Capping alone (max-height + width/height:auto) lets the browser fall
   // back to each file's srcset-derived intrinsic size whenever the cap
@@ -194,7 +203,14 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
       role="dialog"
       aria-modal="true"
       aria-label={openImage.alt}
-      className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-ink/90 p-4"
+      // max-md:backdrop-blur -- "frost dark background when in lightbox,"
+      // per Josh, mobile only for now. Same blur/saturate recipe as every
+      // other frosted surface sitewide (nav.tsx's frostClass, BackToTop's
+      // PILL_BASE) so the backdrop reads as the same glass treatment
+      // rather than a one-off. bg-ink/90 is already translucent, so the
+      // blur has real page content behind it to soften -- a plain solid
+      // fill would make backdrop-blur a no-op.
+      className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-ink/90 p-4 max-md:backdrop-blur-md max-md:backdrop-saturate-150"
       onClick={close}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
@@ -221,7 +237,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
               width={imgWidth}
               height={imgHeight}
               sizes="97vw"
-              className={radius}
+              className={effectiveRadius}
               style={imageStyle}
               priority
             />
