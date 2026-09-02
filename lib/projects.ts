@@ -1309,13 +1309,14 @@ export const projects: Project[] = [
       alt: "Bum selfie, head-on",
       src: "/work/womp-bum-selfie/02-bum-selfie-front.webp",
     },
-    // Video sits below the pair rather than leading the page — the
-    // renders are the artwork, the clip is supplementary. Same reasoning
-    // as Pato.
+    // Video sits beside the pair, third-up, rather than full-width below —
+    // at full width the portrait clip ran oversized next to the two
+    // renders above it. Same "pair" position Last Call uses, extended to
+    // a three-across row when heroPair is also set.
     heroVideo: {
       src: "/work/womp-bum-selfie/03-bum-selfie-video.mp4",
       alt: "The bum selfie, turning",
-      position: "bottom",
+      position: "pair",
       // True 1078x1438 ratio ≈ 0.75 — without this it defaults to
       // aspect-video (16:9), cropping this portrait clip hard to fit a
       // much wider box.

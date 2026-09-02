@@ -137,7 +137,9 @@ export function ProjectContent({ project }: { project: Project }) {
     : project.heroSize === "spot"
       ? [project.hero]
       : heroPairIsVideo
-        ? [project.hero]
+        ? project.heroPair
+          ? [project.hero, project.heroPair]
+          : [project.hero]
         : project.heroPair
           ? project.heroThird
             ? [project.hero, project.heroPair, project.heroThird]
@@ -414,26 +416,59 @@ export function ProjectContent({ project }: { project: Project }) {
                   )}
                 {project.heroPair || project.heroVideo?.position === "pair" ? (
                   project.heroVideo?.position === "pair" ? (
-                    <div className="grid gap-6 md:grid-cols-2 md:gap-8">
-                      <div>
-                        <HeroLightbox
-                          images={heroLightboxImages}
-                          captions={[project.heroCaption]}
-                          hideCaptions={project.hideHeroCaptions}
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                        />
+                    project.heroPair ? (
+                      // Three across — hero and heroPair share the same
+                      // lightbox two-up HeroLightbox already renders for a
+                      // pair, wrapped to take two of three grid columns so
+                      // it lands the same width as the video's own column.
+                      // Bum Selfie only for now: the turnaround clip reads
+                      // as a third render, not a supplementary full-width
+                      // clip below two renders that are already full width.
+                      <div className="grid gap-6 md:grid-cols-3 md:gap-8">
+                        <div className="md:col-span-2">
+                          <HeroLightbox
+                            images={heroLightboxImages}
+                            captions={[
+                              project.heroCaption,
+                              project.heroPair.caption === false ? "" : project.heroPair.alt,
+                            ]}
+                            hideCaptions={project.hideHeroCaptions}
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                          />
+                        </div>
+                        <div>
+                          <ProjectVideo
+                            video={{
+                              ...project.heroVideo,
+                              poster: project.heroVideo.poster,
+                            }}
+                            sound={project.heroVideo.sound}
+                            ratio={project.heroVideo.ratio}
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <ProjectVideo
-                          video={{
-                            ...project.heroVideo,
-                            poster: project.heroVideo.poster,
-                          }}
-                          sound={project.heroVideo.sound}
-                          ratio={project.heroVideo.ratio}
-                        />
+                    ) : (
+                      <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+                        <div>
+                          <HeroLightbox
+                            images={heroLightboxImages}
+                            captions={[project.heroCaption]}
+                            hideCaptions={project.hideHeroCaptions}
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                          />
+                        </div>
+                        <div>
+                          <ProjectVideo
+                            video={{
+                              ...project.heroVideo,
+                              poster: project.heroVideo.poster,
+                            }}
+                            sound={project.heroVideo.sound}
+                            ratio={project.heroVideo.ratio}
+                          />
+                        </div>
                       </div>
-                    </div>
+                    )
                   ) : (
                     project.heroPair &&
                     (project.heroThird ? (
