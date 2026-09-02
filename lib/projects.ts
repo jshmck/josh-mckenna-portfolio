@@ -399,7 +399,8 @@ export const projects: Project[] = [
     summary: "Working on an even tan, one way or another.",
     heroCaption: "",
     brief: [
-      "No brief — just an excuse to draw a headstand with the sun clearly in mind.",
+      "2020's wellness trend of the moment was perineum sunning — thirty seconds of direct sun, no shade, for the vitamin D nobody could actually measure.",
+      "No brief, no clinical backing — just the pose, drawn straight enough that you can decide for yourself whether it's worth doing.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     cardRatio: "1/1",
