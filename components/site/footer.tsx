@@ -55,8 +55,22 @@ export function Footer() {
     // never moves relative to the viewport at all; only the content
     // over it does, at exactly scroll speed. md+ keeps the plain
     // in-flow footer untouched.
-    <footer className="border-t border-hairline max-md:sticky max-md:bottom-0">
-      <div className="mx-auto flex max-w-frame flex-wrap items-center justify-between gap-6 px-6 py-10 md:px-gutter">
+    //
+    // The hairline moves onto the inner div below md, with 12px of
+    // transparent padding above it -- "the bottom edge is too close to
+    // footer line, i want you to add whatever treatment you have added
+    // to top and sides of the project card, to the bottom," per Josh:
+    // the card's mt-3/mx-3 inset, mirrored. It cannot be a margin on
+    // the card itself -- main's opaque background paints under a
+    // child's margin, so a card-side gap rides along as a white apron
+    // covering the footer's own content mid-reveal (the bug removed the
+    // commit before this one). Living here, on the footer's side of the
+    // curtain, the 12px is static background: at full scroll the card's
+    // rounded corner floats 12px above the hairline, and mid-reveal
+    // nothing but the card's shadow ever crosses the footer. md+ keeps
+    // the border on the footer element itself, exactly as it was.
+    <footer className="border-hairline max-md:sticky max-md:bottom-0 max-md:pt-3 md:border-t">
+      <div className="border-hairline max-md:border-t mx-auto flex max-w-frame flex-wrap items-center justify-between gap-6 px-6 py-10 md:px-gutter">
         <div>
           <p className="font-body text-[13px] text-ink-muted">
             Copyright © {new Date().getFullYear()} {siteConfig.name}. All
