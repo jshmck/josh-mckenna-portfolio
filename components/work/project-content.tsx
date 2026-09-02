@@ -152,21 +152,23 @@ export function ProjectContent({ project }: { project: Project }) {
     // page underneath are bg-canvas, matching how iOS's own card
     // surfaces are frequently the same colour as what's behind them,
     // distinguished by elevation rather than a competing surface tone.
-    // shadow-xl, not a custom arbitrary shadow -- "the top of the card's
-    // shadow interferes with the header," per Josh (visible worst behind
-    // the header's own always-transparent-at-rest gaps between the jM/
-    // pill/Cart shapes, and again during a swipe where two cards' shadows
-    // are on screen together). A first cut here (an arbitrary
-    // 0 8px 30px value) had real upward reach: with an 8px offset and
-    // 30px blur, its blur extends up to 22px above the card's own top
-    // edge, comfortably past the 12px mt-3 margin and into the header
-    // band. Tailwind's shadow-xl uses a negative spread (-5px) ahead of
-    // its blur specifically to avoid this -- for its primary layer
-    // (20px offset, 25px blur, -5px spread), the shadow's shrunk-by-
-    // spread top edge sits 25px below the box's own top, then blurs
-    // upward by 25px, landing exactly back at the box's own edge with
-    // zero bleed above it, regardless of margin.
-    <div className="max-md:mx-3 max-md:mt-3 max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas max-md:shadow-xl">
+    // Two-layer shadow, tuned to stay inside the 12px mt-3 margin without
+    // vanishing there. "the top of the card's shadow interferes with the
+    // header," per Josh, first fixed by swapping to Tailwind's shadow-xl
+    // -- but its negative spread pushes upward reach to exactly zero, so
+    // the card had no shadow at all right where the header meets it,
+    // reading as flush with the header rather than floating below it:
+    // "without the top shadow it doesn't read as a card." Both ends need
+    // to be true at once -- visible in the gap, invisible past it -- so
+    // this is a custom pair, not a stock utility: a tight "contact"
+    // layer (2px offset, 6px blur) reaches only 4px above the card's own
+    // top edge, and a softer "ambient" layer (8px offset, 18px blur)
+    // reaches 10px -- both comfortably inside the 12px margin (blur -
+    // offset, same reach math as shadow-xl's own technique), so neither
+    // touches the header's own 88px band regardless of scroll or swipe
+    // state, while the card still reads as elevated on every edge,
+    // including the top.
+    <div className="max-md:mx-3 max-md:mt-3 max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
       <header className="py-16 md:py-[60px]">
         <div className="mx-auto max-w-frame px-6 md:px-gutter">
           <p className="type-label text-ink">
