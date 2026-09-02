@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { navLinks } from "@/lib/site";
 import { CartIcon } from "@/components/ui/social-icons";
@@ -143,6 +143,7 @@ const MERGE_EXIT = 160;
 
 export function Nav() {
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
   // True while a `[data-nav-contrast="light"]` card (Atlanta Magazine's
@@ -251,8 +252,15 @@ export function Nav() {
       }
 
       // Header's own resting height — same band the frost/merge thresholds
-      // above are tuned against ("just past the 88px header").
-      const NAV_HEIGHT = 88;
+      // above are tuned against ("just past the 88px header"). Read live
+      // off the element rather than hardcoded: viewport-fit=cover (see
+      // app/layout.tsx) plus this header's own env(safe-area-inset-top)
+      // padding below means its *real* rendered height now varies by
+      // device — taller on a Dynamic Island phone, still exactly 88 on
+      // anything without a safe area — so a fixed 88 would under-count
+      // the overlap check on exactly the devices the safe-area padding
+      // was added for.
+      const NAV_HEIGHT = headerRef.current?.getBoundingClientRect().height ?? 88;
       const contrastCards = document.querySelectorAll('[data-nav-contrast="light"]');
       let overLight = false;
       contrastCards.forEach((card) => {
@@ -401,7 +409,21 @@ export function Nav() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-[88px] items-start justify-center">
+      {/* min-h-[88px], not a fixed h-[88px] -- pt-[env(safe-area-inset-top)]
+          (see app/layout.tsx's viewportFit: "cover" for the other half of
+          this) pushes the jM/pill/Cart shapes down clear of a notch/
+          Dynamic Island/status bar instead of letting them render behind
+          it. With box-sizing: border-box (Tailwind's own preflight), a
+          *fixed* height would have had that padding eat into the existing
+          88px budget instead of adding to it, squeezing the real nav
+          content into less room -- min-height instead lets the whole
+          header grow taller only on devices that actually have a safe
+          area (0px everywhere else, so h-[88px]'s old behaviour is
+          untouched on any non-notched phone, tablet or desktop). NAV_HEIGHT
+          above already reads this element's own live rendered height for
+          exactly this reason -- a hardcoded 88 would undercount on
+          whichever devices this padding actually does something. */}
+      <header ref={headerRef} className="sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)]">
         <nav
           aria-label="Primary"
           className="mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 md:px-gutter"

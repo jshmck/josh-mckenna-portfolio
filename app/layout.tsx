@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo_Black, Space_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
@@ -70,6 +70,26 @@ export const metadata: Metadata = {
     description: siteConfig.description,
   },
   twitter: { card: "summary_large_image" },
+};
+
+/** viewportFit: "cover" -- "is it possible to utilise apple's full
+ *  screen on safari?? above the dynamic island and battery etc," per
+ *  Josh. Without this, iOS Safari keeps the page's own viewport
+ *  *excluded* from the safe area around the notch/Dynamic Island/status
+ *  bar entirely -- the site's own background never reaches there at
+ *  all, and the system shows its own chrome colour in that band
+ *  instead, reading as a hard edge where the page "starts." "cover"
+ *  extends the viewport (and so the canvas background, and anything
+ *  else painted behind the nav) the full height of the screen; nav.tsx
+ *  then pads its own content down by env(safe-area-inset-top) so the
+ *  jM/pill/Cart shapes themselves stay clear of the actual notch,
+ *  rather than rendering behind it. Doesn't touch Safari's own chrome
+ *  (URL bar, tab switcher) -- no website can hide that from within a
+ *  normal browser tab; that only disappears if someone adds the site to
+ *  their Home Screen and launches the icon directly, a separate,
+ *  opt-in experience this doesn't attempt. */
+export const viewport: Viewport = {
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

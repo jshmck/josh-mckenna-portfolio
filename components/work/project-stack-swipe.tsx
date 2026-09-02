@@ -1,26 +1,33 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { ProjectContent } from "@/components/work/project-content";
 import type { Project } from "@/lib/projects";
 
+/** The persistent nav (nav.tsx: `min-h-[88px]`, sticky, shared across
+ *  every route from the root layout) is never duplicated inside the
+ *  peek — it's already on screen throughout the swipe, right where it
+ *  always is. The real page's own content sits in normal flow *below*
+ *  it, but the peek is `position: fixed`, so without this offset its
+ *  content started filling from true y=0 instead — "the next project is
+ *  higher up than the current project so when it fully slides in it
+ *  creates a jump," per Josh. Reserving the same height here is what
+ *  makes the peek's content land exactly where the same content lands
+ *  once real navigation completes and it's back in normal flow under
+ *  the nav. 88 is the fallback/initial value only (SSR-safe, matches
+ *  the nav's own base height) — the real value is measured live off the
+ *  header once mounted (see the effect below), since nav.tsx's own
+ *  env(safe-area-inset-top) padding makes its rendered height taller
+ *  than 88 on a notched/Dynamic-Island phone specifically. A stale
+ *  hardcoded 88 there would reproduce the exact jump this constant was
+ *  introduced to fix, just on that one class of device. */
+const NAV_HEIGHT_FALLBACK = 88;
+
 /** Minimum resisted travel, px, before a released drag counts as a
  *  completed swipe rather than springing back. */
 const COMPLETE_DISTANCE = 96;
-
-/** The persistent nav (nav.tsx: `h-[88px]`, sticky, shared across every
- *  route from the root layout) is never duplicated inside the peek — it's
- *  already on screen throughout the swipe, right where it always is. The
- *  real page's own content sits in normal flow *below* it, but the peek
- *  is `position: fixed`, so without this offset its content started
- *  filling from true y=0 instead — "the next project is higher up than
- *  the current project so when it fully slides in it creates a jump,"
- *  per Josh. Reserving the same 88px here is what makes the peek's
- *  content land exactly where the same content lands once real
- *  navigation completes and it's back in normal flow under the nav. */
-const NAV_HEIGHT = 88;
 
 /** The horizontal delta must beat the vertical delta by this factor before
  *  a touch is captured as a horizontal drag at all — same dominance test
@@ -148,11 +155,29 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
   const shadowRef = useRef<HTMLDivElement>(null);
   const previousPeekRef = useRef<HTMLDivElement>(null);
   const nextPeekRef = useRef<HTMLDivElement>(null);
+  const [navHeight, setNavHeight] = useState(NAV_HEIGHT_FALLBACK);
 
   useEffect(() => {
     if (previous) router.prefetch(`/work/${previous.slug}`);
     if (next) router.prefetch(`/work/${next.slug}`);
   }, [previous, next, router]);
+
+  // Measures the real nav (a sibling in the root layout, not a descendant
+  // here) rather than trusting NAV_HEIGHT_FALLBACK -- see that constant's
+  // own doc comment for why a stale hardcoded value would reintroduce the
+  // exact peek-jump bug it was written to fix, specifically on notched
+  // devices. Resize-driven, not just mount-once: env(safe-area-inset-top)
+  // can change on rotation (the safe area moves to the *side* in
+  // landscape on a Dynamic Island phone), which changes the header's own
+  // rendered height too.
+  useEffect(() => {
+    const header = document.querySelector("header.sticky");
+    if (!header) return;
+    const update = () => setNavHeight(header.getBoundingClientRect().height);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -400,7 +425,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           ref={previousPeekRef}
           data-stack-peek="previous"
           className="fixed inset-x-0 bottom-0 z-0 origin-top"
-          style={{ top: NAV_HEIGHT }}
+          style={{ top: navHeight }}
         >
           <StackPeek project={previous} />
         </div>
@@ -410,7 +435,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           ref={nextPeekRef}
           data-stack-peek="next"
           className="fixed inset-x-0 bottom-0 z-0 origin-top"
-          style={{ top: NAV_HEIGHT }}
+          style={{ top: navHeight }}
         >
           <StackPeek project={next} />
         </div>
