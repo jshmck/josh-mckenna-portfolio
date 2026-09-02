@@ -185,12 +185,16 @@ export function ProjectContent({ project }: { project: Project }) {
     // image still respects the corner) and the canvas fill. Structurally
     // immune to the bug rather than chasing which specific combination
     // of properties triggers it.
-    // mb-3 completes the inset on all four sides -- "the bottom of a
-    // project card sits on the footer line - give it some space," per
-    // Josh: without it the card's bottom edge ran flush into the
-    // footer's border-t, breaking the floating read on the one edge
-    // where the margin was missing.
-    <div className="max-md:mx-3 max-md:mt-3 max-md:mb-3 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
+    // mb-6 completes the inset -- "the bottom of a project card sits on
+    // the footer line - give it some space," per Josh: without it the
+    // card's bottom edge ran flush into the footer's border-t, breaking
+    // the floating read on the one edge where the margin was missing.
+    // Deliberately deeper than the mt-3/mx-3 on the other three sides
+    // (a matching 12px went in first; "i need a little more room,"
+    // per Josh) -- the shadow's own downward throw fills part of that
+    // gap, so the bottom needs more raw distance than the top for the
+    // clearance to read as equal.
+    <div className="max-md:mx-3 max-md:mt-3 max-md:mb-6 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
       <div className="max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas">
         <header className="py-16 md:py-[60px]">
           <div className="mx-auto max-w-frame px-6 md:px-gutter">
