@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 
 import type { LightboxState } from "@/components/work/lightbox-core";
@@ -219,7 +220,27 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
           maxHeight: heightCapPx,
         };
 
-  return (
+  // Portaled straight to document.body -- every call site (ProjectLightboxProvider,
+  // PosterGrid) mounts this deep inside a project page's own tree, which as
+  // of the mobile card redesign (project-content.tsx) sits inside
+  // ProjectStackSwipe's slab: `relative z-10 bg-canvas`. Any `position`
+  // other than static paired with a real z-index value creates a new
+  // stacking context, so that slab is one -- meaning this dialog's own
+  // z-50 only ever won comparisons *within* the slab's local context.
+  // Compared against anything outside it, the whole slab stood in for the
+  // dialog at its own z-10, which loses to BackToTop's fixed z-30
+  // Previous/Next chevrons (components/ui/back-to-top.tsx, a sibling of
+  // the slab, not a descendant of it) -- "the buttons are interfering at
+  // the bottom," per Josh, seeing BackToTop's circles rendering on top of
+  // an open lightbox instead of hidden behind it, which also broke the
+  // "full screen" read entirely (the backdrop was already genuinely
+  // fixed inset-0 edge-to-edge; the chevrons floating over it were what
+  // made it read as not-full-screen). A portal sidesteps the whole
+  // stacking-context question rather than patching z-index values against
+  // each other -- this dialog now paints as a direct child of body,
+  // comparing its z-50 directly against nav's z-40 and BackToTop's z-30
+  // in the root stacking context, same as any other top-level overlay.
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -346,6 +367,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
           </button>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
