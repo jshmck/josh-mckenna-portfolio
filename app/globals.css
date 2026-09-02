@@ -105,6 +105,22 @@
        protecting here -- disabling it outright removes the bug with
        no real trade-off. */
     overflow-anchor: none;
+
+    /* iOS Safari flashes its own default translucent blue highlight on
+       whatever tappable element a touch lands on, the instant the finger
+       makes contact -- before any JS gets a chance to decide the
+       gesture is actually a drag rather than a tap. "this blue seems to
+       happen at the bottoms sometimes," per Josh, tracing back to the
+       project-page swipe specifically: a drag can start on top of any
+       clickable element (a gallery image's open-larger-view button, a
+       link), which are common further down a project page, so the
+       browser's own flash shows up right where a thumb happens to land.
+       The site already has its own deliberate hover/active feedback
+       everywhere (nav-pill-hover and its relatives), so the browser's
+       default here was always just visual noise fighting them, whether
+       or not the touch turns into a swipe -- worth disabling sitewide
+       on that basis alone, not only for this one gesture. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
