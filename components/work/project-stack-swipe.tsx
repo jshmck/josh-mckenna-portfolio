@@ -534,7 +534,14 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           aria-hidden="true"
           className="pointer-events-none fixed inset-x-0 bottom-5 z-20 flex justify-center md:hidden"
         >
-          <div className="relative flex items-center gap-1.5 rounded-full border border-transparent bg-canvas/15 px-3.5 py-2.5 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150">
+          {/* The header frostClass's glass recipe with one deviation:
+              the brand wash's inset blur drops from 22px to 5px --
+              "make the bubble look less blue, only on the edges," per
+              Josh. At the header pill's size a 22px inset blur reads
+              as a rim tint, but at this pill's ~24px height it flooded
+              the whole surface blue; a tight blur keeps the same tint
+              hugging the rim only, canvas-clear in the middle. */}
+          <div className="relative flex items-center gap-1.5 rounded-full border border-transparent bg-canvas/15 px-3.5 py-2.5 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_5px_color-mix(in_srgb,var(--color-brand)_35%,transparent)] backdrop-blur-md backdrop-saturate-150">
             {dots.map((dot) => (
               <span
                 key={dot.index}
@@ -545,7 +552,10 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
             ))}
             <span
               ref={accentDotRef}
-              className="absolute left-1/2 top-1/2 h-[7px] w-[7px] rounded-full bg-accent"
+              // bg-brand, not bg-accent -- "make the dot blue instead
+              // of purple," per Josh, breaking from the active-nav
+              // purple the first cut borrowed.
+              className="absolute left-1/2 top-1/2 h-[7px] w-[7px] rounded-full bg-brand"
               style={{ transform: `translate(-50%, -50%) translateX(${accentRestOffset}px)` }}
             />
           </div>
