@@ -3,9 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, type ReactNode } from "react";
 
-import { Plate } from "@/components/ui/plate";
+import { ProjectContent } from "@/components/work/project-content";
 import type { Project } from "@/lib/projects";
-import { toWaldeckCase } from "@/lib/waldeck-case";
 
 /** Minimum resisted travel, px, before a released drag counts as a
  *  completed swipe rather than springing back. */
@@ -49,33 +48,30 @@ function resist(delta: number): number {
   return sign * (STICK_DISTANCE * STICK_RATE + (magnitude - STICK_DISTANCE) * FREE_RATE);
 }
 
-type StackNeighbour = Pick<Project, "slug" | "title" | "hero">;
-
 type ProjectStackSwipeProps = {
-  previous?: StackNeighbour | null;
-  next?: StackNeighbour | null;
+  previous?: Project | null;
+  next?: Project | null;
   children: ReactNode;
 };
 
-/** A neighbour project's title + hero, styled to echo the real page's own
- *  header enough that the handoff at the end of a completed swipe is
- *  imperceptible — not a pixel-perfect clone of every hero layout variant
- *  (heroPair, heroVideo, poster-grid...), just the opening beat every
- *  project page shares. */
-function StackPeek({ project }: { project: StackNeighbour }) {
+/** Renders the neighbour project through ProjectContent — the exact same
+ *  component the real `/work/[slug]` page renders — clipped to one
+ *  viewport height via `overflow: hidden` rather than trying to know it's
+ *  a preview. "the page underneath (next project) needs to mirror exactly
+ *  what will appear... has to mirror exactly what the next project looks
+ *  like," per Josh, after a first cut (a hand-rolled title + single hero
+ *  image) visibly mismatched real pages using heroPair, poster-grid,
+ *  square corners, or anything else beyond the plain single-hero case.
+ *  Sharing the literal component makes drift impossible rather than just
+ *  unlikely. `aria-hidden` — this is a second, non-interactive copy of
+ *  page content that shouldn't register with assistive tech, on top of
+ *  already being `pointer-events-none` for sighted/mouse interaction. */
+function StackPeek({ project }: { project: Project }) {
   return (
-    <div className="pointer-events-none h-full w-full overflow-hidden bg-canvas">
-      <div className="pt-16 md:pt-[60px]">
-        <div className="mx-auto max-w-frame px-6 md:px-gutter">
-          <p className="type-label text-ink">Work</p>
-          <h2 className="type-display mt-6 max-w-4xl leading-[1.1] text-accent">
-            {toWaldeckCase(project.title)}
-          </h2>
-        </div>
-        <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
-          <Plate image={project.hero} priority sizes="100vw" />
-        </div>
-      </div>
+    <div aria-hidden="true" className="pointer-events-none h-full w-full overflow-hidden bg-canvas">
+      <article>
+        <ProjectContent project={project} />
+      </article>
     </div>
   );
 }
@@ -314,12 +310,12 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
   return (
     <div ref={containerRef} className="relative overflow-x-hidden">
       {previous && (
-        <div ref={previousPeekRef} className="fixed inset-0 z-0">
+        <div ref={previousPeekRef} data-stack-peek="previous" className="fixed inset-0 z-0">
           <StackPeek project={previous} />
         </div>
       )}
       {next && (
-        <div ref={nextPeekRef} className="fixed inset-0 z-0">
+        <div ref={nextPeekRef} data-stack-peek="next" className="fixed inset-0 z-0">
           <StackPeek project={next} />
         </div>
       )}
