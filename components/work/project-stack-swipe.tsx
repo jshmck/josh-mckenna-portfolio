@@ -33,8 +33,11 @@ const ACTIVATION_DISTANCE = 10;
 
 /** Touches starting this close to the screen edge are left alone — iOS's
  *  own edge-swipe back/forward gesture lives there, and fighting it for
- *  the same gesture reads as broken rather than deliberate. */
-const EDGE_GUARD = 24;
+ *  the same gesture reads as broken rather than deliberate. Narrow
+ *  (was 24) — "closer to the screen edge please," per Josh — a thin
+ *  enough sliver that it still leaves the OS's own edge gesture some
+ *  room without eating into the swipe's own usable width. */
+const EDGE_GUARD = 8;
 
 /** First STICK_DISTANCE px of resisted travel move the slab at STICK_RATE
  *  — "can the pages be slightly stuck and you can pull them?" per Josh.
@@ -42,33 +45,15 @@ const EDGE_GUARD = 24;
  *  (FREE_RATE) for the rest of the gesture. Two-segment rather than a
  *  smooth curve (classic rubber-banding) because Josh's own description
  *  was a discrete two-part feel — stuck, then free — not a continuous
- *  taper. */
+ *  taper. A rAF-driven spring-follow on top of this (easing the
+ *  *displayed* position toward the resisted target rather than painting
+ *  it directly) was tried and reverted — "let's drop the elasticity,
+ *  something faster and simple will work best here (similar to
+ *  lightbox)," per Josh: direct 1:1 tracking reads as more responsive,
+ *  especially on a quick flick, than the extra catch-up lag did. */
 const STICK_DISTANCE = 28;
 const STICK_RATE = 0.25;
 const FREE_RATE = 0.9;
-
-/** How much of the gap between the displayed position and the resisted
- *  target closes each animation frame while dragging — "apply some
- *  elasticity or gloop to the pull," per Josh: without this, the slab
- *  had already been *resisted* (STICK_DISTANCE/STICK_RATE above) but
- *  still snapped straight to that resisted value on every touchmove, so
- *  the motion itself tracked the finger with rigid 1:1 precision once
- *  past the stuck zone. Springing the *displayed* position toward the
- *  resisted target instead — rather than painting the target directly —
- *  gives the drag a touch of catch-up lag, the same "pulling through
- *  something soft" quality as the nav pills' own squash-and-stretch
- *  bounce, without literally squashing or stretching real page content
- *  (a photo or a line of text visibly distorting would read as a
- *  rendering bug, not charm, unlike a small decorative pill). 0.3
- *  converges within a handful of frames (~150ms) — enough to read as
- *  elastic without the drag feeling laggy or unresponsive. */
-const SPRING_FACTOR = 0.3;
-
-/** Below this gap, snap the displayed position to the target outright —
- *  an exponential approach never mathematically reaches zero, so without
- *  a floor the spring loop would keep scheduling frames for an
- *  imperceptible fraction of a pixel indefinitely. */
-const SPRING_SNAP_PX = 0.4;
 
 /** How far the revealed neighbour trails the front slab's own travel —
  *  iOS's own interactive-pop parallax factor is in this range. Below 1 so
@@ -125,6 +110,23 @@ function StackPeek({ project }: { project: Project }) {
  *
  * The chevron circles' own "beckon" nudge (back-to-top.tsx) exists to
  * advertise this same gesture, so the two ship together.
+ *
+ * Dispatches `stackswipe:start`/`stackswipe:end` on `window` for the
+ * duration of a captured drag — nav.tsx listens and forces its own
+ * frosted-pill state while one's in progress, regardless of scroll
+ * position. "when swiping projects can the nav bar at the top be the
+ * frosted pill state so you see the movement underneath. at the moment
+ * it's permanently there looks strange," per Josh: at scrollY 0 (the
+ * common case — most swipes happen right after landing on a page, not
+ * after scrolling into the gallery) the nav's own resting state is a
+ * plain, opaque bar with nothing sliding-glass about it, which read as
+ * static and disconnected from the page moving underneath it. A plain
+ * custom DOM event, not prop-drilling or a shared context — the two
+ * components live in entirely different parts of the tree (nav.tsx in
+ * the root layout, this one deep inside a single route's page), and
+ * nav.tsx already reads external page state the same loosely-coupled
+ * way (querying `[data-nav-contrast="light"]` elsewhere in the DOM)
+ * rather than through props passed down from a common ancestor.
  *
  * Everything here writes transforms straight to the DOM inside touch
  * handlers rather than through React state, the same rule every other
@@ -208,13 +210,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
     let captured = false; // dominance test passed — this touch IS a drag
     let activeDirection: "previous" | "next" | null = null;
     let lastResisted = 0;
-    // Spring-follow state (see SPRING_FACTOR above) — `target` is the raw
-    // resist()ed value from the latest touchmove, `displayed` is what's
-    // actually painted, eased toward `target` every frame while `captured`.
-    let target = 0;
-    let displayed = 0;
-    let springRunning = false;
-    let springRaf = 0;
 
     const setPeekTransform = (el: HTMLDivElement | null, resisted: number, direction: "previous" | "next") => {
       if (!el) return;
@@ -250,28 +245,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       el.style.opacity = "0";
     };
 
-    // Runs continuously (via its own rAF chain, not per touchmove) while
-    // `captured` — the whole point of a spring-follow is that it keeps
-    // closing the gap between the finger's latest resisted position and
-    // what's on screen even between two touchmove events, not just when
-    // a new one arrives. Cancelled from settle() the instant the finger
-    // lifts, handing off to the CSS-transition-based release animation.
-    const springStep = () => {
-      const gap = target - displayed;
-      displayed += Math.abs(gap) < SPRING_SNAP_PX ? gap : gap * SPRING_FACTOR;
-      lastResisted = displayed;
-      slab.style.transform = `translate3d(${displayed}px, 0, 0)`;
-      if (activeDirection) {
-        const peekRef = activeDirection === "previous" ? previousPeekRef : nextPeekRef;
-        setPeekTransform(peekRef.current, displayed, activeDirection);
-      }
-      if (captured) {
-        springRaf = requestAnimationFrame(springStep);
-      } else {
-        springRunning = false;
-      }
-    };
-
     const onTouchStart = (event: TouchEvent) => {
       tracking = false;
       captured = false;
@@ -285,8 +258,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       startX = x;
       startY = event.touches[0].clientY;
       lastResisted = 0;
-      target = 0;
-      displayed = 0;
     };
 
     const onTouchMove = (event: TouchEvent) => {
@@ -316,18 +287,16 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           return;
         }
         slab.style.transition = "";
-        if (!springRunning) {
-          springRunning = true;
-          springRaf = requestAnimationFrame(springStep);
-        }
+        window.dispatchEvent(new Event("stackswipe:start"));
       }
 
       if (!captured || !activeDirection) return;
       event.preventDefault();
-      // Only the *target* updates here — springStep (already running)
-      // picks up the new value on its next frame and eases toward it,
-      // rather than this handler painting the transform directly.
-      target = resist(deltaX);
+      const resisted = resist(deltaX);
+      lastResisted = resisted;
+      slab.style.transform = `translate3d(${resisted}px, 0, 0)`;
+      const peekRef = activeDirection === "previous" ? previousPeekRef : nextPeekRef;
+      setPeekTransform(peekRef.current, resisted, activeDirection);
     };
 
     const settle = () => {
@@ -336,16 +305,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         return;
       }
 
-      // Cancelled explicitly, synchronously, here — not left to
-      // springStep's own trailing `if (captured)` check. That check runs
-      // *after* springStep has already painted a frame, and `captured`
-      // is only set false at the bottom of this function — so a spring
-      // frame already queued before settle() ran would otherwise fire
-      // straight after it and paint one stale, out-of-date position
-      // directly over whatever release transform this function just set,
-      // a one-frame flicker at exactly the moment of release.
-      cancelAnimationFrame(springRaf);
-      springRunning = false;
+      window.dispatchEvent(new Event("stackswipe:end"));
 
       const peekRef = activeDirection === "previous" ? previousPeekRef : nextPeekRef;
       const neighbourSlug = activeDirection === "previous" ? previous?.slug : next?.slug;
@@ -392,7 +352,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
     container.addEventListener("touchcancel", onTouchCancel, { passive: true });
 
     return () => {
-      cancelAnimationFrame(springRaf);
       container.removeEventListener("touchstart", onTouchStart);
       container.removeEventListener("touchmove", onTouchMove);
       container.removeEventListener("touchend", onTouchEnd);
@@ -435,32 +394,22 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           paint, so there's nothing will-change would have preloaded in
           time to matter anyway.
 
-          shadow-[...]: two layered shadows, not one -- "can the drop
-          shadow have an element of frost to it?" per Josh, after the
-          first (plain dark) pass. A literal frosted-glass surface would
-          mean backdrop-filter: blur() sampling whatever's behind the
-          slab, but the slab isn't translucent (it's a full opaque page
-          of real content, and it's also the element actively
-          translating every frame of the drag) -- combining
-          backdrop-filter with a transforming element is exactly the
-          combination that caused this session's two earlier Safari-only
-          bugs (the lightbox positioning bug and its own backdrop-blur
-          rendering bug), so it stays off this specific element on
-          purpose. Reusing the sitewide glassmorphism recipe's *colours*
-          instead (nav.tsx's frostClass, BackToTop's PILL_BASE: a bright
-          white highlight layered with a softer dark shadow) gets the
-          "catches the light like glass" read through plain box-shadow --
-          zero backdrop-filter, zero new cross-browser risk. Tighter
-          white glow first (the frost), broader dark shadow underneath
-          (the separation) -- both symmetric, so containerRef's own
-          overflow-x-hidden clips them flush against the slab at rest
-          (nothing bleeds off the viewport edge) and they only become
-          visible once the slab has actually translated away, on
-          whichever edge is exposed -- previous or next, no direction-
-          specific logic needed either way. */}
+          shadow-[...]: a soft, generous drop shadow all the way around
+          the slab -- "possible to add a shadow ... so it looks separate
+          to the next?" per Josh. A frosted white-glow layer was tried
+          alongside this and reverted -- "remove the glow and go back to
+          the shadow" -- so this is the plain single dark shadow again.
+          One symmetric shadow (not a directional one keyed to drag
+          direction) covers both previous and next without extra logic:
+          containerRef's own overflow-x-hidden clips it flush against the
+          slab at rest (nothing bleeds off the viewport edge when the
+          slab exactly fills it), so it only ever becomes visible once
+          the slab has actually translated away and the shadow's own
+          region scrolls into the container's now-clipped view --
+          automatically on whichever edge is exposed. */}
       <div
         ref={slabRef}
-        className="relative z-10 bg-canvas shadow-[0_0_20px_4px_rgba(255,255,255,0.5),0_0_60px_14px_rgba(0,0,0,0.3)]"
+        className="relative z-10 bg-canvas shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
       >
         {children}
       </div>

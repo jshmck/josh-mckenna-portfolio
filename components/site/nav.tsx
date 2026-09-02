@@ -167,6 +167,16 @@ export function Nav() {
   // exact same nav-pill-landing keyframe the top-of-page return already
   // plays, just on a different trigger.
   const [atBottom, setAtBottom] = useState(false);
+  // True for the duration of a ProjectStackSwipe drag, regardless of
+  // scroll position — see the "stackswipe:start"/"stackswipe:end"
+  // events dispatched from project-stack-swipe.tsx. "when swiping
+  // projects can the nav bar at the top be the frosted pill state so
+  // you see the movement underneath. at the moment it's permanently
+  // there looks strange," per Josh: a swipe usually starts at scrollY
+  // 0, where the nav's own resting state is a plain opaque bar with no
+  // glass quality at all, reading as static and disconnected from the
+  // page sliding underneath it.
+  const [swipeFrost, setSwipeFrost] = useState(false);
 
   // Nav never unmounts across a client-side route change (it lives in the
   // root layout), so `scrolled` could otherwise keep carrying the
@@ -274,6 +284,26 @@ export function Nav() {
     // border colour.
   }, [pathname]);
 
+  // Separate from the scroll-driven effect above on purpose: a
+  // ProjectStackSwipe drag calls event.preventDefault() on its touchmove,
+  // so no 'scroll' event ever fires while one's in progress — polling
+  // inside the scroll listener's own update() wouldn't catch it in real
+  // time the way an explicit start/end event does. []-scoped: unlike the
+  // scroll effect, this has no per-pathname state to reset (a drag can't
+  // survive a route change to begin with — the swipe *is* the route
+  // change) and swipeFrost naturally resets to false once the swipe's
+  // own "end" event fires regardless of which page that lands on.
+  useEffect(() => {
+    const onStart = () => setSwipeFrost(true);
+    const onEnd = () => setSwipeFrost(false);
+    window.addEventListener("stackswipe:start", onStart);
+    window.addEventListener("stackswipe:end", onEnd);
+    return () => {
+      window.removeEventListener("stackswipe:start", onStart);
+      window.removeEventListener("stackswipe:end", onEnd);
+    };
+  }, []);
+
   // On "/", only Work can ever be active (once the embedded gallery has
   // scrolled under the header) — the wordmark isn't in navLinks, so there's
   // no "Home" case to handle here any more.
@@ -357,7 +387,13 @@ export function Nav() {
   // it. Same colour-mix(...) against var(--color-brand) approach, no raw
   // hex. Lives only in the `scrolled` branch, same as the white highlights
   // -- resting state has no surface at all to tint.
-  const frostClass = scrolled
+  //
+  // `|| swipeFrost` forces this same branch during a ProjectStackSwipe
+  // drag regardless of actual scroll position -- see swipeFrost's own
+  // doc comment above. Folded into the existing scrolled ternary rather
+  // than a separate branch so a swipe starting mid-scroll (already
+  // frosted) doesn't replay the pop-in bounce it's already played.
+  const frostClass = scrolled || swipeFrost
     ? `${atBottom ? "animate-[nav-pill-landing_650ms_ease-in-out]" : "animate-[nav-pill-pop_650ms_ease-in-out]"} border-transparent bg-canvas/15 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150`
     : hasFrostedOnce
       ? "animate-[nav-pill-landing_650ms_ease-in-out] border-transparent bg-transparent"
