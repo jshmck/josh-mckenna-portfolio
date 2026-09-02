@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 
 import { MasonryGrid } from "@/components/work/masonry-grid";
 import { ProjectCard } from "@/components/work/project-card";
@@ -25,23 +25,55 @@ type Filter = ProjectCategory | "All";
  * randomising keeps the grid's staggered look identical between server and
  * client renders — random heights would hydrate mismatched.
  *
- * Two close values, not the six-wide spread this used to cycle through
- * (4/5, 3/4, 1/1, 5/4, 3/4, 4/5) — that ranged a full 0.75-1.25, and next
- * to each other in a masonry grid the effect read as uneven rather than
- * intentionally staggered. 4/5 and 1/1 still gives every card without its
- * own cardRatio a real rhythm, just a calmer one. Pieces with a genuine
- * landscape or tall-portrait shape keep cropping nothing — they set their
- * own cardRatio and skip this cycle entirely, same as before.
+ * Two variants, not one: the six-wide spread this used to cycle through
+ * everywhere (4/5, 3/4, 1/1, 5/4, 3/4, 4/5, ranging a full 0.75-1.25) read
+ * as uneven rather than intentionally staggered once mobile's single
+ * column stacked those cards directly on top of each other, so it was
+ * trimmed to just 4/5 and 1/1 there. But that trim applied sitewide, and
+ * on desktop's 2-3 column grid the wide spread was never the problem —
+ * cutting it there instead made every card near-uniform height, so the
+ * rare 2-span landscape card or transparency-adjacency reorder stood out
+ * as a jarring outlier against that flat baseline ("the grid in web is
+ * tighter... and uneven in some spaces," per Josh — mobile was meant to
+ * be closer, not desktop too). Desktop keeps the original wide rhythm;
+ * mobile keeps the calmer one. Pieces with a genuine landscape or
+ * tall-portrait shape keep cropping nothing — they set their own
+ * cardRatio and skip this cycle entirely, same as before.
  */
-const RATIO_CYCLE: ImageRatio[] = ["4/5", "1/1"];
+const RATIO_CYCLE_MOBILE: ImageRatio[] = ["4/5", "1/1"];
+const RATIO_CYCLE_DESKTOP: ImageRatio[] = ["4/5", "3/4", "1/1", "5/4", "3/4", "4/5"];
+
+/** Matches MasonryGrid's own MD_BREAKPOINT — desktop here means "at least
+ *  the 2-column layout," not just the 3-column one, since the wide ratio
+ *  rhythm reads fine across both and only mobile's single stack needed
+ *  the calmer cycle. */
+const DESKTOP_QUERY = "(min-width: 768px)";
+
+function subscribeDesktopQuery(onChange: () => void) {
+  const query = window.matchMedia(DESKTOP_QUERY);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
+/** Server and first-hydration render report `false` (mobile's cycle) —
+ *  MasonryGrid's own columnCount defaults to 1 for the same reason, so
+ *  this stays consistent with the layout it's feeding ratios into rather
+ *  than mismatching it for one frame. */
+function useIsDesktopGrid(): boolean {
+  return useSyncExternalStore(
+    subscribeDesktopQuery,
+    () => window.matchMedia(DESKTOP_QUERY).matches,
+    () => false,
+  );
+}
 
 /**
  * Any card at or past this width/height spans two masonry columns instead
  * of one — a true landscape image forced into a single narrow column
- * (RATIO_CYCLE tops out at 1/1 = 1) would run either badly cropped or
- * absurdly tall. 1.3 sits comfortably above that ceiling, so nothing in
- * the normal cycle crosses it by accident; only a genuinely landscape
- * cardRatio (UAL Booklets 16/10 = 1.6, Bombay Sapphire 3/2 = 1.5,
+ * (both RATIO_CYCLE variants top out at 5/4 = 1.25) would run either badly
+ * cropped or absurdly tall. 1.3 sits comfortably above that ceiling, so
+ * nothing in either cycle crosses it by accident; only a genuinely
+ * landscape cardRatio (UAL Booklets 16/10 = 1.6, Bombay Sapphire 3/2 = 1.5,
  * Wagamama Brighton 1111/640 ≈ 1.74) does.
  */
 const LANDSCAPE_SPAN_RATIO = 1.3;
@@ -194,8 +226,8 @@ function PrideFilterButton({
 
 /** Same ratio a card actually renders at — shared with MasonryGrid's
  *  bin-packing below so the packed heights match the real cards exactly. */
-function effectiveCardRatio(project: Project, index: number): ImageRatio {
-  return project.cardRatio ?? RATIO_CYCLE[index % RATIO_CYCLE.length];
+function effectiveCardRatio(project: Project, index: number, cycle: ImageRatio[]): ImageRatio {
+  return project.cardRatio ?? cycle[index % cycle.length];
 }
 
 function ratioToNumber(ratio: ImageRatio): number {
@@ -221,10 +253,12 @@ function isCardTransparent(project: Project): boolean {
 function MasonryCard({
   project,
   index,
+  ratio,
   sizes = "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw",
 }: {
   project: Project;
   index: number;
+  ratio: ImageRatio;
   sizes?: string;
 }) {
   return (
@@ -234,7 +268,7 @@ function MasonryCard({
       // hoverImage crossfades to another image from the same
       // project wherever one's available (getCardHoverImage).
       image={project.cardImage}
-      ratio={effectiveCardRatio(project, index)}
+      ratio={ratio}
       caption="hover"
       motion="quiet"
       parallax
@@ -251,6 +285,7 @@ export function WorkGallery({
   showIllustrations = true,
 }: WorkGalleryProps) {
   const [filter, setFilter] = useState<Filter>("All");
+  const ratioCycle = useIsDesktopGrid() ? RATIO_CYCLE_DESKTOP : RATIO_CYCLE_MOBILE;
 
   const visible = useMemo(
     () =>
@@ -332,7 +367,8 @@ export function WorkGallery({
       <div className="mt-12">
         <MasonryGrid
           items={visible.map((project, index) => {
-            const ratio = ratioToNumber(effectiveCardRatio(project, index));
+            const cardRatio = effectiveCardRatio(project, index, ratioCycle);
+            const ratio = ratioToNumber(cardRatio);
             const span = ratio >= LANDSCAPE_SPAN_RATIO ? 2 : 1;
             return {
               key: project.slug,
@@ -343,6 +379,7 @@ export function WorkGallery({
                 <MasonryCard
                   project={project}
                   index={index}
+                  ratio={cardRatio}
                   sizes={
                     span === 2
                       ? "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 66vw"
