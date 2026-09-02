@@ -363,26 +363,27 @@ export const projects: Project[] = [
   {
     slug: "bum-selfie",
     title: "Bum Selfie",
-    client: "Personal",
+    client: "Cake Boy Magazine",
     year: 2025,
-    discipline: "Illustration",
+    discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
-    categories: ["Character", "Pride"],
+    categories: ["Editorial", "Pride"],
     summary: "Two attempts at an angle a phone was never built for.",
     heroCaption: "",
     brief: [
-      "No brief — just an excuse to draw the angle a phone camera can never quite get right.",
+      "Cake Boy magazine wanted a two-part illustration for a feature on the different ways to photograph your own arsehole — technique over vanity, apparently.",
+      "The first pass was the straightforward reach-round; the second swapped the angle and kept the trousers on, on the theory that a phone screen half-visible in shot reads as more instructional.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     hero: {
       ratio: "4/5",
-      alt: "Selfie, take one",
+      alt: "The original",
       src: "/work/bum-selfie/01-bum-selfie-4-5.webp",
     },
     gallery: [
       {
         ratio: "4/5",
-        alt: "Selfie, take two",
+        alt: "An updated version",
         src: "/work/bum-selfie/02-butt-selfie-2.webp",
       },
     ],
