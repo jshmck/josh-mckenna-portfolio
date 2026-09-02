@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { ProjectContent } from "@/components/work/project-content";
 import { getAllProjects, type Project } from "@/lib/projects";
@@ -89,6 +89,9 @@ type ProjectStackSwipeProps = {
  *  one dot (5.5px) plus the gap-1.5 (6px) between dots. */
 const DOT_WINDOW = 5;
 const DOT_PITCH = 11.5;
+/** The gap-1.5 between dots, px — the shrink collapse eats one of these
+ *  per hidden dot via negative margin (see applyDotShrink). */
+const DOT_GAP = 6;
 
 /** Renders the neighbour project through ProjectContent — the exact same
  *  component the real `/work/[slug]` page renders — clipped to one
@@ -214,6 +217,48 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
   // Its resting offset is the active dot's distance from the row centre.
   const accentRestOffset = (projectIndex - dotStart - (dots.length - 1) / 2) * DOT_PITCH;
 
+  // The pill's compact state -- "it should shrink (to three dots) when
+  // scrolling down, but same size as is when you start to press as if
+  // going left or right," per Josh: reading mode gets a quieter
+  // three-dot pill; the moment a drag is captured it expands back to
+  // the full window so the accent handoff has the whole strip to play
+  // across. Which two dots collapse is chosen so the active dot always
+  // keeps a neighbour each side (shifting the kept trio at the list's
+  // ends rather than hiding the active dot itself), and the accent's
+  // own centre-offset is recomputed for the three-dot layout since
+  // collapsing dots re-centres the row inside the pill. All of this is
+  // driven by direct DOM writes from the scroll/touch handlers below,
+  // never React state -- a re-render mid-gesture would re-apply the
+  // accent's inline style prop and clobber the drag handler's transform
+  // mid-swipe.
+  const activeDotPos = projectIndex - dotStart;
+  const shrinkKeepStart = Math.max(0, Math.min(activeDotPos - 1, dots.length - 3));
+  const accentShrunkOffset = (activeDotPos - (shrinkKeepStart + 1)) * DOT_PITCH;
+  const dotShrinkState = useRef({ scrolled: false, dragging: false });
+  const applyDotShrink = useCallback(() => {
+    const strip = dotsRef.current;
+    const accent = accentDotRef.current;
+    if (!strip || !accent) return;
+    const state = dotShrinkState.current;
+    const shrunk = state.scrolled && !state.dragging;
+    strip.querySelectorAll<HTMLElement>("[data-dot-hide]").forEach((el) => {
+      el.style.width = shrunk ? "0px" : "";
+      el.style.opacity = shrunk ? "0" : "";
+      // Collapsing width alone leaves the flex gap where the dot stood;
+      // a matching negative margin eats it -- on the side that faces
+      // the surviving trio, since an outermost dot has no outer gap.
+      if (el.dataset.dotHide === "left") el.style.marginRight = shrunk ? `-${DOT_GAP}px` : "";
+      else el.style.marginLeft = shrunk ? `-${DOT_GAP}px` : "";
+    });
+    // The accent re-targets whichever layout is current -- but never
+    // mid-drag: the touchmove handler owns its transform then, and a
+    // completed swipe deliberately leaves it on the neighbour's dot.
+    if (!state.dragging) {
+      accent.style.transition = "transform 500ms var(--ease-bounce)";
+      accent.style.transform = `translate(-50%, -50%) translateX(${shrunk ? accentShrunkOffset : accentRestOffset}px)`;
+    }
+  }, [accentRestOffset, accentShrunkOffset]);
+
   useEffect(() => {
     if (previous) router.prefetch(`/work/${previous.slug}`);
     if (next) router.prefetch(`/work/${next.slug}`);
@@ -258,6 +303,11 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
     if (!strip || !slab) return;
     const RESTING_BOTTOM = 20; // bottom-5, the strip's own class
     const DOCK_INSET = 20; // gap kept above the card's bottom edge when docked
+    // Shrink-on-scroll thresholds, with the same hysteresis idea as the
+    // nav's own frost so rubber-banding near the boundary can't flicker
+    // the pill's size.
+    const SHRINK_ENTER = 120;
+    const SHRINK_EXIT = 60;
     let raf = 0;
     let queued = false;
     const update = () => {
@@ -267,6 +317,11 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       const cardBottom = card.getBoundingClientRect().bottom;
       const docked = window.innerHeight - cardBottom + DOCK_INSET;
       strip.style.bottom = `${Math.max(RESTING_BOTTOM, docked)}px`;
+
+      const state = dotShrinkState.current;
+      const wasScrolled = state.scrolled;
+      state.scrolled = wasScrolled ? window.scrollY > SHRINK_EXIT : window.scrollY > SHRINK_ENTER;
+      if (state.scrolled !== wasScrolled) applyDotShrink();
     };
     const onScroll = () => {
       if (queued) return;
@@ -281,7 +336,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [applyDotShrink]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -417,6 +472,11 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           return;
         }
         slab.style.transition = "";
+        // Expand the dot pill back to its full window the instant the
+        // press reads as a left/right drag -- "same size as is when
+        // you start to press as if going left or right," per Josh.
+        dotShrinkState.current.dragging = true;
+        applyDotShrink();
       }
 
       if (!captured || !activeDirection) return;
@@ -459,6 +519,13 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           peekRef.current.style.transition = "transform 420ms var(--ease-bounce)";
           peekRef.current.style.transform = "translate3d(0, 0, 0) scale(1)";
         }
+        // dragging stays true through the exit animation on a completed
+        // swipe -- applyDotShrink would otherwise re-target the accent,
+        // which deliberately stays on the neighbour's dot (that's
+        // exactly where the destination page renders its own resting
+        // accent, so leaving it means no visible jump across the
+        // navigation). The whole component unmounts with the route
+        // change anyway.
         router.push(`/work/${neighbourSlug}`);
       } else {
         // Cleared to "" (falls back to no transform at all), not set to
@@ -473,15 +540,12 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         slab.style.transition = "transform 500ms var(--ease-bounce)";
         slab.style.transform = "";
         resetPeek(peekRef.current, activeDirection, true);
-        // Spring the accent dot home alongside the slab -- a completed
-        // swipe skips this (the accent is already on the neighbour's
-        // dot, which is exactly where the destination page will render
-        // its own resting accent, so leaving it there means no visible
-        // jump across the navigation).
-        if (accentDotRef.current) {
-          accentDotRef.current.style.transition = "transform 500ms var(--ease-bounce)";
-          accentDotRef.current.style.transform = `translate(-50%, -50%) translateX(${accentRestOffset}px)`;
-        }
+        // Drag over: let applyDotShrink spring the accent home and
+        // re-collapse the pill if scroll had it shrunk -- one call
+        // owns both, on the same bounce curve as the slab's own
+        // spring-back.
+        dotShrinkState.current.dragging = false;
+        applyDotShrink();
       }
 
       tracking = false;
@@ -506,7 +570,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       container.removeEventListener("touchend", onTouchEnd);
       container.removeEventListener("touchcancel", onTouchCancel);
     };
-  }, [previous, next, router, accentRestOffset]);
+  }, [previous, next, router, accentRestOffset, applyDotShrink]);
 
   return (
     <div ref={containerRef} className="relative overflow-x-hidden">
@@ -542,14 +606,26 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
               the whole surface blue; a tight blur keeps the same tint
               hugging the rim only, canvas-clear in the middle. */}
           <div className="relative flex items-center gap-1.5 rounded-full border border-transparent bg-canvas/15 px-3.5 py-2.5 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_5px_color-mix(in_srgb,var(--color-brand)_35%,transparent)] backdrop-blur-md backdrop-saturate-150">
-            {dots.map((dot) => (
-              <span
-                key={dot.index}
-                className={`rounded-full bg-ink/20 ${
-                  dot.small ? "h-[4px] w-[4px]" : "h-[5.5px] w-[5.5px]"
-                }`}
-              />
-            ))}
+            {dots.map((dot, offset) => {
+              // Which side of the surviving trio this dot sits on, for
+              // the shrink collapse (see applyDotShrink) -- unset for
+              // the three that stay.
+              const hideSide =
+                offset < shrinkKeepStart
+                  ? "left"
+                  : offset > shrinkKeepStart + 2
+                    ? "right"
+                    : undefined;
+              return (
+                <span
+                  key={dot.index}
+                  data-dot-hide={hideSide}
+                  className={`rounded-full bg-ink/20 transition-[width,margin,opacity] duration-300 ease-drift ${
+                    dot.small ? "h-[4px] w-[4px]" : "h-[5.5px] w-[5.5px]"
+                  }`}
+                />
+              );
+            })}
             <span
               ref={accentDotRef}
               // bg-brand, not bg-accent -- "make the dot blue instead
