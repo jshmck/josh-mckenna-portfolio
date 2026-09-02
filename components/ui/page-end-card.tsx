@@ -8,41 +8,37 @@
  * of the page flush under the nav. md+ renders an invisible, unstyled
  * wrapper, same as project-content.tsx.
  *
- * Split across two elements for the same reason as project-content.tsx's
- * card: box-shadow and overflow-hidden on the exact same rounded element is
- * a known Safari compositing trap under a transformed/animating ancestor.
- * Nothing here sits under one, but splitting costs nothing and keeps the
- * pattern identical everywhere it's used.
- *
- * Outermost wrapper exists purely to clip the shadow layer's own upward
- * bleed. A plain box-shadow paints on all four sides of the box it's
- * declared on, not just "underneath" it — with this shadow's 8px
- * y-offset and 18px blur, that means ~10px of soft shadow bleeding
- * *above* the box's top edge too. Every page's content starts flush
- * under the header (no top margin, see above), so that upward bleed
- * rendered as a faint dark band right at the very top of the page,
- * immediately under the nav — reported live as "the header seems to be
- * a different colour than the page," confirmed on an actual phone.
- * `clip-path: inset()` on the shadow layer was tried first and clips
- * correctly in Chrome, but iOS Safari doesn't reliably clip a
- * box-shadow via clip-path -- the band was still there live. A plain
- * `overflow: hidden` ancestor clips reliably everywhere, so that's the
- * real fix: zero padding-top means this wrapper's own top edge sits
- * exactly flush with the shadow box's top edge, so nothing (including
- * its shadow) can render above that line. pb-[26px] (8px offset + 18px
- * blur = the shadow's exact maximum downward reach) gives the wrapper
- * enough room below that edge for the *intended* bottom shadow to still
- * render in full -- overflow-hidden would otherwise clip that too. The
- * matching -mb-[26px] cancels the padding's own layout effect so it
- * doesn't push the footer down by 26px. */
+ * The shadow does NOT live on the same box as the page content. A plain
+ * box-shadow paints on all four sides of the box it's declared on, not
+ * just "underneath" it, so putting it on the full-height content box (top
+ * edge sitting flush under the header) bled a faint band all the way up
+ * there — reported live as "the header seems to be a different colour
+ * than the page." Two clip-based attempts (`clip-path: inset()`, then an
+ * `overflow: hidden` ancestor sized flush to the box's own top edge)
+ * both still leaked a hairline: the shadow's gaussian gradient hasn't
+ * actually decayed to zero at the box's own edge (its 8px y-offset means
+ * the blur *peaks* 8px inside the box), so clipping exactly at that edge
+ * cuts through a still-visible part of the gradient rather than its
+ * faded-out tail -- confirmed faintly visible live even after both
+ * clips. The only structural fix is to never let a shadow-casting box
+ * get anywhere near the header: `shadowStrip` below is a short (24px),
+ * separately positioned layer pinned to the bottom corners only, with
+ * its shadow declared on IT, not on the tall content box. Its own top
+ * edge sits 24px above the very bottom of the page, nowhere near the
+ * header, so no amount of upward bleed from its shadow can ever reach
+ * there -- not "clipped well enough to not show," genuinely nowhere
+ * near close enough to show. aria-hidden + pointer-events-none: purely
+ * decorative, and it visually overlaps the last 24px of real content. */
 export function PageEndCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-md:-mb-[26px] max-md:overflow-hidden max-md:pb-[26px]">
-      <div className="max-md:rounded-b-frame max-md:shadow-[0_8px_18px_rgba(0,0,0,0.10)]">
-        <div className="max-md:overflow-hidden max-md:rounded-b-frame max-md:bg-canvas">
-          {children}
-        </div>
+    <div className="max-md:relative">
+      <div className="max-md:overflow-hidden max-md:rounded-b-frame max-md:bg-canvas">
+        {children}
       </div>
+      <div
+        aria-hidden="true"
+        className="max-md:pointer-events-none max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:h-6 max-md:rounded-b-frame max-md:shadow-[0_8px_18px_rgba(0,0,0,0.10)]"
+      />
     </div>
   );
 }
