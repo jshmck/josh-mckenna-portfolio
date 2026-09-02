@@ -20,13 +20,16 @@ function getColumnCount() {
  *  of sitting in a multi-column grid, where the same gap also has to read
  *  as the space *between* columns, not just above/below a card. Tightened
  *  again 16 -> 8 ("can you close the gap between the project hero images
- *  in the work gallery?" per Josh). Safe against the cards' own parallax
- *  (ProjectCard clamps drift to 12px): with everything drifting the same
- *  scroll-lag direction, vertically adjacent cards only ever *converge*
- *  by their offsets' difference, a few px -- the full 12 shows up as
- *  divergence, which opens gaps rather than closing them. */
+ *  in the work gallery?" per Josh), then nudged back up 8 -> 12 ("increase
+ *  the gap on mobile grid ever so slightly," per Josh) once 8 read as
+ *  slightly too tight. Safe against the cards' own parallax (ProjectCard
+ *  clamps drift to 12px, mobileMaxOffset 2 on mobile): with everything
+ *  drifting the same scroll-lag direction, vertically adjacent cards only
+ *  ever *converge* by their offsets' difference, a few px -- the full
+ *  clamp shows up as divergence, which opens gaps rather than closing
+ *  them. */
 function getGap(columnCount: number) {
-  return columnCount === 1 ? 8 : 32;
+  return columnCount === 1 ? 12 : 32;
 }
 
 /** Pre-measurement fallback column width for converting a ratio into a
