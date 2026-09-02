@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { BackToTop } from "@/components/ui/back-to-top";
 import { ProjectContent } from "@/components/work/project-content";
 import { ProjectStackSwipe } from "@/components/work/project-stack-swipe";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
@@ -45,19 +44,16 @@ export default async function ProjectPage({
         <ProjectContent project={project} />
       </ProjectStackSwipe>
 
-      {/* The old Previous/All Work/Next footer nav is gone -- Back to Top
-          now covers Previous/Next (reachable without scrolling past the
-          whole gallery first, unlike this nav ever was), and "ALL WORK"
-          was a second copy of the header's own "Work" link that ended up
-          sitting in the exact same docked spot as the pill below, getting
-          covered by it. "The new back to top covers the all work text
-          anyway," per Josh -- rather than move it, it came out entirely.
-          See BackToTop's own doc comment for the rest of this history.
-          Outside ProjectStackSwipe deliberately -- these are `position:
-          fixed`, and a `transform` on an ancestor (the swipe slab) would
-          turn that into "fixed relative to the transformed ancestor"
-          instead of the viewport, breaking their own dock/undock math. */}
-      <BackToTop previous={previous} next={next} />
+      {/* No floating navigation any more -- BackToTop's frosted
+          Previous/Next circles and centre pill (this page's third
+          generation of project-to-project nav, after the footer nav
+          and the merged pill) are gone entirely: "I dont want the
+          bubbly frost nav bars to live anywhere but the header. that's
+          the language," per Josh. Prev/next lives in the breadcrumb
+          line inside ProjectContent now (with the mobile swipe dots),
+          and the end-of-page NEXT PROJECT teaser + inline BACK TO TOP
+          cover the bottom of the page -- all in normal flow, nothing
+          fixed, nothing frosted. */}
     </article>
   );
 }

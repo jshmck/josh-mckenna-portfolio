@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { FloatingStickers } from "@/components/about/floating-stickers";
-import { BackToTop } from "@/components/ui/back-to-top";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
@@ -121,10 +120,9 @@ export default function AboutPage() {
           real assets over (same "visible until real content lands"
           pattern Plate uses everywhere else on the site).
           pb-32, not this page's usual pb-28 — matches /work and the
-          home-embedded gallery's own bottom padding, both of which
-          BackToTop's docking offset was calibrated against. Using pb-28
-          here left too little room and the pill overlapped the last row's
-          caption text. */}
+          home-embedded gallery's own bottom padding. (Originally sized
+          for the since-removed BackToTop pill's docked position; kept
+          as-is since the deeper padding still reads right without it.) */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
           <h2 className="type-title text-accent">TALkS AND FeAtUReS</h2>
@@ -155,7 +153,6 @@ export default function AboutPage() {
           to reuse them elsewhere, so neither component was deleted, just
           unhooked from this page. */}
 
-      <BackToTop />
     </>
   );
 }

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { BackToTop } from "@/components/ui/back-to-top";
 import { WorkGallery } from "@/components/work/work-gallery";
 import { PROJECT_CATEGORIES, getAllProjects } from "@/lib/projects";
 
@@ -27,7 +26,6 @@ export default function WorkPage() {
           already owns that state. See components/work/work-gallery.tsx. */}
       <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
 
-      <BackToTop />
     </div>
   );
 }

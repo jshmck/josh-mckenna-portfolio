@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { DriftingHero } from "@/components/home/drifting-hero";
 import { ClientLogos } from "@/components/site/client-logos";
-import { BackToTop } from "@/components/ui/back-to-top";
 import { Parallax } from "@/components/ui/parallax";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
@@ -105,7 +104,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <BackToTop />
     </>
   );
 }
