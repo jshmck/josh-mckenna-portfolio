@@ -1290,7 +1290,10 @@ export const projects: Project[] = [
     deliverables: "2 Renders · 1 Turnaround",
     categories: ["3D", "Character", "Pride"],
     summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
-    heroCaption: "",
+    // Displayed caption, distinct from hero.alt (screen readers still get
+    // the plain description) — per Josh: "Who wants this as a resin
+    // collectible?!"
+    heroCaption: "Who wants this as a resin collectible?!",
     brief: [
       "Modelled in Womp, a browser-based 3D tool — a glossy figure bent double, taking a selfie of its own backside.",
     ],
@@ -1307,6 +1310,9 @@ export const projects: Project[] = [
     heroPair: {
       ratio: "4/5",
       alt: "Bum selfie, head-on",
+      // Only one caption line for the row — heroCaption already carries
+      // it under the first frame.
+      caption: false,
       src: "/work/womp-bum-selfie/02-bum-selfie-front.webp",
     },
     // Video sits beside the pair, third-up, rather than full-width below —
