@@ -629,7 +629,19 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
   }, [previous, next, router, accentRestOffset, applyDotShrink]);
 
   return (
-    <div ref={containerRef} className="relative overflow-x-hidden">
+    // overflow-x-clip, NOT overflow-x-hidden -- per CSS, a hidden x-axis
+    // forces overflow-y from visible to auto, quietly making this a
+    // vertical scroll container. That was harmless while the card had a
+    // bottom margin (the shadow's downward throw fit inside the
+    // container's own height), but once main was trimmed to end exactly
+    // at the card's edge, the implied overflow-y:auto CLIPPED the card's
+    // bottom shadow -- "the drop shadow seems to be covered by the
+    // footer's white... need to have the shadow there covering the
+    // footer," per Josh. `clip` clips the horizontal swipe travel
+    // identically but never creates a scroll container, so the y-axis
+    // stays genuinely visible and the shadow falls past the container
+    // onto the revealed footer beneath.
+    <div ref={containerRef} className="relative overflow-x-clip">
       {/* Floating dot strip, mobile only -- "something like the
           Instagram dots (in a carousel) so it lets the user know there
           are more pages to swipe through," then "the dots have to hover
