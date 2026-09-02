@@ -146,11 +146,11 @@ export function Nav() {
   const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
-  // True while a `[data-nav-contrast="light"]` card (Atlanta Magazine's
-  // purple /work card, see Project.navContrastLight) sits under the fixed
-  // pill — swaps the active link from accent-purple to white only for that
-  // window, since purple reads fine against everything else on the site
-  // and only fails against its own colour specifically.
+  // True while a `[data-nav-contrast="light"]` card (any light-blue
+  // artwork — Yeti, Beefbar, Pato and friends, see Project.navContrastLight)
+  // sits under the fixed pill — swaps the active link from accent-blue to
+  // white only for that window, since blue reads fine against everything
+  // else on the site and only fails against its own colour specifically.
   const [overLightBg, setOverLightBg] = useState(false);
   // Latches true the first time `scrolled` goes true, so the landing bounce
   // below (nav-pill-landing) never fires on initial page load -- only once

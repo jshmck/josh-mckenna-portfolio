@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import { siteConfig } from "@/lib/site";
-import { toWaldeckCase } from "@/lib/waldeck-case";
 
 /**
  * Commission enquiry form.
@@ -80,7 +79,7 @@ export function EnquiryForm() {
   if (sent) {
     return (
       <div className="rounded-frame border border-ink p-8">
-        <h2 className="type-title text-accent">gOt It</h2>
+        <h2 className="type-heading text-ink">Got it.</h2>
         <p className="type-lede mt-4 text-ink-muted">
           Thanks for getting in touch.
         </p>
@@ -94,7 +93,7 @@ export function EnquiryForm() {
       noValidate
       className="relative rounded-frame border border-ink p-6 md:p-8"
     >
-      <h2 className="type-title text-accent">SAy HeLLO</h2>
+      <h2 className="type-heading text-ink">Say hello.</h2>
 
       {/* Honeypot — hidden from sighted and screen-reader visitors alike;
           bots that fill every field trip the server-side check in
@@ -192,9 +191,9 @@ export function EnquiryForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="font-display mt-8 rounded-full border border-ink px-4 py-2 text-[11px] font-waldeck-medium tracking-[0.02em] text-ink-muted transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas disabled:pointer-events-none disabled:opacity-50"
+        className="font-grotesque mt-8 rounded-full border border-ink px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink-muted text-trim-caps transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas disabled:pointer-events-none disabled:opacity-50"
       >
-        {submitting ? toWaldeckCase("SENDING") : toWaldeckCase("HOWDY")}
+        {submitting ? "SENDING" : "HOWDY"}
       </button>
     </form>
   );

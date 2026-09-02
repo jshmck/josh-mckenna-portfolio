@@ -15,10 +15,13 @@
   --color-ink-muted: #000000;
 
   /* Brand + accents — Josh's "Website v2" palette (Figma node 101:5).
-     Blue is the primary/commission colour; purple is the loud display accent
-     (section titles, active nav). Red is retired. */
+     Blue is the primary/commission colour AND the accent: the purple
+     accent (#ae88ff — keep this hex, Josh may bring it back) was dropped
+     for blue sitewide ("we have to drop the purple... and have blue
+     instead - so for nav bar etc," 2026-09). The token stays as the seam
+     so a future accent colour is a one-line swap. Red is retired too. */
   --color-brand: #30b7ff; /* primary path — hire / commission / wordmark */
-  --color-accent: #ae88ff; /* display accent — section titles, active nav */
+  --color-accent: var(--color-brand); /* was purple #ae88ff */
   --color-highlight: #ffb600; /* per-project accent wash */
 
   /* Hairline + placeholders were a warm taupe/bronze-grey — Josh wants every
@@ -29,11 +32,12 @@
   --color-placeholder-strong: var(--color-brand); /* navigable objects */
 
   /* Type families.
-     Waldeck is Josh's licensed display face — the JOSH McKenna wordmark,
-     section titles and marquee. It's loaded locally in app/layout.tsx and
-     exposed as --font-waldeck. Statement headings use Helvetica Neue Bold —
-     the same licensed body face as --font-body, at its Bold cut — self-hosted
-     from public/fonts/helvetica-neue. See DESIGN.md → Typography. */
+     Waldeck is Josh's licensed display face, now used ONLY by the homepage
+     hero wordmark (type-wordmark) — "waldeck isnt working site wide," per
+     Josh, so every other title runs Helvetica Neue Bold (the same licensed
+     face as --font-body, self-hosted from public/fonts/helvetica-neue)
+     until he finds a more suitable display font. Waldeck loads locally in
+     app/layout.tsx as --font-waldeck. See DESIGN.md → Typography. */
   --font-display: var(--font-waldeck), "Archivo Black", system-ui, sans-serif;
   --font-grotesque: var(--font-helvetica-neue), system-ui, sans-serif;
   --font-body: var(--font-helvetica-neue), system-ui, sans-serif;
@@ -152,9 +156,13 @@
    page markup readable and stops the scale from drifting.
    ========================================================================== */
 
-/* The JOSH McKenna wordmark and other big Waldeck brand moments. ~200px at
-   1344px, fluid down to phones. Heavy Black weight — the loudest type role. */
-@utility type-display {
+/* The one surviving Waldeck surface: the "jOSH MCkeNNA" homepage hero
+   wordmark (components/home/drifting-hero.tsx). Waldeck is retired
+   everywhere else — Josh: "anywhere else on the site needs to be changed
+   to Helvetica Neue in Bold until i find a more suitable font." Kept as
+   its own role so the rest of the site can move off Waldeck without
+   touching this one call site. ~200px at 1344px, fluid down to phones. */
+@utility type-wordmark {
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 9.8vw, 8.25rem);
   line-height: 0.9;
@@ -162,35 +170,27 @@
   font-weight: var(--font-weight-waldeck-black);
 }
 
-/* Mid-size Waldeck — section titles (SELECTED WORK) and the marquee. Always
-   literal ALL CAPS in the source text — this role has no text-transform, so
-   a title typed in sentence case renders in sentence case. */
-@utility type-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 4.6vw, 3.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.01em;
-  font-weight: var(--font-weight-waldeck-black);
-}
-
-/* Waldeck CTA/link role (MORe ABOUT jOSH) — smaller than type-title. Waldeck's
-   lowercase glyphs sit at nearly the same height as its caps, so the reduced
-   e/j in the CTA are sized explicitly per-letter in app/page.tsx, not via
-   font-variant-caps or the font's own casing. */
-@utility type-link {
-  font-family: var(--font-display);
-  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
-  line-height: 1;
-  letter-spacing: -0.005em;
-  font-weight: var(--font-weight-waldeck-black);
-}
-
-/* The tight statement headings — Helvetica Neue Bold, not Waldeck. */
+/* The universal title role — every page/section title on the site, at one
+   height: the Who statement, project titles, Say hello, Talks and
+   features. Helvetica Neue Bold, text-ink, sentence case in the source
+   text — "black, bold, no capitals (only first letters)," per Josh; the
+   old bigger type-display/type-title Waldeck roles are gone with the
+   font. */
 @utility type-heading {
   font-family: var(--font-grotesque);
   font-size: clamp(2rem, 5vw, 3.75rem);
   line-height: 1.02;
   letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+/* Marquee-only remnant of the old mid-size display role — the band isn't
+   currently rendered anywhere (components/site/marquee.tsx). */
+@utility type-title {
+  font-family: var(--font-grotesque);
+  font-size: clamp(1.75rem, 4.6vw, 3.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
   font-weight: 700;
 }
 
@@ -207,6 +207,18 @@
   font-size: 1rem;
   line-height: 1.45;
   font-weight: 400;
+}
+
+/* Optical centring for caps-only chip/pill labels (the Work filters, the
+   HOWDY/NOTIFY ME buttons). Uppercase Helvetica has no descenders, but the
+   line box still reserves descender space below the baseline, so flex-
+   centred caps ride ~1.5px high in the pill — "the words for the category
+   pills dont look like they are centred to the pill," per Josh. text-box
+   trims the line box to cap-height→baseline so what gets centred is the
+   ink itself. Browsers without text-box support (Firefox, older Safari)
+   simply keep the current slightly-high rendering — no layout breakage. */
+@utility text-trim-caps {
+  text-box: trim-both cap alphabetic;
 }
 
 /* ==========================================================================
@@ -265,157 +277,30 @@
   }
 }
 
-/* The mobile hero scroll cue's bounce (drifting-hero.tsx) — the brand
-   accent dot hopping from its resting spot down onto the next gray dot
-   and springing back: one pitch down (15px = 7px dot + 8px gap), held
-   there a beat, then home, with a small overshoot at each end so it
-   reads as a bounce rather than a slide — the same accent-dot-travels-
-   the-strip language as the project cards' swipe dots, turned vertical.
-   Pure CSS, so the sitewide prefers-reduced-motion rule above
-   neutralises it on its own. */
+/* The mobile hero scroll cue's bounce (drifting-hero.tsx) — a quick
+   double nudge, "like a little bouncy ball, or a real nudge nudge," per
+   Josh: down, nearly home, down again, home, then a rest before the
+   loop repeats. Two full drops rather than one hop-and-hold — the
+   repeat is what makes it read as a bounce at this size. Pure CSS, so
+   the sitewide prefers-reduced-motion rule above neutralises it on its
+   own. */
 @keyframes scroll-cue-hop {
   0%,
-  22% {
+  12% {
     transform: translateY(0);
   }
-  36% {
-    transform: translateY(17px);
+  26% {
+    transform: translateY(7px);
   }
-  46%,
-  62% {
-    transform: translateY(15px);
+  40% {
+    transform: translateY(1px);
   }
-  76% {
-    transform: translateY(-2px);
+  54% {
+    transform: translateY(7px);
   }
-  86%,
+  70%,
   100% {
     transform: translateY(0);
-  }
-}
-
-/* A sticker looping a piece of text — First 3D Character's floating cut-out,
-   circling the h1 (app/work/[slug]/page.tsx) the way an Instagram sticker
-   loops a quote card. Anchored at the title's centre point (left: 50%; top:
-   50%) then carried around it on the standalone `translate`/`rotate`
-   properties, Tailwind v4's split rather than the bundled `transform`
-   shorthand — same split components/ui/tilt-illustration.tsx uses, so this
-   doesn't fight any transform a hover state might add later. The -50%/-50%
-   baked into every stop re-centres the element on itself before the orbit
-   offset is added, since `translate` percentages are relative to the
-   element's own box, not its container. Flattened to an ellipse (190px
-   horizontal, 80px vertical) rather than a circle — a single-line title is
-   wide and short, so a circular swing would carry the sticker far above and
-   below the text instead of hugging it.
-
-   24 stops at 15° increments (generated, not hand-placed — see the rotate
-   values tracking sin(angle) for the gentle lean) run on `linear` (set where
-   this keyframe is invoked, not here), not `ease-in-out`: an 8-stop path on
-   ease-in-out decelerates into and re-accelerates out of every one of those
-   8 points, which reads as a pulse/stutter rather than a glide. Enough
-   points at a constant speed makes the straight-line interpolation between
-   them read as one continuous curve instead. Pure CSS, so the sitewide
-   prefers-reduced-motion rule neutralises it on its own. */
-@keyframes orbit-loop {
-  0% {
-    translate: calc(-50% + 190px) -50%;
-    rotate: 0deg;
-  }
-  4.167% {
-    translate: calc(-50% + 184px) calc(-50% + 21px);
-    rotate: 1.3deg;
-  }
-  8.333% {
-    translate: calc(-50% + 165px) calc(-50% + 40px);
-    rotate: 2.5deg;
-  }
-  12.5% {
-    translate: calc(-50% + 134px) calc(-50% + 57px);
-    rotate: 3.5deg;
-  }
-  16.667% {
-    translate: calc(-50% + 95px) calc(-50% + 69px);
-    rotate: 4.3deg;
-  }
-  20.833% {
-    translate: calc(-50% + 49px) calc(-50% + 77px);
-    rotate: 4.8deg;
-  }
-  25% {
-    translate: -50% calc(-50% + 80px);
-    rotate: 5deg;
-  }
-  29.167% {
-    translate: calc(-50% - 49px) calc(-50% + 77px);
-    rotate: 4.8deg;
-  }
-  33.333% {
-    translate: calc(-50% - 95px) calc(-50% + 69px);
-    rotate: 4.3deg;
-  }
-  37.5% {
-    translate: calc(-50% - 134px) calc(-50% + 57px);
-    rotate: 3.5deg;
-  }
-  41.667% {
-    translate: calc(-50% - 165px) calc(-50% + 40px);
-    rotate: 2.5deg;
-  }
-  45.833% {
-    translate: calc(-50% - 184px) calc(-50% + 21px);
-    rotate: 1.3deg;
-  }
-  50% {
-    translate: calc(-50% - 190px) -50%;
-    rotate: 0deg;
-  }
-  54.167% {
-    translate: calc(-50% - 184px) calc(-50% - 21px);
-    rotate: -1.3deg;
-  }
-  58.333% {
-    translate: calc(-50% - 165px) calc(-50% - 40px);
-    rotate: -2.5deg;
-  }
-  62.5% {
-    translate: calc(-50% - 134px) calc(-50% - 57px);
-    rotate: -3.5deg;
-  }
-  66.667% {
-    translate: calc(-50% - 95px) calc(-50% - 69px);
-    rotate: -4.3deg;
-  }
-  70.833% {
-    translate: calc(-50% - 49px) calc(-50% - 77px);
-    rotate: -4.8deg;
-  }
-  75% {
-    translate: -50% calc(-50% - 80px);
-    rotate: -5deg;
-  }
-  79.167% {
-    translate: calc(-50% + 49px) calc(-50% - 77px);
-    rotate: -4.8deg;
-  }
-  83.333% {
-    translate: calc(-50% + 95px) calc(-50% - 69px);
-    rotate: -4.3deg;
-  }
-  87.5% {
-    translate: calc(-50% + 134px) calc(-50% - 57px);
-    rotate: -3.5deg;
-  }
-  91.667% {
-    translate: calc(-50% + 165px) calc(-50% - 40px);
-    rotate: -2.5deg;
-  }
-  95.833% {
-    translate: calc(-50% + 184px) calc(-50% - 21px);
-    rotate: -1.3deg;
-  }
-  100% {
-    translate: calc(-50% + 190px) -50%;
-    rotate: 0deg;
   }
 }
 
