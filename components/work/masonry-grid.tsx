@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /** Matches the site's existing md/lg breakpoints (columns-1 md:columns-2
  *  lg:columns-3, the CSS multi-column approach this replaces). */
@@ -18,18 +18,36 @@ function getColumnCount() {
  *  project image frames on mobile," per Josh: 32px (matching desktop's
  *  gap-8) read as too much air once cards are stacked one-per-row instead
  *  of sitting in a multi-column grid, where the same gap also has to read
- *  as the space *between* columns, not just above/below a card. */
+ *  as the space *between* columns, not just above/below a card. Tightened
+ *  again 16 -> 8 ("can you close the gap between the project hero images
+ *  in the work gallery?" per Josh). Safe against the cards' own parallax
+ *  (ProjectCard clamps drift to 12px): with everything drifting the same
+ *  scroll-lag direction, vertically adjacent cards only ever *converge*
+ *  by their offsets' difference, a few px -- the full 12 shows up as
+ *  divergence, which opens gaps rather than closing them. */
 function getGap(columnCount: number) {
-  return columnCount === 1 ? 16 : 32;
+  return columnCount === 1 ? 8 : 32;
 }
 
-/** Stand-in column width for converting a ratio into a comparable height —
- *  see the component doc comment for why the actual on-screen pixel width
- *  never needs to be known for bin-packing to be correct. ~420px is
- *  representative of a real column at the 3-column breakpoint (1344px
- *  frame, two 32px gaps, /3); used unchanged at every column count since
- *  it only has to be internally consistent, not match the real viewport. */
-const ASSUMED_COLUMN_WIDTH = 420;
+/** Pre-measurement fallback column width for converting a ratio into a
+ *  height, used only for the first paint before the mount effect reads
+ *  the container's real width. ~420px is representative of a real column
+ *  at the 3-column breakpoint (1344px frame, two 32px gaps, /3).
+ *
+ *  This used to be the ONLY width the packer ever saw, on the theory
+ *  that bin-packing just needs internally-consistent comparisons -- true
+ *  for choosing which column a card lands in, but the packed heights
+ *  also become the literal px `top` every card renders at, and those DO
+ *  depend on the real width. At desktop's ~426px real columns the ~1.5%
+ *  error was invisible; at mobile's ~342px column every card rendered
+ *  ~19% shorter than the slot reserved for it, and each card's surplus
+ *  showed up as extra empty space below it -- gaps of 50-120px varying
+ *  with each card's ratio instead of the intended constant. "can you
+ *  close the gap between the project hero images in the work gallery?"
+ *  per Josh -- the real fix wasn't a smaller gap constant, it was
+ *  measuring the container (see the effect below) so packed geometry
+ *  matches rendered geometry at every viewport. */
+const FALLBACK_COLUMN_WIDTH = 420;
 
 export type MasonryItem = {
   key: string;
@@ -132,7 +150,7 @@ function seatsAdjacentTransparent(
  * candidate in the window would violate it, in which case the rule yields
  * rather than stalling the layout.
  */
-function pack(items: MasonryItem[], columnCount: number, gap: number): Packed[] {
+function pack(items: MasonryItem[], columnCount: number, gap: number, columnWidth: number): Packed[] {
   const columnHeights = new Array(columnCount).fill(0);
   const remaining = [...items];
   const placements: Packed[] = [];
@@ -155,7 +173,7 @@ function pack(items: MasonryItem[], columnCount: number, gap: number): Packed[] 
         }
       }
 
-      const widthPx = span * ASSUMED_COLUMN_WIDTH + (span - 1) * gap;
+      const widthPx = span * columnWidth + (span - 1) * gap;
       const heightPx = widthPx / item.ratio;
       const deadSpace = bestTop - Math.min(...columnHeights);
       const blocked =
@@ -222,16 +240,31 @@ function pack(items: MasonryItem[], columnCount: number, gap: number): Packed[] 
  */
 export function MasonryGrid({ items }: MasonryGridProps) {
   const [columnCount, setColumnCount] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  // Real container width, measured after mount and on resize -- packed
+  // px tops/heights must be computed at the width cards actually render
+  // at (see FALLBACK_COLUMN_WIDTH's comment for the mobile gap bug a
+  // fixed assumed width caused). null until measured, same
+  // settle-after-mount pattern as columnCount, so SSR and the first
+  // client render agree.
+  const [containerWidth, setContainerWidth] = useState<number | null>(null);
 
   useEffect(() => {
-    const update = () => setColumnCount(getColumnCount());
+    const update = () => {
+      setColumnCount(getColumnCount());
+      if (containerRef.current) setContainerWidth(containerRef.current.clientWidth);
+    };
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
 
   const gap = getGap(columnCount);
-  const packed = pack(items, columnCount, gap);
+  const columnWidth =
+    containerWidth !== null
+      ? (containerWidth - (columnCount - 1) * gap) / columnCount
+      : FALLBACK_COLUMN_WIDTH;
+  const packed = pack(items, columnCount, gap, columnWidth);
   const placements: Placement[] = packed.map((p) => ({
     key: p.key,
     node: p.node,
@@ -249,7 +282,7 @@ export function MasonryGrid({ items }: MasonryGridProps) {
   const containerHeight = Math.max(0, Math.max(...columnHeights) - gap);
 
   return (
-    <div className="relative" style={{ height: containerHeight }}>
+    <div ref={containerRef} className="relative" style={{ height: containerHeight }}>
       {placements.map((p) => (
         <div key={p.key} className="absolute" style={{ left: p.left, top: p.top, width: p.width }}>
           {p.node}
