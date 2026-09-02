@@ -265,18 +265,32 @@
   }
 }
 
-/* Slow looping down-nudge — the mobile hero's scroll cue (drifting-hero.tsx),
-   hinting that Home keeps going below the orbiting objects. Downward cousin
-   of the lightbox's one-shot arrow-hint pair, but infinite: it's an ambient
-   invitation, not a reaction to anything. Pure CSS, so the sitewide
-   prefers-reduced-motion rule above neutralises it on its own. */
-@keyframes scroll-cue {
+/* The mobile hero scroll cue's bounce (drifting-hero.tsx) — the brand
+   accent dot hopping from its resting spot down onto the next gray dot
+   and springing back: one pitch down (15px = 7px dot + 8px gap), held
+   there a beat, then home, with a small overshoot at each end so it
+   reads as a bounce rather than a slide — the same accent-dot-travels-
+   the-strip language as the project cards' swipe dots, turned vertical.
+   Pure CSS, so the sitewide prefers-reduced-motion rule above
+   neutralises it on its own. */
+@keyframes scroll-cue-hop {
   0%,
-  100% {
+  22% {
     transform: translateY(0);
   }
-  50% {
-    transform: translateY(6px);
+  36% {
+    transform: translateY(17px);
+  }
+  46%,
+  62% {
+    transform: translateY(15px);
+  }
+  76% {
+    transform: translateY(-2px);
+  }
+  86%,
+  100% {
+    transform: translateY(0);
   }
 }
 

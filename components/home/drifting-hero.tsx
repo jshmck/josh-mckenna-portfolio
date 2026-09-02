@@ -1050,19 +1050,31 @@ export function DriftingHero() {
           );
         })}
 
-        {/* Mobile scroll cue — a gently nudging ↓ at the frame's foot,
-            telling a phone visitor the circulating hero isn't the whole
-            page; a tap scrolls to the Who section right below (#home-who,
-            app/page.tsx). scrollIntoView with no behavior option inherits
-            the html scroll-behavior, so the sitewide smooth scroll — and
-            its reduced-motion flip to instant — applies without a
-            matchMedia check here; the nudge itself is pure CSS, so the
-            global reduced-motion rule neutralises it on its own. Hidden
-            from md up: desktop's wider frame already shows the Who heading
-            at the fold, mobile's 88vh frame doesn't. z-30 keeps it
-            tappable above any object drifting across the frame's foot; ↓
-            matches the Who section's own "More about Josh →" glyph voice
-            rather than the lightbox's < / > pair.
+        {/* Mobile scroll cue — a vertical mini dot strip at the frame's
+            foot telling a phone visitor the circulating hero isn't the
+            whole page ("something chunky and cute that bounces telling
+            you to scroll," per Josh, replacing a first cut's thin ↓
+            glyph): three gray dots with the brand accent dot bouncing
+            down one pitch and springing back, the project cards' swipe-
+            dot language (project-stack-swipe.tsx) turned vertical and
+            sized up a notch for hero scale — 7px gray / 9px brand vs the
+            strip's 5.5/7. No frosted pill around it: the strip itself
+            fades its frost out over plain canvas, and plain canvas is
+            exactly what sits here. bg-brand, not bg-accent, matching the
+            strip's own "make the dot blue instead of purple." The accent
+            dot centres with inset-x-0 + mx-auto rather than a translate
+            utility so the hop animation owns `transform` outright.
+
+            A tap scrolls to the Who section right below (#home-who,
+            app/page.tsx). scrollIntoView with no behavior option
+            inherits the html scroll-behavior, so the sitewide smooth
+            scroll — and its reduced-motion flip to instant — applies
+            without a matchMedia check here; the bounce is pure CSS, so
+            the global reduced-motion rule neutralises it on its own.
+            Hidden from md up: desktop's wider frame already shows the
+            Who heading at the fold, mobile's 88vh frame doesn't. z-30
+            keeps it tappable above any object drifting across the
+            frame's foot.
 
             Anchored to the *small* viewport height (svh -- the fold with
             mobile Safari's URL bar still expanded), not the frame's
@@ -1071,22 +1083,21 @@ export function DriftingHero() {
             screen on a real phone, which put a bottom-anchored cue just
             below the fold -- invisible until the visitor had already
             scrolled, exactly when it's useless ("i dont see it on
-            mobile," per Josh). 152px = the header's 88px flow height
-            above this frame + the button's own 44px + 20px clearance, so
-            the cue's bottom edge clears the smallest fold by 20px and
-            just rides slightly higher up the frame once the bar
-            collapses. */}
+            mobile," per Josh). 164px = the header's 88px flow height
+            above this frame + the strip's ~53px + ~20px clearance, so
+            the cue's bottom edge clears the smallest fold and just rides
+            slightly higher up the frame once the bar collapses. */}
         <button
           type="button"
           aria-label="Scroll down to more about Josh"
           onClick={() => document.getElementById("home-who")?.scrollIntoView()}
-          className="absolute left-1/2 top-[calc(100svh_-_152px)] z-30 hidden h-11 w-11 -translate-x-1/2 items-center justify-center text-ink max-md:flex"
+          className="absolute left-1/2 top-[calc(100svh_-_164px)] z-30 hidden w-11 -translate-x-1/2 flex-col items-center max-md:flex"
         >
-          <span
-            aria-hidden="true"
-            className="inline-block animate-[scroll-cue_2.2s_ease-in-out_infinite] font-body text-2xl"
-          >
-            ↓
+          <span aria-hidden="true" className="relative flex flex-col items-center gap-2 py-2">
+            <span className="h-[7px] w-[7px] rounded-full bg-ink/20" />
+            <span className="h-[7px] w-[7px] rounded-full bg-ink/20" />
+            <span className="h-[7px] w-[7px] rounded-full bg-ink/20" />
+            <span className="absolute inset-x-0 top-[7px] mx-auto h-[9px] w-[9px] animate-[scroll-cue-hop_1.8s_ease-in-out_infinite] rounded-full bg-brand" />
           </span>
         </button>
       </div>
