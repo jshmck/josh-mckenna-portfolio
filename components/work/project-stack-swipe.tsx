@@ -140,22 +140,20 @@ function StackPeek({ project }: { project: Project }) {
  * The chevron circles' own "beckon" nudge (back-to-top.tsx) exists to
  * advertise this same gesture, so the two ship together.
  *
- * Dispatches `stackswipe:start`/`stackswipe:end` on `window` for the
- * duration of a captured drag — nav.tsx listens and forces its own
- * frosted-pill state while one's in progress, regardless of scroll
- * position. "when swiping projects can the nav bar at the top be the
- * frosted pill state so you see the movement underneath. at the moment
- * it's permanently there looks strange," per Josh: at scrollY 0 (the
- * common case — most swipes happen right after landing on a page, not
- * after scrolling into the gallery) the nav's own resting state is a
- * plain, opaque bar with nothing sliding-glass about it, which read as
- * static and disconnected from the page moving underneath it. A plain
- * custom DOM event, not prop-drilling or a shared context — the two
- * components live in entirely different parts of the tree (nav.tsx in
- * the root layout, this one deep inside a single route's page), and
- * nav.tsx already reads external page state the same loosely-coupled
- * way (querying `[data-nav-contrast="light"]` elsewhere in the DOM)
- * rather than through props passed down from a common ancestor.
+ * A drag used to dispatch `stackswipe:start`/`stackswipe:end` on
+ * `window`, with nav.tsx listening and forcing its frosted-pill state
+ * for the duration — asked for when project pages still ran
+ * edge-to-edge and the plain resting nav read as disconnected from the
+ * page sliding underneath it. Removed per Josh after the card redesign:
+ * "when swiping across (next/previous) the blue bubble doesnt need to
+ * appear, the header doesnt need to bounce or anything. only the moves
+ * on the nav bar should be active when it touches the card" — the card
+ * sits inset on its own background now, so at scrollY 0 there's nothing
+ * under the nav for a frost to reveal, and the forced frost just added
+ * a bounce and a blue wash out of nowhere. The nav's frost is purely
+ * scroll-driven again; a swipe that starts mid-scroll keeps whatever
+ * frost state scroll already earned (preventDefault on the drag means
+ * scrollY never moves during one).
  *
  * Everything here writes transforms straight to the DOM inside touch
  * handlers rather than through React state, the same rule every other
@@ -334,7 +332,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           return;
         }
         slab.style.transition = "";
-        window.dispatchEvent(new Event("stackswipe:start"));
       }
 
       if (!captured || !activeDirection) return;
@@ -351,8 +348,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         tracking = false;
         return;
       }
-
-      window.dispatchEvent(new Event("stackswipe:end"));
 
       const peekRef = activeDirection === "previous" ? previousPeekRef : nextPeekRef;
       const neighbourSlug = activeDirection === "previous" ? previous?.slug : next?.slug;
