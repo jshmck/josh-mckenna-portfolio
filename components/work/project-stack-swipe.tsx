@@ -212,6 +212,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
     let captured = false; // dominance test passed — this touch IS a drag
     let activeDirection: "previous" | "next" | null = null;
     let lastResisted = 0;
+    let roundedTimeout = 0;
 
     const setPeekTransform = (el: HTMLDivElement | null, resisted: number, direction: "previous" | "next") => {
       if (!el) return;
@@ -290,6 +291,16 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         }
         slab.style.transition = "";
         shadow.style.transition = "";
+        // "curved corners should only activate on the swipe," per Josh
+        // — rounded-frame toggles on right here (drag captured) rather
+        // than sitting on the static className, so the page's normal
+        // resting look is untouched and the rounding reads as part of
+        // the gesture itself, not a permanent change to how the site
+        // looks. Toggled as a class, not an inline style, so it still
+        // resolves through the same responsive token (26.5px mobile,
+        // 40px desktop) rather than hardcoding one breakpoint's value.
+        slab.classList.add("rounded-frame");
+        shadow.classList.add("rounded-frame");
         window.dispatchEvent(new Event("stackswipe:start"));
       }
 
@@ -344,6 +355,17 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         shadow.style.transition = "transform 500ms var(--ease-bounce)";
         shadow.style.transform = "";
         resetPeek(peekRef.current, activeDirection, true);
+        // Rounded corners come back off once the spring-back has visibly
+        // finished settling, not the instant the finger lifts -- pulling
+        // them square while the page is still animating back into place
+        // would read as the card's shape popping abruptly mid-motion,
+        // not a smooth return to the resting state. 500ms matches the
+        // transition duration set just above.
+        window.clearTimeout(roundedTimeout);
+        roundedTimeout = window.setTimeout(() => {
+          slab.classList.remove("rounded-frame");
+          shadow.classList.remove("rounded-frame");
+        }, 500);
       }
 
       tracking = false;
@@ -363,6 +385,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
     container.addEventListener("touchcancel", onTouchCancel, { passive: true });
 
     return () => {
+      window.clearTimeout(roundedTimeout);
       container.removeEventListener("touchstart", onTouchStart);
       container.removeEventListener("touchmove", onTouchMove);
       container.removeEventListener("touchend", onTouchEnd);
@@ -419,7 +442,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       <div
         ref={shadowRef}
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-[5] rounded-frame shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
+        className="pointer-events-none fixed inset-0 z-[5] shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
       />
       {/* No will-change-transform here (unlike Parallax's own slab) --
           will-change: transform makes an element the containing block
@@ -434,25 +457,32 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           paint, so there's nothing will-change would have preloaded in
           time to matter anyway.
 
-          rounded-frame on both this and the shadow above -- "can you
-          make the corners of the projects round for continuity?" per
-          Josh, matching the same token every other frame on the site
+          rounded-frame toggles onto both this and the shadow above from
+          the touch handlers, not sitting here as a static class -- "can
+          you make the corners of the projects round for continuity?"
+          then "curved corners should only activate on the swipe," per
+          Josh: matches the same token every other frame on the site
           uses (see globals.css: half the nav circles' own diameter at
-          each breakpoint). No overflow-hidden alongside it, on
-          purpose: WriteUp's credits column is `md:sticky` (project-
-          content.tsx), and any ancestor with overflow other than
-          visible -- even one that never actually needs to scroll,
-          which this element never does, its height always matches its
-          content exactly -- becomes that sticky element's containing
-          block for scroll-tracking purposes and breaks it. rounded-
-          frame alone still rounds this element's own background/shadow
-          correctly; it just wouldn't clip a child that happened to
-          paint past the rounded corner. Every hero/gallery container on
-          the site keeps at least a px-6/md:px-gutter margin from the
-          true edge regardless (see project-content.tsx), so nothing
-          real ever reaches into that corner to be clipped in the first
-          place -- the safety net was never doing anything here. */}
-      <div ref={slabRef} className="relative z-10 bg-canvas rounded-frame">
+          each breakpoint), but only while a drag is actually in
+          progress, added the moment a drag is captured and removed
+          again once a spring-back has visibly finished settling — the
+          page's normal resting look is untouched, and the rounding
+          reads as part of the gesture, not a permanent change to how
+          the site looks. No overflow-hidden alongside it, on purpose:
+          WriteUp's credits column is `md:sticky` (project-content.tsx),
+          and any ancestor with overflow other than visible -- even one
+          that never actually needs to scroll, which this element never
+          does, its height always matches its content exactly -- becomes
+          that sticky element's containing block for scroll-tracking
+          purposes and breaks it. rounded-frame alone still rounds this
+          element's own background/shadow correctly; it just wouldn't
+          clip a child that happened to paint past the rounded corner.
+          Every hero/gallery container on the site keeps at least a
+          px-6/md:px-gutter margin from the true edge regardless (see
+          project-content.tsx), so nothing real ever reaches into that
+          corner to be clipped in the first place -- the safety net was
+          never doing anything here. */}
+      <div ref={slabRef} className="relative z-10 bg-canvas">
         {children}
       </div>
     </div>
