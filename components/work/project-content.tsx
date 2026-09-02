@@ -203,16 +203,18 @@ export function ProjectContent({ project }: { project: Project }) {
     // image still respects the corner) and the canvas fill. Structurally
     // immune to the bug rather than chasing which specific combination
     // of properties triggers it.
-    // mb-6 completes the inset -- "the bottom of a project card sits on
-    // the footer line - give it some space," per Josh: without it the
-    // card's bottom edge ran flush into the footer's border-t, breaking
-    // the floating read on the one edge where the margin was missing.
-    // Deliberately deeper than the mt-3/mx-3 on the other three sides
-    // (a matching 12px went in first; "i need a little more room,"
-    // per Josh) -- the shadow's own downward throw fills part of that
-    // gap, so the bottom needs more raw distance than the top for the
-    // clearance to read as equal.
-    <div className="max-md:mx-3 max-md:mt-3 max-md:mb-6 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
+    // mb-10 completes the inset -- "the bottom of a project card sits on
+    // the footer line - give it some space," per Josh: without a bottom
+    // margin the card's edge ran flush into the footer's border-t,
+    // breaking the floating read on the one edge where the margin was
+    // missing. Deliberately much deeper than the mt-3/mx-3 on the other
+    // three sides, and tuned in three passes (12px matching the others,
+    // then 24 -- "i need a little more room" -- then 40: "increase
+    // space between project and footer line") -- the shadow's downward
+    // throw fills part of the gap, and the footer's own curtain reveal
+    // reads better with real air between the card's corner and the
+    // hairline.
+    <div className="max-md:mx-3 max-md:mt-3 max-md:mb-10 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
       <div className="max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas">
         <header className="py-16 md:py-[60px]">
           <div className="mx-auto max-w-frame px-6 md:px-gutter">
@@ -519,14 +521,21 @@ export function ProjectContent({ project }: { project: Project }) {
                 as a two-up, the rest full width, every frame opening
                 full-size in its own shared lightbox. */}
             {project.galleryLayout === "grid" ? (
-              <div className="mx-auto max-w-frame px-6 pb-40 md:px-gutter">
+              <div className="mx-auto max-w-frame px-6 pb-40 max-md:pb-24 md:px-gutter">
                 <GalleryGrid
                   leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
                   images={restImages}
                   indexOffset={heroLightboxImages.length}
                 />
               </div>
-            ) : (
+            ) : project.gallery.length > 0 || project.galleryVideo || project.galleryGif ? (
+              // Gated on actually having something to show -- an empty
+              // ImageStack still rendered its wrapper's full bottom
+              // padding, so projects that end in text (Ford Bronco: hero
+              // + brief, no gallery) carried ~duplicate bottom spacing:
+              // the write-up's own padding plus a phantom gallery's.
+              // Surfaced by "the spacing from last image or text to
+              // bottom of project card is a bit too large," per Josh.
               <ImageStack
                 images={project.gallery}
                 indexOffset={heroLightboxImages.length}
@@ -534,7 +543,7 @@ export function ProjectContent({ project }: { project: Project }) {
                 galleryGif={project.galleryGif}
                 gallerySpans={project.gallerySpans}
               />
-            )}
+            ) : null}
           </ProjectLightboxProvider>
         )}
 

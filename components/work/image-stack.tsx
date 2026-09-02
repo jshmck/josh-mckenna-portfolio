@@ -66,16 +66,22 @@ export function ImageStack({
 
   return (
     <>
-      {/* pb-28 -> pb-40 -- Back to Top's pills float at a fixed distance
-          from the viewport bottom, so scrolling to the end of a gallery
-          used to land the last caption almost flush against them.
-          "Make sure there's room under the project," per Josh. */}
+      {/* pb-28 -> pb-40 -- originally sized so the last caption cleared
+          the since-removed BackToTop pills; "Make sure there's room
+          under the project," per Josh, still holds on desktop.
+          max-md:pb-24 -- "the spacing from last image or text to bottom
+          of project card is a bit too large, decrease this," per Josh:
+          with the mobile card's own bottom edge (rounded corner +
+          margin) closing the page now, 160px of empty card read as a
+          hole; 96px keeps clearance for the docked dot pill without
+          the void. Same pairing in PosterGrid and the grid-layout
+          wrapper in project-content.tsx. */}
       {/* space-y-6/gap-6 below md throughout this file (was a flat -8
           everywhere) — "spacing needs to be closer for work project image
           frames on mobile," per Josh, mobile only, matching the same
           gap-6/md:gap-8 pairing PosterGrid and MasonryGrid already use.
           Desktop's md:space-y-8/md:gap-8 stays exactly as it was. */}
-      <div className="mx-auto max-w-frame space-y-6 px-6 pb-40 md:space-y-8 md:px-gutter">
+      <div className="mx-auto max-w-frame space-y-6 px-6 pb-40 max-md:pb-24 md:space-y-8 md:px-gutter">
         {galleryGif && galleryGif.afterIndex === 0 && (
           // Capped to max-w-lg (512px) — the source GIF is only 1080px
           // native, so stretching it to the frame's full 1344px width
