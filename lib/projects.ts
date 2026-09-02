@@ -364,7 +364,7 @@ export const projects: Project[] = [
     slug: "bum-selfie",
     title: "Bum Selfie",
     client: "Cake Boy Magazine",
-    year: 2025,
+    year: 2020,
     discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
     categories: ["Editorial", "Pride"],
