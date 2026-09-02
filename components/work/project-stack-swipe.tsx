@@ -408,12 +408,22 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
 
   return (
     <div ref={containerRef} className="relative overflow-x-hidden">
+      {/* The peeks' resting transform/opacity are baked into the SSR
+          markup as inline styles (identical values to what resetPeek
+          writes at mount), not left for JS to apply -- they became
+          load-bearing once the slab below went transparent under md:
+          the 12px margin gaps around the card used to be backed by the
+          slab's own opaque background, but now show straight through to
+          whatever's behind, so an unstyled peek would be visible in
+          those strips both in the gap between SSR paint and the
+          effect's first resetPeek, and *permanently* under reduced
+          motion, whose branch never touches peek styles at all. */}
       {previous && (
         <div
           ref={previousPeekRef}
           data-stack-peek="previous"
           className="fixed inset-x-0 bottom-0 z-0 origin-top will-change-transform"
-          style={{ top: navHeight }}
+          style={{ top: navHeight, transform: "translate3d(-100%, 0, 0) scale(0.94)", opacity: 0 }}
         >
           <StackPeek project={previous} />
         </div>
@@ -423,7 +433,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           ref={nextPeekRef}
           data-stack-peek="next"
           className="fixed inset-x-0 bottom-0 z-0 origin-top will-change-transform"
-          style={{ top: navHeight }}
+          style={{ top: navHeight, transform: "translate3d(100%, 0, 0) scale(0.94)", opacity: 0 }}
         >
           <StackPeek project={next} />
         </div>
@@ -455,8 +465,38 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           comment), so it's not a descendant of the slab or either peek
           in the DOM at all, regardless of what containing-block any of
           them establish. Safe to promote all three now that the one
-          thing this used to break can't be broken by it anymore. */}
-      <div ref={slabRef} className="relative z-10 bg-canvas will-change-transform">
+          thing this used to break can't be broken by it anymore.
+
+          bg-canvas is md-only now, not unconditional. The slab used to
+          paint an opaque full-width background at every size, which put
+          a square-edged 12px white strip -- the card's own mx-3 margin,
+          backed by the slab behind it -- riding alongside the card's
+          rounded corners during a drag, covering the revealed neighbour
+          with a hard vertical edge that chopped straight through its
+          title: "the white is cutting over the lettering of the project
+          underneath," per Josh, with a screenshot that finally made the
+          mechanism unambiguous (two earlier fixes -- splitting the
+          card's shadow onto a non-clipping element, restoring
+          will-change -- were aimed at Safari shadow-compositing bugs
+          this was repeatedly mistaken for; the square white block was
+          never the shadow at all). Below md the card inside
+          (ProjectContent's own wrapper) is the opaque surface instead,
+          so the margin gaps around it show what's genuinely behind:
+          body canvas at rest -- visually identical, same colour -- and
+          the incoming project mid-swipe, with only the card's
+          translucent shadow crossing it. That's the actual
+          stacked-cards read the permanent card was adopted for. From md
+          up the card wrapper is unstyled/transparent, so the slab keeps
+          being the opaque page surface there -- an md-width touch
+          device (iPad portrait) mid-swipe would otherwise show the peek
+          bleeding through the page's own unpainted regions. */}
+      {/* data-stack-slab mirrors the peeks' own data-stack-peek: a
+          stable hook for tests/tooling to find the real page's slab --
+          the old approach of matching its utility classes broke the
+          moment those classes changed (bg-canvas going md-only above),
+          and a class-based selector was already one ambiguity away from
+          grabbing a peek's copy of the same content instead. */}
+      <div ref={slabRef} data-stack-slab className="relative z-10 will-change-transform md:bg-canvas">
         {children}
       </div>
     </div>
