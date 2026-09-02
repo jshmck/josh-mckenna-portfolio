@@ -472,6 +472,7 @@ export function ProjectContent({ project }: { project: Project }) {
                         poster: project.heroVideo.poster ?? project.hero.src,
                       }}
                       sound={project.heroVideo.sound}
+                      ratio={project.heroVideo.ratio}
                     />
                   </div>
                 )}
