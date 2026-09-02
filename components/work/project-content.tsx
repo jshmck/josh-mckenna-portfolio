@@ -10,7 +10,7 @@ import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectTitle } from "@/components/work/project-title";
-import { getAllProjects, getProjectNeighbours, type Project, type ProjectImage } from "@/lib/projects";
+import { getProjectNeighbours, type Project, type ProjectImage } from "@/lib/projects";
 import { toWaldeckCase } from "@/lib/waldeck-case";
 
 /**
@@ -86,41 +86,22 @@ function WriteUp({ project }: { project: Project }) {
 export function ProjectContent({ project }: { project: Project }) {
   const [firstImage, secondImage, ...restImages] = project.gallery;
 
-  // Prev/next + position are derived here rather than passed in as props
-  // -- ProjectContent is also rendered by ProjectStackSwipe's StackPeek,
+  // Prev/next derived here rather than passed in as props --
+  // ProjectContent is also rendered by ProjectStackSwipe's StackPeek,
   // and computing them from the project itself means the peek's
-  // breadcrumb arrows and dots mirror the destination page's exactly
-  // with no prop plumbing to keep in sync. Part of the floating-chrome
+  // breadcrumb arrows mirror the destination page's exactly with no
+  // prop plumbing to keep in sync. Part of the floating-chrome
   // teardown: "I dont want the bubbly frost nav bars to live anywhere
   // but the header... the arrows for previous/next project need to live
   // more like the CLIENT, YEAR caption theme... along the same line as
   // WORK / WAGAMAMA PRIDE," per Josh -- these replace BackToTop's
   // frosted chevron circles as the project-to-project navigation.
+  // (The mobile swipe dots used to render here too, in the breadcrumb
+  // zone -- moved to ProjectStackSwipe as a floating overlay, "the dots
+  // have to hover and have an animation as we swipe between projects,"
+  // per Josh: inside the card they translated away with the page
+  // mid-swipe, exactly when they were supposed to be doing their job.)
   const { previous, next } = getProjectNeighbours(project.slug);
-  const orderedProjects = getAllProjects();
-  const projectIndex = orderedProjects.findIndex((p) => p.slug === project.slug);
-  const projectCount = orderedProjects.length;
-
-  // Instagram-style windowed dot strip (mobile only, see the markup):
-  // a literal dot-per-project stops working at this portfolio's size,
-  // so this is the same solve Instagram itself uses past ~5 slides -- a
-  // 5-dot window into the real list, clamped at both ends so the active
-  // dot only leaves centre when you're genuinely near an edge, with the
-  // window-edge dots rendered smaller when more projects exist beyond
-  // them. The dots are a swipe affordance, not controls -- aria-hidden,
-  // since the arrows above and the swipe itself are the real navigation.
-  const DOT_WINDOW = 5;
-  const dotStart = Math.max(0, Math.min(projectIndex - 2, projectCount - DOT_WINDOW));
-  const dots = Array.from(
-    { length: Math.min(DOT_WINDOW, projectCount) },
-    (_, offset) => {
-      const index = dotStart + offset;
-      const isEdge =
-        (offset === 0 && dotStart > 0) ||
-        (offset === DOT_WINDOW - 1 && dotStart + DOT_WINDOW < projectCount);
-      return { index, active: index === projectIndex, small: isEdge };
-    },
-  );
 
   const meta = [
     { label: "Client", value: project.client },
@@ -279,33 +260,6 @@ export function ProjectContent({ project }: { project: Project }) {
                 </p>
               )}
             </div>
-
-            {/* The windowed dot strip -- mobile only: it advertises the
-                swipe gesture ("something like the Instagram dots (in a
-                carousel) so it lets the user know there are more pages
-                to swipe through," per Josh), and the gesture only exists
-                on touch. Sits up here with the breadcrumb rather than
-                following at the bottom of the screen -- its job is done
-                the moment someone lands, and a fixed strip would be
-                floating chrome, the exact language being retired. Active
-                dot takes accent purple, the same "you are here" colour
-                as the active nav link. */}
-            {projectCount > 1 && (
-              <div aria-hidden="true" className="mt-4 flex items-center gap-1.5 md:hidden">
-                {dots.map((dot) => (
-                  <span
-                    key={dot.index}
-                    className={`rounded-full ${
-                      dot.active
-                        ? "h-[7px] w-[7px] bg-accent"
-                        : dot.small
-                          ? "h-[4px] w-[4px] bg-ink/20"
-                          : "h-[5.5px] w-[5.5px] bg-ink/20"
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
 
             <div className="mt-6 flex items-end gap-2">
               <div className="relative shrink-0">
@@ -588,7 +542,8 @@ export function ProjectContent({ project }: { project: Project }) {
             answer to "i need help deciding how to switch to next project
             when you're on it - on web," with "all inline, nothing
             fixed" as the chosen shape. Hidden below md -- mobile
-            navigates by swipe (advertised by the dot strip up top) and
+            navigates by swipe (advertised by ProjectStackSwipe's
+            floating dot strip) and
             iOS's status-bar tap covers scroll-to-top, per Josh.
 
             Plain caption words only. The first cut paired the NEXT

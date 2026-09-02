@@ -40,7 +40,7 @@ export default async function ProjectPage({
 
   return (
     <article>
-      <ProjectStackSwipe previous={previous} next={next}>
+      <ProjectStackSwipe slug={slug} previous={previous} next={next}>
         <ProjectContent project={project} />
       </ProjectStackSwipe>
 

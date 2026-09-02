@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { ProjectContent } from "@/components/work/project-content";
-import type { Project } from "@/lib/projects";
+import { getAllProjects, type Project } from "@/lib/projects";
 
 /** The persistent nav (nav.tsx: `min-h-[88px]`, sticky, shared across
  *  every route from the root layout) is never duplicated inside the
@@ -76,10 +76,19 @@ function resist(delta: number): number {
 }
 
 type ProjectStackSwipeProps = {
+  /** Current page's own slug — locates this project in getAllProjects()
+   *  for the floating dot strip's window/active position. */
+  slug: string;
   previous?: Project | null;
   next?: Project | null;
   children: ReactNode;
 };
+
+/** Geometry of the floating dot strip, shared between the static markup
+ *  and the drag handler that animates the accent dot across it. Pitch =
+ *  one dot (5.5px) plus the gap-1.5 (6px) between dots. */
+const DOT_WINDOW = 5;
+const DOT_PITCH = 11.5;
 
 /** Renders the neighbour project through ProjectContent — the exact same
  *  component the real `/work/[slug]` page renders — clipped to one
@@ -168,13 +177,42 @@ function StackPeek({ project }: { project: Project }) {
  * once it's turned off, unlike a decorative loop that can just freeze in
  * place.
  */
-export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwipeProps) {
+export function ProjectStackSwipe({ slug, previous, next, children }: ProjectStackSwipeProps) {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const slabRef = useRef<HTMLDivElement>(null);
   const previousPeekRef = useRef<HTMLDivElement>(null);
   const nextPeekRef = useRef<HTMLDivElement>(null);
+  const dotsRef = useRef<HTMLDivElement>(null);
+  const accentDotRef = useRef<HTMLSpanElement>(null);
   const [navHeight, setNavHeight] = useState(NAV_HEIGHT_FALLBACK);
+
+  // The floating dot strip's window into the full project list — same
+  // Instagram-style clamped 5-dot window the breadcrumb-zone version
+  // used before it moved here ("the dots have to hover and have an
+  // animation as we swipe between projects," per Josh — inside the card
+  // they translated away with the page mid-swipe, exactly when they
+  // were supposed to be doing their job). Deterministic from the slug,
+  // so SSR markup and hydration agree.
+  const orderedProjects = getAllProjects();
+  const projectIndex = orderedProjects.findIndex((p) => p.slug === slug);
+  const projectCount = orderedProjects.length;
+  const dotStart = Math.max(0, Math.min(projectIndex - 2, projectCount - DOT_WINDOW));
+  const dots = Array.from(
+    { length: Math.min(DOT_WINDOW, projectCount) },
+    (_, offset) => {
+      const index = dotStart + offset;
+      const isEdge =
+        (offset === 0 && dotStart > 0) ||
+        (offset === DOT_WINDOW - 1 && dotStart + DOT_WINDOW < projectCount);
+      return { index, small: isEdge };
+    },
+  );
+  // The accent "you are here" dot is a separate element overlaid on the
+  // gray row (see the markup) so the drag handler can slide it from the
+  // active dot toward the neighbour's without touching the row itself.
+  // Its resting offset is the active dot's distance from the row centre.
+  const accentRestOffset = (projectIndex - dotStart - (dots.length - 1) / 2) * DOT_PITCH;
 
   useEffect(() => {
     if (previous) router.prefetch(`/work/${previous.slug}`);
@@ -196,6 +234,46 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // Fades the floating dot strip out once the footer's curtain reveal
+  // starts -- fixed at the viewport bottom, the dots would otherwise
+  // float over the copyright line for the last stretch of scroll. A
+  // visibility toggle on scroll, not motion, so it runs under reduced
+  // motion too (same as the nav's own scroll-driven frost); the global
+  // reduced-motion CSS clamps the opacity transition to instant anyway.
+  useEffect(() => {
+    const strip = dotsRef.current;
+    if (!strip) return;
+    let raf = 0;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const footer = document.querySelector("footer");
+      if (!footer) return;
+      // Distance-from-document-end, NOT the footer's own rect -- the
+      // footer is sticky bottom-0 (the mobile curtain reveal,
+      // footer.tsx), so its bounding rect sits pinned at the viewport
+      // bottom for the entire scroll and would read as "in view" from
+      // the very first frame. The reveal actually happens over the last
+      // footer-height's worth of scroll, so that's the hide window.
+      const distanceFromEnd =
+        document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+      strip.style.opacity = distanceFromEnd < footer.offsetHeight ? "0" : "";
+    };
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -341,6 +419,19 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       slab.style.transform = `translate3d(${resisted}px, 0, 0)`;
       const peekRef = activeDirection === "previous" ? previousPeekRef : nextPeekRef;
       setPeekTransform(peekRef.current, resisted, activeDirection);
+
+      // The accent dot slides from the active dot toward the incoming
+      // neighbour's in step with the drag, hitting the neighbour exactly
+      // at COMPLETE_DISTANCE -- so a fully handed-off dot doubles as
+      // "release now and it navigates" feedback, not just decoration.
+      // Direction: dragging left (resisted < 0) goes to `next`, whose
+      // dot sits to the right, so the accent moves opposite the drag.
+      if (accentDotRef.current) {
+        const progress = Math.min(1, Math.abs(resisted) / COMPLETE_DISTANCE);
+        const shift = -Math.sign(resisted) * DOT_PITCH * progress;
+        accentDotRef.current.style.transition = "";
+        accentDotRef.current.style.transform = `translate(-50%, -50%) translateX(${accentRestOffset + shift}px)`;
+      }
     };
 
     const settle = () => {
@@ -375,6 +466,15 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         slab.style.transition = "transform 500ms var(--ease-bounce)";
         slab.style.transform = "";
         resetPeek(peekRef.current, activeDirection, true);
+        // Spring the accent dot home alongside the slab -- a completed
+        // swipe skips this (the accent is already on the neighbour's
+        // dot, which is exactly where the destination page will render
+        // its own resting accent, so leaving it there means no visible
+        // jump across the navigation).
+        if (accentDotRef.current) {
+          accentDotRef.current.style.transition = "transform 500ms var(--ease-bounce)";
+          accentDotRef.current.style.transform = `translate(-50%, -50%) translateX(${accentRestOffset}px)`;
+        }
       }
 
       tracking = false;
@@ -399,10 +499,45 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       container.removeEventListener("touchend", onTouchEnd);
       container.removeEventListener("touchcancel", onTouchCancel);
     };
-  }, [previous, next, router]);
+  }, [previous, next, router, accentRestOffset]);
 
   return (
     <div ref={containerRef} className="relative overflow-x-hidden">
+      {/* Floating dot strip, mobile only -- "something like the
+          Instagram dots (in a carousel) so it lets the user know there
+          are more pages to swipe through," then "the dots have to hover
+          and have an animation as we swipe between projects," per Josh:
+          fixed over the page (so it holds still while both cards slide
+          underneath) with the gray windowed row static and the accent
+          dot animating across it in step with the drag (see the
+          touchmove handler). pointer-events-none + aria-hidden -- it's
+          feedback, not a control; the breadcrumb arrows and the swipe
+          itself are the navigation. z-20: over the slab (z-10), under
+          the header (z-40) and lightbox (z-50). Bare tiny dots, no
+          container and no frost -- floating, but not chrome. */}
+      {projectCount > 1 && (
+        <div
+          ref={dotsRef}
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-x-0 bottom-5 z-20 flex justify-center transition-opacity duration-200 md:hidden"
+        >
+          <div className="relative flex items-center gap-1.5">
+            {dots.map((dot) => (
+              <span
+                key={dot.index}
+                className={`rounded-full bg-ink/20 ${
+                  dot.small ? "h-[4px] w-[4px]" : "h-[5.5px] w-[5.5px]"
+                }`}
+              />
+            ))}
+            <span
+              ref={accentDotRef}
+              className="absolute left-1/2 top-1/2 h-[7px] w-[7px] rounded-full bg-accent"
+              style={{ transform: `translate(-50%, -50%) translateX(${accentRestOffset}px)` }}
+            />
+          </div>
+        </div>
+      )}
       {/* The peeks' resting transform/opacity are baked into the SSR
           markup as inline styles (identical values to what resetPeek
           writes at mount), not left for JS to apply -- they became
