@@ -273,8 +273,17 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         }
         router.push(`/work/${neighbourSlug}`);
       } else {
+        // Cleared to "" (falls back to no transform at all), not set to
+        // an explicit identity translate3d(0,0,0) -- *any* specified
+        // transform value, including a no-op one, makes this element the
+        // containing block for `position: fixed` descendants (see the
+        // bug this caused, in the doc comment above). The transition
+        // still animates smoothly toward the resulting `none`; only once
+        // it actually finishes does the lightbox (a descendant, since it
+        // mounts inside `children`) get its real viewport-relative fixed
+        // positioning back.
         slab.style.transition = "transform 500ms var(--ease-bounce)";
-        slab.style.transform = "translate3d(0, 0, 0)";
+        slab.style.transform = "";
         resetPeek(peekRef.current, activeDirection, true);
       }
 
@@ -314,7 +323,19 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           <StackPeek project={next} />
         </div>
       )}
-      <div ref={slabRef} className="relative z-10 bg-canvas will-change-transform">
+      {/* No will-change-transform here (unlike Parallax's own slab) --
+          will-change: transform makes an element the containing block
+          for any `position: fixed` descendant, same as an actual
+          transform does, and the lightbox dialog (LightboxOverlay,
+          `fixed inset-0`) mounts inside `children` -- it was pinning
+          itself to *this div's* box instead of the real viewport,
+          "something is up with the lightbox on mobile... seems to have
+          dropped off screen," per Josh, on every project. Skipping the
+          perf hint is the fix: the first real `transform` write already
+          happens synchronously in the touchmove handler, well before any
+          paint, so there's nothing will-change would have preloaded in
+          time to matter anyway. */}
+      <div ref={slabRef} className="relative z-10 bg-canvas">
         {children}
       </div>
     </div>

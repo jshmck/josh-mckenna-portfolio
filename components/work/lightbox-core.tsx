@@ -47,6 +47,25 @@ export function useLightboxState(images: ProjectImage[]): LightboxState {
   useEffect(() => {
     if (openIndex === null) return;
 
+    // `overflow: hidden` on its own doesn't lock scroll on iOS Safari --
+    // the page (and the fixed dialog sitting on top of it) can still be
+    // dragged, and once that scroll starts, Safari's own dynamic toolbar
+    // show/hide changes the visual viewport mid-gesture, which is what
+    // was actually behind "something is up with the lightbox on
+    // mobile... seems to have dropped off screen," per Josh -- LightboxOverlay's
+    // own height math (see its useViewportSize) is computed once and
+    // trusted, so a viewport that changes size out from under it renders
+    // stale. Pinning the body itself in place (the standard iOS
+    // scroll-lock technique) stops that scroll from ever starting, which
+    // is more reliable than trying to chase every resulting layout
+    // symptom individually. Position is captured/restored around the
+    // fixed pin so closing the lightbox doesn't leave the page jumped to
+    // the top.
+    const scrollY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
     document.body.style.overflow = "hidden";
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -63,7 +82,12 @@ export function useLightboxState(images: ProjectImage[]): LightboxState {
 
     window.addEventListener("keydown", onKeyDown);
     return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
       document.body.style.overflow = "";
+      window.scrollTo(0, scrollY);
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [openIndex, images.length]);

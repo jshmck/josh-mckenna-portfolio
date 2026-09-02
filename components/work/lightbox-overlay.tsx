@@ -42,13 +42,34 @@ const LIGHTBOX_BUTTON_CLASS =
  *  every automated test at every viewport size, but not in at least one
  *  real browser session), so the shared-height math now happens in JS
  *  where it's directly inspectable, instead of trusting the CSS engine to
- *  resolve a custom property through several layers of nested functions. */
+ *  resolve a custom property through several layers of nested functions.
+ *
+ * Prefers `window.visualViewport` over `window.innerWidth`/`innerHeight`
+ * when it exists, and listens to its own `resize` event rather than
+ * `window`'s -- iOS Safari's address bar/toolbar collapsing or expanding
+ * (which a scroll gesture can trigger) changes the *visual* viewport
+ * without reliably firing a plain `window resize`, so the stage's height
+ * math could go stale mid-session against a `window.innerHeight` that
+ * hadn't caught up. Real body-scroll locking (see lightbox-core.tsx)
+ * stops that scroll from starting in the first place now, but tracking
+ * visualViewport directly is the more robust fix either way -- it's the
+ * API iOS Safari actually updates for exactly this case. */
 function useViewportSize() {
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
 
   useEffect(() => {
-    const update = () => setSize({ width: window.innerWidth, height: window.innerHeight });
+    const viewport = window.visualViewport;
+    const update = () =>
+      setSize(
+        viewport
+          ? { width: viewport.width, height: viewport.height }
+          : { width: window.innerWidth, height: window.innerHeight },
+      );
     update();
+    if (viewport) {
+      viewport.addEventListener("resize", update);
+      return () => viewport.removeEventListener("resize", update);
+    }
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
