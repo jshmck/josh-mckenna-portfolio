@@ -265,6 +265,21 @@
   }
 }
 
+/* Slow looping down-nudge — the mobile hero's scroll cue (drifting-hero.tsx),
+   hinting that Home keeps going below the orbiting objects. Downward cousin
+   of the lightbox's one-shot arrow-hint pair, but infinite: it's an ambient
+   invitation, not a reaction to anything. Pure CSS, so the sitewide
+   prefers-reduced-motion rule above neutralises it on its own. */
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
 /* A sticker looping a piece of text — First 3D Character's floating cut-out,
    circling the h1 (app/work/[slug]/page.tsx) the way an Instagram sticker
    loops a quote card. Anchored at the title's centre point (left: 50%; top:

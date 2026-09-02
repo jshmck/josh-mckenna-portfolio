@@ -15,8 +15,10 @@ export default function HomePage() {
     <>
       <DriftingHero />
 
-      {/* Who Josh is */}
-      <section>
+      {/* Who Josh is. The id is the target of the hero's mobile scroll cue
+          (see drifting-hero.tsx); scroll-mt keeps the heading clear of the
+          sticky pill nav when that cue (or any future anchor) lands here. */}
+      <section id="home-who" className="scroll-mt-20">
         <div className="mx-auto grid max-w-frame gap-16 px-6 pb-24 pt-16 md:grid-cols-2 md:items-center md:px-gutter md:pb-16">
           <Reveal>
             <h2 className="type-heading text-ink">

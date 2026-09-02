@@ -1049,6 +1049,33 @@ export function DriftingHero() {
             </div>
           );
         })}
+
+        {/* Mobile scroll cue — a gently nudging ↓ at the frame's foot,
+            telling a phone visitor the circulating hero isn't the whole
+            page; a tap scrolls to the Who section right below (#home-who,
+            app/page.tsx). scrollIntoView with no behavior option inherits
+            the html scroll-behavior, so the sitewide smooth scroll — and
+            its reduced-motion flip to instant — applies without a
+            matchMedia check here; the nudge itself is pure CSS, so the
+            global reduced-motion rule neutralises it on its own. Hidden
+            from md up: desktop's wider frame already shows the Who heading
+            at the fold, mobile's 88vh frame doesn't. z-30 keeps it
+            tappable above any object drifting across the frame's foot; ↓
+            matches the Who section's own "More about Josh →" glyph voice
+            rather than the lightbox's < / > pair. */}
+        <button
+          type="button"
+          aria-label="Scroll down to more about Josh"
+          onClick={() => document.getElementById("home-who")?.scrollIntoView()}
+          className="absolute bottom-4 left-1/2 z-30 hidden h-11 w-11 -translate-x-1/2 items-center justify-center text-ink max-md:flex"
+        >
+          <span
+            aria-hidden="true"
+            className="inline-block animate-[scroll-cue_2.2s_ease-in-out_infinite] font-body text-2xl"
+          >
+            ↓
+          </span>
+        </button>
       </div>
     </section>
   );
