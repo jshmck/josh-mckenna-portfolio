@@ -90,9 +90,13 @@ type ProjectStackSwipeProps = {
  *  image) visibly mismatched real pages using heroPair, poster-grid,
  *  square corners, or anything else beyond the plain single-hero case.
  *  Sharing the literal component makes drift impossible rather than just
- *  unlikely. `aria-hidden` — this is a second, non-interactive copy of
- *  page content that shouldn't register with assistive tech, on top of
- *  already being `pointer-events-none` for sighted/mouse interaction. */
+ *  unlikely — it's also why the peek automatically picked up the mobile
+ *  "card" look (rounded corners, inset margin, shadow — see
+ *  ProjectContent's own doc comment) the moment that shipped, with no
+ *  changes needed here at all. `aria-hidden` — this is a second,
+ *  non-interactive copy of page content that shouldn't register with
+ *  assistive tech, on top of already being `pointer-events-none` for
+ *  sighted/mouse interaction. */
 function StackPeek({ project }: { project: Project }) {
   return (
     <div aria-hidden="true" className="pointer-events-none h-full w-full overflow-hidden bg-canvas">
@@ -114,6 +118,24 @@ function StackPeek({ project }: { project: Project }) {
  * sits behind it, parallax-revealed as the slab moves off — the same
  * front/back relationship a native push/pop screen transition uses,
  * approximated here since there's no real second page mounted to reveal.
+ *
+ * The slab itself carries no visual presentation of its own any more —
+ * no shadow, no rounded corners, nothing keyed to whether a drag is in
+ * progress. Both of those used to live here (a separate `fixed inset-0`
+ * shadow element kept in lockstep with the slab's own transform, and a
+ * rounded-frame class toggled on right as a drag was captured, off again
+ * once a spring-back settled) as reactive fixes for a page that only
+ * ever looked like a "card" while being dragged — chasing where the
+ * shadow should stop bleeding, whether it should reach the nav, what
+ * colour it should be. "i just thought the shadow and swipe and dynamic
+ * island cut off isnt really working, so i am thinking on mobile when
+ * you open a project it opens up a 'card' with curved corners, (very
+ * apple) this makes it swipe a lot cleaner," per Josh. Once the card
+ * look (rounded corners, inset margin, shadow) is part of
+ * ProjectContent's own permanent mobile presentation instead of
+ * something this component switches on, the slab, both peeks, and the
+ * real page all render that same card automatically — nothing here has
+ * to know or care that a shadow exists at all.
  *
  * The chevron circles' own "beckon" nudge (back-to-top.tsx) exists to
  * advertise this same gesture, so the two ship together.
@@ -152,7 +174,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const slabRef = useRef<HTMLDivElement>(null);
-  const shadowRef = useRef<HTMLDivElement>(null);
   const previousPeekRef = useRef<HTMLDivElement>(null);
   const nextPeekRef = useRef<HTMLDivElement>(null);
   const [navHeight, setNavHeight] = useState(NAV_HEIGHT_FALLBACK);
@@ -182,8 +203,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
   useEffect(() => {
     const container = containerRef.current;
     const slab = slabRef.current;
-    const shadow = shadowRef.current;
-    if (!container || !slab || !shadow || (!previous && !next)) return;
+    if (!container || !slab || (!previous && !next)) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -237,7 +257,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
     let captured = false; // dominance test passed — this touch IS a drag
     let activeDirection: "previous" | "next" | null = null;
     let lastResisted = 0;
-    let roundedTimeout = 0;
 
     const setPeekTransform = (el: HTMLDivElement | null, resisted: number, direction: "previous" | "next") => {
       if (!el) return;
@@ -315,17 +334,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           return;
         }
         slab.style.transition = "";
-        shadow.style.transition = "";
-        // "curved corners should only activate on the swipe," per Josh
-        // — rounded-frame toggles on right here (drag captured) rather
-        // than sitting on the static className, so the page's normal
-        // resting look is untouched and the rounding reads as part of
-        // the gesture itself, not a permanent change to how the site
-        // looks. Toggled as a class, not an inline style, so it still
-        // resolves through the same responsive token (26.5px mobile,
-        // 40px desktop) rather than hardcoding one breakpoint's value.
-        slab.classList.add("rounded-frame");
-        shadow.classList.add("rounded-frame");
         window.dispatchEvent(new Event("stackswipe:start"));
       }
 
@@ -333,9 +341,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       event.preventDefault();
       const resisted = resist(deltaX);
       lastResisted = resisted;
-      const translate = `translate3d(${resisted}px, 0, 0)`;
-      slab.style.transform = translate;
-      shadow.style.transform = translate;
+      slab.style.transform = `translate3d(${resisted}px, 0, 0)`;
       const peekRef = activeDirection === "previous" ? previousPeekRef : nextPeekRef;
       setPeekTransform(peekRef.current, resisted, activeDirection);
     };
@@ -356,8 +362,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       if (Math.abs(lastResisted) >= COMPLETE_DISTANCE && neighbourSlug) {
         slab.style.transition = "transform 420ms var(--ease-bounce)";
         slab.style.transform = `translate3d(${sign * viewportWidth}px, 0, 0)`;
-        shadow.style.transition = "transform 420ms var(--ease-bounce)";
-        shadow.style.transform = `translate3d(${sign * viewportWidth}px, 0, 0)`;
         if (peekRef.current) {
           peekRef.current.style.transition = "transform 420ms var(--ease-bounce)";
           peekRef.current.style.transform = "translate3d(0, 0, 0) scale(1)";
@@ -372,25 +376,10 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         // still animates smoothly toward the resulting `none`; only once
         // it actually finishes does the lightbox (a descendant, since it
         // mounts inside `children`) get its real viewport-relative fixed
-        // positioning back. shadow has no descendants of its own to worry
-        // about, but clearing it the same way keeps both elements' resting
-        // state expressed identically.
+        // positioning back.
         slab.style.transition = "transform 500ms var(--ease-bounce)";
         slab.style.transform = "";
-        shadow.style.transition = "transform 500ms var(--ease-bounce)";
-        shadow.style.transform = "";
         resetPeek(peekRef.current, activeDirection, true);
-        // Rounded corners come back off once the spring-back has visibly
-        // finished settling, not the instant the finger lifts -- pulling
-        // them square while the page is still animating back into place
-        // would read as the card's shape popping abruptly mid-motion,
-        // not a smooth return to the resting state. 500ms matches the
-        // transition duration set just above.
-        window.clearTimeout(roundedTimeout);
-        roundedTimeout = window.setTimeout(() => {
-          slab.classList.remove("rounded-frame");
-          shadow.classList.remove("rounded-frame");
-        }, 500);
       }
 
       tracking = false;
@@ -410,7 +399,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
     container.addEventListener("touchcancel", onTouchCancel, { passive: true });
 
     return () => {
-      window.clearTimeout(roundedTimeout);
       container.removeEventListener("touchstart", onTouchStart);
       container.removeEventListener("touchmove", onTouchMove);
       container.removeEventListener("touchend", onTouchEnd);
@@ -440,35 +428,6 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           <StackPeek project={next} />
         </div>
       )}
-      {/* The shadow lives on its own element now, not on the slab --
-          "i think it's because the project page has a top... maybe we
-          need to make the project page the full height of the browser?
-          either that or curve the edge?" per Josh. The slab is a normal-
-          flow element that only starts at y=88 (wherever document flow
-          puts it, right after the sticky nav reserves its own space),
-          so a box-shadow applied directly to it wrapped around all four
-          of *its* edges, including a visible horizontal line right
-          under the nav where the slab's own top edge sits -- reading as
-          "the page has a top" instead of a seamless card sliding past
-          the nav. Rather than fight the slab's real document-flow
-          height with negative margins (fragile -- margin collapsing
-          through however many ancestors sit between this and <body>
-          isn't something to reason about with confidence), this is a
-          second, empty, `fixed inset-0` element with no background of
-          its own -- genuinely full viewport height regardless of where
-          the slab's real content starts, so its own top edge sits
-          behind the nav instead of just under it. Kept in lockstep with
-          the slab's own transform at every step (touchmove and both
-          settle() branches) rather than being a child of it, so it
-          reads as one shadow, not two. z-[5], between the peeks (z-0)
-          and the slab (z-10) -- doesn't need to be above the slab (the
-          shadow was never meant to paint over the real content) and
-          shouldn't be above the nav (z-40) either. */}
-      <div
-        ref={shadowRef}
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-[5] shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
-      />
       {/* No will-change-transform here (unlike Parallax's own slab) --
           will-change: transform makes an element the containing block
           for any `position: fixed` descendant, same as an actual
@@ -482,31 +441,12 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           paint, so there's nothing will-change would have preloaded in
           time to matter anyway.
 
-          rounded-frame toggles onto both this and the shadow above from
-          the touch handlers, not sitting here as a static class -- "can
-          you make the corners of the projects round for continuity?"
-          then "curved corners should only activate on the swipe," per
-          Josh: matches the same token every other frame on the site
-          uses (see globals.css: half the nav circles' own diameter at
-          each breakpoint), but only while a drag is actually in
-          progress, added the moment a drag is captured and removed
-          again once a spring-back has visibly finished settling — the
-          page's normal resting look is untouched, and the rounding
-          reads as part of the gesture, not a permanent change to how
-          the site looks. No overflow-hidden alongside it, on purpose:
-          WriteUp's credits column is `md:sticky` (project-content.tsx),
-          and any ancestor with overflow other than visible -- even one
-          that never actually needs to scroll, which this element never
-          does, its height always matches its content exactly -- becomes
-          that sticky element's containing block for scroll-tracking
-          purposes and breaks it. rounded-frame alone still rounds this
-          element's own background/shadow correctly; it just wouldn't
-          clip a child that happened to paint past the rounded corner.
-          Every hero/gallery container on the site keeps at least a
-          px-6/md:px-gutter margin from the true edge regardless (see
-          project-content.tsx), so nothing real ever reaches into that
-          corner to be clipped in the first place -- the safety net was
-          never doing anything here. */}
+          bg-canvas here is load-bearing, not decorative: on mobile,
+          ProjectContent's own card wrapper (see its doc comment) is
+          narrower than this slab, inset by its own margin -- without
+          this div's full-width opaque background, the peek sitting
+          behind it at rest would show through that margin gap on either
+          side of the card. */}
       <div ref={slabRef} className="relative z-10 bg-canvas">
         {children}
       </div>

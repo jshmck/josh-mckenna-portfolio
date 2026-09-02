@@ -129,7 +129,30 @@ export function ProjectContent({ project }: { project: Project }) {
             : [project.hero];
 
   return (
-    <>
+    // Mobile-only "card" presentation -- "on mobile when you open a
+    // project it opens up a 'card' with curved corners, (very apple)
+    // this makes it swipe a lot cleaner," per Josh, after the swipe's
+    // own shadow/corner/safe-area patches (all reactive fixes chasing
+    // symptoms of the page running edge-to-edge) weren't reading right
+    // together. Making the card permanent -- part of the page's own
+    // normal presentation, not something ProjectStackSwipe toggles on
+    // only while dragging -- means the swipe inherits it for free: the
+    // slab and both peeks all render this exact component, so the
+    // rounding, margin and shadow are already correct and already
+    // moving with the content before any drag-specific code has to
+    // think about it. All max-md: scoped -- desktop keeps rendering
+    // exactly as it always has, an invisible, unstyled wrapper at that
+    // breakpoint. overflow-hidden is safe here despite genuinely
+    // clipping content now (needed for the rounded corners to clip a
+    // full-bleed image rather than just rounding the background behind
+    // its square one): WriteUp's credits column below is only
+    // `md:sticky`, so there's no sticky element in the DOM at any width
+    // this wrapper actually applies overflow-hidden at. Shadow only,
+    // no colour contrast, for the "floating" read -- both this and the
+    // page underneath are bg-canvas, matching how iOS's own card
+    // surfaces are frequently the same colour as what's behind them,
+    // distinguished by elevation rather than a competing surface tone.
+    <div className="max-md:mx-3 max-md:mt-3 max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas max-md:shadow-[0_8px_30px_rgba(0,0,0,0.15)]">
       <header className="py-16 md:py-[60px]">
         <div className="mx-auto max-w-frame px-6 md:px-gutter">
           <p className="type-label text-ink">
@@ -419,6 +442,6 @@ export function ProjectContent({ project }: { project: Project }) {
           )}
         </ProjectLightboxProvider>
       )}
-    </>
+    </div>
   );
 }
