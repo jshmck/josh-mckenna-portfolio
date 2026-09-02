@@ -146,11 +146,16 @@ export function Nav() {
   const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
-  // True while a `[data-nav-contrast="light"]` card (any light-blue
-  // artwork — Yeti, Beefbar, Pato and friends, see Project.navContrastLight)
-  // sits under the fixed pill — swaps the active link from accent-blue to
-  // white only for that window, since blue reads fine against everything
-  // else on the site and only fails against its own colour specifically.
+  // True while a `[data-nav-contrast="light"]` surface (any light-blue
+  // artwork — the flagged /work cards, or a flagged full-bleed hero like
+  // L.A. Pride's blue-sky photo; see Project.navContrastLight) crosses
+  // the fixed bar's midline. Only the bar's BLUE elements swap to white
+  // for that window — the active/hovered link, the jM mark
+  // (filter-inverted) and the cart's blue states — "only the
+  // highlighted/selected word needs to be white and anything that's blue
+  // (jM) - not anything that's black already," per Josh. Blue reads fine
+  // against everything else on the site and only fails against its own
+  // colour specifically; black ink holds its own on the artwork.
   const [overLightBg, setOverLightBg] = useState(false);
   // Latches true the first time `scrolled` goes true, so the landing bounce
   // below (nav-pill-landing) never fires on initial page load -- only once
@@ -268,9 +273,16 @@ export function Nav() {
       const NAV_HEIGHT = headerRef.current?.getBoundingClientRect().height ?? 88;
       const contrastCards = document.querySelectorAll('[data-nav-contrast="light"]');
       let overLight = false;
+      // Midline, not edge overlap — swapping the instant the flagged
+      // surface's top edge slips under the bar left the just-turned-white
+      // text sitting on the cream canvas *above* the artwork for the first
+      // ~half-bar of scroll (caught on la-pride's hero). The bar's text
+      // sits at its vertical centre, so swap exactly when the blue crosses
+      // that line, in both scroll directions.
       contrastCards.forEach((card) => {
         const rect = card.getBoundingClientRect();
-        if (rect.top < NAV_HEIGHT && rect.bottom > 0) overLight = true;
+        const navMidline = NAV_HEIGHT / 2;
+        if (rect.top < navMidline && rect.bottom > navMidline) overLight = true;
       });
       setOverLightBg(overLight);
     };
@@ -470,6 +482,13 @@ export function Nav() {
                   clicking jM while already on "/" did nothing if you'd
                   scrolled down. Every primary nav link gets the same
                   treatment now. */}
+              {/* brightness-0 flattens the blue mark to a black silhouette
+                  (alpha preserved), invert flips it white — so the same
+                  PNG goes white over flagged blue artwork with no second
+                  asset needed from Josh. transition-transform, not the
+                  old transition-all: the hover tilt/scale keeps its
+                  bounce while the white swap snaps instantly in both
+                  directions, per Josh. */}
               <Image
                 src="/icons/jm-logomark.png"
                 alt=""
@@ -478,7 +497,7 @@ export function Nav() {
                 height={112}
                 sizes="56px"
                 priority
-                className="h-10 w-10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14"
+                className={`h-10 w-10 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14${overLightBg ? " brightness-0 invert" : ""}`}
               />
             </Link>
           </div>
@@ -539,11 +558,15 @@ export function Nav() {
                       (Tailwind's hover: variant never fires on a tap).
                       inline-block so the animation's transform actually
                       renders (inline elements can ignore it in some
-                      browsers). transition-[color,font-weight] only now
-                      -- transform is driven by the keyframe, not a CSS
+                      browsers). transition-[font-weight] only now --
+                      transform is driven by the keyframe, not a CSS
                       transition, so it's dropped from this list rather
                       than fighting the animation for control of the
-                      property.
+                      property; `color` was dropped too so the white swap
+                      over flagged blue artwork lands instantly in both
+                      directions ("make sure the switch between black and
+                      white is instant," per Josh) rather than fading
+                      through unreadable in-betweens.
 
                       px-1/md:px-2 py-1/md:py-1.5 with matching negative
                       margins grows the actual hoverable box past the
@@ -598,7 +621,7 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
+                    className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
                         ? overLightBg
                           ? "font-bold text-canvas"
@@ -657,9 +680,23 @@ export function Nav() {
                   Cart didn't have this before; added it now while
                   already touching this hover treatment rather than
                   leaving the gap. */}
+              {/* Only the bag's BLUE states swap to white over flagged blue
+                  artwork — the active accent tint and the brand hover tint,
+                  both invisible against the very blue that triggered the
+                  swap. Its resting black stays black, per Josh ("not
+                  anything that's black already"), and CartIcon is
+                  mask-rendered off currentColor so text-canvas is all a
+                  swap takes. transition-transform, not [color,transform]:
+                  the white swap must land instantly. */}
               <CartIcon
-                className={`h-5 w-5 transition-[color,transform] duration-200 ease-in-out group-hover:rotate-6 group-hover:scale-110 group-hover:text-brand group-hover:duration-300 group-hover:ease-drift group-active:rotate-6 group-active:scale-110 group-active:text-brand md:h-7 md:w-7 ${
-                  isActive("/shop") ? "text-accent" : "text-ink"
+                className={`h-5 w-5 transition-transform duration-200 ease-in-out group-hover:rotate-6 group-hover:scale-110 group-hover:duration-300 group-hover:ease-drift group-active:rotate-6 group-active:scale-110 md:h-7 md:w-7 ${
+                  overLightBg
+                    ? `group-hover:text-canvas group-active:text-canvas ${
+                        isActive("/shop") ? "text-canvas" : "text-ink"
+                      }`
+                    : `group-hover:text-brand group-active:text-brand ${
+                        isActive("/shop") ? "text-accent" : "text-ink"
+                      }`
                 }`}
               />
             </Link>

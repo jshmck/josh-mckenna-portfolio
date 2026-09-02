@@ -335,11 +335,19 @@ export type Project = {
    * Pato, Boat International, Step Journal, Monocle heel, …). Flags both
    * the /work card (project-card.tsx) and the project page's own hero
    * wrapper (project-content.tsx) with a `data-nav-contrast="light"`
-   * attribute; nav.tsx watches for that attribute intersecting its own
-   * fixed position and swaps the active link to white only while it's in
-   * view, everywhere else on the site keeps the normal blue.
+   * attribute; nav.tsx watches for that attribute crossing its own
+   * midline and swaps the bar's blue elements — the active/hovered link,
+   * the jM mark, the cart's blue states — to white while it's there.
+   * Black nav text stays black; it holds its own on the artwork.
+   *
+   * `true` flags both surfaces; `"hero"` flags only the project page's
+   * hero — for a project whose full-bleed hero is blue but whose /work
+   * card isn't (L.A. Pride: blue-sky photo hero, lime-green lockup card —
+   * "the full screen hero is blue sky so the text doesnt stand a
+   * chance," per Josh). A white bar over a light non-blue card is its own
+   * contrast failure, so don't flag a card that doesn't need it.
    */
-  navContrastLight?: boolean;
+  navContrastLight?: boolean | "hero";
   /**
    * Sorts before every non-pinned project, lowest rank first —
    * Josh's own curated lead-in to /work, independent of year.
@@ -2261,6 +2269,9 @@ export const projects: Project[] = [
     client: "City of Los Angeles",
     year: 2024,
     pinnedRank: 6,
+    // Hero only — the full-bleed stage photo is blue sky, but the /work
+    // card is the lime-green lockup and reads fine under a blue bar.
+    navContrastLight: "hero",
     discipline: "Festival Identity",
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
     categories: ["Pride"],
