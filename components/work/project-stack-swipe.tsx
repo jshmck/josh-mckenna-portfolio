@@ -412,7 +412,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         <div
           ref={previousPeekRef}
           data-stack-peek="previous"
-          className="fixed inset-x-0 bottom-0 z-0 origin-top"
+          className="fixed inset-x-0 bottom-0 z-0 origin-top will-change-transform"
           style={{ top: navHeight }}
         >
           <StackPeek project={previous} />
@@ -422,32 +422,41 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         <div
           ref={nextPeekRef}
           data-stack-peek="next"
-          className="fixed inset-x-0 bottom-0 z-0 origin-top"
+          className="fixed inset-x-0 bottom-0 z-0 origin-top will-change-transform"
           style={{ top: navHeight }}
         >
           <StackPeek project={next} />
         </div>
       )}
-      {/* No will-change-transform here (unlike Parallax's own slab) --
-          will-change: transform makes an element the containing block
-          for any `position: fixed` descendant, same as an actual
-          transform does, and the lightbox dialog (LightboxOverlay,
-          `fixed inset-0`) mounts inside `children` -- it was pinning
-          itself to *this div's* box instead of the real viewport,
-          "something is up with the lightbox on mobile... seems to have
-          dropped off screen," per Josh, on every project. Skipping the
-          perf hint is the fix: the first real `transform` write already
-          happens synchronously in the touchmove handler, well before any
-          paint, so there's nothing will-change would have preloaded in
-          time to matter anyway.
+      {/* will-change-transform is back on the slab and both peeks (it
+          used to be deliberately absent here -- see git history) --
+          "the shadow under the project is still white? it needs to be
+          shadow as i swipe," per Josh, on a real device: the card's
+          shadow (project-content.tsx, already split onto its own
+          non-clipping element to dodge a separate Safari box-shadow/
+          overflow-hidden trap) was still rendering wrong specifically
+          *during* the live drag, not at rest. A shadow glitching or
+          flattening only while its ancestor is mid-transform-animation
+          is a known Safari compositing issue -- without a layer-
+          promotion hint, Safari can fail to correctly re-rasterize a
+          shadow as its transformed ancestor updates every touchmove
+          frame, instead of painting it once as a stable GPU layer that
+          just translates/scales as a unit.
 
-          bg-canvas here is load-bearing, not decorative: on mobile,
-          ProjectContent's own card wrapper (see its doc comment) is
-          narrower than this slab, inset by its own margin -- without
-          this div's full-width opaque background, the peek sitting
-          behind it at rest would show through that margin gap on either
-          side of the card. */}
-      <div ref={slabRef} className="relative z-10 bg-canvas">
+          This was left off deliberately in an earlier pass because
+          will-change: transform makes an element the containing block
+          for any `position: fixed` descendant, same as a real transform
+          does -- the lightbox dialog used to mount inline inside
+          `children`, so this was pinning it to *this div's* box instead
+          of the real viewport ("something is up with the lightbox on
+          mobile... seems to have dropped off screen," per Josh, at the
+          time). That constraint no longer applies: LightboxOverlay now
+          renders via createPortal(..., document.body) (see its own doc
+          comment), so it's not a descendant of the slab or either peek
+          in the DOM at all, regardless of what containing-block any of
+          them establish. Safe to promote all three now that the one
+          thing this used to break can't be broken by it anymore. */}
+      <div ref={slabRef} className="relative z-10 bg-canvas will-change-transform">
         {children}
       </div>
     </div>
