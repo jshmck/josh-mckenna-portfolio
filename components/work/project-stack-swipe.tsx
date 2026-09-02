@@ -356,6 +356,28 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       state.scrolled = wasScrolled ? window.scrollY > SHRINK_EXIT : window.scrollY > SHRINK_ENTER;
       state.overPlain = lastContentBottom !== -Infinity && lastContentBottom < stripTop;
       if (state.scrolled !== wasScrolled || state.overPlain !== wasOverPlain) applyDotShrink();
+
+      // The peeks stop at the revealed footer's edge -- "the same way
+      // you've done the sides and the top, apply to the bottom... the
+      // white is covering the t&c and footer bar," per Josh: the peeks
+      // are fixed, full-height, opaque layers, so during a swipe at the
+      // page's end the incoming one slid in OVER the footer the curtain
+      // reveal had just uncovered, whiting out the copyright bar. Their
+      // bottom now tracks how much footer is actually revealed (the
+      // viewport below <main>'s own bottom edge -- measured off main,
+      // NOT the footer's rect, which sits sticky-pinned at the viewport
+      // bottom from the first frame; see the strip-fade lesson above),
+      // so mid-swipe the footer band stays visible below both cards,
+      // the same persistent chrome the header is at the top. Written
+      // here, per scroll frame, because a drag preventDefault()s all
+      // scrolling -- the value can't change mid-gesture, so the last
+      // scroll tick's write is always current when a swipe starts.
+      const mainBottom = document.querySelector("main")?.getBoundingClientRect().bottom;
+      if (mainBottom !== undefined) {
+        const reveal = `${Math.max(0, window.innerHeight - mainBottom)}px`;
+        if (previousPeekRef.current) previousPeekRef.current.style.bottom = reveal;
+        if (nextPeekRef.current) nextPeekRef.current.style.bottom = reveal;
+      }
     };
     const onScroll = () => {
       if (queued) return;
