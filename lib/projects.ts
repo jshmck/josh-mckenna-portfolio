@@ -365,6 +365,39 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "lime-bikes",
+    title: "Lime Bikes",
+    client: "Personal",
+    year: 2026,
+    discipline: "Illustration",
+    deliverables: "2 illustrations · 2 icons",
+    categories: ["Icons", "Editorial"],
+    summary: "Two bikes, each drawn twice — once for looking, once for tapping.",
+    heroCaption: "",
+    brief: [
+      "No brief — just an excuse to draw the Lime bike properly, twice over: once at full size, and once redrawn at icon scale, where the wordmark goes, the frame becomes a single stroke and the green basket does all the identifying.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    cardRatio: "1/1",
+    // The icon redraws run at their real size — 48px, next to the title —
+    // rather than as gallery plates a 480px export could never fill.
+    headerIllustrations: [
+      { src: "/work/lime-bikes/icon-bike-01.webp", aspect: "430/264", width: 48 },
+      { src: "/work/lime-bikes/icon-bike-02.webp", aspect: "430/272", width: 48 },
+    ],
+    hero: {
+      ratio: "1/1",
+      alt: "Lime bike — the covered frame",
+      src: "/work/lime-bikes/01-lime-bike-01.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "Lime bike — the open frame",
+      src: "/work/lime-bikes/02-lime-bike-02.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "palm-springs",
     title: "Palm Springs",
     client: "Personal",
