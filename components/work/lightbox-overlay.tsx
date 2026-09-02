@@ -26,16 +26,19 @@ function ratioToNumber(ratio: string) {
  *  clone of nav.tsx's word class — same 15/22px font-body at regular
  *  weight ("same thickness as the text in the nav bars," per Josh), same
  *  bold-on-hover, same nav-pill-hover squash-and-stretch, same enlarged
- *  hit box via padding + matching negative margins — with the colours
- *  adapted: text-canvas at rest, not text-ink-muted, since these sit on
- *  the lightbox's dark ink/90 backdrop, and brand blue on hover/tap
- *  ("lets have the hover colour blue," per Josh), a deliberate departure
- *  from the nav words' accent purple. The old circle-button chrome
- *  (h-9 w-9, hover bg wash, directional translate/rotate accents) is
- *  gone with the rest of the bespoke styling — "make it all match," per
- *  Josh, and the nav words have none of it. */
+ *  hit box via padding + matching negative margins — with brand blue on
+ *  hover/tap ("lets have the hover colour blue," per Josh), a deliberate
+ *  departure from the nav words' accent purple. text-ink-muted at rest,
+ *  not text-canvas -- the backdrop itself used to be dark (bg-ink/90),
+ *  which needed light text; now that it's canvas-coloured (see the
+ *  backdrop's own comment below), the same near-black used on every
+ *  other pill on the site (nav.tsx, BackToTop) reads correctly here
+ *  too. The old circle-button chrome (h-9 w-9, hover bg wash,
+ *  directional translate/rotate accents) is gone with the rest of the
+ *  bespoke styling — "make it all match," per Josh, and the nav words
+ *  have none of it. */
 const LIGHTBOX_BUTTON_CLASS =
-  "-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] text-canvas transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:font-bold hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:font-bold active:text-brand md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px]";
+  "-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] text-ink-muted transition-[color,font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:font-bold hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:font-bold active:text-brand md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px]";
 
 /** Tracks the viewport size live (mount + resize) so the stage can size
  *  itself in real pixels rather than through nested CSS var()/calc()/min()
@@ -249,10 +252,17 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
       // per Josh, mobile only for now. Same blur/saturate recipe as every
       // other frosted surface sitewide (nav.tsx's frostClass, BackToTop's
       // PILL_BASE) so the backdrop reads as the same glass treatment
-      // rather than a one-off. bg-ink/90 is already translucent, so the
-      // blur has real page content behind it to soften -- a plain solid
-      // fill would make backdrop-blur a no-op.
-      className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-ink/90 p-4 max-md:backdrop-blur-md max-md:backdrop-saturate-150"
+      // rather than a one-off. bg-canvas/95, not bg-ink/90 -- "i think the
+      // black or grey background is a bit off brand - should we do the
+      // same (almost) white as site wide?" per Josh, after seeing a dark
+      // backdrop read as a jarring departure from the rest of the site's
+      // one consistent "Sugar White" surface. Still translucent (/95, not
+      // opaque), so backdrop-blur still has real page content behind it
+      // to soften rather than becoming a no-op -- a plain solid fill
+      // would make it one. LIGHTBOX_BUTTON_CLASS's rest colour switched
+      // from text-canvas to text-ink-muted alongside this, for the same
+      // reason -- see its own comment.
+      className="fixed inset-0 z-50 flex animate-[lightbox-backdrop_320ms_ease-out] flex-col items-center justify-center gap-4 bg-canvas/95 p-4 max-md:backdrop-blur-md max-md:backdrop-saturate-150"
       onClick={close}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
