@@ -90,6 +90,17 @@ export const metadata: Metadata = {
  *  opt-in experience this doesn't attempt. */
 export const viewport: Viewport = {
   viewportFit: "cover",
+  // "for some reason the dynamic island area is a different colour than
+  // the website," per Josh -- without an explicit theme-color, iOS
+  // Safari doesn't just trust the page's own background in the safe
+  // area; it renders its own translucent scrim there for legibility
+  // over whatever content is nearby, which read as a mismatched
+  // gray-ish gradient behind the status bar instead of flat canvas.
+  // Declaring the colour outright removes the need for that scrim.
+  // #faf9f6 mirrors --color-canvas (globals.css) exactly -- this is a
+  // browser-chrome API, not CSS, so it genuinely cannot consume the
+  // token directly; keep it in sync by hand if canvas ever changes.
+  themeColor: "#faf9f6",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
