@@ -118,7 +118,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <Nav />
-        <main id="main" className="flex-1">
+        {/* The max-md: trio here is one half of the footer's mobile
+            curtain reveal (see footer.tsx): the footer pins sticky at
+            the viewport bottom *behind* the page, so main needs to
+            genuinely cover it while scrolling -- relative + z-10 wins
+            the paint order over the footer (a later sibling would
+            otherwise paint on top), and the explicit bg-canvas makes
+            main opaque so the pinned footer can't show through the
+            transparent gaps around the mobile project card (or any
+            other unpainted region on other pages). Visually identical
+            to the body canvas it covers. position: relative does NOT
+            re-anchor the fixed elements inside main (BackToTop's
+            pills, the swipe peeks) -- only transform/filter/will-change
+            ancestors do that -- and the lightbox portals to body
+            anyway. md+ is untouched, plain in-flow main. */}
+        <main id="main" className="flex-1 max-md:relative max-md:z-10 max-md:bg-canvas">
           {children}
         </main>
         <Footer />

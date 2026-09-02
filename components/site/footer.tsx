@@ -43,7 +43,19 @@ const links = [
  */
 export function Footer() {
   return (
-    <footer className="border-t border-hairline">
+    // max-md:sticky bottom-0 -- the mobile "curtain reveal": the footer
+    // pins itself at the viewport's bottom edge for the whole scroll,
+    // sitting *behind* <main> (which carries max-md:relative z-10 +
+    // an opaque bg-canvas in layout.tsx specifically so it covers this),
+    // and the page's last stretch of scroll slides the card up off it
+    // like a curtain -- "can it have a dynamic scroll too so it appears
+    // closer the further down?" per Josh, choosing the curtain-reveal
+    // reading. Pure scroll geometry (position: sticky), no animation or
+    // JS, so there's nothing for reduced-motion to guard -- the footer
+    // never moves relative to the viewport at all; only the content
+    // over it does, at exactly scroll speed. md+ keeps the plain
+    // in-flow footer untouched.
+    <footer className="border-t border-hairline max-md:sticky max-md:bottom-0">
       <div className="mx-auto flex max-w-frame flex-wrap items-center justify-between gap-6 px-6 py-10 md:px-gutter">
         <div>
           <p className="font-body text-[13px] text-ink-muted">
