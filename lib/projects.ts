@@ -1288,24 +1288,24 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D", "Character"],
+    categories: ["3D", "Character", "Pride"],
     summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
     heroCaption: "",
     brief: [
       "Modelled in Womp, a browser-based 3D tool — a glossy figure bent double, taking a selfie of its own backside.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
-    // Both this and heroPair are genuinely 1920x2160 (8/9) — a cleaner,
-    // less grainy re-render of the same pose than the original hero, and
-    // it happens to share heroPair's exact true ratio, so no crop
-    // compromise is needed to land the two frames the same size.
+    // 4/5 across all three frames in the row — per Josh, over each
+    // asset's own true ratio (renders are 8/9, the video's 1078x1438 is
+    // ≈3/4), so hero/heroPair/video crop to a matching frame instead of
+    // each keeping its native shape.
     hero: {
-      ratio: "8/9",
+      ratio: "4/5",
       alt: "Bum selfie",
       src: "/work/womp-bum-selfie/01-orang.webp",
     },
     heroPair: {
-      ratio: "8/9",
+      ratio: "4/5",
       alt: "Bum selfie, head-on",
       src: "/work/womp-bum-selfie/02-bum-selfie-front.webp",
     },
@@ -1317,10 +1317,7 @@ export const projects: Project[] = [
       src: "/work/womp-bum-selfie/03-bum-selfie-video.mp4",
       alt: "The bum selfie, turning",
       position: "pair",
-      // True 1078x1438 ratio ≈ 0.75 — without this it defaults to
-      // aspect-video (16:9), cropping this portrait clip hard to fit a
-      // much wider box.
-      ratio: "3/4",
+      ratio: "4/5",
     },
     gallery: [],
   },
