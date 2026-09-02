@@ -52,7 +52,18 @@ export const clients: Client[] = [
   { name: "The Body Shop", logo: "/logos/body-shop.png", size: "xl" },
   { name: "Soho House", logo: "/logos/soho-house.png", size: "xl" },
   { name: "V&A", logo: "/logos/va-museum.svg" },
-  { name: "Three", logo: "/logos/three.svg", size: "icon" },
+  // .png, not .svg like its neighbours — the original file was an SVG
+  // wrapper around two embedded raster PNGs composited via an SVG
+  // <mask> (a luminance mask providing the "3" shape, applied to a
+  // solid-black fill layer). That mask composition is what iOS Safari
+  // was rasterizing at a fixed, lower-than-display resolution — "three
+  // logo is pixelated on mobile," per Josh, invisible on desktop
+  // because Chrome/Firefox rasterize the same mask at actual output
+  // size. Flattened the mask + fill into one real RGBA PNG (the mask's
+  // own luminance became the alpha channel directly, at its full
+  // 1665x2160 native resolution) so there's no live SVG masking left to
+  // rasterize badly — same pixels, no more Safari-only bug.
+  { name: "Three", logo: "/logos/three.png", size: "icon" },
   { name: "MTV", logo: "/logos/mtv.svg", size: "icon" },
   { name: "The Guardian", logo: "/logos/guardian.svg" },
   { name: "The Times", logo: "/logos/the-times.svg" },
