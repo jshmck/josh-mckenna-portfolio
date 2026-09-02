@@ -40,8 +40,8 @@ export default function AboutPage() {
             <div>
               <Reveal>
                 <p className="type-lede text-ink-muted">
-                  Josh McKenna is a London-based illustrator with over a
-                  decade of experience moving between digital products and
+                  Josh McKenna is an illustrator with over a decade of
+                  experience moving between digital products and
                   physical spaces. He studied illustration at Falmouth
                   University before going freelance in 2014, working with
                   brands from Apple to the Wall Street Journal. From the
@@ -126,7 +126,7 @@ export default function AboutPage() {
           as-is since the deeper padding still reads right without it.) */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
-          <h2 className="type-heading text-ink">Talks and features.</h2>
+          <h2 className="type-heading text-ink">Talks and features</h2>
           <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
               <li key={feature.alt}>

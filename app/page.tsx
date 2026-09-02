@@ -23,8 +23,8 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-frame gap-16 px-6 pb-24 pt-16 md:grid-cols-2 md:items-center md:px-gutter md:pb-16">
           <Reveal>
             <h2 className="type-heading text-ink">
-              London-based illustrator working across character design, LGBTQ+
-              themes, brand campaigns and automotive art.
+              British illustrator working across character design, LGBTQ+
+              themes, icons, social media brand campaigns and automotive art
             </h2>
             <p className="type-lede mt-6 max-w-lg text-ink-muted">
               He&apos;s drawn for the likes of Apple — loud, friendly, queer
