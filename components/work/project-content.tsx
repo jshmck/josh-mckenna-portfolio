@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { BackToTopLink } from "@/components/ui/back-to-top-link";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { GalleryGrid } from "@/components/work/gallery-grid";
 import { HeroLightbox } from "@/components/work/hero-lightbox";
@@ -582,6 +583,38 @@ export function ProjectContent({ project }: { project: Project }) {
             )}
           </ProjectLightboxProvider>
         )}
+
+        {/* End-of-project nav, desktop only, all in normal flow -- the
+            answer to "i need help deciding how to switch to next project
+            when you're on it - on web," with "all inline, nothing
+            fixed" as the chosen shape: once you've reached the end of
+            the gallery, the next project is offered right there (the
+            classic portfolio end-of-page teaser), alongside the subtle
+            inline successor to the retired BackToTop pill. Hidden below
+            md -- mobile navigates by swipe (advertised by the dot strip
+            up top) and iOS's status-bar tap covers scroll-to-top, per
+            Josh. The teaser title runs through the same Waldeck-casing
+            treatment as the page's own display h1, in the section-title
+            accent, with the arrow nudging right on hover -- Waldeck
+            Black has no bolder weight to swap to, so motion is the
+            hover cue here. */}
+        <div className="mx-auto hidden max-w-frame items-end justify-between gap-8 px-6 pb-20 md:flex md:px-gutter">
+          <BackToTopLink />
+          {next && (
+            <Link href={`/work/${next.slug}`} className="group text-right">
+              <span className="type-label block text-ink">Next project</span>
+              <span className="type-title mt-2 block text-accent">
+                {toDisplayTitle(next.title)}{" "}
+                <span
+                  aria-hidden="true"
+                  className="inline-block transition-transform duration-300 ease-drift group-hover:translate-x-2"
+                >
+                  →
+                </span>
+              </span>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
