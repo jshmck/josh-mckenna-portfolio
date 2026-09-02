@@ -265,25 +265,22 @@
   }
 }
 
-/* The mobile hero scroll cue's bounce (drifting-hero.tsx) — the brand
-   accent dot hopping from its resting spot down onto the next gray dot
-   and springing back: one pitch down (15px = 7px dot + 8px gap), held
-   there a beat, then home, with a small overshoot at each end so it
-   reads as a bounce rather than a slide — the same accent-dot-travels-
-   the-strip language as the project cards' swipe dots, turned vertical.
-   Pure CSS, so the sitewide prefers-reduced-motion rule above
-   neutralises it on its own. */
+/* The mobile hero scroll cue's bounce (drifting-hero.tsx) — the chunky
+   brand chevron hopping down and springing back home: drop with a small
+   overshoot, settle a beat, then return past home by a hair, so it
+   reads as a bounce rather than a slide. Pure CSS, so the sitewide
+   prefers-reduced-motion rule above neutralises it on its own. */
 @keyframes scroll-cue-hop {
   0%,
   22% {
     transform: translateY(0);
   }
   36% {
-    transform: translateY(17px);
+    transform: translateY(10px);
   }
   46%,
   62% {
-    transform: translateY(15px);
+    transform: translateY(8px);
   }
   76% {
     transform: translateY(-2px);

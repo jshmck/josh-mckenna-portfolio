@@ -1050,20 +1050,17 @@ export function DriftingHero() {
           );
         })}
 
-        {/* Mobile scroll cue — a vertical mini dot strip at the frame's
-            foot telling a phone visitor the circulating hero isn't the
-            whole page ("something chunky and cute that bounces telling
-            you to scroll," per Josh, replacing a first cut's thin ↓
-            glyph): three gray dots with the brand accent dot bouncing
-            down one pitch and springing back, the project cards' swipe-
-            dot language (project-stack-swipe.tsx) turned vertical and
-            sized up a notch for hero scale — 7px gray / 9px brand vs the
-            strip's 5.5/7. No frosted pill around it: the strip itself
-            fades its frost out over plain canvas, and plain canvas is
-            exactly what sits here. bg-brand, not bg-accent, matching the
-            strip's own "make the dot blue instead of purple." The accent
-            dot centres with inset-x-0 + mx-auto rather than a translate
-            utility so the hop animation owns `transform` outright.
+        {/* Mobile scroll cue — a chunky brand-blue chevron bouncing at
+            the frame's foot, telling a phone visitor the circulating
+            hero isn't the whole page. Third cut: a thin ↓ glyph read
+            off against the mobile chrome, a vertical swipe-dot strip
+            wasn't it either — "a little chevron pointing down but have
+            it thick like the blue ball," per Josh, so this is a bare
+            SVG stroke at the swipe strip's accent-dot weight: 7px
+            rounded stroke ≈ the 9px ball, stroke through currentColor
+            off the button's text-brand so colour stays on tokens.
+            Interim shape like every chevron on the site — swap to a
+            MaskIcon when Josh's hand-drawn icon batch lands.
 
             A tap scrolls to the Who section right below (#home-who,
             app/page.tsx). scrollIntoView with no behavior option
@@ -1083,22 +1080,31 @@ export function DriftingHero() {
             screen on a real phone, which put a bottom-anchored cue just
             below the fold -- invisible until the visitor had already
             scrolled, exactly when it's useless ("i dont see it on
-            mobile," per Josh). 164px = the header's 88px flow height
-            above this frame + the strip's ~53px + ~20px clearance, so
-            the cue's bottom edge clears the smallest fold and just rides
-            slightly higher up the frame once the bar collapses. */}
+            mobile," per Josh). 156px = the header's 88px flow height
+            above this frame + the button's 48px + 20px clearance, so
+            the cue's bottom edge clears the smallest fold and just
+            rides slightly higher up the frame once the bar
+            collapses. */}
         <button
           type="button"
           aria-label="Scroll down to more about Josh"
           onClick={() => document.getElementById("home-who")?.scrollIntoView()}
-          className="absolute left-1/2 top-[calc(100svh_-_164px)] z-30 hidden w-11 -translate-x-1/2 flex-col items-center max-md:flex"
+          className="absolute left-1/2 top-[calc(100svh_-_156px)] z-30 hidden h-12 w-11 -translate-x-1/2 items-center justify-center text-brand max-md:flex"
         >
-          <span aria-hidden="true" className="relative flex flex-col items-center gap-2 py-2">
-            <span className="h-[7px] w-[7px] rounded-full bg-ink/20" />
-            <span className="h-[7px] w-[7px] rounded-full bg-ink/20" />
-            <span className="h-[7px] w-[7px] rounded-full bg-ink/20" />
-            <span className="absolute inset-x-0 top-[7px] mx-auto h-[9px] w-[9px] animate-[scroll-cue-hop_1.8s_ease-in-out_infinite] rounded-full bg-brand" />
-          </span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 26 16"
+            fill="none"
+            className="w-7 animate-[scroll-cue-hop_1.8s_ease-in-out_infinite]"
+          >
+            <path
+              d="M4 4 L13 12 L22 4"
+              stroke="currentColor"
+              strokeWidth="7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
       </div>
     </section>
