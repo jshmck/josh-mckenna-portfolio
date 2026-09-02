@@ -1062,12 +1062,25 @@ export function DriftingHero() {
             at the fold, mobile's 88vh frame doesn't. z-30 keeps it
             tappable above any object drifting across the frame's foot; ↓
             matches the Who section's own "More about Josh →" glyph voice
-            rather than the lightbox's < / > pair. */}
+            rather than the lightbox's < / > pair.
+
+            Anchored to the *small* viewport height (svh -- the fold with
+            mobile Safari's URL bar still expanded), not the frame's
+            bottom edge: the frame is 88vh of the *large* viewport, and
+            88vh plus the 88px header overshoots the bars-visible first
+            screen on a real phone, which put a bottom-anchored cue just
+            below the fold -- invisible until the visitor had already
+            scrolled, exactly when it's useless ("i dont see it on
+            mobile," per Josh). 152px = the header's 88px flow height
+            above this frame + the button's own 44px + 20px clearance, so
+            the cue's bottom edge clears the smallest fold by 20px and
+            just rides slightly higher up the frame once the bar
+            collapses. */}
         <button
           type="button"
           aria-label="Scroll down to more about Josh"
           onClick={() => document.getElementById("home-who")?.scrollIntoView()}
-          className="absolute bottom-4 left-1/2 z-30 hidden h-11 w-11 -translate-x-1/2 items-center justify-center text-ink max-md:flex"
+          className="absolute left-1/2 top-[calc(100svh_-_152px)] z-30 hidden h-11 w-11 -translate-x-1/2 items-center justify-center text-ink max-md:flex"
         >
           <span
             aria-hidden="true"
