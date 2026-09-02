@@ -377,14 +377,14 @@ export const projects: Project[] = [
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     hero: {
       ratio: "4/5",
-      alt: "The original",
-      src: "/work/bum-selfie/01-bum-selfie-4-5.webp",
+      alt: "An updated version",
+      src: "/work/bum-selfie/02-butt-selfie-2.webp",
     },
     gallery: [
       {
         ratio: "4/5",
-        alt: "An updated version",
-        src: "/work/bum-selfie/02-butt-selfie-2.webp",
+        alt: "The original",
+        src: "/work/bum-selfie/01-bum-selfie-4-5.webp",
       },
     ],
     featured: false,
