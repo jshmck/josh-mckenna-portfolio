@@ -372,7 +372,6 @@ export const projects: Project[] = [
     heroCaption: "",
     brief: [
       "Cake Boy magazine wanted a two-part illustration for a feature on the different ways to photograph your own arsehole — technique over vanity, apparently.",
-      "The first pass was the straightforward reach-round; the second swapped the angle and kept the trousers on, on the theory that a phone screen half-visible in shot reads as more instructional.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     hero: {
