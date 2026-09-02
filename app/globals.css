@@ -265,27 +265,28 @@
   }
 }
 
-/* The mobile hero scroll cue's bounce (drifting-hero.tsx) — the chunky
-   brand chevron hopping down and springing back home: drop with a small
-   overshoot, settle a beat, then return past home by a hair, so it
-   reads as a bounce rather than a slide. Pure CSS, so the sitewide
-   prefers-reduced-motion rule above neutralises it on its own. */
+/* The mobile hero scroll cue's bounce (drifting-hero.tsx) — a quick
+   double nudge, "like a little bouncy ball, or a real nudge nudge," per
+   Josh: down, nearly home, down again, home, then a rest before the
+   loop repeats. Two full drops rather than one hop-and-hold — the
+   repeat is what makes it read as a bounce at this size. Pure CSS, so
+   the sitewide prefers-reduced-motion rule above neutralises it on its
+   own. */
 @keyframes scroll-cue-hop {
   0%,
-  22% {
+  12% {
     transform: translateY(0);
   }
-  36% {
-    transform: translateY(10px);
+  26% {
+    transform: translateY(7px);
   }
-  46%,
-  62% {
-    transform: translateY(8px);
+  40% {
+    transform: translateY(1px);
   }
-  76% {
-    transform: translateY(-2px);
+  54% {
+    transform: translateY(7px);
   }
-  86%,
+  70%,
   100% {
     transform: translateY(0);
   }

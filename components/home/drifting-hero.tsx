@@ -1050,17 +1050,18 @@ export function DriftingHero() {
           );
         })}
 
-        {/* Mobile scroll cue — a chunky brand-blue chevron bouncing at
-            the frame's foot, telling a phone visitor the circulating
-            hero isn't the whole page. Third cut: a thin ↓ glyph read
-            off against the mobile chrome, a vertical swipe-dot strip
-            wasn't it either — "a little chevron pointing down but have
-            it thick like the blue ball," per Josh, so this is a bare
-            SVG stroke at the swipe strip's accent-dot weight: 7px
-            rounded stroke ≈ the 9px ball, stroke through currentColor
-            off the button's text-brand so colour stays on tokens.
-            Interim shape like every chevron on the site — swap to a
-            MaskIcon when Josh's hand-drawn icon batch lands.
+        {/* Mobile scroll cue — a very small grey chevron double-nudging
+            at the frame's foot, telling a phone visitor the circulating
+            hero isn't the whole page. Fourth cut, converging per Josh:
+            thin ↓ glyph → vertical swipe-dot strip → big brand-blue
+            chevron → "a little too big/thick... make it very small,
+            grey (same as 'Client etc')" — so it keeps the fat rounded
+            stroke proportions of the blue version, scaled to 16px wide,
+            in text-ink/60, the exact grey of the project pages' meta
+            labels (Client/Year, project-content.tsx), via currentColor
+            so colour stays on tokens. Interim shape like every chevron
+            on the site — swap to a MaskIcon when Josh's hand-drawn icon
+            batch lands.
 
             A tap scrolls to the Who section right below (#home-who,
             app/page.tsx). scrollIntoView with no behavior option
@@ -1089,13 +1090,13 @@ export function DriftingHero() {
           type="button"
           aria-label="Scroll down to more about Josh"
           onClick={() => document.getElementById("home-who")?.scrollIntoView()}
-          className="absolute left-1/2 top-[calc(100svh_-_156px)] z-30 hidden h-12 w-11 -translate-x-1/2 items-center justify-center text-brand max-md:flex"
+          className="absolute left-1/2 top-[calc(100svh_-_156px)] z-30 hidden h-12 w-11 -translate-x-1/2 items-center justify-center text-ink/60 max-md:flex"
         >
           <svg
             aria-hidden="true"
             viewBox="0 0 26 16"
             fill="none"
-            className="w-7 animate-[scroll-cue-hop_1.8s_ease-in-out_infinite]"
+            className="w-4 animate-[scroll-cue-hop_2s_ease-in-out_infinite]"
           >
             <path
               d="M4 4 L13 12 L22 4"
