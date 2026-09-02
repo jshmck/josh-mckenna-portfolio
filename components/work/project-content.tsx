@@ -185,7 +185,12 @@ export function ProjectContent({ project }: { project: Project }) {
     // image still respects the corner) and the canvas fill. Structurally
     // immune to the bug rather than chasing which specific combination
     // of properties triggers it.
-    <div className="max-md:mx-3 max-md:mt-3 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
+    // mb-3 completes the inset on all four sides -- "the bottom of a
+    // project card sits on the footer line - give it some space," per
+    // Josh: without it the card's bottom edge ran flush into the
+    // footer's border-t, breaking the floating read on the one edge
+    // where the margin was missing.
+    <div className="max-md:mx-3 max-md:mt-3 max-md:mb-3 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
       <div className="max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas">
         <header className="py-16 md:py-[60px]">
           <div className="mx-auto max-w-frame px-6 md:px-gutter">
