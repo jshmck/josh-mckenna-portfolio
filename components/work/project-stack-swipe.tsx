@@ -236,30 +236,37 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // Fades the floating dot strip out once the footer's curtain reveal
-  // starts -- fixed at the viewport bottom, the dots would otherwise
-  // float over the copyright line for the last stretch of scroll. A
-  // visibility toggle on scroll, not motion, so it runs under reduced
-  // motion too (same as the nav's own scroll-driven frost); the global
-  // reduced-motion CSS clamps the opacity transition to instant anyway.
+  // Docks the floating dot strip to the card's bottom edge once the
+  // footer's curtain reveal starts -- "when you hit the bottom of a
+  // project and see the footer, the dots are to remain at the bottom of
+  // the project card," per Josh (replacing a first cut that faded them
+  // out there instead). Same continuous-offset docking the old
+  // BackToTop pill used above the footer, just anchored to the card:
+  // the strip rests 20px off the viewport bottom, and once the card's
+  // own bottom edge scrolls up past that line the strip rides up with
+  // it, always sitting DOCK_INSET above the card's edge. Written
+  // straight to the DOM per scroll frame (rAF-throttled), not through
+  // React state -- the offset changes continuously while the footer
+  // reveals. Runs under reduced motion too: this tracks scroll
+  // position 1:1, it doesn't animate anything on its own. Measures the
+  // card (the slab's first child, ProjectContent's shadow wrapper)
+  // rather than the footer or document end, so it stays correct if the
+  // card's bottom margin or the footer's height ever change.
   useEffect(() => {
     const strip = dotsRef.current;
-    if (!strip) return;
+    const slab = slabRef.current;
+    if (!strip || !slab) return;
+    const RESTING_BOTTOM = 20; // bottom-5, the strip's own class
+    const DOCK_INSET = 20; // gap kept above the card's bottom edge when docked
     let raf = 0;
     let queued = false;
     const update = () => {
       queued = false;
-      const footer = document.querySelector("footer");
-      if (!footer) return;
-      // Distance-from-document-end, NOT the footer's own rect -- the
-      // footer is sticky bottom-0 (the mobile curtain reveal,
-      // footer.tsx), so its bounding rect sits pinned at the viewport
-      // bottom for the entire scroll and would read as "in view" from
-      // the very first frame. The reveal actually happens over the last
-      // footer-height's worth of scroll, so that's the hide window.
-      const distanceFromEnd =
-        document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
-      strip.style.opacity = distanceFromEnd < footer.offsetHeight ? "0" : "";
+      const card = slab.firstElementChild;
+      if (!card) return;
+      const cardBottom = card.getBoundingClientRect().bottom;
+      const docked = window.innerHeight - cardBottom + DOCK_INSET;
+      strip.style.bottom = `${Math.max(RESTING_BOTTOM, docked)}px`;
     };
     const onScroll = () => {
       if (queued) return;
@@ -513,15 +520,21 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           touchmove handler). pointer-events-none + aria-hidden -- it's
           feedback, not a control; the breadcrumb arrows and the swipe
           itself are the navigation. z-20: over the slab (z-10), under
-          the header (z-40) and lightbox (z-50). Bare tiny dots, no
-          container and no frost -- floating, but not chrome. */}
+          the header (z-40) and lightbox (z-50). The dots sit in a small
+          frosted pill -- "i think they might need a small pill
+          surrounding them?" per Josh, once the bare dots were floating
+          over live artwork where the gray ones could vanish against a
+          busy image. Same glass recipe as the header's frostClass
+          (nav.tsx), just at dot scale, so the one piece of floating
+          chrome left outside the header still speaks the header's own
+          material language rather than inventing a third surface. */}
       {projectCount > 1 && (
         <div
           ref={dotsRef}
           aria-hidden="true"
-          className="pointer-events-none fixed inset-x-0 bottom-5 z-20 flex justify-center transition-opacity duration-200 md:hidden"
+          className="pointer-events-none fixed inset-x-0 bottom-5 z-20 flex justify-center md:hidden"
         >
-          <div className="relative flex items-center gap-1.5">
+          <div className="relative flex items-center gap-1.5 rounded-full border border-transparent bg-canvas/15 px-3.5 py-2.5 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150">
             {dots.map((dot) => (
               <span
                 key={dot.index}
