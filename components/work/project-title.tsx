@@ -15,7 +15,7 @@ type ProjectTitleProps = {
  * its own client component purely because shrinking to fit needs a DOM
  * measurement, which a server component can't do.
  *
- * type-display's font-size is a `clamp()` that only tracks viewport width,
+ * type-heading's font-size is a `clamp()` that only tracks viewport width,
  * not the actual rendered text — so a long unbroken word ("REGENeRATIVELY")
  * at the clamp's own floor can still be wider than the phone showing it,
  * pushing the whole page into horizontal scroll. "titles ... cause the

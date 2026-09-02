@@ -30,19 +30,28 @@ Tailwind v4 has **no `tailwind.config.js`**. Tokens live in the `@theme` block i
   `globals.css` and nowhere else, no exceptions. Use `bg-canvas`, `text-ink`,
   `text-ink-muted`, `border-hairline`, `bg-brand`, `text-accent`,
   `bg-placeholder`. (Project detail pages used to carry a per-project accent
-  wash behind the title — removed; the title itself is `text-accent` now.)
+  wash behind the title — removed; the title is plain `text-ink` now, like
+  every other title.)
 - **Never bracket a CSS var.** `bg-canvas`, not `bg-[var(--color-canvas)]`.
   Bracket notation silently drops opacity modifiers: `/30` on a bracketed var
   produces no opacity and no error.
-- **Five type roles, not ad-hoc sizes.** `type-display`, `type-title`,
-  `type-heading`, `type-label`, `type-lede`. A new size is a design decision —
-  add it as an `@utility` in `globals.css`, never inline.
-- **`--color-brand` (#30b7ff) marks the commission path.** CTAs, the JOSH
-  McKenna wordmark, the marquee band, the hero navigation cards. `--color-accent`
-  (#ae88ff) is the purple display accent — section titles (`SELECTED WORK`,
-  `MORE ABOUT JOSH →`) and the active/hovered primary nav link, which also goes
-  bold on hover/active as of the nav rework. Neither is a container border
-  colour; containers use `border-hairline`. (Josh's v2 retired the old red.)
+- **Four type roles, not ad-hoc sizes.** `type-heading` (the universal
+  title role — every page/section/project title, sentence case, black,
+  Helvetica Neue Bold), `type-label`, `type-lede`, and `type-wordmark`
+  (the hero's "jOSH MCkeNNA" lockup — the only Waldeck left on the site;
+  Waldeck is otherwise retired until Josh picks a new display face).
+  `type-title` lingers only for the unrendered marquee. A new size is a
+  design decision — add it as an `@utility` in `globals.css`, never
+  inline.
+- **`--color-brand` (#30b7ff) marks the commission path** — CTAs, the JOSH
+  McKenna wordmark, the marquee band, the hero navigation cards — **and
+  `--color-accent` now aliases it.** The purple accent (#ae88ff) was dropped
+  for blue sitewide (nav active/hover, link/card hovers, error labels); the
+  hex lives in a globals.css comment in case it returns, and accent call
+  sites keep using `text-accent` so a future accent colour is a one-line
+  token swap. Titles/headers are plain `text-ink` (see the type-roles rule).
+  Neither token is a container border; containers use `border-hairline`.
+  (Josh's v2 retired the old red.)
 - **No `border-2` or thicker.** No current exception — the hero objects'
   hover state has no card or outline at all now, just a scale/tilt lift.
 - **Never the `Sparkles` icon.** Hard ban.

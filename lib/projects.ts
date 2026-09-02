@@ -261,14 +261,6 @@ export type Project = {
    */
   creditsIllustrations?: { src: string; aspect: string }[];
   /**
-   * Trial: a single decorative cut-out that bobs gently beside the
-   * `heroSize: "spot"` hero — First 3D Character only for now, reusing the
-   * same transparent PNG already drifting in the homepage hero. Purely
-   * decorative (no alt), hidden below md since there's no room to float
-   * anything beside a hero that's already full-width on mobile.
-   */
-  floatingObject?: { src: string; aspect: string };
-  /**
    * Trial: a silent video inserted mid-gallery — Instagram Sticker's Mardi
    * Gras footage only for now. Doesn't join the lightbox's click-to-enlarge
    * cycle (ImageStack's `images` stays pure photos); rendered as its own
@@ -335,16 +327,17 @@ export type Project = {
   featured?: boolean;
   /**
    * The artwork itself is close enough to `--color-accent` (the nav's
-   * active-link colour) that the purple "Work" text nearly disappears when
-   * the fixed nav scrolls directly over it — Atlanta Magazine's card
-   * background is the first real case. Flags both the /work card
-   * (project-card.tsx) and, since California Magazine's hero has the same
-   * problem on its own project page, the project page's own hero wrapper
-   * (app/work/[slug]/page.tsx) with a `data-nav-contrast="light"`
+   * active-link colour) that the "Work" text nearly disappears when the
+   * fixed nav scrolls directly over it. Originally a purple-on-purple fix
+   * (Atlanta/California Magazine); since the accent went brand blue those
+   * flags moved to the light-blue cards instead — "when the nav bar goes
+   * over any light blue it should go white," per Josh (Yeti, Beefbar,
+   * Pato, Boat International, Step Journal, Monocle heel, …). Flags both
+   * the /work card (project-card.tsx) and the project page's own hero
+   * wrapper (project-content.tsx) with a `data-nav-contrast="light"`
    * attribute; nav.tsx watches for that attribute intersecting its own
    * fixed position and swaps the active link to white only while it's in
-   * view, everywhere else on the site keeps the normal purple (which reads
-   * fine against cream, blue, pink — every other case checked so far).
+   * view, everywhere else on the site keeps the normal blue.
    */
   navContrastLight?: boolean;
   /**
@@ -365,6 +358,9 @@ export const projects: Project[] = [
     title: "Bum Selfie",
     client: "Cake Boy Magazine",
     year: 2020,
+    // Light-blue artwork — the blue nav vanishes into it, so the active
+    // link goes white while this sits under the bar (navContrastLight doc).
+    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
     categories: ["Editorial", "Pride"],
@@ -518,10 +514,6 @@ export const projects: Project[] = [
     title: "California Magazine",
     client: "California Magazine",
     year: 2019,
-    // The purple background is close enough to the nav's own accent purple
-    // that "Work" nearly disappears when the fixed nav scrolls over this
-    // card or hero — same fix as Atlanta Magazine and LGBTQ Centre.
-    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "Half-Page Illustration",
     categories: ["Editorial"],
@@ -544,7 +536,7 @@ export const projects: Project[] = [
   },
   {
     slug: "kiehls-trevor-project",
-    title: "Kiehl's",
+    title: "Kiehl's Pride Campaign",
     client: "Kiehl's",
     year: 2023,
     discipline: "Pride Campaign",
@@ -648,7 +640,7 @@ export const projects: Project[] = [
   // the restore path.
   {
     slug: "wsj-airpods-rich",
-    title: "WSJ",
+    title: "Wall Street Journal",
     client: "The Wall Street Journal",
     year: 2019,
     yearLabel: "February 2019",
@@ -716,10 +708,13 @@ export const projects: Project[] = [
   },
   {
     slug: "monocle-downward-trend",
-    title: "Downward Trend",
+    title: "Monocle Editorial",
     client: "Monocle",
     year: 2018,
     yearLabel: "October 2018, Issue 117",
+    // Light-blue artwork — the blue nav vanishes into it, so the active
+    // link goes white while this sits under the bar (navContrastLight doc).
+    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
     categories: ["Editorial"],
@@ -857,14 +852,10 @@ export const projects: Project[] = [
   },
   {
     slug: "atlanta-magazine",
-    title: "Alphabet Soup",
+    title: "Atlanta Magazine",
     client: "Atlanta Magazine",
     year: 2022,
     pinnedRank: 3,
-    // The purple gradient background is close enough to the nav's own
-    // accent purple that "Work" nearly disappears when the fixed nav
-    // scrolls over this card — see the field's own doc comment.
-    navContrastLight: true,
     yearLabel: "October 2022",
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
@@ -973,10 +964,13 @@ export const projects: Project[] = [
   },
   {
     slug: "boat-international",
-    title: "Boat Int.",
+    title: "Boat International",
     client: "Boat International",
     year: 2024,
     yearLabel: "December 2024",
+    // Light-blue artwork — the blue nav vanishes into it, so the active
+    // link goes white while this sits under the bar (navContrastLight doc).
+    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
@@ -1010,6 +1004,9 @@ export const projects: Project[] = [
     client: "STEP Journal",
     year: 2019,
     yearLabel: "August/September 2019",
+    // Light-blue artwork — the blue nav vanishes into it, so the active
+    // link goes white while this sits under the bar (navContrastLight doc).
+    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "1 Cover Illustration",
     categories: ["Editorial"],
@@ -1040,7 +1037,7 @@ export const projects: Project[] = [
   },
   {
     slug: "weapons-of-reason-gay-divide",
-    title: "The Gay Divide",
+    title: "Weapons of Reason",
     client: "Weapons of Reason",
     year: 2019,
     yearLabel: "The Inequality Issue, 2019",
@@ -1134,7 +1131,7 @@ export const projects: Project[] = [
   },
   {
     slug: "vogue-sun-tan",
-    title: "Tanning Tips",
+    title: "Vogue Magazine",
     client: "Vogue Magazine",
     year: 2018,
     // Pinned to the middle of /work's curated block, regardless of year
@@ -1150,7 +1147,7 @@ export const projects: Project[] = [
     // Bombay Sapphire.
     cardRatio: "16/9",
     summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
-    heroCaption: "The first of a three-part series on tanning safely.",
+    heroCaption: "Tanning Tips — the first of a three-part series on tanning safely.",
     brief: [
       "I created a three-part editorial illustration series for Vogue Magazine, focusing on how to tan safely. The artwork visually guides readers through essential sun protection tips, including applying SPF, seeking shade during peak hours, and incorporating protective clothing and accessories.",
     ],
@@ -1177,7 +1174,7 @@ export const projects: Project[] = [
   },
   {
     slug: "instagram-sticker",
-    title: "Pride Sticker",
+    title: "Instagram Pride Sticker",
     client: "Instagram",
     year: 2017,
     yearLabel: "2017–2022",
@@ -1324,9 +1321,6 @@ export const projects: Project[] = [
     // happened to also give 1/1, but only by chance of array position.
     cardRatio: "1/1",
     heroSize: "spot",
-    // Same cut-out already drifting in the homepage hero (id: "ambient-1")
-    // — reused here rather than re-exported, so the two stay pixel-identical.
-    floatingObject: { src: "/illustrations/objects/face.png", aspect: "0.795" },
     hero: {
       ratio: "1/1",
       alt: "A beanie, a moustache, an earring",
@@ -1494,6 +1488,9 @@ export const projects: Project[] = [
     title: "Pato",
     client: "Personal",
     year: 2026,
+    // Light-blue artwork — the blue nav vanishes into it, so the active
+    // link goes white while this sits under the bar (navContrastLight doc).
+    navContrastLight: true,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
     categories: ["3D", "Character"],
@@ -1555,35 +1552,6 @@ export const projects: Project[] = [
       ratio: "4/5",
       alt: "The Last Call hat and keyring",
       src: "/work/womp-last-call/01-last-call.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "womp-leap",
-    title: "Leap",
-    client: "Personal",
-    year: 2026,
-    discipline: "3D Illustration",
-    deliverables: "1 Render",
-    categories: ["3D", "Character"],
-    summary: "Mid-air, headphones on, committed to the landing.",
-    heroCaption: "",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool — headphones on, full diagonal reach.",
-    ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
-    // True ratio — was silently cropping to 4/5 via RATIO_CYCLE's chance
-    // assignment, clipping the figure's trailing hand exactly like the
-    // hero comment below warns against. One of the deliberate odd ones,
-    // like Beefbar and Voxi Pride.
-    cardRatio: "8/9",
-    heroSize: "spot",
-    hero: {
-      // True 1920x2160 ratio — the default 4/5 crop would clip the
-      // trailing hand of this figure's full diagonal reach.
-      ratio: "8/9",
-      alt: "Mid-leap, headphones on",
-      src: "/work/womp-leap/01-leap.webp",
     },
     gallery: [],
   },
@@ -1697,6 +1665,9 @@ export const projects: Project[] = [
     client: "Personal",
     year: 2025,
     pinnedRank: 8,
+    // Light-blue artwork — the blue nav vanishes into it, so the active
+    // link goes white while this sits under the bar (navContrastLight doc).
+    navContrastLight: true,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Character"],
@@ -1852,7 +1823,7 @@ export const projects: Project[] = [
   },
   {
     slug: "nomad-wheels-505-livery",
-    title: "505 Touring",
+    title: "Nomad 505 Touring",
     client: "Nomad Wheel Co.",
     year: 2024,
     pinnedRank: 12,
@@ -1955,7 +1926,7 @@ export const projects: Project[] = [
   },
   {
     slug: "monocle-spot-illo",
-    title: "Sumo",
+    title: "Monocle - Sumo",
     client: "Monocle",
     year: 2018,
     pinnedRank: 17,
@@ -2166,6 +2137,9 @@ export const projects: Project[] = [
     client: "Beefbar",
     year: 2017,
     yearLabel: "2017–Present Day",
+    // Light-blue artwork — the blue nav vanishes into it, so the active
+    // link goes white while this sits under the bar (navContrastLight doc).
+    navContrastLight: true,
     pinnedRank: 7,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
@@ -2455,7 +2429,7 @@ export const projects: Project[] = [
   },
   {
     slug: "bombay-sapphire",
-    title: "Stir Creativity",
+    title: "Bombay Sapphire",
     client: "Bombay Sapphire",
     year: 2018,
     pinnedRank: 11,
@@ -2468,7 +2442,7 @@ export const projects: Project[] = [
     cardRatio: "16/9",
     summary:
       "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
-    heroCaption: "The mural, live in Bombay Sapphire's Shoreditch pop-up.",
+    heroCaption: "The Stir Creativity mural, live in Bombay Sapphire's Shoreditch pop-up.",
     brief: [
       "Bombay Sapphire's CANVAS was a four-day pop-up in Shoreditch built around one line: Stir Creativity. I was one of fifteen artists asked to contribute, working across three pieces instead of one — a mural painted live in the window, a back-of-jacket embroidery, and fifty hand-finished bottles.",
       "The starting point was a Grains of Paradise pod from a trip to the distillery — earthy for the first few seconds, then this fiery burst. I wanted the work to feel the same way, harvesty and celebratory at once, so the mural and the jacket both lean on the same botanical shapes and hot orange-on-blue palette.",

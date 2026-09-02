@@ -11,16 +11,6 @@ import { PosterGrid } from "@/components/work/poster-grid";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectTitle } from "@/components/work/project-title";
 import { getProjectNeighbours, type Project, type ProjectImage } from "@/lib/projects";
-import { toWaldeckCase } from "@/lib/waldeck-case";
-
-/**
- * project.title itself keeps normal casing for the breadcrumb, gallery
- * cards and metadata — only the big display h1 gets the Waldeck-casing
- * treatment (see lib/waldeck-case.ts for the rule and why).
- */
-function toDisplayTitle(title: string) {
-  return toWaldeckCase(title);
-}
 
 /** Splits a brief paragraph on a single `[label](/href)` cross-link — the
  *  only markdown this field supports, for pointing between related project
@@ -131,18 +121,19 @@ export function ProjectContent({ project }: { project: Project }) {
     { label: "Deliverables", value: project.deliverables },
   ];
 
-  const displayTitle = toDisplayTitle(project.title);
-  // Below md, a multi-word title breaks before its last word — at
-  // type-display's mobile floor a short two-word title ("ALPHABET SOUP")
-  // can just squeeze onto one cramped line, while longer ones wrap
-  // anyway, so titles read inconsistently phone to phone. "The project
-  // name needs to be on two lines," per Josh. Breaking before the last
-  // word (not one-word-per-line) keeps three-word titles ("The Gay
-  // Divide") to exactly two lines as well. The split is computed here but
+  // The h1 renders project.title as stored — natural casing ("Wagamama
+  // Pride"), the sitewide universal title rule.
+  // Below md, a multi-word title breaks before its last word — at the
+  // title's mobile floor a short two-word title ("Alphabet Soup") can
+  // just squeeze onto one cramped line, while longer ones wrap anyway,
+  // so titles read inconsistently phone to phone. "The project name
+  // needs to be on two lines," per Josh. Breaking before the last word
+  // (not one-word-per-line) keeps three-word titles ("The Gay Divide")
+  // to exactly two lines as well. The split is computed here but
   // rendered by ProjectTitle (a client component — see its own doc
   // comment), which also shrinks the font if either resulting line is
   // still too wide for the viewport.
-  const displayTitleWords = displayTitle.split(" ");
+  const displayTitleWords = project.title.split(" ");
   const displayTitleHead = displayTitleWords.slice(0, -1).join(" ");
   const displayTitleLast = displayTitleWords[displayTitleWords.length - 1];
   const headerIllustrations = project.headerIllustrations;
@@ -299,28 +290,9 @@ export function ProjectContent({ project }: { project: Project }) {
                 <ProjectTitle
                   head={displayTitleHead}
                   last={displayTitleLast}
-                  className="type-display max-w-4xl leading-[1.1] text-accent"
+                  className="type-heading max-w-4xl text-ink"
                 />
 
-                {/* Trial (First 3D Character only for now): the same cut-out
-                    that bobs in the homepage hero, circling the title like a
-                    sticker looping a quote card. Hidden below md — no room
-                    for `orbit-loop`'s swing once the header stacks tighter. */}
-                {project.floatingObject && (
-                  <div
-                    aria-hidden="true"
-                    className="absolute left-1/2 top-1/2 hidden w-32 animate-[orbit-loop_18s_linear_infinite] md:block lg:w-44"
-                    style={{ aspectRatio: project.floatingObject.aspect }}
-                  >
-                    <Image
-                      src={project.floatingObject.src}
-                      alt=""
-                      fill
-                      sizes="176px"
-                      className="object-contain"
-                    />
-                  </div>
-                )}
               </div>
 
               {/* Trial (la-pride only for now): sat on the title's own
@@ -328,7 +300,7 @@ export function ProjectContent({ project }: { project: Project }) {
                   shy of the frame's right edge below — static, no hover
                   movement, unlike the /work page's top illustration row.
                   Width splits evenly across however many pieces are given
-                  (96% total, small gap) so a two-up like la-pride's shield
+                  (72% total, small gap) so a two-up like la-pride's shield
                   + plate reads as a pair sitting close together rather than
                   stranded at opposite ends of the row. */}
               {headerIllustrations && (
@@ -339,7 +311,7 @@ export function ProjectContent({ project }: { project: Project }) {
                       className="relative shrink-0"
                       style={{
                         aspectRatio: aspect,
-                        width: `${96 / headerIllustrations.length}%`,
+                        width: `${72 / headerIllustrations.length}%`,
                       }}
                     >
                       <Image

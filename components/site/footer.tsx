@@ -56,21 +56,16 @@ export function Footer() {
     // over it does, at exactly scroll speed. md+ keeps the plain
     // in-flow footer untouched.
     //
-    // The hairline moves onto the inner div below md, with 12px of
-    // transparent padding above it -- "the bottom edge is too close to
-    // footer line, i want you to add whatever treatment you have added
-    // to top and sides of the project card, to the bottom," per Josh:
-    // the card's mt-3/mx-3 inset, mirrored. It cannot be a margin on
-    // the card itself -- main's opaque background paints under a
-    // child's margin, so a card-side gap rides along as a white apron
-    // covering the footer's own content mid-reveal (the bug removed the
-    // commit before this one). Living here, on the footer's side of the
-    // curtain, the 12px is static background: at full scroll the card's
-    // rounded corner floats 12px above the hairline, and mid-reveal
-    // nothing but the card's shadow ever crosses the footer. md+ keeps
-    // the border on the footer element itself, exactly as it was.
+    // No hairline below md any more -- "remove the footer line
+    // completely and just have the pages end with curve and shadow,"
+    // per Josh, once every page got its own rounded-bottom-corner-plus-
+    // shadow ending (see PageEndCard). The line read as a second,
+    // competing edge once the page itself already announces where it
+    // stops; the shadow alone now carries that job, the same way it
+    // does on the project card. md+ keeps the border on the footer
+    // element itself, exactly as it was.
     <footer className="border-hairline max-md:sticky max-md:bottom-0 max-md:pt-3 md:border-t">
-      <div className="border-hairline max-md:border-t mx-auto flex max-w-frame flex-wrap items-center justify-between gap-6 px-6 py-10 md:px-gutter">
+      <div className="mx-auto flex max-w-frame flex-wrap items-center justify-between gap-6 px-6 py-10 md:px-gutter">
         {/* max-md:order-1 flips the stack on mobile only -- "on mobile
             can you swap the social icons above the Copyright text," per
             Josh. The two blocks wrap onto separate rows below md

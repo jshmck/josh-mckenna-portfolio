@@ -994,7 +994,7 @@ export function DriftingHero() {
             intentional instead. Ignores the pointer so it never blocks
             anything. */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
-          <h1 className="type-display leading-[0.95] text-brand">
+          <h1 className="type-wordmark leading-[0.95] text-brand">
             <span className="block">jOSH</span>
             <span className="block">MCkeNNA</span>
           </h1>

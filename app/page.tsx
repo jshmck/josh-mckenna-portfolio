@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { DriftingHero } from "@/components/home/drifting-hero";
 import { ClientLogos } from "@/components/site/client-logos";
+import { PageEndCard } from "@/components/ui/page-end-card";
 import { Parallax } from "@/components/ui/parallax";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
@@ -12,7 +13,7 @@ export default function HomePage() {
   const projects = getAllProjects();
 
   return (
-    <>
+    <PageEndCard>
       <DriftingHero />
 
       {/* Who Josh is. The id is the target of the hero's mobile scroll cue
@@ -106,6 +107,6 @@ export default function HomePage() {
         </div>
       </section>
 
-    </>
+    </PageEndCard>
   );
 }
