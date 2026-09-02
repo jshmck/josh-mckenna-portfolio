@@ -188,6 +188,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
   const nextPeekRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLDivElement>(null);
   const accentDotRef = useRef<HTMLSpanElement>(null);
+  const dotChromeRef = useRef<HTMLSpanElement>(null);
   const [navHeight, setNavHeight] = useState(NAV_HEIGHT_FALLBACK);
 
   // The floating dot strip's window into the full project list — same
@@ -234,13 +235,27 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
   const activeDotPos = projectIndex - dotStart;
   const shrinkKeepStart = Math.max(0, Math.min(activeDotPos - 1, dots.length - 3));
   const accentShrunkOffset = (activeDotPos - (shrinkKeepStart + 1)) * DOT_PITCH;
-  const dotShrinkState = useRef({ scrolled: false, dragging: false });
+  const dotShrinkState = useRef({ scrolled: false, dragging: false, overPlain: false });
   const applyDotShrink = useCallback(() => {
     const strip = dotsRef.current;
     const accent = accentDotRef.current;
     if (!strip || !accent) return;
     const state = dotShrinkState.current;
     const shrunk = state.scrolled && !state.dragging;
+    // The frosted surround fades out entirely once the strip floats
+    // over the card's empty bottom zone -- "as soon as you've scrolled
+    // past the last image or text and you're on plain white bg of the
+    // project card, the surround of the three dots disappears, but
+    // function the same," per Josh: the chrome exists for contrast over
+    // artwork, and over bare canvas it's just a box. It comes back for
+    // the duration of a drag regardless -- the incoming project's
+    // artwork slides under the dots mid-swipe, exactly when contrast
+    // matters again. The chrome is its own absolutely-positioned layer
+    // behind the dots so this is a single opacity fade, not a pile of
+    // background/shadow/filter properties trying to transition in sync.
+    if (dotChromeRef.current) {
+      dotChromeRef.current.style.opacity = state.overPlain && !state.dragging ? "0" : "";
+    }
     strip.querySelectorAll<HTMLElement>("[data-dot-hide]").forEach((el) => {
       el.style.width = shrunk ? "0px" : "";
       el.style.opacity = shrunk ? "0" : "";
@@ -316,12 +331,31 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       if (!card) return;
       const cardBottom = card.getBoundingClientRect().bottom;
       const docked = window.innerHeight - cardBottom + DOCK_INSET;
-      strip.style.bottom = `${Math.max(RESTING_BOTTOM, docked)}px`;
+      const stripBottom = Math.max(RESTING_BOTTOM, docked);
+      strip.style.bottom = `${stripBottom}px`;
+
+      // Where the card's real content ends -- the bottom-most visible
+      // text/image/video inside the card, found by rect rather than
+      // document order so it doesn't depend on which layout (stack,
+      // grid, poster, outro video) a given project uses. Elements
+      // hidden at this breakpoint (the md-only end-of-project nav)
+      // measure zero-height and drop out on their own. Re-queried per
+      // frame rather than cached at mount: images loading in shift
+      // layout, and this only ever runs on the rAF-throttled scroll
+      // tick, not at 60fps free-run.
+      let lastContentBottom = -Infinity;
+      card.querySelectorAll("figure, img, video, p, dl").forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.height > 0 && rect.bottom > lastContentBottom) lastContentBottom = rect.bottom;
+      });
+      const stripTop = window.innerHeight - stripBottom - strip.offsetHeight;
 
       const state = dotShrinkState.current;
       const wasScrolled = state.scrolled;
+      const wasOverPlain = state.overPlain;
       state.scrolled = wasScrolled ? window.scrollY > SHRINK_EXIT : window.scrollY > SHRINK_ENTER;
-      if (state.scrolled !== wasScrolled) applyDotShrink();
+      state.overPlain = lastContentBottom !== -Infinity && lastContentBottom < stripTop;
+      if (state.scrolled !== wasScrolled || state.overPlain !== wasOverPlain) applyDotShrink();
     };
     const onScroll = () => {
       if (queued) return;
@@ -598,18 +632,29 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           aria-hidden="true"
           className="pointer-events-none fixed inset-x-0 bottom-5 z-20 flex justify-center md:hidden"
         >
-          {/* The header frostClass's glass recipe with one deviation:
-              the brand wash's inset blur drops from 22px to 5px --
-              "make the bubble look less blue, only on the edges," per
-              Josh. At the header pill's size a 22px inset blur reads
-              as a rim tint, but at this pill's ~24px height it flooded
-              the whole surface blue; a tight blur keeps the same tint
-              hugging the rim only, canvas-clear in the middle. */}
-          <div className="relative flex items-center gap-1.5 rounded-full border border-transparent bg-canvas/15 px-3.5 py-2.5 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_5px_color-mix(in_srgb,var(--color-brand)_35%,transparent)] backdrop-blur-md backdrop-saturate-150">
+          <div className="relative flex items-center gap-1.5 px-3.5 py-2.5">
+            {/* The frosted surround, its own layer behind the dots so
+                applyDotShrink can fade the whole surface with a single
+                opacity write (see its comment on the plain-canvas
+                zone). The header frostClass's glass recipe with one
+                deviation: the brand wash's inset blur drops from 22px
+                to 5px -- "make the bubble look less blue, only on the
+                edges," per Josh. At the header pill's size a 22px
+                inset blur reads as a rim tint, but at this pill's
+                ~24px height it flooded the whole surface blue; a tight
+                blur keeps the same tint hugging the rim only,
+                canvas-clear in the middle. */}
+            <span
+              ref={dotChromeRef}
+              className="absolute inset-0 rounded-full border border-transparent bg-canvas/15 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_5px_color-mix(in_srgb,var(--color-brand)_35%,transparent)] backdrop-blur-md backdrop-saturate-150 transition-opacity duration-300"
+            />
             {dots.map((dot, offset) => {
               // Which side of the surviving trio this dot sits on, for
               // the shrink collapse (see applyDotShrink) -- unset for
-              // the three that stay.
+              // the three that stay. `relative` so the gray dots paint
+              // above the absolutely-positioned chrome layer -- a
+              // positioned sibling otherwise wins the paint order over
+              // static ones regardless of DOM order.
               const hideSide =
                 offset < shrinkKeepStart
                   ? "left"
@@ -620,7 +665,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
                 <span
                   key={dot.index}
                   data-dot-hide={hideSide}
-                  className={`rounded-full bg-ink/20 transition-[width,margin,opacity] duration-300 ease-drift ${
+                  className={`relative rounded-full bg-ink/20 transition-[width,margin,opacity] duration-300 ease-drift ${
                     dot.small ? "h-[4px] w-[4px]" : "h-[5.5px] w-[5.5px]"
                   }`}
                 />
