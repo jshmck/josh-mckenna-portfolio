@@ -70,7 +70,12 @@ export function ImageStack({
           from the viewport bottom, so scrolling to the end of a gallery
           used to land the last caption almost flush against them.
           "Make sure there's room under the project," per Josh. */}
-      <div className="mx-auto max-w-frame space-y-8 px-6 pb-40 md:px-gutter">
+      {/* space-y-6/gap-6 below md throughout this file (was a flat -8
+          everywhere) — "spacing needs to be closer for work project image
+          frames on mobile," per Josh, mobile only, matching the same
+          gap-6/md:gap-8 pairing PosterGrid and MasonryGrid already use.
+          Desktop's md:space-y-8/md:gap-8 stays exactly as it was. */}
+      <div className="mx-auto max-w-frame space-y-6 px-6 pb-40 md:space-y-8 md:px-gutter">
         {galleryGif && galleryGif.afterIndex === 0 && (
           // Capped to max-w-lg (512px) — the source GIF is only 1080px
           // native, so stretching it to the frame's full 1344px width
@@ -95,8 +100,8 @@ export function ImageStack({
           <div
             className={
               firstImage?.small || secondImage?.small
-                ? "flex flex-wrap justify-center gap-8"
-                : "grid gap-8 md:grid-cols-2"
+                ? "flex flex-wrap justify-center gap-6 md:gap-8"
+                : "grid gap-6 md:grid-cols-2 md:gap-8"
             }
           >
             {[firstImage, secondImage].filter(Boolean).map((image, index) => (
@@ -167,7 +172,7 @@ export function ImageStack({
             return (
               <Fragment key={image.alt}>
                 <Reveal>
-                  <div className={`grid grid-cols-1 gap-8 ${span.count === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+                  <div className={`grid grid-cols-1 gap-6 md:gap-8 ${span.count === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
                     {spanImages.map((spanImage, i) => (
                       <div key={spanImage.alt}>
                         <button
@@ -206,7 +211,7 @@ export function ImageStack({
             const next = loopImages[index + 1];
             return (
               <Reveal key={image.alt}>
-                <div className="flex flex-wrap justify-center gap-8">
+                <div className="flex flex-wrap justify-center gap-6 md:gap-8">
                   {[image, next].map((pairImage, i) => (
                     <div key={pairImage.alt} className="w-full max-w-lg">
                       <button

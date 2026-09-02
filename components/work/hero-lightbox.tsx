@@ -75,8 +75,8 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
           ? heightMatchedRow
             ? "flex flex-wrap justify-center gap-4"
             : images.length === 3
-              ? "grid gap-8 md:grid-cols-3"
-              : "grid gap-8 md:grid-cols-2"
+              ? "grid gap-6 md:grid-cols-3 md:gap-8"
+              : "grid gap-6 md:grid-cols-2 md:gap-8"
           : undefined
       }
     >

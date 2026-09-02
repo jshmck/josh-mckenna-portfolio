@@ -41,7 +41,7 @@ export function GalleryGrid({ leadImages = [], images, indexOffset = 0 }: Galler
   return (
     <>
       {leadImages.length > 0 && (
-        <div className="mb-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
+        <div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8">
           {leadImages.map((image, index) => (
             <Reveal key={image.alt}>
               <button
@@ -61,7 +61,7 @@ export function GalleryGrid({ leadImages = [], images, indexOffset = 0 }: Galler
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8">
         {images.map((image, index) => {
           const wide = isPanorama(image.ratio);
           return (
