@@ -71,7 +71,13 @@ export function Footer() {
     // the border on the footer element itself, exactly as it was.
     <footer className="border-hairline max-md:sticky max-md:bottom-0 max-md:pt-3 md:border-t">
       <div className="border-hairline max-md:border-t mx-auto flex max-w-frame flex-wrap items-center justify-between gap-6 px-6 py-10 md:px-gutter">
-        <div>
+        {/* max-md:order-1 flips the stack on mobile only -- "on mobile
+            can you swap the social icons above the Copyright text," per
+            Josh. The two blocks wrap onto separate rows below md
+            (flex-wrap), so ordering is what decides which reads first;
+            desktop keeps them side by side, copyright left, icons
+            right, untouched. */}
+        <div className="max-md:order-1">
           <p className="font-body text-[13px] text-ink-muted">
             Copyright © {new Date().getFullYear()} {siteConfig.name}. All
             rights reserved.{" "}
