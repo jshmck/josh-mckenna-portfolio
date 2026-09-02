@@ -39,7 +39,7 @@ export default function ShopPage() {
               heading/paragraph, so the whole thing springs up as one group. */}
           <Reveal>
             <h1 className="type-heading text-ink">
-              Prints, stickers and other small things.
+              Prints, stickers and other small things
             </h1>
             <p className="type-lede mt-5 text-ink-muted">
               Not open yet. Leave an email and you&apos;ll hear the moment it
