@@ -145,6 +145,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const slabRef = useRef<HTMLDivElement>(null);
+  const shadowRef = useRef<HTMLDivElement>(null);
   const previousPeekRef = useRef<HTMLDivElement>(null);
   const nextPeekRef = useRef<HTMLDivElement>(null);
 
@@ -156,7 +157,8 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
   useEffect(() => {
     const container = containerRef.current;
     const slab = slabRef.current;
-    if (!container || !slab || (!previous && !next)) return;
+    const shadow = shadowRef.current;
+    if (!container || !slab || !shadow || (!previous && !next)) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -287,6 +289,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           return;
         }
         slab.style.transition = "";
+        shadow.style.transition = "";
         window.dispatchEvent(new Event("stackswipe:start"));
       }
 
@@ -294,7 +297,9 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       event.preventDefault();
       const resisted = resist(deltaX);
       lastResisted = resisted;
-      slab.style.transform = `translate3d(${resisted}px, 0, 0)`;
+      const translate = `translate3d(${resisted}px, 0, 0)`;
+      slab.style.transform = translate;
+      shadow.style.transform = translate;
       const peekRef = activeDirection === "previous" ? previousPeekRef : nextPeekRef;
       setPeekTransform(peekRef.current, resisted, activeDirection);
     };
@@ -315,6 +320,8 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       if (Math.abs(lastResisted) >= COMPLETE_DISTANCE && neighbourSlug) {
         slab.style.transition = "transform 420ms var(--ease-bounce)";
         slab.style.transform = `translate3d(${sign * viewportWidth}px, 0, 0)`;
+        shadow.style.transition = "transform 420ms var(--ease-bounce)";
+        shadow.style.transform = `translate3d(${sign * viewportWidth}px, 0, 0)`;
         if (peekRef.current) {
           peekRef.current.style.transition = "transform 420ms var(--ease-bounce)";
           peekRef.current.style.transform = "translate3d(0, 0, 0) scale(1)";
@@ -329,9 +336,13 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
         // still animates smoothly toward the resulting `none`; only once
         // it actually finishes does the lightbox (a descendant, since it
         // mounts inside `children`) get its real viewport-relative fixed
-        // positioning back.
+        // positioning back. shadow has no descendants of its own to worry
+        // about, but clearing it the same way keeps both elements' resting
+        // state expressed identically.
         slab.style.transition = "transform 500ms var(--ease-bounce)";
         slab.style.transform = "";
+        shadow.style.transition = "transform 500ms var(--ease-bounce)";
+        shadow.style.transform = "";
         resetPeek(peekRef.current, activeDirection, true);
       }
 
@@ -381,6 +392,35 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           <StackPeek project={next} />
         </div>
       )}
+      {/* The shadow lives on its own element now, not on the slab --
+          "i think it's because the project page has a top... maybe we
+          need to make the project page the full height of the browser?
+          either that or curve the edge?" per Josh. The slab is a normal-
+          flow element that only starts at y=88 (wherever document flow
+          puts it, right after the sticky nav reserves its own space),
+          so a box-shadow applied directly to it wrapped around all four
+          of *its* edges, including a visible horizontal line right
+          under the nav where the slab's own top edge sits -- reading as
+          "the page has a top" instead of a seamless card sliding past
+          the nav. Rather than fight the slab's real document-flow
+          height with negative margins (fragile -- margin collapsing
+          through however many ancestors sit between this and <body>
+          isn't something to reason about with confidence), this is a
+          second, empty, `fixed inset-0` element with no background of
+          its own -- genuinely full viewport height regardless of where
+          the slab's real content starts, so its own top edge sits
+          behind the nav instead of just under it. Kept in lockstep with
+          the slab's own transform at every step (touchmove and both
+          settle() branches) rather than being a child of it, so it
+          reads as one shadow, not two. z-[5], between the peeks (z-0)
+          and the slab (z-10) -- doesn't need to be above the slab (the
+          shadow was never meant to paint over the real content) and
+          shouldn't be above the nav (z-40) either. */}
+      <div
+        ref={shadowRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-[5] shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
+      />
       {/* No will-change-transform here (unlike Parallax's own slab) --
           will-change: transform makes an element the containing block
           for any `position: fixed` descendant, same as an actual
@@ -392,37 +432,8 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           perf hint is the fix: the first real `transform` write already
           happens synchronously in the touchmove handler, well before any
           paint, so there's nothing will-change would have preloaded in
-          time to matter anyway.
-
-          shadow-[...]: a soft, generous drop shadow all the way around
-          the slab -- "possible to add a shadow ... so it looks separate
-          to the next?" per Josh. Two trials since, both reverted after
-          he saw them live: a frosted white-glow layer alongside the dark
-          shadow ("remove the glow and go back to the shadow"), and a
-          brand-blue tint via color-mix() ("sorry lets revert back to the
-          black shadow"). Plain black rgba again. containerRef stays
-          overflow-x-hidden only (not overflow-hidden on both axes, which
-          was also tried in between and reverted -- "the drop shadow
-          needs to extend to the top during movement," per Josh: clipping
-          the container's own vertical overflow cut the shadow off right
-          at the nav's own lower edge instead of letting it bleed up
-          through the nav's transparent gaps the way it does now, which
-          is what "extend to the top" actually wanted). z-40 on the nav
-          versus z-10 here already keeps the shadow behind the nav's
-          three opaque shapes regardless -- it only ever shows through
-          the gaps between them, never over them. One symmetric shadow
-          (not a directional one keyed to drag direction) covers both
-          previous and next without extra logic: containerRef's own
-          overflow-x-hidden clips it flush against the slab at rest
-          (nothing bleeds off the viewport edge when the slab exactly
-          fills it), so it only ever becomes visible once the slab has
-          actually translated away and the shadow's own region scrolls
-          into the container's now-clipped view -- automatically on
-          whichever edge is exposed. */}
-      <div
-        ref={slabRef}
-        className="relative z-10 bg-canvas shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
-      >
+          time to matter anyway. */}
+      <div ref={slabRef} className="relative z-10 bg-canvas">
         {children}
       </div>
     </div>
