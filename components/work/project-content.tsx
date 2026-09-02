@@ -152,7 +152,21 @@ export function ProjectContent({ project }: { project: Project }) {
     // page underneath are bg-canvas, matching how iOS's own card
     // surfaces are frequently the same colour as what's behind them,
     // distinguished by elevation rather than a competing surface tone.
-    <div className="max-md:mx-3 max-md:mt-3 max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas max-md:shadow-[0_8px_30px_rgba(0,0,0,0.15)]">
+    // shadow-xl, not a custom arbitrary shadow -- "the top of the card's
+    // shadow interferes with the header," per Josh (visible worst behind
+    // the header's own always-transparent-at-rest gaps between the jM/
+    // pill/Cart shapes, and again during a swipe where two cards' shadows
+    // are on screen together). A first cut here (an arbitrary
+    // 0 8px 30px value) had real upward reach: with an 8px offset and
+    // 30px blur, its blur extends up to 22px above the card's own top
+    // edge, comfortably past the 12px mt-3 margin and into the header
+    // band. Tailwind's shadow-xl uses a negative spread (-5px) ahead of
+    // its blur specifically to avoid this -- for its primary layer
+    // (20px offset, 25px blur, -5px spread), the shadow's shrunk-by-
+    // spread top edge sits 25px below the box's own top, then blurs
+    // upward by 25px, landing exactly back at the box's own edge with
+    // zero bleed above it, regardless of margin.
+    <div className="max-md:mx-3 max-md:mt-3 max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas max-md:shadow-xl">
       <header className="py-16 md:py-[60px]">
         <div className="mx-auto max-w-frame px-6 md:px-gutter">
           <p className="type-label text-ink">
