@@ -360,7 +360,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
   }, [previous, next, router]);
 
   return (
-    <div ref={containerRef} className="relative overflow-x-hidden">
+    <div ref={containerRef} className="relative overflow-hidden">
       {previous && (
         <div
           ref={previousPeekRef}
@@ -398,18 +398,41 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           the slab -- "possible to add a shadow ... so it looks separate
           to the next?" per Josh. A frosted white-glow layer was tried
           alongside this and reverted -- "remove the glow and go back to
-          the shadow" -- so this is the plain single dark shadow again.
-          One symmetric shadow (not a directional one keyed to drag
-          direction) covers both previous and next without extra logic:
-          containerRef's own overflow-x-hidden clips it flush against the
-          slab at rest (nothing bleeds off the viewport edge when the
-          slab exactly fills it), so it only ever becomes visible once
-          the slab has actually translated away and the shadow's own
-          region scrolls into the container's now-clipped view --
-          automatically on whichever edge is exposed. */}
+          the shadow" -- so this is the plain single shadow again, just
+          tinted brand blue via color-mix() rather than plain black --
+          "should the shadow be blue like nav bar?" per Josh, matching
+          the same colour-mix(...) against var(--color-brand) recipe
+          nav.tsx's own frostClass and BackToTop's PILL_BASE already use
+          for their glass tint, not a raw hex (see CLAUDE.md's colour
+          rule). One symmetric shadow (not a directional one keyed to
+          drag direction) covers both previous and next without extra
+          logic: containerRef's own overflow-hidden clips it flush
+          against the slab at rest (nothing bleeds off the viewport edge
+          when the slab exactly fills it), so it only ever becomes
+          visible once the slab has actually translated away and the
+          shadow's own region scrolls into the container's now-clipped
+          view -- automatically on whichever edge is exposed.
+
+          containerRef clips *both* axes now, not just overflow-x --
+          "is it possible to have the project shadow underneath the nav
+          bar? like it does when you've scrolled down a bit," per Josh:
+          the nav's own <header> has no background of its own (only the
+          jM/pill/Cart shapes inside it do — see nav.tsx's own doc
+          comment), so the gaps between those shapes are genuinely
+          transparent, and the shadow's blur radius was bleeding a few
+          px above the slab's own top edge into that transparent band,
+          showing through rather than tucking under the nav the way
+          normal scrolled content (which never paints there in the
+          first place) does. containerRef's own box starts at exactly
+          the same y the nav's box ends at (it's the next thing in flow
+          after the sticky header), so clipping its vertical overflow
+          too stops that bleed at precisely the right line — the fixed-
+          position peeks are untouched by this (position: fixed ignores
+          an ancestor's overflow unless that ancestor also establishes a
+          containing block via transform, which containerRef doesn't). */}
       <div
         ref={slabRef}
-        className="relative z-10 bg-canvas shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
+        className="relative z-10 bg-canvas shadow-[0_0_50px_10px_color-mix(in_srgb,var(--color-brand)_35%,transparent)]"
       >
         {children}
       </div>
