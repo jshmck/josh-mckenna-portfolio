@@ -312,20 +312,24 @@ export function ProjectContent({ project }: { project: Project }) {
                   stranded at opposite ends of the row. */}
               {headerIllustrations && (
                 <div className="hidden min-w-0 flex-1 items-end gap-2 md:flex">
-                  {headerIllustrations.map(({ src, aspect }) => (
+                  {headerIllustrations.map(({ src, aspect, width }) => (
                     <div
                       key={src}
                       className="relative shrink-0"
                       style={{
                         aspectRatio: aspect,
-                        width: `${96 / headerIllustrations.length}%`,
+                        width: width
+                          ? `${width}px`
+                          : `${96 / headerIllustrations.length}%`,
                       }}
                     >
                       <Image
                         src={src}
                         alt=""
                         fill
-                        sizes="(max-width: 1344px) 40vw, 560px"
+                        sizes={
+                          width ? `${width}px` : "(max-width: 1344px) 40vw, 560px"
+                        }
                         className="object-contain object-left"
                       />
                     </div>

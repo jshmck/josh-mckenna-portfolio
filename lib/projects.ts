@@ -250,8 +250,12 @@ export type Project = {
    * title, same treatment as the /work page's top illustration row — la-pride
    * only for now. Purely decorative (no alt), so keep this to flat character
    * art that reads fine without a caption, not anything load-bearing.
+   * `width` pins a piece to a fixed CSS px width instead of the default
+   * even split of the header row — for pieces drawn to run tiny, like
+   * Lime Bikes' 48px map icons, where a percentage share would blow them
+   * up past their own resolution.
    */
-  headerIllustrations?: { src: string; aspect: string }[];
+  headerIllustrations?: { src: string; aspect: string; width?: number }[];
   /**
    * Trial: small decorative pieces stacked under the sticky credits
    * sidebar, top to bottom — la-pride only for now. Unlike
