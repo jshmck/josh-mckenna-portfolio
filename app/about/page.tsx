@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { FloatingStickers } from "@/components/about/floating-stickers";
+import { PageEndCard } from "@/components/ui/page-end-card";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
@@ -19,12 +20,12 @@ export const metadata: Metadata = {
  * above. Only Talks & Features gets a visible title — Press doesn't, its
  * quote-plus-attribution format already reads as press on its own.
  * Selected Clients lives on the homepage now, not here (see app/page.tsx).
- * Titles use type-title + text-accent, matching the rest of the site's
- * section headers.
+ * Titles use type-heading + text-ink — the sitewide universal title role
+ * ("black, bold, no capitals (only first letters)," per Josh).
  */
 export default function AboutPage() {
   return (
-    <>
+    <PageEndCard>
       <h1 className="sr-only">Info</h1>
 
       {/* The person — one short paragraph, plus a placeholder portrait
@@ -125,7 +126,7 @@ export default function AboutPage() {
           as-is since the deeper padding still reads right without it.) */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
-          <h2 className="type-title text-accent">TALkS AND FeAtUReS</h2>
+          <h2 className="type-heading text-ink">Talks and features.</h2>
           <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
               <li key={feature.alt}>
@@ -153,6 +154,6 @@ export default function AboutPage() {
           to reuse them elsewhere, so neither component was deleted, just
           unhooked from this page. */}
 
-    </>
+    </PageEndCard>
   );
 }
