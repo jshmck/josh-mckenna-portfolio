@@ -488,7 +488,14 @@ export function Nav() {
                   asset needed from Josh. transition-transform, not the
                   old transition-all: the hover tilt/scale keeps its
                   bounce while the white swap snaps instantly in both
-                  directions, per Josh. */}
+                  directions, per Josh.
+
+                  The invert conditional is interpolated as its own
+                  space-separated token — a first cut appended `${…}` flush
+                  against md:w-14, fusing them into one unscannable token
+                  for Tailwind's static extractor, so md:w-14's CSS was
+                  never generated and the mark rendered 40×56: the
+                  "stretched too tall" jM. */}
               <Image
                 src="/icons/jm-logomark.png"
                 alt=""
@@ -497,7 +504,7 @@ export function Nav() {
                 height={112}
                 sizes="56px"
                 priority
-                className={`h-10 w-10 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14${overLightBg ? " brightness-0 invert" : ""}`}
+                className={`h-10 w-10 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14 ${overLightBg ? "brightness-0 invert" : ""}`}
               />
             </Link>
           </div>
