@@ -419,7 +419,7 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
       <div
         ref={shadowRef}
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-[5] shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
+        className="pointer-events-none fixed inset-0 z-[5] rounded-frame shadow-[0_0_50px_10px_rgba(0,0,0,0.35)]"
       />
       {/* No will-change-transform here (unlike Parallax's own slab) --
           will-change: transform makes an element the containing block
@@ -432,8 +432,27 @@ export function ProjectStackSwipe({ previous, next, children }: ProjectStackSwip
           perf hint is the fix: the first real `transform` write already
           happens synchronously in the touchmove handler, well before any
           paint, so there's nothing will-change would have preloaded in
-          time to matter anyway. */}
-      <div ref={slabRef} className="relative z-10 bg-canvas">
+          time to matter anyway.
+
+          rounded-frame on both this and the shadow above -- "can you
+          make the corners of the projects round for continuity?" per
+          Josh, matching the same token every other frame on the site
+          uses (see globals.css: half the nav circles' own diameter at
+          each breakpoint). No overflow-hidden alongside it, on
+          purpose: WriteUp's credits column is `md:sticky` (project-
+          content.tsx), and any ancestor with overflow other than
+          visible -- even one that never actually needs to scroll,
+          which this element never does, its height always matches its
+          content exactly -- becomes that sticky element's containing
+          block for scroll-tracking purposes and breaks it. rounded-
+          frame alone still rounds this element's own background/shadow
+          correctly; it just wouldn't clip a child that happened to
+          paint past the rounded corner. Every hero/gallery container on
+          the site keeps at least a px-6/md:px-gutter margin from the
+          true edge regardless (see project-content.tsx), so nothing
+          real ever reaches into that corner to be clipped in the first
+          place -- the safety net was never doing anything here. */}
+      <div ref={slabRef} className="relative z-10 bg-canvas rounded-frame">
         {children}
       </div>
     </div>
