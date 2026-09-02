@@ -361,6 +361,57 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "bum-selfie",
+    title: "Bum Selfie",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "2 illustrations",
+    categories: ["Character", "Pride"],
+    summary: "Two attempts at an angle a phone was never built for.",
+    heroCaption: "",
+    brief: [
+      "No brief — just an excuse to draw the angle a phone camera can never quite get right.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    hero: {
+      ratio: "4/5",
+      alt: "Selfie, take one",
+      src: "/work/bum-selfie/01-bum-selfie-4-5.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "Selfie, take two",
+        src: "/work/bum-selfie/02-butt-selfie-2.webp",
+      },
+    ],
+    featured: false,
+  },
+  {
+    slug: "perineum-sunning",
+    title: "Perineum Sunning",
+    client: "Personal",
+    year: 2020,
+    discipline: "Illustration",
+    deliverables: "Key Art",
+    categories: ["Character"],
+    summary: "Working on an even tan, one way or another.",
+    heroCaption: "",
+    brief: [
+      "No brief — just an excuse to draw a headstand with the sun clearly in mind.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "Sunbathing, from an unusual angle",
+      src: "/work/perineum-sunning/01-perineum-sunning.webp",
+    },
+    gallery: [],
+    featured: false,
+  },
+  {
     slug: "palm-springs",
     title: "Palm Springs",
     client: "Personal",
@@ -482,6 +533,7 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "California Magazine" },
     ],
+    cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "An egg, nested in California poppies",
@@ -1296,6 +1348,7 @@ export const projects: Project[] = [
     heroCaption: "Who wants this as a resin collectible?!",
     brief: [
       "Modelled in Womp, a browser-based 3D tool — a glossy figure bent double, taking a selfie of its own backside.",
+      "A 3D take on [Bum Selfie](/work/bum-selfie), the flat illustration it started from.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
     // 4/5 across all three frames in the row — per Josh, over each
