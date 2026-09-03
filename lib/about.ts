@@ -200,6 +200,45 @@ export const features: FeatureItem[] = [
     youtube: { id: "b7zTmfXE8ic", poster: "/about/nicer-tuesdays-poster.jpg" },
   },
   {
+    title: "Featured — It's Nice That",
+    description:
+      "It's Nice That's coverage of Josh, from his student work at Falmouth in 2014 through the 2017 Pride commissions for Google and Instagram.",
+    alt: "It's Nice That articles featuring Josh McKenna, 2014–2017",
+    // Screenshots of the articles' own headers, chronological. Josh's
+    // captures are 3456x1500 padded to 16:9 on white; the Pride one was
+    // captured at 16:9 directly (ads and floating UI stripped).
+    images: [
+      {
+        src: "/about/its-nice-that/2014-student.jpg",
+        alt: "It's Nice That, April 2014 — ‘Student Josh McKenna is making waves in Cornwall with his tropical work’",
+      },
+      {
+        src: "/about/its-nice-that/2014-graduate.jpg",
+        alt: "It's Nice That, December 2014 — ‘Stunning new work from Falmouth graduate Josh McKenna’",
+      },
+      {
+        src: "/about/its-nice-that/2016-editorial.jpg",
+        alt: "It's Nice That, January 2016 — ‘Cheeky and voluptuous editorial illustrations from Josh McKenna’",
+      },
+      {
+        src: "/about/its-nice-that/2016-advent.jpg",
+        alt: "It's Nice That, December 2016 — ‘Ass & Titties advent calendar features Jade Schulz, Josh McKenna and Mike Perry’",
+      },
+      {
+        src: "/about/its-nice-that/2017-krieger.jpg",
+        alt: "It's Nice That, June 2017 — Josh's illustration fronting ‘Instagram co-founder Mike Krieger on how to stand out’",
+      },
+      {
+        src: "/about/its-nice-that/2017-pride.jpg",
+        alt: "It's Nice That, October 2017 — ‘Josh McKenna talks through his work on Pride for Google and Instagram’",
+      },
+      {
+        src: "/about/its-nice-that/2017-masculinity.jpg",
+        alt: "It's Nice That, October 2017 — Josh among the five creatives in ‘To me, being a man just means being yourself’",
+      },
+    ],
+  },
+  {
     title: "Feature — Bombay Sapphire",
     description:
       "‘Testhouse Punch’ — Hypebeast's film with Josh, covering Bombay Sapphire's Stir Creativity campaign.",
