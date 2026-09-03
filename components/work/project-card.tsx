@@ -140,7 +140,16 @@ export function ProjectCard({
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-center transition-[background-color] duration-300 group-hover:bg-canvas/85 group-focus-within:bg-canvas/85"
           >
-            <span className="type-label leading-none text-ink opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+            {/* Kinetic entrance, not a flat fade — the wash lands first,
+                then the title rises ~8px into place a beat later. The
+                delay sits only on the hover/focus variants so leaving the
+                card clears the title immediately instead of lingering.
+                transition-[opacity,translate], not transform — Tailwind
+                v4's translate-y-* emits the standalone CSS `translate`
+                property, so transitioning `transform` animates nothing.
+                Same spring as the card's own shrink hover, so the two
+                motions read as one gesture. */}
+            <span className="type-label translate-y-2 leading-none text-ink opacity-0 transition-[opacity,translate] duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-y-0 group-hover:opacity-100 group-hover:delay-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:delay-100">
               {project.title}
             </span>
           </div>
