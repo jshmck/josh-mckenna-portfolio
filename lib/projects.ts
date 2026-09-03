@@ -369,7 +369,7 @@ export const projects: Project[] = [
     title: "It's All Love",
     client: "Google",
     year: 2017,
-    discipline: "Pride Campaign",
+    discipline: "Stickers & Iconography",
     deliverables: "Sticker Set · 24 Stickers",
     categories: ["Pride", "Character", "Icons"],
     summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
