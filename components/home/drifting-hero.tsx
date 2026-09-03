@@ -1050,18 +1050,18 @@ export function DriftingHero() {
           );
         })}
 
-        {/* Mobile scroll cue — a very small grey chevron double-nudging
-            at the frame's foot, telling a phone visitor the circulating
-            hero isn't the whole page. Fourth cut, converging per Josh:
-            thin ↓ glyph → vertical swipe-dot strip → big brand-blue
-            chevron → "a little too big/thick... make it very small,
-            grey (same as 'Client etc')" — so it keeps the fat rounded
-            stroke proportions of the blue version, scaled to 16px wide,
-            in text-ink/60, the exact grey of the project pages' meta
-            labels (Client/Year, project-content.tsx), via currentColor
-            so colour stays on tokens. Interim shape like every chevron
-            on the site — swap to a MaskIcon when Josh's hand-drawn icon
-            batch lands.
+        {/* Mobile scroll cue — a very small pale chevron squishing at
+            the frame's foot, telling a phone visitor the circulating
+            hero isn't the whole page. Converged over five cuts per
+            Josh: thin ↓ glyph → vertical swipe-dot strip → big
+            brand-blue chevron → small meta-label grey → "lighter in
+            colour (almost similar to the frost glass of the nav)":
+            same fat rounded stroke at 16px wide ("perfect size"), now
+            text-ink/25 — as close to the nav frost's whisper as a
+            stroke on plain canvas can go while staying findable — via
+            currentColor so colour stays on tokens. Interim shape like
+            every chevron on the site — swap to a MaskIcon when Josh's
+            hand-drawn icon batch lands.
 
             A tap scrolls to the Who section right below (#home-who,
             app/page.tsx). scrollIntoView with no behavior option
@@ -1081,22 +1081,23 @@ export function DriftingHero() {
             screen on a real phone, which put a bottom-anchored cue just
             below the fold -- invisible until the visitor had already
             scrolled, exactly when it's useless ("i dont see it on
-            mobile," per Josh). 156px = the header's 88px flow height
-            above this frame + the button's 48px + 20px clearance, so
-            the cue's bottom edge clears the smallest fold and just
-            rides slightly higher up the frame once the bar
-            collapses. */}
+            mobile," per Josh). 144px = the header's 88px flow height
+            above this frame + the button's 48px + 8px clearance —
+            was 20px clearance, tightened to sit "slightly lower" per
+            Josh — so the cue's bottom edge still clears the smallest
+            fold and just rides slightly higher up the frame once the
+            bar collapses. */}
         <button
           type="button"
           aria-label="Scroll down to more about Josh"
           onClick={() => document.getElementById("home-who")?.scrollIntoView()}
-          className="absolute left-1/2 top-[calc(100svh_-_156px)] z-30 hidden h-12 w-11 -translate-x-1/2 items-center justify-center text-ink/60 max-md:flex"
+          className="absolute left-1/2 top-[calc(100svh_-_144px)] z-30 hidden h-12 w-11 -translate-x-1/2 items-center justify-center text-ink/25 max-md:flex"
         >
           <svg
             aria-hidden="true"
             viewBox="0 0 26 16"
             fill="none"
-            className="w-4 animate-[scroll-cue-hop_2s_ease-in-out_infinite]"
+            className="w-4 animate-[scroll-cue-hop_2.4s_ease-in-out_infinite]"
           >
             <path
               d="M4 4 L13 12 L22 4"

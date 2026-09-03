@@ -277,30 +277,39 @@
   }
 }
 
-/* The mobile hero scroll cue's bounce (drifting-hero.tsx) — a quick
-   double nudge, "like a little bouncy ball, or a real nudge nudge," per
-   Josh: down, nearly home, down again, home, then a rest before the
-   loop repeats. Two full drops rather than one hop-and-hold — the
-   repeat is what makes it read as a bounce at this size. Pure CSS, so
-   the sitewide prefers-reduced-motion rule above neutralises it on its
-   own. */
+/* The mobile hero scroll cue's bounce (drifting-hero.tsx) — the double
+   nudge with squash-and-stretch, "a bit more natural and gloopy," per
+   Josh: the chevron stretches tall as it starts to fall, squashes wide
+   at the bottom of the drop, rebounds with a smaller echo of the same
+   deformation, then wobbles home — classic animation-principles
+   squash/stretch, which is what separates gloop from a rigid shape
+   sliding on a rail. Scales are paired so x and y roughly trade volume
+   (wide-and-flat at the bottom, narrow-and-tall mid-fall) the way soft
+   things deform. Pure CSS, so the sitewide prefers-reduced-motion rule
+   above neutralises it on its own. */
 @keyframes scroll-cue-hop {
   0%,
-  12% {
-    transform: translateY(0);
+  10% {
+    transform: translateY(0) scale(1, 1);
   }
-  26% {
-    transform: translateY(7px);
+  20% {
+    transform: translateY(2px) scale(0.92, 1.12);
   }
-  40% {
-    transform: translateY(1px);
+  32% {
+    transform: translateY(7px) scale(1.22, 0.78);
   }
-  54% {
-    transform: translateY(7px);
+  44% {
+    transform: translateY(2.5px) scale(0.95, 1.07);
   }
-  70%,
+  56% {
+    transform: translateY(6px) scale(1.12, 0.88);
+  }
+  68% {
+    transform: translateY(0) scale(0.97, 1.03);
+  }
+  80%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1, 1);
   }
 }
 
