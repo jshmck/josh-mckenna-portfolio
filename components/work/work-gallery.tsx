@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useMemo, useSyncExternalStore } from "react";
 
 import { MasonryGrid } from "@/components/work/masonry-grid";
 import { ProjectCard } from "@/components/work/project-card";
@@ -19,6 +20,49 @@ type WorkGalleryProps = {
 };
 
 type Filter = ProjectCategory | "All";
+
+const CATEGORY_PARAM = "category";
+
+/** Fired after `setFilter` writes `?category=` via `router.replace` --
+ *  `history.replaceState` (which the router calls under the hood) doesn't
+ *  raise `popstate` on its own, so the external-store hook below has no
+ *  other way to notice a write it made itself. */
+const FILTER_CHANGE_EVENT = "worklist:filter";
+
+/** Reads the active filter back out of `?category=`. Backs a
+ *  `useSyncExternalStore` (below) rather than a post-mount effect --
+ *  `useSearchParams` would force this whole gallery out of static
+ *  prerendering unless wrapped in its own Suspense boundary, which would
+ *  mean shipping a fallback instead of real HTML for the page's main
+ *  content, and setting state straight from an effect body just to seed
+ *  it from `window` trips the "don't setState synchronously in an
+ *  effect" rule. External-store subscription is the sanctioned way to
+ *  read a value React doesn't own and react to it changing. */
+function filterFromSearch(search: string, categories: ProjectCategory[]): Filter {
+  const value = new URLSearchParams(search).get(CATEGORY_PARAM);
+  return value && (categories as string[]).includes(value) ? (value as Filter) : "All";
+}
+
+function subscribeFilterQuery(onChange: () => void) {
+  window.addEventListener("popstate", onChange);
+  window.addEventListener(FILTER_CHANGE_EVENT, onChange);
+  return () => {
+    window.removeEventListener("popstate", onChange);
+    window.removeEventListener(FILTER_CHANGE_EVENT, onChange);
+  };
+}
+
+/** Server and first-hydration render both report "All" (matching
+ *  useIsDesktopGrid's own reasoning just above) -- the real value from
+ *  `?category=` lands a tick later once the store's snapshot can read
+ *  `window`. */
+function useFilterFromQuery(categories: ProjectCategory[]): Filter {
+  return useSyncExternalStore(
+    subscribeFilterQuery,
+    () => filterFromSearch(window.location.search, categories),
+    () => "All",
+  );
+}
 
 /**
  * Ratio rhythm for the masonry columns. Cycling a fixed sequence rather than
@@ -129,8 +173,12 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * The "Pride" filter pill only — everywhere else in the row is the plain
  * bordered/filled button below. On hover it reveals a pride-flag treatment
  * underneath the label (pink/light-blue/white rings around a rainbow
- * fill), pure CSS, no image asset. Idle and active states otherwise match
- * every other pill so it doesn't stand out until you touch it. Hover
+ * fill), pure CSS, no image asset. Idle otherwise matches every other pill
+ * so it doesn't stand out until you touch it; once selected, the rings and
+ * panning rainbow fill stay showing for as long as the filter is active,
+ * rather than only while hovered/pressed — the rainbow-pan animation itself
+ * is unconditional on the layer, gated purely by opacity, so there's no
+ * animation restart/jump when hover and active overlap. Hover
  * bounce (scale-105, duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)])
  * matches BackToTop's exact recipe, not the simpler asymmetric-easing
  * scale used on plain text links — this is a filled/outlined pill like
@@ -204,20 +252,22 @@ function PrideFilterButton({
         <span
           key={color}
           aria-hidden="true"
-          className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-coarse:group-active:opacity-100"
+          className={`absolute rounded-full transition-opacity duration-300 group-hover:opacity-100 pointer-coarse:group-active:opacity-100 ${active ? "opacity-100" : "opacity-0"}`}
           style={{ inset: `${i * 2}px`, backgroundColor: color }}
         />
       ))}
       <span
         aria-hidden="true"
-        className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:animate-[rainbow-pan_1.5s_linear_infinite] group-hover:opacity-100 pointer-coarse:group-active:animate-[rainbow-pan_1.5s_linear_infinite] pointer-coarse:group-active:opacity-100"
+        className={`absolute rounded-full animate-[rainbow-pan_1.5s_linear_infinite] transition-opacity duration-300 group-hover:opacity-100 pointer-coarse:group-active:opacity-100 ${active ? "opacity-100" : "opacity-0"}`}
         style={{
           inset: `${PRIDE_RINGS.length * 2}px`,
           background: prideStripeGradient,
           backgroundSize: "100% 200%",
         }}
       />
-      <span className="relative z-10 transition-colors duration-300 group-hover:text-black pointer-coarse:group-active:text-black">
+      <span
+        className={`relative z-10 transition-colors duration-300 group-hover:text-black pointer-coarse:group-active:text-black ${active ? "text-black" : ""}`}
+      >
         Pride
       </span>
     </button>
@@ -284,8 +334,26 @@ export function WorkGallery({
   categories,
   showIllustrations = true,
 }: WorkGalleryProps) {
-  const [filter, setFilter] = useState<Filter>("All");
+  const router = useRouter();
+  const pathname = usePathname();
+  const filter = useFilterFromQuery(categories);
   const ratioCycle = useIsDesktopGrid() ? RATIO_CYCLE_DESKTOP : RATIO_CYCLE_MOBILE;
+
+  /** Keeps the URL in sync with the picked filter so it survives a visit
+   *  to a project page and back -- previously this was local state only,
+   *  so the back button always landed on the unfiltered grid. `scroll:
+   *  false` matches every other in-place interaction on this page. */
+  function setFilter(next: Filter) {
+    const params = new URLSearchParams(window.location.search);
+    if (next === "All") {
+      params.delete(CATEGORY_PARAM);
+    } else {
+      params.set(CATEGORY_PARAM, next);
+    }
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    window.dispatchEvent(new Event(FILTER_CHANGE_EVENT));
+  }
 
   const visible = useMemo(
     () =>
