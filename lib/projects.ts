@@ -500,7 +500,7 @@ export const projects: Project[] = [
       { role: "Client", name: "Google" },
     ],
     // /work card only, per Josh — a four-sticker composite on a solid
-    // lavender fill, so the card gets a real surface instead of the
+    // light-pink fill, so the card gets a real surface instead of the
     // overview sheet's transparent float. The project page above keeps
     // the full sheet; this never renders there. Pinned to its true 1/1
     // ("make sure it stays at 1/1") so RATIO_CYCLE can't crop it.
@@ -508,16 +508,16 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "1/1",
       alt: "Four stickers from the set",
-      src: "/work/its-all-love/02-hero.webp",
+      src: "/work/its-all-love/04-hero-light.webp",
     },
-    // Rainbow_2 flattened onto the composite's own lavender (sampled
-    // 186/166/249) — the hover overlay renders with no surface of its
+    // Rainbow_2 flattened onto the composite's own pink (sampled
+    // 255/230/246) — the hover overlay renders with no surface of its
     // own, so a transparent sticker would float over the four-sticker
     // card instead of replacing it.
     cardHoverImage: {
       ratio: "1/1",
       alt: "The rainbow sticker",
-      src: "/work/its-all-love/03-rainbow-hover.webp",
+      src: "/work/its-all-love/05-rainbow-hover-light.webp",
     },
     hero: {
       ratio: "1/1",
