@@ -2321,10 +2321,6 @@ export const projects: Project[] = [
       alt: "Billboard — Hollywood Blvd, Sunday June 9",
       src: "/work/la-pride/09-lamp-post-banner.webp",
     },
-    headerIllustrations: [
-      { src: "/work/la-pride/lol-shield.webp", aspect: "2160/1500" },
-      { src: "/work/la-pride/license-plate.webp", aspect: "2160/1500" },
-    ],
     /**
      * Not-landscape first, because the template pairs the first two into a
      * two-up row and runs everything after them full width. A 2/3 portrait
