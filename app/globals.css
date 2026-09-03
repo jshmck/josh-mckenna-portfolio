@@ -186,9 +186,11 @@
 }
 
 /* Waldeck's second surface, returned per Josh (2026-09-03): the contact
-   form's "Say hello" heading (components/contact/enquiry-form.tsx). Same
-   scale as type-heading, but set in Waldeck Black — note the face's
-   non-standard 100-340 wght axis, hence the token instead of 700. */
+   form's "SAy HeLLO" heading (components/contact/enquiry-form.tsx),
+   quirk-cased and in brand blue at the call site — the form is the
+   commission path. Same scale as type-heading, but set in Waldeck Black —
+   note the face's non-standard 100-340 wght axis, hence the token
+   instead of 700. */
 @utility type-heading-waldeck {
   font-family: var(--font-display);
   font-size: clamp(2rem, 5vw, 3.75rem);
