@@ -202,9 +202,9 @@ export type Project = {
   /**
    * Keeps `hero` out of its usual top-of-page slot entirely — `hero` is
    * still required (it's the /work card thumbnail and the OG image) but
-   * isn't repeated in the page body. Tilda Rice only for now: Josh wanted
-   * the three product photos to read together as one group, after the
-   * write-up, rather than one of them singled out above the videos.
+   * isn't repeated in the page body. Tilda Rice only for now: the product
+   * shots live on the videoRow clips as posters, so repeating one of them
+   * as a standalone hero would double it up on the same page.
    */
   heroHiddenOnPage?: boolean;
   /**
@@ -496,26 +496,16 @@ export const projects: Project[] = [
       { src: "/work/tilda-rice/fried-rice.mp4", alt: "Indonesian Fried Rice animation", sound: true },
       { src: "/work/tilda-rice/masala.mp4", alt: "Masala Rice animation", sound: true },
     ],
-    // All three product photos in one row, not the default two-up-then-single
-    // stack — see Project.gallerySpans.
-    gallerySpans: [{ startIndex: 0, count: 3 }],
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "Tilda Katsu Curry Rice packaging",
-        src: "/work/tilda-rice/02-katsu-curry.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Tilda Indonesian Fried Rice packaging",
-        src: "/work/tilda-rice/01-fried-rice.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Tilda Masala Rice packaging",
-        src: "/work/tilda-rice/03-masala-rice.webp",
-      },
-    ],
+    // The product shots moved onto the clips above as posters — an empty
+    // gallery keeps them off the page body, but getCardHoverImage would
+    // then find no second image, so the /work card's hover swap is pinned
+    // to the same katsu shot it auto-picked when the gallery was here.
+    cardHoverImage: {
+      ratio: "1/1",
+      alt: "Tilda Katsu Curry Rice packaging",
+      src: "/work/tilda-rice/02-katsu-curry.webp",
+    },
+    gallery: [],
   },
   {
     slug: "california-magazine",
