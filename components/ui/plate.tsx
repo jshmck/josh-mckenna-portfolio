@@ -69,16 +69,17 @@ export function Plate({
   priority = false,
 }: PlateProps) {
   const fit = image.fit ?? "cover";
-  // `contain` frames real artwork, not a missing-image state — the
-  // placeholder tones exist to signal "nothing here yet," so a contain
-  // letterbox uses the canvas colour instead of leaking placeholder-blue
-  // behind a piece that already exists.
-  const surface =
-    fit === "contain"
-      ? "bg-canvas"
-      : tone === "strong"
-        ? "bg-placeholder-strong"
-        : "bg-placeholder";
+  // The placeholder tones exist to signal "nothing here yet," so they
+  // only back an empty slot. Any real image sits on bg-canvas instead:
+  // a contain letterbox would otherwise leak placeholder-blue around
+  // the artwork, and even a cover image lets a sub-pixel rim of the
+  // surface through where the rounded corners antialias — Josh spotted
+  // the blue fringing the Gestalten card's edge.
+  const surface = image.src
+    ? "bg-canvas"
+    : tone === "strong"
+      ? "bg-placeholder-strong"
+      : "bg-placeholder";
 
   return (
     <div

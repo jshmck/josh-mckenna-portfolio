@@ -43,7 +43,10 @@ export function FeatureGallery({ images }: FeatureGalleryProps) {
   };
 
   return (
-    <div className="group relative aspect-[16/9] overflow-hidden rounded-frame bg-placeholder">
+    // bg-canvas, not bg-placeholder — every slide is a real photo, and
+    // the placeholder blue would fringe the rounded corners where the
+    // cover images antialias (same fix as Plate's loaded-image surface).
+    <div className="group relative aspect-[16/9] overflow-hidden rounded-frame bg-canvas">
       <div
         ref={trackRef}
         onScroll={handleScroll}
