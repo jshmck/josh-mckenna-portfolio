@@ -2713,6 +2713,35 @@ export const projects: Project[] = [
     },
     gallery: [],
   },
+  {
+    slug: "mini-animation",
+    title: "Mini Animation",
+    client: "Personal",
+    year: 2017,
+    discipline: "Illustration & Animation",
+    deliverables: "1 animation",
+    categories: ["Automotive", "Motion"],
+    summary: "A Mini convertible, animated for a five-second loop.",
+    heroCaption: "A held frame from the animation, 2017.",
+    brief: [
+      "No brief — a personal animation exercise, a Mini convertible driving past palm trees on a five-second loop.",
+    ],
+    credits: [{ role: "Illustration & Animation", name: "Josh McKenna" }],
+    // True 16/9 (source is 1220x686) on the project page; cropped to 1/1
+    // on the /work card per Josh.
+    cardRatio: "1/1",
+    hero: {
+      ratio: "16/9",
+      alt: "The Mini, mid-drive",
+      src: "/work/mini-animation/01-mini-driving-hero.webp",
+    },
+    heroVideo: {
+      src: "/work/mini-animation/02-mini-driving.mp4",
+      alt: "The Mini animation, looping",
+      ratio: "16/9",
+    },
+    gallery: [],
+  },
 ];
 
 /* ==========================================================================
