@@ -363,6 +363,58 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    // Single overview sheet for now — Josh is redrawing the set in a new
+    // style, so the individual stickers land later.
+    slug: "its-all-love",
+    title: "It's All Love",
+    client: "Google",
+    year: 2017,
+    discipline: "Stickers & Iconography",
+    deliverables: "Sticker Set · 24 Stickers",
+    categories: ["Pride", "Character", "Icons"],
+    summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
+    heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
+    brief: [
+      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme — twenty-four stickers celebrating the LGBTQ+ community, from a finger snap to a full wedding.",
+      "The set went on to win an Applied Arts Photography & Illustration Award in the Conceptual Illustration category, Spring 2018.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Agency", name: "Anyways" },
+      { role: "Client", name: "Google" },
+    ],
+    // /work card only, per Josh — a four-sticker composite on a solid
+    // lavender fill, so the card gets a real surface instead of the
+    // overview sheet's transparent float. The project page above keeps
+    // the full sheet; this never renders there. Pinned to its true 1/1
+    // ("make sure it stays at 1/1") so RATIO_CYCLE can't crop it.
+    cardRatio: "1/1",
+    cardImage: {
+      ratio: "1/1",
+      alt: "Four stickers from the set",
+      src: "/work/its-all-love/02-hero.webp",
+    },
+    // Rainbow_2 flattened onto the composite's own lavender (sampled
+    // 186/166/249) — the hover overlay renders with no surface of its
+    // own, so a transparent sticker would float over the four-sticker
+    // card instead of replacing it.
+    cardHoverImage: {
+      ratio: "1/1",
+      alt: "The rainbow sticker",
+      src: "/work/its-all-love/03-rainbow-hover.webp",
+    },
+    hero: {
+      ratio: "1/1",
+      alt: "The full sticker set",
+      src: "/work/its-all-love/01-overview-01.webp",
+      // Transparent PNG — same fix as the Instagram sticker's hero:
+      // contain sits on bg-canvas, so no placeholder tone shows through
+      // the transparent background.
+      fit: "contain",
+    },
+    gallery: [],
+  },
+  {
     slug: "bum-selfie",
     title: "Bum Selfie",
     client: "Cake Boy Magazine",
