@@ -375,7 +375,7 @@ export const projects: Project[] = [
     summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
     heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
     brief: [
-      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme — twenty-four stickers celebrating the LGBTQIA2+ community, from a finger snap to a full wedding.",
+      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme — twenty-four stickers celebrating the LGBTQ+ community, from a finger snap to a full wedding.",
       "The set went on to win an Applied Arts Photography & Illustration Award in the Conceptual Illustration category, Spring 2018.",
     ],
     credits: [
