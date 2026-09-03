@@ -73,7 +73,22 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
       className={
         images.length > 1
           ? heightMatchedRow
-            ? "flex flex-col gap-6 md:flex-row md:flex-wrap md:justify-center md:gap-4"
+            ? // Plain block stacking below md, not flex — every attempt to
+              // keep flex-col and override sizing per-child ran into the
+              // same WebKit bug: an aspect-ratio'd flex item with an
+              // auto/overridden cross size gets its width and/or height
+              // mis-resolved (images shrank to a sliver, then to 0×0, then
+              // overflowed past the right edge, each a symptom of the same
+              // aspect-ratio/flex-stretch interaction — Chromium never
+              // reproduced any of it). A plain block child sidesteps flex's
+              // sizing algorithm entirely: width comes from the containing
+              // block (always definite), height from aspect-ratio times
+              // that width (always definite) — the same well-defined path
+              // every other image on the site already uses. `space-y-6`
+              // stands in for the flex gap below md since `gap` needs
+              // flex/grid; md:flex switches back to the original desktop
+              // side-by-side row, unaffected.
+              "space-y-6 md:space-y-0 md:flex md:flex-row md:flex-wrap md:justify-center md:gap-4"
             : images.length === 3
               ? "grid gap-6 md:grid-cols-3 md:gap-8"
               : "grid gap-6 md:grid-cols-2 md:gap-8"
@@ -96,10 +111,14 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
                 // side by side — that row height derives from a target
                 // width built for a two-up (see rowStyle above), so on a
                 // single mobile column it rendered each image at a sliver
-                // of the frame. `!` beats the inline style below; allSmall
-                // pairs keep their own deliberate small-and-paired sizing
-                // (rowHeight's h-64/sm:h-96), unaffected since rowStyle is
-                // never set for them.
+                // of the frame. `!` beats the inline style below so
+                // aspect-ratio (still active, from RATIO_CLASS) derives the
+                // height from this now-full-width block instead — both
+                // definite, computed independently of any child, so there's
+                // no percentage/flex circularity for a browser to get wrong.
+                // allSmall pairs keep their own deliberate small-and-paired
+                // sizing (rowHeight's h-64/sm:h-96), unaffected since
+                // rowStyle is never set for them.
                 `${rowHeight ?? ""} ${RATIO_CLASS[image.ratio]} ${allSmall ? "" : "max-md:!h-auto"}`
               : image.small
                 ? "mx-auto w-full max-w-lg"
