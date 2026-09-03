@@ -378,7 +378,7 @@ export const projects: Project[] = [
     heroCaption:
       "One of two couple pairings, printed onto canvas totes for Comic Relief and Sink The Pink's Red Nose Day 2020 range.",
     brief: [
-      "Comic Relief, in partnership with Sink The Pink, commissioned tote bag artwork for Red Nose Day 2020 — one embrace pose, redrawn across two couple pairings.",
+      "Comic Relief, in partnership with Sink The Pink, commissioned tote bag artwork for Red Nose Day 2020 — two couple pairings, printed across the range.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
