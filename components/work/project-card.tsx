@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Parallax } from "@/components/ui/parallax";
 import { Plate } from "@/components/ui/plate";
+import { ProjectVideo } from "@/components/work/project-video";
 import type { Project, ProjectImage } from "@/lib/projects";
 
 /** Shared between the image and its hover overlay so they stay in sync.
@@ -34,9 +35,11 @@ type ProjectCardProps = {
   /**
    * `lift` moves the whole card up 6px — the expressive Home/About
    * treatment. `quiet` only scales the image 1.02× and leaves the card
-   * still.
+   * still. `shrink` scales the whole card (image + title together) down
+   * to 0.97× in place, no translate — the Work gallery's desktop hover,
+   * per Josh.
    */
-  motion?: "lift" | "quiet";
+  motion?: "lift" | "quiet" | "shrink";
   /** Wraps just the image in the same 0.85× scroll parallax as Home's
    *  signature illustration — each grid image drifts independently. */
   parallax?: boolean;
@@ -65,6 +68,13 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const hoverCaption = caption === "hover";
   const baseImage = image ?? project.hero;
+  // Trial (mini-animation only, see Project.cardVideo): the card plays the
+  // hero clip instead of sitting on its still frame — cropped to the same
+  // ratio the still would've used, poster is that still so there's no flash
+  // before playback starts.
+  const cardVideo =
+    project.cardVideo && project.heroVideo ? project.heroVideo : undefined;
+  const effectiveRatio = ratio ?? baseImage.ratio;
 
   const plate = (
     // Clipping and transforming live on two separate nested elements, not
@@ -87,13 +97,20 @@ export function ProjectCard({
             : ""
         }`}
       >
-        <Plate
-          image={ratio ? { ...baseImage, ratio } : baseImage}
-          sizes={sizes}
-          priority={priority}
-          radius={hoverCaption ? "" : undefined}
-          showPlaceholderCaption={!hoverCaption}
-        />
+        {cardVideo ? (
+          <ProjectVideo
+            video={{ src: cardVideo.src, alt: cardVideo.alt, poster: baseImage.src }}
+            ratio={effectiveRatio}
+          />
+        ) : (
+          <Plate
+            image={{ ...baseImage, ratio: effectiveRatio }}
+            sizes={sizes}
+            priority={priority}
+            radius={hoverCaption ? "" : undefined}
+            showPlaceholderCaption={!hoverCaption}
+          />
+        )}
         {hoverCaption && hoverImage && (
           <div
             aria-hidden="true"
@@ -112,14 +129,36 @@ export function ProjectCard({
             )}
           </div>
         )}
-        {/* Title reveal on hover/focus — a white wash, centred title in ink,
-            no blur. */}
+        {/* Title reveal on hover/focus — a translucent canvas-white wash,
+            centred title in ink, no blur. A full backdrop-blur frost
+            (nav's recipe, then stripped to pure blur) was tried here and
+            reverted — "the frost effect is too overstimulating," per
+            Josh; the plain wash previews the crossfading hoverImage
+            underneath without churning every pixel of it. */}
         {hoverCaption && (
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-center transition-[background-color] duration-300 group-hover:bg-canvas/85 group-focus-within:bg-canvas/85"
+            // duration-500 on the wash (was 300) also from the reference —
+            // the leisurely wash behind the quick text is part of the feel.
+            className="pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-center transition-[background-color] duration-500 group-hover:bg-canvas/85 group-focus-within:bg-canvas/85"
           >
-            <span className="type-label leading-none text-ink opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+            {/* Kinetic entrance matched to emanuelecolombo.it's project
+                cards, the reference Josh pointed at for "the fun text
+                appear": the title rests 20px low and invisible, then on
+                hover the opacity lands fast (200ms) while the rise takes
+                twice as long (400ms) — the word appears almost instantly
+                but is still gliding up as it does, which is the whole
+                trick. Plain ease-in-out and no delay, per the reference
+                (his uses no spring here — the card's own shrink carries
+                the bounce). duration-[0.2s,0.4s] maps per-property onto
+                transition-[opacity,translate] in order.
+                transition-[opacity,translate], not transform — Tailwind
+                v4's translate-y-* emits the standalone CSS `translate`
+                property, so transitioning `transform` animates nothing. */}
+            {/* Helvetica matched to the nav links (font-body 22px bold,
+                sentence case), not the uppercase mono type-label — "the
+                same as the nav bar," per Josh. */}
+            <span className="translate-y-5 font-body text-[22px] leading-none font-bold text-ink opacity-0 transition-[opacity,translate] duration-[0.2s,0.4s] ease-in-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
               {project.title}
             </span>
           </div>
@@ -137,8 +176,16 @@ export function ProjectCard({
       // the "hero" scope deliberately leaves the card unflagged. See
       // Project.navContrastLight's doc comment.
       data-nav-contrast={project.navContrastLight === true ? "light" : undefined}
-      className={`group block transition-transform duration-300 ease-drift ${
-        motion === "lift" ? "hover:-translate-y-1.5 focus-visible:-translate-y-1.5" : ""
+      className={`group block transition-transform ${
+        motion === "lift"
+          ? "duration-300 ease-drift hover:-translate-y-1.5 focus-visible:-translate-y-1.5"
+          : motion === "shrink"
+            ? // Same spring as the nav's jM-logo/BackToTop hover bounce
+              // (duration-500, cubic-bezier(0.34,1.56,0.64,1)) rather than
+              // `lift`'s plain ease-drift — "that same gloopy bounce as the
+              // nav bar," per Josh.
+              "duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[0.97] focus-visible:scale-[0.97]"
+            : "duration-300 ease-drift"
       }`}
     >
       {parallax ? (
@@ -179,7 +226,12 @@ export function ProjectCard({
           strip, title only (no client/year) to match what the hover wash
           itself shows. */}
       {hoverCaption && (
-        <div className="mt-3 md:hidden">
+        // mt-2, tighter than the `below` caption's mt-3 above — proximity
+        // is the only cue tying this title to its own image rather than
+        // the next card down, so it needs to sit closer to its image than
+        // MasonryGrid's row gap (16px on mobile) sits to the next card.
+        // Equal spacing on both sides read as ambiguous, per Josh.
+        <div className="mt-2 md:hidden">
           {/* truncate + a fixed leading, not the free-flowing h3 the
               `below` caption uses above — WorkGallery's masonry packer
               (MOBILE_CAPTION_RESERVE_PX) reserves an exact pixel height

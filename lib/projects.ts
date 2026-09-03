@@ -257,6 +257,15 @@ export type Project = {
    */
   cardRatio?: ImageRatio;
   /**
+   * Trial: plays `heroVideo` autoplaying/looping on the /work and
+   * home-embedded gallery card, instead of the usual still `hero`/`cardImage`
+   * frame — mini-animation only for now, since the animation itself is the
+   * whole piece rather than a supporting clip. Requires `heroVideo`; cropped
+   * to the card's usual ratio the same way the still image is, and reuses
+   * ProjectVideo's own prefers-reduced-motion guard.
+   */
+  cardVideo?: boolean;
+  /**
    * Crossfades in over the card's lead image on hover/focus. Set this to
    * curate the pick (e.g. la-pride); otherwise `getCardHoverImage` below
    * picks `heroPair` or the first gallery image automatically, so every
@@ -491,7 +500,7 @@ export const projects: Project[] = [
       { role: "Client", name: "Google" },
     ],
     // /work card only, per Josh — a four-sticker composite on a solid
-    // lavender fill, so the card gets a real surface instead of the
+    // light-pink fill, so the card gets a real surface instead of the
     // overview sheet's transparent float. The project page above keeps
     // the full sheet; this never renders there. Pinned to its true 1/1
     // ("make sure it stays at 1/1") so RATIO_CYCLE can't crop it.
@@ -499,16 +508,16 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "1/1",
       alt: "Four stickers from the set",
-      src: "/work/its-all-love/02-hero.webp",
+      src: "/work/its-all-love/04-hero-light.webp",
     },
-    // Rainbow_2 flattened onto the composite's own lavender (sampled
-    // 186/166/249) — the hover overlay renders with no surface of its
+    // Rainbow_2 flattened onto the composite's own pink (sampled
+    // 255/230/246) — the hover overlay renders with no surface of its
     // own, so a transparent sticker would float over the four-sticker
     // card instead of replacing it.
     cardHoverImage: {
       ratio: "1/1",
       alt: "The rainbow sticker",
-      src: "/work/its-all-love/03-rainbow-hover.webp",
+      src: "/work/its-all-love/05-rainbow-hover-light.webp",
     },
     hero: {
       ratio: "1/1",
@@ -2691,9 +2700,9 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Animation", name: "Bershka" },
     ],
-    // True 9/16 (source is 1080x1920) — pinned so the /work card keeps the
-    // full portrait rather than a masonry-cycle crop through the dancers.
-    cardRatio: "9/16",
+    // Per Josh: crop the /work card to 4/5 instead of the true 9/16 —
+    // the project page itself still runs the full portrait frame below.
+    cardRatio: "4/5",
     hero: {
       ratio: "9/16",
       alt: "We Are Proud animation, held frame",
@@ -2710,6 +2719,38 @@ export const projects: Project[] = [
       alt: "The We Are Proud animation",
       sound: false,
       ratio: "9/16",
+    },
+    gallery: [],
+  },
+  {
+    slug: "mini-animation",
+    title: "Mini Animation",
+    client: "Personal",
+    year: 2017,
+    discipline: "Illustration & Animation",
+    deliverables: "1 animation",
+    categories: ["Automotive", "Motion"],
+    summary: "A Mini convertible, animated for a five-second loop.",
+    heroCaption: "A held frame from the animation, 2017.",
+    brief: [
+      "No brief — a personal animation exercise, a Mini convertible driving past palm trees on a five-second loop.",
+    ],
+    credits: [{ role: "Illustration & Animation", name: "Josh McKenna" }],
+    // True 16/9 (source is 1220x686) on the project page; cropped to 1/1
+    // on the /work card per Josh.
+    cardRatio: "1/1",
+    // The whole piece is the animation — the grid card plays it rather
+    // than sitting on the still frame like every other video-backed card.
+    cardVideo: true,
+    hero: {
+      ratio: "16/9",
+      alt: "The Mini, mid-drive",
+      src: "/work/mini-animation/01-mini-driving-hero.webp",
+    },
+    heroVideo: {
+      src: "/work/mini-animation/02-mini-driving.mp4",
+      alt: "The Mini animation, looping",
+      ratio: "16/9",
     },
     gallery: [],
   },
