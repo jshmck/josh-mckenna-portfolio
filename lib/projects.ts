@@ -394,6 +394,15 @@ export const projects: Project[] = [
       alt: "Four stickers from the set",
       src: "/work/its-all-love/02-hero.webp",
     },
+    // Rainbow_2 flattened onto the composite's own lavender (sampled
+    // 186/166/249) — the hover overlay renders with no surface of its
+    // own, so a transparent sticker would float over the four-sticker
+    // card instead of replacing it.
+    cardHoverImage: {
+      ratio: "1/1",
+      alt: "The rainbow sticker",
+      src: "/work/its-all-love/03-rainbow-hover.webp",
+    },
     hero: {
       ratio: "1/1",
       alt: "The full sticker set",
