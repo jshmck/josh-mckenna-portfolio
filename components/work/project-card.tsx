@@ -129,8 +129,12 @@ export function ProjectCard({
             )}
           </div>
         )}
-        {/* Title reveal on hover/focus — a white wash, centred title in ink,
-            no blur. */}
+        {/* Title reveal on hover/focus — a translucent canvas-white wash,
+            centred title in ink, no blur. A full backdrop-blur frost
+            (nav's recipe, then stripped to pure blur) was tried here and
+            reverted — "the frost effect is too overstimulating," per
+            Josh; the plain wash previews the crossfading hoverImage
+            underneath without churning every pixel of it. */}
         {hoverCaption && (
           <div
             aria-hidden="true"
@@ -154,12 +158,16 @@ export function ProjectCard({
       // the "hero" scope deliberately leaves the card unflagged. See
       // Project.navContrastLight's doc comment.
       data-nav-contrast={project.navContrastLight === true ? "light" : undefined}
-      className={`group block transition-transform duration-300 ease-drift ${
+      className={`group block transition-transform ${
         motion === "lift"
-          ? "hover:-translate-y-1.5 focus-visible:-translate-y-1.5"
+          ? "duration-300 ease-drift hover:-translate-y-1.5 focus-visible:-translate-y-1.5"
           : motion === "shrink"
-            ? "hover:scale-[0.97] focus-visible:scale-[0.97]"
-            : ""
+            ? // Same spring as the nav's jM-logo/BackToTop hover bounce
+              // (duration-500, cubic-bezier(0.34,1.56,0.64,1)) rather than
+              // `lift`'s plain ease-drift — "that same gloopy bounce as the
+              // nav bar," per Josh.
+              "duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[0.97] focus-visible:scale-[0.97]"
+            : "duration-300 ease-drift"
       }`}
     >
       {parallax ? (
