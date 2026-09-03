@@ -75,15 +75,20 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* portrait.jpg is pre-cropped to 4/3 from Josh's 2:3 master
-                (Desktop/Website Projects Folder/Josh.JPG) — letting
-                object-cover crop the vertical original here would centre
-                on the torso and cut the face off. */}
+            {/* portrait-studio.jpg is pre-cropped to 4/3 from the
+                near-square master (Desktop/Website Projects Folder/
+                JoshStudio.png) — object-cover's centre crop would clip
+                the cap. The cowboy-hat portrait (Josh.JPG) was tried
+                here first; Josh called the crop weird in the 4/3 frame
+                and picked this studio shot instead. The filename names
+                the shot, not just "portrait": Next's image cache keys
+                on the URL, so swapping a different photo in under the
+                same name serves the stale one. */}
             <Plate
               image={{
                 ratio: "4/3",
-                alt: "Portrait of Josh McKenna in a cowboy hat, holding a red rose",
-                src: "/about/portrait.jpg",
+                alt: "Josh McKenna at his desk, working on an illustration",
+                src: "/about/portrait-studio.jpg",
               }}
               sizes="(max-width: 768px) 100vw, 45vw"
             />
