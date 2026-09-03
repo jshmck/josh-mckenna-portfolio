@@ -378,6 +378,7 @@ export const projects: Project[] = [
       "Cake Boy magazine wanted a two-part illustration for a feature on the different ways to photograph your own arsehole — technique over vanity, apparently.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "An updated version",
