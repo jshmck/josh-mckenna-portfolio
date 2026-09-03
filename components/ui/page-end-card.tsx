@@ -1,32 +1,37 @@
 /**
- * Mobile-only page-end treatment — "I like the project cards, could all
- * the other pages end like that... only end with the curved corners and
- * shadow," per Josh, after seeing the /work/[slug] card (project-content.tsx).
- * Three earlier attempts (a separate shadow strip, an inner gradient, a
- * shadow tuned back onto the flush edge-to-edge box) all read as either a
- * stray line or a shadow "inside the card instead of outside" — because
- * with no visible margin around it, there was nothing to show where the
- * invisible (bg-canvas-on-bg-canvas) card actually ended and the shadow
- * began; any gradient just looked smudged onto the page itself. This now
- * copies project-content.tsx's card treatment directly, the one place on
- * the site this genuinely already reads as a floating card: `mx-3 mt-3`
- * margin makes the gap itself visible (the header/page shows through
- * around the card), so the shadow renders in a space distinct from the
- * card rather than flush against it. Same two-layer shadow tuned to that
- * exact 12px margin (see project-content.tsx's own comment for the
- * offset/blur reach math) and the same shadow/overflow-hidden split
- * across two elements (a known Safari compositing trap when they're on
- * the same node). No bottom margin, deliberately, same reasoning as
- * project-content.tsx: main's opaque background paints under a child's
- * margin too, so a bottom gap here would ride along as a canvas-coloured
- * apron covering the footer's icons mid-curtain-reveal. The card's own
- * shadowed edge is the curtain's edge; air between the corner and the
- * footer's content comes from the footer's own top padding. md+ renders
- * an invisible, unstyled wrapper, same as project-content.tsx. */
+ * Mobile-only page-end treatment — the bottom of every non-project page
+ * (Home, Work, Shop, Info, Contact, 404) finishes like the project card
+ * does, without becoming a card itself: "only projects should have
+ * cards... the bottom of each page should finish like the card, but
+ * they should be full width. no shadow on top or sides, only on the
+ * bottom," per Josh, correcting a first cut that copied the project
+ * card's whole treatment (side margins + all-round shadow) onto every
+ * page. So: no margins, square top, full-bleed sides — just the two
+ * bottom corners curved and a downward-only shadow, so the page ends on
+ * the same curtain edge over the footer reveal as a project card does.
+ *
+ * Shadow-only-below is geometry, not clever masking: both layers keep
+ * blur ≤ y-offset, so their upward reach (blur − offset) is zero — the
+ * same reach math the project card used to stay out of the header's
+ * band, pushed all the way. Sideways reach doesn't matter here because
+ * the box is full-bleed: anything cast sideways lands outside the
+ * viewport. Bottom reach (offset + blur) stays ~8px/24px, matching the
+ * project card's weight.
+ *
+ * Same shadow/overflow-hidden split across two elements as
+ * project-content.tsx — box-shadow and overflow-hidden on the same
+ * rounded element is the Safari compositing trap that painted the
+ * project card's shadow as an opaque block (see the long comment
+ * there). No bottom margin, deliberately, same reasoning too: main's
+ * opaque background paints under a child's margin, so a gap here would
+ * ride along as a canvas-coloured apron covering the footer's icons
+ * mid-curtain-reveal. md+ renders an invisible, unstyled wrapper, same
+ * as project-content.tsx.
+ */
 export function PageEndCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-md:mx-3 max-md:mt-3 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
-      <div className="max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas">
+    <div className="max-md:rounded-b-frame max-md:shadow-[0_4px_4px_rgba(0,0,0,0.08),0_12px_12px_rgba(0,0,0,0.10)]">
+      <div className="max-md:overflow-hidden max-md:rounded-b-frame max-md:bg-canvas">
         {children}
       </div>
     </div>
