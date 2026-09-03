@@ -150,9 +150,9 @@ export const features: FeatureItem[] = [
     alt: "A Minute With — a one-minute filmed interview with Josh McKenna",
     video: {
       src: "/about/a-minute-with.mp4",
-      // The 0:28 frame, per Josh — him drawing on the iPad, captioned
-      // "my process is all digital these days."
-      poster: "/about/a-minute-with-poster-28s.jpg",
+      // The ~1:02 frame, per Josh — the film's B&A endcard, fronted by
+      // the dog. (Replaced the earlier 0:28 drawing frame.)
+      poster: "/about/a-minute-with-poster-102.jpg",
     },
   },
   {
