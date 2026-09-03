@@ -147,9 +147,11 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
   // True while a `[data-nav-contrast="light"]` surface (any light-blue
-  // artwork — the flagged /work cards, or a flagged full-bleed hero like
-  // L.A. Pride's blue-sky photo; see Project.navContrastLight) crosses
-  // the fixed bar's midline. Only the bar's BLUE elements swap to white
+  // artwork — the flagged /work cards, a flagged full-bleed hero like
+  // L.A. Pride's blue-sky photo, or a single flagged gallery image like
+  // Bombay Sapphire's bottle shots; see Project.navContrastLight /
+  // ProjectImage.navContrastLight) crosses the fixed bar's midline. Only
+  // the bar's BLUE elements swap to white
   // for that window — the active/hovered link, the jM mark
   // (filter-inverted) and the cart's blue states — "only the
   // highlighted/selected word needs to be white and anything that's blue
