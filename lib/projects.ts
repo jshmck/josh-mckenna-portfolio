@@ -2691,9 +2691,9 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Animation", name: "Bershka" },
     ],
-    // True 9/16 (source is 1080x1920) — pinned so the /work card keeps the
-    // full portrait rather than a masonry-cycle crop through the dancers.
-    cardRatio: "9/16",
+    // Per Josh: crop the /work card to 4/5 instead of the true 9/16 —
+    // the project page itself still runs the full portrait frame below.
+    cardRatio: "4/5",
     hero: {
       ratio: "9/16",
       alt: "We Are Proud animation, held frame",
