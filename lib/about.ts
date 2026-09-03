@@ -165,9 +165,9 @@ export const features: FeatureItem[] = [
     image: { src: "/about/gestalten-mr-hudson-cover.jpg" },
   },
   {
-    title: "Apple Today — iPad & Procreate Workshops",
+    title: "Art Lab & Apple Today — Apple",
     description:
-      "Two Today at Apple sessions in 2019: an iPad and Procreate workshop, and ‘Art Lab: Portraits Beyond Labels’ — part workshop, part interview.",
+      "Two sessions at Apple in 2019: ‘Art Lab: Portraits Beyond Labels’ — part workshop, part interview — and an Apple Today iPad illustration workshop.",
     alt: "Photos from Josh's Today at Apple Art Lab workshops",
     images: [
       {
