@@ -73,7 +73,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
       className={
         images.length > 1
           ? heightMatchedRow
-            ? "flex flex-wrap justify-center gap-4"
+            ? "flex flex-col gap-6 md:flex-row md:flex-wrap md:justify-center md:gap-4"
             : images.length === 3
               ? "grid gap-6 md:grid-cols-3 md:gap-8"
               : "grid gap-6 md:grid-cols-2 md:gap-8"
@@ -90,7 +90,17 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
           // than the image itself.
           className={
             heightMatchedRow
-              ? `${rowHeight ?? ""} ${RATIO_CLASS[image.ratio]}`
+              ? // Below md, mismatched-ratio pairs (Away's 4/5 beside a
+                // 250/291 mockup, Nomad's 4/5 beside a 1/1 flyer) stack
+                // full width instead of sharing a row height sized for two
+                // side by side — that row height derives from a target
+                // width built for a two-up (see rowStyle above), so on a
+                // single mobile column it rendered each image at a sliver
+                // of the frame. `!` beats the inline style below; allSmall
+                // pairs keep their own deliberate small-and-paired sizing
+                // (rowHeight's h-64/sm:h-96), unaffected since rowStyle is
+                // never set for them.
+                `${rowHeight ?? ""} ${RATIO_CLASS[image.ratio]} ${allSmall ? "" : "max-md:!h-auto"}`
               : image.small
                 ? "mx-auto w-full max-w-lg"
                 : undefined
