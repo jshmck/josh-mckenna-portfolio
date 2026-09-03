@@ -2703,9 +2703,12 @@ export const projects: Project[] = [
     // "top" position with no pair renders it alone; hero.src still supplies
     // the video poster, the /work card image and the OG image.
     heroVideo: {
+      // Source has a real audio track, but Josh wants it playing ambiently
+      // like the other silent hero clips rather than gated behind a click
+      // — sound: false mutes it so ProjectVideo autoplays + loops it.
       src: "/work/bershka/02-we-are-proud.mp4",
       alt: "The We Are Proud animation",
-      sound: true,
+      sound: false,
       ratio: "9/16",
     },
     gallery: [],
