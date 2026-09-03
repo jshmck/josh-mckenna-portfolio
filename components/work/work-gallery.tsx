@@ -129,8 +129,12 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
  * The "Pride" filter pill only — everywhere else in the row is the plain
  * bordered/filled button below. On hover it reveals a pride-flag treatment
  * underneath the label (pink/light-blue/white rings around a rainbow
- * fill), pure CSS, no image asset. Idle and active states otherwise match
- * every other pill so it doesn't stand out until you touch it. Hover
+ * fill), pure CSS, no image asset. Idle otherwise matches every other pill
+ * so it doesn't stand out until you touch it; once selected, the rings and
+ * panning rainbow fill stay showing for as long as the filter is active,
+ * rather than only while hovered/pressed — the rainbow-pan animation itself
+ * is unconditional on the layer, gated purely by opacity, so there's no
+ * animation restart/jump when hover and active overlap. Hover
  * bounce (scale-105, duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)])
  * matches BackToTop's exact recipe, not the simpler asymmetric-easing
  * scale used on plain text links — this is a filled/outlined pill like
@@ -204,20 +208,22 @@ function PrideFilterButton({
         <span
           key={color}
           aria-hidden="true"
-          className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-coarse:group-active:opacity-100"
+          className={`absolute rounded-full transition-opacity duration-300 group-hover:opacity-100 pointer-coarse:group-active:opacity-100 ${active ? "opacity-100" : "opacity-0"}`}
           style={{ inset: `${i * 2}px`, backgroundColor: color }}
         />
       ))}
       <span
         aria-hidden="true"
-        className="absolute rounded-full opacity-0 transition-opacity duration-300 group-hover:animate-[rainbow-pan_1.5s_linear_infinite] group-hover:opacity-100 pointer-coarse:group-active:animate-[rainbow-pan_1.5s_linear_infinite] pointer-coarse:group-active:opacity-100"
+        className={`absolute rounded-full animate-[rainbow-pan_1.5s_linear_infinite] transition-opacity duration-300 group-hover:opacity-100 pointer-coarse:group-active:opacity-100 ${active ? "opacity-100" : "opacity-0"}`}
         style={{
           inset: `${PRIDE_RINGS.length * 2}px`,
           background: prideStripeGradient,
           backgroundSize: "100% 200%",
         }}
       />
-      <span className="relative z-10 transition-colors duration-300 group-hover:text-black pointer-coarse:group-active:text-black">
+      <span
+        className={`relative z-10 transition-colors duration-300 group-hover:text-black pointer-coarse:group-active:text-black ${active ? "text-black" : ""}`}
+      >
         Pride
       </span>
     </button>
