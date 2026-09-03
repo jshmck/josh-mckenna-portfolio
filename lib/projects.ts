@@ -1927,9 +1927,7 @@ export const projects: Project[] = [
     categories: ["Editorial"],
     summary: "A chair, repeated as wallpaper, in case the first one wasn't clear enough.",
     heroCaption: "A tribute to a great design collaboration — Vitra × Virgil Abloh, 2025.",
-    brief: [
-      "Made in Figma Draw — the Vitra × Virgil Abloh chair, repeated as a wordmark pattern behind it.",
-    ],
+    brief: ["Made in Figma Draw — the Vitra × Virgil Abloh chair."],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
@@ -1938,7 +1936,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Vitra × Virgil Abloh",
-      src: "/work/figma-vitra-virgil/01-vitgr-hr2.webp",
+      src: "/work/figma-vitra-virgil/01-vitgr-hr3.webp",
     },
     gallery: [],
   },
