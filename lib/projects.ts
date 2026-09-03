@@ -363,6 +363,41 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    // Single overview sheet for now — Josh is redrawing the set in a new
+    // style, so the individual stickers land later.
+    slug: "its-all-love",
+    title: "It's All Love",
+    client: "Google",
+    year: 2017,
+    discipline: "Pride Campaign",
+    deliverables: "Sticker Set · 24 Stickers",
+    categories: ["Pride", "Character", "Icons"],
+    summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
+    heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
+    brief: [
+      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme — twenty-four stickers celebrating the LGBTQIA2+ community, from a finger snap to a full wedding.",
+      "The set went on to win an Applied Arts Photography & Illustration Award in the Conceptual Illustration category, Spring 2018.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Agency", name: "Anyways" },
+      { role: "Client", name: "Google" },
+    ],
+    // True 1/1, pinned so RATIO_CYCLE can't crop a sticker row off the
+    // sheet at whatever ratio its grid position lands on.
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "The full sticker set",
+      src: "/work/its-all-love/01-overview-01.webp",
+      // Transparent PNG — same fix as the Instagram sticker's hero:
+      // contain sits on bg-canvas, so no placeholder tone shows through
+      // the transparent background.
+      fit: "contain",
+    },
+    gallery: [],
+  },
+  {
     slug: "bum-selfie",
     title: "Bum Selfie",
     client: "Cake Boy Magazine",
