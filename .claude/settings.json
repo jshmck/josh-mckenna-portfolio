@@ -25,6 +25,8 @@
       "Bash(git restore:*)",
       "Bash(git show:*)",
       "Bash(gh pr:*)",
+      "Bash(~/bin/gh pr:*)",
+      "Bash(/Users/josh/bin/gh pr:*)",
       "Bash(gh repo view:*)",
       "Bash(gh api:*)",
       "Bash(ls:*)",
