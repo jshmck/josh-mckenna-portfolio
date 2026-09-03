@@ -383,9 +383,17 @@ export const projects: Project[] = [
       { role: "Agency", name: "Anyways" },
       { role: "Client", name: "Google" },
     ],
-    // True 1/1, pinned so RATIO_CYCLE can't crop a sticker row off the
-    // sheet at whatever ratio its grid position lands on.
+    // /work card only, per Josh — a four-sticker composite on a solid
+    // lavender fill, so the card gets a real surface instead of the
+    // overview sheet's transparent float. The project page above keeps
+    // the full sheet; this never renders there. Pinned to its true 1/1
+    // ("make sure it stays at 1/1") so RATIO_CYCLE can't crop it.
     cardRatio: "1/1",
+    cardImage: {
+      ratio: "1/1",
+      alt: "Four stickers from the set",
+      src: "/work/its-all-love/02-hero.webp",
+    },
     hero: {
       ratio: "1/1",
       alt: "The full sticker set",
