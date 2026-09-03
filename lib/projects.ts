@@ -18,6 +18,7 @@ export const PROJECT_CATEGORIES = [
   "Hospitality",
   "Icons",
   "Logo",
+  "Motion",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
@@ -470,7 +471,7 @@ export const projects: Project[] = [
     year: 2022,
     discipline: "Illustration",
     deliverables: "Illustrations for Animation",
-    categories: ["Character", "Icons"],
+    categories: ["Character", "Icons", "Motion"],
     summary: "Three rice pouches, three flavours, three animations.",
     heroCaption: "Illustration for three animated Tilda Rice ads — Katsu Curry, Indonesian Fried Rice and Masala — 2022.",
     brief: [
