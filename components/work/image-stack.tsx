@@ -241,7 +241,10 @@ export function ImageStack({
           const capped = isPortrait(image.ratio) || image.small;
           return (
             <Fragment key={image.alt}>
-              <Reveal className={capped ? "mx-auto max-w-lg" : undefined}>
+              <Reveal
+                className={capped ? "mx-auto max-w-lg" : undefined}
+                navContrastLight={image.navContrastLight}
+              >
                 <button
                   type="button"
                   onClick={() => openAt(indexOffset + fullIndex)}

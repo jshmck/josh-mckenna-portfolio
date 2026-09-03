@@ -116,6 +116,19 @@ export type ProjectImage = {
    * these (like beefbar)."
    */
   square?: boolean;
+  /**
+   * Per-image extension of Project.navContrastLight (see its own doc
+   * comment for the full mechanism) — flags one gallery photo, rather than
+   * the whole hero/card, as light-blue enough that the fixed nav's blue
+   * elements need to swap to white while it crosses the bar. Bombay
+   * Sapphire is the first case: the mural hero isn't blue, but the
+   * hand-painted bottles further down the gallery are — "when the nav bar
+   * goes over the top of the blue bottles the highlighted text and jM
+   * should go from blue to white," per Josh. Only wired up on ImageStack's
+   * plain full-width single-image branch so far (nothing paired or
+   * gallerySpans-grouped has needed it yet).
+   */
+  navContrastLight?: boolean;
 };
 
 export type Credit = {
@@ -495,8 +508,8 @@ export const projects: Project[] = [
     gallery: [
       {
         ratio: "4/5",
-        alt: "The original",
-        src: "/work/bum-selfie/01-bum-selfie-4-5.webp",
+        alt: "Bend over",
+        src: "/work/bum-selfie/03-bend-over-4-5.webp",
       },
     ],
     featured: false,
@@ -2607,11 +2620,14 @@ export const projects: Project[] = [
         ratio: "4/3",
         alt: "Fifty hand-finished bottles, ready to go",
         src: "/work/bombay-sapphire/07-bottles-wide.webp",
+        // See ProjectImage.navContrastLight's doc comment.
+        navContrastLight: true,
       },
       {
         ratio: "4/3",
         alt: "Bottle detail — botanicals from the Grains of Paradise",
         src: "/work/bombay-sapphire/08-bottles-macro.webp",
+        navContrastLight: true,
       },
     ],
   },
