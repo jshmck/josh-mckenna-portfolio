@@ -257,6 +257,15 @@ export type Project = {
    */
   cardRatio?: ImageRatio;
   /**
+   * Trial: plays `heroVideo` autoplaying/looping on the /work and
+   * home-embedded gallery card, instead of the usual still `hero`/`cardImage`
+   * frame — mini-animation only for now, since the animation itself is the
+   * whole piece rather than a supporting clip. Requires `heroVideo`; cropped
+   * to the card's usual ratio the same way the still image is, and reuses
+   * ProjectVideo's own prefers-reduced-motion guard.
+   */
+  cardVideo?: boolean;
+  /**
    * Crossfades in over the card's lead image on hover/focus. Set this to
    * curate the pick (e.g. la-pride); otherwise `getCardHoverImage` below
    * picks `heroPair` or the first gallery image automatically, so every
@@ -2730,6 +2739,9 @@ export const projects: Project[] = [
     // True 16/9 (source is 1220x686) on the project page; cropped to 1/1
     // on the /work card per Josh.
     cardRatio: "1/1",
+    // The whole piece is the animation — the grid card plays it rather
+    // than sitting on the still frame like every other video-backed card.
+    cardVideo: true,
     hero: {
       ratio: "16/9",
       alt: "The Mini, mid-drive",

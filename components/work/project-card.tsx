@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Parallax } from "@/components/ui/parallax";
 import { Plate } from "@/components/ui/plate";
+import { ProjectVideo } from "@/components/work/project-video";
 import type { Project, ProjectImage } from "@/lib/projects";
 
 /** Shared between the image and its hover overlay so they stay in sync.
@@ -34,9 +35,11 @@ type ProjectCardProps = {
   /**
    * `lift` moves the whole card up 6px — the expressive Home/About
    * treatment. `quiet` only scales the image 1.02× and leaves the card
-   * still.
+   * still. `shrink` scales the whole card (image + title together) down
+   * to 0.97× in place, no translate — the Work gallery's desktop hover,
+   * per Josh.
    */
-  motion?: "lift" | "quiet";
+  motion?: "lift" | "quiet" | "shrink";
   /** Wraps just the image in the same 0.85× scroll parallax as Home's
    *  signature illustration — each grid image drifts independently. */
   parallax?: boolean;
@@ -65,6 +68,13 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const hoverCaption = caption === "hover";
   const baseImage = image ?? project.hero;
+  // Trial (mini-animation only, see Project.cardVideo): the card plays the
+  // hero clip instead of sitting on its still frame — cropped to the same
+  // ratio the still would've used, poster is that still so there's no flash
+  // before playback starts.
+  const cardVideo =
+    project.cardVideo && project.heroVideo ? project.heroVideo : undefined;
+  const effectiveRatio = ratio ?? baseImage.ratio;
 
   const plate = (
     // Clipping and transforming live on two separate nested elements, not
@@ -87,13 +97,20 @@ export function ProjectCard({
             : ""
         }`}
       >
-        <Plate
-          image={ratio ? { ...baseImage, ratio } : baseImage}
-          sizes={sizes}
-          priority={priority}
-          radius={hoverCaption ? "" : undefined}
-          showPlaceholderCaption={!hoverCaption}
-        />
+        {cardVideo ? (
+          <ProjectVideo
+            video={{ src: cardVideo.src, alt: cardVideo.alt, poster: baseImage.src }}
+            ratio={effectiveRatio}
+          />
+        ) : (
+          <Plate
+            image={{ ...baseImage, ratio: effectiveRatio }}
+            sizes={sizes}
+            priority={priority}
+            radius={hoverCaption ? "" : undefined}
+            showPlaceholderCaption={!hoverCaption}
+          />
+        )}
         {hoverCaption && hoverImage && (
           <div
             aria-hidden="true"
@@ -138,7 +155,11 @@ export function ProjectCard({
       // Project.navContrastLight's doc comment.
       data-nav-contrast={project.navContrastLight === true ? "light" : undefined}
       className={`group block transition-transform duration-300 ease-drift ${
-        motion === "lift" ? "hover:-translate-y-1.5 focus-visible:-translate-y-1.5" : ""
+        motion === "lift"
+          ? "hover:-translate-y-1.5 focus-visible:-translate-y-1.5"
+          : motion === "shrink"
+            ? "hover:scale-[0.97] focus-visible:scale-[0.97]"
+            : ""
       }`}
     >
       {parallax ? (
