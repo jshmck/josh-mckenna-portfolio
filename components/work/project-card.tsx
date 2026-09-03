@@ -172,6 +172,24 @@ export function ProjectCard({
           </p>
         </div>
       )}
+      {/* hoverCaption's frosted-glass title only reveals on hover/focus,
+          which touch has neither of — mobile saw no title anywhere in the
+          grid. md:hidden keeps desktop's pure hover-reveal card exactly as
+          it was; only the mobile breakpoint gains this always-visible
+          strip, title only (no client/year) to match what the hover wash
+          itself shows. */}
+      {hoverCaption && (
+        <div className="mt-3 md:hidden">
+          {/* truncate + a fixed leading, not the free-flowing h3 the
+              `below` caption uses above — WorkGallery's masonry packer
+              (MOBILE_CAPTION_RESERVE_PX) reserves an exact pixel height
+              for this strip so cards don't overlap, which only holds if
+              every title renders at the same single-line height. */}
+          <h3 className="truncate font-body text-[15px] leading-[1.2] font-medium text-ink">
+            {project.title}
+          </h3>
+        </div>
+      )}
     </Link>
   );
 }

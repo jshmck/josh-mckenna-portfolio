@@ -122,6 +122,16 @@ function useIsDesktopGrid(): boolean {
  */
 const LANDSCAPE_SPAN_RATIO = 1.3;
 
+/** Reserved height (px) for ProjectCard's mobile-only title strip —
+ *  mt-3 (12px) + a 15px/1.2-leading single truncated line (18px), plus a
+ *  couple px of buffer against font-metric rounding. Every card here uses
+ *  `caption="hover"`, so every one gains this strip at the single-column
+ *  breakpoint (see MasonryGrid's mobileCaptionPx). Over-reserving by a
+ *  couple px just leaves a hair more air below the shortest card in a
+ *  row; under-reserving is the failure mode (captions overlapping the row
+ *  beneath), so round up rather than measure exact. */
+const MOBILE_CAPTION_RESERVE_PX = 32;
+
 /** Top-of-page illustration row, /work only (see showIllustrations
  *  above). Lives here rather than in app/work/page.tsx because it used
  *  to react to the active filter category -- that per-category logic
@@ -443,6 +453,7 @@ export function WorkGallery({
               ratio,
               span,
               transparent: isCardTransparent(project),
+              mobileCaptionPx: MOBILE_CAPTION_RESERVE_PX,
               node: (
                 <MasonryCard
                   project={project}

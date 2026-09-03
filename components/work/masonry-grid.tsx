@@ -68,6 +68,13 @@ export type MasonryItem = {
    *  See pack()'s adjacency check, which refuses to seat one of these next
    *  to another. */
   transparent?: boolean;
+  /** Extra px to reserve below the image-ratio height, added only at the
+   *  single-column (mobile) breakpoint — for a caption strip that renders
+   *  in normal flow under the card there but not at 2/3-column desktop.
+   *  Without this the packer sizes each slot from the image ratio alone,
+   *  so the caption's own height overflows the slot and overlaps the next
+   *  row (see ProjectCard's mobile-only title strip). */
+  mobileCaptionPx?: number;
   node: React.ReactNode;
 };
 
@@ -177,7 +184,8 @@ function pack(items: MasonryItem[], columnCount: number, gap: number, columnWidt
       }
 
       const widthPx = span * columnWidth + (span - 1) * gap;
-      const heightPx = widthPx / item.ratio;
+      const heightPx =
+        widthPx / item.ratio + (columnCount === 1 ? (item.mobileCaptionPx ?? 0) : 0);
       const deadSpace = bestTop - Math.min(...columnHeights);
       const blocked =
         item.transparent && seatsAdjacentTransparent(placements, bestStart, span, bestTop, heightPx);
