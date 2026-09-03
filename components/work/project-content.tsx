@@ -36,13 +36,20 @@ function renderBriefParagraph(paragraph: string) {
 /** The brief + sticky credits sidebar. Shared between the default layout
  *  (after the hero) and "grid" layout (before the gallery) so the two
  *  placements can't drift out of sync. */
-function WriteUp({ project }: { project: Project }) {
+function WriteUp({ project, leads = false }: { project: Project; leads?: boolean }) {
   return (
     // max-md:py-10 — the write-up's 80px of breathing room above and
     // below reads right on desktop but as a hole between sections on a
     // phone ("the spacing on mobile between the sections and the top of
     // the imagery," per Josh) — halved below md, desktop untouched.
-    <div className="mx-auto grid max-w-frame gap-14 px-6 py-20 max-md:py-10 md:grid-cols-[1fr_260px] md:px-gutter">
+    // `leads` (the poster-grid placement, where this text opens the page
+    // instead of the hero): mobile top padding drops to 0 so the text
+    // sits on the header's own 32px seam, same as an image would —
+    // "on the occasion that the project has text before image (Rooted
+    // journal, beefbar etc) the text could be tighter," per Josh.
+    <div
+      className={`mx-auto grid max-w-frame gap-14 px-6 py-20 max-md:py-10 md:grid-cols-[1fr_260px] md:px-gutter ${leads ? "max-md:pt-0" : ""}`}
+    >
       <div className="max-w-2xl">
         {project.brief.map((paragraph, index) => (
           <p
@@ -355,7 +362,7 @@ export function ProjectContent({ project }: { project: Project }) {
             reach the write-up buries it; everywhere else the hero comes
             first, per the wireframe. */}
         {project.galleryLayout === "poster-grid" && (
-          <WriteUp project={project} />
+          <WriteUp project={project} leads />
         )}
 
         {/* Hero — heroPair renders it as a two-up instead of one full-width
