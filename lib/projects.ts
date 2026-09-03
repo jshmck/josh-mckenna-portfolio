@@ -380,6 +380,45 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "comic-relief-sink-the-pink",
+    title: "Comic Relief x Sink The Pink",
+    client: "Comic Relief",
+    year: 2020,
+    discipline: "Pride Campaign",
+    deliverables: "2 tote designs",
+    categories: ["Pride", "Character", "Icons"],
+    summary: "Two couples in one embrace, printed for Red Nose Day — one ended up on a Spice Girl's shoulder.",
+    heroCaption:
+      "One of two couple pairings, printed onto canvas totes for Comic Relief and Sink The Pink's Red Nose Day 2020 range.",
+    brief: [
+      "Comic Relief, in partnership with Sink The Pink, commissioned tote bag artwork for Red Nose Day 2020 — two couple pairings, printed across the range.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Comic Relief" },
+      { role: "Partner", name: "Sink The Pink" },
+    ],
+    hero: {
+      ratio: "1/1",
+      alt: "Tote artwork — pairing one",
+      src: "/work/comic-relief-sink-the-pink/01-tote-women.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "Tote artwork — pairing two",
+      src: "/work/comic-relief-sink-the-pink/02-tote-men.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "Mel C, of the Spice Girls, posted this online",
+        // Low-res screenshot — the original photo file is lost.
+        small: true,
+        src: "/work/comic-relief-sink-the-pink/03-mel-c-tote.webp",
+      },
+    ],
+  },
+  {
     slug: "hikes-n-bikes",
     title: "Hikes n Bikes",
     client: "Hikes and Bikes LA",
@@ -492,7 +531,7 @@ export const projects: Project[] = [
     navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
-    categories: ["Editorial", "Pride"],
+    categories: ["Editorial"],
     summary: "Two attempts at an angle a phone was never built for.",
     heroCaption: "",
     brief: [
@@ -903,20 +942,20 @@ export const projects: Project[] = [
       alt: "The full sticker set",
       src: "/work/away-pride-stickers/02-sticker-set.webp",
     },
-    // Both true 4/5 now that the mockup's been re-exported at high res —
-    // paired side by side, full column width (not `small`, per Josh — the
-    // resolution isn't a concern anymore, so no reason to cap them).
+    // Leads with the luggage mockup now, per Josh — swapped with the flat
+    // sticker set below. True ratio (2000x2328, reduced 250/291).
     hero: {
-      ratio: "4/5",
-      alt: "The full sticker set",
-      src: "/work/away-pride-stickers/02-sticker-set.webp",
-    },
-    // True ratio (2000x2328, reduced 250/291) — the reshoot's crop is no
-    // longer an exact 4/5.
-    heroPair: {
       ratio: "250/291",
       alt: "The sticker set, applied to Away luggage",
       src: "/work/away-pride-stickers/01-sticker-luggage.webp",
+    },
+    // Both true 4/5 now that the mockup's been re-exported at high res —
+    // paired side by side, full column width (not `small`, per Josh — the
+    // resolution isn't a concern anymore, so no reason to cap them).
+    heroPair: {
+      ratio: "4/5",
+      alt: "The full sticker set",
+      src: "/work/away-pride-stickers/02-sticker-set.webp",
       caption: false,
     },
     gallery: [],
@@ -1474,7 +1513,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D", "Character", "Pride"],
+    categories: ["3D", "Character"],
     summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
     // Displayed caption, distinct from hero.alt (screen readers still get
     // the plain description) — per Josh: "Who wants this as a resin
@@ -2205,15 +2244,13 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "VOXI by Vodafone" },
     ],
+    // Leads with the phone case now, per Josh — the "Endless Love" banner
+    // moved into the gallery grid below (GalleryGrid's isPanorama spans it
+    // across both columns automatically).
     hero: {
-      // True ratio (3.3657), not the site's usual 16/10 — the "Endless
-      // Love" banner crop of the full cast.
-      ratio: "2400/713",
-      alt: "The full \"Endless Love\" banner artwork for VOXI's Pride campaign",
-      src: "/work/voxi-pride/01-banner.webp",
-      // Too narrow (short) a strip for the sitewide rounded frame to read
-      // right — square corners instead, per Josh.
-      square: true,
+      ratio: "1/1",
+      alt: "VOXI × Josh McKenna, on a phone case",
+      src: "/work/voxi-pride/07-phone.webp",
     },
     // True ratio (0.7998) — a fresh 4/5 export, replacing the old 3/4
     // portrait poster crop.
@@ -2237,6 +2274,17 @@ export const projects: Project[] = [
     galleryLayout: "grid",
     gallery: [
       {
+        // True ratio (3.3657), not the site's usual 16/10 — the "Endless
+        // Love" banner crop of the full cast. Spans both grid columns
+        // (GalleryGrid's isPanorama) instead of sitting half-width.
+        ratio: "2400/713",
+        alt: "The full \"Endless Love\" banner artwork for VOXI's Pride campaign",
+        src: "/work/voxi-pride/01-banner.webp",
+        // Too narrow (short) a strip for the sitewide rounded frame to read
+        // right — square corners instead, per Josh.
+        square: true,
+      },
+      {
         ratio: "1/1",
         alt: "Endless Love — framed square",
         src: "/work/voxi-pride/03-vox-9.webp",
@@ -2255,11 +2303,6 @@ export const projects: Project[] = [
         ratio: "1/1",
         alt: "Endless Love — the kiss",
         src: "/work/voxi-pride/06-vox-12.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "VOXI × Josh McKenna, on a phone case",
-        src: "/work/voxi-pride/07-phone.webp",
       },
       {
         ratio: "1/1",
@@ -2628,6 +2671,43 @@ export const projects: Project[] = [
         navContrastLight: true,
       },
     ],
+  },
+  {
+    slug: "bershka",
+    title: "We Are Proud",
+    client: "Bershka",
+    year: 2018,
+    discipline: "Illustration",
+    deliverables: "1 Instagram Story animation",
+    categories: ["Pride", "Motion"],
+    summary: "A rainbow of dancers, animated for Bershka's Pride month Instagram Stories.",
+    heroCaption: "A held frame from the animation, 2018.",
+    brief: [
+      "For Pride month 2018, Bershka commissioned a short Instagram Story animation — characters dancing across a rainbow as the words \"We Are Proud\" build up over the top.",
+      "I drew the artwork; Bershka's in-house team animated it.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Animation", name: "Bershka" },
+    ],
+    // True 9/16 (source is 1080x1920) — pinned so the /work card keeps the
+    // full portrait rather than a masonry-cycle crop through the dancers.
+    cardRatio: "9/16",
+    hero: {
+      ratio: "9/16",
+      alt: "We Are Proud animation, held frame",
+      src: "/work/bershka/01-we-are-proud-hero.webp",
+    },
+    // No heroPair — the video is the only asset, so heroVideo's default
+    // "top" position with no pair renders it alone; hero.src still supplies
+    // the video poster, the /work card image and the OG image.
+    heroVideo: {
+      src: "/work/bershka/02-we-are-proud.mp4",
+      alt: "The We Are Proud animation",
+      sound: true,
+      ratio: "9/16",
+    },
+    gallery: [],
   },
 ];
 
