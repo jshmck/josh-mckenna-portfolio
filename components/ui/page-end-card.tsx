@@ -2,39 +2,31 @@
  * Mobile-only page-end treatment — "I like the project cards, could all
  * the other pages end like that... only end with the curved corners and
  * shadow," per Josh, after seeing the /work/[slug] card (project-content.tsx).
- * Bottom corners only, no side/top margin — unlike the project card, which
- * floats as a full card inset on every edge, this rounds off just where the
- * page meets the footer's curtain reveal (see footer.tsx), leaving the top
- * of the page flush under the nav. md+ renders an invisible, unstyled
- * wrapper, same as project-content.tsx.
- *
- * The shadow lives back on the real content box (outer div), not a
- * separate strip or an inner gradient -- two things that both got tried
- * and both read wrong. A background gradient clipped inside the box (an
- * earlier attempt) darkened the card's own bottom padding instead of
- * casting a shadow past its edge -- reported live as "the shadow is
- * inside the card instead of outside." A separate invisible strip's flat
- * top edge, on pages whose content doesn't run flush to the bottom (e.g.
- * Shop), sat in plain canvas space and read as a stray line.
- *
- * The actual fix is the shadow's own numbers: `18px` blur on an `8px`
- * offset (the original values) meant blur > offset, and CSS box-shadow
- * blurs symmetrically around the offset edge -- with blur wider than the
- * offset, the blur necessarily reaches *back past the box's own top edge*
- * and bleeds upward, flush under the header, however tightly you clip it
- * (clipping just slices through a still-nonzero part of the gradient,
- * confirmed live even after clip-path and overflow-hidden attempts).
- * Keeping blur ≤ offset (`14px` blur on a `16px` offset here) means the
- * blur's reach never crosses back above the box's top edge in the first
- * place -- not clipped away, mathematically absent. So it can go straight
- * back on the real box: a proper shadow cast outside and below the
- * rounded corners, nothing bleeding under the header, nothing floating
- * disconnected in blank space either, since it's tied to the real edge
- * of real content again. */
+ * Three earlier attempts (a separate shadow strip, an inner gradient, a
+ * shadow tuned back onto the flush edge-to-edge box) all read as either a
+ * stray line or a shadow "inside the card instead of outside" — because
+ * with no visible margin around it, there was nothing to show where the
+ * invisible (bg-canvas-on-bg-canvas) card actually ended and the shadow
+ * began; any gradient just looked smudged onto the page itself. This now
+ * copies project-content.tsx's card treatment directly, the one place on
+ * the site this genuinely already reads as a floating card: `mx-3 mt-3`
+ * margin makes the gap itself visible (the header/page shows through
+ * around the card), so the shadow renders in a space distinct from the
+ * card rather than flush against it. Same two-layer shadow tuned to that
+ * exact 12px margin (see project-content.tsx's own comment for the
+ * offset/blur reach math) and the same shadow/overflow-hidden split
+ * across two elements (a known Safari compositing trap when they're on
+ * the same node). No bottom margin, deliberately, same reasoning as
+ * project-content.tsx: main's opaque background paints under a child's
+ * margin too, so a bottom gap here would ride along as a canvas-coloured
+ * apron covering the footer's icons mid-curtain-reveal. The card's own
+ * shadowed edge is the curtain's edge; air between the corner and the
+ * footer's content comes from the footer's own top padding. md+ renders
+ * an invisible, unstyled wrapper, same as project-content.tsx. */
 export function PageEndCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-md:rounded-b-frame max-md:shadow-[0_16px_14px_rgba(0,0,0,0.12)]">
-      <div className="max-md:overflow-hidden max-md:rounded-b-frame max-md:bg-canvas">
+    <div className="max-md:mx-3 max-md:mt-3 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
+      <div className="max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas">
         {children}
       </div>
     </div>
