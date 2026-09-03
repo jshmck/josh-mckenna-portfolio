@@ -300,9 +300,11 @@ export function ProjectContent({ project }: { project: Project }) {
                   shy of the frame's right edge below — static, no hover
                   movement, unlike the /work page's top illustration row.
                   Width splits evenly across however many pieces are given
-                  (72% total, small gap) so a two-up like la-pride's shield
-                  + plate reads as a pair sitting close together rather than
-                  stranded at opposite ends of the row. */}
+                  (54% total, small gap — was 72, "reduce the size of the
+                  LA pride illustrations next to the title," per Josh) so a
+                  two-up like la-pride's shield + plate reads as a pair
+                  sitting close together rather than stranded at opposite
+                  ends of the row. */}
               {headerIllustrations && (
                 <div className="hidden min-w-0 flex-1 items-end gap-2 md:flex">
                   {headerIllustrations.map(({ src, aspect }) => (
@@ -311,7 +313,7 @@ export function ProjectContent({ project }: { project: Project }) {
                       className="relative shrink-0"
                       style={{
                         aspectRatio: aspect,
-                        width: `${72 / headerIllustrations.length}%`,
+                        width: `${54 / headerIllustrations.length}%`,
                       }}
                     >
                       <Image
