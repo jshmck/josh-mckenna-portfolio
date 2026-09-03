@@ -66,7 +66,11 @@ export type ImageRatio =
   // WSJ AirPods article screenshot — true 1376x2184 (reduced 172/273).
   // Nearest existing ratio (3/4) would have cropped the masthead or the
   // body copy.
-  | "172/273";
+  | "172/273"
+  // Hikes n Bikes' full mural artwork — a wall-wide 7500x3300 strip
+  // (reduced 25/11). Nearest existing ratio (16/10) would have cropped
+  // the palms, nozzle and pump off both ends.
+  | "25/11";
 
 export type ProjectImage = {
   ratio: ImageRatio;
