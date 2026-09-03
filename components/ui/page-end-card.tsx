@@ -8,36 +8,34 @@
  * of the page flush under the nav. md+ renders an invisible, unstyled
  * wrapper, same as project-content.tsx.
  *
- * The shadow does NOT live on the same box as the page content. A plain
- * box-shadow paints on all four sides of the box it's declared on, not
- * just "underneath" it, so putting it on the full-height content box (top
- * edge sitting flush under the header) bled a faint band all the way up
- * there — reported live as "the header seems to be a different colour
- * than the page." Two clip-based attempts (`clip-path: inset()`, then an
- * `overflow: hidden` ancestor sized flush to the box's own top edge)
- * both still leaked a hairline: the shadow's gaussian gradient hasn't
- * actually decayed to zero at the box's own edge (its 8px y-offset means
- * the blur *peaks* 8px inside the box), so clipping exactly at that edge
- * cuts through a still-visible part of the gradient rather than its
- * faded-out tail -- confirmed faintly visible live even after both
- * clips. The only structural fix is to never let a shadow-casting box
- * get anywhere near the header: `shadowStrip` below is a short (24px),
- * separately positioned layer pinned to the bottom corners only, with
- * its shadow declared on IT, not on the tall content box. Its own top
- * edge sits 24px above the very bottom of the page, nowhere near the
- * header, so no amount of upward bleed from its shadow can ever reach
- * there -- not "clipped well enough to not show," genuinely nowhere
- * near close enough to show. aria-hidden + pointer-events-none: purely
- * decorative, and it visually overlaps the last 24px of real content. */
+ * This is a `background` gradient, not a `box-shadow`. Two earlier attempts
+ * used box-shadow on the content box itself and both leaked a visible band
+ * above the box's top edge, flush under the header ("the header seems to be
+ * a different colour than the page") -- clip-path doesn't reliably clip
+ * box-shadow in WebKit, and an overflow-hidden ancestor sized flush to the
+ * box's own edge still showed a hairline, because a shadow's blur can't
+ * actually reach zero alpha AT the edge that casts it (there's always some
+ * value right at the source, however small the offset). A third attempt
+ * moved the shadow onto a separate invisible strip near the bottom instead
+ * of the header -- that stopped the header leak, but on any page whose real
+ * content doesn't run flush to the very bottom (e.g. Shop's ghosted grid,
+ * padded well above the footer), the strip's own flat top edge sat in
+ * plain canvas space with nothing visibly attached to it, and its
+ * never-quite-zero shadow value read as a stray horizontal line — reported
+ * live as "the shadow is working well at the bottom but now there is a
+ * line." A `linear-gradient` doesn't have that failure mode: it's zero by
+ * definition at the stop you give it, not asymptotically approaching zero.
+ * So the fade lives directly on the content box, clipped by the same
+ * overflow-hidden + rounded-b-frame that already clips the content --
+ * no separate strip, nothing that can ever land outside the box it's
+ * describing. */
 export function PageEndCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-md:relative">
-      <div className="max-md:overflow-hidden max-md:rounded-b-frame max-md:bg-canvas">
-        {children}
-      </div>
+    <div className="max-md:relative max-md:overflow-hidden max-md:rounded-b-frame max-md:bg-canvas">
+      {children}
       <div
         aria-hidden="true"
-        className="max-md:pointer-events-none max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:h-6 max-md:rounded-b-frame max-md:shadow-[0_8px_18px_rgba(0,0,0,0.10)]"
+        className="max-md:pointer-events-none max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:h-10 max-md:bg-[linear-gradient(to_top,rgba(0,0,0,0.10),rgba(0,0,0,0))]"
       />
     </div>
   );
