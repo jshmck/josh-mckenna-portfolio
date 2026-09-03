@@ -330,7 +330,7 @@ function MasonryCard({
       image={project.cardImage}
       ratio={ratio}
       caption="hover"
-      motion="quiet"
+      motion="lift"
       parallax
       hoverImage={getCardHoverImage(project)}
       sizes={sizes}
