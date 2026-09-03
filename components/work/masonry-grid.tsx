@@ -27,9 +27,17 @@ function getColumnCount() {
  *  drifting the same scroll-lag direction, vertically adjacent cards only
  *  ever *converge* by their offsets' difference, a few px -- the full
  *  clamp shows up as divergence, which opens gaps rather than closing
- *  them. */
+ *  them.
+ *
+ *  Nudged again 12 -> 16 once every mobile card gained a title strip
+ *  underneath it (ProjectCard's mobile-only caption): at 12px this row
+ *  gap exactly matched the image-to-title mt-2 (also landing near 12px
+ *  pre-tighten), so a title read as equally close to the image above and
+ *  the next card's image below -- ambiguous which project it belonged
+ *  to, per Josh. This gap is now deliberately wider than that mt-2 so
+ *  proximity alone signals the grouping. */
 function getGap(columnCount: number) {
-  return columnCount === 1 ? 12 : 32;
+  return columnCount === 1 ? 16 : 32;
 }
 
 /** Pre-measurement fallback column width for converting a ratio into a

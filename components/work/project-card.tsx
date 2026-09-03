@@ -179,7 +179,12 @@ export function ProjectCard({
           strip, title only (no client/year) to match what the hover wash
           itself shows. */}
       {hoverCaption && (
-        <div className="mt-3 md:hidden">
+        // mt-2, tighter than the `below` caption's mt-3 above — proximity
+        // is the only cue tying this title to its own image rather than
+        // the next card down, so it needs to sit closer to its image than
+        // MasonryGrid's row gap (16px on mobile) sits to the next card.
+        // Equal spacing on both sides read as ambiguous, per Josh.
+        <div className="mt-2 md:hidden">
           {/* truncate + a fixed leading, not the free-flowing h3 the
               `below` caption uses above — WorkGallery's masonry packer
               (MOBILE_CAPTION_RESERVE_PX) reserves an exact pixel height
