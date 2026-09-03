@@ -1,4 +1,5 @@
 import { EnquiryForm } from "@/components/contact/enquiry-form";
+import { SOCIAL_ICON_SIZE, socialLinks } from "@/components/site/social-links";
 import { Reveal } from "@/components/ui/reveal";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { siteConfig } from "@/lib/site";
@@ -12,13 +13,14 @@ import { siteConfig } from "@/lib/site";
  * wanted again later. The caller owns its own page-level heading
  * (sr-only or otherwise) — this component starts at the intro paragraph.
  *
- * No social icon row here any more — it duplicated the sitewide footer's
- * (same icons, same links, nearly identical styling), which renders on
- * every page including this one via the root layout. Removed the copy
- * here rather than teaching Footer to hide itself on "/contact", since
- * Footer's own doc comment already establishes it as the canonical,
- * every-page way to reach Josh's socials — this page duplicating that
- * was the odd one out, not Footer.
+ * The full-size social icon row that used to live here was removed as a
+ * duplicate of the sitewide footer's. What remains is a mobile-only row
+ * (md:hidden) between the intro paragraph and the email addresses —
+ * "on mobile i want the social media icons from the footer just under
+ * the paragraph and above the emails," per Josh — drawing from the same
+ * shared list as the footer (components/site/social-links.ts) so the
+ * two can't drift apart again. No envelope icon in it, per the same
+ * request: the addresses themselves sit directly below.
  */
 export function ContactContent() {
   return (
@@ -37,9 +39,28 @@ export function ContactContent() {
             replies within two working days.
           </p>
 
+          {/* Mobile-only: the footer's social set, minus the envelope
+              (the addresses are right below). Same hover recipe as the
+              footer's row. md+ keeps relying on the sitewide footer. */}
+          <ul className="mt-8 flex items-center gap-4 md:hidden">
+            {socialLinks.map(({ label, href, Icon, size = SOCIAL_ICON_SIZE }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={label}
+                  className="inline-block text-ink-muted transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-accent hover:duration-300 hover:ease-drift"
+                >
+                  <Icon size={size} />
+                </a>
+              </li>
+            ))}
+          </ul>
+
           {/* Moved here from the old sitewide footer — same treatment,
               same text size/format. */}
-          <div className="mt-12">
+          <div className="mt-12 max-md:mt-10">
             <p className="type-label text-ink-muted">Direct Commissions</p>
             <a
               href={`mailto:${siteConfig.email}`}
