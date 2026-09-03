@@ -934,28 +934,34 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Away" },
     ],
-    // The /work card leads with the flat sticker set, not the low-res
-    // suitcase mockup.
-    cardRatio: "4/5",
+    // The /work card leads with the luggage mockup now, per Josh — hover
+    // swaps to the flat sticker set. True ratio (2000x2328, reduced
+    // 250/291), matching cardImage so the card isn't cropped.
+    cardRatio: "250/291",
     cardImage: {
-      ratio: "4/5",
-      alt: "The full sticker set",
-      src: "/work/away-pride-stickers/02-sticker-set.webp",
-    },
-    // Leads with the luggage mockup now, per Josh — swapped with the flat
-    // sticker set below. True ratio (2000x2328, reduced 250/291).
-    hero: {
       ratio: "250/291",
       alt: "The sticker set, applied to Away luggage",
       src: "/work/away-pride-stickers/01-sticker-luggage.webp",
     },
-    // Both true 4/5 now that the mockup's been re-exported at high res —
-    // paired side by side, full column width (not `small`, per Josh — the
-    // resolution isn't a concern anymore, so no reason to cap them).
-    heroPair: {
+    cardHoverImage: {
       ratio: "4/5",
       alt: "The full sticker set",
       src: "/work/away-pride-stickers/02-sticker-set.webp",
+    },
+    // Both true 4/5 now that the mockup's been re-exported at high res —
+    // paired side by side, full column width (not `small`, per Josh — the
+    // resolution isn't a concern anymore, so no reason to cap them).
+    hero: {
+      ratio: "4/5",
+      alt: "The full sticker set",
+      src: "/work/away-pride-stickers/02-sticker-set.webp",
+    },
+    // True ratio (2000x2328, reduced 250/291) — the reshoot's crop is no
+    // longer an exact 4/5.
+    heroPair: {
+      ratio: "250/291",
+      alt: "The sticker set, applied to Away luggage",
+      src: "/work/away-pride-stickers/01-sticker-luggage.webp",
       caption: false,
     },
     gallery: [],
@@ -2244,28 +2250,29 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "VOXI by Vodafone" },
     ],
-    // Leads with the phone case now, per Josh — the "Endless Love" banner
-    // moved into the gallery grid below (GalleryGrid's isPanorama spans it
-    // across both columns automatically).
     hero: {
+      // True ratio (3.3657), not the site's usual 16/10 — the "Endless
+      // Love" banner crop of the full cast.
+      ratio: "2400/713",
+      alt: "The full \"Endless Love\" banner artwork for VOXI's Pride campaign",
+      src: "/work/voxi-pride/01-banner.webp",
+      // Too narrow (short) a strip for the sitewide rounded frame to read
+      // right — square corners instead, per Josh.
+      square: true,
+    },
+    // The /work card leads with the phone case now, per Josh — hover swaps
+    // to the full-cast crop that used to lead. True ratio (1/1), matching
+    // cardImage so the card isn't cropped.
+    cardRatio: "1/1",
+    cardImage: {
       ratio: "1/1",
       alt: "VOXI × Josh McKenna, on a phone case",
       src: "/work/voxi-pride/07-phone.webp",
     },
-    // True ratio (0.7998) — a fresh 4/5 export, replacing the old 3/4
-    // portrait poster crop.
-    cardRatio: "4/5",
-    cardImage: {
+    cardHoverImage: {
       ratio: "4/5",
       alt: "Full cast, cropped for the card",
       src: "/work/voxi-pride/02-card.webp",
-    },
-    // Explicit, not getCardHoverImage's default (first gallery image) —
-    // Josh wants the phone case as the /work hover swap specifically.
-    cardHoverImage: {
-      ratio: "1/1",
-      alt: "VOXI × Josh McKenna, on a phone case",
-      src: "/work/voxi-pride/07-phone.webp",
     },
     // Uniform two-column grid (see GalleryGrid) rather than the usual
     // two-up-then-full-width stack — six true-square images read better
@@ -2273,17 +2280,6 @@ export const projects: Project[] = [
     // own row at the end instead of mixed in with the artwork.
     galleryLayout: "grid",
     gallery: [
-      {
-        // True ratio (3.3657), not the site's usual 16/10 — the "Endless
-        // Love" banner crop of the full cast. Spans both grid columns
-        // (GalleryGrid's isPanorama) instead of sitting half-width.
-        ratio: "2400/713",
-        alt: "The full \"Endless Love\" banner artwork for VOXI's Pride campaign",
-        src: "/work/voxi-pride/01-banner.webp",
-        // Too narrow (short) a strip for the sitewide rounded frame to read
-        // right — square corners instead, per Josh.
-        square: true,
-      },
       {
         ratio: "1/1",
         alt: "Endless Love — framed square",
@@ -2303,6 +2299,11 @@ export const projects: Project[] = [
         ratio: "1/1",
         alt: "Endless Love — the kiss",
         src: "/work/voxi-pride/06-vox-12.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "VOXI × Josh McKenna, on a phone case",
+        src: "/work/voxi-pride/07-phone.webp",
       },
       {
         ratio: "1/1",
