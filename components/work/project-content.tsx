@@ -295,14 +295,13 @@ export function ProjectContent({ project }: { project: Project }) {
 
               </div>
 
-              {/* Trial (la-pride only for now): sat on the title's own
-                  baseline, anchored left right after the title and reduced
-                  shy of the frame's right edge below — static, no hover
-                  movement, unlike the /work page's top illustration row.
-                  Width splits evenly across however many pieces are given
-                  (72% total, small gap) so a two-up like la-pride's shield
-                  + plate reads as a pair sitting close together rather than
-                  stranded at opposite ends of the row. */}
+              {/* Currently unused — la-pride trialled this (its shield +
+                  plate pair next to the title), got shrunk from 72% to
+                  54%, then removed outright per Josh. The hook stays for
+                  a future project's header art, same unhooked-not-deleted
+                  treatment as the marquee: sat on the title's baseline,
+                  anchored left after the title, width split evenly across
+                  the pieces (54% total, small gap). */}
               {headerIllustrations && (
                 <div className="hidden min-w-0 flex-1 items-end gap-2 md:flex">
                   {headerIllustrations.map(({ src, aspect }) => (
@@ -311,7 +310,7 @@ export function ProjectContent({ project }: { project: Project }) {
                       className="relative shrink-0"
                       style={{
                         aspectRatio: aspect,
-                        width: `${72 / headerIllustrations.length}%`,
+                        width: `${54 / headerIllustrations.length}%`,
                       }}
                     >
                       <Image
