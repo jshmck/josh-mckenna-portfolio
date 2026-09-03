@@ -1377,9 +1377,12 @@ export const projects: Project[] = [
     deliverables: "Sticker Set · Mural · Parade Float",
     categories: ["LGBTQ+", "Murals", "Icons"],
     featured: true,
-    // cardImage is a true 1/1 — pinned explicitly, same fix as
-    // monocle-spot-illo, so a future reorder can't flip it via RATIO_CYCLE.
-    cardRatio: "1/1",
+    // 4/5 frame even though cardImage is a true 1/1 — "put instagram
+    // sticker in 4/5 frame to help with the grid," per Josh: leading the
+    // grid at 1/1 left its row visibly shorter than the portrait cards
+    // around it. The lavender fill crops top/bottom safely; the figure
+    // stays centred (the taller frame crops the square image's sides).
+    cardRatio: "4/5",
     summary:
       "I created an iconic Pride sticker for Instagram Stories: a sassy, muscular bloke in red high heels. Meant to last a month, it stayed live for five years, used by millions and turned into a symbol of queer culture and self-expression.",
     heroCaption: "The original character design, created for Instagram's 2017 Pride sticker set.",
