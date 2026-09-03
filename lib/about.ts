@@ -120,9 +120,14 @@ export const features: FeatureItem[] = [
   {
     title: "Application Accepted — SXSW 2027",
     description:
-      "Josh's application to speak at SXSW 2027 in Austin has been accepted — more detail nearer the date. Pictured: his SXSW illustration for Ad Age.",
-    alt: "Josh's SXSW illustration for Ad Age",
-    image: { src: "/about/sxsw-adage.jpg", fit: "contain" },
+      "Josh's PanelPicker proposal was voted through — SXSW 2027 runs 15–21 March in Austin, Texas.",
+    alt: "SXSW 2027 PanelPicker voting card for Josh's proposal",
+    // The 1920x1080 promo master is extended to exactly 16/10 by growing
+    // its flat purple/pink bands (scratchpad job, no content scaled or
+    // cropped) — contain-letterboxing the 16:9 original left this the
+    // only square-cornered card on the page, and cover would clip the
+    // SXSW logo off its left edge.
+    image: { src: "/about/sxsw-panelpicker-card.jpg" },
   },
   {
     title: "Speaker — Config 2026",
@@ -136,7 +141,9 @@ export const features: FeatureItem[] = [
     alt: "A Minute With — a one-minute filmed interview with Josh McKenna",
     video: {
       src: "/about/a-minute-with.mp4",
-      poster: "/about/a-minute-with-poster.jpg",
+      // The 0:28 frame, per Josh — him drawing on the iPad, captioned
+      // "my process is all digital these days."
+      poster: "/about/a-minute-with-poster-28s.jpg",
     },
   },
   {
