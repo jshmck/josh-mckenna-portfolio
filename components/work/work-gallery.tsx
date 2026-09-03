@@ -182,7 +182,7 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
 ).join(", ")})`;
 
 /**
- * The "Pride" filter pill only — everywhere else in the row is the plain
+ * The "LGBTQ+" filter pill only — everywhere else in the row is the plain
  * bordered/filled button below. On hover it reveals a pride-flag treatment
  * underneath the label (pink/light-blue/white rings around a rainbow
  * fill), pure CSS, no image asset. Idle otherwise matches every other pill
@@ -280,7 +280,7 @@ function PrideFilterButton({
       <span
         className={`relative z-10 transition-colors duration-300 group-hover:text-black pointer-coarse:group-active:text-black ${active ? "text-black" : ""}`}
       >
-        Pride
+        LGBTQ+
       </span>
     </button>
   );
@@ -404,7 +404,7 @@ export function WorkGallery({
         {filters.map((option) => {
           const active = filter === option;
 
-          if (option === "Pride") {
+          if (option === "LGBTQ+") {
             return (
               <PrideFilterButton
                 key={option}

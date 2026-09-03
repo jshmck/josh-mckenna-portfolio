@@ -8,17 +8,18 @@
  * projects through the helpers at the bottom, never the array directly.
  */
 
+// Trimmed from ten pills to seven, per Josh (Sep 2026) — Character,
+// Hospitality and Logo were dropped outright (their projects show under
+// All only unless retagged), Pride became LGBTQ+, Mural→Murals and
+// Automotive→Cars. Order here is pill order on /work.
 export const PROJECT_CATEGORIES = [
-  "Character",
-  "Pride",
+  "LGBTQ+",
   "Editorial",
-  "Mural",
-  "Automotive",
-  "3D",
-  "Hospitality",
+  "Murals",
+  "Cars",
   "Icons",
-  "Logo",
   "Motion",
+  "3D",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
@@ -395,7 +396,7 @@ export const projects: Project[] = [
     year: 2020,
     discipline: "Pride Campaign",
     deliverables: "2 tote designs",
-    categories: ["Pride", "Character", "Icons"],
+    categories: ["LGBTQ+"],
     summary: "Two couples in one embrace, printed for Red Nose Day — one ended up on a Spice Girl's shoulder.",
     heroCaption:
       "One of two couple pairings, printed onto canvas totes for Comic Relief and Sink The Pink's Red Nose Day 2020 range.",
@@ -434,7 +435,7 @@ export const projects: Project[] = [
     year: 2020,
     discipline: "Mural",
     deliverables: "1 mural",
-    categories: ["Mural"],
+    categories: ["Murals"],
     summary: "Seven cyclists, a peach, and some advice about gas.",
     heroCaption:
       "Painted at La Cienega and Santa Monica Boulevards, West Hollywood, December 2020.",
@@ -487,7 +488,7 @@ export const projects: Project[] = [
     year: 2017,
     discipline: "Stickers & Iconography",
     deliverables: "Sticker Set · 24 Stickers",
-    categories: ["Pride", "Character", "Icons"],
+    categories: ["LGBTQ+", "Icons"],
     summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
     heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
     brief: [
@@ -540,7 +541,7 @@ export const projects: Project[] = [
     navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
-    categories: ["Editorial"],
+    categories: [],
     summary: "Two attempts at an angle a phone was never built for.",
     heroCaption: "",
     brief: [
@@ -569,7 +570,7 @@ export const projects: Project[] = [
     year: 2020,
     discipline: "Illustration",
     deliverables: "Key Art",
-    categories: ["Character"],
+    categories: [],
     summary: "Working on an even tan, one way or another.",
     heroCaption: "",
     brief: [
@@ -593,7 +594,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Illustration",
     deliverables: "Key Art",
-    categories: ["Automotive"],
+    categories: ["Cars"],
     summary: "A carport doing its one job, in Palm Springs.",
     heroCaption: "",
     brief: [
@@ -616,7 +617,7 @@ export const projects: Project[] = [
     year: 2021,
     discipline: "Illustration",
     deliverables: "Key Art",
-    categories: ["Automotive"],
+    categories: ["Cars"],
     summary: "The new Bronco, reveal day.",
     heroCaption: "",
     brief: [
@@ -639,7 +640,7 @@ export const projects: Project[] = [
     year: 2022,
     discipline: "Illustration",
     deliverables: "Illustrations for Animation",
-    categories: ["Character", "Icons", "Motion"],
+    categories: ["Motion"],
     summary: "Three rice pouches, three flavours, three animations.",
     heroCaption: "Illustration for three animated Tilda Rice ads — Katsu Curry, Indonesian Fried Rice and Masala — 2022.",
     brief: [
@@ -728,7 +729,7 @@ export const projects: Project[] = [
     year: 2023,
     discipline: "Pride Campaign",
     deliverables: "Packaging · Parade Float",
-    categories: ["Pride", "Character"],
+    categories: ["LGBTQ+"],
     summary: "A Pride parade, wrapped around a jar of face cream.",
     heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
     brief: [
@@ -769,7 +770,7 @@ export const projects: Project[] = [
     year: 2022,
     discipline: "Illustration",
     deliverables: "3 Posters",
-    categories: ["Hospitality", "Automotive"],
+    categories: [],
     summary: "Three hotels, three vintage travel posters, one coastline.",
     heroCaption: "A set of travel posters for three Costa Smeralda hotels — Cala di Volpe, Romazzino and Cervo — 2022.",
     hideHeroCaptions: true,
@@ -867,7 +868,7 @@ export const projects: Project[] = [
     year: 2019,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Character", "Icons", "Logo"],
+    categories: ["Icons"],
     summary: "The ampersand, sat cross-legged and fully aware of it.",
     heroCaption: "For \"re/viewed,\" Ace & Tate's series inviting illustrators to reinterpret their logo, 2019.",
     brief: [
@@ -933,7 +934,7 @@ export const projects: Project[] = [
     year: 2019,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set",
-    categories: ["Pride", "Character", "Icons"],
+    categories: ["LGBTQ+", "Icons"],
     summary: "Two couples, a rainbow and a sunbather, sized to fit on a suitcase.",
     heroCaption: "A set of five Pride stickers, available in Away's stores throughout Pride month, 2019.",
     brief: [
@@ -991,7 +992,7 @@ export const projects: Project[] = [
     pinnedRank: 1,
     discipline: "Pride Campaign",
     deliverables: "Vinyl Window Display",
-    categories: ["Pride", "Character", "Hospitality"],
+    categories: ["LGBTQ+", "Murals"],
     summary: "Two Pride windows, one restaurant chain, a year apart.",
     heroCaption: "The full artwork, designed for Wagamama's Brighton window, 2023.",
     brief: [
@@ -1052,7 +1053,7 @@ export const projects: Project[] = [
     yearLabel: "October 2022",
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
-    categories: ["Pride", "Editorial"],
+    categories: ["LGBTQ+", "Editorial"],
     summary: "Every letter of the acronym, spelled out so nobody has to ask twice.",
     heroCaption: "For Atlanta Magazine's October 2022 feature \"Alphabet Soup,\" written by Taylor Alxndr.",
     brief: [
@@ -1092,7 +1093,7 @@ export const projects: Project[] = [
     year: 2022,
     discipline: "Illustration",
     deliverables: "5 Icons",
-    categories: ["Character", "Icons"],
+    categories: ["Icons"],
     summary: "A hot dog, a bottle, a pizza slice — Coke turns up in all of them.",
     heroCaption: "One of five \"everyday moments\" icons made for Coca-Cola, 2022.",
     // No visible captions on this one -- "Poolside" turned out to be a
@@ -1236,7 +1237,7 @@ export const projects: Project[] = [
     yearLabel: "The Inequality Issue, 2019",
     discipline: "Editorial Illustration",
     deliverables: "Editorial Illustration",
-    categories: ["Editorial", "Pride"],
+    categories: ["LGBTQ+", "Editorial"],
     summary: "A mechanic, rising from under the hood in heels.",
     heroCaption: "Illustrated for \"The Gay Divide,\" Weapons of Reason's The Inequality Issue, 2019.",
     brief: [
@@ -1374,7 +1375,7 @@ export const projects: Project[] = [
     pinnedRank: 4,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set · Mural · Parade Float",
-    categories: ["Pride", "Mural", "Character", "Icons"],
+    categories: ["LGBTQ+", "Murals", "Icons"],
     featured: true,
     // cardImage is a true 1/1 — pinned explicitly, same fix as
     // monocle-spot-illo, so a future reorder can't flip it via RATIO_CYCLE.
@@ -1503,7 +1504,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "1 Render",
-    categories: ["3D", "Character"],
+    categories: ["3D"],
     summary: "A beanie, a moustache, an earring — the first character built in Womp.",
     heroCaption: "",
     brief: [
@@ -1528,7 +1529,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D", "Character"],
+    categories: ["3D"],
     summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
     // Displayed caption, distinct from hero.alt (screen readers still get
     // the plain description) — per Josh: "Who wants this as a resin
@@ -1576,7 +1577,7 @@ export const projects: Project[] = [
     pinnedRank: 18,
     discipline: "3D Illustration",
     deliverables: "1 Turnaround · 3 Renders",
-    categories: ["3D", "Automotive"],
+    categories: ["Cars", "3D"],
     summary: "My favourite car, rendered because I wanted an excuse to model it.",
     heroCaption: "",
     brief: [
@@ -1621,7 +1622,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
-    categories: ["3D", "Automotive"],
+    categories: ["Cars", "3D"],
     summary: "Same little city car, once yellow under pink light and once black under red.",
     heroCaption: "",
     brief: [
@@ -1654,7 +1655,7 @@ export const projects: Project[] = [
     pinnedRank: 13,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
-    categories: ["3D", "Character", "Editorial"],
+    categories: ["Editorial", "3D"],
     summary: "Tapping into the coffee fund.",
     heroCaption: "",
     brief: [
@@ -1686,7 +1687,7 @@ export const projects: Project[] = [
     navContrastLight: true,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D", "Character"],
+    categories: ["3D"],
     summary: "Three legs, full confidence.",
     heroCaption: "",
     brief: [
@@ -1757,7 +1758,7 @@ export const projects: Project[] = [
     yearLabel: "Spring 2025",
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
-    categories: ["Editorial"],
+    categories: ["Editorial", "Icons"],
     summary: "Composting, fishing and shouting into a megaphone, drawn at the same scale.",
     heroCaption: "Illustrated for \"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
     brief: [
@@ -1863,7 +1864,7 @@ export const projects: Project[] = [
     navContrastLight: true,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Character"],
+    categories: [],
     summary: "A YETI cooler, occupied.",
     heroCaption: "",
     brief: [
@@ -1889,7 +1890,7 @@ export const projects: Project[] = [
     pinnedRank: 15,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Editorial"],
+    categories: [],
     summary: "Mind the closing doors — and whatever's still in your hand.",
     heroCaption: "",
     brief: [
@@ -1914,7 +1915,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Character"],
+    categories: [],
     summary: "LA's chaotic sidewalk bots, forever stalling out halfway across a crossing.",
     heroCaption: "",
     brief: [
@@ -1963,7 +1964,7 @@ export const projects: Project[] = [
     pinnedRank: 16,
     discipline: "Illustration",
     deliverables: "2 Illustrations",
-    categories: ["Automotive"],
+    categories: ["Cars"],
     summary: "A niche favourite, picked for doors that drop straight into the sill.",
     heroCaption: "",
     brief: [
@@ -1994,7 +1995,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Character"],
+    categories: [],
     summary: "One hand for the case, one for the content.",
     heroCaption: "",
     brief: [
@@ -2020,7 +2021,7 @@ export const projects: Project[] = [
     pinnedRank: 12,
     discipline: "Automotive Livery",
     deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
-    categories: ["Automotive"],
+    categories: ["Cars", "Icons"],
     summary: "Livery and posters for a wheel launch, field-tested on camera in Josh's own Land Cruiser.",
     heroCaption:
       "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch, styled after vintage Dakar rally posters (and my actual Land Cruiser — yep that's me driving).",
@@ -2064,7 +2065,7 @@ export const projects: Project[] = [
     year: 2021,
     discipline: "Event Invitation",
     deliverables: "2 Invitations",
-    categories: ["Hospitality", "Automotive"],
+    categories: [],
     // Overrides effectiveCardRatio's RATIO_CYCLE fallback -- without this
     // the /work grid was landing this card on a square slot regardless of
     // cardImage's own declared ratio (ProjectCard's `ratio` prop always
@@ -2156,7 +2157,7 @@ export const projects: Project[] = [
     yearLabel: "2017/18/19/20",
     discipline: "Illustration",
     deliverables: "Covers · Inside Pages · Spots · Maps",
-    categories: ["Character", "Editorial"],
+    categories: ["Editorial"],
     // Standardized to 16/9 with the other landscape /work cards, not the
     // photo's true 3/2 — checked against the actual spread, nothing
     // essential is cropped. Same fix as Bombay Sapphire below.
@@ -2249,7 +2250,7 @@ export const projects: Project[] = [
     year: 2019,
     discipline: "Pride Campaign",
     deliverables: "Phone Cases · Flags · Pins · Social · Tees",
-    categories: ["Pride", "Character"],
+    categories: ["LGBTQ+"],
     summary: "Eleven characters, cut into pins, flags, cases and tees.",
     heroCaption: "",
     brief: [
@@ -2333,7 +2334,7 @@ export const projects: Project[] = [
     pinnedRank: 7,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
-    categories: ["Hospitality", "Character"],
+    categories: [],
     summary: "One new poster, every time Beefbar opens somewhere new. Still counting.",
     heroCaption: "The Monte Carlo poster — Beefbar's flagship, part of the ongoing series.",
     brief: [
@@ -2456,7 +2457,7 @@ export const projects: Project[] = [
     navContrastLight: "hero",
     discipline: "Festival Identity",
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
-    categories: ["Pride"],
+    categories: ["LGBTQ+", "Murals"],
     // True ratio of the lockup cardImage (a 4/5 export of the same
     // artwork) — pinned explicitly rather than leaving it to chance which
     // cycle slot lands here (a slightly-off ratio would crop "PRIDE 2024"
@@ -2593,7 +2594,7 @@ export const projects: Project[] = [
     pinnedRank: 9,
     discipline: "Editorial Illustration",
     deliverables: "Key Art · Magazine Mockup",
-    categories: ["Automotive", "Editorial"],
+    categories: ["Cars", "Editorial"],
     summary: "A hot-pink electric sports car makes the case for keeping the noise.",
     heroCaption: "The finished key art.",
     brief: [
@@ -2624,7 +2625,7 @@ export const projects: Project[] = [
     pinnedRank: 11,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
-    categories: ["Mural"],
+    categories: ["Murals"],
     // Standardized to 16/9 with the other landscape /work cards, not the
     // hero's true 1.5 — checked against the actual storefront shot,
     // nothing essential is cropped. Same fix as UAL Booklets above.
@@ -2689,7 +2690,7 @@ export const projects: Project[] = [
     year: 2018,
     discipline: "Illustration",
     deliverables: "1 Instagram Story animation",
-    categories: ["Pride", "Motion"],
+    categories: ["LGBTQ+", "Motion"],
     summary: "A rainbow of dancers, animated for Bershka's Pride month Instagram Stories.",
     heroCaption: "A held frame from the animation, 2018.",
     brief: [
@@ -2729,7 +2730,7 @@ export const projects: Project[] = [
     year: 2017,
     discipline: "Illustration & Animation",
     deliverables: "1 animation",
-    categories: ["Automotive", "Motion"],
+    categories: ["Cars", "Motion"],
     summary: "A Mini convertible, animated for a five-second loop.",
     heroCaption: "A held frame from the animation, 2017.",
     brief: [

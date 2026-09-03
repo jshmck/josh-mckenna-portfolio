@@ -18,7 +18,7 @@ export const archivedProjects: Project[] = [
     year: 2019,
     discipline: "Illustration",
     deliverables: "Brand Mark",
-    categories: ["Pride", "Character", "Logo"],
+    categories: ["LGBTQ+"],
     summary: "Four couples in a wreath, holding the wordmark together.",
     heroCaption: "A brand mark for the London LGBTQ+ Community Centre, 2019.",
     brief: [
