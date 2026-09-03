@@ -989,7 +989,7 @@ export const projects: Project[] = [
     client: "Wagamama",
     year: 2023,
     yearLabel: "2022–2023",
-    pinnedRank: 1,
+    pinnedRank: 2,
     discipline: "Pride Campaign",
     deliverables: "Vinyl Window Display",
     categories: ["LGBTQ+", "Murals"],
@@ -1049,7 +1049,7 @@ export const projects: Project[] = [
     title: "Atlanta Magazine",
     client: "Atlanta Magazine",
     year: 2022,
-    pinnedRank: 3,
+    pinnedRank: 4,
     yearLabel: "October 2022",
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
@@ -1331,7 +1331,7 @@ export const projects: Project[] = [
     // Pinned to the middle of /work's curated block, regardless of year
     // — Josh wants this one prominent despite being older than most of
     // the rest, just not leading the page.
-    pinnedRank: 10,
+    pinnedRank: 8,
     discipline: "Editorial Illustration",
     deliverables: "3 Spot Illustrations",
     categories: ["Editorial"],
@@ -1372,7 +1372,7 @@ export const projects: Project[] = [
     client: "Instagram",
     year: 2017,
     yearLabel: "2017–2022",
-    pinnedRank: 4,
+    pinnedRank: 1,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set · Mural · Parade Float",
     categories: ["LGBTQ+", "Murals", "Icons"],
@@ -1574,7 +1574,6 @@ export const projects: Project[] = [
     title: "Jimny",
     client: "Personal",
     year: 2026,
-    pinnedRank: 18,
     discipline: "3D Illustration",
     deliverables: "1 Turnaround · 3 Renders",
     categories: ["Cars", "3D"],
@@ -1652,7 +1651,7 @@ export const projects: Project[] = [
     title: "Money Bench",
     client: "Personal",
     year: 2026,
-    pinnedRank: 13,
+    pinnedRank: 11,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
     categories: ["Editorial", "3D"],
@@ -1858,7 +1857,7 @@ export const projects: Project[] = [
     title: "Yeti",
     client: "Personal",
     year: 2025,
-    pinnedRank: 8,
+    pinnedRank: 7,
     // Light-blue artwork — the blue nav vanishes into it, so the active
     // link goes white while this sits under the bar (navContrastLight doc).
     navContrastLight: true,
@@ -1887,7 +1886,7 @@ export const projects: Project[] = [
     title: "Underground",
     client: "Personal",
     year: 2025,
-    pinnedRank: 15,
+    pinnedRank: 16,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
@@ -1961,7 +1960,7 @@ export const projects: Project[] = [
     title: "BMW Z1",
     client: "Personal",
     year: 2025,
-    pinnedRank: 16,
+    pinnedRank: 15,
     discipline: "Illustration",
     deliverables: "2 Illustrations",
     categories: ["Cars"],
@@ -2121,7 +2120,7 @@ export const projects: Project[] = [
     title: "Monocle - Sumo",
     client: "Monocle",
     year: 2018,
-    pinnedRank: 17,
+    pinnedRank: 9,
     // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
     // square export, and leaving this to the cycle meant a pinnedRank
     // reorder elsewhere could silently flip this card's parity and crop it
@@ -2331,7 +2330,7 @@ export const projects: Project[] = [
     // Light-blue artwork — the blue nav vanishes into it, so the active
     // link goes white while this sits under the bar (navContrastLight doc).
     navContrastLight: true,
-    pinnedRank: 7,
+    pinnedRank: 6,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
     categories: [],
@@ -2451,7 +2450,7 @@ export const projects: Project[] = [
     title: "L.A. Pride",
     client: "City of Los Angeles",
     year: 2024,
-    pinnedRank: 6,
+    pinnedRank: 3,
     // Hero only — the full-bleed stage photo is blue sky, but the /work
     // card is the lime-green lockup and reads fine under a blue bar.
     navContrastLight: "hero",
@@ -2591,7 +2590,7 @@ export const projects: Project[] = [
     title: "The Sound of Driving",
     client: "Personal",
     year: 2026,
-    pinnedRank: 9,
+    pinnedRank: 10,
     discipline: "Editorial Illustration",
     deliverables: "Key Art · Magazine Mockup",
     categories: ["Cars", "Editorial"],
@@ -2622,7 +2621,7 @@ export const projects: Project[] = [
     title: "Bombay Sapphire",
     client: "Bombay Sapphire",
     year: 2018,
-    pinnedRank: 11,
+    pinnedRank: 13,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
     categories: ["Murals"],
