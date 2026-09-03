@@ -531,7 +531,7 @@ export const projects: Project[] = [
     navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
-    categories: ["Editorial", "Pride"],
+    categories: ["Editorial"],
     summary: "Two attempts at an angle a phone was never built for.",
     heroCaption: "",
     brief: [
@@ -1513,7 +1513,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D", "Character", "Pride"],
+    categories: ["3D", "Character"],
     summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
     // Displayed caption, distinct from hero.alt (screen readers still get
     // the plain description) — per Josh: "Who wants this as a resin
