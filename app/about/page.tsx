@@ -75,8 +75,16 @@ export default function AboutPage() {
               </div>
             </div>
 
+            {/* portrait.jpg is pre-cropped to 4/3 from Josh's 2:3 master
+                (Desktop/Website Projects Folder/Josh.JPG) — letting
+                object-cover crop the vertical original here would centre
+                on the torso and cut the face off. */}
             <Plate
-              image={{ ratio: "4/3", alt: "Portrait of Josh McKenna" }}
+              image={{
+                ratio: "4/3",
+                alt: "Portrait of Josh McKenna in a cowboy hat, holding a red rose",
+                src: "/about/portrait.jpg",
+              }}
               sizes="(max-width: 768px) 100vw, 45vw"
             />
           </div>
