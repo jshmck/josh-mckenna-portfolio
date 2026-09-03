@@ -167,7 +167,7 @@ export const features: FeatureItem[] = [
   {
     title: "Apple Today — iPad & Procreate Workshops",
     description:
-      "‘Art Lab: Portraits Beyond Labels’ — Josh ran two of these Today at Apple iPad and Procreate workshops in 2019.",
+      "Two Today at Apple sessions in 2019: an iPad and Procreate workshop, and ‘Art Lab: Portraits Beyond Labels’ — part workshop, part interview.",
     alt: "Photos from Josh's Today at Apple Art Lab workshops",
     images: [
       {
