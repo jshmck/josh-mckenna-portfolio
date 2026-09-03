@@ -367,6 +367,45 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "comic-relief-sink-the-pink",
+    title: "Comic Relief x Sink The Pink",
+    client: "Comic Relief",
+    year: 2020,
+    discipline: "Pride Campaign",
+    deliverables: "2 tote designs",
+    categories: ["Pride", "Character", "Icons"],
+    summary: "Two couples in one embrace, printed for Red Nose Day — one ended up on a Spice Girl's shoulder.",
+    heroCaption:
+      "One of two couple pairings, printed onto canvas totes for Comic Relief and Sink The Pink's Red Nose Day 2020 range.",
+    brief: [
+      "Comic Relief, in partnership with Sink The Pink, commissioned tote bag artwork for Red Nose Day 2020 — one embrace pose, redrawn across two couple pairings.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Comic Relief" },
+      { role: "Partner", name: "Sink The Pink" },
+    ],
+    hero: {
+      ratio: "1/1",
+      alt: "Tote artwork — pairing one",
+      src: "/work/comic-relief-sink-the-pink/01-tote-women.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "Tote artwork — pairing two",
+      src: "/work/comic-relief-sink-the-pink/02-tote-men.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "Mel C, of the Spice Girls, posted this online",
+        // Low-res screenshot — the original photo file is lost.
+        small: true,
+        src: "/work/comic-relief-sink-the-pink/03-mel-c-tote.webp",
+      },
+    ],
+  },
+  {
     slug: "hikes-n-bikes",
     title: "Hikes n Bikes",
     client: "Hikes and Bikes LA",
