@@ -99,15 +99,24 @@ export type FeatureItem = {
   description: string;
   alt: string;
   /** Real photo/artwork, once one exists — rendered through Plate like
-   *  every other framed image. `fit: "contain"` for artwork whose ratio
-   *  is far from the grid's 16/10 card (the Ad Age SXSW banner is 3.6:1 —
-   *  cover-cropping it would show less than half the piece). */
+   *  every other framed image. Every Talks & Features card is 16/9 now
+   *  (Josh: "make sure all frames are 16/9"), so sources are either
+   *  natively 16:9 or close enough to cover-crop. `fit: "contain"`
+   *  remains for any future piece whose ratio is far off. */
   image?: { src: string; fit?: "cover" | "contain" };
+  /** Several photos in one slot — a swipeable in-card gallery
+   *  (components/about/feature-gallery.tsx), no lightbox. */
+  images?: { src: string; alt: string }[];
   /** Real film. The files in public/about/ are 960×540 H.264 re-encodes
    *  of Josh's masters (the originals are 120–240 MB each — far too heavy
    *  to ship); the poster is a frame from the film so the card reads
    *  before anyone presses play. */
   video?: { src: string; poster: string };
+  /** A talk whose recording lives on someone else's YouTube channel
+   *  (Figma's, It's Nice That's) — embedded click-to-load via
+   *  components/about/youtube-embed.tsx rather than re-hosted. The
+   *  poster is a local copy of the video's thumbnail. */
+  youtube?: { id: string; poster: string };
 };
 
 /**
@@ -120,50 +129,86 @@ export const features: FeatureItem[] = [
   {
     title: "Application Accepted — SXSW 2027",
     description:
-      "Josh's application to speak at SXSW 2027 in Austin has been accepted — more detail nearer the date. Pictured: his SXSW illustration for Ad Age.",
-    alt: "Josh's SXSW illustration for Ad Age",
-    image: { src: "/about/sxsw-adage.jpg", fit: "contain" },
+      "Josh's PanelPicker proposal was voted through — SXSW 2027 runs 15–21 March in Austin, Texas.",
+    alt: "SXSW 2027 PanelPicker voting card for Josh's proposal",
+    // The promo master is natively 1920x1080, so at the 16/9 card ratio
+    // it goes in untouched. (An earlier 16/10 grid needed a version with
+    // its flat bands extended — gone now the frames match the asset.)
+    image: { src: "/about/sxsw-panelpicker-169.jpg" },
   },
   {
     title: "Speaker — Config 2026",
-    description: "A talk at Config, Figma's annual design conference.",
-    alt: "Photo placeholder — Config 2026 talk",
+    description:
+      "‘Dimensional shift: sculpting in Figma Draw’ — Josh's talk at Config, Figma's annual design conference.",
+    alt: "Config 2026 talk — Dimensional shift: sculpting in Figma Draw",
+    youtube: { id: "0ZoW_ym83JQ", poster: "/about/config-2026-poster.jpg" },
   },
   {
     title: "A Minute With — Josh McKenna",
     description:
-      "Sixty seconds on the practice — a one-minute filmed interview with Josh.",
+      "Sixty seconds on the practice — a one-minute filmed interview with Josh for his agency, B&A.",
     alt: "A Minute With — a one-minute filmed interview with Josh McKenna",
     video: {
       src: "/about/a-minute-with.mp4",
-      poster: "/about/a-minute-with-poster.jpg",
+      // The 0:28 frame, per Josh — him drawing on the iPad, captioned
+      // "my process is all digital these days."
+      poster: "/about/a-minute-with-poster-28s.jpg",
     },
   },
   {
     title: "Book Feature — Gestalten",
     description:
-      "Josh's work appears in a 2019 title from Berlin publisher Gestalten.",
-    alt: "Photo placeholder — Gestalten book feature",
+      "Josh's spread in ‘Mr Hudson Explores: The Gay Man's Travel Companion’, published by Gestalten in 2019.",
+    alt: "Gestalten's Mr Hudson Explores — the cover beside Josh's London spread",
+    // Josh's own product shot (Mr-Hudson-Explores-Cover.png), natively
+    // 16:9 — cover and open spread together.
+    image: { src: "/about/gestalten-mr-hudson-cover.jpg" },
   },
   {
-    title: "Workshop — Apple",
-    description: "An illustration workshop led with Apple.",
-    alt: "Photo placeholder — Apple workshop",
+    title: "Apple Today — iPad & Procreate Workshops",
+    description:
+      "Two Today at Apple sessions in 2019: an iPad and Procreate workshop, and ‘Art Lab: Portraits Beyond Labels’ — part workshop, part interview.",
+    alt: "Photos from Josh's Today at Apple Art Lab workshops",
+    images: [
+      {
+        src: "/about/apple-today/01.jpg",
+        alt: "Josh on stage under the Art Lab session card, his We Are Proud artwork on the store's screen",
+      },
+      {
+        src: "/about/apple-today/02.jpg",
+        alt: "Josh talking through his character work on the store's big screen",
+      },
+      {
+        src: "/about/apple-today/03.jpg",
+        alt: "Josh in conversation in front of the audience at the workshop",
+      },
+      {
+        src: "/about/apple-today/04.jpg",
+        alt: "Workshop attendees drawing on iPads with Apple Pencils",
+      },
+      {
+        src: "/about/apple-today/05.jpg",
+        alt: "An Apple team member demonstrating Procreate layers on screen",
+      },
+    ],
   },
   {
     title: "Speaker — Nicer Tuesdays 2017",
     description:
       "Josh spoke at Nicer Tuesdays, It's Nice That's monthly talks night in London, in the year of the Instagram Pride sticker.",
-    alt: "Video placeholder — Nicer Tuesdays talk",
+    alt: "Nicer Tuesdays: Josh McKenna — It's Nice That's talk video",
+    youtube: { id: "b7zTmfXE8ic", poster: "/about/nicer-tuesdays-poster.jpg" },
   },
   {
     title: "Feature — Bombay Sapphire",
     description:
-      "A film made with Bombay Sapphire for their Stir Creativity campaign.",
-    alt: "Bombay Sapphire Stir Creativity — a short film featuring Josh McKenna",
+      "‘Testhouse Punch’ — Hypebeast's film with Josh, covering Bombay Sapphire's Stir Creativity campaign.",
+    alt: "Bombay Sapphire Stir Creativity — Hypebeast's film featuring Josh McKenna",
     video: {
       src: "/about/bombay-sapphire.mp4",
-      poster: "/about/bombay-sapphire-poster.jpg",
+      // The 0:05 frame, per Josh — the film's own 'Testhouse Punch'
+      // title card.
+      poster: "/about/bombay-sapphire-poster-5s.jpg",
     },
   },
   {
