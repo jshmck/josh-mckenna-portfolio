@@ -137,7 +137,7 @@ export const features: FeatureItem[] = [
   {
     title: "A Minute With — Josh McKenna",
     description:
-      "Sixty seconds on the practice — a one-minute filmed interview with Josh.",
+      "Sixty seconds on the practice — a one-minute filmed interview with Josh for his agency, B&A.",
     alt: "A Minute With — a one-minute filmed interview with Josh McKenna",
     video: {
       src: "/about/a-minute-with.mp4",
