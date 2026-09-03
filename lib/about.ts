@@ -156,15 +156,6 @@ export const features: FeatureItem[] = [
     },
   },
   {
-    title: "Book Feature — Gestalten",
-    description:
-      "Josh's spread in ‘Mr Hudson Explores: The Gay Man's Travel Companion’, published by Gestalten in 2019.",
-    alt: "Gestalten's Mr Hudson Explores — the cover beside Josh's London spread",
-    // Josh's own product shot (Mr-Hudson-Explores-Cover.png), natively
-    // 16:9 — cover and open spread together.
-    image: { src: "/about/gestalten-mr-hudson-cover.jpg" },
-  },
-  {
     title: "Art Lab & Apple Today — Apple",
     description:
       "Two sessions at Apple in 2019: ‘Art Lab: Portraits Beyond Labels’ — part workshop, part interview — and an Apple Today iPad illustration workshop.",
@@ -193,11 +184,42 @@ export const features: FeatureItem[] = [
     ],
   },
   {
+    title: "Book Feature — Gestalten",
+    description:
+      "Josh's spread in ‘Mr Hudson Explores: The Gay Man's Travel Companion’, published by Gestalten in 2019.",
+    alt: "Gestalten's Mr Hudson Explores — the cover beside Josh's London spread",
+    // Josh's own product shot (Mr-Hudson-Explores-Cover.png), natively
+    // 16:9 — cover and open spread together.
+    image: { src: "/about/gestalten-mr-hudson-cover.jpg" },
+  },
+  {
     title: "Speaker — Nicer Tuesdays 2017",
     description:
       "Josh spoke at Nicer Tuesdays, It's Nice That's monthly talks night in London, in the year of the Instagram Pride sticker.",
     alt: "Nicer Tuesdays: Josh McKenna — It's Nice That's talk video",
     youtube: { id: "b7zTmfXE8ic", poster: "/about/nicer-tuesdays-poster.jpg" },
+  },
+  {
+    title: "Feature — Bombay Sapphire",
+    description:
+      "‘Testhouse Punch’ — Hypebeast's film with Josh, covering Bombay Sapphire's Stir Creativity campaign.",
+    alt: "Bombay Sapphire Stir Creativity — Hypebeast's film featuring Josh McKenna",
+    video: {
+      src: "/about/bombay-sapphire.mp4",
+      // The 0:05 frame, per Josh — the film's own 'Testhouse Punch'
+      // title card.
+      poster: "/about/bombay-sapphire-poster-5s.jpg",
+    },
+  },
+  {
+    title: "Campaign Film — HP",
+    description:
+      "After The George, Dublin's landmark gay bar, was defaced with hate speech, HP printed Josh's artwork at building scale on their Latex presses to cover it.",
+    alt: "HP campaign film — The George in Dublin wrapped in Josh's printed artwork",
+    video: {
+      src: "/about/hp-latex.mp4",
+      poster: "/about/hp-latex-poster.jpg",
+    },
   },
   {
     title: "Featured — It's Nice That",
@@ -237,28 +259,6 @@ export const features: FeatureItem[] = [
         alt: "It's Nice That, October 2017 — Josh among the five creatives in ‘To me, being a man just means being yourself’",
       },
     ],
-  },
-  {
-    title: "Feature — Bombay Sapphire",
-    description:
-      "‘Testhouse Punch’ — Hypebeast's film with Josh, covering Bombay Sapphire's Stir Creativity campaign.",
-    alt: "Bombay Sapphire Stir Creativity — Hypebeast's film featuring Josh McKenna",
-    video: {
-      src: "/about/bombay-sapphire.mp4",
-      // The 0:05 frame, per Josh — the film's own 'Testhouse Punch'
-      // title card.
-      poster: "/about/bombay-sapphire-poster-5s.jpg",
-    },
-  },
-  {
-    title: "Campaign Film — HP",
-    description:
-      "After The George, Dublin's landmark gay bar, was defaced with hate speech, HP printed Josh's artwork at building scale on their Latex presses to cover it.",
-    alt: "HP campaign film — The George in Dublin wrapped in Josh's printed artwork",
-    video: {
-      src: "/about/hp-latex.mp4",
-      poster: "/about/hp-latex-poster.jpg",
-    },
   },
 ];
 
