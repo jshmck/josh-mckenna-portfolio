@@ -155,7 +155,10 @@ export function ProjectCard({
                 transition-[opacity,translate], not transform — Tailwind
                 v4's translate-y-* emits the standalone CSS `translate`
                 property, so transitioning `transform` animates nothing. */}
-            <span className="type-label translate-y-5 leading-none text-ink opacity-0 transition-[opacity,translate] duration-[0.2s,0.4s] ease-in-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+            {/* Helvetica matched to the nav links (font-body 22px bold,
+                sentence case), not the uppercase mono type-label — "the
+                same as the nav bar," per Josh. */}
+            <span className="translate-y-5 font-body text-[22px] leading-none font-bold text-ink opacity-0 transition-[opacity,translate] duration-[0.2s,0.4s] ease-in-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
               {project.title}
             </span>
           </div>
