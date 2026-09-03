@@ -99,10 +99,14 @@ export type FeatureItem = {
   description: string;
   alt: string;
   /** Real photo/artwork, once one exists — rendered through Plate like
-   *  every other framed image. `fit: "contain"` for artwork whose ratio
-   *  is far from the grid's 16/10 card (the Ad Age SXSW banner is 3.6:1 —
-   *  cover-cropping it would show less than half the piece). */
+   *  every other framed image. Every Talks & Features card is 16/9 now
+   *  (Josh: "make sure all frames are 16/9"), so sources are either
+   *  natively 16:9 or close enough to cover-crop. `fit: "contain"`
+   *  remains for any future piece whose ratio is far off. */
   image?: { src: string; fit?: "cover" | "contain" };
+  /** Several photos in one slot — a swipeable in-card gallery
+   *  (components/about/feature-gallery.tsx), no lightbox. */
+  images?: { src: string; alt: string }[];
   /** Real film. The files in public/about/ are 960×540 H.264 re-encodes
    *  of Josh's masters (the originals are 120–240 MB each — far too heavy
    *  to ship); the poster is a frame from the film so the card reads
@@ -127,12 +131,10 @@ export const features: FeatureItem[] = [
     description:
       "Josh's PanelPicker proposal was voted through — SXSW 2027 runs 15–21 March in Austin, Texas.",
     alt: "SXSW 2027 PanelPicker voting card for Josh's proposal",
-    // The 1920x1080 promo master is extended to exactly 16/10 by growing
-    // its flat purple/pink bands (scratchpad job, no content scaled or
-    // cropped) — contain-letterboxing the 16:9 original left this the
-    // only square-cornered card on the page, and cover would clip the
-    // SXSW logo off its left edge.
-    image: { src: "/about/sxsw-panelpicker-card.jpg" },
+    // The promo master is natively 1920x1080, so at the 16/9 card ratio
+    // it goes in untouched. (An earlier 16/10 grid needed a version with
+    // its flat bands extended — gone now the frames match the asset.)
+    image: { src: "/about/sxsw-panelpicker-169.jpg" },
   },
   {
     title: "Speaker — Config 2026",
@@ -157,18 +159,38 @@ export const features: FeatureItem[] = [
     title: "Book Feature — Gestalten",
     description:
       "Josh's spread in ‘Mr Hudson Explores: The Gay Man's Travel Companion’, published by Gestalten in 2019.",
-    alt: "Josh McKenna's spread in Gestalten's Mr Hudson Explores, open to his London pages",
-    // Cropped from the Instagram Sticker project's product shot
-    // (public/work/instagram-sticker uses the full stacked version) —
-    // this card shows just the open spread with Josh's feature.
-    image: { src: "/about/gestalten-mr-hudson.jpg" },
+    alt: "Gestalten's Mr Hudson Explores — the cover beside Josh's London spread",
+    // Josh's own product shot (Mr-Hudson-Explores-Cover.png), natively
+    // 16:9 — cover and open spread together.
+    image: { src: "/about/gestalten-mr-hudson-cover.jpg" },
   },
   {
-    title: "Workshop — Apple",
+    title: "Apple Today — iPad & Procreate Workshops",
     description:
-      "‘Art Lab: Portraits Beyond Labels’ — Josh's Today at Apple session, July 2019.",
-    alt: "Josh on stage at his Today at Apple Art Lab session, his We Are Proud artwork on the store's screen",
-    image: { src: "/about/apple-art-lab.jpg" },
+      "‘Art Lab: Portraits Beyond Labels’ — Josh ran two of these Today at Apple iPad and Procreate workshops in 2019.",
+    alt: "Photos from Josh's Today at Apple Art Lab workshops",
+    images: [
+      {
+        src: "/about/apple-today/01.jpg",
+        alt: "Josh on stage under the Art Lab session card, his We Are Proud artwork on the store's screen",
+      },
+      {
+        src: "/about/apple-today/02.jpg",
+        alt: "Josh talking through his character work on the store's big screen",
+      },
+      {
+        src: "/about/apple-today/03.jpg",
+        alt: "Josh in conversation in front of the audience at the workshop",
+      },
+      {
+        src: "/about/apple-today/04.jpg",
+        alt: "Workshop attendees drawing on iPads with Apple Pencils",
+      },
+      {
+        src: "/about/apple-today/05.jpg",
+        alt: "An Apple team member demonstrating Procreate layers on screen",
+      },
+    ],
   },
   {
     title: "Speaker — Nicer Tuesdays 2017",

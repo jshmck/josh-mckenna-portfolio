@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { FeatureGallery } from "@/components/about/feature-gallery";
 import { FloatingStickers } from "@/components/about/floating-stickers";
 import { YouTubeEmbed } from "@/components/about/youtube-embed";
 import { PageEndCard } from "@/components/ui/page-end-card";
@@ -146,14 +147,13 @@ export default function AboutPage() {
               <li key={feature.alt}>
                 <Reveal delay={index * 80}>
                   {feature.video ? (
-                    /* Film cards are true 16/9 while image cards stay
-                       16/10 — Josh asked for the video frames to match
-                       the films exactly rather than letterboxing them
-                       inside the grid ratio. No autoplay — playback is
-                       user-initiated via the native controls, so no
-                       reduced-motion guard is needed here.
-                       preload="metadata" keeps the page from pulling
-                       multi-MB files anyone may never play. */
+                    /* Every Talks & Features card is 16/9 — films fill
+                       the frame exactly, and image cards match ("make
+                       sure all frames are 16/9," per Josh). No autoplay
+                       — playback is user-initiated via the native
+                       controls, so no reduced-motion guard is needed
+                       here. preload="metadata" keeps the page from
+                       pulling multi-MB files anyone may never play. */
                     <div className="relative aspect-[16/9] overflow-hidden rounded-frame bg-ink">
                       <video
                         className="absolute inset-0 h-full w-full object-cover"
@@ -174,10 +174,14 @@ export default function AboutPage() {
                       poster={feature.youtube.poster}
                       alt={feature.alt}
                     />
+                  ) : feature.images ? (
+                    /* Several photos in one slot — swipe on touch,
+                       prev/next on desktop, no lightbox. */
+                    <FeatureGallery images={feature.images} />
                   ) : (
                     <Plate
                       image={{
-                        ratio: "16/10",
+                        ratio: "16/9",
                         alt: feature.alt,
                         src: feature.image?.src,
                         fit: feature.image?.fit,
