@@ -1,32 +1,15 @@
-import {
-  BehanceIcon,
-  EmailIcon,
-  FigmaIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  ThreadsIcon,
-  XIcon,
-} from "@/components/ui/social-icons";
+import { EmailIcon } from "@/components/ui/social-icons";
 import Link from "next/link";
 
+import { SOCIAL_ICON_SIZE, socialLinks } from "@/components/site/social-links";
 import { legalLinks, siteConfig } from "@/lib/site";
 
-/** Small, far right — a quiet way to reach Josh from any page, not a
- *  repeat of Contact's own full-size icon row. Email first (not a new
- *  tab), then the same social set/order as contact-content.tsx
- *  (Behance included — this list had drifted out of sync with it). */
-const ICON_SIZE = 18;
+/** Small, far right — a quiet way to reach Josh from any page. Email
+ *  first (not a new tab), then the shared social set from
+ *  social-links.ts (also rendered by Contact's mobile-only row). */
 const links = [
   { label: "Email", href: `mailto:${siteConfig.email}`, Icon: EmailIcon, external: false },
-  { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon, external: true },
-  { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon, external: true },
-  { label: "X", href: siteConfig.x.url, Icon: XIcon, external: true },
-  { label: "LinkedIn", href: siteConfig.linkedin.url, Icon: LinkedInIcon, external: true },
-  // Behance's mark is naturally wider than the others (its own proportions,
-  // not a square glyph like the rest) — sized down a touch so it doesn't
-  // read heavier than its neighbours at the same height.
-  { label: "Behance", href: siteConfig.behance.url, Icon: BehanceIcon, external: true, size: 14 },
-  { label: "Figma", href: siteConfig.figma.url, Icon: FigmaIcon, external: true },
+  ...socialLinks.map((link) => ({ ...link, external: true })),
 ];
 
 /**
@@ -91,7 +74,7 @@ export function Footer() {
         </div>
 
         <ul className="flex items-center gap-4">
-          {links.map(({ label, href, Icon, external, size }) => (
+          {links.map(({ label, href, Icon, external, size = SOCIAL_ICON_SIZE }) => (
             <li key={label}>
               <a
                 href={href}
@@ -99,7 +82,7 @@ export function Footer() {
                 aria-label={label}
                 className="inline-block text-ink-muted transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-accent hover:duration-300 hover:ease-drift"
               >
-                <Icon size={size ?? ICON_SIZE} />
+                <Icon size={size} />
               </a>
             </li>
           ))}
