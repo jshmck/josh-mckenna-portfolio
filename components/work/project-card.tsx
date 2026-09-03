@@ -185,7 +185,7 @@ export function ProjectCard({
               (MOBILE_CAPTION_RESERVE_PX) reserves an exact pixel height
               for this strip so cards don't overlap, which only holds if
               every title renders at the same single-line height. */}
-          <h3 className="truncate font-body text-[15px] leading-[1.2] font-medium text-ink">
+          <h3 className="truncate text-center font-body text-[15px] leading-[1.2] font-medium text-ink">
             {project.title}
           </h3>
         </div>
