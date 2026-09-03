@@ -75,8 +75,16 @@ export default function AboutPage() {
               </div>
             </div>
 
+            {/* portrait.jpg is pre-cropped to 4/3 from Josh's 2:3 master
+                (Desktop/Website Projects Folder/Josh.JPG) — letting
+                object-cover crop the vertical original here would centre
+                on the torso and cut the face off. */}
             <Plate
-              image={{ ratio: "4/3", alt: "Portrait of Josh McKenna" }}
+              image={{
+                ratio: "4/3",
+                alt: "Portrait of Josh McKenna in a cowboy hat, holding a red rose",
+                src: "/about/portrait.jpg",
+              }}
               sizes="(max-width: 768px) 100vw, 45vw"
             />
           </div>
@@ -116,10 +124,10 @@ export default function AboutPage() {
       </section>
 
       {/* Talks & features — one merged list now, not a compact text list
-          plus a separate rich-card version of the same events. Real event
-          names, placeholder photos/video and captions until Josh sends the
-          real assets over (same "visible until real content lands"
-          pattern Plate uses everywhere else on the site).
+          plus a separate rich-card version of the same events. Real
+          captions and media where the asset exists (public/about/);
+          the rest keep Plate's labelled placeholder until Josh sends
+          the file over.
           pb-32, not this page's usual pb-28 — matches /work and the
           home-embedded gallery's own bottom padding. (Originally sized
           for the since-removed BackToTop pill's docked position; kept
@@ -131,10 +139,38 @@ export default function AboutPage() {
             {features.map((feature, index) => (
               <li key={feature.alt}>
                 <Reveal delay={index * 80}>
-                  <Plate
-                    image={{ ratio: "16/10", alt: feature.alt }}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
+                  {feature.video ? (
+                    /* Films keep the grid's 16/10 frame; the 16:9 video
+                       sits object-contain inside it, so the sliver of
+                       letterbox is bg-ink and reads as a video's own
+                       black bars rather than a mis-sized image. No
+                       autoplay — playback is user-initiated via the
+                       native controls, so no reduced-motion guard is
+                       needed here. preload="metadata" keeps the page
+                       from pulling multi-MB files anyone may never
+                       play. */
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-frame bg-ink">
+                      <video
+                        className="absolute inset-0 h-full w-full object-contain"
+                        src={feature.video.src}
+                        poster={feature.video.poster}
+                        controls
+                        preload="metadata"
+                        playsInline
+                        aria-label={feature.alt}
+                      />
+                    </div>
+                  ) : (
+                    <Plate
+                      image={{
+                        ratio: "16/10",
+                        alt: feature.alt,
+                        src: feature.image?.src,
+                        fit: feature.image?.fit,
+                      }}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  )}
                   <h3 className="font-body mt-4 text-[15px] font-bold text-ink">
                     {feature.title}
                   </h3>
