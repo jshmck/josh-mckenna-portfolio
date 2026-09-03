@@ -98,61 +98,83 @@ export type FeatureItem = {
   title: string;
   description: string;
   alt: string;
+  /** Real photo/artwork, once one exists — rendered through Plate like
+   *  every other framed image. `fit: "contain"` for artwork whose ratio
+   *  is far from the grid's 16/10 card (the Ad Age SXSW banner is 3.6:1 —
+   *  cover-cropping it would show less than half the piece). */
+  image?: { src: string; fit?: "cover" | "contain" };
+  /** Real film. The files in public/about/ are 960×540 H.264 re-encodes
+   *  of Josh's masters (the originals are 120–240 MB each — far too heavy
+   *  to ship); the poster is a frame from the film so the card reads
+   *  before anyone presses play. */
+  video?: { src: string; poster: string };
 };
 
 /**
  * The rich version of the footer's "Selected Talks and Features" list —
  * same real events, expanded with a photo/video slot and a write-up.
- * Placeholder copy and media until Josh sends the real assets over.
+ * Slots without `image`/`video` still render Plate's labelled placeholder
+ * until Josh sends the asset over.
  */
 export const features: FeatureItem[] = [
   {
     title: "Application Accepted — SXSW 2027",
     description:
-      "Placeholder write-up — swap in the real caption once Josh sends it over.",
-    alt: "Photo placeholder — SXSW 2027",
+      "Josh's application to speak at SXSW 2027 in Austin has been accepted — more detail nearer the date. Pictured: his SXSW illustration for Ad Age.",
+    alt: "Josh's SXSW illustration for Ad Age",
+    image: { src: "/about/sxsw-adage.jpg", fit: "contain" },
   },
   {
     title: "Speaker — Config 2026",
-    description:
-      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    description: "A talk at Config, Figma's annual design conference.",
     alt: "Photo placeholder — Config 2026 talk",
   },
   {
     title: "A Minute With — Josh McKenna",
     description:
-      "Placeholder write-up — swap in the real caption once Josh sends it over.",
-    alt: "Video placeholder — A Minute With interview",
+      "Sixty seconds on the practice — a one-minute filmed interview with Josh.",
+    alt: "A Minute With — a one-minute filmed interview with Josh McKenna",
+    video: {
+      src: "/about/a-minute-with.mp4",
+      poster: "/about/a-minute-with-poster.jpg",
+    },
   },
   {
     title: "Book Feature — Gestalten",
     description:
-      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+      "Josh's work appears in a 2019 title from Berlin publisher Gestalten.",
     alt: "Photo placeholder — Gestalten book feature",
   },
   {
     title: "Workshop — Apple",
-    description:
-      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+    description: "An illustration workshop led with Apple.",
     alt: "Photo placeholder — Apple workshop",
   },
   {
     title: "Speaker — Nicer Tuesdays 2017",
     description:
-      "Placeholder write-up — swap in the real caption once Josh sends it over.",
+      "Josh spoke at Nicer Tuesdays, It's Nice That's monthly talks night in London, in the year of the Instagram Pride sticker.",
     alt: "Video placeholder — Nicer Tuesdays talk",
   },
   {
     title: "Feature — Bombay Sapphire",
     description:
-      "Placeholder write-up — swap in the real caption once Josh sends it over.",
-    alt: "Photo placeholder — Bombay Sapphire feature",
+      "A film made with Bombay Sapphire for their Stir Creativity campaign.",
+    alt: "Bombay Sapphire Stir Creativity — a short film featuring Josh McKenna",
+    video: {
+      src: "/about/bombay-sapphire.mp4",
+      poster: "/about/bombay-sapphire-poster.jpg",
+    },
   },
   {
-    title: "Feature — Bombay Sapphire",
+    title: "Campaign Film — HP",
     description:
-      "Placeholder write-up — swap in the real caption once Josh sends it over.",
-    alt: "Photo placeholder — Bombay Sapphire feature 2",
+      "After The George, Dublin's landmark gay bar, was defaced with hate speech, HP printed Josh's artwork at building scale on their Latex presses to cover it.",
+    alt: "HP campaign film — The George in Dublin wrapped in Josh's printed artwork",
+    video: {
+      src: "/about/hp-latex.mp4",
+      poster: "/about/hp-latex-poster.jpg",
+    },
   },
 ];
 
