@@ -367,6 +367,57 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "hikes-n-bikes",
+    title: "Hikes n Bikes",
+    client: "Hikes and Bikes LA",
+    year: 2020,
+    discipline: "Mural",
+    deliverables: "1 mural",
+    categories: ["Mural"],
+    summary: "Seven cyclists, a peach, and some advice about gas.",
+    heroCaption:
+      "Painted at La Cienega and Santa Monica Boulevards, West Hollywood, December 2020.",
+    brief: [
+      "The wall is the side of a bike-rental and organised-hike shop at the corner of La Cienega and Santa Monica Boulevards in West Hollywood, directly under a Kylie Skin billboard. Anything painted there has to read from a moving car, so it works the way the billboard above it does: a few big shapes and five words — pump less gas, pump more. The peach finishes the sentence.",
+    ],
+    credits: [
+      { role: "Illustration & Mural", name: "Josh McKenna" },
+      { role: "Client", name: "Hikes and Bikes LA" },
+    ],
+    // Pinned to the photo's true 4/5 so RATIO_CYCLE can't crop the
+    // billboard out of the top of the card — the Kylie Skin sign is
+    // the joke and has to survive the crop.
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "The wall, under the Kylie Skin billboard",
+      src: "/work/hikes-n-bikes/01-mural-kylie-billboard.webp",
+    },
+    // The 15s ladder clip sits beside the finished-wall photo in the
+    // hero two-up (Last Call precedent). Declared 4/5 to match the
+    // hero's height — the source is a 9:16 phone clip, and the cover
+    // crop trims sky and ground, not the ladder.
+    heroVideo: {
+      src: "/work/hikes-n-bikes/03-painting-process.mp4",
+      alt: "Painting the peach's leaves, day one",
+      position: "pair",
+      ratio: "4/5",
+    },
+    // A lone gallery image defaults into the two-up row's left column at
+    // half width — a wall-wide strip wants the full frame instead.
+    gallerySpans: [{ startIndex: 0, count: 1 }],
+    gallery: [
+      {
+        ratio: "25/11",
+        // Transparent PNG — contain sits on bg-canvas so the
+        // placeholder tone can't show through the background.
+        fit: "contain",
+        alt: "The full artwork — pump less gas, pump more",
+        src: "/work/hikes-n-bikes/02-mural-artwork.webp",
+      },
+    ],
+  },
+  {
     // Single overview sheet for now — Josh is redrawing the set in a new
     // style, so the individual stickers land later.
     slug: "its-all-love",
