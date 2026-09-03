@@ -32,16 +32,14 @@ export default function NotFound() {
 
         <p className="type-lede mt-4 max-w-md text-ink-muted">This page doesn&apos;t exist.</p>
 
-        {/* Same pill treatment as BackToTop (components/ui/back-to-top.tsx) —
-            frosted glass, brand-blue inset wash, the same nav-pill-hover
-            squash-and-stretch bounce — but static in the page flow rather
-            than fixed/scroll-triggered, since this is the one thing on the
-            page to press and should be visible immediately. */}
+        {/* Same pill treatment as the filter chips / HOWDY submit button
+            (components/work/work-gallery.tsx, components/contact/enquiry-form.tsx) —
+            ink outline -> brand outline on hover, filled brand/canvas on active. */}
         <Link
           href="/"
-          className="mt-10 rounded-full border border-transparent bg-canvas/15 px-8 py-5 font-body text-[18px] text-ink shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150 transition-[color,background-color] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:animate-[nav-pill-hover_650ms_ease-in-out] hover:text-brand active:animate-[nav-pill-hover_650ms_ease-in-out] active:bg-brand active:text-canvas"
+          className="font-grotesque mt-10 rounded-full border border-ink px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink-muted text-trim-caps transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas"
         >
-          Back to home
+          Home
         </Link>
       </section>
     </PageEndCard>
