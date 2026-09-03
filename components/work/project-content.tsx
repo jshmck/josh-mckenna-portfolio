@@ -38,7 +38,11 @@ function renderBriefParagraph(paragraph: string) {
  *  placements can't drift out of sync. */
 function WriteUp({ project }: { project: Project }) {
   return (
-    <div className="mx-auto grid max-w-frame gap-14 px-6 py-20 md:grid-cols-[1fr_260px] md:px-gutter">
+    // max-md:py-10 — the write-up's 80px of breathing room above and
+    // below reads right on desktop but as a hole between sections on a
+    // phone ("the spacing on mobile between the sections and the top of
+    // the imagery," per Josh) — halved below md, desktop untouched.
+    <div className="mx-auto grid max-w-frame gap-14 px-6 py-20 max-md:py-10 md:grid-cols-[1fr_260px] md:px-gutter">
       <div className="max-w-2xl">
         {project.brief.map((paragraph, index) => (
           <p
@@ -238,7 +242,13 @@ export function ProjectContent({ project }: { project: Project }) {
     // this side of the curtain.
     <div className="max-md:mx-3 max-md:mt-3 max-md:rounded-frame max-md:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_18px_rgba(0,0,0,0.10)]">
       <div className="max-md:overflow-hidden max-md:rounded-frame max-md:bg-canvas">
-        <header className="py-16 md:py-[60px]">
+        {/* max-md:pb-8 — the header's 64px bottom padding stacked on the
+            imagery block's own 48px top padding put ~112px of dead air
+            between the meta labels and the first image on a phone ("the
+            spacing on mobile between the sections and the top of the
+            imagery," per Josh). 32px here + 0 on the imagery containers
+            below closes that to one clean gap; desktop untouched. */}
+        <header className="py-16 max-md:pb-8 md:py-[60px]">
           <div className="mx-auto max-w-frame px-6 md:px-gutter">
             {/* Breadcrumb left, prev/next arrows right -- one line, one
                 caption language, on every breakpoint. The glyphs sit
@@ -369,7 +379,7 @@ export function ProjectContent({ project }: { project: Project }) {
               // gap-8 — so the video frames land at the same width as the
               // packaging photos below them, not an arbitrary smaller cap.
               // Sits above `hero` — see Project.videoRow.
-              <div className="mx-auto max-w-frame px-6 pt-12 md:px-gutter">
+              <div className="mx-auto max-w-frame px-6 pt-12 max-md:pt-0 md:px-gutter">
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
                   {project.videoRow.map((video) => (
                     <div key={video.src}>
@@ -382,7 +392,11 @@ export function ProjectContent({ project }: { project: Project }) {
 
             {project.heroSize !== "spot" && !project.heroHiddenOnPage && (
               <div
-                className="mx-auto max-w-frame px-6 pt-12 md:px-gutter"
+                // Mobile pt: 0 normally (the header's own max-md:pb-8 is
+                // the whole gap now), but when a videoRow leads the page
+                // this container sits under it, not the header — keep the
+                // inter-image gap-6 rhythm there instead.
+                className={`mx-auto max-w-frame px-6 pt-12 md:px-gutter ${project.videoRow ? "max-md:pt-6" : "max-md:pt-0"}`}
                 // Read by nav.tsx — see Project.navContrastLight's doc comment.
                 data-nav-contrast={project.navContrastLight ? "light" : undefined}
               >
@@ -517,7 +531,7 @@ export function ProjectContent({ project }: { project: Project }) {
               // the site — captions stay off (captions=[""]) since this slot
               // was always meant to read uncaptioned.
               <div
-                className="mx-auto max-w-frame px-6 pt-12 md:px-gutter"
+                className="mx-auto max-w-frame px-6 pt-12 max-md:pt-0 md:px-gutter"
                 data-nav-contrast={project.navContrastLight ? "light" : undefined}
               >
                 <div className="mx-auto max-w-lg">

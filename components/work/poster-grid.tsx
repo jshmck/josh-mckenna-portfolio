@@ -34,7 +34,12 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
     <>
       {/* pb-28 -> pb-40, matching ImageStack/GalleryGrid -- see their own
           comment on this same change. */}
-      <div className="mx-auto max-w-frame px-6 pt-12 pb-40 max-md:pb-24 md:px-gutter">
+      {/* max-md:pt-0 -- in poster-grid layout the write-up sits directly
+          above this grid, and its own (halved) mobile bottom padding is
+          the whole gap now; stacking pt-12 on top read as a hole between
+          sections on a phone, same fix as the hero containers in
+          project-content.tsx. */}
+      <div className="mx-auto max-w-frame px-6 pt-12 max-md:pt-0 pb-40 max-md:pb-24 md:px-gutter">
         <div
           className={
             columns === 5
