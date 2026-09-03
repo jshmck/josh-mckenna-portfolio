@@ -483,6 +483,7 @@ export const projects: Project[] = [
       { role: "Agency", name: "Havas" },
       { role: "Client", name: "Tilda" },
     ],
+    cardRatio: "1/1",
     hero: {
       ratio: "1/1",
       alt: "Tilda Indonesian Fried Rice packaging",
@@ -493,10 +494,28 @@ export const projects: Project[] = [
     // /work gallery card's thumbnail (see ProjectCard's baseImage) even
     // though it doesn't render on the project page itself.
     heroHiddenOnPage: true,
+    // Posters are each flavour's own product shot — these clips have sound,
+    // so they never autoplay, and without a poster the row sits on whatever
+    // first frame the browser bothers to decode.
     videoRow: [
-      { src: "/work/tilda-rice/katsu.mp4", alt: "Katsu Curry Rice animation", sound: true },
-      { src: "/work/tilda-rice/fried-rice.mp4", alt: "Indonesian Fried Rice animation", sound: true },
-      { src: "/work/tilda-rice/masala.mp4", alt: "Masala Rice animation", sound: true },
+      {
+        src: "/work/tilda-rice/katsu.mp4",
+        alt: "Katsu Curry Rice animation",
+        poster: "/work/tilda-rice/02-katsu-curry.webp",
+        sound: true,
+      },
+      {
+        src: "/work/tilda-rice/fried-rice.mp4",
+        alt: "Indonesian Fried Rice animation",
+        poster: "/work/tilda-rice/01-fried-rice.webp",
+        sound: true,
+      },
+      {
+        src: "/work/tilda-rice/masala.mp4",
+        alt: "Masala Rice animation",
+        poster: "/work/tilda-rice/03-masala-rice.webp",
+        sound: true,
+      },
     ],
     // All three product photos in one row, not the default two-up-then-single
     // stack — see Project.gallerySpans.
