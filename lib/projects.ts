@@ -293,11 +293,11 @@ export type Project = {
     afterIndex: number;
   };
   /**
-   * Trial: an animated GIF inserted mid-gallery — Instagram Sticker's
-   * original sticker animation only for now. Next's image optimizer
-   * freezes GIFs to their first frame, so this bypasses Plate and renders
-   * via next/image's `unoptimized` mode instead, which serves the source
-   * bytes as-is and keeps the animation. Same `afterIndex` indexing as
+   * Trial: fills the same mid-gallery slot an animated GIF used to —
+   * Instagram Sticker's original sticker animation only for now. Now a
+   * silent video (src is an .mp4), autoplaying on loop via ProjectVideo:
+   * lighter than the source GIF and unaffected by Next's image optimizer
+   * freezing GIFs to their first frame. Same `afterIndex` indexing as
    * `galleryVideo`.
    */
   galleryGif?: {
@@ -1406,13 +1406,13 @@ export const projects: Project[] = [
       alt: "The Instagram Pride sticker character",
       src: "/work/instagram-sticker/01-instagram-sticker-bg2-hr.webp",
     },
-    // GIF leads the gallery (afterIndex: 0, before the two-up pair) — the
+    // Leads the gallery (afterIndex: 0, before the two-up pair) — the
     // sticker's own animation, right after the write-up. Video sits right
     // after the two-up pair (afterIndex: 2 = after gallery[0] and [1]),
     // keeping the whole Mardi Gras beat — float photo, float detail,
     // footage — together before Sticker Set breaks to a new subject.
     galleryGif: {
-      src: "/work/instagram-sticker/10-sticker-animation.gif",
+      src: "/work/instagram-sticker/10-sticker-animation.mp4",
       alt: "The move behind the sticker.",
       ratio: "1/1",
       afterIndex: 0,
