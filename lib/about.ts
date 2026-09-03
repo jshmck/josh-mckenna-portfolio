@@ -108,6 +108,11 @@ export type FeatureItem = {
    *  to ship); the poster is a frame from the film so the card reads
    *  before anyone presses play. */
   video?: { src: string; poster: string };
+  /** A talk whose recording lives on someone else's YouTube channel
+   *  (Figma's, It's Nice That's) — embedded click-to-load via
+   *  components/about/youtube-embed.tsx rather than re-hosted. The
+   *  poster is a local copy of the video's thumbnail. */
+  youtube?: { id: string; poster: string };
 };
 
 /**
@@ -131,8 +136,10 @@ export const features: FeatureItem[] = [
   },
   {
     title: "Speaker — Config 2026",
-    description: "A talk at Config, Figma's annual design conference.",
-    alt: "Photo placeholder — Config 2026 talk",
+    description:
+      "‘Dimensional shift: sculpting in Figma Draw’ — Josh's talk at Config, Figma's annual design conference.",
+    alt: "Config 2026 talk — Dimensional shift: sculpting in Figma Draw",
+    youtube: { id: "0ZoW_ym83JQ", poster: "/about/config-2026-poster.jpg" },
   },
   {
     title: "A Minute With — Josh McKenna",
@@ -149,28 +156,37 @@ export const features: FeatureItem[] = [
   {
     title: "Book Feature — Gestalten",
     description:
-      "Josh's work appears in a 2019 title from Berlin publisher Gestalten.",
-    alt: "Photo placeholder — Gestalten book feature",
+      "Josh's spread in ‘Mr Hudson Explores: The Gay Man's Travel Companion’, published by Gestalten in 2019.",
+    alt: "Josh McKenna's spread in Gestalten's Mr Hudson Explores, open to his London pages",
+    // Cropped from the Instagram Sticker project's product shot
+    // (public/work/instagram-sticker uses the full stacked version) —
+    // this card shows just the open spread with Josh's feature.
+    image: { src: "/about/gestalten-mr-hudson.jpg" },
   },
   {
     title: "Workshop — Apple",
-    description: "An illustration workshop led with Apple.",
-    alt: "Photo placeholder — Apple workshop",
+    description:
+      "‘Art Lab: Portraits Beyond Labels’ — Josh's Today at Apple session, July 2019.",
+    alt: "Josh on stage at his Today at Apple Art Lab session, his We Are Proud artwork on the store's screen",
+    image: { src: "/about/apple-art-lab.jpg" },
   },
   {
     title: "Speaker — Nicer Tuesdays 2017",
     description:
       "Josh spoke at Nicer Tuesdays, It's Nice That's monthly talks night in London, in the year of the Instagram Pride sticker.",
-    alt: "Video placeholder — Nicer Tuesdays talk",
+    alt: "Nicer Tuesdays: Josh McKenna — It's Nice That's talk video",
+    youtube: { id: "b7zTmfXE8ic", poster: "/about/nicer-tuesdays-poster.jpg" },
   },
   {
     title: "Feature — Bombay Sapphire",
     description:
-      "A film made with Bombay Sapphire for their Stir Creativity campaign.",
-    alt: "Bombay Sapphire Stir Creativity — a short film featuring Josh McKenna",
+      "‘Testhouse Punch’ — Hypebeast's film with Josh, covering Bombay Sapphire's Stir Creativity campaign.",
+    alt: "Bombay Sapphire Stir Creativity — Hypebeast's film featuring Josh McKenna",
     video: {
       src: "/about/bombay-sapphire.mp4",
-      poster: "/about/bombay-sapphire-poster.jpg",
+      // The 0:05 frame, per Josh — the film's own 'Testhouse Punch'
+      // title card.
+      poster: "/about/bombay-sapphire-poster-5s.jpg",
     },
   },
   {

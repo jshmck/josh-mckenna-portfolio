@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { FloatingStickers } from "@/components/about/floating-stickers";
+import { YouTubeEmbed } from "@/components/about/youtube-embed";
 import { PageEndCard } from "@/components/ui/page-end-card";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
@@ -145,18 +146,17 @@ export default function AboutPage() {
               <li key={feature.alt}>
                 <Reveal delay={index * 80}>
                   {feature.video ? (
-                    /* Films keep the grid's 16/10 frame; the 16:9 video
-                       sits object-contain inside it, so the sliver of
-                       letterbox is bg-ink and reads as a video's own
-                       black bars rather than a mis-sized image. No
-                       autoplay — playback is user-initiated via the
-                       native controls, so no reduced-motion guard is
-                       needed here. preload="metadata" keeps the page
-                       from pulling multi-MB files anyone may never
-                       play. */
-                    <div className="relative aspect-[16/10] overflow-hidden rounded-frame bg-ink">
+                    /* Film cards are true 16/9 while image cards stay
+                       16/10 — Josh asked for the video frames to match
+                       the films exactly rather than letterboxing them
+                       inside the grid ratio. No autoplay — playback is
+                       user-initiated via the native controls, so no
+                       reduced-motion guard is needed here.
+                       preload="metadata" keeps the page from pulling
+                       multi-MB files anyone may never play. */
+                    <div className="relative aspect-[16/9] overflow-hidden rounded-frame bg-ink">
                       <video
-                        className="absolute inset-0 h-full w-full object-contain"
+                        className="absolute inset-0 h-full w-full object-cover"
                         src={feature.video.src}
                         poster={feature.video.poster}
                         controls
@@ -165,6 +165,15 @@ export default function AboutPage() {
                         aria-label={feature.alt}
                       />
                     </div>
+                  ) : feature.youtube ? (
+                    /* Talks whose recordings live on someone else's
+                       YouTube channel — click-to-load, see the
+                       component for the rationale. */
+                    <YouTubeEmbed
+                      videoId={feature.youtube.id}
+                      poster={feature.youtube.poster}
+                      alt={feature.alt}
+                    />
                   ) : (
                     <Plate
                       image={{
