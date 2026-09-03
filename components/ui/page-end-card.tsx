@@ -8,35 +8,35 @@
  * of the page flush under the nav. md+ renders an invisible, unstyled
  * wrapper, same as project-content.tsx.
  *
- * This is a `background` gradient, not a `box-shadow`. Two earlier attempts
- * used box-shadow on the content box itself and both leaked a visible band
- * above the box's top edge, flush under the header ("the header seems to be
- * a different colour than the page") -- clip-path doesn't reliably clip
- * box-shadow in WebKit, and an overflow-hidden ancestor sized flush to the
- * box's own edge still showed a hairline, because a shadow's blur can't
- * actually reach zero alpha AT the edge that casts it (there's always some
- * value right at the source, however small the offset). A third attempt
- * moved the shadow onto a separate invisible strip near the bottom instead
- * of the header -- that stopped the header leak, but on any page whose real
- * content doesn't run flush to the very bottom (e.g. Shop's ghosted grid,
- * padded well above the footer), the strip's own flat top edge sat in
- * plain canvas space with nothing visibly attached to it, and its
- * never-quite-zero shadow value read as a stray horizontal line — reported
- * live as "the shadow is working well at the bottom but now there is a
- * line." A `linear-gradient` doesn't have that failure mode: it's zero by
- * definition at the stop you give it, not asymptotically approaching zero.
- * So the fade lives directly on the content box, clipped by the same
- * overflow-hidden + rounded-b-frame that already clips the content --
- * no separate strip, nothing that can ever land outside the box it's
- * describing. */
+ * The shadow lives back on the real content box (outer div), not a
+ * separate strip or an inner gradient -- two things that both got tried
+ * and both read wrong. A background gradient clipped inside the box (an
+ * earlier attempt) darkened the card's own bottom padding instead of
+ * casting a shadow past its edge -- reported live as "the shadow is
+ * inside the card instead of outside." A separate invisible strip's flat
+ * top edge, on pages whose content doesn't run flush to the bottom (e.g.
+ * Shop), sat in plain canvas space and read as a stray line.
+ *
+ * The actual fix is the shadow's own numbers: `18px` blur on an `8px`
+ * offset (the original values) meant blur > offset, and CSS box-shadow
+ * blurs symmetrically around the offset edge -- with blur wider than the
+ * offset, the blur necessarily reaches *back past the box's own top edge*
+ * and bleeds upward, flush under the header, however tightly you clip it
+ * (clipping just slices through a still-nonzero part of the gradient,
+ * confirmed live even after clip-path and overflow-hidden attempts).
+ * Keeping blur ≤ offset (`14px` blur on a `16px` offset here) means the
+ * blur's reach never crosses back above the box's top edge in the first
+ * place -- not clipped away, mathematically absent. So it can go straight
+ * back on the real box: a proper shadow cast outside and below the
+ * rounded corners, nothing bleeding under the header, nothing floating
+ * disconnected in blank space either, since it's tied to the real edge
+ * of real content again. */
 export function PageEndCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-md:relative max-md:overflow-hidden max-md:rounded-b-frame max-md:bg-canvas">
-      {children}
-      <div
-        aria-hidden="true"
-        className="max-md:pointer-events-none max-md:absolute max-md:inset-x-0 max-md:bottom-0 max-md:h-10 max-md:bg-[linear-gradient(to_top,rgba(0,0,0,0.10),rgba(0,0,0,0))]"
-      />
+    <div className="max-md:rounded-b-frame max-md:shadow-[0_16px_14px_rgba(0,0,0,0.12)]">
+      <div className="max-md:overflow-hidden max-md:rounded-b-frame max-md:bg-canvas">
+        {children}
+      </div>
     </div>
   );
 }
