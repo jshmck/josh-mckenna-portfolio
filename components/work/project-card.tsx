@@ -138,18 +138,24 @@ export function ProjectCard({
         {hoverCaption && (
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-center transition-[background-color] duration-300 group-hover:bg-canvas/85 group-focus-within:bg-canvas/85"
+            // duration-500 on the wash (was 300) also from the reference —
+            // the leisurely wash behind the quick text is part of the feel.
+            className="pointer-events-none absolute inset-0 flex items-center justify-center p-4 text-center transition-[background-color] duration-500 group-hover:bg-canvas/85 group-focus-within:bg-canvas/85"
           >
-            {/* Kinetic entrance, not a flat fade — the wash lands first,
-                then the title rises ~8px into place a beat later. The
-                delay sits only on the hover/focus variants so leaving the
-                card clears the title immediately instead of lingering.
+            {/* Kinetic entrance matched to emanuelecolombo.it's project
+                cards, the reference Josh pointed at for "the fun text
+                appear": the title rests 20px low and invisible, then on
+                hover the opacity lands fast (200ms) while the rise takes
+                twice as long (400ms) — the word appears almost instantly
+                but is still gliding up as it does, which is the whole
+                trick. Plain ease-in-out and no delay, per the reference
+                (his uses no spring here — the card's own shrink carries
+                the bounce). duration-[0.2s,0.4s] maps per-property onto
+                transition-[opacity,translate] in order.
                 transition-[opacity,translate], not transform — Tailwind
                 v4's translate-y-* emits the standalone CSS `translate`
-                property, so transitioning `transform` animates nothing.
-                Same spring as the card's own shrink hover, so the two
-                motions read as one gesture. */}
-            <span className="type-label translate-y-2 leading-none text-ink opacity-0 transition-[opacity,translate] duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-y-0 group-hover:opacity-100 group-hover:delay-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:delay-100">
+                property, so transitioning `transform` animates nothing. */}
+            <span className="type-label translate-y-5 leading-none text-ink opacity-0 transition-[opacity,translate] duration-[0.2s,0.4s] ease-in-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
               {project.title}
             </span>
           </div>
