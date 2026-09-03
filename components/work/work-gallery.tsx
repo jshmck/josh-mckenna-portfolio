@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useMemo, useSyncExternalStore } from "react";
 
 import { MasonryGrid } from "@/components/work/masonry-grid";
 import { ProjectCard } from "@/components/work/project-card";
@@ -19,6 +20,49 @@ type WorkGalleryProps = {
 };
 
 type Filter = ProjectCategory | "All";
+
+const CATEGORY_PARAM = "category";
+
+/** Fired after `setFilter` writes `?category=` via `router.replace` --
+ *  `history.replaceState` (which the router calls under the hood) doesn't
+ *  raise `popstate` on its own, so the external-store hook below has no
+ *  other way to notice a write it made itself. */
+const FILTER_CHANGE_EVENT = "worklist:filter";
+
+/** Reads the active filter back out of `?category=`. Backs a
+ *  `useSyncExternalStore` (below) rather than a post-mount effect --
+ *  `useSearchParams` would force this whole gallery out of static
+ *  prerendering unless wrapped in its own Suspense boundary, which would
+ *  mean shipping a fallback instead of real HTML for the page's main
+ *  content, and setting state straight from an effect body just to seed
+ *  it from `window` trips the "don't setState synchronously in an
+ *  effect" rule. External-store subscription is the sanctioned way to
+ *  read a value React doesn't own and react to it changing. */
+function filterFromSearch(search: string, categories: ProjectCategory[]): Filter {
+  const value = new URLSearchParams(search).get(CATEGORY_PARAM);
+  return value && (categories as string[]).includes(value) ? (value as Filter) : "All";
+}
+
+function subscribeFilterQuery(onChange: () => void) {
+  window.addEventListener("popstate", onChange);
+  window.addEventListener(FILTER_CHANGE_EVENT, onChange);
+  return () => {
+    window.removeEventListener("popstate", onChange);
+    window.removeEventListener(FILTER_CHANGE_EVENT, onChange);
+  };
+}
+
+/** Server and first-hydration render both report "All" (matching
+ *  useIsDesktopGrid's own reasoning just above) -- the real value from
+ *  `?category=` lands a tick later once the store's snapshot can read
+ *  `window`. */
+function useFilterFromQuery(categories: ProjectCategory[]): Filter {
+  return useSyncExternalStore(
+    subscribeFilterQuery,
+    () => filterFromSearch(window.location.search, categories),
+    () => "All",
+  );
+}
 
 /**
  * Ratio rhythm for the masonry columns. Cycling a fixed sequence rather than
@@ -77,6 +121,16 @@ function useIsDesktopGrid(): boolean {
  * Wagamama Brighton 1111/640 ≈ 1.74) does.
  */
 const LANDSCAPE_SPAN_RATIO = 1.3;
+
+/** Reserved height (px) for ProjectCard's mobile-only title strip —
+ *  mt-3 (12px) + a 15px/1.2-leading single truncated line (18px), plus a
+ *  couple px of buffer against font-metric rounding. Every card here uses
+ *  `caption="hover"`, so every one gains this strip at the single-column
+ *  breakpoint (see MasonryGrid's mobileCaptionPx). Over-reserving by a
+ *  couple px just leaves a hair more air below the shortest card in a
+ *  row; under-reserving is the failure mode (captions overlapping the row
+ *  beneath), so round up rather than measure exact. */
+const MOBILE_CAPTION_RESERVE_PX = 32;
 
 /** Top-of-page illustration row, /work only (see showIllustrations
  *  above). Lives here rather than in app/work/page.tsx because it used
@@ -290,8 +344,26 @@ export function WorkGallery({
   categories,
   showIllustrations = true,
 }: WorkGalleryProps) {
-  const [filter, setFilter] = useState<Filter>("All");
+  const router = useRouter();
+  const pathname = usePathname();
+  const filter = useFilterFromQuery(categories);
   const ratioCycle = useIsDesktopGrid() ? RATIO_CYCLE_DESKTOP : RATIO_CYCLE_MOBILE;
+
+  /** Keeps the URL in sync with the picked filter so it survives a visit
+   *  to a project page and back -- previously this was local state only,
+   *  so the back button always landed on the unfiltered grid. `scroll:
+   *  false` matches every other in-place interaction on this page. */
+  function setFilter(next: Filter) {
+    const params = new URLSearchParams(window.location.search);
+    if (next === "All") {
+      params.delete(CATEGORY_PARAM);
+    } else {
+      params.set(CATEGORY_PARAM, next);
+    }
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    window.dispatchEvent(new Event(FILTER_CHANGE_EVENT));
+  }
 
   const visible = useMemo(
     () =>
@@ -381,6 +453,7 @@ export function WorkGallery({
               ratio,
               span,
               transparent: isCardTransparent(project),
+              mobileCaptionPx: MOBILE_CAPTION_RESERVE_PX,
               node: (
                 <MasonryCard
                   project={project}

@@ -1,9 +1,8 @@
 "use client";
 
 import { Fragment } from "react";
-import Image from "next/image";
 
-import { Plate, RATIO_CLASS } from "@/components/ui/plate";
+import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { ProjectVideo } from "@/components/work/project-video";
 import { useProjectLightbox } from "@/components/work/project-lightbox-context";
@@ -22,9 +21,10 @@ type ImageStackProps = {
   /** Trial (Instagram Sticker only): a silent video inserted mid-gallery,
    *  outside the lightbox's photo-cycle. See Project.galleryVideo. */
   galleryVideo?: { src: string; alt: string; sound?: boolean; afterIndex: number };
-  /** Trial (Instagram Sticker only): an animated GIF inserted mid-gallery,
-   *  bypassing Plate via next/image's `unoptimized` mode so the animation
-   *  survives. See Project.galleryGif. */
+  /** Trial (Instagram Sticker only): fills the same slot an animated GIF
+   *  used to — a silent video, autoplaying on loop via ProjectVideo, which
+   *  is both lighter than the source GIF and immune to Next's image
+   *  optimizer freezing GIFs to their first frame. See Project.galleryGif. */
   galleryGif?: { src: string; alt: string; ratio: ImageRatio; afterIndex: number };
   /** Trial (Instagram Sticker only): groups consecutive images into one
    *  row instead of stacking them. See Project.gallerySpans. */
@@ -83,21 +83,14 @@ export function ImageStack({
           Desktop's md:space-y-8/md:gap-8 stays exactly as it was. */}
       <div className="mx-auto max-w-frame space-y-6 px-6 pb-40 max-md:pb-24 md:space-y-8 md:px-gutter">
         {galleryGif && galleryGif.afterIndex === 0 && (
-          // Capped to max-w-lg (512px) — the source GIF is only 1080px
-          // native, so stretching it to the frame's full 1344px width
-          // would upscale it past its real resolution and blur.
+          // Capped to max-w-lg (512px) — the source is only 1080px native,
+          // so stretching it to the frame's full 1344px width would
+          // upscale it past its real resolution and blur.
           <Reveal className="mx-auto max-w-lg">
-            <div
-              className={`relative overflow-hidden rounded-frame ${RATIO_CLASS[galleryGif.ratio]}`}
-            >
-              <Image
-                src={galleryGif.src}
-                alt={galleryGif.alt}
-                fill
-                unoptimized
-                className="object-cover"
-              />
-            </div>
+            <ProjectVideo
+              video={{ src: galleryGif.src, alt: galleryGif.alt }}
+              ratio={galleryGif.ratio}
+            />
             <p className="type-label mt-3 text-ink-muted">{galleryGif.alt}</p>
           </Reveal>
         )}
