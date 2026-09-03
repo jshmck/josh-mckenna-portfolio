@@ -534,8 +534,8 @@ export const projects: Project[] = [
     gallery: [
       {
         ratio: "4/5",
-        alt: "The original",
-        src: "/work/bum-selfie/01-bum-selfie-4-5.webp",
+        alt: "Bend over",
+        src: "/work/bum-selfie/03-bend-over-4-5.webp",
       },
     ],
     featured: false,
