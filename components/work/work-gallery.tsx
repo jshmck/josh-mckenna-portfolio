@@ -459,14 +459,6 @@ export function WorkGallery({
           guess at it. /work only (showIllustrations) -- moving this row
           into WorkGallery made it start showing up on Home's embedded
           gallery too, which it never did before. */}
-      {showIllustrations && (
-        <div className="mb-10 flex flex-nowrap items-end justify-center gap-4 sm:gap-6">
-          {ILLUSTRATIONS.map(({ src, aspect, height }) => (
-            <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
-          ))}
-        </div>
-      )}
-
       <div
         ref={pillRowRef}
         className="flex flex-wrap items-center justify-center gap-2"
@@ -521,6 +513,18 @@ export function WorkGallery({
         <p className="type-label mt-12 text-center text-ink-muted">
           Nothing matches — try another word.
         </p>
+      )}
+
+      {/* Below the pills, not above — "move the ipad illustration below
+          the categories," per Josh (mt-10 replaces the old mb-10 now the
+          row sits under what it used to sit over). Same tilt-toward-
+          cursor pair as before, /work only (showIllustrations). */}
+      {showIllustrations && (
+        <div className="mt-10 flex flex-nowrap items-end justify-center gap-4 sm:gap-6">
+          {ILLUSTRATIONS.map(({ src, aspect, height }) => (
+            <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
+          ))}
+        </div>
       )}
 
       {/* True masonry via MasonryGrid (bin-packed from each card's known
