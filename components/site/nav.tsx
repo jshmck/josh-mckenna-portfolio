@@ -676,15 +676,16 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    // Guarded: when the page's own filter row is already
-                    // on screen (top of /work, or Home scrolled to the
-                    // embedded gallery), the menu would drop directly
-                    // over it as a doubled row ("make sure this doesnt
-                    // happen on return to top," per Josh) — so it only
-                    // opens once the real row is out of the viewport, and
-                    // always on pages that don't render one at all.
+                    // Twice guarded: /work only ("hover state should only
+                    // be available when inside the work page," per Josh —
+                    // it was opening on project pages and everywhere
+                    // else too), and even there only once the page's own
+                    // filter row has scrolled out of the viewport, since
+                    // at the top the menu dropped directly over the real
+                    // row as a doubled stack ("make sure this doesnt
+                    // happen on return to top").
                     onMouseEnter={
-                      link.href === "/work"
+                      link.href === "/work" && pathname === "/work"
                         ? () => {
                             const row = document.querySelector(
                               '[aria-label="Filter work by discipline"]',
