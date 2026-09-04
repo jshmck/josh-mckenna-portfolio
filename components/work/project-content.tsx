@@ -142,6 +142,15 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
     { label: "Deliverables", value: project.deliverables },
   ];
 
+  // Mobile only ("in the projects themselves on mobile," per Josh) — the
+  // same brand line the /work grid card's hover shows under its title,
+  // repeated here under the page's own H1. Same fallback/guard as the
+  // card: only opt-in projects (cardLabel, or cardTitle's implied client)
+  // get one, and Personal-client pieces never do. The H1 itself stays the
+  // real project.title always — cardTitle only ever governs the grid card.
+  const cardBrandText =
+    project.cardLabel ?? (project.cardTitle ? project.client : undefined);
+
   // The h1 renders project.title as stored — natural casing ("Wagamama
   // Pride"), the sitewide universal title rule.
   // Below md, a multi-word title breaks before its last word — at the
@@ -320,6 +329,11 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
                   className="type-heading max-w-4xl text-ink"
                 />
 
+                {cardBrandText && project.client !== "Personal" && (
+                  <p className="type-label mt-1.5 text-ink-muted md:hidden">
+                    {cardBrandText}
+                  </p>
+                )}
               </div>
 
               {/* Currently unused — la-pride trialled this (its shield +

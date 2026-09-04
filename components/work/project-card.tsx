@@ -75,6 +75,13 @@ export function ProjectCard({
   // through un-reviewed.
   const displayTitle = project.cardTitle ?? project.title;
   const cardLabelText = project.cardLabel ?? (project.cardTitle ? project.client : undefined);
+  // The always-visible mobile strip below shows one line, not the desktop
+  // hover's title+brand pair — brand first when there is one ("Work gallery
+  // should just be brand, if not brand then title," per Josh), falling
+  // back to the title otherwise. Personal-client pieces never show a
+  // brand line, matching the desktop hover's own guard.
+  const mobileCardText =
+    cardLabelText && project.client !== "Personal" ? cardLabelText : displayTitle;
   // Trial (mini-animation only, see Project.cardVideo): the card plays the
   // hero clip instead of sitting on its still frame — cropped to the same
   // ratio the still would've used, poster is that still so there's no flash
@@ -234,8 +241,8 @@ export function ProjectCard({
           which touch has neither of — mobile saw no title anywhere in the
           grid. md:hidden keeps desktop's pure hover-reveal card exactly as
           it was; only the mobile breakpoint gains this always-visible
-          strip, title only (no client/year) to match what the hover wash
-          itself shows. */}
+          strip. One line, not the desktop hover's title+brand pair — see
+          mobileCardText above. */}
       {hoverCaption && (
         // mt-2, tighter than the `below` caption's mt-3 above — proximity
         // is the only cue tying this title to its own image rather than
@@ -249,7 +256,7 @@ export function ProjectCard({
               for this strip so cards don't overlap, which only holds if
               every title renders at the same single-line height. */}
           <h3 className="truncate text-center font-body text-[15px] leading-[1.2] font-medium text-ink">
-            {displayTitle}
+            {mobileCardText}
           </h3>
         </div>
       )}
