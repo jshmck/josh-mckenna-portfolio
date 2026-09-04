@@ -2783,7 +2783,13 @@ export const projects: Project[] = [
     year: 2024,
     pinnedRank: 3,
     discipline: "Festival Identity",
-    deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
+    // Full rebrand scope, per Josh — "it was a rebrand project, involved
+    // everything: logo, type, posters, wayfinding, banners, stage
+    // livery, digital assets for screens." Wristbands and merch were
+    // already confirmed deliverables, kept alongside the fuller list
+    // rather than dropped.
+    deliverables:
+      "Logo · Type · Posters · Wayfinding · Banners · Stage Livery · Digital Screens · Wristbands · Merch",
     categories: ["LGBTQ+", "Murals"],
     // True ratio of the lockup cardImage (a 4/5 export of the same
     // artwork) — pinned explicitly rather than leaving it to chance which
@@ -2793,7 +2799,7 @@ export const projects: Project[] = [
     summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption: "",
     brief: [
-      "LA Pride's been running since 1970, and by 2024 the bill included Ricky Martin, Muna and Jojo Siwa. James Junk and I got the call to rebuild the whole visual identity — branding, wayfinding, every banner on site, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there we built the letters themselves out of people, stacking characters into the L and the A. It had to hold up at every scale there is — stage-header-sized and cap-badge-sized, same drawing.",
+      "LA Pride's been running since 1970, and by 2024 the bill included Ricky Martin, Muna and Jojo Siwa. James Junk and I got the call to rebuild the whole visual identity from the ground up — the logo, the typeface, posters, wayfinding, every banner on site, the stage livery, digital assets for the venue's screens, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there we built the letters themselves out of people, stacking characters into the L and the A. It had to hold up at every scale there is — stage-header-sized and cap-badge-sized, same drawing.",
       "James handled the type, I drew the characters. Fifty years is a long time to be handed the keys to. Scroll on, you'll see what we did with them.",
     ],
     credits: [
