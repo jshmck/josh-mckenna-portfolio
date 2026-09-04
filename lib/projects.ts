@@ -1099,6 +1099,16 @@ export const projects: Project[] = [
     // Pinned, not left to RATIO_CYCLE — per Josh, the /work card can't land
     // on 4/5 for this one.
     cardRatio: "1/1",
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "172/273",
+        alt: "The piece as it ran on WSJ.com",
+        src: "/work/wsj-airpods-rich/02-article.webp",
+      },
+    },
     hero: {
       ratio: "3/2",
       alt: "Three ears in a row, each wearing an AirPod",
@@ -1333,6 +1343,16 @@ export const projects: Project[] = [
       alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
       src: "/work/atlanta-magazine/01-lgbtqiqa.webp",
     },
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/3",
+        alt: "The spread on the printed page.",
+        src: "/work/atlanta-magazine/02-magazine-landscape.webp",
+      },
+    },
     hero: {
       ratio: "16/9",
       alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
@@ -1440,6 +1460,16 @@ export const projects: Project[] = [
     // The artwork is a true 4/5, not RATIO_CYCLE's default alternation —
     // same fix as monocle-spot-illo and coca-cola-moments.
     cardRatio: "4/5",
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/5",
+        alt: "The spread on the printed page.",
+        src: "/work/boat-international/02-boat-international-mockup.webp",
+      },
+    },
     hero: {
       ratio: "4/5",
       alt: "A dayboat at anchor, tethered to a sun-shaped solar balloon.",
@@ -1477,6 +1507,16 @@ export const projects: Project[] = [
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
     // happened to also give 4/5, but only by chance of array position.
     cardRatio: "4/5",
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/5",
+        alt: "The cover on the printed issue.",
+        src: "/work/step-journal/02-step-journal-cover-mockup.webp",
+      },
+    },
     hero: {
       ratio: "4/5",
       alt: "A house sliced open by a knife, its layers labelled with capital gains, inheritance and income tax.",
@@ -1520,6 +1560,16 @@ export const projects: Project[] = [
     // as wide as the site's usual two-up hero grid instead of one column
     // of it — per Josh, the spread should lead the page. Replaced the
     // original flat export with Josh's mockup-shadow render.
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "1/1",
+        alt: "The spread, held open and read in print",
+        src: "/work/weapons-of-reason-gay-divide/01-ins-post-arrive-2.webp",
+      },
+    },
     hero: {
       ratio: "16/9",
       alt: "The Gay Divide spread, opening page",
@@ -2894,6 +2944,16 @@ export const projects: Project[] = [
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
     // was giving this 1/1 by chance.
     cardRatio: "4/5",
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/5",
+        alt: "Mocked up as a magazine spread",
+        src: "/work/sound-of-driving/04-mag-03.webp",
+      },
+    },
     hero: {
       ratio: "4/5",
       alt: "\"Have EVs Killed the Sound of Driving?\" — the finished key art",
