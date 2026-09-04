@@ -4,6 +4,7 @@ import type { ImageRatio, ProjectImage } from "@/lib/projects";
 
 export const RATIO_CLASS: Record<ImageRatio, string> = {
   "1/1": "aspect-square",
+  "5/3": "aspect-[5/3]",
   "2/3": "aspect-[2/3]",
   "4/5": "aspect-[4/5]",
   "3/4": "aspect-[3/4]",

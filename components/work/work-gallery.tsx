@@ -467,14 +467,20 @@ export function WorkGallery({
           // category, can the rules of the grid change?" per Josh).
           dense={filter !== "All"}
           items={visible.map((project, index) => {
-            const cardRatio = effectiveCardRatio(project, index, ratioCycle);
-            const ratio = ratioToNumber(cardRatio);
-            const span = ratio >= LANDSCAPE_SPAN_RATIO ? 2 : 1;
             // Filtered views can lead with a category-specific cover; when
             // one applies, hover swaps back to the original lead instead
-            // of the usual second-image pick. See cardImageByCategory.
+            // of the usual second-image pick, and the override's own ratio
+            // becomes the card frame — a 16/9 spread override renders as a
+            // full two-column spread rather than centre-cropped into the
+            // project's usual frame (Weapons of Reason's double page, which
+            // lost half its headline to the 1/1 crop). See
+            // cardImageByCategory.
             const categoryImage =
               filter !== "All" ? project.cardImageByCategory?.[filter] : undefined;
+            const cardRatio =
+              categoryImage?.ratio ?? effectiveCardRatio(project, index, ratioCycle);
+            const ratio = ratioToNumber(cardRatio);
+            const span = ratio >= LANDSCAPE_SPAN_RATIO ? 2 : 1;
             return {
               key: project.slug,
               ratio,

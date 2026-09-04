@@ -33,6 +33,13 @@ export type ImageRatio =
   | "4/3"
   | "5/4"
   | "3/2"
+  // Card-frame-only ratio for the /work grid's two-column-wide cards. A
+  // 16/9 frame spanning two columns renders ~31px shorter than the 4/5
+  // portrait beside it (the double card absorbs a 32px gutter, so the
+  // ratios don't cancel); at 5/3 the row lands level to within a pixel
+  // ("i want them to have equal height," per Josh). Costs the wide
+  // artwork ~3% off each side on the card only.
+  | "5/3"
   | "16/10"
   // Beefbar Posters' true print ratios — none of the ratios above were close
   // enough to snap to without a visible crop or letterbox gap.
@@ -1099,16 +1106,6 @@ export const projects: Project[] = [
     // Pinned, not left to RATIO_CYCLE — per Josh, the /work card can't land
     // on 4/5 for this one.
     cardRatio: "1/1",
-    // Editorial pill leads with the printed piece — "editorial
-    // section should show any mock as cover image," per Josh. Hover
-    // swaps back to the artwork itself (see WorkGallery).
-    cardImageByCategory: {
-      Editorial: {
-        ratio: "172/273",
-        alt: "The piece as it ran on WSJ.com",
-        src: "/work/wsj-airpods-rich/02-article.webp",
-      },
-    },
     hero: {
       ratio: "3/2",
       alt: "Three ears in a row, each wearing an AirPod",
@@ -1267,7 +1264,7 @@ export const projects: Project[] = [
     // Card and hero share 16/9 now — Josh's clearer re-export of the
     // Brighton artwork (Sep 2026) is natively 3413x1920, retiring the
     // 1063/640 crop (and its ImageRatio member) the hero used to carry.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
     // On the Murals pill the card leads with the installed glass instead
     // of the flat artwork — "the image is of the large window vinyl,"
     // per Josh (Old Street, his pick over Marble Arch/Brighton).
@@ -1337,7 +1334,7 @@ export const projects: Project[] = [
     // The artwork itself is a wide 16/9 wordmark banner — force the /work
     // grid card to the same landscape shape instead of RATIO_CYCLE's default
     // portrait, so the card isn't cropping down a wide piece.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
     cardImage: {
       ratio: "16/9",
       alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
@@ -1560,16 +1557,6 @@ export const projects: Project[] = [
     // as wide as the site's usual two-up hero grid instead of one column
     // of it — per Josh, the spread should lead the page. Replaced the
     // original flat export with Josh's mockup-shadow render.
-    // Editorial pill leads with the printed piece — "editorial
-    // section should show any mock as cover image," per Josh. Hover
-    // swaps back to the artwork itself (see WorkGallery).
-    cardImageByCategory: {
-      Editorial: {
-        ratio: "1/1",
-        alt: "The spread, held open and read in print",
-        src: "/work/weapons-of-reason-gay-divide/01-ins-post-arrive-2.webp",
-      },
-    },
     hero: {
       ratio: "16/9",
       alt: "The Gay Divide spread, opening page",
@@ -1649,7 +1636,7 @@ export const projects: Project[] = [
     // hero's true 1.6 — still clears LANDSCAPE_SPAN_RATIO (1.3) either way,
     // so it spans two columns automatically, same as UAL Booklets and
     // Bombay Sapphire.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
     summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
     heroCaption: "Tanning Tips — the first of a three-part series on tanning safely.",
     brief: [
@@ -2492,7 +2479,7 @@ export const projects: Project[] = [
     // Standardized to 16/9 with the other landscape /work cards, not the
     // photo's true 3/2 — checked against the actual spread, nothing
     // essential is cropped. Same fix as Bombay Sapphire below.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
     summary: "Six UAL colleges, six colour-ways, one shared case of first-week nerves.",
     heroCaption: "One interior spread, reused across all six 2017–2020 college editions.",
     brief: [
@@ -2979,7 +2966,7 @@ export const projects: Project[] = [
     // Standardized to 16/9 with the other landscape /work cards, not the
     // hero's true 1.5 — checked against the actual storefront shot,
     // nothing essential is cropped. Same fix as UAL Booklets above.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
     summary:
       "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
     heroCaption: "The Stir Creativity mural, live in Bombay Sapphire's Shoreditch pop-up.",
