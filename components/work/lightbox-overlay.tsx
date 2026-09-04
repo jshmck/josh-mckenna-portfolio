@@ -34,9 +34,15 @@ function ratioToNumber(ratio: string) {
  *  the hover colour blue," per Josh -- kept from the pill era, it's a
  *  colour choice, not pill chrome). p-3 grows each tap target well past
  *  the glyph; the absolute positions below place the padded box, so no
- *  negative margins are needed to compensate. */
+ *  negative margins are needed to compensate. z-20 -- these sit as
+ *  siblings of the open image's own z-10 stage (added for the
+ *  drag-follow peeks to tuck behind, see the stage div below), and a
+ *  positioned sibling with no z-index of its own paints BEHIND an
+ *  explicit z-10 regardless of DOM order. Without this every control
+ *  went invisible under any image that reached its corner: the counter
+ *  and the × both reported cut off by the picture. */
 const LIGHTBOX_BUTTON_CLASS =
-  "p-3 font-mono text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-brand hover:duration-300 hover:ease-drift active:scale-110 active:text-brand";
+  "z-20 p-3 font-mono text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-110 hover:text-brand hover:duration-300 hover:ease-drift active:scale-110 active:text-brand";
 
 /** Tracks the viewport size live (mount + resize) so the stage can size
  *  itself in real pixels rather than through nested CSS var()/calc()/min()
@@ -785,7 +791,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
               "1 / 12" is the caption-voice hint that a swipe has
               somewhere to go, cousin of the breadcrumb dot strip. */}
           {openIndex !== null && (
-            <p className="type-label absolute bottom-6 left-1/2 -translate-x-1/2 text-ink md:hidden">
+            <p className="type-label absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-ink md:hidden">
               {openIndex + 1} / {images.length}
             </p>
           )}
