@@ -255,7 +255,11 @@ export type Project = {
    * per Josh — Wagamama and L.A. Pride's Murals covers so far). The card's
    * frame keeps its normal `cardRatio`, so pick images that survive that
    * crop. Ignored on the unfiltered ALL grid and everywhere else a card
-   * renders.
+   * renders. Landscape (`ratio` ≥ `LANDSCAPE_SPAN_RATIO`, work-gallery.tsx)
+   * overrides span two grid columns exactly like a landscape `cardRatio`
+   * does — give them `"5/3"`, not the artwork's true ratio, per the same
+   * rule `cardRatio` documents below (Wagamama's Murals cover, Atlanta's
+   * Editorial cover).
    */
   cardImageByCategory?: Partial<Record<ProjectCategory, ProjectImage>>;
   /**
@@ -264,6 +268,21 @@ export type Project = {
    * masonry rhythm, regardless of the image's own shape, which is fine for
    * most artwork but forces a real fixed format (Beefbar's posters) into
    * whatever ratio its position happens to land on.
+   *
+   * Any landscape value here (ratio ≥ `LANDSCAPE_SPAN_RATIO`, 1.3, see
+   * work-gallery.tsx) makes the card span two grid columns — and MUST be
+   * `"5/3"`, never the artwork's true ratio (16/9, 16/10, 3/2, whatever it
+   * actually is). A span-2 card's box is `2×column + gap` wide, so its
+   * true-ratio height comes out shorter than a single-column neighbour's —
+   * `"5/3"` is the one value that cancels that gap-vs-width difference at
+   * this site's real column width, landing both cards level to the pixel
+   * (verified in Chrome, Honda Super N against Ford Bronco's 4/5: 496px vs
+   * 497px). "Any horizontal frame on the grid has to follow the same 5/3
+   * rule," per Josh — this is a standing rule, not a one-off fix; every
+   * landscape `cardRatio` and every landscape `cardImageByCategory` entry
+   * follows it (Wagamama, Atlanta Magazine, Honda Super N, and whichever
+   * project is next). The full-bleed project-page `hero` is untouched —
+   * this only ever governs the /work grid card's own crop.
    */
   cardRatio?: ImageRatio;
   /**
@@ -1270,10 +1289,13 @@ export const projects: Project[] = [
     cardRatio: "5/3",
     // On the Murals pill the card leads with the installed glass instead
     // of the flat artwork — "the image is of the large window vinyl,"
-    // per Josh (Old Street, his pick over Marble Arch/Brighton).
+    // per Josh (Old Street, his pick over Marble Arch/Brighton). 5/3,
+    // not the photo's true 3/2 — "any horizontal frame on the grid has
+    // to follow the same 5/3 rule," per Josh, so a span-2 override
+    // levels against its row-mate the same way a span-2 cardRatio does.
     cardImageByCategory: {
       Murals: {
-        ratio: "3/2",
+        ratio: "5/3",
         alt: "The window at Wagamama's Old Street",
         src: "/work/wagamama-pride/03-old-street.webp",
       },
@@ -1345,10 +1367,12 @@ export const projects: Project[] = [
     },
     // Editorial pill leads with the printed piece — "editorial
     // section should show any mock as cover image," per Josh. Hover
-    // swaps back to the artwork itself (see WorkGallery).
+    // swaps back to the artwork itself (see WorkGallery). 5/3, not the
+    // photo's true 4/3 — same levelling rule as every other span-2
+    // frame on the grid.
     cardImageByCategory: {
       Editorial: {
-        ratio: "4/3",
+        ratio: "5/3",
         alt: "The spread on the printed page.",
         src: "/work/atlanta-magazine/02-magazine-landscape.webp",
       },
