@@ -590,29 +590,24 @@ export const projects: Project[] = [
       alt: "Honda Super N",
       src: "/work/honda-super-n/01-super-n-red.webp",
     },
-    heroPair: {
-      ratio: "16/9",
-      alt: "Super N — rear three-quarter",
-      src: "/work/honda-super-n/06-super-n-rear-quarter.webp",
-    },
-    // All four purple angles first (hero two-up + this pair), then the
-    // stock N-One it started from in the same four angles — paired rows
-    // rather than a carousel, "might be overkill?" per Josh; agreed.
+    // Full-width rows for every three-quarter view — "i liked the large
+    // view on the project page," per Josh: purple front and rear 3/4
+    // lead (hero + gallery[0]), the white 3/4s follow the same way. The
+    // four head-on/tail views close the page as one row of 1/1 squares
+    // (count: 4) — centre crops of the 16/9 sources, safe because the
+    // car sits dead centre in every render. The count: 1 spans keep the
+    // full-width rows out of the default two-up pairing.
     gallerySpans: [
-      { startIndex: 0, count: 2 },
-      { startIndex: 2, count: 2 },
-      { startIndex: 4, count: 2 },
+      { startIndex: 0, count: 1 },
+      { startIndex: 1, count: 1 },
+      { startIndex: 2, count: 1 },
+      { startIndex: 3, count: 4 },
     ],
     gallery: [
       {
         ratio: "16/9",
-        alt: "Super N — head on",
-        src: "/work/honda-super-n/07-super-n-front.webp",
-      },
-      {
-        ratio: "16/9",
-        alt: "Super N — from behind",
-        src: "/work/honda-super-n/08-super-n-back.webp",
+        alt: "Super N — rear three-quarter",
+        src: "/work/honda-super-n/06-super-n-rear-quarter.webp",
       },
       {
         ratio: "16/9",
@@ -625,12 +620,22 @@ export const projects: Project[] = [
         src: "/work/honda-super-n/05-n-one-rear-quarter.webp",
       },
       {
-        ratio: "16/9",
+        ratio: "1/1",
+        alt: "Super N — head on",
+        src: "/work/honda-super-n/07-super-n-front.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Super N — from behind",
+        src: "/work/honda-super-n/08-super-n-back.webp",
+      },
+      {
+        ratio: "1/1",
         alt: "Head on",
         src: "/work/honda-super-n/03-n-one-front.webp",
       },
       {
-        ratio: "16/9",
+        ratio: "1/1",
         alt: "From behind",
         src: "/work/honda-super-n/04-n-one-rear.webp",
       },
