@@ -84,7 +84,10 @@ export function ProjectTitle({ head, last, className = "" }: ProjectTitleProps) 
   }, [head, last]);
 
   return (
-    <h1 ref={ref} className={className}>
+    // data-project-title: ProjectStackSwipe's dot-strip reveal anchors on
+    // this h1's bottom edge crossing under the sticky header — see its
+    // comment for the timing rule.
+    <h1 ref={ref} data-project-title className={className}>
       {head ? (
         <>
           {head} <br className="md:hidden" />

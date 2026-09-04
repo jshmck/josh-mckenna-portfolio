@@ -387,10 +387,7 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
               )}
             </div>
 
-            {/* data-project-meta: ProjectStackSwipe's dot-strip reveal
-                anchors on this row — see its own comment for why it's the
-                one thing every project layout renders in the same spot. */}
-            <dl data-project-meta className="mt-8 flex flex-wrap gap-x-16 gap-y-6">
+            <dl className="mt-8 flex flex-wrap gap-x-16 gap-y-6">
               {meta.map((item) => (
                 <div key={item.label}>
                   <dt className="type-label text-ink/60">{item.label}</dt>
