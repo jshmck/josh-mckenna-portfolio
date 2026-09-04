@@ -142,6 +142,54 @@ import { CartIcon } from "@/components/ui/social-icons";
 const MERGE_ENTER = 96; // just past the 88px header
 const MERGE_EXIT = 160;
 
+/** The nav's own copy of the Work search, inside the hover drop-down. Used
+ * to render full-width unconditionally — "the search is the full length,
+ * not the smaller circle with mag like it is at the top of the page," per
+ * Josh, comparing it to the in-page pill (work-gallery.tsx) it's meant to
+ * echo. A standalone component rather than inline JSX so its own `open`
+ * state remounts fresh (collapsed) every time the drop-down itself mounts
+ * on hover — no effect needed to reset it back to closed between opens. */
+function NavWorkSearch({ delayMs }: { delayMs: number }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span
+      className="group/navsearch relative inline-flex animate-[pill-woosh_550ms_var(--ease-bounce)_both] items-center"
+      style={{ animationDelay: `${delayMs}ms` }}
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 16 16"
+        className={`pointer-events-none absolute left-0 h-3 w-3 transition-[translate,color] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/navsearch:text-brand ${
+          open ? "translate-x-[14px] text-brand" : "translate-x-[11px] text-ink"
+        }`}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      >
+        <circle cx="6.5" cy="6.5" r="4.75" />
+        <path d="m10.5 10.5 3.5 3.5" />
+      </svg>
+      <input
+        type="search"
+        aria-label="Search work"
+        onFocus={() => setOpen(true)}
+        onBlur={(event) => {
+          if (!event.target.value.trim()) setOpen(false);
+        }}
+        onChange={(event) =>
+          window.dispatchEvent(new CustomEvent("worklist:search", { detail: event.target.value }))
+        }
+        className={`font-grotesque rounded-full border bg-canvas py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none [&::-webkit-search-cancel-button]:hidden ${
+          open
+            ? "w-40 border-brand pr-4 pl-8"
+            : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
+        }`}
+      />
+    </span>
+  );
+}
+
 export function Nav() {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
@@ -579,35 +627,11 @@ export function Nav() {
                       window event (different tree), which also pops the
                       in-page pill open so the query stays visible after
                       this menu closes. Uncontrolled here — each open
-                      starts a fresh input, the gallery keeps the state. */}
+                      starts a fresh input, the gallery keeps the state.
+                      NavWorkSearch (above Nav) owns the collapsed/open
+                      sizing itself, mirroring work-gallery.tsx's pill. */}
                   {pathname === "/work" && (
-                    <span
-                      className="group/navsearch relative inline-flex animate-[pill-woosh_550ms_var(--ease-bounce)_both] items-center"
-                      style={{ animationDelay: `${(getActiveCategories().length + 1) * 55}ms` }}
-                    >
-                      <svg
-                        aria-hidden="true"
-                        viewBox="0 0 16 16"
-                        className="pointer-events-none absolute left-3.5 h-3 w-3 text-ink transition-colors duration-300 group-focus-within/navsearch:text-brand group-hover/navsearch:text-brand"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      >
-                        <circle cx="6.5" cy="6.5" r="4.75" />
-                        <path d="m10.5 10.5 3.5 3.5" />
-                      </svg>
-                      <input
-                        type="search"
-                        aria-label="Search work"
-                        onChange={(event) =>
-                          window.dispatchEvent(
-                            new CustomEvent("worklist:search", { detail: event.target.value }),
-                          )
-                        }
-                        className="font-grotesque w-40 rounded-full border border-ink bg-canvas py-[9.5px] pr-4 pl-8 text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none hover:border-brand focus:border-brand [&::-webkit-search-cancel-button]:hidden"
-                      />
-                    </span>
+                    <NavWorkSearch delayMs={(getActiveCategories().length + 1) * 55} />
                   )}
                 </div>
               </div>
