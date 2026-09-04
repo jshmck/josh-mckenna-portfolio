@@ -446,6 +446,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
     if (reduced) {
       let startX = 0;
       let startY = 0;
+      let startScrollY = 0;
       let tracking = false;
 
       const onTouchStart = (event: TouchEvent) => {
@@ -456,6 +457,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         tracking = true;
         startX = event.touches[0].clientX;
         startY = event.touches[0].clientY;
+        startScrollY = window.scrollY;
       };
 
       const onTouchEnd = (event: TouchEvent) => {
@@ -464,6 +466,13 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         const touch = event.changedTouches[0];
         const deltaX = touch.clientX - startX;
         const deltaY = touch.clientY - startY;
+        // Pull-down-to-go-back, only from the very top of the page — same
+        // eligibility rule as the animated version below, just without any
+        // drag-follow to show for it under reduced motion.
+        if (deltaY >= COMPLETE_DISTANCE && Math.abs(deltaY) > Math.abs(deltaX) * DOMINANCE && startScrollY <= 0) {
+          router.back();
+          return;
+        }
         if (Math.abs(deltaX) < COMPLETE_DISTANCE) return;
         if (Math.abs(deltaX) < Math.abs(deltaY) * DOMINANCE) return;
         const slug = deltaX < 0 ? next?.slug : previous?.slug;
@@ -486,9 +495,10 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
 
     let startX = 0;
     let startY = 0;
+    let startScrollY = 0;
     let tracking = false; // a touch is down and eligible to become a drag
     let captured = false; // dominance test passed — this touch IS a drag
-    let activeDirection: "previous" | "next" | null = null;
+    let activeDirection: "previous" | "next" | "back" | null = null;
     let lastResisted = 0;
 
     const setPeekTransform = (el: HTMLDivElement | null, resisted: number, direction: "previous" | "next") => {
@@ -537,6 +547,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       tracking = true;
       startX = x;
       startY = event.touches[0].clientY;
+      startScrollY = window.scrollY;
       lastResisted = 0;
     };
 
@@ -547,35 +558,61 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       const deltaY = touch.clientY - startY;
 
       if (!captured) {
-        if (Math.abs(deltaX) < ACTIVATION_DISTANCE) return;
-        if (Math.abs(deltaX) < Math.abs(deltaY) * DOMINANCE) {
-          tracking = false; // reads as a scroll — stop watching this touch
-          return;
+        if (Math.abs(deltaX) < ACTIVATION_DISTANCE && Math.abs(deltaY) < ACTIVATION_DISTANCE) return;
+
+        if (Math.abs(deltaY) > Math.abs(deltaX) * DOMINANCE) {
+          // Vertical-dominant — only claims the gesture as "pull down to
+          // go back" when it's actually downward AND the page hasn't
+          // scrolled at all yet ("only at scroll top," per Josh, so this
+          // can never be confused with a normal downward scroll further
+          // into the page). Anything else here reads as a plain scroll.
+          if (deltaY <= 0 || startScrollY > 0) {
+            tracking = false;
+            return;
+          }
+          captured = true;
+          activeDirection = "back";
+          slab.style.transition = "";
+        } else {
+          if (Math.abs(deltaX) < ACTIVATION_DISTANCE) return;
+          captured = true;
+          activeDirection = deltaX < 0 ? "next" : "previous";
+          if (
+            (activeDirection === "next" && !next) ||
+            (activeDirection === "previous" && !previous)
+          ) {
+            // No neighbour that direction — nothing to reveal, so don't
+            // drag the slab away from a page it can't come back from
+            // without wrapping. getProjectNeighbours wraps at both ends in
+            // practice, so this only matters if a caller ever passes null.
+            tracking = false;
+            captured = false;
+            return;
+          }
+          slab.style.transition = "";
+          // Expand the dot pill back to its full window the instant the
+          // press reads as a left/right drag -- "same size as is when
+          // you start to press as if going left or right," per Josh.
+          dotShrinkState.current.dragging = true;
+          applyDotShrink();
         }
-        captured = true;
-        activeDirection = deltaX < 0 ? "next" : "previous";
-        if (
-          (activeDirection === "next" && !next) ||
-          (activeDirection === "previous" && !previous)
-        ) {
-          // No neighbour that direction — nothing to reveal, so don't
-          // drag the slab away from a page it can't come back from
-          // without wrapping. getProjectNeighbours wraps at both ends in
-          // practice, so this only matters if a caller ever passes null.
-          tracking = false;
-          captured = false;
-          return;
-        }
-        slab.style.transition = "";
-        // Expand the dot pill back to its full window the instant the
-        // press reads as a left/right drag -- "same size as is when
-        // you start to press as if going left or right," per Josh.
-        dotShrinkState.current.dragging = true;
-        applyDotShrink();
       }
 
       if (!captured || !activeDirection) return;
       event.preventDefault();
+
+      if (activeDirection === "back") {
+        const resisted = resist(deltaY);
+        lastResisted = resisted;
+        // Same "falling away" read as the lightbox's own pull-to-close —
+        // scales down and fades slightly as it's pulled, on top of the
+        // translate, rather than just a flat drag.
+        const progress = Math.min(1, resisted / COMPLETE_DISTANCE);
+        slab.style.transform = `translate3d(0, ${resisted}px, 0) scale(${1 - progress * 0.04})`;
+        slab.style.opacity = `${1 - progress * 0.25}`;
+        return;
+      }
+
       const resisted = resist(deltaX);
       lastResisted = resisted;
       slab.style.transform = `translate3d(${resisted}px, 0, 0)`;
@@ -599,6 +636,28 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
     const settle = () => {
       if (!captured || !activeDirection) {
         tracking = false;
+        return;
+      }
+
+      if (activeDirection === "back") {
+        if (lastResisted >= COMPLETE_DISTANCE) {
+          // Committed — finish the fall away and hand off to the browser's
+          // own back navigation, which is what restores the exact scroll
+          // position Work (or Home) was left at; router.back() rather than
+          // router.push('/work') specifically so that's true regardless of
+          // which page this project was opened from.
+          slab.style.transition = "transform 260ms ease-in, opacity 260ms ease-in";
+          slab.style.transform = `translate3d(0, ${lastResisted + 160}px, 0) scale(0.9)`;
+          slab.style.opacity = "0";
+          window.setTimeout(() => router.back(), 260);
+        } else {
+          slab.style.transition = "transform 420ms var(--ease-bounce), opacity 420ms var(--ease-bounce)";
+          slab.style.transform = "";
+          slab.style.opacity = "";
+        }
+        tracking = false;
+        captured = false;
+        activeDirection = null;
         return;
       }
 
