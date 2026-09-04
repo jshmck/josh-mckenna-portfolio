@@ -534,6 +534,23 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   const widthCapPx = viewport ? Math.min(viewport.width * 0.97, 2000) : 2000;
   const isMobileViewport = !!viewport && viewport.width < 768;
 
+  // Inline pixel height for every stage-shaped box below (both peeks and
+  // the real stage), falling back to their own CSS h-[calc(100vh-72px)]
+  // class only for the first paint before useViewportSize's effect has
+  // measured anything. From then on this is the single source of truth,
+  // so the stage can never drift from the visualViewport math heightCapPx
+  // above already uses for the image inside it. That drift was real: CSS
+  // 100vh doesn't shrink the way visualViewport does when a mobile
+  // browser's own toolbar is on screen, so the stage could render taller
+  // than what's actually visible, pushing a tall image further down than
+  // its own (correctly visualViewport-based) height math intended --
+  // exactly the mismatch that let a tall image's frame crowd the
+  // counter/close button despite their z-20 fix. "still doing it on the
+  // taller images," per Josh.
+  const stageStyle: React.CSSProperties | undefined = viewport
+    ? { height: viewport.height - stageReserve }
+    : undefined;
+
   // Every frame in the cycle (the open image, and the live drag-follow
   // peeks either side of it) runs through this same sizing math, factored
   // out so the peeks can never drift from what the "real" open image would
@@ -664,10 +681,13 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
         <div
           ref={prevPeekRef}
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center p-4"
+          className="pointer-events-none fixed inset-0 z-0 flex will-change-transform items-center justify-center p-4"
           style={{ transform: "translate3d(-100%, 0, 0)", opacity: 0 }}
         >
-          <div className="relative flex h-[calc(100vh-72px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-96px)]">
+          <div
+            className="relative flex h-[calc(100vh-72px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-96px)]"
+            style={stageStyle}
+          >
             {prevImage.src && (
               <Image
                 src={prevImage.src}
@@ -677,6 +697,15 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
                 sizes="97vw"
                 className={prevFrame.effectiveRadius}
                 style={prevFrame.style}
+                // Eagerly loaded, not the default lazy — this sits
+                // translated fully off-screen at rest, so next/image's
+                // own IntersectionObserver never considers it "near
+                // viewport" until a drag is already underway. Without
+                // this the peek only started fetching/decoding once the
+                // finger moved, popping in mid-swipe instead of
+                // following it live -- worse the bigger the file, which
+                // is exactly what made it read as janky on taller images.
+                priority
               />
             )}
           </div>
@@ -686,10 +715,13 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
         <div
           ref={nextPeekRef}
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center p-4"
+          className="pointer-events-none fixed inset-0 z-0 flex will-change-transform items-center justify-center p-4"
           style={{ transform: "translate3d(100%, 0, 0)", opacity: 0 }}
         >
-          <div className="relative flex h-[calc(100vh-72px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-96px)]">
+          <div
+            className="relative flex h-[calc(100vh-72px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-96px)]"
+            style={stageStyle}
+          >
             {nextImage.src && (
               <Image
                 src={nextImage.src}
@@ -699,23 +731,28 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
                 sizes="97vw"
                 className={nextFrame.effectiveRadius}
                 style={nextFrame.style}
+                // Same eager-load reasoning as prevImage above.
+                priority
               />
             )}
           </div>
         </div>
       )}
-      <div className="relative z-10 flex h-[calc(100vh-72px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-96px)]">
+      <div
+        className="relative z-10 flex h-[calc(100vh-72px)] w-[min(97vw,2000px)] items-center justify-center md:h-[calc(100vh-96px)]"
+        style={stageStyle}
+      >
         {openImage.src && (
           <div
             key={openIndex}
             ref={dragImageRef}
-            className={
+            className={`will-change-transform ${
               direction === "next"
                 ? "animate-[lightbox-slide-right_420ms_var(--ease-bounce)]"
                 : direction === "prev"
                   ? "animate-[lightbox-slide-left_420ms_var(--ease-bounce)]"
                   : "animate-[lightbox-pop_420ms_var(--ease-bounce)]"
-            }
+            }`}
             onClick={(event) => event.stopPropagation()}
           >
             <Image
