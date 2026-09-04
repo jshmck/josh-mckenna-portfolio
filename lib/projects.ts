@@ -1550,7 +1550,7 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "1/1",
       alt: "A mechanic, living his truth in pink heels",
-      src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01-hr.webp",
+      src: "/work/weapons-of-reason-gay-divide/04-mechanic-bg.webp",
     },
     // True ratio 1.7637 (4000x2268) — close enough to 16/9 (1.7778) to snap
     // with no visible crop. Full-width, no heroPair, so the spread reads
@@ -1566,7 +1566,7 @@ export const projects: Project[] = [
       {
         ratio: "1/1",
         alt: "A mechanic, living his truth in pink heels",
-        src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01-hr.webp",
+        src: "/work/weapons-of-reason-gay-divide/04-mechanic-bg.webp",
       },
       {
         ratio: "1/1",
