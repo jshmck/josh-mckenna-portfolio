@@ -501,6 +501,41 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "piper-heidsieck",
+    title: "Piper-Heidsieck",
+    client: "Piper-Heidsieck",
+    year: 2024,
+    discipline: "Illustration",
+    deliverables: "1 gift tin",
+    categories: ["LGBTQ+"],
+    summary: "A riverside scene wrapped around a champagne tin for Pride.",
+    heroCaption: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut.",
+    brief: [
+      "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month gift tin — the house's Cuvée Brut wrapped in scenes of friendship and connection by the river, with a rainbow hot-air balloon drifting over town. It followed the house's collaboration with David Doran the year before.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Piper-Heidsieck" },
+    ],
+    // The only asset is the campaign's own 469px product render ("product
+    // shot only," per Josh — the press-kit pages were dropped). `spot`
+    // keeps it at the small centred width the resolution can honestly
+    // fill, same reasoning as Monocle's heel. True ratio 0.586 sits on
+    // 9/16 (4% letterbox, invisible under `contain`); the ingester's 3/4
+    // snap would have cropped a quarter of the tin.
+    heroSize: "spot",
+    cardRatio: "9/16",
+    hero: {
+      ratio: "9/16",
+      alt: "The tin, beside the bottle",
+      src: "/work/piper-heidsieck/01-tin.webp",
+      // Transparent background — contain on bg-canvas, the usual
+      // real-alpha fix (see Plate).
+      fit: "contain",
+    },
+    gallery: [],
+  },
+  {
     slug: "comic-relief-sink-the-pink",
     title: "Comic Relief x Sink The Pink",
     client: "Comic Relief",
