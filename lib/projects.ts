@@ -390,6 +390,117 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "levis-rainbow-rodeo",
+    title: "Levi's Rainbow Rodeo",
+    client: "Levi's",
+    year: 2024,
+    discipline: "Pride Campaign",
+    deliverables: "1 invite · 3 enamel pins · cups · 1 tee",
+    categories: ["LGBTQ+", "Icons"],
+    summary: "Two cowboys sharing a horse, printed on pins, cups and tees for Pride.",
+    heroCaption:
+      "Made for the Rainbow Rodeo at Levi's Haus, Los Angeles, June 2024 — hosted by Benny Drama, with DJ sets from Violet Chachki and Tinashe.",
+    brief: [
+      "For Pride 2024, Levi's threw a Rainbow Rodeo at Levi's Haus in Los Angeles and wanted the whole event drawn as one world — invite, enamel pins, cups and a tee, all riffing on classic western Americana with the cowboys made explicitly queer.",
+      "The same few characters carry every piece: two riders sharing a horse, a bucking bronco, a rope heart, a hat under a rainbow. Each pin ran in multiple colourways, and the tee's back print carries the two cowboys in an embrace.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Levi's" },
+    ],
+    // The camera shots are true 2/3 (6000x4000 Canon frames and Josh's own
+    // portrait crops of them) — 2/3 is already in ImageRatio, so nothing
+    // here snaps or crops. The ingester flagged them against its older
+    // five-ratio list; ignored deliberately.
+    cardRatio: "2/3",
+    // Josh picked the pins over the invite poster to lead — the poster
+    // rides alongside as the pair instead.
+    hero: {
+      ratio: "2/3",
+      alt: "Enamel pins — all three designs",
+      src: "/work/levis-rainbow-rodeo/02-pins-trio.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "The invite",
+      src: "/work/levis-rainbow-rodeo/01-poster.webp",
+    },
+    // Pairs throughout: merch photos two-up, then each sketch beside the
+    // piece it became, then the three pin sketches in one row of three.
+    gallerySpans: [
+      { startIndex: 0, count: 2 },
+      { startIndex: 2, count: 2 },
+      { startIndex: 4, count: 2 },
+      { startIndex: 6, count: 2 },
+      { startIndex: 8, count: 3 },
+    ],
+    gallery: [
+      {
+        ratio: "2/3",
+        alt: "Pins — the bronco rider",
+        src: "/work/levis-rainbow-rodeo/03-pins-red.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "Pins — the yellow colourway",
+        src: "/work/levis-rainbow-rodeo/04-pins-yellow.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "Pins — the hat",
+        src: "/work/levis-rainbow-rodeo/05-pins-pink.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "Cups at the bar",
+        src: "/work/levis-rainbow-rodeo/06-cups.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The back print",
+        src: "/work/levis-rainbow-rodeo/08-tee-back.webp",
+      },
+      {
+        ratio: "5/4",
+        alt: "Sketch — the back print",
+        src: "/work/levis-rainbow-rodeo/09-sketch-tee-couple.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "The tee, worn",
+        src: "/work/levis-rainbow-rodeo/07-tee-front.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Sketch — the invite",
+        src: "/work/levis-rainbow-rodeo/10-sketch-invite-whip.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Sketch — the rodeo pin",
+        src: "/work/levis-rainbow-rodeo/12-sketch-pin-rodeo.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Sketch — the hat pin",
+        src: "/work/levis-rainbow-rodeo/13-sketch-pin-hat.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Sketch — the two ladies pin",
+        src: "/work/levis-rainbow-rodeo/14-sketch-pin-ladies.webp",
+      },
+      {
+        // 902px source — `small` caps it at the 512px column so a web-res
+        // sketch never renders upscaled (same path as Coca-Cola Moments).
+        ratio: "3/4",
+        alt: "Sketch — the invite motifs",
+        src: "/work/levis-rainbow-rodeo/11-sketch-invite-stack.webp",
+        small: true,
+      },
+    ],
+  },
+  {
     slug: "comic-relief-sink-the-pink",
     title: "Comic Relief x Sink The Pink",
     client: "Comic Relief",
