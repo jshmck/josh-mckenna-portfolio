@@ -1246,8 +1246,9 @@ export const projects: Project[] = [
       { role: "Client", name: "Wagamama" },
     ],
     // Card and hero share 16/9 now — Josh's clearer re-export of the
-    // Brighton artwork (Sep 2026) is natively 3413x1920, retiring the
-    // 1063/640 crop (and its ImageRatio member) the hero used to carry.
+    // Brighton artwork (Sep 2026, latest revision natively 3631x2042)
+    // retired the 1063/640 crop (and its ImageRatio member) the hero
+    // used to carry.
     cardRatio: "5/3",
     // On the Murals pill the card leads with the installed glass instead
     // of the flat artwork — "the image is of the large window vinyl,"
@@ -1262,7 +1263,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "16/9",
       alt: "The full Wagamama Brighton Pride artwork",
-      src: "/work/wagamama-pride/01-full-hr.webp",
+      src: "/work/wagamama-pride/01-brighton-hr-v2.webp",
     },
     // The first three run one after another, full width; the last two —
     // both documentary installation shots — pair up instead, per Josh.
