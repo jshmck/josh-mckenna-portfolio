@@ -552,6 +552,10 @@ export const projects: Project[] = [
     slug: "whatsapp",
     title: "WhatsApp",
     client: "WhatsApp",
+    // TRIAL: "Privacy Campaign > WhatsApp," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Privacy Campaign",
+    cardLabel: "WhatsApp",
     year: 2018,
     discipline: "Campaign Illustration",
     deliverables: "2 illustrations",
