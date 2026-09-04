@@ -665,14 +665,39 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     // width:auto. maxWidth stays on as a guard for the widest frame, where
     // sub-percent drift between declared and true ratio could otherwise
     // poke past the stage.
+    // objectFit: "contain" — a safety net, not a crop/fill choice: this
+    // box's width/height are sized off the DECLARED ratio (`image.ratio`),
+    // which the data model deliberately lets drift from a file's true
+    // aspect for curatorial crops elsewhere on the site ("ratio is a
+    // curatorial crop, not the source's native aspect," per GalleryGrid's
+    // own la-pride comment) — Plate is safe from that by always setting
+    // object-fit itself, but this component wasn't, and wasn't rendering
+    // through Plate to inherit it. Most of the time an `auto` dimension
+    // quietly falls back to the image's own true intrinsic ratio and
+    // nothing looks wrong — until max-width/max-height actually binds
+    // and clamps that auto value, at which point CSS does NOT re-derive
+    // the other (fixed) dimension to match, and a still-square photo
+    // declared at a 2/3 ratio for its Plate card rendered visibly
+    // stretched into that ratio here instead of letterboxed. "LA Pride
+    // logomark is stretched to fit — make sure this doesn't happen
+    // anywhere site wide," per Josh: contain is what every other image
+    // renderer on the site already leans on for exactly this, and every
+    // ratio-accurate image (the overwhelming majority) looks identical
+    // with it on, since there's nothing for it to letterbox.
     const style =
       fit === "uniform" && heightCapPx
-        ? { width: "auto" as const, height: Math.round(heightCapPx), maxWidth: widthCapPx }
+        ? {
+            width: "auto" as const,
+            height: Math.round(heightCapPx),
+            maxWidth: widthCapPx,
+            objectFit: "contain" as const,
+          }
         : {
             width: "auto" as const,
             height: "auto" as const,
             maxWidth: widthCapPx,
             maxHeight: heightCapPx,
+            objectFit: "contain" as const,
           };
     return { imgWidth, imgHeight, effectiveRadius, style };
   };
