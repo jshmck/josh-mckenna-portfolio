@@ -565,15 +565,11 @@ export const projects: Project[] = [
     summary: "A kei car on stretched wheels, sitting far too low.",
     heroCaption: "",
     brief: [
-      "No brief — just an excuse to draw a kei car the way the stance scene builds them: slammed, cambered, a spoiler it doesn't need.",
+      "No brief — love for the Honda N-One, so it had to be drawn. Even cooler with a bolt-on bodykit, so it got drawn again: slammed, cambered, a spoiler it doesn't need.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // True 16/9 (3840x2160) — the ingester's 16/10 snap would have cropped
     // it. Landscape card spans two grid columns like the other 16/9s.
-    // The hero swapped from the original transparent cut-out to Josh's
-    // re-export on a solid red field ("replace the honda n with the
-    // coloured background one") — new filename on purpose, so Next's
-    // image cache can't serve the old render.
     cardRatio: "16/9",
     // The grid card hovers from the purple build to the stock white car
     // ("make sure the hover image on the gallery grid goes from purple
@@ -583,12 +579,15 @@ export const projects: Project[] = [
     cardHoverImage: {
       ratio: "16/9",
       alt: "The stock N-One",
-      src: "/work/honda-super-n/02-n-one-side.webp",
+      src: "/work/honda-super-n/03-n-one-side-v2.webp",
     },
+    // -v2 filenames throughout — Josh re-exported all eight renders on a
+    // brighter red field ("i just updated the BG colour so swap them"),
+    // new names so Next's image cache can't serve the old shade.
     hero: {
       ratio: "16/9",
       alt: "Honda Super N",
-      src: "/work/honda-super-n/01-super-n-red.webp",
+      src: "/work/honda-super-n/01-super-n-side-v2.webp",
     },
     // Full-width rows for every three-quarter view — "i liked the large
     // view on the project page," per Josh: purple front and rear 3/4
@@ -607,37 +606,44 @@ export const projects: Project[] = [
       {
         ratio: "16/9",
         alt: "Super N — rear three-quarter",
-        src: "/work/honda-super-n/06-super-n-rear-quarter.webp",
+        src: "/work/honda-super-n/02-super-n-rear-quarter-v2.webp",
       },
       {
         ratio: "16/9",
         alt: "The stock N-One",
-        src: "/work/honda-super-n/02-n-one-side.webp",
+        src: "/work/honda-super-n/03-n-one-side-v2.webp",
       },
       {
         ratio: "16/9",
         alt: "Rear three-quarter",
-        src: "/work/honda-super-n/05-n-one-rear-quarter.webp",
+        src: "/work/honda-super-n/04-n-one-rear-quarter-v2.webp",
       },
       {
+        // "You can drop the captions of the four little frames," per
+        // Josh — alt stays for accessibility, caption: false just hides
+        // ImageStack's printed <p>.
         ratio: "1/1",
         alt: "Super N — head on",
-        src: "/work/honda-super-n/07-super-n-front.webp",
+        src: "/work/honda-super-n/05-super-n-front-v2.webp",
+        caption: false,
       },
       {
         ratio: "1/1",
         alt: "Super N — from behind",
-        src: "/work/honda-super-n/08-super-n-back.webp",
+        src: "/work/honda-super-n/06-super-n-back-v2.webp",
+        caption: false,
       },
       {
         ratio: "1/1",
         alt: "Head on",
-        src: "/work/honda-super-n/03-n-one-front.webp",
+        src: "/work/honda-super-n/07-n-one-front-v2.webp",
+        caption: false,
       },
       {
         ratio: "1/1",
         alt: "From behind",
-        src: "/work/honda-super-n/04-n-one-rear.webp",
+        src: "/work/honda-super-n/08-n-one-rear-v2.webp",
+        caption: false,
       },
     ],
   },
