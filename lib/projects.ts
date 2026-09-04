@@ -124,19 +124,6 @@ export type ProjectImage = {
    * these (like beefbar)."
    */
   square?: boolean;
-  /**
-   * Per-image extension of Project.navContrastLight (see its own doc
-   * comment for the full mechanism) — flags one gallery photo, rather than
-   * the whole hero/card, as light-blue enough that the fixed nav's blue
-   * elements need to swap to white while it crosses the bar. Bombay
-   * Sapphire is the first case: the mural hero isn't blue, but the
-   * hand-painted bottles further down the gallery are — "when the nav bar
-   * goes over the top of the blue bottles the highlighted text and jM
-   * should go from blue to white," per Josh. Only wired up on ImageStack's
-   * plain full-width single-image branch so far (nothing paired or
-   * gallerySpans-grouped has needed it yet).
-   */
-  navContrastLight?: boolean;
 };
 
 export type Credit = {
@@ -375,29 +362,6 @@ export type Project = {
   posterGridColumns?: 4 | 5;
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
-  /**
-   * The artwork itself is close enough to `--color-accent` (the nav's
-   * active-link colour) that the "Work" text nearly disappears when the
-   * fixed nav scrolls directly over it. Originally a purple-on-purple fix
-   * (Atlanta/California Magazine); since the accent went brand blue those
-   * flags moved to the light-blue cards instead — "when the nav bar goes
-   * over any light blue it should go white," per Josh (Yeti, Beefbar,
-   * Pato, Boat International, Step Journal, Monocle heel, …). Flags both
-   * the /work card (project-card.tsx) and the project page's own hero
-   * wrapper (project-content.tsx) with a `data-nav-contrast="light"`
-   * attribute; nav.tsx watches for that attribute crossing its own
-   * midline and swaps the bar's blue elements — the active/hovered link,
-   * the jM mark, the cart's blue states — to white while it's there.
-   * Black nav text stays black; it holds its own on the artwork.
-   *
-   * `true` flags both surfaces; `"hero"` flags only the project page's
-   * hero — for a project whose full-bleed hero is blue but whose /work
-   * card isn't (L.A. Pride: blue-sky photo hero, lime-green lockup card —
-   * "the full screen hero is blue sky so the text doesnt stand a
-   * chance," per Josh). A white bar over a light non-blue card is its own
-   * contrast failure, so don't flag a card that doesn't need it.
-   */
-  navContrastLight?: boolean | "hero";
   /**
    * Sorts before every non-pinned project, lowest rank first —
    * Josh's own curated lead-in to /work, independent of year.
@@ -793,9 +757,6 @@ export const projects: Project[] = [
     title: "Bum Selfie",
     client: "Cake Boy Magazine",
     year: 2020,
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
     categories: [],
@@ -1157,9 +1118,6 @@ export const projects: Project[] = [
     client: "Monocle",
     year: 2018,
     yearLabel: "October 2018, Issue 117",
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
     categories: ["Editorial"],
@@ -1439,9 +1397,6 @@ export const projects: Project[] = [
     client: "Boat International",
     year: 2024,
     yearLabel: "December 2024",
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
@@ -1485,9 +1440,6 @@ export const projects: Project[] = [
     client: "STEP Journal",
     year: 2019,
     yearLabel: "August/September 2019",
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "1 Cover Illustration",
     categories: ["Editorial"],
@@ -1999,9 +1951,6 @@ export const projects: Project[] = [
     title: "Pato",
     client: "Personal",
     year: 2026,
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
     categories: ["3D"],
@@ -2176,9 +2125,6 @@ export const projects: Project[] = [
     client: "Personal",
     year: 2025,
     pinnedRank: 7,
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
@@ -2646,9 +2592,6 @@ export const projects: Project[] = [
     client: "Beefbar",
     year: 2017,
     yearLabel: "2017–Present Day",
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     pinnedRank: 6,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
@@ -2770,9 +2713,6 @@ export const projects: Project[] = [
     client: "City of Los Angeles",
     year: 2024,
     pinnedRank: 3,
-    // Hero only — the full-bleed stage photo is blue sky, but the /work
-    // card is the lime-green lockup and reads fine under a blue bar.
-    navContrastLight: "hero",
     discipline: "Festival Identity",
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
     categories: ["LGBTQ+", "Murals"],
@@ -3009,14 +2949,11 @@ export const projects: Project[] = [
         ratio: "4/3",
         alt: "Fifty hand-finished bottles, ready to go",
         src: "/work/bombay-sapphire/07-bottles-wide.webp",
-        // See ProjectImage.navContrastLight's doc comment.
-        navContrastLight: true,
       },
       {
         ratio: "4/3",
         alt: "Bottle detail — botanicals from the Grains of Paradise",
         src: "/work/bombay-sapphire/08-bottles-macro.webp",
-        navContrastLight: true,
       },
     ],
   },

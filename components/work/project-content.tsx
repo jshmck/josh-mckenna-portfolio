@@ -414,8 +414,6 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
                 // this container sits under it, not the header — keep the
                 // inter-image gap-6 rhythm there instead.
                 className={`mx-auto max-w-frame px-6 pt-12 md:px-gutter ${project.videoRow ? "max-md:pt-6" : "max-md:pt-0"}`}
-                // Read by nav.tsx — see Project.navContrastLight's doc comment.
-                data-nav-contrast={project.navContrastLight ? "light" : undefined}
               >
                 {/* Video position: "top" (default, Nomad Wheels) is the main
                     showcase leading the page; "bottom" (Pato) is supplementary,
@@ -549,7 +547,6 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
               // was always meant to read uncaptioned.
               <div
                 className="mx-auto max-w-frame px-6 pt-12 max-md:pt-0 md:px-gutter"
-                data-nav-contrast={project.navContrastLight ? "light" : undefined}
               >
                 <div className="mx-auto max-w-lg">
                   <HeroLightbox
