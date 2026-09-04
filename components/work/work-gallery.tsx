@@ -452,6 +452,25 @@ export function WorkGallery({
   }, []);
 
   const visible = useMemo(() => {
+    // Everyday words people actually type, mapped to the category they
+    // mean — "the search needs to show LGBT when gay is used... auto,
+    // automotive for car etc," per Josh. Prefix-matched both ways so
+    // half-typed queries ("automo") and longer ones ("automotive
+    // illustration" won't, but "gays" will) still land.
+    const CATEGORY_ALIASES: Record<string, string[]> = {
+      "LGBTQ+": ["gay", "queer", "pride", "lgbt", "lgbtq", "rainbow", "trans"],
+      Cars: ["auto", "automotive", "car", "cars", "vehicle", "motor", "driving", "wheels"],
+      Murals: ["mural", "wall", "painting", "painted"],
+      Editorial: ["magazine", "press", "publication", "article", "journal"],
+      Icons: ["icon", "sticker", "stickers", "emoji", "logo"],
+      Motion: ["animation", "animated", "video", "moving", "gif"],
+      "3D": ["render", "cgi", "three"],
+    };
+    const aliasHit = (category: string, q: string) =>
+      q.length >= 2 &&
+      (CATEGORY_ALIASES[category] ?? []).some(
+        (alias) => alias.startsWith(q) || q.startsWith(alias),
+      );
     // A live query searches EVERYTHING, ignoring whichever category pill
     // happens to be active — "the search function should search all
     // categories not just the pill thats selected," per Josh (it used to
@@ -460,10 +479,12 @@ export function WorkGallery({
     // moment the query clears.
     const q = query.trim().toLowerCase();
     if (q) {
-      return projects.filter((project) =>
-        [project.title, project.cardTitle, project.cardLabel, project.client, ...project.categories]
-          .filter(Boolean)
-          .some((field) => String(field).toLowerCase().includes(q)),
+      return projects.filter(
+        (project) =>
+          [project.title, project.cardTitle, project.cardLabel, project.client, ...project.categories]
+            .filter(Boolean)
+            .some((field) => String(field).toLowerCase().includes(q)) ||
+          project.categories.some((category) => aliasHit(category, q)),
       );
     }
     return filter === "All"
@@ -655,13 +676,16 @@ export function WorkGallery({
           row sits under what it used to sit over). Same tilt-toward-
           cursor pair as before, /work only (showIllustrations). */}
       {showIllustrations && (
-        // Empty search result: the pair wobbles ("i love the 'nothing
-        // matches' screen with the ipad there, can you have the ipad
-        // illustration wobble or gloopy at this moment," per Josh) —
-        // keyed on the query so every further keystroke that still
-        // matches nothing wobbles it again, not just the first.
+        // Empty search result: the pair wobbles once ("i love the
+        // 'nothing matches' screen with the ipad there, can you have the
+        // ipad illustration wobble or gloopy at this moment," per Josh).
+        // Class-only, no key — an earlier cut keyed this div on the
+        // query to re-wobble per keystroke, but that remounts the
+        // next/image inside every keypress, which is the mobile
+        // "flicker when typing". Adding the class plays the keyframe
+        // once per entry into the empty state; leaving and re-entering
+        // it replays naturally.
         <div
-          key={visible.length === 0 ? query : "rest"}
           className={`mt-10 flex flex-nowrap items-end justify-center gap-4 sm:gap-6 ${
             visible.length === 0 ? "animate-[empty-wobble_800ms_ease-in-out]" : ""
           }`}
