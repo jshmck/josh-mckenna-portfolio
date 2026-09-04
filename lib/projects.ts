@@ -536,6 +536,39 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
+    slug: "whatsapp",
+    title: "WhatsApp",
+    client: "WhatsApp",
+    year: 2018,
+    discipline: "Campaign Illustration",
+    deliverables: "2 illustrations",
+    categories: [],
+    summary: "Beach couples for WhatsApp, close enough that nobody else hears a word.",
+    heroCaption: "For WhatsApp's \"It's between you\" campaign, 2018.",
+    brief: [
+      "WhatsApp commissioned illustrations for \"It's between you,\" its campaign about private messaging — couples on the beach in close conversation, the parasol doing the work of a closed door.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "WhatsApp" },
+    ],
+    // Both source squares are true 1/1 — pinned so RATIO_CYCLE can't crop
+    // the lockup. The campaign version leads, per Josh; the clean
+    // illustration rides beside it.
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "\"It's between you.\"",
+      src: "/work/whatsapp/01-between-you.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "Under the parasol",
+      src: "/work/whatsapp/02-ladies.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "comic-relief-sink-the-pink",
     title: "Comic Relief x Sink The Pink",
     client: "Comic Relief",
