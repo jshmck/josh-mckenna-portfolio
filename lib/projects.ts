@@ -2468,9 +2468,11 @@ export const projects: Project[] = [
   },
   {
     slug: "nomad-wheels-505-livery",
-    title: "Nomad 505 Touring",
+    // Renamed from "Nomad 505 Touring" sitewide, per Josh — this is the
+    // real project.title now, not a cardTitle override, so it's what
+    // shows everywhere: H1, breadcrumb, browser tab, OG tags.
+    title: "505 Wheel Launch",
     client: "Nomad Wheel Co.",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
     cardLabel: "Nomad Wheel Co.",
     year: 2024,
     pinnedRank: 12,
