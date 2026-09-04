@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 
@@ -112,13 +112,10 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   const { openImage, openIndex, direction, images, close, goPrev, goNext } = state;
   const viewport = useViewportSize();
 
-  // Touch paging — "Lightbox has to be swipable on mobile," per Josh.
-  // Same release-only decision as ProjectSwipeNav for the horizontal case
-  // (no drag-follow; goPrev/goNext already have their own slide-in
-  // animation via `direction`, so a swipe just needs to trigger that, not
-  // draw its own). A ref, not state — this is gesture bookkeeping between
-  // touch events, never rendered on its own, so it doesn't need to be
-  // state React tracks.
+  // Touch paging — "Lightbox has to be swipable on mobile," per Josh. A
+  // ref, not state — this is gesture bookkeeping between touch events,
+  // never rendered on its own, so it doesn't need to be state React
+  // tracks.
   const touchRef = useRef<{ x: number; y: number } | null>(null);
   // Which axis this drag committed to, decided once the touch has moved
   // far enough to tell — swipe-down-to-close needs a live drag-follow
@@ -143,6 +140,21 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   const horizontalDirectionRef = useRef<"prev" | "next" | null>(null);
   const PULL_TO_CLOSE_DISTANCE = 120;
   const PAGE_SETTLE_MS = 200;
+
+  // A drag-committed page already animates the incoming peek all the way
+  // into its resting position during the 200ms settle below — by the time
+  // goNext/goPrev swaps openIndex, the peek IS the new open image, just
+  // one layer underneath (z-0) where the stage (z-10) is about to take
+  // over. Firing the stage's own entrance keyframe on top of that restarts
+  // the exact same slide from scratch, which is what "the swipe motion is
+  // a little janky, sometimes the next image slides under the current"
+  // was — the just-settled peek and the freshly-entering stage briefly
+  // disagreed about where the frame should be. Set right before goNext/
+  // goPrev in the drag-commit path, read once by the render below, then
+  // cleared by the effect beneath it once that render has committed — a
+  // ref rather than state so flipping it can't itself trigger a second,
+  // redundant re-render.
+  const suppressEntranceRef = useRef(false);
 
   // Same two-segment "stuck, then free" resistance as ProjectStackSwipe's
   // own resist() (project-stack-swipe.tsx) — kept as a separate, smaller-
@@ -184,6 +196,37 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     el.style.transform = `translate3d(${restSign * 100}%, 0, 0)`;
     el.style.opacity = "0";
   };
+
+  // Mirrors the deferred reset that used to run synchronously inside the
+  // touchend handler. Waiting for this effect (which only runs after
+  // React has committed the swapped openIndex) rather than resetting the
+  // peeks/slab in the same tick as goNext/goPrev is what closed the
+  // "white flash when it appears" gap: resetting them earlier could beat
+  // React's own re-render to the screen, so the peek snapped invisible
+  // before the new stage had painted anything to replace it — one frame
+  // of bare backdrop. Both peeks reset unconditionally on every openIndex
+  // change (not just drag-committed ones) since click/keyboard navigation
+  // never touched them in the first place, making the reset a harmless
+  // no-op there. useLayoutEffect, not useEffect — this also cancels the
+  // stage's own entrance keyframe when suppressEntranceRef is set, which
+  // has to land before the browser's first paint of the new frame or the
+  // keyframe plays for a frame regardless of the class being present;
+  // reading suppressEntranceRef.current here (an effect, not render) is
+  // what keeps that check out of the lint's no-ref-reads-during-render
+  // rule.
+  useLayoutEffect(() => {
+    const slab = dragImageRef.current;
+    if (suppressEntranceRef.current && slab) {
+      slab.style.animation = "none";
+    }
+    resetPeek(prevPeekRef.current, "prev", false);
+    resetPeek(nextPeekRef.current, "next", false);
+    if (slab) {
+      slab.style.transition = "none";
+      slab.style.transform = "";
+    }
+    suppressEntranceRef.current = false;
+  }, [openIndex]);
 
   // 1:1 with the finger (no separate parallax discount) — direct tracking
   // reads as quicker/snappier than a catch-up-style reveal, which is the
@@ -459,10 +502,12 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
 
     if (Math.abs(deltaX) >= SWIPE_DISTANCE) {
       // Committed — finish the drag the rest of the way off/on-screen
-      // quickly, then swap the index once that's landed. The peeks reset
-      // instantly (no transition) in the same tick as the index swap, so
-      // by the time React re-renders with the new neighbour images
-      // they're already back at rest, off-screen.
+      // quickly, then swap the index once that's landed. Deliberately NOT
+      // resetting the peek/slab transforms here in the same tick as the
+      // index swap — that used to beat React's own re-render to the
+      // screen, snapping the peek invisible before the new stage had
+      // painted anything to replace it (see the effect above this
+      // function for where that reset actually happens now, and why).
       const vw = viewport?.width ?? window.innerWidth;
       const sign = hDirection === "next" ? -1 : 1;
       if (slab) {
@@ -474,12 +519,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
         peekEl.style.transform = "translate3d(0, 0, 0)";
       }
       window.setTimeout(() => {
-        resetPeek(prevPeekRef.current, "prev", false);
-        resetPeek(nextPeekRef.current, "next", false);
-        if (slab) {
-          slab.style.transition = "none";
-          slab.style.transform = "";
-        }
+        suppressEntranceRef.current = true;
         if (hDirection === "next") goNext();
         else goPrev();
       }, PAGE_SETTLE_MS);
@@ -511,6 +551,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   if (!openImage) return null;
 
   const STAGE_LONG_EDGE = 2000;
+  const PORTRAIT_CLEARANCE = 72;
 
   // The widest ratio in this cycle sets the shared height ceiling — every
   // narrower/taller image in the same cycle has room to spare at that
@@ -579,8 +620,30 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     // heightCapPx), which is the whole point for a 9/16 photo; flooring it
     // to 1 here would just reproduce a smaller version of the same bug.
     const heightRatio = isMobileViewport ? ratio : stageMaxRatio;
-    const heightCapPx = viewport
-      ? Math.min(viewport.height - stageReserve, widthCapPx / heightRatio)
+    // A little extra clearance beyond stageReserve, mobile only -- "the
+    // lifeguard images are still cutting into the nav, maybe reduce just
+    // those images," per Josh. stageReserve already carves out the band
+    // the counter/close live in, but an extreme portrait ratio (9/16) can
+    // size to fill that ceiling exactly -- and because both the stage and
+    // the image inside it are centred (not bottom/top-aligned), that
+    // reserved band actually splits evenly above and below the image, so
+    // an image sized to exactly fill it leaves only stageReserve / 2 of
+    // real clearance on EACH side, not the full 72px the reserve implies.
+    // 36px comfortably clears the small under-image counter but not the
+    // taller top-right × (12px top offset + its own ~57px tap target) --
+    // PORTRAIT_CLEARANCE=72 widens that split gap to (72+72)/2=72px,
+    // enough margin for the × with room to spare, and the split-gap
+    // maths keeps that margin constant regardless of viewport height, so
+    // it holds even when a mobile browser's toolbar eats into what's
+    // actually visible. Landscape/square images never hit this branch in
+    // practice -- they're constrained by widthCapPx below instead, which
+    // already leaves natural breathing room -- so this only ever shrinks
+    // the images that were touching the ceiling to begin with.
+    const heightCeiling = viewport
+      ? viewport.height - stageReserve - (isMobileViewport ? PORTRAIT_CLEARANCE : 0)
+      : undefined;
+    const heightCapPx = heightCeiling !== undefined
+      ? Math.min(heightCeiling, widthCapPx / heightRatio)
       : undefined;
     // Mirrors the inline frame's own square-corner treatment (see
     // ProjectImage.square in lib/projects.ts, and HeroLightbox's
