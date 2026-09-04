@@ -381,7 +381,7 @@ export const projects: Project[] = [
     client: "Levi's",
     year: 2024,
     discipline: "Pride Campaign",
-    deliverables: "1 invite · 3 enamel pins · cups · 1 tee",
+    deliverables: "1 invite · 3 enamel pins · 1 tee · bar accessories",
     categories: ["LGBTQ+", "Icons"],
     summary: "Two cowboys sharing a horse, printed on pins, cups and tees for Pride.",
     heroCaption:
@@ -406,19 +406,28 @@ export const projects: Project[] = [
       alt: "Enamel pins — all three designs",
       src: "/work/levis-rainbow-rodeo/02-pins-trio.webp",
     },
+    // The full poster's cream frame got clipped mid-stroke by Plate's
+    // rounded corners, both here and on the grid-card hover swap, so both
+    // slots use a copy cropped to the red field instead of the original
+    // ("cropped until there is no border/stroke being cut off"). -v2
+    // filename since the old 01-poster.webp path is gone from git but
+    // may still be sitting in a browser/CDN cache.
     heroPair: {
       ratio: "4/5",
       alt: "The invite",
-      src: "/work/levis-rainbow-rodeo/01-poster.webp",
+      src: "/work/levis-rainbow-rodeo/01-poster-v2.webp",
     },
-    // Pairs throughout: merch photos two-up, then each sketch beside the
-    // piece it became, then the three pin sketches in one row of three.
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "The invite",
+      src: "/work/levis-rainbow-rodeo/01-poster-v2.webp",
+    },
+    // Merch photos only — no process sketches, per Josh. The three pin
+    // shots run as one row of three, cups and the worn tee pair up, and
+    // the landscape back print closes full width.
     gallerySpans: [
-      { startIndex: 0, count: 2 },
-      { startIndex: 2, count: 2 },
-      { startIndex: 4, count: 2 },
-      { startIndex: 6, count: 2 },
-      { startIndex: 8, count: 3 },
+      { startIndex: 0, count: 3 },
+      { startIndex: 3, count: 2 },
     ],
     gallery: [
       {
@@ -442,47 +451,14 @@ export const projects: Project[] = [
         src: "/work/levis-rainbow-rodeo/06-cups.webp",
       },
       {
-        ratio: "3/2",
-        alt: "The back print",
-        src: "/work/levis-rainbow-rodeo/08-tee-back.webp",
-      },
-      {
-        ratio: "5/4",
-        alt: "Sketch — the back print",
-        src: "/work/levis-rainbow-rodeo/09-sketch-tee-couple.webp",
-      },
-      {
         ratio: "2/3",
         alt: "The tee, worn",
         src: "/work/levis-rainbow-rodeo/07-tee-front.webp",
       },
       {
-        ratio: "4/5",
-        alt: "Sketch — the invite",
-        src: "/work/levis-rainbow-rodeo/10-sketch-invite-whip.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Sketch — the rodeo pin",
-        src: "/work/levis-rainbow-rodeo/12-sketch-pin-rodeo.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Sketch — the hat pin",
-        src: "/work/levis-rainbow-rodeo/13-sketch-pin-hat.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Sketch — the two ladies pin",
-        src: "/work/levis-rainbow-rodeo/14-sketch-pin-ladies.webp",
-      },
-      {
-        // 902px source — `small` caps it at the 512px column so a web-res
-        // sketch never renders upscaled (same path as Coca-Cola Moments).
-        ratio: "3/4",
-        alt: "Sketch — the invite motifs",
-        src: "/work/levis-rainbow-rodeo/11-sketch-invite-stack.webp",
-        small: true,
+        ratio: "3/2",
+        alt: "The back print",
+        src: "/work/levis-rainbow-rodeo/08-tee-back.webp",
       },
     ],
   },
