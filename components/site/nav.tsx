@@ -676,8 +676,26 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
+                    // Guarded: when the page's own filter row is already
+                    // on screen (top of /work, or Home scrolled to the
+                    // embedded gallery), the menu would drop directly
+                    // over it as a doubled row ("make sure this doesnt
+                    // happen on return to top," per Josh) — so it only
+                    // opens once the real row is out of the viewport, and
+                    // always on pages that don't render one at all.
                     onMouseEnter={
-                      link.href === "/work" ? () => setWorkMenuOpen(true) : undefined
+                      link.href === "/work"
+                        ? () => {
+                            const row = document.querySelector(
+                              '[aria-label="Filter work by discipline"]',
+                            );
+                            if (row) {
+                              const rect = row.getBoundingClientRect();
+                              if (rect.bottom > 0 && rect.top < window.innerHeight) return;
+                            }
+                            setWorkMenuOpen(true);
+                          }
+                        : undefined
                     }
                     className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
