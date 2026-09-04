@@ -538,6 +538,11 @@ export const projects: Project[] = [
     title: "Honda Super N",
     client: "Personal",
     year: 2026,
+    // Ranked just ahead of Bronco (18) so the Cars category's dense pack
+    // seats Honda first in a fresh row — as the wider span-2 card it then
+    // claims the row's left two columns, leaving Bronco to land in the
+    // remaining right slot behind it. See Bronco's own pinnedRank comment.
+    pinnedRank: 17,
     discipline: "Illustration",
     deliverables: "Key Art",
     categories: ["Cars"],
@@ -547,9 +552,14 @@ export const projects: Project[] = [
       "No brief — love for the Honda N-One, so it had to be drawn. Even cooler with a bolt-on bodykit, so it got drawn again: slammed, cambered, a spoiler it doesn't need.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
-    // True 16/9 (3840x2160) — the ingester's 16/10 snap would have cropped
-    // it. Landscape card spans two grid columns like the other 16/9s.
-    cardRatio: "16/9",
+    // The hero (true 16/9, 3840x2160) is untouched, but the /work grid
+    // card frame uses 5/3, not 16/9 — same fix as Wagamama/Atlanta/etc:
+    // a span-2 card at true 16/9 renders ~32px shorter than a single-
+    // column 4/5 neighbour at this site's actual column width, so 5/3
+    // (the ratio that cancels that gap-vs-width difference) is what
+    // "same height" actually requires. Landscape card still spans two
+    // grid columns either way.
+    cardRatio: "5/3",
     // The grid card hovers from the purple build to the stock white car
     // ("make sure the hover image on the gallery grid goes from purple
     // to white honda," per Josh) — explicit, because the gallery now
@@ -575,11 +585,13 @@ export const projects: Project[] = [
     // (count: 4) — centre crops of the 16/9 sources, safe because the
     // car sits dead centre in every render. The count: 1 spans keep the
     // full-width rows out of the default two-up pairing.
+    // Stock N-One's rear three-quarter dropped ("you can remove the
+    // stock rear 3/4 view," per Josh) — side view is the only stock
+    // angle left besides the two small squares.
     gallerySpans: [
       { startIndex: 0, count: 1 },
       { startIndex: 1, count: 1 },
-      { startIndex: 2, count: 1 },
-      { startIndex: 3, count: 4 },
+      { startIndex: 2, count: 4 },
     ],
     gallery: [
       {
@@ -591,11 +603,6 @@ export const projects: Project[] = [
         ratio: "16/9",
         alt: "The stock N-One",
         src: "/work/honda-super-n/03-n-one-side-v2.webp",
-      },
-      {
-        ratio: "16/9",
-        alt: "Rear three-quarter",
-        src: "/work/honda-super-n/04-n-one-rear-quarter-v2.webp",
       },
       {
         // "You can drop the captions of the four little frames," per
@@ -849,6 +856,15 @@ export const projects: Project[] = [
     title: "Ford Bronco",
     client: "Personal",
     year: 2021,
+    // Promoted so the Cars category filter's dense pack lands it beside
+    // Honda instead of Jimny — "swap jimny for the bronco, bring bronco
+    // up and to the right of honda," per Josh. Unpinned items sort
+    // Infinity-after any finite rank regardless of value, so nudging
+    // Bronco ahead of Jimny/Twingo (both unpinned, 2026) needs a real
+    // pinnedRank. 18, one after Honda's 17 — Honda ranking first means
+    // it claims a fresh row's left two columns as the wider span-2 card,
+    // leaving Bronco the remaining right slot right behind it.
+    pinnedRank: 18,
     discipline: "Illustration",
     deliverables: "Key Art",
     categories: ["Cars"],
@@ -859,6 +875,18 @@ export const projects: Project[] = [
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     cardRatio: "1/1",
+    // "In car category, change the bronco to 4/5 to better fit next to
+    // honda," per Josh — taller frame reads better beside Honda's 16/9
+    // span than the square. Same cardImageByCategory mechanism as
+    // Wagamama/L.A. Pride's Murals covers; every other view keeps the
+    // 1/1 above untouched.
+    cardImageByCategory: {
+      Cars: {
+        ratio: "4/5",
+        alt: "Ford Bronco, three-quarter rear, parked in the desert",
+        src: "/work/ford-bronco/01-bronco-2021.webp",
+      },
+    },
     hero: {
       ratio: "1/1",
       alt: "Ford Bronco, three-quarter rear, parked in the desert",
