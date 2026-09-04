@@ -142,17 +142,28 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
     { label: "Deliverables", value: project.deliverables },
   ];
 
+  // The page's H1 and breadcrumb now render the same displayTitle the
+  // /work grid card's hover shows — "the project title in the Work /
+  // Wagamama Pride pages [wasn't] matching the hover titles... make sure
+  // they're all the same," per Josh. cardTitle used to be scoped to the
+  // grid card only (the page kept the real project.title, e.g. "Wagamama
+  // Pride" under a "Pride Windows" hover); that split is gone now — a
+  // visitor who clicks through should see the same name they hovered.
+  // generateMetadata (app/work/[slug]/page.tsx) still uses the real
+  // project.title for the browser tab / OG tags — not a visible mismatch
+  // a visitor would notice.
+  const displayTitle = project.cardTitle ?? project.title;
+
   // Mobile only ("in the projects themselves on mobile," per Josh) — the
   // same brand line the /work grid card's hover shows under its title,
   // repeated here under the page's own H1. Same fallback/guard as the
   // card: only opt-in projects (cardLabel, or cardTitle's implied client)
-  // get one, and Personal-client pieces never do. The H1 itself stays the
-  // real project.title always — cardTitle only ever governs the grid card.
+  // get one, and Personal-client pieces never do.
   const cardBrandText =
     project.cardLabel ?? (project.cardTitle ? project.client : undefined);
 
-  // The h1 renders project.title as stored — natural casing ("Wagamama
-  // Pride"), the sitewide universal title rule.
+  // The h1 renders displayTitle, natural casing ("Wagamama Pride"), the
+  // sitewide universal title rule.
   // Below md, a multi-word title breaks before its last word — at the
   // title's mobile floor a short two-word title ("Alphabet Soup") can
   // just squeeze onto one cramped line, while longer ones wrap anyway,
@@ -163,7 +174,7 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
   // rendered by ProjectTitle (a client component — see its own doc
   // comment), which also shrinks the font if either resulting line is
   // still too wide for the viewport.
-  const displayTitleWords = project.title.split(" ");
+  const displayTitleWords = displayTitle.split(" ");
   const displayTitleHead = displayTitleWords.slice(0, -1).join(" ");
   const displayTitleLast = displayTitleWords[displayTitleWords.length - 1];
   const headerIllustrations = project.headerIllustrations;
@@ -294,7 +305,7 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
                   Work
                 </Link>
                 {"  /  "}
-                {project.title}
+                {displayTitle}
               </p>
               {(previous || next) && (
                 <p className="flex shrink-0 items-center font-mono text-[16px] text-ink">

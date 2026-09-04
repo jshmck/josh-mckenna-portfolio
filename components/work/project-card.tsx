@@ -193,7 +193,7 @@ export function ProjectCard({
   return (
     <Link
       href={`/work/${project.slug}`}
-      aria-label={hoverCaption ? project.title : undefined}
+      aria-label={hoverCaption ? displayTitle : undefined}
       className={`group block transition-transform ${
         motion === "lift"
           ? "duration-300 ease-drift hover:-translate-y-1.5 focus-visible:-translate-y-1.5"
