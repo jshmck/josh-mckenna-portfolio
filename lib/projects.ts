@@ -255,7 +255,11 @@ export type Project = {
    * per Josh — Wagamama and L.A. Pride's Murals covers so far). The card's
    * frame keeps its normal `cardRatio`, so pick images that survive that
    * crop. Ignored on the unfiltered ALL grid and everywhere else a card
-   * renders.
+   * renders. Landscape (`ratio` ≥ `LANDSCAPE_SPAN_RATIO`, work-gallery.tsx)
+   * overrides span two grid columns exactly like a landscape `cardRatio`
+   * does — give them `"5/3"`, not the artwork's true ratio, per the same
+   * rule `cardRatio` documents below (Wagamama's Murals cover, Atlanta's
+   * Editorial cover).
    */
   cardImageByCategory?: Partial<Record<ProjectCategory, ProjectImage>>;
   /**
@@ -264,6 +268,21 @@ export type Project = {
    * masonry rhythm, regardless of the image's own shape, which is fine for
    * most artwork but forces a real fixed format (Beefbar's posters) into
    * whatever ratio its position happens to land on.
+   *
+   * Any landscape value here (ratio ≥ `LANDSCAPE_SPAN_RATIO`, 1.3, see
+   * work-gallery.tsx) makes the card span two grid columns — and MUST be
+   * `"5/3"`, never the artwork's true ratio (16/9, 16/10, 3/2, whatever it
+   * actually is). A span-2 card's box is `2×column + gap` wide, so its
+   * true-ratio height comes out shorter than a single-column neighbour's —
+   * `"5/3"` is the one value that cancels that gap-vs-width difference at
+   * this site's real column width, landing both cards level to the pixel
+   * (verified in Chrome, Honda Super N against Ford Bronco's 4/5: 496px vs
+   * 497px). "Any horizontal frame on the grid has to follow the same 5/3
+   * rule," per Josh — this is a standing rule, not a one-off fix; every
+   * landscape `cardRatio` and every landscape `cardImageByCategory` entry
+   * follows it (Wagamama, Atlanta Magazine, Honda Super N, and whichever
+   * project is next). The full-bleed project-page `hero` is untouched —
+   * this only ever governs the /work grid card's own crop.
    */
   cardRatio?: ImageRatio;
   /**
@@ -381,7 +400,7 @@ export const projects: Project[] = [
     client: "Levi's",
     year: 2024,
     discipline: "Pride Campaign",
-    deliverables: "1 invite · 3 enamel pins · cups · 1 tee",
+    deliverables: "1 invite · 3 enamel pins · 1 tee · bar accessories",
     categories: ["LGBTQ+", "Icons"],
     summary: "Two cowboys sharing a horse, printed on pins, cups and tees for Pride.",
     heroCaption:
@@ -394,11 +413,14 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Levi's" },
     ],
-    // The camera shots are true 2/3 (6000x4000 Canon frames and Josh's own
-    // portrait crops of them) — 2/3 is already in ImageRatio, so nothing
-    // here snaps or crops. The ingester flagged them against its older
-    // five-ratio list; ignored deliberately.
-    cardRatio: "2/3",
+    // The camera shots themselves are true 2/3 (6000x4000 Canon frames and
+    // Josh's own portrait crops of them) — that ratio is used as-is on the
+    // project page. But left as cardRatio it ran the grid card far taller
+    // than the 4/5–1/1 range the rest of the grid cycles through, reading
+    // like a 9/16 sliver next to its neighbours. Cropped to 4/5 instead
+    // ("stick to the rules of the grid, either 4/5 or 1/1 — both would
+    // work with the pins here").
+    cardRatio: "4/5",
     // Josh picked the pins over the invite poster to lead — the poster
     // rides alongside as the pair instead.
     hero: {
@@ -406,19 +428,28 @@ export const projects: Project[] = [
       alt: "Enamel pins — all three designs",
       src: "/work/levis-rainbow-rodeo/02-pins-trio.webp",
     },
+    // The full poster's cream frame got clipped mid-stroke by Plate's
+    // rounded corners, both here and on the grid-card hover swap, so both
+    // slots use a copy cropped to the red field instead of the original
+    // ("cropped until there is no border/stroke being cut off"). -v2
+    // filename since the old 01-poster.webp path is gone from git but
+    // may still be sitting in a browser/CDN cache.
     heroPair: {
       ratio: "4/5",
       alt: "The invite",
-      src: "/work/levis-rainbow-rodeo/01-poster.webp",
+      src: "/work/levis-rainbow-rodeo/01-poster-v2.webp",
     },
-    // Pairs throughout: merch photos two-up, then each sketch beside the
-    // piece it became, then the three pin sketches in one row of three.
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "The invite",
+      src: "/work/levis-rainbow-rodeo/01-poster-v2.webp",
+    },
+    // Merch photos only — no process sketches, per Josh. The three pin
+    // shots run as one row of three, cups and the worn tee pair up, and
+    // the landscape back print closes full width.
     gallerySpans: [
-      { startIndex: 0, count: 2 },
-      { startIndex: 2, count: 2 },
-      { startIndex: 4, count: 2 },
-      { startIndex: 6, count: 2 },
-      { startIndex: 8, count: 3 },
+      { startIndex: 0, count: 3 },
+      { startIndex: 3, count: 2 },
     ],
     gallery: [
       {
@@ -442,47 +473,14 @@ export const projects: Project[] = [
         src: "/work/levis-rainbow-rodeo/06-cups.webp",
       },
       {
-        ratio: "3/2",
-        alt: "The back print",
-        src: "/work/levis-rainbow-rodeo/08-tee-back.webp",
-      },
-      {
-        ratio: "5/4",
-        alt: "Sketch — the back print",
-        src: "/work/levis-rainbow-rodeo/09-sketch-tee-couple.webp",
-      },
-      {
         ratio: "2/3",
         alt: "The tee, worn",
         src: "/work/levis-rainbow-rodeo/07-tee-front.webp",
       },
       {
-        ratio: "4/5",
-        alt: "Sketch — the invite",
-        src: "/work/levis-rainbow-rodeo/10-sketch-invite-whip.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Sketch — the rodeo pin",
-        src: "/work/levis-rainbow-rodeo/12-sketch-pin-rodeo.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Sketch — the hat pin",
-        src: "/work/levis-rainbow-rodeo/13-sketch-pin-hat.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Sketch — the two ladies pin",
-        src: "/work/levis-rainbow-rodeo/14-sketch-pin-ladies.webp",
-      },
-      {
-        // 902px source — `small` caps it at the 512px column so a web-res
-        // sketch never renders upscaled (same path as Coca-Cola Moments).
-        ratio: "3/4",
-        alt: "Sketch — the invite motifs",
-        src: "/work/levis-rainbow-rodeo/11-sketch-invite-stack.webp",
-        small: true,
+        ratio: "3/2",
+        alt: "The back print",
+        src: "/work/levis-rainbow-rodeo/08-tee-back.webp",
       },
     ],
   },
@@ -559,54 +557,98 @@ export const projects: Project[] = [
     title: "Honda Super N",
     client: "Personal",
     year: 2026,
+    // Ranked just ahead of Bronco (18) so the Cars category's dense pack
+    // seats Honda first in a fresh row — as the wider span-2 card it then
+    // claims the row's left two columns, leaving Bronco to land in the
+    // remaining right slot behind it. See Bronco's own pinnedRank comment.
+    pinnedRank: 17,
     discipline: "Illustration",
     deliverables: "Key Art",
     categories: ["Cars"],
     summary: "A kei car on stretched wheels, sitting far too low.",
     heroCaption: "",
     brief: [
-      "No brief — just an excuse to draw a kei car the way the stance scene builds them: slammed, cambered, a spoiler it doesn't need.",
+      "No brief — love for the Honda N-One, so it had to be drawn. Even cooler with a bolt-on bodykit, so it got drawn again: slammed, cambered, a spoiler it doesn't need.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
-    // True 16/9 (3840x2160) — the ingester's 16/10 snap would have cropped
-    // it. Landscape card spans two grid columns like the other 16/9s.
-    // The hero swapped from the original transparent cut-out to Josh's
-    // re-export on a solid red field ("replace the honda n with the
-    // coloured background one") — new filename on purpose, so Next's
-    // image cache can't serve the old render.
-    cardRatio: "16/9",
+    // The hero (true 16/9, 3840x2160) is untouched, but the /work grid
+    // card frame uses 5/3, not 16/9 — same fix as Wagamama/Atlanta/etc:
+    // a span-2 card at true 16/9 renders ~32px shorter than a single-
+    // column 4/5 neighbour at this site's actual column width, so 5/3
+    // (the ratio that cancels that gap-vs-width difference) is what
+    // "same height" actually requires. Landscape card still spans two
+    // grid columns either way.
+    cardRatio: "5/3",
+    // The grid card hovers from the purple build to the stock white car
+    // ("make sure the hover image on the gallery grid goes from purple
+    // to white honda," per Josh) — explicit, because the gallery now
+    // leads with purple angles and getCardHoverImage would pick one of
+    // those instead.
+    cardHoverImage: {
+      ratio: "16/9",
+      alt: "The stock N-One",
+      src: "/work/honda-super-n/03-n-one-side-v2.webp",
+    },
+    // -v2 filenames throughout — Josh re-exported all eight renders on a
+    // brighter red field ("i just updated the BG colour so swap them"),
+    // new names so Next's image cache can't serve the old shade.
     hero: {
       ratio: "16/9",
       alt: "Honda Super N",
-      src: "/work/honda-super-n/01-super-n-red.webp",
+      src: "/work/honda-super-n/01-super-n-side-v2.webp",
     },
-    // The stock N-One the build is based on, on the same red field —
-    // four angles, paired two-up ("add them to the projects page," per
-    // Josh).
+    // Full-width rows for every three-quarter view — "i liked the large
+    // view on the project page," per Josh: purple front and rear 3/4
+    // lead (hero + gallery[0]), the white 3/4s follow the same way. The
+    // four head-on/tail views close the page as one row of 1/1 squares
+    // (count: 4) — centre crops of the 16/9 sources, safe because the
+    // car sits dead centre in every render. The count: 1 spans keep the
+    // full-width rows out of the default two-up pairing.
+    // Stock N-One's rear three-quarter dropped ("you can remove the
+    // stock rear 3/4 view," per Josh) — side view is the only stock
+    // angle left besides the two small squares.
     gallerySpans: [
-      { startIndex: 0, count: 2 },
-      { startIndex: 2, count: 2 },
+      { startIndex: 0, count: 1 },
+      { startIndex: 1, count: 1 },
+      { startIndex: 2, count: 4 },
     ],
     gallery: [
       {
         ratio: "16/9",
+        alt: "Super N — rear three-quarter",
+        src: "/work/honda-super-n/02-super-n-rear-quarter-v2.webp",
+      },
+      {
+        ratio: "16/9",
         alt: "The stock N-One",
-        src: "/work/honda-super-n/02-n-one-side.webp",
+        src: "/work/honda-super-n/03-n-one-side-v2.webp",
       },
       {
-        ratio: "16/9",
-        alt: "Rear three-quarter",
-        src: "/work/honda-super-n/05-n-one-rear-quarter.webp",
+        // "You can drop the captions of the four little frames," per
+        // Josh — alt stays for accessibility, caption: false just hides
+        // ImageStack's printed <p>.
+        ratio: "1/1",
+        alt: "Super N — head on",
+        src: "/work/honda-super-n/05-super-n-front-v2.webp",
+        caption: false,
       },
       {
-        ratio: "16/9",
+        ratio: "1/1",
+        alt: "Super N — from behind",
+        src: "/work/honda-super-n/06-super-n-back-v2.webp",
+        caption: false,
+      },
+      {
+        ratio: "1/1",
         alt: "Head on",
-        src: "/work/honda-super-n/03-n-one-front.webp",
+        src: "/work/honda-super-n/07-n-one-front-v2.webp",
+        caption: false,
       },
       {
-        ratio: "16/9",
+        ratio: "1/1",
         alt: "From behind",
-        src: "/work/honda-super-n/04-n-one-rear.webp",
+        src: "/work/honda-super-n/08-n-one-rear-v2.webp",
+        caption: false,
       },
     ],
   },
@@ -833,6 +875,15 @@ export const projects: Project[] = [
     title: "Ford Bronco",
     client: "Personal",
     year: 2021,
+    // Promoted so the Cars category filter's dense pack lands it beside
+    // Honda instead of Jimny — "swap jimny for the bronco, bring bronco
+    // up and to the right of honda," per Josh. Unpinned items sort
+    // Infinity-after any finite rank regardless of value, so nudging
+    // Bronco ahead of Jimny/Twingo (both unpinned, 2026) needs a real
+    // pinnedRank. 18, one after Honda's 17 — Honda ranking first means
+    // it claims a fresh row's left two columns as the wider span-2 card,
+    // leaving Bronco the remaining right slot right behind it.
+    pinnedRank: 18,
     discipline: "Illustration",
     deliverables: "Key Art",
     categories: ["Cars"],
@@ -843,6 +894,18 @@ export const projects: Project[] = [
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     cardRatio: "1/1",
+    // "In car category, change the bronco to 4/5 to better fit next to
+    // honda," per Josh — taller frame reads better beside Honda's 16/9
+    // span than the square. Same cardImageByCategory mechanism as
+    // Wagamama/L.A. Pride's Murals covers; every other view keeps the
+    // 1/1 above untouched.
+    cardImageByCategory: {
+      Cars: {
+        ratio: "4/5",
+        alt: "Ford Bronco, three-quarter rear, parked in the desert",
+        src: "/work/ford-bronco/01-bronco-2021.webp",
+      },
+    },
     hero: {
       ratio: "1/1",
       alt: "Ford Bronco, three-quarter rear, parked in the desert",
@@ -1220,15 +1283,19 @@ export const projects: Project[] = [
       { role: "Client", name: "Wagamama" },
     ],
     // Card and hero share 16/9 now — Josh's clearer re-export of the
-    // Brighton artwork (Sep 2026) is natively 3413x1920, retiring the
-    // 1063/640 crop (and its ImageRatio member) the hero used to carry.
+    // Brighton artwork (Sep 2026, latest revision natively 3631x2042)
+    // retired the 1063/640 crop (and its ImageRatio member) the hero
+    // used to carry.
     cardRatio: "5/3",
     // On the Murals pill the card leads with the installed glass instead
     // of the flat artwork — "the image is of the large window vinyl,"
-    // per Josh (Old Street, his pick over Marble Arch/Brighton).
+    // per Josh (Old Street, his pick over Marble Arch/Brighton). 5/3,
+    // not the photo's true 3/2 — "any horizontal frame on the grid has
+    // to follow the same 5/3 rule," per Josh, so a span-2 override
+    // levels against its row-mate the same way a span-2 cardRatio does.
     cardImageByCategory: {
       Murals: {
-        ratio: "3/2",
+        ratio: "5/3",
         alt: "The window at Wagamama's Old Street",
         src: "/work/wagamama-pride/03-old-street.webp",
       },
@@ -1236,7 +1303,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "16/9",
       alt: "The full Wagamama Brighton Pride artwork",
-      src: "/work/wagamama-pride/01-full-hr.webp",
+      src: "/work/wagamama-pride/01-brighton-hr-v2.webp",
     },
     // The first three run one after another, full width; the last two —
     // both documentary installation shots — pair up instead, per Josh.
@@ -1300,10 +1367,12 @@ export const projects: Project[] = [
     },
     // Editorial pill leads with the printed piece — "editorial
     // section should show any mock as cover image," per Josh. Hover
-    // swaps back to the artwork itself (see WorkGallery).
+    // swaps back to the artwork itself (see WorkGallery). 5/3, not the
+    // photo's true 4/3 — same levelling rule as every other span-2
+    // frame on the grid.
     cardImageByCategory: {
       Editorial: {
-        ratio: "4/3",
+        ratio: "5/3",
         alt: "The spread on the printed page.",
         src: "/work/atlanta-magazine/02-magazine-landscape.webp",
       },

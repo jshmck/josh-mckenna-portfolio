@@ -171,7 +171,15 @@ export function ImageStack({
             return (
               <Fragment key={image.alt}>
                 <Reveal>
-                  <div className={`grid grid-cols-1 gap-6 md:gap-8 ${span.count === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+                  <div
+                    className={`grid gap-3 sm:gap-6 md:gap-8 ${
+                      span.count === 4
+                        ? "grid-cols-4"
+                        : span.count === 3
+                          ? "grid-cols-1 sm:grid-cols-3"
+                          : "grid-cols-1 sm:grid-cols-2"
+                    }`}
+                  >
                     {spanImages.map((spanImage, i) => (
                       <div key={spanImage.alt}>
                         <button
@@ -182,7 +190,13 @@ export function ImageStack({
                         >
                           <Plate
                             image={spanImage}
-                            sizes={span.count === 3 ? "(max-width: 640px) 100vw, 33vw" : "(max-width: 640px) 100vw, 50vw"}
+                            sizes={
+                              span.count === 3
+                                ? "(max-width: 640px) 100vw, 33vw"
+                                : span.count === 4
+                                  ? "25vw"
+                                  : "(max-width: 640px) 100vw, 50vw"
+                            }
                           />
                         </button>
                         {spanImage.caption !== false && (
