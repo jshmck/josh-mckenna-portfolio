@@ -360,28 +360,31 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       });
       const stripTop = window.innerHeight - stripBottom - strip.offsetHeight;
 
-      // "Revealed" once the write-up (hero's own caption/paragraph block)
-      // has started scrolling in under the sticky header — its TOP edge,
-      // not its bottom: on a short project (a single hero + a brief
-      // paragraph, little or no gallery after it) there isn't enough
-      // scroll room left for the whole block to clear the header, so a
-      // bottom-based check never fires and the dots stay hidden forever.
-      // The top crossing under the header is the same moment the hero
-      // above it has fully scrolled away, which is the actual point of
-      // the rule — see applyDotShrink for why the strip stays invisible
-      // before that. Measured fresh off the real header each frame, same
-      // as the peek-jump fix's own nav-height effect above, rather than
-      // trusting React state here — this closure only re-runs when
-      // applyDotShrink's identity changes, so a stale header height
-      // would survive a rotation untouched.
+      // "Revealed" once the first image has scrolled past the header --
+      // "appear after user has scrolled past first image," per Josh,
+      // replacing an earlier cut keyed off the write-up's own top (which
+      // waited for the hero's caption and the write-up's own top padding
+      // to clear too, reading as late). data-project-hero marks the
+      // page's lead image block (see project-content.tsx) so this only
+      // ever measures the actual artwork, not its caption. Falls back to
+      // the first paragraph for the projects with no image ahead of the
+      // text at all -- poster-grid layouts (Beefbar), which open straight
+      // into the write-up with the gallery after it, and any project with
+      // heroHiddenOnPage set. Measured fresh off the real header each
+      // frame, same as the peek-jump fix's own nav-height effect above,
+      // rather than trusting React state here — this closure only
+      // re-runs when applyDotShrink's identity changes, so a stale header
+      // height would survive a rotation untouched.
       const headerHeight = document.querySelector("header.sticky")?.getBoundingClientRect().height ?? NAV_HEIGHT_FALLBACK;
-      const writeUpTop = card.querySelector("[data-project-writeup]")?.getBoundingClientRect().top;
+      const revealAnchorBottom = (
+        card.querySelector("[data-project-hero]") ?? card.querySelector("[data-project-writeup] p")
+      )?.getBoundingClientRect().bottom;
       // A short project (hero + a brief paragraph, little or nothing
-      // after it) can run out of page before the write-up's top ever
-      // reaches the header — there just isn't enough scroll room. Once
-      // the user has reached the actual bottom of the page they've seen
-      // everything there is to see including the hero, so the dots
-      // reveal regardless of where the write-up landed.
+      // after it) can run out of page before the anchor ever reaches the
+      // header — there just isn't enough scroll room. Once the user has
+      // reached the actual bottom of the page they've seen everything
+      // there is to see including the hero, so the dots reveal
+      // regardless of where the anchor landed.
       const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
       const nearBottom = maxScrollY > 0 && window.scrollY >= maxScrollY - 2;
 
@@ -391,7 +394,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       const wasRevealed = state.revealed;
       state.scrolled = wasScrolled ? window.scrollY > SHRINK_EXIT : window.scrollY > SHRINK_ENTER;
       state.overPlain = lastContentBottom !== -Infinity && lastContentBottom < stripTop;
-      state.revealed = nearBottom || (writeUpTop !== undefined && writeUpTop <= headerHeight);
+      state.revealed = nearBottom || (revealAnchorBottom !== undefined && revealAnchorBottom <= headerHeight);
       if (state.scrolled !== wasScrolled || state.overPlain !== wasOverPlain || state.revealed !== wasRevealed) {
         applyDotShrink();
       }

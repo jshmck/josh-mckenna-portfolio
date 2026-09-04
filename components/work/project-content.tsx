@@ -445,6 +445,10 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
 
             {project.heroSize !== "spot" && !project.heroHiddenOnPage && (
               <div
+                // data-project-hero: ProjectStackSwipe's dot-strip reveal
+                // measures this block to know when the lead image has
+                // scrolled past — see its own comment for why.
+                data-project-hero
                 // Mobile pt: 0 normally (the header's own max-md:pb-8 is
                 // the whole gap now), but when a videoRow leads the page
                 // this container sits under it, not the header — keep the
@@ -582,6 +586,7 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
               // the site — captions stay off (captions=[""]) since this slot
               // was always meant to read uncaptioned.
               <div
+                data-project-hero
                 className="mx-auto max-w-frame px-6 pt-12 max-md:pt-0 md:px-gutter"
               >
                 <div className="mx-auto max-w-lg">
