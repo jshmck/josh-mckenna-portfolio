@@ -6,8 +6,11 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 import { MasonryGrid } from "@/components/work/masonry-grid";
 import { ProjectCard } from "@/components/work/project-card";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
+import { measureGalleryAnchorTop, projectSlugFromHref, recordBackTarget } from "@/lib/back-peek";
 import { getCardHoverImage } from "@/lib/projects";
 import type { ImageRatio, Project, ProjectCategory, ProjectImage } from "@/lib/projects";
+
+export type Filter = ProjectCategory | "All";
 
 type WorkGalleryProps = {
   projects: Project[];
@@ -17,9 +20,32 @@ type WorkGalleryProps = {
    *  that row isn't meant to duplicate there. Defaults true since /work
    *  is the more common caller; Home explicitly opts out. */
   showIllustrations?: boolean;
+  /**
+   * False renders a frozen, non-interactive snapshot instead of the live
+   * gallery — used by the pull-down back peek (project-stack-swipe.tsx)
+   * to mirror exactly what a project page's `router.back()` will land
+   * on. Filter/search stop reading the live URL/local state (a project
+   * page shares neither) and lock to `initialFilter`/`initialQuery`
+   * instead; the entrance animation, search-sync listeners and the
+   * click recorder below all no-op, since a peek is always rendered
+   * inside a `pointer-events-none` ancestor anyway. Defaults true — the
+   * two real pages (/work, Home) both want the live gallery.
+   */
+  interactive?: boolean;
+  /** Frozen filter for a non-interactive peek. Ignored when interactive. */
+  initialFilter?: Filter;
+  /** Frozen search text for a non-interactive peek. Ignored when interactive. */
+  initialQuery?: string;
+  /**
+   * Which page this live instance renders on — "work" for standalone
+   * /work, "home" for Home's embedded section. Presence alone gates the
+   * click recorder (see handleProjectLinkClick below): only a real,
+   * interactive instance should ever write a back-peek record, so a
+   * peek copy simply doesn't get this prop rather than needing its own
+   * `interactive` check duplicated here.
+   */
+  recordContext?: "work" | "home";
 };
-
-type Filter = ProjectCategory | "All";
 
 const CATEGORY_PARAM = "category";
 
@@ -361,10 +387,18 @@ export function WorkGallery({
   projects,
   categories,
   showIllustrations = true,
+  interactive = true,
+  initialFilter,
+  initialQuery,
+  recordContext,
 }: WorkGalleryProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const filter = useFilterFromQuery(categories);
+  const urlFilter = useFilterFromQuery(categories);
+  // A frozen peek never reads the live URL -- the project page it's
+  // rendered on shares no `?category=` with the gallery it's mirroring
+  // (see WorkGalleryProps.interactive's doc comment).
+  const filter = interactive ? urlFilter : (initialFilter ?? "All");
   const ratioCycle = useIsDesktopGrid() ? RATIO_CYCLE_DESKTOP : RATIO_CYCLE_MOBILE;
 
   /** Keeps the URL in sync with the picked filter so it survives a visit
@@ -386,7 +420,8 @@ export function WorkGallery({
   // Free-text search, local state only (unlike the category filter it
   // doesn't survive into the URL — a half-typed query isn't a view worth
   // bookmarking). ANDs with the category filter rather than replacing it.
-  const [query, setQuery] = useState("");
+  // A frozen peek seeds from initialQuery and never calls setQuery again.
+  const [query, setQuery] = useState(interactive ? "" : (initialQuery ?? ""));
   // Collapsed to a bare mag-glass pill until focused — "no word for
   // SEARCH, just the mag glass in a small pill, then when you click an
   // x in a circle gloopy rolls to the right making space to type," per
@@ -399,7 +434,11 @@ export function WorkGallery({
   // nav.tsx) — it lives in a different tree, so it feeds this state via
   // a window event. A non-empty value also opens the in-page pill so
   // the active query is always visible somewhere once the menu closes.
+  // Skipped entirely for a frozen peek — its input is inert (rendered
+  // inside a pointer-events-none ancestor) and the nav's own search box
+  // doesn't exist on a project page for this to listen for anyway.
   useEffect(() => {
+    if (!interactive) return;
     const onSearch = (event: Event) => {
       const value = String((event as CustomEvent).detail ?? "");
       setQuery(value);
@@ -415,7 +454,7 @@ export function WorkGallery({
     // Registered once — setFilter reads the live URL itself, so a stale
     // closure can't misread the active category.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [interactive]);
 
   // The reverse rule: picking a real category ends the search ("should
   // using search cancel out category and it just searches ALL? i think
@@ -425,13 +464,15 @@ export function WorkGallery({
   // going through any click handler here. Watching `filter` rather than
   // hooking every call site is what keeps the two rules from fighting:
   // typing sets the filter to "All", which this effect deliberately
-  // ignores.
+  // ignores. Skipped for a frozen peek — filter is a constant there, so
+  // this would only ever fire once on mount and clobber initialQuery.
   useEffect(() => {
+    if (!interactive) return;
     if (filter !== "All") {
       setQuery("");
       setSearchOpen(false);
     }
-  }, [filter]);
+  }, [interactive, filter]);
 
   // One-shot entrance for the filter row — "when you click on Work in
   // the nav bar, the All pill drops down, and all the categories kind of
@@ -448,11 +489,16 @@ export function WorkGallery({
   // Work in the nav fires "worklist:entrance" (see nav.tsx), each bump
   // remounts the row via key={entranceRun} below, and a fresh mount is
   // what makes the CSS animations run again — toggling a class on the
-  // same elements wouldn't. 0 = not yet revealed (row hidden).
+  // same elements wouldn't. 0 = not yet revealed (row hidden). A frozen
+  // peek starts already-revealed (1) and skips the effect below entirely
+  // — it's rendering a page the visitor already scrolled past this
+  // entrance on, so replaying it from hidden would be a lie, not a
+  // preview.
   const pillRowRef = useRef<HTMLDivElement>(null);
-  const [entranceRun, setEntranceRun] = useState(0);
+  const [entranceRun, setEntranceRun] = useState(interactive ? 0 : 1);
   const pillsRevealed = entranceRun > 0;
   useEffect(() => {
+    if (!interactive) return;
     const replay = () => setEntranceRun((run) => run + 1);
     window.addEventListener("worklist:entrance", replay);
     const row = pillRowRef.current;
@@ -473,7 +519,7 @@ export function WorkGallery({
       window.removeEventListener("worklist:entrance", replay);
       observer.disconnect();
     };
-  }, []);
+  }, [interactive]);
 
   const visible = useMemo(() => {
     // Everyday words people actually type, mapped to the category they
@@ -548,8 +594,37 @@ export function WorkGallery({
         }
       : { className: "opacity-0", style: undefined };
 
+  // Records what's behind a project page the instant a card is clicked,
+  // so the pull-down-to-go-back gesture on that page (project-stack-swipe.tsx)
+  // can mirror this exact scroll position/filter/search instead of bare
+  // canvas — see lib/back-peek.ts. Delegated on the whole gallery rather
+  // than threaded through ProjectCard/MasonryCard as an onClick prop: one
+  // capture-phase listener here covers every card this instance renders
+  // without touching a component used by both the live gallery and its
+  // own frozen peek copy. recordContext is only set on the two real,
+  // interactive instances (/work, Home) — a peek copy never gets it, so
+  // this never fires from inside a peek even without checking
+  // `interactive` separately.
+  function handleGalleryLinkClick(event: React.MouseEvent<HTMLDivElement>) {
+    if (!recordContext) return;
+    const anchor = (event.target as HTMLElement).closest("a");
+    const slug = projectSlugFromHref(anchor?.getAttribute("href") ?? null);
+    if (!slug) return;
+    recordBackTarget(slug, {
+      kind: "gallery",
+      context: recordContext,
+      scrollY: window.scrollY,
+      anchorTop: measureGalleryAnchorTop(recordContext),
+      category: filter,
+      query,
+    });
+  }
+
   return (
-    <>
+    // display: contents -- a delegation point for handleGalleryLinkClick
+    // that adds no box of its own, so it can't affect the grid/section
+    // layout either page embeds this component into.
+    <div className="contents" onClickCapture={handleGalleryLinkClick}>
       {/* Static -- no orbit, no drift -- but each leans toward the cursor
           on hover, same tilt math as the homepage hero's floating
           objects. See components/ui/tilt-illustration.tsx. Same pair on
@@ -838,6 +913,6 @@ export function WorkGallery({
         {visible.length} {visible.length === 1 ? "piece" : "pieces"}
         {filter !== "All" ? ` in ${filter}` : ""}
       </p>
-    </>
+    </div>
   );
 }
