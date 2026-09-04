@@ -569,6 +569,33 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
+    slug: "honda-super-n",
+    title: "Honda Super N",
+    client: "Personal",
+    year: 2026,
+    discipline: "Illustration",
+    deliverables: "Key Art",
+    categories: ["Cars"],
+    summary: "A kei car on stretched wheels, sitting far too low.",
+    heroCaption: "",
+    brief: [
+      "No brief — just an excuse to draw a kei car the way the stance scene builds them: slammed, cambered, a spoiler it doesn't need.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // True 16/9 (3840x2160) — the ingester's 16/10 snap would have cropped
+    // it. Landscape card spans two grid columns like the other 16/9s.
+    cardRatio: "16/9",
+    hero: {
+      ratio: "16/9",
+      alt: "Honda Super N",
+      src: "/work/honda-super-n/01-super-n.webp",
+      // Transparent cut-out — contain on bg-canvas, the usual real-alpha
+      // fix (see Plate).
+      fit: "contain",
+    },
+    gallery: [],
+  },
+  {
     slug: "comic-relief-sink-the-pink",
     title: "Comic Relief x Sink The Pink",
     client: "Comic Relief",
