@@ -576,7 +576,13 @@ export function WorkGallery({
             // to keep in sync. [&::-webkit-search-cancel-button]:hidden
             // — the circled × below is the one clear affordance;
             // WebKit's native cancel button would double it up.
-            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none [&::-webkit-search-cancel-button]:hidden ${
+            // max-md: 16px type with the padding trimmed to keep the
+            // pill's 32px height — anything under 16px makes iOS Safari
+            // auto-zoom the whole page into a focused input, which is
+            // what "pushes the screen to the right" on mobile (the page
+            // wasn't overflowing, the viewport was zooming). Desktop
+            // keeps the row's 11px.
+            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none max-md:py-[7px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
                 ? "w-44 border-brand pr-9 pl-8"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
