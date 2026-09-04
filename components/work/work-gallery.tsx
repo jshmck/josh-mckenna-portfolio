@@ -387,6 +387,12 @@ export function WorkGallery({
   // doesn't survive into the URL — a half-typed query isn't a view worth
   // bookmarking). ANDs with the category filter rather than replacing it.
   const [query, setQuery] = useState("");
+  // Collapsed to a bare mag-glass pill until focused — "no word for
+  // SEARCH, just the mag glass in a small pill, then when you click an
+  // x in a circle gloopy rolls to the right making space to type," per
+  // Josh. Focus opens it (covers click and keyboard tab alike); blur
+  // closes it again only when there's nothing typed.
+  const [searchOpen, setSearchOpen] = useState(false);
 
   // One-shot entrance for the filter row — "when you click on Work in
   // the nav bar, the All pill drops down, and all the categories kind of
@@ -522,7 +528,12 @@ export function WorkGallery({
           <svg
             aria-hidden="true"
             viewBox="0 0 16 16"
-            className="pointer-events-none absolute left-3.5 h-3 w-3 text-ink"
+            // Centred in the collapsed pill, docks to the left edge once
+            // it opens — same gloopy spring as the width change so the
+            // two read as one move.
+            className={`pointer-events-none absolute h-3 w-3 text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+              searchOpen ? "left-3.5 translate-x-0" : "left-1/2 -translate-x-1/2"
+            }`}
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -535,21 +546,40 @@ export function WorkGallery({
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search"
+            onFocus={() => setSearchOpen(true)}
+            onBlur={() => {
+              if (!query.trim()) setSearchOpen(false);
+            }}
             aria-label="Search work"
-            // [&::-webkit-search-cancel-button]:hidden — the circled ×
-            // below is the one clear affordance; WebKit's own native
-            // cancel button doubling it up reads as two Xs.
-            className="font-grotesque w-32 rounded-full border border-ink bg-transparent py-[9.5px] pr-9 pl-8 text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none placeholder:text-ink-muted hover:border-brand focus:w-44 focus:border-brand [&::-webkit-search-cancel-button]:hidden"
+            // No placeholder word — collapsed it's just the mag glass;
+            // the input itself is what's clickable/tabbable in both
+            // states, so the pill's height always matches its
+            // neighbours' (same py/text metrics) with no second element
+            // to keep in sync. [&::-webkit-search-cancel-button]:hidden
+            // — the circled × below is the one clear affordance;
+            // WebKit's native cancel button would double it up.
+            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none [&::-webkit-search-cancel-button]:hidden ${
+              searchOpen
+                ? "w-44 border-brand pr-9 pl-8"
+                : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
+            }`}
           />
-          {/* × in a brand-blue circle, clears the query — only there once
-              there's something to clear. */}
-          {query && (
+          {/* × in a brand-blue circle — rolls in along the pill to the
+              right end as it expands (search-x-roll, globals.css), and
+              both clears and collapses on tap. Present whenever the pill
+              is open, not just once something's typed. onMouseDown
+              preventDefault keeps the input's blur from unmounting this
+              button under the very click aimed at it. */}
+          {searchOpen && (
             <button
               type="button"
-              onClick={() => setQuery("")}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                setQuery("");
+                setSearchOpen(false);
+              }}
               aria-label="Clear search"
-              className="absolute right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110"
+              className="absolute right-1.5 flex h-5 w-5 animate-[search-x-roll_550ms_var(--ease-bounce)_both] items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110"
             >
               ×
             </button>

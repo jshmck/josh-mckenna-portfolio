@@ -349,6 +349,20 @@
   }
 }
 
+/* The search pill's clear-× rolling in from the left as the pill expands
+   — translate + spin together so it reads as rolling along the pill's
+   inside edge to its resting spot at the right end. */
+@keyframes search-x-roll {
+  from {
+    opacity: 0;
+    transform: translateX(-96px) rotate(-300deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
 @keyframes pill-woosh {
   from {
     opacity: 0;
