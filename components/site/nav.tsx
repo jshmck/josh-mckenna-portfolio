@@ -559,7 +559,13 @@ export function Nav() {
                     >
                       <Link
                         href={option === "All" ? "/work" : `/work?category=${encodeURIComponent(option)}`}
-                        onClick={() => setWorkMenuOpen(false)}
+                        // The empty search dispatch mirrors the in-page
+                        // pills: picking any category (All included, whose
+                        // URL may not even change) ends a live search.
+                        onClick={() => {
+                          setWorkMenuOpen(false);
+                          window.dispatchEvent(new CustomEvent("worklist:search", { detail: "" }));
+                        }}
                         className="font-grotesque inline-block rounded-full border border-ink bg-canvas px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink-muted text-trim-caps shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand"
                       >
                         {option}

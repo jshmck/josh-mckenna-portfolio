@@ -404,10 +404,34 @@ export function WorkGallery({
       const value = String((event as CustomEvent).detail ?? "");
       setQuery(value);
       setSearchOpen(!!value.trim());
+      // Searching cancels the category outright (same rule as the
+      // in-page input's onChange — see its comment).
+      if (value.trim() && new URLSearchParams(window.location.search).get(CATEGORY_PARAM)) {
+        setFilter("All");
+      }
     };
     window.addEventListener("worklist:search", onSearch);
     return () => window.removeEventListener("worklist:search", onSearch);
+    // Registered once — setFilter reads the live URL itself, so a stale
+    // closure can't misread the active category.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // The reverse rule: picking a real category ends the search ("should
+  // using search cancel out category and it just searches ALL? i think
+  // the latter makes more sense," per Josh — the two are exclusive
+  // modes now, in both directions). Covers the in-page pills AND the
+  // nav drop-down's links, which change the filter via the URL without
+  // going through any click handler here. Watching `filter` rather than
+  // hooking every call site is what keeps the two rules from fighting:
+  // typing sets the filter to "All", which this effect deliberately
+  // ignores.
+  useEffect(() => {
+    if (filter !== "All") {
+      setQuery("");
+      setSearchOpen(false);
+    }
+  }, [filter]);
 
   // One-shot entrance for the filter row — "when you click on Work in
   // the nav bar, the All pill drops down, and all the categories kind of
@@ -547,15 +571,26 @@ export function WorkGallery({
         {filters.map((option, index) => {
           const active = filter === option;
           const entrance = pillEntrance(index);
+          // ALL can't rely on the filter-change effect (typing sets the
+          // filter to All too, so that effect must ignore it) — clearing
+          // lives on the click itself instead: "after typing and
+          // searching, clicking ALL again will clear the search," per
+          // Josh. Harmless on the other pills, whose filter change would
+          // clear it anyway.
+          const pick = () => {
+            setQuery("");
+            setSearchOpen(false);
+            setFilter(option);
+          };
 
           return (
             <span key={option} className={entrance.className} style={entrance.style}>
               {option === "LGBTQ+" ? (
-                <PrideFilterButton active={active} onClick={() => setFilter(option)} />
+                <PrideFilterButton active={active} onClick={pick} />
               ) : (
                 <button
                   type="button"
-                  onClick={() => setFilter(option)}
+                  onClick={pick}
                   aria-pressed={active}
                   className={`font-grotesque rounded-full px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-trim-caps transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
                     active
@@ -615,7 +650,19 @@ export function WorkGallery({
             ref={searchInputRef}
             type="search"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            // Typing snaps the pill highlight to ALL — the search
+            // already looked across every category, but the old
+            // category's pill staying lit while its filter did nothing
+            // read as a lie. Guarded on the live URL param so an
+            // already-ALL view doesn't churn router.replace per
+            // keystroke.
+            onChange={(event) => {
+              const value = event.target.value;
+              setQuery(value);
+              if (value.trim() && new URLSearchParams(window.location.search).get(CATEGORY_PARAM)) {
+                setFilter("All");
+              }
+            }}
             onFocus={() => setSearchOpen(true)}
             onBlur={() => {
               if (!query.trim()) setSearchOpen(false);
