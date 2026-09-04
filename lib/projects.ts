@@ -575,19 +575,45 @@ export const projects: Project[] = [
     // coloured background one") — new filename on purpose, so Next's
     // image cache can't serve the old render.
     cardRatio: "16/9",
+    // The grid card hovers from the purple build to the stock white car
+    // ("make sure the hover image on the gallery grid goes from purple
+    // to white honda," per Josh) — explicit, because the gallery now
+    // leads with purple angles and getCardHoverImage would pick one of
+    // those instead.
+    cardHoverImage: {
+      ratio: "16/9",
+      alt: "The stock N-One",
+      src: "/work/honda-super-n/02-n-one-side.webp",
+    },
     hero: {
       ratio: "16/9",
       alt: "Honda Super N",
       src: "/work/honda-super-n/01-super-n-red.webp",
     },
-    // The stock N-One the build is based on, on the same red field —
-    // four angles, paired two-up ("add them to the projects page," per
-    // Josh).
+    heroPair: {
+      ratio: "16/9",
+      alt: "Super N — rear three-quarter",
+      src: "/work/honda-super-n/06-super-n-rear-quarter.webp",
+    },
+    // All four purple angles first (hero two-up + this pair), then the
+    // stock N-One it started from in the same four angles — paired rows
+    // rather than a carousel, "might be overkill?" per Josh; agreed.
     gallerySpans: [
       { startIndex: 0, count: 2 },
       { startIndex: 2, count: 2 },
+      { startIndex: 4, count: 2 },
     ],
     gallery: [
+      {
+        ratio: "16/9",
+        alt: "Super N — head on",
+        src: "/work/honda-super-n/07-super-n-front.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "Super N — from behind",
+        src: "/work/honda-super-n/08-super-n-back.webp",
+      },
       {
         ratio: "16/9",
         alt: "The stock N-One",
