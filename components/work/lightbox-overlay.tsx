@@ -201,31 +201,63 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   // touchend handler. Waiting for this effect (which only runs after
   // React has committed the swapped openIndex) rather than resetting the
   // peeks/slab in the same tick as goNext/goPrev is what closed the
-  // "white flash when it appears" gap: resetting them earlier could beat
-  // React's own re-render to the screen, so the peek snapped invisible
-  // before the new stage had painted anything to replace it — one frame
-  // of bare backdrop. Both peeks reset unconditionally on every openIndex
-  // change (not just drag-committed ones) since click/keyboard navigation
-  // never touched them in the first place, making the reset a harmless
-  // no-op there. useLayoutEffect, not useEffect — this also cancels the
-  // stage's own entrance keyframe when suppressEntranceRef is set, which
-  // has to land before the browser's first paint of the new frame or the
-  // keyframe plays for a frame regardless of the class being present;
-  // reading suppressEntranceRef.current here (an effect, not render) is
-  // what keeps that check out of the lint's no-ref-reads-during-render
-  // rule.
+  // first "white flash when it appears" gap: resetting them earlier could
+  // beat React's own re-render to the screen, so the peek snapped
+  // invisible before the new stage had painted anything to replace it —
+  // one frame of bare backdrop. Both peeks reset unconditionally on every
+  // openIndex change (not just drag-committed ones) since click/keyboard
+  // navigation never touched them in the first place, making the reset a
+  // harmless no-op there. useLayoutEffect, not useEffect — this also
+  // cancels the stage's own entrance keyframe when suppressEntranceRef is
+  // set, which has to land before the browser's first paint of the new
+  // frame or the keyframe plays for a frame regardless of the class being
+  // present; reading suppressEntranceRef.current here (an effect, not
+  // render) is what keeps that check out of the lint's
+  // no-ref-reads-during-render rule.
   useLayoutEffect(() => {
     const slab = dragImageRef.current;
     if (suppressEntranceRef.current && slab) {
       slab.style.animation = "none";
     }
-    resetPeek(prevPeekRef.current, "prev", false);
-    resetPeek(nextPeekRef.current, "next", false);
     if (slab) {
       slab.style.transition = "none";
       slab.style.transform = "";
     }
+    const resetPeeks = () => {
+      resetPeek(prevPeekRef.current, "prev", false);
+      resetPeek(nextPeekRef.current, "next", false);
+    };
+    // Pre-paint ordering alone still left a *shorter* flash ("still a
+    // light flash of white when image is loaded," per Josh): the stage's
+    // key={openIndex} remount mounts a brand-new <img>, and even with the
+    // file already in cache from the peek, its first paint waits on a
+    // fresh decode — a frame or two where the stage is transparent and
+    // the just-hidden peek has nothing behind it but backdrop. For a
+    // drag-committed page the peek is ALREADY showing this exact image,
+    // centred, at rest — so instead of hiding it pre-paint, hold it in
+    // place as the stand-in until the stage's own img reports decoded,
+    // then swap. decode() resolves in a micro-beat for a cached file;
+    // the timeout is a belt-and-braces cap so a decode() that never
+    // settles (or an <img> that never appears) can't strand the peek
+    // over the stage forever.
+    const img = slab?.querySelector("img");
+    if (suppressEntranceRef.current && img) {
+      suppressEntranceRef.current = false;
+      let done = false;
+      const settle = () => {
+        if (done) return;
+        done = true;
+        resetPeeks();
+      };
+      img.decode().then(settle, settle);
+      const cap = window.setTimeout(settle, 600);
+      return () => {
+        window.clearTimeout(cap);
+        settle();
+      };
+    }
     suppressEntranceRef.current = false;
+    resetPeeks();
   }, [openIndex]);
 
   // 1:1 with the finger (no separate parallax discount) — direct tracking
