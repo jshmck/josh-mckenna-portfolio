@@ -458,7 +458,22 @@ export function WorkGallery({
     // half-typed queries ("automo") and longer ones ("automotive
     // illustration" won't, but "gays" will) still land.
     const CATEGORY_ALIASES: Record<string, string[]> = {
-      "LGBTQ+": ["gay", "queer", "pride", "lgbt", "lgbtq", "rainbow", "trans"],
+      "LGBTQ+": [
+        "lesbian",
+        "gay",
+        "bi",
+        "bisexual",
+        "trans",
+        "transexual",
+        "transsexual",
+        "transgender",
+        "queer",
+        "intersex",
+        "pride",
+        "lgbt",
+        "lgbtq",
+        "rainbow",
+      ],
       Cars: ["auto", "automotive", "car", "cars", "vehicle", "motor", "driving", "wheels"],
       Murals: ["mural", "wall", "painting", "painted"],
       Editorial: ["magazine", "press", "publication", "article", "journal"],
