@@ -235,13 +235,23 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
   const activeDotPos = projectIndex - dotStart;
   const shrinkKeepStart = Math.max(0, Math.min(activeDotPos - 1, dots.length - 3));
   const accentShrunkOffset = (activeDotPos - (shrinkKeepStart + 1)) * DOT_PITCH;
-  const dotShrinkState = useRef({ scrolled: false, dragging: false, overPlain: false });
+  const dotShrinkState = useRef({ scrolled: false, dragging: false, overPlain: false, revealed: false });
   const applyDotShrink = useCallback(() => {
     const strip = dotsRef.current;
     const accent = accentDotRef.current;
     if (!strip || !accent) return;
     const state = dotShrinkState.current;
     const shrunk = state.scrolled && !state.dragging;
+    // Hidden outright until the hero image and its caption/paragraph have
+    // scrolled past — "the dots can't appear on or near images, it's
+    // confusing, you think it's going to swipe the image like a
+    // carousel," per Josh: floating right over the opening hero, the dot
+    // strip reads as an image-carousel indicator rather than project-to-
+    // project navigation. Bypassed during an active drag regardless (see
+    // `dragging` below) — the dots are live feedback for the gesture
+    // that's already in progress, so hiding them mid-swipe would defeat
+    // the one moment they're actually informative.
+    strip.style.opacity = !state.revealed && !state.dragging ? "0" : "1";
     // The frosted surround fades out entirely once the strip floats
     // over the card's empty bottom zone -- "as soon as you've scrolled
     // past the last image or text and you're on plain white bg of the
@@ -350,12 +360,41 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       });
       const stripTop = window.innerHeight - stripBottom - strip.offsetHeight;
 
+      // "Revealed" once the write-up (hero's own caption/paragraph block)
+      // has started scrolling in under the sticky header — its TOP edge,
+      // not its bottom: on a short project (a single hero + a brief
+      // paragraph, little or no gallery after it) there isn't enough
+      // scroll room left for the whole block to clear the header, so a
+      // bottom-based check never fires and the dots stay hidden forever.
+      // The top crossing under the header is the same moment the hero
+      // above it has fully scrolled away, which is the actual point of
+      // the rule — see applyDotShrink for why the strip stays invisible
+      // before that. Measured fresh off the real header each frame, same
+      // as the peek-jump fix's own nav-height effect above, rather than
+      // trusting React state here — this closure only re-runs when
+      // applyDotShrink's identity changes, so a stale header height
+      // would survive a rotation untouched.
+      const headerHeight = document.querySelector("header.sticky")?.getBoundingClientRect().height ?? NAV_HEIGHT_FALLBACK;
+      const writeUpTop = card.querySelector("[data-project-writeup]")?.getBoundingClientRect().top;
+      // A short project (hero + a brief paragraph, little or nothing
+      // after it) can run out of page before the write-up's top ever
+      // reaches the header — there just isn't enough scroll room. Once
+      // the user has reached the actual bottom of the page they've seen
+      // everything there is to see including the hero, so the dots
+      // reveal regardless of where the write-up landed.
+      const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
+      const nearBottom = maxScrollY > 0 && window.scrollY >= maxScrollY - 2;
+
       const state = dotShrinkState.current;
       const wasScrolled = state.scrolled;
       const wasOverPlain = state.overPlain;
+      const wasRevealed = state.revealed;
       state.scrolled = wasScrolled ? window.scrollY > SHRINK_EXIT : window.scrollY > SHRINK_ENTER;
       state.overPlain = lastContentBottom !== -Infinity && lastContentBottom < stripTop;
-      if (state.scrolled !== wasScrolled || state.overPlain !== wasOverPlain) applyDotShrink();
+      state.revealed = nearBottom || (writeUpTop !== undefined && writeUpTop <= headerHeight);
+      if (state.scrolled !== wasScrolled || state.overPlain !== wasOverPlain || state.revealed !== wasRevealed) {
+        applyDotShrink();
+      }
 
       // The peeks stop at the revealed footer's edge -- "the same way
       // you've done the sides and the top, apply to the bottom... the
@@ -664,7 +703,13 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         <div
           ref={dotsRef}
           aria-hidden="true"
-          className="pointer-events-none fixed inset-x-0 bottom-5 z-20 flex justify-center md:hidden"
+          className="pointer-events-none fixed inset-x-0 bottom-5 z-20 flex justify-center transition-opacity duration-300 md:hidden"
+          // Baked hidden by default (mirrors the peeks' own baked resting
+          // styles below, and for the same reason) — revealed is JS-only
+          // state, so without this the strip would flash visible on first
+          // paint before the scroll effect's first `update()` call hides
+          // it over the hero.
+          style={{ opacity: 0 }}
         >
           <div className="relative flex items-center gap-1.5 px-3.5 py-2.5">
             {/* The frosted surround, its own layer behind the dots so

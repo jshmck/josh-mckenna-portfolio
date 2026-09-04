@@ -48,6 +48,7 @@ function WriteUp({ project, leads = false }: { project: Project; leads?: boolean
     // "on the occasion that the project has text before image (Rooted
     // journal, beefbar etc) the text could be tighter," per Josh.
     <div
+      data-project-writeup
       className={`mx-auto grid max-w-frame gap-14 px-6 py-20 max-md:py-10 md:grid-cols-[1fr_260px] md:px-gutter ${leads ? "max-md:pt-0" : ""}`}
     >
       <div className="max-w-2xl">
