@@ -681,7 +681,14 @@ export function WorkGallery({
             // what "pushes the screen to the right" on mobile (the page
             // wasn't overflowing, the viewport was zooming). Desktop
             // keeps the row's 11px.
-            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none max-md:py-[7px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
+            // group-has button:hover — hovering the clear-× makes the
+            // bar itself do one jelly squash-and-stretch
+            // (search-pill-jelly, globals.css): "the bubble makes the
+            // search bar wobble a bit," per Josh. On the input only, not
+            // the whole span — wobbling the × would shift it under the
+            // cursor, and a hover that un-hovers itself restarts the
+            // animation in a flicker loop.
+            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:animate-[search-pill-jelly_600ms_var(--ease-bounce)] max-md:py-[7px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
                 ? "w-44 border-brand pr-9 pl-8"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
@@ -716,9 +723,14 @@ export function WorkGallery({
             // an otherwise springy move ("the movement is a bit janky,"
             // per Josh). The roll-in keyframe only rides along while
             // open, so closing transitions out instead of replaying it.
-            className={`absolute right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+            // transition-[...,scale], not just transform — scale-* is
+            // Tailwind v4's standalone `scale` property (same trap as
+            // the glass's translate above), so without it the hover
+            // grow and the close shrink both snapped instead of
+            // springing.
+            className={`absolute right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-[transform,opacity,scale] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
               searchOpen
-                ? "animate-[search-x-roll_550ms_var(--ease-bounce)_both] hover:scale-110"
+                ? "animate-[search-x-roll_550ms_var(--ease-bounce)_both] hover:scale-125"
                 : "pointer-events-none scale-0 opacity-0"
             }`}
           >

@@ -384,6 +384,27 @@
   }
 }
 
+/* The search pill's jelly reaction to hovering the clear-× — the bar
+   squashes and stretches once, trading width for height like the scroll
+   cue's hop, then settles. Pure CSS, so reduced motion neutralises it. */
+@keyframes search-pill-jelly {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1.05, 0.9);
+  }
+  50% {
+    transform: scale(0.96, 1.06);
+  }
+  72% {
+    transform: scale(1.02, 0.97);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
 @keyframes pill-woosh {
   from {
     opacity: 0;
