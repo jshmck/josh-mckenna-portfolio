@@ -547,10 +547,18 @@ export function WorkGallery({
             // two read as one move.
             // group-hover: the glass goes brand with the border — "make
             // sure the mag glass is blue on hover like the rest of the
-            // pills," per Josh (the pills' hover recolours text and
-            // border together, so this matches).
-            className={`pointer-events-none absolute h-3 w-3 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/search:text-brand ${
-              searchOpen ? "left-3.5 translate-x-0 text-brand" : "left-1/2 -translate-x-1/2 text-ink"
+            // pills," per Josh. Position is transform-only off a fixed
+            // left-0 (11px centres it in the closed 34px pill, 14px is
+            // the old left-3.5 docked spot): the earlier left-1/2 ↔
+            // left-3.5 move animated `left` — a layout property — against
+            // a width that was itself mid-transition, and that compound
+            // path is what read as janky on collapse.
+            // transition-[translate,...], not transform — Tailwind v4's
+            // translate-x-* emits the standalone CSS `translate`
+            // property (same trap ProjectCard's title notes), so
+            // transitioning `transform` would snap instead of glide.
+            className={`pointer-events-none absolute left-0 h-3 w-3 transition-[translate,color] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/search:text-brand ${
+              searchOpen ? "translate-x-[14px] text-brand" : "translate-x-[11px] text-ink"
             }`}
             fill="none"
             stroke="currentColor"
@@ -594,20 +602,30 @@ export function WorkGallery({
               is open, not just once something's typed. onMouseDown
               preventDefault keeps the input's blur from unmounting this
               button under the very click aimed at it. */}
-          {searchOpen && (
-            <button
-              type="button"
-              onMouseDown={(event) => event.preventDefault()}
-              onClick={() => {
-                setQuery("");
-                setSearchOpen(false);
-              }}
-              aria-label="Clear search"
-              className="absolute right-1.5 flex h-5 w-5 animate-[search-x-roll_550ms_var(--ease-bounce)_both] items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110"
-            >
-              ×
-            </button>
-          )}
+          <button
+            type="button"
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => {
+              setQuery("");
+              setSearchOpen(false);
+            }}
+            aria-label="Clear search"
+            aria-hidden={!searchOpen}
+            tabIndex={searchOpen ? undefined : -1}
+            // Always mounted, hidden by scale/opacity when closed — the
+            // old conditional mount vanished the × in a single frame
+            // while the pill was still mid-collapse, a hard cut inside
+            // an otherwise springy move ("the movement is a bit janky,"
+            // per Josh). The roll-in keyframe only rides along while
+            // open, so closing transitions out instead of replaying it.
+            className={`absolute right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+              searchOpen
+                ? "animate-[search-x-roll_550ms_var(--ease-bounce)_both] hover:scale-110"
+                : "pointer-events-none scale-0 opacity-0"
+            }`}
+          >
+            ×
+          </button>
         </span>
       </div>
 
