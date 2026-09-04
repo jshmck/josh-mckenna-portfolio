@@ -146,19 +146,9 @@ export function Nav() {
   const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
-  // True while a `[data-nav-contrast="light"]` surface (any light-blue
-  // artwork — the flagged /work cards, a flagged full-bleed hero like
-  // L.A. Pride's blue-sky photo, or a single flagged gallery image like
-  // Bombay Sapphire's bottle shots; see Project.navContrastLight /
-  // ProjectImage.navContrastLight) crosses the fixed bar's midline. Only
-  // the bar's BLUE elements swap to white
-  // for that window — the active/hovered link, the jM mark
-  // (filter-inverted) and the cart's blue states — "only the
-  // highlighted/selected word needs to be white and anything that's blue
-  // (jM) - not anything that's black already," per Josh. Blue reads fine
-  // against everything else on the site and only fails against its own
-  // colour specifically; black ink holds its own on the artwork.
-  const [overLightBg, setOverLightBg] = useState(false);
+  // (The `overLightBg` blue-goes-white contrast swap lived here — the
+  // whole navContrastLight mechanism was removed 2026-09-04, "lets remove
+  // that rule and I will make a new rule tomorrow," per Josh.)
   // Latches true the first time `scrolled` goes true, so the landing bounce
   // below (nav-pill-landing) never fires on initial page load -- only once
   // there's been a real frost-in to "land" back down from. State, not a
@@ -263,30 +253,6 @@ export function Nav() {
         setHomeWorkActive(false);
       }
 
-      // Header's own resting height — same band the frost/merge thresholds
-      // above are tuned against ("just past the 88px header"). Read live
-      // off the element rather than hardcoded: viewport-fit=cover (see
-      // app/layout.tsx) plus this header's own env(safe-area-inset-top)
-      // padding below means its *real* rendered height now varies by
-      // device — taller on a Dynamic Island phone, still exactly 88 on
-      // anything without a safe area — so a fixed 88 would under-count
-      // the overlap check on exactly the devices the safe-area padding
-      // was added for.
-      const NAV_HEIGHT = headerRef.current?.getBoundingClientRect().height ?? 88;
-      const contrastCards = document.querySelectorAll('[data-nav-contrast="light"]');
-      let overLight = false;
-      // Midline, not edge overlap — swapping the instant the flagged
-      // surface's top edge slips under the bar left the just-turned-white
-      // text sitting on the cream canvas *above* the artwork for the first
-      // ~half-bar of scroll (caught on la-pride's hero). The bar's text
-      // sits at its vertical centre, so swap exactly when the blue crosses
-      // that line, in both scroll directions.
-      contrastCards.forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        const navMidline = NAV_HEIGHT / 2;
-        if (rect.top < navMidline && rect.bottom > navMidline) overLight = true;
-      });
-      setOverLightBg(overLight);
     };
 
     const onScroll = () => {
@@ -506,7 +472,7 @@ export function Nav() {
                 height={112}
                 sizes="56px"
                 priority
-                className={`h-10 w-10 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14 ${overLightBg ? "brightness-0 invert" : ""}`}
+                className="h-10 w-10 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-6 hover:scale-125 active:-rotate-6 active:scale-125 md:h-14 md:w-14"
               />
             </Link>
           </div>
@@ -632,12 +598,8 @@ export function Nav() {
                     onClick={() => scrollToTopIfCurrent(link.href)}
                     className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
-                        ? overLightBg
-                          ? "font-bold text-canvas"
-                          : "font-bold text-accent"
-                        : overLightBg
-                          ? "text-ink-muted hover:font-bold hover:text-canvas"
-                          : "text-ink-muted hover:font-bold hover:text-accent"
+                        ? "font-bold text-accent"
+                        : "text-ink-muted hover:font-bold hover:text-accent"
                     }`}
                   >
                     {link.label}
@@ -689,23 +651,9 @@ export function Nav() {
                   Cart didn't have this before; added it now while
                   already touching this hover treatment rather than
                   leaving the gap. */}
-              {/* Only the bag's BLUE states swap to white over flagged blue
-                  artwork — the active accent tint and the brand hover tint,
-                  both invisible against the very blue that triggered the
-                  swap. Its resting black stays black, per Josh ("not
-                  anything that's black already"), and CartIcon is
-                  mask-rendered off currentColor so text-canvas is all a
-                  swap takes. transition-transform, not [color,transform]:
-                  the white swap must land instantly. */}
               <CartIcon
-                className={`h-5 w-5 transition-transform duration-200 ease-in-out group-hover:rotate-6 group-hover:scale-110 group-hover:duration-300 group-hover:ease-drift group-active:rotate-6 group-active:scale-110 md:h-7 md:w-7 ${
-                  overLightBg
-                    ? `group-hover:text-canvas group-active:text-canvas ${
-                        isActive("/shop") ? "text-canvas" : "text-ink"
-                      }`
-                    : `group-hover:text-brand group-active:text-brand ${
-                        isActive("/shop") ? "text-accent" : "text-ink"
-                      }`
+                className={`h-5 w-5 transition-transform duration-200 ease-in-out group-hover:rotate-6 group-hover:scale-110 group-hover:duration-300 group-hover:ease-drift group-active:rotate-6 group-active:scale-110 md:h-7 md:w-7 group-hover:text-brand group-active:text-brand ${
+                  isActive("/shop") ? "text-accent" : "text-ink"
                 }`}
               />
             </Link>

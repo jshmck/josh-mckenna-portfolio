@@ -105,7 +105,17 @@ function WriteUp({ project, leads = false }: { project: Project; leads?: boolean
  * to know it's being previewed — same markup either way, just how much of
  * it ends up visible differs by context.
  */
-export function ProjectContent({ project }: { project: Project }) {
+export function ProjectContent({ project: projectProp }: { project: Project }) {
+  // A "card"-positioned heroVideo exists only for the /work grid card
+  // (see Project.heroVideo's doc comment) — the page renders exactly as
+  // if the project had no video at all. Stripping it here, once, keeps
+  // every downstream branch (top/bottom/pair/outro slots AND the
+  // hero-lightbox image set, which treats "has a heroVideo" as "the
+  // video leads the page") honest without touching each one.
+  const project =
+    projectProp.heroVideo?.position === "card"
+      ? { ...projectProp, heroVideo: undefined }
+      : projectProp;
   const [firstImage, secondImage, ...restImages] = project.gallery;
 
   // Prev/next derived here rather than passed in as props --
@@ -404,8 +414,6 @@ export function ProjectContent({ project }: { project: Project }) {
                 // this container sits under it, not the header — keep the
                 // inter-image gap-6 rhythm there instead.
                 className={`mx-auto max-w-frame px-6 pt-12 md:px-gutter ${project.videoRow ? "max-md:pt-6" : "max-md:pt-0"}`}
-                // Read by nav.tsx — see Project.navContrastLight's doc comment.
-                data-nav-contrast={project.navContrastLight ? "light" : undefined}
               >
                 {/* Video position: "top" (default, Nomad Wheels) is the main
                     showcase leading the page; "bottom" (Pato) is supplementary,
@@ -539,7 +547,6 @@ export function ProjectContent({ project }: { project: Project }) {
               // was always meant to read uncaptioned.
               <div
                 className="mx-auto max-w-frame px-6 pt-12 max-md:pt-0 md:px-gutter"
-                data-nav-contrast={project.navContrastLight ? "light" : undefined}
               >
                 <div className="mx-auto max-w-lg">
                   <HeroLightbox

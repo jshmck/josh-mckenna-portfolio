@@ -208,7 +208,10 @@ export const features: FeatureItem[] = [
     alt: "HP campaign film — The George in Dublin wrapped in Josh's printed artwork",
     video: {
       src: "/about/hp-latex.mp4",
-      poster: "/about/hp-latex-poster.jpg",
+      // 0:50 — Josh at the drawing desk, captioned "Josh McKenna, Artist"
+      // by the film itself (was Josh in front of the wrapped George; new
+      // filename so Next's image cache can't serve the old frame).
+      poster: "/about/hp-latex-poster-50s.jpg",
     },
   },
   {

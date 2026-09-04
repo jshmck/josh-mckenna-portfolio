@@ -7,11 +7,6 @@ type RevealProps = {
   /** Stagger within a group, in ms. */
   delay?: number;
   className?: string;
-  /** Sets `data-nav-contrast="light"` on the wrapping div -- nav.tsx
-   *  watches for that attribute crossing its own midline the same way it
-   *  already does for a project's hero (see Project.navContrastLight /
-   *  ProjectImage.navContrastLight's doc comments in lib/projects.ts). */
-  navContrastLight?: boolean;
 };
 
 /**
@@ -32,12 +27,7 @@ type RevealProps = {
  * - The observer disconnects after the first trigger. A reveal that replays
  *   every time you scroll past reads as a glitch, not a flourish.
  */
-export function Reveal({
-  children,
-  delay = 0,
-  className = "",
-  navContrastLight = false,
-}: RevealProps) {
+export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -62,7 +52,6 @@ export function Reveal({
     <div
       ref={ref}
       data-reveal="hidden"
-      data-nav-contrast={navContrastLight ? "light" : undefined}
       style={{ transitionDelay: `${delay}ms` }}
       className={className}
     >

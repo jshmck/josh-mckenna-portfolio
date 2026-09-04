@@ -8,17 +8,18 @@
  * projects through the helpers at the bottom, never the array directly.
  */
 
+// Trimmed from ten pills to seven, per Josh (Sep 2026) — Character,
+// Hospitality and Logo were dropped outright (their projects show under
+// All only unless retagged), Pride became LGBTQ+, Mural→Murals and
+// Automotive→Cars. Order here is pill order on /work.
 export const PROJECT_CATEGORIES = [
-  "Character",
-  "Pride",
+  "LGBTQ+",
   "Editorial",
-  "Mural",
-  "Automotive",
-  "3D",
-  "Hospitality",
+  "Murals",
+  "Cars",
   "Icons",
-  "Logo",
   "Motion",
+  "3D",
 ] as const;
 
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
@@ -32,6 +33,13 @@ export type ImageRatio =
   | "4/3"
   | "5/4"
   | "3/2"
+  // Card-frame-only ratio for the /work grid's two-column-wide cards. A
+  // 16/9 frame spanning two columns renders ~31px shorter than the 4/5
+  // portrait beside it (the double card absorbs a 32px gutter, so the
+  // ratios don't cancel); at 5/3 the row lands level to within a pixel
+  // ("i want them to have equal height," per Josh). Costs the wide
+  // artwork ~3% off each side on the card only.
+  | "5/3"
   | "16/10"
   // Beefbar Posters' true print ratios — none of the ratios above were close
   // enough to snap to without a visible crop or letterbox gap.
@@ -116,19 +124,6 @@ export type ProjectImage = {
    * these (like beefbar)."
    */
   square?: boolean;
-  /**
-   * Per-image extension of Project.navContrastLight (see its own doc
-   * comment for the full mechanism) — flags one gallery photo, rather than
-   * the whole hero/card, as light-blue enough that the fixed nav's blue
-   * elements need to swap to white while it crosses the bar. Bombay
-   * Sapphire is the first case: the mural hero isn't blue, but the
-   * hand-painted bottles further down the gallery are — "when the nav bar
-   * goes over the top of the blue bottles the highlighted text and jM
-   * should go from blue to white," per Josh. Only wired up on ImageStack's
-   * plain full-width single-image branch so far (nothing paired or
-   * gallerySpans-grouped has needed it yet).
-   */
-  navContrastLight?: boolean;
 };
 
 export type Credit = {
@@ -185,8 +180,12 @@ export type Project = {
      *  out of the hero block entirely, rendering it after the write-up
      *  instead — Jimny only for now, where the three renders lead the page
      *  (via hero/heroPair/heroThird) and the turnaround clip reads as a
-     *  closer rather than the opener. */
-    position?: "top" | "bottom" | "pair" | "outro";
+     *  closer rather than the opener. "card" keeps it off the project page
+     *  entirely — it exists only so `cardVideo` can play it on the /work
+     *  grid card (Instagram Sticker, whose page already runs the same
+     *  animation mid-gallery via `galleryGif`); ProjectContent treats a
+     *  "card" video as absent. */
+    position?: "top" | "bottom" | "pair" | "outro" | "card";
     /** Defaults to 16/9. Set when the clip isn't landscape. */
     ratio?: ImageRatio;
   };
@@ -248,6 +247,17 @@ export type Project = {
    * when absent.
    */
   cardImage?: ProjectImage;
+  /**
+   * Per-pill override of the card's lead image — while the given category
+   * filter is active on /work, the card leads with a more on-topic image
+   * than its usual `cardImage`/`hero` ("once you've selected the category,
+   * the cover images could change to the specific more relevant image,"
+   * per Josh — Wagamama and L.A. Pride's Murals covers so far). The card's
+   * frame keeps its normal `cardRatio`, so pick images that survive that
+   * crop. Ignored on the unfiltered ALL grid and everywhere else a card
+   * renders.
+   */
+  cardImageByCategory?: Partial<Record<ProjectCategory, ProjectImage>>;
   /**
    * Overrides the /work and home-embedded gallery card's frame ratio —
    * WorkGallery otherwise cycles a fixed sequence per card position for the
@@ -353,29 +363,6 @@ export type Project = {
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
   /**
-   * The artwork itself is close enough to `--color-accent` (the nav's
-   * active-link colour) that the "Work" text nearly disappears when the
-   * fixed nav scrolls directly over it. Originally a purple-on-purple fix
-   * (Atlanta/California Magazine); since the accent went brand blue those
-   * flags moved to the light-blue cards instead — "when the nav bar goes
-   * over any light blue it should go white," per Josh (Yeti, Beefbar,
-   * Pato, Boat International, Step Journal, Monocle heel, …). Flags both
-   * the /work card (project-card.tsx) and the project page's own hero
-   * wrapper (project-content.tsx) with a `data-nav-contrast="light"`
-   * attribute; nav.tsx watches for that attribute crossing its own
-   * midline and swaps the bar's blue elements — the active/hovered link,
-   * the jM mark, the cart's blue states — to white while it's there.
-   * Black nav text stays black; it holds its own on the artwork.
-   *
-   * `true` flags both surfaces; `"hero"` flags only the project page's
-   * hero — for a project whose full-bleed hero is blue but whose /work
-   * card isn't (L.A. Pride: blue-sky photo hero, lime-green lockup card —
-   * "the full screen hero is blue sky so the text doesnt stand a
-   * chance," per Josh). A white bar over a light non-blue card is its own
-   * contrast failure, so don't flag a card that doesn't need it.
-   */
-  navContrastLight?: boolean | "hero";
-  /**
    * Sorts before every non-pinned project, lowest rank first —
    * Josh's own curated lead-in to /work, independent of year.
    * getAllProjects() otherwise sorts strictly by year descending, which
@@ -389,13 +376,248 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "levis-rainbow-rodeo",
+    title: "Levi's Rainbow Rodeo",
+    client: "Levi's",
+    year: 2024,
+    discipline: "Pride Campaign",
+    deliverables: "1 invite · 3 enamel pins · cups · 1 tee",
+    categories: ["LGBTQ+", "Icons"],
+    summary: "Two cowboys sharing a horse, printed on pins, cups and tees for Pride.",
+    heroCaption:
+      "Made for the Rainbow Rodeo at Levi's Haus, Los Angeles, June 2024 — hosted by Benny Drama, with DJ sets from Violet Chachki and Tinashe.",
+    brief: [
+      "For Pride 2024, Levi's threw a Rainbow Rodeo at Levi's Haus in Los Angeles and wanted the whole event drawn as one world — invite, enamel pins, cups and a tee, all riffing on classic western Americana with the cowboys made explicitly queer.",
+      "The same few characters carry every piece: two riders sharing a horse, a bucking bronco, a rope heart, a hat under a rainbow. Each pin ran in multiple colourways, and the tee's back print carries the two cowboys in an embrace.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Levi's" },
+    ],
+    // The camera shots are true 2/3 (6000x4000 Canon frames and Josh's own
+    // portrait crops of them) — 2/3 is already in ImageRatio, so nothing
+    // here snaps or crops. The ingester flagged them against its older
+    // five-ratio list; ignored deliberately.
+    cardRatio: "2/3",
+    // Josh picked the pins over the invite poster to lead — the poster
+    // rides alongside as the pair instead.
+    hero: {
+      ratio: "2/3",
+      alt: "Enamel pins — all three designs",
+      src: "/work/levis-rainbow-rodeo/02-pins-trio.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "The invite",
+      src: "/work/levis-rainbow-rodeo/01-poster.webp",
+    },
+    // Pairs throughout: merch photos two-up, then each sketch beside the
+    // piece it became, then the three pin sketches in one row of three.
+    gallerySpans: [
+      { startIndex: 0, count: 2 },
+      { startIndex: 2, count: 2 },
+      { startIndex: 4, count: 2 },
+      { startIndex: 6, count: 2 },
+      { startIndex: 8, count: 3 },
+    ],
+    gallery: [
+      {
+        ratio: "2/3",
+        alt: "Pins — the bronco rider",
+        src: "/work/levis-rainbow-rodeo/03-pins-red.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "Pins — the yellow colourway",
+        src: "/work/levis-rainbow-rodeo/04-pins-yellow.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "Pins — the hat",
+        src: "/work/levis-rainbow-rodeo/05-pins-pink.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "Cups at the bar",
+        src: "/work/levis-rainbow-rodeo/06-cups.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The back print",
+        src: "/work/levis-rainbow-rodeo/08-tee-back.webp",
+      },
+      {
+        ratio: "5/4",
+        alt: "Sketch — the back print",
+        src: "/work/levis-rainbow-rodeo/09-sketch-tee-couple.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "The tee, worn",
+        src: "/work/levis-rainbow-rodeo/07-tee-front.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Sketch — the invite",
+        src: "/work/levis-rainbow-rodeo/10-sketch-invite-whip.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Sketch — the rodeo pin",
+        src: "/work/levis-rainbow-rodeo/12-sketch-pin-rodeo.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Sketch — the hat pin",
+        src: "/work/levis-rainbow-rodeo/13-sketch-pin-hat.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Sketch — the two ladies pin",
+        src: "/work/levis-rainbow-rodeo/14-sketch-pin-ladies.webp",
+      },
+      {
+        // 902px source — `small` caps it at the 512px column so a web-res
+        // sketch never renders upscaled (same path as Coca-Cola Moments).
+        ratio: "3/4",
+        alt: "Sketch — the invite motifs",
+        src: "/work/levis-rainbow-rodeo/11-sketch-invite-stack.webp",
+        small: true,
+      },
+    ],
+  },
+  {
+    slug: "piper-heidsieck",
+    title: "Piper-Heidsieck",
+    client: "Piper-Heidsieck",
+    year: 2024,
+    discipline: "Illustration",
+    deliverables: "1 gift tin",
+    categories: ["LGBTQ+"],
+    summary: "A riverside scene wrapped around a champagne tin for Pride.",
+    heroCaption: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut.",
+    brief: [
+      "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month gift tin — the house's Cuvée Brut wrapped in scenes of friendship and connection by the river, with a rainbow hot-air balloon drifting over town. It followed the house's collaboration with David Doran the year before.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Piper-Heidsieck" },
+    ],
+    // The only asset is the campaign's own 469px product render ("product
+    // shot only," per Josh — the press-kit pages were dropped). `spot`
+    // keeps it at the small centred width the resolution can honestly
+    // fill, same reasoning as Monocle's heel. True ratio 0.586 sits on
+    // 9/16 (4% letterbox, invisible under `contain`); the ingester's 3/4
+    // snap would have cropped a quarter of the tin.
+    heroSize: "spot",
+    cardRatio: "9/16",
+    hero: {
+      ratio: "9/16",
+      alt: "The tin, beside the bottle",
+      src: "/work/piper-heidsieck/01-tin.webp",
+      // Transparent background — contain on bg-canvas, the usual
+      // real-alpha fix (see Plate).
+      fit: "contain",
+    },
+    gallery: [],
+  },
+  {
+    slug: "whatsapp",
+    title: "WhatsApp",
+    client: "WhatsApp",
+    year: 2018,
+    discipline: "Campaign Illustration",
+    deliverables: "2 illustrations",
+    categories: [],
+    summary: "Beach couples for WhatsApp, close enough that nobody else hears a word.",
+    heroCaption: "For WhatsApp's \"It's between you\" campaign, 2018.",
+    brief: [
+      "WhatsApp commissioned illustrations for \"It's between you,\" its campaign about private messaging — couples on the beach in close conversation, the parasol doing the work of a closed door.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "WhatsApp" },
+    ],
+    // Both source squares are true 1/1 — pinned so RATIO_CYCLE can't crop
+    // the lockup. The campaign version leads, per Josh; the clean
+    // illustration rides beside it.
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "\"It's between you.\"",
+      src: "/work/whatsapp/01-between-you.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "Under the parasol",
+      src: "/work/whatsapp/02-ladies.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "honda-super-n",
+    title: "Honda Super N",
+    client: "Personal",
+    year: 2026,
+    discipline: "Illustration",
+    deliverables: "Key Art",
+    categories: ["Cars"],
+    summary: "A kei car on stretched wheels, sitting far too low.",
+    heroCaption: "",
+    brief: [
+      "No brief — just an excuse to draw a kei car the way the stance scene builds them: slammed, cambered, a spoiler it doesn't need.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // True 16/9 (3840x2160) — the ingester's 16/10 snap would have cropped
+    // it. Landscape card spans two grid columns like the other 16/9s.
+    // The hero swapped from the original transparent cut-out to Josh's
+    // re-export on a solid red field ("replace the honda n with the
+    // coloured background one") — new filename on purpose, so Next's
+    // image cache can't serve the old render.
+    cardRatio: "16/9",
+    hero: {
+      ratio: "16/9",
+      alt: "Honda Super N",
+      src: "/work/honda-super-n/01-super-n-red.webp",
+    },
+    // The stock N-One the build is based on, on the same red field —
+    // four angles, paired two-up ("add them to the projects page," per
+    // Josh).
+    gallerySpans: [
+      { startIndex: 0, count: 2 },
+      { startIndex: 2, count: 2 },
+    ],
+    gallery: [
+      {
+        ratio: "16/9",
+        alt: "The stock N-One",
+        src: "/work/honda-super-n/02-n-one-side.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "Rear three-quarter",
+        src: "/work/honda-super-n/05-n-one-rear-quarter.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "Head on",
+        src: "/work/honda-super-n/03-n-one-front.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "From behind",
+        src: "/work/honda-super-n/04-n-one-rear.webp",
+      },
+    ],
+  },
+  {
     slug: "comic-relief-sink-the-pink",
     title: "Comic Relief x Sink The Pink",
     client: "Comic Relief",
     year: 2020,
     discipline: "Pride Campaign",
     deliverables: "2 tote designs",
-    categories: ["Pride", "Character", "Icons"],
+    categories: ["LGBTQ+"],
     summary: "Two couples in one embrace, printed for Red Nose Day — one ended up on a Spice Girl's shoulder.",
     heroCaption:
       "One of two couple pairings, printed onto canvas totes for Comic Relief and Sink The Pink's Red Nose Day 2020 range.",
@@ -434,7 +656,7 @@ export const projects: Project[] = [
     year: 2020,
     discipline: "Mural",
     deliverables: "1 mural",
-    categories: ["Mural"],
+    categories: ["Murals"],
     summary: "Seven cyclists, a peach, and some advice about gas.",
     heroCaption:
       "Painted at La Cienega and Santa Monica Boulevards, West Hollywood, December 2020.",
@@ -487,7 +709,7 @@ export const projects: Project[] = [
     year: 2017,
     discipline: "Stickers & Iconography",
     deliverables: "Sticker Set · 24 Stickers",
-    categories: ["Pride", "Character", "Icons"],
+    categories: ["LGBTQ+", "Icons"],
     summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
     heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
     brief: [
@@ -535,12 +757,9 @@ export const projects: Project[] = [
     title: "Bum Selfie",
     client: "Cake Boy Magazine",
     year: 2020,
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
-    categories: ["Editorial"],
+    categories: [],
     summary: "Two attempts at an angle a phone was never built for.",
     heroCaption: "",
     brief: [
@@ -569,7 +788,7 @@ export const projects: Project[] = [
     year: 2020,
     discipline: "Illustration",
     deliverables: "Key Art",
-    categories: ["Character"],
+    categories: [],
     summary: "Working on an even tan, one way or another.",
     heroCaption: "",
     brief: [
@@ -593,7 +812,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Illustration",
     deliverables: "Key Art",
-    categories: ["Automotive"],
+    categories: ["Cars"],
     summary: "A carport doing its one job, in Palm Springs.",
     heroCaption: "",
     brief: [
@@ -616,7 +835,7 @@ export const projects: Project[] = [
     year: 2021,
     discipline: "Illustration",
     deliverables: "Key Art",
-    categories: ["Automotive"],
+    categories: ["Cars"],
     summary: "The new Bronco, reveal day.",
     heroCaption: "",
     brief: [
@@ -639,7 +858,7 @@ export const projects: Project[] = [
     year: 2022,
     discipline: "Illustration",
     deliverables: "Illustrations for Animation",
-    categories: ["Character", "Icons", "Motion"],
+    categories: ["Motion"],
     summary: "Three rice pouches, three flavours, three animations.",
     heroCaption: "Illustration for three animated Tilda Rice ads — Katsu Curry, Indonesian Fried Rice and Masala — 2022.",
     brief: [
@@ -728,7 +947,7 @@ export const projects: Project[] = [
     year: 2023,
     discipline: "Pride Campaign",
     deliverables: "Packaging · Parade Float",
-    categories: ["Pride", "Character"],
+    categories: ["LGBTQ+"],
     summary: "A Pride parade, wrapped around a jar of face cream.",
     heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
     brief: [
@@ -769,7 +988,7 @@ export const projects: Project[] = [
     year: 2022,
     discipline: "Illustration",
     deliverables: "3 Posters",
-    categories: ["Hospitality", "Automotive"],
+    categories: [],
     summary: "Three hotels, three vintage travel posters, one coastline.",
     heroCaption: "A set of travel posters for three Costa Smeralda hotels — Cala di Volpe, Romazzino and Cervo — 2022.",
     hideHeroCaptions: true,
@@ -867,7 +1086,7 @@ export const projects: Project[] = [
     year: 2019,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Character", "Icons", "Logo"],
+    categories: ["Icons"],
     summary: "The ampersand, sat cross-legged and fully aware of it.",
     heroCaption: "For \"re/viewed,\" Ace & Tate's series inviting illustrators to reinterpret their logo, 2019.",
     brief: [
@@ -899,9 +1118,6 @@ export const projects: Project[] = [
     client: "Monocle",
     year: 2018,
     yearLabel: "October 2018, Issue 117",
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
     categories: ["Editorial"],
@@ -933,7 +1149,7 @@ export const projects: Project[] = [
     year: 2019,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set",
-    categories: ["Pride", "Character", "Icons"],
+    categories: ["LGBTQ+", "Icons"],
     summary: "Two couples, a rainbow and a sunbather, sized to fit on a suitcase.",
     heroCaption: "A set of five Pride stickers, available in Away's stores throughout Pride month, 2019.",
     brief: [
@@ -988,10 +1204,10 @@ export const projects: Project[] = [
     client: "Wagamama",
     year: 2023,
     yearLabel: "2022–2023",
-    pinnedRank: 1,
+    pinnedRank: 2,
     discipline: "Pride Campaign",
     deliverables: "Vinyl Window Display",
-    categories: ["Pride", "Character", "Hospitality"],
+    categories: ["LGBTQ+", "Murals"],
     summary: "Two Pride windows, one restaurant chain, a year apart.",
     heroCaption: "The full artwork, designed for Wagamama's Brighton window, 2023.",
     brief: [
@@ -1006,7 +1222,17 @@ export const projects: Project[] = [
     // Card and hero share 16/9 now — Josh's clearer re-export of the
     // Brighton artwork (Sep 2026) is natively 3413x1920, retiring the
     // 1063/640 crop (and its ImageRatio member) the hero used to carry.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
+    // On the Murals pill the card leads with the installed glass instead
+    // of the flat artwork — "the image is of the large window vinyl,"
+    // per Josh (Old Street, his pick over Marble Arch/Brighton).
+    cardImageByCategory: {
+      Murals: {
+        ratio: "3/2",
+        alt: "The window at Wagamama's Old Street",
+        src: "/work/wagamama-pride/03-old-street.webp",
+      },
+    },
     hero: {
       ratio: "16/9",
       alt: "The full Wagamama Brighton Pride artwork",
@@ -1048,11 +1274,11 @@ export const projects: Project[] = [
     title: "Atlanta Magazine",
     client: "Atlanta Magazine",
     year: 2022,
-    pinnedRank: 3,
+    pinnedRank: 4,
     yearLabel: "October 2022",
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
-    categories: ["Pride", "Editorial"],
+    categories: ["LGBTQ+", "Editorial"],
     summary: "Every letter of the acronym, spelled out so nobody has to ask twice.",
     heroCaption: "For Atlanta Magazine's October 2022 feature \"Alphabet Soup,\" written by Taylor Alxndr.",
     brief: [
@@ -1066,11 +1292,21 @@ export const projects: Project[] = [
     // The artwork itself is a wide 16/9 wordmark banner — force the /work
     // grid card to the same landscape shape instead of RATIO_CYCLE's default
     // portrait, so the card isn't cropping down a wide piece.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
     cardImage: {
       ratio: "16/9",
       alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
       src: "/work/atlanta-magazine/01-lgbtqiqa.webp",
+    },
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/3",
+        alt: "The spread on the printed page.",
+        src: "/work/atlanta-magazine/02-magazine-landscape.webp",
+      },
     },
     hero: {
       ratio: "16/9",
@@ -1092,7 +1328,7 @@ export const projects: Project[] = [
     year: 2022,
     discipline: "Illustration",
     deliverables: "5 Icons",
-    categories: ["Character", "Icons"],
+    categories: ["Icons"],
     summary: "A hot dog, a bottle, a pizza slice — Coke turns up in all of them.",
     heroCaption: "One of five \"everyday moments\" icons made for Coca-Cola, 2022.",
     // No visible captions on this one -- "Poolside" turned out to be a
@@ -1161,9 +1397,6 @@ export const projects: Project[] = [
     client: "Boat International",
     year: 2024,
     yearLabel: "December 2024",
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
@@ -1179,6 +1412,16 @@ export const projects: Project[] = [
     // The artwork is a true 4/5, not RATIO_CYCLE's default alternation —
     // same fix as monocle-spot-illo and coca-cola-moments.
     cardRatio: "4/5",
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/5",
+        alt: "The spread on the printed page.",
+        src: "/work/boat-international/02-boat-international-mockup.webp",
+      },
+    },
     hero: {
       ratio: "4/5",
       alt: "A dayboat at anchor, tethered to a sun-shaped solar balloon.",
@@ -1197,9 +1440,6 @@ export const projects: Project[] = [
     client: "STEP Journal",
     year: 2019,
     yearLabel: "August/September 2019",
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "Editorial Illustration",
     deliverables: "1 Cover Illustration",
     categories: ["Editorial"],
@@ -1216,6 +1456,16 @@ export const projects: Project[] = [
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
     // happened to also give 4/5, but only by chance of array position.
     cardRatio: "4/5",
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/5",
+        alt: "The cover on the printed issue.",
+        src: "/work/step-journal/02-step-journal-cover-mockup.webp",
+      },
+    },
     hero: {
       ratio: "4/5",
       alt: "A house sliced open by a knife, its layers labelled with capital gains, inheritance and income tax.",
@@ -1236,7 +1486,7 @@ export const projects: Project[] = [
     yearLabel: "The Inequality Issue, 2019",
     discipline: "Editorial Illustration",
     deliverables: "Editorial Illustration",
-    categories: ["Editorial", "Pride"],
+    categories: ["LGBTQ+", "Editorial"],
     summary: "A mechanic, rising from under the hood in heels.",
     heroCaption: "Illustrated for \"The Gay Divide,\" Weapons of Reason's The Inequality Issue, 2019.",
     brief: [
@@ -1252,7 +1502,7 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "1/1",
       alt: "A mechanic, living his truth in pink heels",
-      src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01-hr.webp",
+      src: "/work/weapons-of-reason-gay-divide/04-mechanic-bg.webp",
     },
     // True ratio 1.7637 (4000x2268) — close enough to 16/9 (1.7778) to snap
     // with no visible crop. Full-width, no heroPair, so the spread reads
@@ -1268,7 +1518,7 @@ export const projects: Project[] = [
       {
         ratio: "1/1",
         alt: "A mechanic, living his truth in pink heels",
-        src: "/work/weapons-of-reason-gay-divide/03-wor-gay-divide-web-01-hr.webp",
+        src: "/work/weapons-of-reason-gay-divide/04-mechanic-bg.webp",
       },
       {
         ratio: "1/1",
@@ -1330,7 +1580,7 @@ export const projects: Project[] = [
     // Pinned to the middle of /work's curated block, regardless of year
     // — Josh wants this one prominent despite being older than most of
     // the rest, just not leading the page.
-    pinnedRank: 10,
+    pinnedRank: 8,
     discipline: "Editorial Illustration",
     deliverables: "3 Spot Illustrations",
     categories: ["Editorial"],
@@ -1338,7 +1588,7 @@ export const projects: Project[] = [
     // hero's true 1.6 — still clears LANDSCAPE_SPAN_RATIO (1.3) either way,
     // so it spans two columns automatically, same as UAL Booklets and
     // Bombay Sapphire.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
     summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
     heroCaption: "Tanning Tips — the first of a three-part series on tanning safely.",
     brief: [
@@ -1371,14 +1621,31 @@ export const projects: Project[] = [
     client: "Instagram",
     year: 2017,
     yearLabel: "2017–2022",
-    pinnedRank: 4,
+    pinnedRank: 1,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set · Mural · Parade Float",
-    categories: ["Pride", "Mural", "Character", "Icons"],
+    categories: ["LGBTQ+", "Murals", "Icons"],
     featured: true,
-    // cardImage is a true 1/1 — pinned explicitly, same fix as
-    // monocle-spot-illo, so a future reorder can't flip it via RATIO_CYCLE.
-    cardRatio: "1/1",
+    // 4/5 frame even though cardImage is a true 1/1 — "put instagram
+    // sticker in 4/5 frame to help with the grid," per Josh: leading the
+    // grid at 1/1 left its row visibly shorter than the portrait cards
+    // around it. The lavender fill crops top/bottom safely; the figure
+    // stays centred (the taller frame crops the square image's sides).
+    cardRatio: "4/5",
+    // The card plays the sticker's turnaround clip instead of the still
+    // ("replace the grid Instagram sticker cover image with the new
+    // animation," per Josh — frame stays 4/5). position: "card" keeps it
+    // off the project page, which already runs the same animation
+    // mid-gallery via galleryGif below; ProjectCard poster-frames the
+    // clip with cardImage itself, so reduced-motion viewers get the same
+    // approved lavender still as before.
+    cardVideo: true,
+    heroVideo: {
+      src: "/work/instagram-sticker/11-sticker-animation.mp4",
+      alt: "The sticker's animation",
+      position: "card",
+      ratio: "9/16",
+    },
     summary:
       "I created an iconic Pride sticker for Instagram Stories: a sassy, muscular bloke in red high heels. Meant to last a month, it stayed live for five years, used by millions and turned into a symbol of queer culture and self-expression.",
     heroCaption: "The original character design, created for Instagram's 2017 Pride sticker set.",
@@ -1420,8 +1687,12 @@ export const projects: Project[] = [
     // after the two-up pair (afterIndex: 2 = after gallery[0] and [1]),
     // keeping the whole Mardi Gras beat — float photo, float detail,
     // footage — together before Sticker Set breaks to a new subject.
+    // Same clip as the card above — Josh's new pink-background render
+    // (H.264 transcode of his HEVC export, which Chromium/Firefox can't
+    // decode), replacing the old white 10- file. The 1/1 frame is kept,
+    // per Josh; the portrait clip centre-crops into it.
     galleryGif: {
-      src: "/work/instagram-sticker/10-sticker-animation.mp4",
+      src: "/work/instagram-sticker/11-sticker-animation.mp4",
       alt: "The move behind the sticker.",
       ratio: "1/1",
       afterIndex: 0,
@@ -1503,7 +1774,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "1 Render",
-    categories: ["3D", "Character"],
+    categories: ["3D"],
     summary: "A beanie, a moustache, an earring — the first character built in Womp.",
     heroCaption: "",
     brief: [
@@ -1528,7 +1799,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D", "Character"],
+    categories: ["3D"],
     summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
     // Displayed caption, distinct from hero.alt (screen readers still get
     // the plain description) — per Josh: "Who wants this as a resin
@@ -1573,10 +1844,9 @@ export const projects: Project[] = [
     title: "Jimny",
     client: "Personal",
     year: 2026,
-    pinnedRank: 18,
     discipline: "3D Illustration",
     deliverables: "1 Turnaround · 3 Renders",
-    categories: ["3D", "Automotive"],
+    categories: ["Cars", "3D"],
     summary: "My favourite car, rendered because I wanted an excuse to model it.",
     heroCaption: "",
     brief: [
@@ -1621,7 +1891,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
-    categories: ["3D", "Automotive"],
+    categories: ["Cars", "3D"],
     summary: "Same little city car, once yellow under pink light and once black under red.",
     heroCaption: "",
     brief: [
@@ -1651,10 +1921,10 @@ export const projects: Project[] = [
     title: "Money Bench",
     client: "Personal",
     year: 2026,
-    pinnedRank: 13,
+    pinnedRank: 11,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
-    categories: ["3D", "Character", "Editorial"],
+    categories: ["Editorial", "3D"],
     summary: "Tapping into the coffee fund.",
     heroCaption: "",
     brief: [
@@ -1681,12 +1951,9 @@ export const projects: Project[] = [
     title: "Pato",
     client: "Personal",
     year: 2026,
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D", "Character"],
+    categories: ["3D"],
     summary: "Three legs, full confidence.",
     heroCaption: "",
     brief: [
@@ -1757,7 +2024,7 @@ export const projects: Project[] = [
     yearLabel: "Spring 2025",
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
-    categories: ["Editorial"],
+    categories: ["Editorial", "Icons"],
     summary: "Composting, fishing and shouting into a megaphone, drawn at the same scale.",
     heroCaption: "Illustrated for \"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
     brief: [
@@ -1857,13 +2124,10 @@ export const projects: Project[] = [
     title: "Yeti",
     client: "Personal",
     year: 2025,
-    pinnedRank: 8,
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
+    pinnedRank: 7,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Character"],
+    categories: [],
     summary: "A YETI cooler, occupied.",
     heroCaption: "",
     brief: [
@@ -1886,10 +2150,10 @@ export const projects: Project[] = [
     title: "Underground",
     client: "Personal",
     year: 2025,
-    pinnedRank: 15,
+    pinnedRank: 16,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Editorial"],
+    categories: [],
     summary: "Mind the closing doors — and whatever's still in your hand.",
     heroCaption: "",
     brief: [
@@ -1914,7 +2178,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Character"],
+    categories: [],
     summary: "LA's chaotic sidewalk bots, forever stalling out halfway across a crossing.",
     heroCaption: "",
     brief: [
@@ -1960,10 +2224,10 @@ export const projects: Project[] = [
     title: "BMW Z1",
     client: "Personal",
     year: 2025,
-    pinnedRank: 16,
+    pinnedRank: 15,
     discipline: "Illustration",
     deliverables: "2 Illustrations",
-    categories: ["Automotive"],
+    categories: ["Cars"],
     summary: "A niche favourite, picked for doors that drop straight into the sill.",
     heroCaption: "",
     brief: [
@@ -1994,7 +2258,7 @@ export const projects: Project[] = [
     year: 2025,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Character"],
+    categories: [],
     summary: "One hand for the case, one for the content.",
     heroCaption: "",
     brief: [
@@ -2020,7 +2284,8 @@ export const projects: Project[] = [
     pinnedRank: 12,
     discipline: "Automotive Livery",
     deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
-    categories: ["Automotive"],
+    // "remove 505 from icons," per Josh.
+    categories: ["Cars"],
     summary: "Livery and posters for a wheel launch, field-tested on camera in Josh's own Land Cruiser.",
     heroCaption:
       "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch, styled after vintage Dakar rally posters (and my actual Land Cruiser — yep that's me driving).",
@@ -2064,7 +2329,7 @@ export const projects: Project[] = [
     year: 2021,
     discipline: "Event Invitation",
     deliverables: "2 Invitations",
-    categories: ["Hospitality", "Automotive"],
+    categories: [],
     // Overrides effectiveCardRatio's RATIO_CYCLE fallback -- without this
     // the /work grid was landing this card on a square slot regardless of
     // cardImage's own declared ratio (ProjectCard's `ratio` prop always
@@ -2120,7 +2385,7 @@ export const projects: Project[] = [
     title: "Monocle - Sumo",
     client: "Monocle",
     year: 2018,
-    pinnedRank: 17,
+    pinnedRank: 9,
     // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
     // square export, and leaving this to the cycle meant a pinnedRank
     // reorder elsewhere could silently flip this card's parity and crop it
@@ -2156,11 +2421,11 @@ export const projects: Project[] = [
     yearLabel: "2017/18/19/20",
     discipline: "Illustration",
     deliverables: "Covers · Inside Pages · Spots · Maps",
-    categories: ["Character", "Editorial"],
+    categories: ["Editorial"],
     // Standardized to 16/9 with the other landscape /work cards, not the
     // photo's true 3/2 — checked against the actual spread, nothing
     // essential is cropped. Same fix as Bombay Sapphire below.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
     summary: "Six UAL colleges, six colour-ways, one shared case of first-week nerves.",
     heroCaption: "One interior spread, reused across all six 2017–2020 college editions.",
     brief: [
@@ -2249,7 +2514,7 @@ export const projects: Project[] = [
     year: 2019,
     discipline: "Pride Campaign",
     deliverables: "Phone Cases · Flags · Pins · Social · Tees",
-    categories: ["Pride", "Character"],
+    categories: ["LGBTQ+"],
     summary: "Eleven characters, cut into pins, flags, cases and tees.",
     heroCaption: "",
     brief: [
@@ -2327,13 +2592,10 @@ export const projects: Project[] = [
     client: "Beefbar",
     year: 2017,
     yearLabel: "2017–Present Day",
-    // Light-blue artwork — the blue nav vanishes into it, so the active
-    // link goes white while this sits under the bar (navContrastLight doc).
-    navContrastLight: true,
-    pinnedRank: 7,
+    pinnedRank: 6,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
-    categories: ["Hospitality", "Character"],
+    categories: [],
     summary: "One new poster, every time Beefbar opens somewhere new. Still counting.",
     heroCaption: "The Monte Carlo poster — Beefbar's flagship, part of the ongoing series.",
     brief: [
@@ -2450,13 +2712,10 @@ export const projects: Project[] = [
     title: "L.A. Pride",
     client: "City of Los Angeles",
     year: 2024,
-    pinnedRank: 6,
-    // Hero only — the full-bleed stage photo is blue sky, but the /work
-    // card is the lime-green lockup and reads fine under a blue bar.
-    navContrastLight: "hero",
+    pinnedRank: 3,
     discipline: "Festival Identity",
     deliverables: "Branding · Banners · Wayfinding · Wristbands · Merch",
-    categories: ["Pride"],
+    categories: ["LGBTQ+", "Murals"],
     // True ratio of the lockup cardImage (a 4/5 export of the same
     // artwork) — pinned explicitly rather than leaving it to chance which
     // cycle slot lands here (a slightly-off ratio would crop "PRIDE 2024"
@@ -2497,6 +2756,15 @@ export const projects: Project[] = [
       ratio: "4/5",
       alt: "The LA Pride 2024 lockup",
       src: "/work/la-pride/01-la-pride-4x5.webp",
+    },
+    // Murals pill leads with the flyposted wall instead of the lockup —
+    // same "more relevant image per category" ask as Wagamama's.
+    cardImageByCategory: {
+      Murals: {
+        ratio: "2/3",
+        alt: "Flyposted lineup sheet and site map",
+        src: "/work/la-pride/07-flyposted-lineup.webp",
+      },
     },
     cardHoverImage: {
       ratio: "2/3",
@@ -2590,10 +2858,10 @@ export const projects: Project[] = [
     title: "The Sound of Driving",
     client: "Personal",
     year: 2026,
-    pinnedRank: 9,
+    pinnedRank: 10,
     discipline: "Editorial Illustration",
     deliverables: "Key Art · Magazine Mockup",
-    categories: ["Automotive", "Editorial"],
+    categories: ["Cars", "Editorial"],
     summary: "A hot-pink electric sports car makes the case for keeping the noise.",
     heroCaption: "The finished key art.",
     brief: [
@@ -2603,6 +2871,16 @@ export const projects: Project[] = [
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
     // was giving this 1/1 by chance.
     cardRatio: "4/5",
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/5",
+        alt: "Mocked up as a magazine spread",
+        src: "/work/sound-of-driving/04-mag-03.webp",
+      },
+    },
     hero: {
       ratio: "4/5",
       alt: "\"Have EVs Killed the Sound of Driving?\" — the finished key art",
@@ -2621,14 +2899,14 @@ export const projects: Project[] = [
     title: "Bombay Sapphire",
     client: "Bombay Sapphire",
     year: 2018,
-    pinnedRank: 11,
+    pinnedRank: 13,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
-    categories: ["Mural"],
+    categories: ["Murals"],
     // Standardized to 16/9 with the other landscape /work cards, not the
     // hero's true 1.5 — checked against the actual storefront shot,
     // nothing essential is cropped. Same fix as UAL Booklets above.
-    cardRatio: "16/9",
+    cardRatio: "5/3",
     summary:
       "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
     heroCaption: "The Stir Creativity mural, live in Bombay Sapphire's Shoreditch pop-up.",
@@ -2671,14 +2949,11 @@ export const projects: Project[] = [
         ratio: "4/3",
         alt: "Fifty hand-finished bottles, ready to go",
         src: "/work/bombay-sapphire/07-bottles-wide.webp",
-        // See ProjectImage.navContrastLight's doc comment.
-        navContrastLight: true,
       },
       {
         ratio: "4/3",
         alt: "Bottle detail — botanicals from the Grains of Paradise",
         src: "/work/bombay-sapphire/08-bottles-macro.webp",
-        navContrastLight: true,
       },
     ],
   },
@@ -2689,7 +2964,7 @@ export const projects: Project[] = [
     year: 2018,
     discipline: "Illustration",
     deliverables: "1 Instagram Story animation",
-    categories: ["Pride", "Motion"],
+    categories: ["LGBTQ+", "Motion"],
     summary: "A rainbow of dancers, animated for Bershka's Pride month Instagram Stories.",
     heroCaption: "A held frame from the animation, 2018.",
     brief: [
@@ -2729,7 +3004,7 @@ export const projects: Project[] = [
     year: 2017,
     discipline: "Illustration & Animation",
     deliverables: "1 animation",
-    categories: ["Automotive", "Motion"],
+    categories: ["Cars", "Motion"],
     summary: "A Mini convertible, animated for a five-second loop.",
     heroCaption: "A held frame from the animation, 2017.",
     brief: [

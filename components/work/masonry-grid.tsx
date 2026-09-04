@@ -88,6 +88,10 @@ export type MasonryItem = {
 
 type MasonryGridProps = {
   items: MasonryItem[];
+  /** Pack with the wide LOOKAHEAD_DENSE window — for views whose order
+   *  isn't curated (the /work category filters), where a level grid
+   *  beats strict sequence. */
+  dense?: boolean;
 };
 
 type Placement = {
@@ -102,6 +106,15 @@ type Placement = {
  *  `pack()` below. Large enough to find a good filler for a stalled 2-span
  *  item without turning this into a full reorder of the whole grid. */
 const LOOKAHEAD = 6;
+
+/** The window `dense` mode packs with instead. A filtered view isn't
+ *  Josh's curated ALL order — "when you click a category, can the rules
+ *  of the grid change?" — so the packer is free to reach much further
+ *  ahead for whichever card levels the columns (e.g. Editorial's
+ *  Weapons of Reason ↔ Monocle heel swap, which lets UAL Booklets pull
+ *  up beside it). Order still breaks ties, so cards only jump when it
+ *  genuinely closes a gap. */
+const LOOKAHEAD_DENSE = 24;
 
 type Packed = {
   key: string;
@@ -168,13 +181,19 @@ function seatsAdjacentTransparent(
  * candidate in the window would violate it, in which case the rule yields
  * rather than stalling the layout.
  */
-function pack(items: MasonryItem[], columnCount: number, gap: number, columnWidth: number): Packed[] {
+function pack(
+  items: MasonryItem[],
+  columnCount: number,
+  gap: number,
+  columnWidth: number,
+  lookahead: number = LOOKAHEAD,
+): Packed[] {
   const columnHeights = new Array(columnCount).fill(0);
   const remaining = [...items];
   const placements: Packed[] = [];
 
   while (remaining.length > 0) {
-    const windowSize = Math.min(remaining.length, LOOKAHEAD);
+    const windowSize = Math.min(remaining.length, lookahead);
     const candidates = [];
 
     for (let i = 0; i < windowSize; i++) {
@@ -257,7 +276,7 @@ function pack(items: MasonryItem[], columnCount: number, gap: number, columnWidt
  * columned from the first frame. That's the accepted cost of not having a
  * real viewport width before JS runs, per Josh.
  */
-export function MasonryGrid({ items }: MasonryGridProps) {
+export function MasonryGrid({ items, dense = false }: MasonryGridProps) {
   const [columnCount, setColumnCount] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   // Real container width, measured after mount and on resize -- packed
@@ -283,7 +302,7 @@ export function MasonryGrid({ items }: MasonryGridProps) {
     containerWidth !== null
       ? (containerWidth - (columnCount - 1) * gap) / columnCount
       : FALLBACK_COLUMN_WIDTH;
-  const packed = pack(items, columnCount, gap, columnWidth);
+  const packed = pack(items, columnCount, gap, columnWidth, dense ? LOOKAHEAD_DENSE : LOOKAHEAD);
   const placements: Placement[] = packed.map((p) => ({
     key: p.key,
     node: p.node,

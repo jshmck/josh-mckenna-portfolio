@@ -7,7 +7,7 @@ import { MasonryGrid } from "@/components/work/masonry-grid";
 import { ProjectCard } from "@/components/work/project-card";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { getCardHoverImage } from "@/lib/projects";
-import type { ImageRatio, Project, ProjectCategory } from "@/lib/projects";
+import type { ImageRatio, Project, ProjectCategory, ProjectImage } from "@/lib/projects";
 
 type WorkGalleryProps = {
   projects: Project[];
@@ -182,7 +182,7 @@ const prideStripeGradient = `linear-gradient(to bottom, ${PRIDE_STRIPES.map(
 ).join(", ")})`;
 
 /**
- * The "Pride" filter pill only — everywhere else in the row is the plain
+ * The "LGBTQ+" filter pill only — everywhere else in the row is the plain
  * bordered/filled button below. On hover it reveals a pride-flag treatment
  * underneath the label (pink/light-blue/white rings around a rainbow
  * fill), pure CSS, no image asset. Idle otherwise matches every other pill
@@ -280,7 +280,7 @@ function PrideFilterButton({
       <span
         className={`relative z-10 transition-colors duration-300 group-hover:text-black pointer-coarse:group-active:text-black ${active ? "text-black" : ""}`}
       >
-        Pride
+        LGBTQ+
       </span>
     </button>
   );
@@ -316,11 +316,23 @@ function MasonryCard({
   project,
   index,
   ratio,
+  image,
+  hoverImage,
   sizes = "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw",
 }: {
   project: Project;
   index: number;
   ratio: ImageRatio;
+  /** Lead-image override — WorkGallery passes the active filter's
+   *  cardImageByCategory pick here so a filtered view can lead with a
+   *  more on-topic image (see that field's doc comment). */
+  image?: ProjectImage;
+  /** Hover override, set alongside `image`: an overridden cover hovers
+   *  back to the project's original lead ("the hover image has to be
+   *  the original — LA when in murals will be the green logo mark, and
+   *  wagamama the pink crowd," per Josh), instead of the usual
+   *  getCardHoverImage pick. */
+  hoverImage?: ProjectImage;
   sizes?: string;
 }) {
   return (
@@ -329,12 +341,16 @@ function MasonryCard({
       // cardImage lets a project override its lead image (la-pride);
       // hoverImage crossfades to another image from the same
       // project wherever one's available (getCardHoverImage).
-      image={project.cardImage}
+      image={image ?? project.cardImage}
       ratio={ratio}
       caption="hover"
       motion="shrink"
-      parallax
-      hoverImage={getCardHoverImage(project)}
+      // No scroll parallax on grid cards — the per-card drift moved
+      // neighbouring edges by different amounts, so the fixed 32px
+      // gutters read as uneven while scrolling ("it's the scrolling
+      // movement you have set up," per Josh). Hover shrink and the
+      // one-time reveal stay.
+      hoverImage={hoverImage ?? getCardHoverImage(project)}
       sizes={sizes}
       priority={index < 3}
     />
@@ -404,7 +420,7 @@ export function WorkGallery({
         {filters.map((option) => {
           const active = filter === option;
 
-          if (option === "Pride") {
+          if (option === "LGBTQ+") {
             return (
               <PrideFilterButton
                 key={option}
@@ -446,8 +462,23 @@ export function WorkGallery({
           disappears. */}
       <div className="mt-12">
         <MasonryGrid
+          // Filtered views repack densely — they're not the curated ALL
+          // order, so levelling the columns wins ("when you click a
+          // category, can the rules of the grid change?" per Josh).
+          dense={filter !== "All"}
           items={visible.map((project, index) => {
-            const cardRatio = effectiveCardRatio(project, index, ratioCycle);
+            // Filtered views can lead with a category-specific cover; when
+            // one applies, hover swaps back to the original lead instead
+            // of the usual second-image pick, and the override's own ratio
+            // becomes the card frame — a 16/9 spread override renders as a
+            // full two-column spread rather than centre-cropped into the
+            // project's usual frame (Weapons of Reason's double page, which
+            // lost half its headline to the 1/1 crop). See
+            // cardImageByCategory.
+            const categoryImage =
+              filter !== "All" ? project.cardImageByCategory?.[filter] : undefined;
+            const cardRatio =
+              categoryImage?.ratio ?? effectiveCardRatio(project, index, ratioCycle);
             const ratio = ratioToNumber(cardRatio);
             const span = ratio >= LANDSCAPE_SPAN_RATIO ? 2 : 1;
             return {
@@ -461,6 +492,10 @@ export function WorkGallery({
                   project={project}
                   index={index}
                   ratio={cardRatio}
+                  image={categoryImage ?? project.cardImage}
+                  hoverImage={
+                    categoryImage ? (project.cardImage ?? project.hero) : undefined
+                  }
                   sizes={
                     span === 2
                       ? "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 66vw"

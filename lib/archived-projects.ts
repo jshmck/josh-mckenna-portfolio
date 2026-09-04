@@ -18,7 +18,7 @@ export const archivedProjects: Project[] = [
     year: 2019,
     discipline: "Illustration",
     deliverables: "Brand Mark",
-    categories: ["Pride", "Character", "Logo"],
+    categories: ["LGBTQ+"],
     summary: "Four couples in a wreath, holding the wordmark together.",
     heroCaption: "A brand mark for the London LGBTQ+ Community Centre, 2019.",
     brief: [
@@ -28,10 +28,6 @@ export const archivedProjects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "London LGBTQ+ Community Centre" },
     ],
-    // The card falls back to this purple hero now that the white colourway
-    // (which used to lead the card specifically to sidestep this) is gone —
-    // same nav-purple collision as Atlanta Magazine's card, same fix.
-    navContrastLight: true,
     cardRatio: "1/1",
     // A small brand mark, not a full illustration — same "runs small"
     // treatment as Sumo and Downward Trend, rather than the usual
