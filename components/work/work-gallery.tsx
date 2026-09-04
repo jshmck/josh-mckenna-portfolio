@@ -393,6 +393,7 @@ export function WorkGallery({
   // Josh. Focus opens it (covers click and keyboard tab alike); blur
   // closes it again only when there's nothing typed.
   const [searchOpen, setSearchOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // The nav's Work drop-down carries its own search input on /work (see
   // nav.tsx) — it lives in a different tree, so it feeds this state via
@@ -451,17 +452,23 @@ export function WorkGallery({
   }, []);
 
   const visible = useMemo(() => {
-    const byCategory =
-      filter === "All"
-        ? projects
-        : projects.filter((project) => project.categories.includes(filter));
+    // A live query searches EVERYTHING, ignoring whichever category pill
+    // happens to be active — "the search function should search all
+    // categories not just the pill thats selected," per Josh (it used to
+    // AND the two, so searching from a filtered view silently missed
+    // most of the portfolio). The category filter takes back over the
+    // moment the query clears.
     const q = query.trim().toLowerCase();
-    if (!q) return byCategory;
-    return byCategory.filter((project) =>
-      [project.title, project.cardTitle, project.cardLabel, project.client, ...project.categories]
-        .filter(Boolean)
-        .some((field) => String(field).toLowerCase().includes(q)),
-    );
+    if (q) {
+      return projects.filter((project) =>
+        [project.title, project.cardTitle, project.cardLabel, project.client, ...project.categories]
+          .filter(Boolean)
+          .some((field) => String(field).toLowerCase().includes(q)),
+      );
+    }
+    return filter === "All"
+      ? projects
+      : projects.filter((project) => project.categories.includes(filter));
   }, [filter, query, projects]);
 
   const filters: Filter[] = ["All", ...categories];
@@ -569,6 +576,7 @@ export function WorkGallery({
             <path d="m10.5 10.5 3.5 3.5" />
           </svg>
           <input
+            ref={searchInputRef}
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -608,6 +616,13 @@ export function WorkGallery({
             onClick={() => {
               setQuery("");
               setSearchOpen(false);
+              // The onMouseDown preventDefault above keeps the input
+              // focused through this click (so blur can't unmount the
+              // button mid-press) — which left its caret blinking inside
+              // the closed pill ("cursor stays inside the pill when
+              // closed," per Josh). Closing is the one moment focus
+              // should actually go.
+              searchInputRef.current?.blur();
             }}
             aria-label="Clear search"
             aria-hidden={!searchOpen}
