@@ -727,7 +727,9 @@ export const projects: Project[] = [
     slug: "hikes-n-bikes",
     title: "Hikes n Bikes",
     client: "Hikes and Bikes LA",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    // TRIAL: "Wall Mural > Hikes and Bikes LA," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Wall Mural",
     cardLabel: "Hikes and Bikes LA",
     year: 2020,
     discipline: "Mural",
@@ -1164,7 +1166,9 @@ export const projects: Project[] = [
     slug: "wsj-airpods-rich",
     title: "Wall Street Journal",
     client: "The Wall Street Journal",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    // TRIAL: "Editorial > The Wall Street Journal," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Editorial",
     cardLabel: "The Wall Street Journal",
     year: 2019,
     yearLabel: "February 2019",
@@ -2188,7 +2192,9 @@ export const projects: Project[] = [
     slug: "rooted-journal-editorial",
     title: "Rooted Journal",
     client: "The Rooted Journal",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    // TRIAL: "Living Regeneratively > The Rooted Journal," per Josh —
+    // see Project.cardTitle.
+    cardTitle: "Living Regeneratively",
     cardLabel: "The Rooted Journal",
     year: 2025,
     pinnedRank: 5,
@@ -2597,7 +2603,9 @@ export const projects: Project[] = [
     slug: "ual-welcome-booklets",
     title: "UAL Booklets",
     client: "University of the Arts London",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    // TRIAL: "Welcome Booklets > University of the Arts London," per
+    // Josh — see Project.cardTitle.
+    cardTitle: "Welcome Booklets",
     cardLabel: "University of the Arts London",
     year: 2017,
     yearLabel: "2017/18/19/20",
@@ -2693,7 +2701,9 @@ export const projects: Project[] = [
     slug: "voxi-pride",
     title: "Voxi Pride",
     client: "VOXI by Vodafone",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    // TRIAL: "Pride Campaign > VOXI by Vodafone," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Pride Campaign",
     cardLabel: "VOXI by Vodafone",
     year: 2019,
     discipline: "Pride Campaign",
