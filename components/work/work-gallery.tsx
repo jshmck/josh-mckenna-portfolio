@@ -727,10 +727,21 @@ export function WorkGallery({
             // Tailwind v4's standalone `scale` property (same trap as
             // the glass's translate above), so without it the hover
             // grow and the close shrink both snapped instead of
-            // springing.
+            // springing. A keyframe animation was tried here for a
+            // multi-stage wobble like the pill's jelly, but a
+            // forwards-filled animation doesn't hand off to a
+            // transition on removal — un-hover snapped straight back to
+            // 1 instead of springing down. A plain transition with a
+            // non-uniform target reverses cleanly in both directions and
+            // still overshoots, since --ease-bounce's curve pushes past
+            // its endpoint before settling — the same curve that already
+            // reads as gloopy on the pills' own hover. hover:duration-500
+            // slows just the grow so the overshoot has time to read;
+            // un-hover falls back to the base duration-300, a touch
+            // snappier on the way down.
             className={`absolute right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-[transform,opacity,scale] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
               searchOpen
-                ? "animate-[search-x-roll_550ms_var(--ease-bounce)_both] hover:scale-125"
+                ? "animate-[search-x-roll_550ms_var(--ease-bounce)_both] hover:duration-500 hover:[scale:1.34_1.16]"
                 : "pointer-events-none scale-0 opacity-0"
             }`}
           >
