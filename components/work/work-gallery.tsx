@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { MasonryGrid } from "@/components/work/masonry-grid";
 import { ProjectCard } from "@/components/work/project-card";
@@ -383,15 +383,70 @@ export function WorkGallery({
     window.dispatchEvent(new Event(FILTER_CHANGE_EVENT));
   }
 
-  const visible = useMemo(
-    () =>
+  // Free-text search, local state only (unlike the category filter it
+  // doesn't survive into the URL — a half-typed query isn't a view worth
+  // bookmarking). ANDs with the category filter rather than replacing it.
+  const [query, setQuery] = useState("");
+
+  // One-shot entrance for the filter row — "when you click on Work in
+  // the nav bar, the All pill drops down, and all the categories kind of
+  // gloopy woosh out to the right... like a drop down menu but more
+  // fun," per Josh. Keyed off first view (IntersectionObserver, same
+  // once-only idea as Reveal) rather than literally the nav click, so it
+  // also plays on a direct /work load and when Home's embedded gallery
+  // scrolls in — every way of arriving gets the same entrance. The
+  // stagger itself is per-pill animationDelay set inline below;
+  // fill-mode backwards keeps each pill hidden until its own delay is
+  // up. Reduced motion: the keyframes are pure CSS, so the sitewide
+  // rule neutralises them and the row just appears once revealed.
+  const pillRowRef = useRef<HTMLDivElement>(null);
+  const [pillsRevealed, setPillsRevealed] = useState(false);
+  useEffect(() => {
+    const row = pillRowRef.current;
+    if (!row) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPillsRevealed(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    observer.observe(row);
+    return () => observer.disconnect();
+  }, []);
+
+  const visible = useMemo(() => {
+    const byCategory =
       filter === "All"
         ? projects
-        : projects.filter((project) => project.categories.includes(filter)),
-    [filter, projects],
-  );
+        : projects.filter((project) => project.categories.includes(filter));
+    const q = query.trim().toLowerCase();
+    if (!q) return byCategory;
+    return byCategory.filter((project) =>
+      [project.title, project.cardTitle, project.cardLabel, project.client, ...project.categories]
+        .filter(Boolean)
+        .some((field) => String(field).toLowerCase().includes(q)),
+    );
+  }, [filter, query, projects]);
 
   const filters: Filter[] = ["All", ...categories];
+
+  /** Entrance wrapper per pill: index 0 (All) drops down, everything
+   *  after wooshes out rightward on the same gloopy spring as the pills'
+   *  own hover, ~55ms apart. Hidden (opacity-0) until the row's first
+   *  view so nothing flashes at rest before the entrance plays. */
+  const pillEntrance = (index: number) =>
+    pillsRevealed
+      ? {
+          className:
+            index === 0
+              ? "animate-[pill-drop_500ms_var(--ease-bounce)_both]"
+              : "animate-[pill-woosh_550ms_var(--ease-bounce)_both]",
+          style: { animationDelay: `${index * 55}ms` },
+        }
+      : { className: "opacity-0", style: undefined };
 
   return (
     <>
@@ -413,40 +468,60 @@ export function WorkGallery({
       )}
 
       <div
-        className="flex flex-wrap justify-center gap-2"
+        ref={pillRowRef}
+        className="flex flex-wrap items-center justify-center gap-2"
         role="group"
         aria-label="Filter work by discipline"
       >
-        {filters.map((option) => {
+        {filters.map((option, index) => {
           const active = filter === option;
-
-          if (option === "LGBTQ+") {
-            return (
-              <PrideFilterButton
-                key={option}
-                active={active}
-                onClick={() => setFilter(option)}
-              />
-            );
-          }
+          const entrance = pillEntrance(index);
 
           return (
-            <button
-              key={option}
-              type="button"
-              onClick={() => setFilter(option)}
-              aria-pressed={active}
-              className={`font-grotesque rounded-full px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-trim-caps transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
-                active
-                  ? "bg-brand text-canvas"
-                  : "border border-ink text-ink-muted hover:border-brand hover:text-brand"
-              }`}
-            >
-              {option}
-            </button>
+            <span key={option} className={entrance.className} style={entrance.style}>
+              {option === "LGBTQ+" ? (
+                <PrideFilterButton active={active} onClick={() => setFilter(option)} />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setFilter(option)}
+                  aria-pressed={active}
+                  className={`font-grotesque rounded-full px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-trim-caps transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 ${
+                    active
+                      ? "bg-brand text-canvas"
+                      : "border border-ink text-ink-muted hover:border-brand hover:text-brand"
+                  }`}
+                >
+                  {option}
+                </button>
+              )}
+            </span>
           );
         })}
+        {/* Search rides the same woosh, last in the stagger — "at the
+            very end i want there to be a search bar," per Josh. Styled
+            as one more pill; grows a little on focus, same gloopy
+            spring as the pills' own hover. */}
+        <span
+          className={pillEntrance(filters.length).className}
+          style={pillEntrance(filters.length).style}
+        >
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search"
+            aria-label="Search work"
+            className="font-grotesque w-24 rounded-full border border-ink bg-transparent px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none placeholder:text-ink-muted hover:border-brand focus:w-36 focus:border-brand"
+          />
+        </span>
       </div>
+
+      {visible.length === 0 && (
+        <p className="type-label mt-12 text-center text-ink-muted">
+          Nothing matches — try another word.
+        </p>
+      )}
 
       {/* True masonry via MasonryGrid (bin-packed from each card's known
           ratio, see that component's doc comment) — replaced a CSS

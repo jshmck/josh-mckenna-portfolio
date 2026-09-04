@@ -334,6 +334,32 @@
    image, a directional slide for arrow/keyboard navigation — so paging
    through a gallery has some spring to it instead of hard-cutting between
    frames. */
+/* The Work filter row's entrance — "All" drops down from above, then the
+   other pills gloopy-woosh out to the right of it in a stagger (delays set
+   inline per pill in WorkGallery). Pure CSS, so the sitewide
+   prefers-reduced-motion rule neutralises both on its own. */
+@keyframes pill-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pill-woosh {
+  from {
+    opacity: 0;
+    transform: translateX(-36px) scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
 @keyframes lightbox-backdrop {
   from {
     opacity: 0;
