@@ -394,11 +394,14 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Levi's" },
     ],
-    // The camera shots are true 2/3 (6000x4000 Canon frames and Josh's own
-    // portrait crops of them) — 2/3 is already in ImageRatio, so nothing
-    // here snaps or crops. The ingester flagged them against its older
-    // five-ratio list; ignored deliberately.
-    cardRatio: "2/3",
+    // The camera shots themselves are true 2/3 (6000x4000 Canon frames and
+    // Josh's own portrait crops of them) — that ratio is used as-is on the
+    // project page. But left as cardRatio it ran the grid card far taller
+    // than the 4/5–1/1 range the rest of the grid cycles through, reading
+    // like a 9/16 sliver next to its neighbours. Cropped to 4/5 instead
+    // ("stick to the rules of the grid, either 4/5 or 1/1 — both would
+    // work with the pins here").
+    cardRatio: "4/5",
     // Josh picked the pins over the invite poster to lead — the poster
     // rides alongside as the pair instead.
     hero: {
