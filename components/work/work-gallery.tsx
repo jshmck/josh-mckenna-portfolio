@@ -681,14 +681,12 @@ export function WorkGallery({
             // what "pushes the screen to the right" on mobile (the page
             // wasn't overflowing, the viewport was zooming). Desktop
             // keeps the row's 11px.
-            // group-has button:hover — hovering the clear-× makes the
-            // bar itself do one jelly squash-and-stretch
-            // (search-pill-jelly, globals.css): "the bubble makes the
-            // search bar wobble a bit," per Josh. On the input only, not
-            // the whole span — wobbling the × would shift it under the
-            // cursor, and a hover that un-hovers itself restarts the
-            // animation in a flicker loop.
-            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:animate-[search-pill-jelly_600ms_var(--ease-bounce)] max-md:py-[7px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
+            // group-has button:hover — hovering the clear-× grows the
+            // bar itself, same plain-transition grow as the × (below),
+            // so the two read as one gesture instead of two different
+            // motions. On the input only, not the whole span — growing
+            // the × too would shift it out from under the cursor.
+            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:scale-[1.03] max-md:py-[7px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
                 ? "w-44 border-brand pr-9 pl-8"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
