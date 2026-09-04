@@ -394,6 +394,20 @@ export function WorkGallery({
   // closes it again only when there's nothing typed.
   const [searchOpen, setSearchOpen] = useState(false);
 
+  // The nav's Work drop-down carries its own search input on /work (see
+  // nav.tsx) — it lives in a different tree, so it feeds this state via
+  // a window event. A non-empty value also opens the in-page pill so
+  // the active query is always visible somewhere once the menu closes.
+  useEffect(() => {
+    const onSearch = (event: Event) => {
+      const value = String((event as CustomEvent).detail ?? "");
+      setQuery(value);
+      setSearchOpen(!!value.trim());
+    };
+    window.addEventListener("worklist:search", onSearch);
+    return () => window.removeEventListener("worklist:search", onSearch);
+  }, []);
+
   // One-shot entrance for the filter row — "when you click on Work in
   // the nav bar, the All pill drops down, and all the categories kind of
   // gloopy woosh out to the right... like a drop down menu but more
@@ -535,8 +549,8 @@ export function WorkGallery({
             // sure the mag glass is blue on hover like the rest of the
             // pills," per Josh (the pills' hover recolours text and
             // border together, so this matches).
-            className={`pointer-events-none absolute h-3 w-3 text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/search:text-brand ${
-              searchOpen ? "left-3.5 translate-x-0" : "left-1/2 -translate-x-1/2"
+            className={`pointer-events-none absolute h-3 w-3 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/search:text-brand ${
+              searchOpen ? "left-3.5 translate-x-0 text-brand" : "left-1/2 -translate-x-1/2 text-ink"
             }`}
             fill="none"
             stroke="currentColor"
@@ -602,7 +616,17 @@ export function WorkGallery({
           row sits under what it used to sit over). Same tilt-toward-
           cursor pair as before, /work only (showIllustrations). */}
       {showIllustrations && (
-        <div className="mt-10 flex flex-nowrap items-end justify-center gap-4 sm:gap-6">
+        // Empty search result: the pair wobbles ("i love the 'nothing
+        // matches' screen with the ipad there, can you have the ipad
+        // illustration wobble or gloopy at this moment," per Josh) —
+        // keyed on the query so every further keystroke that still
+        // matches nothing wobbles it again, not just the first.
+        <div
+          key={visible.length === 0 ? query : "rest"}
+          className={`mt-10 flex flex-nowrap items-end justify-center gap-4 sm:gap-6 ${
+            visible.length === 0 ? "animate-[empty-wobble_800ms_ease-in-out]" : ""
+          }`}
+        >
           {ILLUSTRATIONS.map(({ src, aspect, height }) => (
             <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
           ))}

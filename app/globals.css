@@ -349,6 +349,27 @@
   }
 }
 
+/* The /work illustration pair's empty-state wobble — replays per
+   keystroke while the search matches nothing. Pure CSS, so reduced
+   motion neutralises it. */
+@keyframes empty-wobble {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-6deg) scale(1.05);
+  }
+  55% {
+    transform: rotate(5deg) scale(0.97);
+  }
+  80% {
+    transform: rotate(-2deg) scale(1.02);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
 /* The search pill's clear-× rolling in from the left as the pill expands
    — translate + spin together so it reads as rolling along the pill's
    inside edge to its resting spot at the right end. */

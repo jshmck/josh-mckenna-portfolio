@@ -561,6 +561,43 @@ export function Nav() {
                       </Link>
                     </span>
                   ))}
+                  {/* Search rides the menu's stagger too, /work only —
+                      "include the new search bar in the drop down work
+                      hover menu when anywhere on the work screen," per
+                      Josh. It feeds the gallery's own query state via a
+                      window event (different tree), which also pops the
+                      in-page pill open so the query stays visible after
+                      this menu closes. Uncontrolled here — each open
+                      starts a fresh input, the gallery keeps the state. */}
+                  {pathname === "/work" && (
+                    <span
+                      className="group/navsearch relative inline-flex animate-[pill-woosh_550ms_var(--ease-bounce)_both] items-center"
+                      style={{ animationDelay: `${(getActiveCategories().length + 1) * 55}ms` }}
+                    >
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 16 16"
+                        className="pointer-events-none absolute left-3.5 h-3 w-3 text-ink transition-colors duration-300 group-focus-within/navsearch:text-brand group-hover/navsearch:text-brand"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      >
+                        <circle cx="6.5" cy="6.5" r="4.75" />
+                        <path d="m10.5 10.5 3.5 3.5" />
+                      </svg>
+                      <input
+                        type="search"
+                        aria-label="Search work"
+                        onChange={(event) =>
+                          window.dispatchEvent(
+                            new CustomEvent("worklist:search", { detail: event.target.value }),
+                          )
+                        }
+                        className="font-grotesque w-40 rounded-full border border-ink bg-canvas py-[9.5px] pr-4 pl-8 text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none hover:border-brand focus:border-brand [&::-webkit-search-cancel-button]:hidden"
+                      />
+                    </span>
+                  )}
                 </div>
               </div>
             )}
