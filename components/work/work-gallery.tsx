@@ -682,11 +682,18 @@ export function WorkGallery({
             // wasn't overflowing, the viewport was zooming). Desktop
             // keeps the row's 11px.
             // group-has button:hover — hovering the clear-× grows the
-            // bar itself, same plain-transition grow as the × (below),
-            // so the two read as one gesture instead of two different
-            // motions. On the input only, not the whole span — growing
-            // the × too would shift it out from under the cursor.
-            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:scale-[1.03] max-md:py-[7px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
+            // bar itself, same gesture as the × (below), so the two
+            // read as one move. Width, not `scale` — the × is a solid
+            // fill with no stroke to distort, but this element has a
+            // 1px border, and a transform-scale rasterises the box at
+            // its base size before enlarging the bitmap, which softens
+            // a hairline border into a visibly thinner, blurrier line
+            // ("the outline stroke goes thinner," per Josh). A real
+            // width change keeps the border literally 1px throughout.
+            // Only width, not py — the pill's height has to keep
+            // matching its neighbours' (see the py/text-metrics note
+            // above), and growing padding on hover would break that.
+            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:w-[184px] max-md:py-[7px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
                 ? "w-44 border-brand pr-9 pl-8"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
