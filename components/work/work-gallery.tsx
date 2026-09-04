@@ -399,22 +399,35 @@ export function WorkGallery({
   // fill-mode backwards keeps each pill hidden until its own delay is
   // up. Reduced motion: the keyframes are pure CSS, so the sitewide
   // rule neutralises them and the row just appears once revealed.
+  // A counter rather than a boolean so the entrance can REPLAY: hovering
+  // Work in the nav fires "worklist:entrance" (see nav.tsx), each bump
+  // remounts the row via key={entranceRun} below, and a fresh mount is
+  // what makes the CSS animations run again — toggling a class on the
+  // same elements wouldn't. 0 = not yet revealed (row hidden).
   const pillRowRef = useRef<HTMLDivElement>(null);
-  const [pillsRevealed, setPillsRevealed] = useState(false);
+  const [entranceRun, setEntranceRun] = useState(0);
+  const pillsRevealed = entranceRun > 0;
   useEffect(() => {
+    const replay = () => setEntranceRun((run) => run + 1);
+    window.addEventListener("worklist:entrance", replay);
     const row = pillRowRef.current;
-    if (!row) return;
+    if (!row) {
+      return () => window.removeEventListener("worklist:entrance", replay);
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setPillsRevealed(true);
+          setEntranceRun((run) => Math.max(run, 1));
           observer.disconnect();
         }
       },
       { rootMargin: "0px 0px -10% 0px" },
     );
     observer.observe(row);
-    return () => observer.disconnect();
+    return () => {
+      window.removeEventListener("worklist:entrance", replay);
+      observer.disconnect();
+    };
   }, []);
 
   const visible = useMemo(() => {
@@ -460,6 +473,9 @@ export function WorkGallery({
           into WorkGallery made it start showing up on Home's embedded
           gallery too, which it never did before. */}
       <div
+        // key: a fresh mount per entranceRun bump is what replays the
+        // entrance animations — see entranceRun's own comment.
+        key={entranceRun}
         ref={pillRowRef}
         className="flex flex-wrap items-center justify-center gap-2"
         role="group"
@@ -495,17 +511,49 @@ export function WorkGallery({
             as one more pill; grows a little on focus, same gloopy
             spring as the pills' own hover. */}
         <span
-          className={pillEntrance(filters.length).className}
+          className={`relative inline-flex items-center ${pillEntrance(filters.length).className}`}
           style={pillEntrance(filters.length).style}
         >
+          {/* Inline SVG glyphs, stroke currentColor — the site has no
+              icon set beyond the masked-PNG socials, and these two are
+              simple enough to not warrant new assets ("include a mag
+              glass and an X in a circle in the search pill," per Josh,
+              off an It's Nice That reference). */}
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 16 16"
+            className="pointer-events-none absolute left-3.5 h-3 w-3 text-ink"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          >
+            <circle cx="6.5" cy="6.5" r="4.75" />
+            <path d="m10.5 10.5 3.5 3.5" />
+          </svg>
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search"
             aria-label="Search work"
-            className="font-grotesque w-24 rounded-full border border-ink bg-transparent px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none placeholder:text-ink-muted hover:border-brand focus:w-36 focus:border-brand"
+            // [&::-webkit-search-cancel-button]:hidden — the circled ×
+            // below is the one clear affordance; WebKit's own native
+            // cancel button doubling it up reads as two Xs.
+            className="font-grotesque w-32 rounded-full border border-ink bg-transparent py-[9.5px] pr-9 pl-8 text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none placeholder:text-ink-muted hover:border-brand focus:w-44 focus:border-brand [&::-webkit-search-cancel-button]:hidden"
           />
+          {/* × in a brand-blue circle, clears the query — only there once
+              there's something to clear. */}
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              aria-label="Clear search"
+              className="absolute right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110"
+            >
+              ×
+            </button>
+          )}
         </span>
       </div>
 

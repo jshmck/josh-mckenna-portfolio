@@ -596,6 +596,17 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
+                    // Hovering Work replays the filter row's pill
+                    // entrance ("have the pills drop down when you hover
+                    // over work in the nav pill," per Josh) — dispatched
+                    // as a window event since the gallery lives in a
+                    // different tree; pages without a mounted WorkGallery
+                    // simply have no listener, so this is a no-op there.
+                    onMouseEnter={
+                      link.href === "/work"
+                        ? () => window.dispatchEvent(new Event("worklist:entrance"))
+                        : undefined
+                    }
                     className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
