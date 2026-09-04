@@ -2908,8 +2908,9 @@ export const projects: Project[] = [
     slug: "la-pride",
     title: "L.A. Pride",
     client: "City of Los Angeles",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
-    cardLabel: "City of Los Angeles",
+    // TRIAL: "Pride 2024 > LA Pride," per Josh — see Project.cardTitle.
+    cardTitle: "Pride 2024",
+    cardLabel: "LA Pride",
     year: 2024,
     pinnedRank: 3,
     discipline: "Festival Identity",
