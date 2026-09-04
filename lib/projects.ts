@@ -135,6 +135,14 @@ export type Project = {
   slug: string;
   title: string;
   client: string;
+  /**
+   * Second name shown under Client in the project page's meta grid, for a
+   * project with two credited parties (Comic Relief x Sink The Pink) —
+   * Sink The Pink was already a "Partner" credit in the sticky sidebar,
+   * Josh wants it up top too. `client` itself is untouched everywhere
+   * else (SEO description, credits list, cardLabel fallback).
+   */
+  clientPartner?: string;
   /** Stays numeric even for an ongoing project — getAllProjects() sorts on
    *  this. Use `yearLabel` to override what actually prints. */
   year: number;
@@ -689,6 +697,7 @@ export const projects: Project[] = [
     slug: "comic-relief-sink-the-pink",
     title: "Comic Relief x Sink The Pink",
     client: "Comic Relief",
+    clientPartner: "Sink The Pink",
     // TRIAL: "Pride Totes > Comic Relief," per Josh — see Project.cardTitle.
     cardTitle: "Pride Totes",
     cardLabel: "Comic Relief",

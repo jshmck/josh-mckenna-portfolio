@@ -75,13 +75,15 @@ export function ProjectCard({
   // through un-reviewed.
   const displayTitle = project.cardTitle ?? project.title;
   const cardLabelText = project.cardLabel ?? (project.cardTitle ? project.client : undefined);
-  // The always-visible mobile strip below shows one line, not the desktop
-  // hover's title+brand pair — brand first when there is one ("Work gallery
-  // should just be brand, if not brand then title," per Josh), falling
-  // back to the title otherwise. Personal-client pieces never show a
-  // brand line, matching the desktop hover's own guard.
+  // The always-visible mobile strip below shows one line — brand then
+  // title together when there's a brand to show ("on mobile have Brand
+  // and then Project title on one line," per Josh), falling back to the
+  // title alone otherwise. Personal-client pieces never show a brand,
+  // matching the desktop hover's own guard.
   const mobileCardText =
-    cardLabelText && project.client !== "Personal" ? cardLabelText : displayTitle;
+    cardLabelText && project.client !== "Personal"
+      ? `${cardLabelText} · ${displayTitle}`
+      : displayTitle;
   // Trial (mini-animation only, see Project.cardVideo): the card plays the
   // hero clip instead of sitting on its still frame — cropped to the same
   // ratio the still would've used, poster is that still so there's no flash

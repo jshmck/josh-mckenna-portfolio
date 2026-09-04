@@ -135,8 +135,16 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
   // mid-swipe, exactly when they were supposed to be doing their job.)
   const { previous, next } = getProjectNeighbours(project.slug);
 
-  const meta = [
-    { label: "Client", value: project.client },
+  // clientPartner (Comic Relief x Sink The Pink so far) prints as a second
+  // line under Client, not appended inline — value stays an array only
+  // when there's a second name to show.
+  const meta: { label: string; value: string | string[] }[] = [
+    {
+      label: "Client",
+      value: project.clientPartner
+        ? [project.client, project.clientPartner]
+        : project.client,
+    },
     { label: "Year", value: project.yearLabel ?? String(project.year) },
     { label: "Discipline", value: project.discipline },
     { label: "Deliverables", value: project.deliverables },
@@ -383,7 +391,9 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
                 <div key={item.label}>
                   <dt className="type-label text-ink/60">{item.label}</dt>
                   <dd className="mt-1.5 font-body text-[15px] font-medium text-ink">
-                    {item.value}
+                    {Array.isArray(item.value)
+                      ? item.value.map((line) => <div key={line}>{line}</div>)
+                      : item.value}
                   </dd>
                 </div>
               ))}
