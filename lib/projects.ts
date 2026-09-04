@@ -186,8 +186,12 @@ export type Project = {
      *  out of the hero block entirely, rendering it after the write-up
      *  instead — Jimny only for now, where the three renders lead the page
      *  (via hero/heroPair/heroThird) and the turnaround clip reads as a
-     *  closer rather than the opener. */
-    position?: "top" | "bottom" | "pair" | "outro";
+     *  closer rather than the opener. "card" keeps it off the project page
+     *  entirely — it exists only so `cardVideo` can play it on the /work
+     *  grid card (Instagram Sticker, whose page already runs the same
+     *  animation mid-gallery via `galleryGif`); ProjectContent treats a
+     *  "card" video as absent. */
+    position?: "top" | "bottom" | "pair" | "outro" | "card";
     /** Defaults to 16/9. Set when the clip isn't landscape. */
     ratio?: ImageRatio;
   };
@@ -249,6 +253,17 @@ export type Project = {
    * when absent.
    */
   cardImage?: ProjectImage;
+  /**
+   * Per-pill override of the card's lead image — while the given category
+   * filter is active on /work, the card leads with a more on-topic image
+   * than its usual `cardImage`/`hero` ("once you've selected the category,
+   * the cover images could change to the specific more relevant image,"
+   * per Josh — Wagamama and L.A. Pride's Murals covers so far). The card's
+   * frame keeps its normal `cardRatio`, so pick images that survive that
+   * crop. Ignored on the unfiltered ALL grid and everywhere else a card
+   * renders.
+   */
+  cardImageByCategory?: Partial<Record<ProjectCategory, ProjectImage>>;
   /**
    * Overrides the /work and home-embedded gallery card's frame ratio —
    * WorkGallery otherwise cycles a fixed sequence per card position for the
@@ -584,16 +599,45 @@ export const projects: Project[] = [
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // True 16/9 (3840x2160) — the ingester's 16/10 snap would have cropped
     // it. Landscape card spans two grid columns like the other 16/9s.
+    // The hero swapped from the original transparent cut-out to Josh's
+    // re-export on a solid red field ("replace the honda n with the
+    // coloured background one") — new filename on purpose, so Next's
+    // image cache can't serve the old render.
     cardRatio: "16/9",
     hero: {
       ratio: "16/9",
       alt: "Honda Super N",
-      src: "/work/honda-super-n/01-super-n.webp",
-      // Transparent cut-out — contain on bg-canvas, the usual real-alpha
-      // fix (see Plate).
-      fit: "contain",
+      src: "/work/honda-super-n/01-super-n-red.webp",
     },
-    gallery: [],
+    // The stock N-One the build is based on, on the same red field —
+    // four angles, paired two-up ("add them to the projects page," per
+    // Josh).
+    gallerySpans: [
+      { startIndex: 0, count: 2 },
+      { startIndex: 2, count: 2 },
+    ],
+    gallery: [
+      {
+        ratio: "16/9",
+        alt: "The stock N-One",
+        src: "/work/honda-super-n/02-n-one-side.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "Rear three-quarter",
+        src: "/work/honda-super-n/05-n-one-rear-quarter.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "Head on",
+        src: "/work/honda-super-n/03-n-one-front.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "From behind",
+        src: "/work/honda-super-n/04-n-one-rear.webp",
+      },
+    ],
   },
   {
     slug: "comic-relief-sink-the-pink",
@@ -1214,6 +1258,16 @@ export const projects: Project[] = [
     // Brighton artwork (Sep 2026) is natively 3413x1920, retiring the
     // 1063/640 crop (and its ImageRatio member) the hero used to carry.
     cardRatio: "16/9",
+    // On the Murals pill the card leads with the installed glass instead
+    // of the flat artwork — "the image is of the large window vinyl,"
+    // per Josh (Old Street, his pick over Marble Arch/Brighton).
+    cardImageByCategory: {
+      Murals: {
+        ratio: "3/2",
+        alt: "The window at Wagamama's Old Street",
+        src: "/work/wagamama-pride/03-old-street.webp",
+      },
+    },
     hero: {
       ratio: "16/9",
       alt: "The full Wagamama Brighton Pride artwork",
@@ -1589,6 +1643,20 @@ export const projects: Project[] = [
     // around it. The lavender fill crops top/bottom safely; the figure
     // stays centred (the taller frame crops the square image's sides).
     cardRatio: "4/5",
+    // The card plays the sticker's turnaround clip instead of the still
+    // ("replace the grid Instagram sticker cover image with the new
+    // animation," per Josh — frame stays 4/5). position: "card" keeps it
+    // off the project page, which already runs the same animation
+    // mid-gallery via galleryGif below; ProjectCard poster-frames the
+    // clip with cardImage itself, so reduced-motion viewers get the same
+    // approved lavender still as before.
+    cardVideo: true,
+    heroVideo: {
+      src: "/work/instagram-sticker/11-sticker-animation.mp4",
+      alt: "The sticker's animation",
+      position: "card",
+      ratio: "9/16",
+    },
     summary:
       "I created an iconic Pride sticker for Instagram Stories: a sassy, muscular bloke in red high heels. Meant to last a month, it stayed live for five years, used by millions and turned into a symbol of queer culture and self-expression.",
     heroCaption: "The original character design, created for Instagram's 2017 Pride sticker set.",
@@ -1630,8 +1698,12 @@ export const projects: Project[] = [
     // after the two-up pair (afterIndex: 2 = after gallery[0] and [1]),
     // keeping the whole Mardi Gras beat — float photo, float detail,
     // footage — together before Sticker Set breaks to a new subject.
+    // Same clip as the card above — Josh's new pink-background render
+    // (H.264 transcode of his HEVC export, which Chromium/Firefox can't
+    // decode), replacing the old white 10- file. The 1/1 frame is kept,
+    // per Josh; the portrait clip centre-crops into it.
     galleryGif: {
-      src: "/work/instagram-sticker/10-sticker-animation.mp4",
+      src: "/work/instagram-sticker/11-sticker-animation.mp4",
       alt: "The move behind the sticker.",
       ratio: "1/1",
       afterIndex: 0,
@@ -2229,7 +2301,8 @@ export const projects: Project[] = [
     pinnedRank: 12,
     discipline: "Automotive Livery",
     deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
-    categories: ["Cars", "Icons"],
+    // "remove 505 from icons," per Josh.
+    categories: ["Cars"],
     summary: "Livery and posters for a wheel launch, field-tested on camera in Josh's own Land Cruiser.",
     heroCaption:
       "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch, styled after vintage Dakar rally posters (and my actual Land Cruiser — yep that's me driving).",
@@ -2706,6 +2779,15 @@ export const projects: Project[] = [
       ratio: "4/5",
       alt: "The LA Pride 2024 lockup",
       src: "/work/la-pride/01-la-pride-4x5.webp",
+    },
+    // Murals pill leads with the flyposted wall instead of the lockup —
+    // same "more relevant image per category" ask as Wagamama's.
+    cardImageByCategory: {
+      Murals: {
+        ratio: "2/3",
+        alt: "Flyposted lineup sheet and site map",
+        src: "/work/la-pride/07-flyposted-lineup.webp",
+      },
     },
     cardHoverImage: {
       ratio: "2/3",
