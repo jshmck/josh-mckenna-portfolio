@@ -203,11 +203,41 @@ export function Nav() {
   // whole. Hover-only for now — touch already has the in-page filter
   // row, which keeps its own scroll-in entrance.
   const [workMenuOpen, setWorkMenuOpen] = useState(false);
-  // Any route change closes it — the nav outlives navigations, so an
-  // open menu would otherwise ride along onto the next page.
-  useEffect(() => {
+  // Closing used to be instant on mouseLeave, which punished any
+  // imprecise diagonal move from "Work" down into the pills — the
+  // classic drop-down safe-triangle problem ("the area to move to the
+  // pills is big enough that they dont disappear too quickly... I hate
+  // when you leave a drop down menu by mistake," per Josh). A short
+  // grace period instead of a real triangle-hitbox calculation: cheap,
+  // and covers the same accidental-exit case without tracking cursor
+  // trajectory. closeMenuNow bypasses the grace period for the cases
+  // that should shut it immediately — a category click or clicking
+  // Work itself — and always clears any pending timer first, so a
+  // stale grace-period close can't fire after those and swallow a menu
+  // the user only just reopened. A route change closes it a third way,
+  // via the render-time prevPathname reset below, alongside scroll
+  // state — that pattern only touches state, never a ref, so it can't
+  // also cancel a pending close timer, but a dangling one is harmless
+  // (see its comment there).
+  const workMenuCloseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelWorkMenuClose = () => {
+    if (workMenuCloseTimeout.current) {
+      clearTimeout(workMenuCloseTimeout.current);
+      workMenuCloseTimeout.current = null;
+    }
+  };
+  const closeMenuNow = () => {
+    cancelWorkMenuClose();
     setWorkMenuOpen(false);
-  }, [pathname]);
+  };
+  const scheduleWorkMenuClose = () => {
+    cancelWorkMenuClose();
+    workMenuCloseTimeout.current = setTimeout(() => {
+      workMenuCloseTimeout.current = null;
+      setWorkMenuOpen(false);
+    }, 300);
+  };
+  useEffect(() => cancelWorkMenuClose, []);
   // (The `overLightBg` blue-goes-white contrast swap lived here — the
   // whole navContrastLight mechanism was removed 2026-09-04, "lets remove
   // that rule and I will make a new rule tomorrow," per Josh.)
@@ -261,6 +291,15 @@ export function Nav() {
     setScrolled(false);
     setHasFrostedOnce(false);
     setAtBottom(false);
+    // Route change closes the Work menu the same render-time way — the
+    // nav outlives navigations, so an open menu would otherwise ride
+    // along onto the next page. Plain setWorkMenuOpen, not closeMenuNow:
+    // that also touches a ref, and ref writes during render are the
+    // other thing this pattern exists to avoid (see hasFrostedOnce's
+    // comment below). Any close already scheduled via the grace-period
+    // timeout is harmless left dangling — it only ever calls
+    // setWorkMenuOpen(false) too, a no-op once this has already run.
+    setWorkMenuOpen(false);
   }
 
   if (scrolled && !hasFrostedOnce) setHasFrostedOnce(true);
@@ -585,7 +624,12 @@ export function Nav() {
             // drop-down below and keeps it open while the cursor is
             // anywhere over pill or menu (the menu's own pt-3 bridges
             // the visual gap so crossing down never leaves this box).
-            onMouseLeave={() => setWorkMenuOpen(false)}
+            // scheduleWorkMenuClose/cancelWorkMenuClose (see state
+            // above) turn that into a grace-period close rather than an
+            // instant one, so a diagonal move that briefly clips outside
+            // this box doesn't kill the menu before the cursor lands.
+            onMouseEnter={cancelWorkMenuClose}
+            onMouseLeave={scheduleWorkMenuClose}
             className={`relative flex items-center gap-3 rounded-full border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${frostClass}`}
           >
             {workMenuOpen && (
@@ -611,7 +655,7 @@ export function Nav() {
                         // pills: picking any category (All included, whose
                         // URL may not even change) ends a live search.
                         onClick={() => {
-                          setWorkMenuOpen(false);
+                          closeMenuNow();
                           window.dispatchEvent(new CustomEvent("worklist:search", { detail: "" }));
                         }}
                         className="font-grotesque inline-block rounded-full border border-ink bg-canvas px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink-muted text-trim-caps shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand"
@@ -716,11 +760,11 @@ export function Nav() {
                     // own row appears under a menu that mouseleave never
                     // closed (the cursor hasn't moved) — "you click
                     // WORK... the hover is doubling up the pills," per
-                    // Josh. The pathname effect below covers arrivals
-                    // from other pages the same way.
+                    // Josh. The prevPathname render-time reset above
+                    // covers arrivals from other pages the same way.
                     onClick={() => {
                       scrollToTopIfCurrent(link.href);
-                      setWorkMenuOpen(false);
+                      closeMenuNow();
                     }}
                     // Twice guarded: /work only ("hover state should only
                     // be available when inside the work page," per Josh —
@@ -740,6 +784,7 @@ export function Nav() {
                               const rect = row.getBoundingClientRect();
                               if (rect.bottom > 0 && rect.top < window.innerHeight) return;
                             }
+                            cancelWorkMenuClose();
                             setWorkMenuOpen(true);
                           }
                         : undefined
