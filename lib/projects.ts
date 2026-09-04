@@ -3171,48 +3171,8 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    slug: "bershka",
-    title: "We Are Proud",
-    client: "Bershka",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
-    cardLabel: "Bershka",
-    year: 2018,
-    discipline: "Illustration",
-    deliverables: "1 Instagram Story animation",
-    categories: ["LGBTQ+", "Motion"],
-    summary: "A rainbow of dancers, animated for Bershka's Pride month Instagram Stories.",
-    heroCaption: "A held frame from the animation, 2018.",
-    brief: [
-      "For Pride month 2018, Bershka commissioned a short Instagram Story animation — characters dancing across a rainbow as the words \"We Are Proud\" build up over the top.",
-      "I drew the artwork; Bershka's in-house team animated it.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Animation", name: "Bershka" },
-    ],
-    // Per Josh: crop the /work card to 4/5 instead of the true 9/16 —
-    // the project page itself still runs the full portrait frame below.
-    cardRatio: "4/5",
-    hero: {
-      ratio: "9/16",
-      alt: "We Are Proud animation, held frame",
-      src: "/work/bershka/01-we-are-proud-hero.webp",
-    },
-    // No heroPair — the video is the only asset, so heroVideo's default
-    // "top" position with no pair renders it alone; hero.src still supplies
-    // the video poster, the /work card image and the OG image.
-    heroVideo: {
-      // Source has a real audio track, but Josh wants it playing ambiently
-      // like the other silent hero clips rather than gated behind a click
-      // — sound: false mutes it so ProjectVideo autoplays + loops it.
-      src: "/work/bershka/02-we-are-proud.mp4",
-      alt: "The We Are Proud animation",
-      sound: false,
-      ratio: "9/16",
-    },
-    gallery: [],
-  },
+  // Bershka lived here — archived to lib/archived-projects.ts per Josh
+  // ("not strong enough"), not deleted; see that file for the restore path.
   {
     slug: "mini-animation",
     title: "Mini Animation",
