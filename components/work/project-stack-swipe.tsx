@@ -360,31 +360,27 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       });
       const stripTop = window.innerHeight - stripBottom - strip.offsetHeight;
 
-      // "Revealed" once the first image has scrolled past the header --
-      // "appear after user has scrolled past first image," per Josh,
-      // replacing an earlier cut keyed off the write-up's own top (which
-      // waited for the hero's caption and the write-up's own top padding
-      // to clear too, reading as late). data-project-hero marks the
-      // page's lead image block (see project-content.tsx) so this only
-      // ever measures the actual artwork, not its caption. Falls back to
-      // the first paragraph for the projects with no image ahead of the
-      // text at all -- poster-grid layouts (Beefbar), which open straight
-      // into the write-up with the gallery after it, and any project with
-      // heroHiddenOnPage set. Measured fresh off the real header each
-      // frame, same as the peek-jump fix's own nav-height effect above,
-      // rather than trusting React state here — this closure only
-      // re-runs when applyDotShrink's identity changes, so a stale header
-      // height would survive a rotation untouched.
+      // "Revealed" once the nav bar reaches the CLIENT / YEAR breadline --
+      // "the nav dots need to appear sooner, perhaps as soon as the nav
+      // bar hits the client and year breadline," per Josh, replacing an
+      // earlier cut keyed off the hero image (which still wasn't soon
+      // enough). data-project-meta marks that row in the page's own
+      // header (see project-content.tsx) -- unlike a hero image, every
+      // layout renders it in exactly the same spot right below the
+      // title, poster-grid and heroHiddenOnPage projects included, so
+      // there's no second layout to fall back to here. Measured fresh
+      // off the real header each frame, same as the peek-jump fix's own
+      // nav-height effect above, rather than trusting React state here —
+      // this closure only re-runs when applyDotShrink's identity
+      // changes, so a stale header height would survive a rotation
+      // untouched.
       const headerHeight = document.querySelector("header.sticky")?.getBoundingClientRect().height ?? NAV_HEIGHT_FALLBACK;
-      const revealAnchorBottom = (
-        card.querySelector("[data-project-hero]") ?? card.querySelector("[data-project-writeup] p")
-      )?.getBoundingClientRect().bottom;
-      // A short project (hero + a brief paragraph, little or nothing
-      // after it) can run out of page before the anchor ever reaches the
-      // header — there just isn't enough scroll room. Once the user has
-      // reached the actual bottom of the page they've seen everything
-      // there is to see including the hero, so the dots reveal
-      // regardless of where the anchor landed.
+      const revealAnchorBottom = card.querySelector("[data-project-meta]")?.getBoundingClientRect().bottom;
+      // A vanishingly short project could in principle run out of page
+      // before the breadline ever reaches the header — there just isn't
+      // enough scroll room. Once the user has reached the actual bottom
+      // of the page they've seen everything there is to see, so the dots
+      // reveal regardless of where the anchor landed.
       const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
       const nearBottom = maxScrollY > 0 && window.scrollY >= maxScrollY - 2;
 

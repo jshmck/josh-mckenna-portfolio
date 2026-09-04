@@ -387,7 +387,10 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
               )}
             </div>
 
-            <dl className="mt-8 flex flex-wrap gap-x-16 gap-y-6">
+            {/* data-project-meta: ProjectStackSwipe's dot-strip reveal
+                anchors on this row — see its own comment for why it's the
+                one thing every project layout renders in the same spot. */}
+            <dl data-project-meta className="mt-8 flex flex-wrap gap-x-16 gap-y-6">
               {meta.map((item) => (
                 <div key={item.label}>
                   <dt className="type-label text-ink/60">{item.label}</dt>
@@ -445,10 +448,6 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
 
             {project.heroSize !== "spot" && !project.heroHiddenOnPage && (
               <div
-                // data-project-hero: ProjectStackSwipe's dot-strip reveal
-                // measures this block to know when the lead image has
-                // scrolled past — see its own comment for why.
-                data-project-hero
                 // Mobile pt: 0 normally (the header's own max-md:pb-8 is
                 // the whole gap now), but when a videoRow leads the page
                 // this container sits under it, not the header — keep the
@@ -585,10 +584,7 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
               // enlarge via HeroLightbox, same as every other hero image on
               // the site — captions stay off (captions=[""]) since this slot
               // was always meant to read uncaptioned.
-              <div
-                data-project-hero
-                className="mx-auto max-w-frame px-6 pt-12 max-md:pt-0 md:px-gutter"
-              >
+              <div className="mx-auto max-w-frame px-6 pt-12 max-md:pt-0 md:px-gutter">
                 <div className="mx-auto max-w-lg">
                   <HeroLightbox
                     images={heroLightboxImages}
