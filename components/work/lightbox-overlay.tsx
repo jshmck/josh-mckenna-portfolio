@@ -583,7 +583,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   if (!openImage) return null;
 
   const STAGE_LONG_EDGE = 2000;
-  const PORTRAIT_CLEARANCE = 72;
+  const PORTRAIT_CLEARANCE = 108;
 
   // The widest ratio in this cycle sets the shared height ceiling — every
   // narrower/taller image in the same cycle has room to spare at that
@@ -652,21 +652,23 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     // heightCapPx), which is the whole point for a 9/16 photo; flooring it
     // to 1 here would just reproduce a smaller version of the same bug.
     const heightRatio = isMobileViewport ? ratio : stageMaxRatio;
-    // A little extra clearance beyond stageReserve, mobile only -- "the
-    // lifeguard images are still cutting into the nav, maybe reduce just
-    // those images," per Josh. stageReserve already carves out the band
-    // the counter/close live in, but an extreme portrait ratio (9/16) can
-    // size to fill that ceiling exactly -- and because both the stage and
-    // the image inside it are centred (not bottom/top-aligned), that
-    // reserved band actually splits evenly above and below the image, so
-    // an image sized to exactly fill it leaves only stageReserve / 2 of
-    // real clearance on EACH side, not the full 72px the reserve implies.
-    // 36px comfortably clears the small under-image counter but not the
-    // taller top-right × (12px top offset + its own ~57px tap target) --
-    // PORTRAIT_CLEARANCE=72 widens that split gap to (72+72)/2=72px,
-    // enough margin for the × with room to spare, and the split-gap
-    // maths keeps that margin constant regardless of viewport height, so
-    // it holds even when a mobile browser's toolbar eats into what's
+    // Extra clearance beyond stageReserve, mobile only -- "the lifeguard
+    // images are still cutting into the nav, maybe reduce just those
+    // images," per Josh (twice -- the first cut of this constant, 72,
+    // still read as touching, see below). stageReserve already carves out
+    // the band the counter/close live in, but an extreme portrait ratio
+    // (9/16) can size to fill that ceiling exactly -- and because both
+    // the stage and the image inside it are centred (not bottom/
+    // top-aligned), the reserved room splits evenly above and below the
+    // image: total clearance (stageReserve + PORTRAIT_CLEARANCE) yields
+    // only HALF that on each side. The top-right × is the binding
+    // constraint -- its padded tap target reaches ~69px down from the
+    // viewport top (12px offset + ~57px box), so a half-clearance of 72
+    // (the first cut) left a 3px sliver between button and image, which
+    // is what still read as "cutting into the nav". 108 puts the half at
+    // (72+108)/2 = 90px -- a real ~21px visible gap below the ×, and the
+    // split maths keeps it constant regardless of viewport height, so it
+    // holds even when a mobile browser's toolbar eats into what's
     // actually visible. Landscape/square images never hit this branch in
     // practice -- they're constrained by widthCapPx below instead, which
     // already leaves natural breathing room -- so this only ever shrinks
