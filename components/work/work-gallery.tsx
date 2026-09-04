@@ -7,7 +7,7 @@ import { MasonryGrid } from "@/components/work/masonry-grid";
 import { ProjectCard } from "@/components/work/project-card";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { getCardHoverImage } from "@/lib/projects";
-import type { ImageRatio, Project, ProjectCategory } from "@/lib/projects";
+import type { ImageRatio, Project, ProjectCategory, ProjectImage } from "@/lib/projects";
 
 type WorkGalleryProps = {
   projects: Project[];
@@ -316,11 +316,23 @@ function MasonryCard({
   project,
   index,
   ratio,
+  image,
+  hoverImage,
   sizes = "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw",
 }: {
   project: Project;
   index: number;
   ratio: ImageRatio;
+  /** Lead-image override — WorkGallery passes the active filter's
+   *  cardImageByCategory pick here so a filtered view can lead with a
+   *  more on-topic image (see that field's doc comment). */
+  image?: ProjectImage;
+  /** Hover override, set alongside `image`: an overridden cover hovers
+   *  back to the project's original lead ("the hover image has to be
+   *  the original — LA when in murals will be the green logo mark, and
+   *  wagamama the pink crowd," per Josh), instead of the usual
+   *  getCardHoverImage pick. */
+  hoverImage?: ProjectImage;
   sizes?: string;
 }) {
   return (
@@ -329,7 +341,7 @@ function MasonryCard({
       // cardImage lets a project override its lead image (la-pride);
       // hoverImage crossfades to another image from the same
       // project wherever one's available (getCardHoverImage).
-      image={project.cardImage}
+      image={image ?? project.cardImage}
       ratio={ratio}
       caption="hover"
       motion="shrink"
@@ -338,7 +350,7 @@ function MasonryCard({
       // gutters read as uneven while scrolling ("it's the scrolling
       // movement you have set up," per Josh). Hover shrink and the
       // one-time reveal stay.
-      hoverImage={getCardHoverImage(project)}
+      hoverImage={hoverImage ?? getCardHoverImage(project)}
       sizes={sizes}
       priority={index < 3}
     />
@@ -450,10 +462,19 @@ export function WorkGallery({
           disappears. */}
       <div className="mt-12">
         <MasonryGrid
+          // Filtered views repack densely — they're not the curated ALL
+          // order, so levelling the columns wins ("when you click a
+          // category, can the rules of the grid change?" per Josh).
+          dense={filter !== "All"}
           items={visible.map((project, index) => {
             const cardRatio = effectiveCardRatio(project, index, ratioCycle);
             const ratio = ratioToNumber(cardRatio);
             const span = ratio >= LANDSCAPE_SPAN_RATIO ? 2 : 1;
+            // Filtered views can lead with a category-specific cover; when
+            // one applies, hover swaps back to the original lead instead
+            // of the usual second-image pick. See cardImageByCategory.
+            const categoryImage =
+              filter !== "All" ? project.cardImageByCategory?.[filter] : undefined;
             return {
               key: project.slug,
               ratio,
@@ -465,6 +486,10 @@ export function WorkGallery({
                   project={project}
                   index={index}
                   ratio={cardRatio}
+                  image={categoryImage ?? project.cardImage}
+                  hoverImage={
+                    categoryImage ? (project.cardImage ?? project.hero) : undefined
+                  }
                   sizes={
                     span === 2
                       ? "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 66vw"
