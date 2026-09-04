@@ -333,7 +333,11 @@ function MasonryCard({
       ratio={ratio}
       caption="hover"
       motion="shrink"
-      parallax
+      // No scroll parallax on grid cards — the per-card drift moved
+      // neighbouring edges by different amounts, so the fixed 32px
+      // gutters read as uneven while scrolling ("it's the scrolling
+      // movement you have set up," per Josh). Hover shrink and the
+      // one-time reveal stay.
       hoverImage={getCardHoverImage(project)}
       sizes={sizes}
       priority={index < 3}
