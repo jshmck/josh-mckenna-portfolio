@@ -145,16 +145,24 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   // into its resting position during the 200ms settle below — by the time
   // goNext/goPrev swaps openIndex, the peek IS the new open image, just
   // one layer underneath (z-0) where the stage (z-10) is about to take
-  // over. Firing the stage's own entrance keyframe on top of that restarts
-  // the exact same slide from scratch, which is what "the swipe motion is
-  // a little janky, sometimes the next image slides under the current"
-  // was — the just-settled peek and the freshly-entering stage briefly
-  // disagreed about where the frame should be. Set right before goNext/
-  // goPrev in the drag-commit path, read once by the render below, then
-  // cleared by the effect beneath it once that render has committed — a
-  // ref rather than state so flipping it can't itself trigger a second,
-  // redundant re-render.
-  const suppressEntranceRef = useRef(false);
+  // over, so the peek stays put as the stand-in until the stage's own img
+  // has decoded (see the layout effect below). While the hold is on, the
+  // stage's entrance keyframe is also cancelled — replaying the slide the
+  // peek just finished is what originally read as "the next image slides
+  // under the current".
+  //
+  // State, not a ref, and specifically the OLD openIndex rather than a
+  // boolean: the peeks' own content (prevImage/nextImage below) has to
+  // keep deriving from the pre-swap index for as long as the hold lasts.
+  // A first cut kept the peek element visible but let its props recompute
+  // from the new index in the same render as the swap — so the visibly
+  // held peek's src flipped to the NEXT neighbour along while it was
+  // still centred on screen, showing the following image early or a
+  // blank while that wrong file fetched ("some blank some repeated," per
+  // Josh). Deriving the peeks from heldIndex ?? openIndex keeps the held
+  // peek painting exactly the frame it settled on until the stage
+  // underneath is ready to take over.
+  const [heldIndex, setHeldIndex] = useState<number | null>(null);
 
   // Same two-segment "stuck, then free" resistance as ProjectStackSwipe's
   // own resist() (project-stack-swipe.tsx) — kept as a separate, smaller-
@@ -197,28 +205,25 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     el.style.opacity = "0";
   };
 
-  // Mirrors the deferred reset that used to run synchronously inside the
-  // touchend handler. Waiting for this effect (which only runs after
-  // React has committed the swapped openIndex) rather than resetting the
-  // peeks/slab in the same tick as goNext/goPrev is what closed the
-  // first "white flash when it appears" gap: resetting them earlier could
-  // beat React's own re-render to the screen, so the peek snapped
-  // invisible before the new stage had painted anything to replace it —
-  // one frame of bare backdrop. Both peeks reset unconditionally on every
-  // openIndex change (not just drag-committed ones) since click/keyboard
-  // navigation never touched them in the first place, making the reset a
-  // harmless no-op there. useLayoutEffect, not useEffect — this also
-  // cancels the stage's own entrance keyframe when suppressEntranceRef is
-  // set, which has to land before the browser's first paint of the new
-  // frame or the keyframe plays for a frame regardless of the class being
-  // present; reading suppressEntranceRef.current here (an effect, not
-  // render) is what keeps that check out of the lint's
-  // no-ref-reads-during-render rule.
+  // Runs after React has committed a navigation but before the browser
+  // paints it. For click/keyboard navigation (no hold) this just resets
+  // the peeks/slab from any leftover drag styles — a near-no-op. For a
+  // drag-committed page (heldIndex set) it cancels the stage's entrance
+  // keyframe pre-paint (inline animation:none — it persists on the
+  // element across the release re-render, so the animation class coming
+  // back can't restart the slide) and then waits for the stage's new
+  // <img> to report decoded before hiding the held peek and releasing
+  // the hold. The stage's key={openIndex} remount mounts a brand-new
+  // <img>, and even with the file already in cache from the peek, its
+  // first paint waits on a fresh decode — a frame or two of transparent
+  // stage that read as "a light flash of white" whenever the peek was
+  // hidden any earlier than this. decode() resolves in a micro-beat for
+  // a cached file; the timeout is a belt-and-braces cap so a decode that
+  // never settles (or an <img> that never appears) can't strand the peek
+  // over the stage forever. Cleanup only cancels — it never settles —
+  // so a rapid follow-up swipe can't null out the hold it just started.
   useLayoutEffect(() => {
     const slab = dragImageRef.current;
-    if (suppressEntranceRef.current && slab) {
-      slab.style.animation = "none";
-    }
     if (slab) {
       slab.style.transition = "none";
       slab.style.transform = "";
@@ -227,38 +232,26 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
       resetPeek(prevPeekRef.current, "prev", false);
       resetPeek(nextPeekRef.current, "next", false);
     };
-    // Pre-paint ordering alone still left a *shorter* flash ("still a
-    // light flash of white when image is loaded," per Josh): the stage's
-    // key={openIndex} remount mounts a brand-new <img>, and even with the
-    // file already in cache from the peek, its first paint waits on a
-    // fresh decode — a frame or two where the stage is transparent and
-    // the just-hidden peek has nothing behind it but backdrop. For a
-    // drag-committed page the peek is ALREADY showing this exact image,
-    // centred, at rest — so instead of hiding it pre-paint, hold it in
-    // place as the stand-in until the stage's own img reports decoded,
-    // then swap. decode() resolves in a micro-beat for a cached file;
-    // the timeout is a belt-and-braces cap so a decode() that never
-    // settles (or an <img> that never appears) can't strand the peek
-    // over the stage forever.
-    const img = slab?.querySelector("img");
-    if (suppressEntranceRef.current && img) {
-      suppressEntranceRef.current = false;
-      let done = false;
-      const settle = () => {
-        if (done) return;
-        done = true;
-        resetPeeks();
-      };
-      img.decode().then(settle, settle);
-      const cap = window.setTimeout(settle, 600);
-      return () => {
-        window.clearTimeout(cap);
-        settle();
-      };
+    if (heldIndex === null) {
+      resetPeeks();
+      return;
     }
-    suppressEntranceRef.current = false;
-    resetPeeks();
-  }, [openIndex]);
+    if (slab) slab.style.animation = "none";
+    let done = false;
+    const settle = () => {
+      if (done) return;
+      done = true;
+      resetPeeks();
+      setHeldIndex(null);
+    };
+    const img = slab?.querySelector("img");
+    if (img) img.decode().then(settle, settle);
+    const cap = window.setTimeout(settle, img ? 600 : 0);
+    return () => {
+      done = true;
+      window.clearTimeout(cap);
+    };
+  }, [openIndex, heldIndex]);
 
   // 1:1 with the finger (no separate parallax discount) — direct tracking
   // reads as quicker/snappier than a catch-up-style reveal, which is the
@@ -323,6 +316,18 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   }, [openIndex]);
 
   const onTouchStart = (event: React.TouchEvent) => {
+    // A new touch landing while a decode-hold is still live (rapid
+    // chained swipes) releases it immediately — otherwise the coming
+    // drag would move peeks still derived from the pre-swap index. The
+    // stage has had a settle animation's worth of time to decode by now,
+    // so hiding the stand-in early is at worst a one-frame seam, where
+    // dragging stale peeks would show entirely wrong neighbours.
+    if (heldIndex !== null) {
+      resetPeek(prevPeekRef.current, "prev", false);
+      resetPeek(nextPeekRef.current, "next", false);
+      setHeldIndex(null);
+    }
+
     const target = event.target as Element;
     const excluded = !!target.closest("[data-lightbox-control]");
 
@@ -551,7 +556,12 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
         peekEl.style.transform = "translate3d(0, 0, 0)";
       }
       window.setTimeout(() => {
-        suppressEntranceRef.current = true;
+        // Same tick as the index swap so React batches them into one
+        // render — the hold and the new openIndex must land together, or
+        // the peeks would re-derive from the new index for a frame
+        // before the hold takes effect (the exact bug heldIndex exists
+        // to prevent, see its declaration).
+        setHeldIndex(openIndex);
         if (hDirection === "next") goNext();
         else goPrev();
       }, PAGE_SETTLE_MS);
@@ -737,9 +747,18 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   };
 
   const { imgWidth, imgHeight, effectiveRadius, style: imageStyle } = computeFrame(openImage);
+  // heldIndex ?? openIndex, NOT openIndex — while a drag-committed swap
+  // is holding a peek on screen as the stand-in for the still-decoding
+  // stage, the peeks keep deriving from the pre-swap index, so the held
+  // one keeps painting exactly the frame it settled on. See heldIndex's
+  // declaration for the visible bug this prevents.
+  const peekBaseIndex = heldIndex ?? openIndex;
   const prevImage =
-    images.length > 1 && openIndex !== null ? images[(openIndex - 1 + images.length) % images.length] : null;
-  const nextImage = images.length > 1 && openIndex !== null ? images[(openIndex + 1) % images.length] : null;
+    images.length > 1 && peekBaseIndex !== null
+      ? images[(peekBaseIndex - 1 + images.length) % images.length]
+      : null;
+  const nextImage =
+    images.length > 1 && peekBaseIndex !== null ? images[(peekBaseIndex + 1) % images.length] : null;
   const prevFrame = prevImage ? computeFrame(prevImage) : null;
   const nextFrame = nextImage ? computeFrame(nextImage) : null;
 
