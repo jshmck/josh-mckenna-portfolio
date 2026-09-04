@@ -155,6 +155,11 @@ export function Nav() {
   // whole. Hover-only for now — touch already has the in-page filter
   // row, which keeps its own scroll-in entrance.
   const [workMenuOpen, setWorkMenuOpen] = useState(false);
+  // Any route change closes it — the nav outlives navigations, so an
+  // open menu would otherwise ride along onto the next page.
+  useEffect(() => {
+    setWorkMenuOpen(false);
+  }, [pathname]);
   // (The `overLightBg` blue-goes-white contrast swap lived here — the
   // whole navContrastLight mechanism was removed 2026-09-04, "lets remove
   // that rule and I will make a new rule tomorrow," per Josh.)
@@ -675,7 +680,18 @@ export function Nav() {
                   <Link
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
-                    onClick={() => scrollToTopIfCurrent(link.href)}
+                    // Closing the menu on click matters even without a
+                    // route change: clicking Work while scrolled on
+                    // /work scroll-restores to the top, where the page's
+                    // own row appears under a menu that mouseleave never
+                    // closed (the cursor hasn't moved) — "you click
+                    // WORK... the hover is doubling up the pills," per
+                    // Josh. The pathname effect below covers arrivals
+                    // from other pages the same way.
+                    onClick={() => {
+                      scrollToTopIfCurrent(link.href);
+                      setWorkMenuOpen(false);
+                    }}
                     // Twice guarded: /work only ("hover state should only
                     // be available when inside the work page," per Josh —
                     // it was opening on project pages and everywhere
