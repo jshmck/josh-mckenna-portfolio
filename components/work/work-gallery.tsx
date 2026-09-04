@@ -517,7 +517,7 @@ export function WorkGallery({
             as one more pill; grows a little on focus, same gloopy
             spring as the pills' own hover. */}
         <span
-          className={`relative inline-flex items-center ${pillEntrance(filters.length).className}`}
+          className={`group/search relative inline-flex items-center ${pillEntrance(filters.length).className}`}
           style={pillEntrance(filters.length).style}
         >
           {/* Inline SVG glyphs, stroke currentColor — the site has no
@@ -531,7 +531,11 @@ export function WorkGallery({
             // Centred in the collapsed pill, docks to the left edge once
             // it opens — same gloopy spring as the width change so the
             // two read as one move.
-            className={`pointer-events-none absolute h-3 w-3 text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+            // group-hover: the glass goes brand with the border — "make
+            // sure the mag glass is blue on hover like the rest of the
+            // pills," per Josh (the pills' hover recolours text and
+            // border together, so this matches).
+            className={`pointer-events-none absolute h-3 w-3 text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/search:text-brand ${
               searchOpen ? "left-3.5 translate-x-0" : "left-1/2 -translate-x-1/2"
             }`}
             fill="none"

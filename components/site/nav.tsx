@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { navLinks } from "@/lib/site";
+import { getActiveCategories } from "@/lib/projects";
 import { CartIcon } from "@/components/ui/social-icons";
 
 /**
@@ -146,6 +147,14 @@ export function Nav() {
   const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [homeWorkActive, setHomeWorkActive] = useState(false);
+  // Trial — hovering Work drops the category menu out of the nav pill
+  // itself, wherever you are on whatever page ("even if the user is
+  // halfway down the page or browsing the Work page, a hover over work
+  // brings up the category menu," per Josh). Opens on the Work link's
+  // mouseenter, closes when the cursor leaves the pill+menu block as a
+  // whole. Hover-only for now — touch already has the in-page filter
+  // row, which keeps its own scroll-in entrance.
+  const [workMenuOpen, setWorkMenuOpen] = useState(false);
   // (The `overLightBg` blue-goes-white contrast swap lived here — the
   // whole navContrastLight mechanism was removed 2026-09-04, "lets remove
   // that rule and I will make a new rule tomorrow," per Josh.)
@@ -519,8 +528,42 @@ export function Nav() {
               twice before the cause was clear; worth leaving it quieter
               unless he asks for more. */}
           <div
-            className={`flex items-center gap-3 rounded-full border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${frostClass}`}
+            // relative + onMouseLeave: anchors the Work category
+            // drop-down below and keeps it open while the cursor is
+            // anywhere over pill or menu (the menu's own pt-3 bridges
+            // the visual gap so crossing down never leaves this box).
+            onMouseLeave={() => setWorkMenuOpen(false)}
+            className={`relative flex items-center gap-3 rounded-full border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${frostClass}`}
           >
+            {workMenuOpen && (
+              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3">
+                {/* Same drop/woosh entrance as the in-page filter row —
+                    mount-on-open is what plays it fresh each hover. Solid
+                    bg-canvas pills (no frost, per Josh) so they read over
+                    whatever content is behind them. */}
+                <div className="flex w-max max-w-[92vw] flex-wrap justify-center gap-2">
+                  {["All", ...getActiveCategories()].map((option, index) => (
+                    <span
+                      key={option}
+                      className={
+                        index === 0
+                          ? "animate-[pill-drop_500ms_var(--ease-bounce)_both]"
+                          : "animate-[pill-woosh_550ms_var(--ease-bounce)_both]"
+                      }
+                      style={{ animationDelay: `${index * 55}ms` }}
+                    >
+                      <Link
+                        href={option === "All" ? "/work" : `/work?category=${encodeURIComponent(option)}`}
+                        onClick={() => setWorkMenuOpen(false)}
+                        className="font-grotesque inline-block rounded-full border border-ink bg-canvas px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink-muted text-trim-caps shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand"
+                      >
+                        {option}
+                      </Link>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
             <ul className="flex items-center gap-3 md:gap-10">
               {navLinks.map((link) => (
                 <li key={link.href}>
@@ -596,16 +639,8 @@ export function Nav() {
                     href={link.href}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     onClick={() => scrollToTopIfCurrent(link.href)}
-                    // Hovering Work replays the filter row's pill
-                    // entrance ("have the pills drop down when you hover
-                    // over work in the nav pill," per Josh) — dispatched
-                    // as a window event since the gallery lives in a
-                    // different tree; pages without a mounted WorkGallery
-                    // simply have no listener, so this is a no-op there.
                     onMouseEnter={
-                      link.href === "/work"
-                        ? () => window.dispatchEvent(new Event("worklist:entrance"))
-                        : undefined
+                      link.href === "/work" ? () => setWorkMenuOpen(true) : undefined
                     }
                     className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
