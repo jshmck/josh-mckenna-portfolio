@@ -747,9 +747,16 @@ export function WorkGallery({
             // circle. hover:duration-500 slows just the grow so the
             // overshoot has time to read; un-hover falls back to the
             // base duration-300, a touch snappier on the way down.
+            // active:scale-90 active:duration-100 — the press itself
+            // needed its own feedback, not just the hover pop ("when
+            // you click it i want it to have a satisfying feel," per
+            // Josh). A fast compress on mousedown reads as a tactile
+            // squish; releasing hands off into the existing clear/close
+            // motion, so the click reads as press-then-release rather
+            // than a flat tap.
             className={`absolute right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-[transform,opacity,scale] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
               searchOpen
-                ? "animate-[search-x-roll_550ms_var(--ease-bounce)_both] hover:duration-500 hover:scale-125"
+                ? "animate-[search-x-roll_550ms_var(--ease-bounce)_both] hover:duration-500 hover:scale-125 active:scale-90 active:duration-100"
                 : "pointer-events-none scale-0 opacity-0"
             }`}
           >
