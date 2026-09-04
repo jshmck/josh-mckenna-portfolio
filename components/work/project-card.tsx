@@ -68,6 +68,13 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const hoverCaption = caption === "hover";
   const baseImage = image ?? project.hero;
+  // TRIAL — see Project.cardTitle/cardLabel doc comments. A title/label
+  // pair is only supplied explicitly (never derived): showing the label
+  // is opt-in per project, not automatic for every branded piece, so a
+  // duplicate-looking pair ("Beefbar" title, "Beefbar" label) can't slip
+  // through un-reviewed.
+  const displayTitle = project.cardTitle ?? project.title;
+  const cardLabelText = project.cardLabel ?? (project.cardTitle ? project.client : undefined);
   // Trial (mini-animation only, see Project.cardVideo): the card plays the
   // hero clip instead of sitting on its still frame — cropped to the same
   // ratio the still would've used, poster is that still so there's no flash
@@ -155,11 +162,20 @@ export function ProjectCard({
                 transition-[opacity,translate], not transform — Tailwind
                 v4's translate-y-* emits the standalone CSS `translate`
                 property, so transitioning `transform` animates nothing. */}
-            {/* Helvetica matched to the nav links (font-body 22px bold,
-                sentence case), not the uppercase mono type-label — "the
-                same as the nav bar," per Josh. */}
-            <span className="translate-y-5 font-body text-[22px] leading-none font-bold text-ink opacity-0 transition-[opacity,translate] duration-[0.2s,0.4s] ease-in-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
-              {project.title}
+            {/* TRIAL — client label below the title, both riding the same
+                kinetic entrance. Opt-in per project (cardTitle/cardLabel),
+                confirmed project by project with Josh rather than derived
+                automatically — see the two fields' doc comments. */}
+            <span className="flex translate-y-5 flex-col items-center gap-1 opacity-0 transition-[opacity,translate] duration-[0.2s,0.4s] ease-in-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              {/* Helvetica matched to the nav links (font-body 22px bold,
+                  sentence case), not the uppercase mono type-label — "the
+                  same as the nav bar," per Josh. */}
+              <span className="font-body text-[22px] leading-none font-bold text-ink">
+                {displayTitle}
+              </span>
+              {cardLabelText && project.client !== "Personal" && (
+                <span className="type-label text-ink-muted">{cardLabelText}</span>
+              )}
             </span>
           </div>
         )}
@@ -233,7 +249,7 @@ export function ProjectCard({
               for this strip so cards don't overlap, which only holds if
               every title renders at the same single-line height. */}
           <h3 className="truncate text-center font-body text-[15px] leading-[1.2] font-medium text-ink">
-            {project.title}
+            {displayTitle}
           </h3>
         </div>
       )}

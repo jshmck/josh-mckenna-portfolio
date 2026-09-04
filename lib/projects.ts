@@ -248,6 +248,27 @@ export type Project = {
    */
   cardImage?: ProjectImage;
   /**
+   * Trial (components/work/project-card.tsx): overrides the /work grid
+   * card's hover title when it should differ from the full page `title` —
+   * the page's own H1/OG tags are untouched. For a title that already
+   * carries its client name as a prefix ("Levi's Rainbow Rodeo"), once the
+   * client renders as its own label underneath, the prefix is redundant —
+   * `cardTitle: "Rainbow Rodeo"` trims it, label reads "Levi's" below. Also
+   * covers a title that's just a bare repeat of the client ("Boat
+   * International") with nothing to trim — give it a real descriptive
+   * `cardTitle` ("Editorial") and pair with an explicit `cardLabel`
+   * ("By Boat International") instead.
+   */
+  cardTitle?: string;
+  /**
+   * Trial: full override of the label text shown under the hover title
+   * (see `cardTitle`) — defaults to a bare `client`. Use the "By {client}"
+   * form specifically when `cardTitle` replaces a generic/duplicate title
+   * rather than trimming a real one, so the label reads as attribution and
+   * not a second title fragment.
+   */
+  cardLabel?: string;
+  /**
    * Per-pill override of the card's lead image — while the given category
    * filter is active on /work, the card leads with a more on-topic image
    * than its usual `cardImage`/`hero` ("once you've selected the category,
@@ -398,6 +419,10 @@ export const projects: Project[] = [
     slug: "levis-rainbow-rodeo",
     title: "Levi's Rainbow Rodeo",
     client: "Levi's",
+    // TRIAL: grid card trims the redundant "Levi's" now that the client
+    // renders as its own label underneath — Josh's own example for this
+    // whole mechanism. See Project.cardTitle.
+    cardTitle: "Rainbow Rodeo",
     year: 2024,
     discipline: "Pride Campaign",
     deliverables: "1 invite · 3 enamel pins · 1 tee · bar accessories",
@@ -488,6 +513,10 @@ export const projects: Project[] = [
     slug: "piper-heidsieck",
     title: "Piper-Heidsieck",
     client: "Piper-Heidsieck",
+    // TRIAL: "Bottle Packaging > Piper-Heidsieck," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Bottle Packaging",
+    cardLabel: "Piper-Heidsieck",
     year: 2024,
     discipline: "Illustration",
     deliverables: "1 gift tin",
@@ -656,6 +685,9 @@ export const projects: Project[] = [
     slug: "comic-relief-sink-the-pink",
     title: "Comic Relief x Sink The Pink",
     client: "Comic Relief",
+    // TRIAL: "Pride Totes > Comic Relief," per Josh — see Project.cardTitle.
+    cardTitle: "Pride Totes",
+    cardLabel: "Comic Relief",
     year: 2020,
     discipline: "Pride Campaign",
     deliverables: "2 tote designs",
@@ -695,6 +727,8 @@ export const projects: Project[] = [
     slug: "hikes-n-bikes",
     title: "Hikes n Bikes",
     client: "Hikes and Bikes LA",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "Hikes and Bikes LA",
     year: 2020,
     discipline: "Mural",
     deliverables: "1 mural",
@@ -748,6 +782,9 @@ export const projects: Project[] = [
     slug: "its-all-love",
     title: "It's All Love",
     client: "Google",
+    // TRIAL: the original confirmed example for this whole mechanism —
+    // see Project.cardTitle.
+    cardLabel: "Google",
     year: 2017,
     discipline: "Stickers & Iconography",
     deliverables: "Sticker Set · 24 Stickers",
@@ -798,6 +835,8 @@ export const projects: Project[] = [
     slug: "bum-selfie",
     title: "Bum Selfie",
     client: "Cake Boy Magazine",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "Cake Boy Magazine",
     year: 2020,
     discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
@@ -918,6 +957,11 @@ export const projects: Project[] = [
     slug: "tilda-rice",
     title: "Tilda Rice",
     client: "Tilda",
+    // TRIAL: "Flavour Animations > Tilda Rice," per Josh — cardLabel
+    // spells out the full "Tilda Rice" rather than falling back to the
+    // bare client field. See Project.cardTitle.
+    cardTitle: "Flavour Animations",
+    cardLabel: "Tilda Rice",
     year: 2022,
     discipline: "Illustration",
     deliverables: "Illustrations for Animation",
@@ -982,6 +1026,10 @@ export const projects: Project[] = [
     slug: "california-magazine",
     title: "California Magazine",
     client: "California Magazine",
+    // TRIAL: same Editorial pattern as Boat International — see
+    // Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "California Magazine",
     year: 2019,
     discipline: "Editorial Illustration",
     deliverables: "Half-Page Illustration",
@@ -1007,6 +1055,8 @@ export const projects: Project[] = [
     slug: "kiehls-trevor-project",
     title: "Kiehl's Pride Campaign",
     client: "Kiehl's",
+    // TRIAL: same trim as Levi's Rainbow Rodeo — see Project.cardTitle.
+    cardTitle: "Pride Campaign",
     year: 2023,
     discipline: "Pride Campaign",
     deliverables: "Packaging · Parade Float",
@@ -1048,6 +1098,9 @@ export const projects: Project[] = [
     slug: "costa-smeralda",
     title: "Costa Smeralda",
     client: "Costa Smeralda",
+    // TRIAL: "Posters > Costa Smeralda," per Josh — see Project.cardTitle.
+    cardTitle: "Posters",
+    cardLabel: "Costa Smeralda",
     year: 2022,
     discipline: "Illustration",
     deliverables: "3 Posters",
@@ -1111,6 +1164,8 @@ export const projects: Project[] = [
     slug: "wsj-airpods-rich",
     title: "Wall Street Journal",
     client: "The Wall Street Journal",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "The Wall Street Journal",
     year: 2019,
     yearLabel: "February 2019",
     discipline: "Editorial Illustration",
@@ -1146,6 +1201,11 @@ export const projects: Project[] = [
     slug: "ace-tate-logo",
     title: "Ace & Tate",
     client: "Ace & Tate",
+    // TRIAL: "Re/Viewed > Ace & Tate," per Josh — the actual series name
+    // this ran under ("re/viewed", see the brief below). See
+    // Project.cardTitle.
+    cardTitle: "Re/Viewed",
+    cardLabel: "Ace & Tate",
     year: 2019,
     discipline: "Illustration",
     deliverables: "1 Illustration",
@@ -1179,6 +1239,10 @@ export const projects: Project[] = [
     slug: "monocle-downward-trend",
     title: "Monocle Editorial",
     client: "Monocle",
+    // TRIAL: "trim it anyway," per Josh — same Editorial/Monocle pattern
+    // as monocle-spot-illo. See Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "Monocle",
     year: 2018,
     yearLabel: "October 2018, Issue 117",
     discipline: "Editorial Illustration",
@@ -1209,6 +1273,9 @@ export const projects: Project[] = [
     slug: "away-pride-stickers",
     title: "Away",
     client: "Away",
+    // TRIAL: "Pride Sticker Set > Away," per Josh — see Project.cardTitle.
+    cardTitle: "Pride Sticker Set",
+    cardLabel: "Away",
     year: 2019,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set",
@@ -1265,6 +1332,9 @@ export const projects: Project[] = [
     slug: "wagamama-pride",
     title: "Wagamama Pride",
     client: "Wagamama",
+    // TRIAL: "Pride Windows > Wagamama," per Josh — see Project.cardTitle.
+    cardTitle: "Pride Windows",
+    cardLabel: "Wagamama",
     year: 2023,
     yearLabel: "2022–2023",
     pinnedRank: 2,
@@ -1340,6 +1410,10 @@ export const projects: Project[] = [
     slug: "atlanta-magazine",
     title: "Atlanta Magazine",
     client: "Atlanta Magazine",
+    // TRIAL: "Alphabet Soup > Atlanta Magazine," per Josh — the actual
+    // feature title (see brief below). See Project.cardTitle.
+    cardTitle: "Alphabet Soup",
+    cardLabel: "Atlanta Magazine",
     year: 2022,
     pinnedRank: 4,
     yearLabel: "October 2022",
@@ -1394,6 +1468,9 @@ export const projects: Project[] = [
     slug: "coca-cola-moments",
     title: "Coca-Cola Moments",
     client: "Coca-Cola",
+    // TRIAL: "Moments" is the deliverable series name, reads fine alone
+    // — see Project.cardTitle.
+    cardTitle: "Moments",
     year: 2022,
     discipline: "Illustration",
     deliverables: "5 Icons",
@@ -1464,6 +1541,13 @@ export const projects: Project[] = [
     slug: "boat-international",
     title: "Boat International",
     client: "Boat International",
+    // TRIAL: title === client verbatim, nothing to trim — "things like
+    // 'Boat International' need a title, so maybe editorial, by boat
+    // international," per Josh. Grid card reads "Editorial" over "By
+    // Boat International" instead of repeating the bare client name
+    // twice. Full page title untouched. See Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "By Boat International",
     year: 2024,
     yearLabel: "December 2024",
     discipline: "Editorial Illustration",
@@ -1507,6 +1591,10 @@ export const projects: Project[] = [
     slug: "step-journal",
     title: "Step Journal",
     client: "STEP Journal",
+    // TRIAL: "Magazine Cover > Step Journal," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Magazine Cover",
+    cardLabel: "Step Journal",
     year: 2019,
     yearLabel: "August/September 2019",
     discipline: "Editorial Illustration",
@@ -1551,6 +1639,10 @@ export const projects: Project[] = [
     slug: "weapons-of-reason-gay-divide",
     title: "Weapons of Reason",
     client: "Weapons of Reason",
+    // TRIAL: "The Gay Divide > Weapons of Reason," per Josh — the actual
+    // feature title (see brief below). See Project.cardTitle.
+    cardTitle: "The Gay Divide",
+    cardLabel: "Weapons of Reason",
     year: 2019,
     yearLabel: "The Inequality Issue, 2019",
     discipline: "Editorial Illustration",
@@ -1600,6 +1692,8 @@ export const projects: Project[] = [
     slug: "opto-markets-2019",
     title: "OPTO Mag",
     client: "CMC Markets",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "CMC Markets",
     year: 2019,
     yearLabel: "OPTO Issue 03, Jan/Feb 2019",
     discipline: "Editorial Illustration",
@@ -1645,6 +1739,10 @@ export const projects: Project[] = [
     slug: "vogue-sun-tan",
     title: "Vogue Magazine",
     client: "Vogue Magazine",
+    // TRIAL: same Editorial pattern as the other magazine credits — see
+    // Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "Vogue Magazine",
     year: 2018,
     // Pinned to the middle of /work's curated block, regardless of year
     // — Josh wants this one prominent despite being older than most of
@@ -1688,6 +1786,8 @@ export const projects: Project[] = [
     slug: "instagram-sticker",
     title: "Instagram Pride Sticker",
     client: "Instagram",
+    // TRIAL: same trim as Levi's/Kiehl's — see Project.cardTitle.
+    cardTitle: "Pride Sticker",
     year: 2017,
     yearLabel: "2017–2022",
     pinnedRank: 1,
@@ -2088,6 +2188,8 @@ export const projects: Project[] = [
     slug: "rooted-journal-editorial",
     title: "Rooted Journal",
     client: "The Rooted Journal",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "The Rooted Journal",
     year: 2025,
     pinnedRank: 5,
     yearLabel: "Spring 2025",
@@ -2349,6 +2451,8 @@ export const projects: Project[] = [
     slug: "nomad-wheels-505-livery",
     title: "Nomad 505 Touring",
     client: "Nomad Wheel Co.",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "Nomad Wheel Co.",
     year: 2024,
     pinnedRank: 12,
     discipline: "Automotive Livery",
@@ -2395,6 +2499,9 @@ export const projects: Project[] = [
     slug: "mr-porter-miami-invites",
     title: "Mr Porter Invites",
     client: "Mr Porter",
+    // TRIAL: "Miami Invites > Mr Porter," per Josh — see Project.cardTitle.
+    cardTitle: "Miami Invites",
+    cardLabel: "Mr Porter",
     year: 2021,
     discipline: "Event Invitation",
     deliverables: "2 Invitations",
@@ -2453,6 +2560,10 @@ export const projects: Project[] = [
     slug: "monocle-spot-illo",
     title: "Monocle - Sumo",
     client: "Monocle",
+    // TRIAL: generic-category title like Boat International, not a trim
+    // to "Sumo" — "Editorial > Monocle," per Josh. See Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "Monocle",
     year: 2018,
     pinnedRank: 9,
     // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
@@ -2486,6 +2597,8 @@ export const projects: Project[] = [
     slug: "ual-welcome-booklets",
     title: "UAL Booklets",
     client: "University of the Arts London",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "University of the Arts London",
     year: 2017,
     yearLabel: "2017/18/19/20",
     discipline: "Illustration",
@@ -2580,6 +2693,8 @@ export const projects: Project[] = [
     slug: "voxi-pride",
     title: "Voxi Pride",
     client: "VOXI by Vodafone",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "VOXI by Vodafone",
     year: 2019,
     discipline: "Pride Campaign",
     deliverables: "Phone Cases · Flags · Pins · Social · Tees",
@@ -2659,6 +2774,9 @@ export const projects: Project[] = [
     slug: "beefbar-posters",
     title: "Beefbar",
     client: "Beefbar",
+    // TRIAL: "Posters > Beefbar," per Josh — see Project.cardTitle.
+    cardTitle: "Posters",
+    cardLabel: "Beefbar",
     year: 2017,
     yearLabel: "2017–Present Day",
     pinnedRank: 6,
@@ -2780,6 +2898,8 @@ export const projects: Project[] = [
     slug: "la-pride",
     title: "L.A. Pride",
     client: "City of Los Angeles",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "City of Los Angeles",
     year: 2024,
     pinnedRank: 3,
     discipline: "Festival Identity",
@@ -2973,6 +3093,10 @@ export const projects: Project[] = [
     slug: "bombay-sapphire",
     title: "Bombay Sapphire",
     client: "Bombay Sapphire",
+    // TRIAL: "Stir Creativity" is the real campaign name, per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Stir Creativity",
+    cardLabel: "Bombay Sapphire",
     year: 2018,
     pinnedRank: 13,
     discipline: "Illustration",
@@ -3036,6 +3160,8 @@ export const projects: Project[] = [
     slug: "bershka",
     title: "We Are Proud",
     client: "Bershka",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "Bershka",
     year: 2018,
     discipline: "Illustration",
     deliverables: "1 Instagram Story animation",
