@@ -716,6 +716,10 @@ export const projects: Project[] = [
       { role: "Client", name: "Comic Relief" },
       { role: "Partner", name: "Sink The Pink" },
     ],
+    // True ratio (2000x2000) — pinned rather than left to RATIO_CYCLE's
+    // chance assignment, same fix as the other unpinned cards found
+    // alongside the Bum Selfie 3D report.
+    cardRatio: "1/1",
     hero: {
       ratio: "1/1",
       alt: "Tote artwork — pairing one",
@@ -1086,6 +1090,10 @@ export const projects: Project[] = [
       { role: "Agency", name: "Havas" },
       { role: "Client", name: "Kiehl's" },
     ],
+    // True ratio (2400x2400) — pinned rather than left to RATIO_CYCLE's
+    // chance assignment, same fix as the other unpinned cards found
+    // alongside the Bum Selfie 3D report.
+    cardRatio: "1/1",
     hero: {
       ratio: "1/1",
       alt: "Limited-edition Kiehl's Ultra Facial Cream, Pride campaign packaging",
@@ -1279,6 +1287,10 @@ export const projects: Project[] = [
     // usual full-bleed hero shows it at a scale it was never meant to be
     // seen at.
     heroSize: "spot",
+    // True ratio (1049x1311, an exact 4/5) — pinned rather than left to
+    // RATIO_CYCLE's chance assignment, same fix as the other unpinned
+    // cards found alongside the Bum Selfie 3D report.
+    cardRatio: "4/5",
     hero: {
       ratio: "4/5",
       alt: "A stiletto heel, cracked clean through",
@@ -1996,6 +2008,11 @@ export const projects: Project[] = [
       "A 3D take on [Bum Selfie](/work/bum-selfie), the flat illustration it started from.",
     ],
     credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    // Pinned — this was the one Womp 3D project left unpinned, so the
+    // /work grid silently handed it whatever RATIO_CYCLE landed on for
+    // its position (including landscape values the portrait render was
+    // never shot for). "It should be 1/1," per Josh.
+    cardRatio: "1/1",
     // 4/5 across all three frames in the row — per Josh, over each
     // asset's own true ratio (renders are 8/9, the video's 1078x1438 is
     // ≈3/4), so hero/heroPair/video crop to a matching frame instead of
