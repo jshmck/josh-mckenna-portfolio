@@ -774,15 +774,19 @@ export function WorkGallery({
             // Safari auto-zoom the whole page into a focused input, which
             // is what "pushes the screen to the right" on mobile (the
             // page wasn't overflowing, the viewport was zooming). Desktop
-            // keeps the row's 11px, where the same py as the pills lands
-            // on the same height with no trim needed. py-[5.8px], not a
-            // rounder number: a `<button>` and a native `<input>` don't
-            // render an identical box from identical padding/font-size
-            // (confirmed by measuring both live) — "the search pill... is
-            // bigger than the other pills," per Josh. This value is
-            // reverse-engineered from that gap, not derived from a clean
-            // formula; if the pills' own py/text ever changes, re-measure
-            // rather than assume this scales with it.
+            // keeps the row's 11px, but py-[7.85px] there too, NOT the
+            // pills' own py-[9.5px] — a `<button>` and a native `<input>`
+            // don't render an identical box from identical padding/
+            // font-size at EITHER size (confirmed by measuring both live:
+            // desktop's input was rendering a full 3.3px taller than the
+            // pills at the "matching" 9.5px value, not just mobile's
+            // smaller gap) — "search pill still looks bigger than the
+            // rest (both web and mobile)," per Josh, after an earlier pass
+            // only re-measured and fixed the mobile side. Both py values
+            // are reverse-engineered from their own measured gap, not
+            // derived from a shared formula; if the pills' own py/text
+            // ever changes, re-measure both rather than assume either
+            // scales with it.
             // group-has button:hover — hovering the clear-× grows the
             // bar itself, same gesture as the × (below), so the two
             // read as one move. Width, not `scale` — the × is a solid
@@ -795,7 +799,7 @@ export function WorkGallery({
             // Only width, not py — the pill's height has to keep
             // matching its neighbours' (see the py/text-metrics note
             // above), and growing padding on hover would break that.
-            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
+            className={`font-grotesque rounded-full border bg-transparent py-[7.85px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
                 ? "w-44 border-brand pr-9 pl-8"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
