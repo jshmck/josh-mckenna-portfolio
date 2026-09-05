@@ -88,7 +88,7 @@ export function ContactContent() {
             the old max-w-[280px] footprint at this aspect ratio. */}
         <div className="mt-8">
           <TiltIllustration
-            src="/illustrations/last-call.png"
+            src="/illustrations/last-call.webp"
             alt="A drawing, for the sake of it"
             aspect="1255/1338"
             height={298}
