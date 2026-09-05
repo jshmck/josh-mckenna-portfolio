@@ -257,15 +257,18 @@ export type Project = {
   cardImage?: ProjectImage;
   /**
    * Trial (components/work/project-card.tsx): overrides the /work grid
-   * card's hover title when it should differ from the full page `title` —
-   * the page's own H1/OG tags are untouched. For a title that already
-   * carries its client name as a prefix ("Levi's Rainbow Rodeo"), once the
-   * client renders as its own label underneath, the prefix is redundant —
-   * `cardTitle: "Rainbow Rodeo"` trims it, label reads "Levi's" below. Also
-   * covers a title that's just a bare repeat of the client ("Boat
-   * International") with nothing to trim — give it a real descriptive
-   * `cardTitle` ("Editorial") and pair with an explicit `cardLabel`
-   * ("By Boat International") instead.
+   * card's hover title when it should differ from the full page `title`.
+   * For a title that already carries its client name as a prefix ("Levi's
+   * Rainbow Rodeo"), once the client renders as its own label underneath,
+   * the prefix is redundant — `cardTitle: "Rainbow Rodeo"` trims it, label
+   * reads "Levi's" below. Also covers a title that's just a bare repeat of
+   * the client ("Boat International") with nothing to trim — give it a
+   * real descriptive `cardTitle` ("Editorial") and pair with an explicit
+   * `cardLabel` ("By Boat International") instead. The page's own H1 falls
+   * back to this too (see project-content.tsx's displayTitle) unless
+   * `pageTitle` overrides it — most projects want the grid and the page to
+   * read the same name, so this is still the shared default in both
+   * places; `pageTitle` exists for the projects that don't.
    */
   cardTitle?: string;
   /**
@@ -276,6 +279,33 @@ export type Project = {
    * not a second title fragment.
    */
   cardLabel?: string;
+  /**
+   * Overrides the PROJECT PAGE's own H1/breadcrumb/browser-tab title —
+   * the opposite direction from `cardTitle` (which changes what the grid
+   * card shows while the page keeps the real name). Use this when several
+   * projects deliberately share one generic `cardTitle` on the grid (e.g.
+   * three different Editorial pieces all showing "Editorial" as their
+   * card label) but the page itself should still carry each piece's own
+   * specific name — "Editorial - Vogue Magazine becomes 'Safe Tanning
+   * Editorial'... Monocle becomes 'Sumo Spot Illustration'... Monocle
+   * becomes 'Downward Trend'," per Josh. Falls back to `cardTitle ?? title`
+   * when absent, same as before this field existed — most projects don't
+   * need the pair. generateMetadata (app/work/[slug]/page.tsx) uses the
+   * same fallback chain for the browser tab/OG title, so it always matches
+   * whatever the page's own H1 shows.
+   */
+  pageTitle?: string;
+  /**
+   * Overrides where ProjectTitle's mobile two-line break falls — see that
+   * component's own doc comment for the default rule (break before the
+   * last word only). Only needed when that generic rule splits a title
+   * somewhere it doesn't actually read naturally — "Honda Super N" wants
+   * "Honda" / "Super N", not the default "Honda Super" / "N". Value is the
+   * word index (0-based, counting words of whichever title is actually
+   * displayed — cardTitle/pageTitle if set, else the plain title) the
+   * second line should start at.
+   */
+  titleBreakIndex?: number;
   /**
    * Per-pill override of the card's lead image — while the given category
    * filter is active on /work, the card leads with a more on-topic image
@@ -596,6 +626,9 @@ export const projects: Project[] = [
   {
     slug: "honda-super-n",
     title: "Honda Super N",
+    // "Honda" / "Super N", not the generic last-word-only rule's "Honda
+    // Super" / "N" — see titleBreakIndex's own doc comment.
+    titleBreakIndex: 1,
     client: "Personal",
     year: 2026,
     // Ranked just ahead of Bronco (18) so the Cars category's dense pack
@@ -1268,6 +1301,10 @@ export const projects: Project[] = [
     // as monocle-spot-illo. See Project.cardTitle.
     cardTitle: "Editorial",
     cardLabel: "Monocle",
+    // The page itself keeps the piece's real name (matches the article
+    // it ran alongside — see heroCaption below) even though the grid
+    // card shows the generic "Editorial" both Monocle pieces share.
+    pageTitle: "Downward Trend",
     year: 2018,
     yearLabel: "October 2018, Issue 117",
     discipline: "Editorial Illustration",
@@ -1772,6 +1809,10 @@ export const projects: Project[] = [
     // Project.cardTitle.
     cardTitle: "Editorial",
     cardLabel: "Vogue Magazine",
+    // The page itself keeps the piece's real name (matches the series'
+    // subject — see summary below) even though the grid card shows the
+    // generic "Editorial" every magazine credit shares.
+    pageTitle: "Safe Tanning Editorial",
     year: 2018,
     // Pinned to the middle of /work's curated block, regardless of year
     // — Josh wants this one prominent despite being older than most of
@@ -2602,6 +2643,10 @@ export const projects: Project[] = [
     // to "Sumo" — "Editorial > Monocle," per Josh. See Project.cardTitle.
     cardTitle: "Editorial",
     cardLabel: "Monocle",
+    // The page itself keeps the piece's real name (matches the subject —
+    // see summary below) even though the grid card shows the generic
+    // "Editorial" both Monocle pieces share.
+    pageTitle: "Sumo Spot Illustration",
     year: 2018,
     pinnedRank: 9,
     // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
