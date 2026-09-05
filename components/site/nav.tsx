@@ -39,9 +39,19 @@ import { CartIcon } from "@/components/ui/social-icons";
  *      with jM/Cart now genuinely far from the main pill, motion implying
  *      they'd travelled in from it stopped making sense — Josh's own
  *      observation.
- *   5. (current) Blobs reverted back to plain circles, per Josh — no
- *      reason given, just "put them back to circle." Grid layout and
- *      dropped animation from pass 4 both stayed.
+ *   5. Blobs reverted back to plain circles, per Josh — no reason given,
+ *      just "put them back to circle." Grid layout and dropped animation
+ *      from pass 4 both stayed.
+ *   6. (current, mobile only) "mobile nav bar needs to be one shape,
+ *      include jM and cart in the same nav bar as the rest," per Josh —
+ *      unifying again, but not by reviving pass 3's SVG goo filter (that's
+ *      still what broke backdrop-blur sitewide). Below md, <nav> itself
+ *      now carries the one shared border/background/blur (see
+ *      barFrostClassMobile), and the three shapes drop their own —
+ *      shapeFrostClassDesktop keeps desktop's separate circles/pill
+ *      exactly as pass 5 left them, untouched. Grid layout (and therefore
+ *      jM/Cart sitting at the frame's real edges) stays the same at every
+ *      breakpoint; only which element(s) paint the frost changed.
  *
  * `position: sticky`, not `fixed` — sits in normal document flow, so a
  * spacer div is no longer needed to reserve its space. This used to be
@@ -56,9 +66,10 @@ import { CartIcon } from "@/components/ui/social-icons";
  * header-over-content smudge was the frost threshold below.
  *
  * The <header> itself is always 88px, never shrinks, and never carries a
- * border or background — that's all on the three shapes now, sharing one
- * `frostClass` string so they never drift out of sync with each other.
- * <nav> is a `grid-cols-[1fr_auto_1fr]` spanning max-w-frame (the site's
+ * border or background — from md up that's all on the three shapes, which
+ * share one `shapeFrostClassDesktop` string so they never drift out of
+ * sync with each other; below md it moves to <nav> itself instead (pass 6,
+ * below). <nav> is a `grid-cols-[1fr_auto_1fr]` spanning max-w-frame (the site's
  * usual content width) rather than a flex row with a gap — jM and Cart
  * sit in the two `1fr` tracks (`justify-self-start`/`-end`), the main
  * pill in the `auto` middle track, which stays centred in the viewport
@@ -415,10 +426,12 @@ export function Nav() {
   // distance between them now, motion implying they came from the pill
   // no longer reads as sensible. No replacement animation yet.
   //
-  // frostClass is shared across all three shapes so the frost (border
-  // colour, background, blur, the one-shot "stuck, then unstuck" settle)
-  // stays byte-identical between them -- all three squash/stretch/settle
-  // in lockstep, not staggered. 650ms, up from an original 500ms flat
+  // This recipe (border colour, background, blur, the one-shot "stuck,
+  // then unstuck" settle) is shared across all three shapes at md+ (see
+  // shapeFrostClassDesktop below) so the frost stays byte-identical
+  // between them -- all three squash/stretch/settle in lockstep, not
+  // staggered. Below md it's one shape, so there's nothing left to keep
+  // in sync -- see pass 6, further down. 650ms, up from an original 500ms flat
   // scale-pop -- the new keyframe (globals.css) needs the extra room to
   // read as a hold-then-release rather than a single quick pop.
   //
@@ -465,11 +478,37 @@ export function Nav() {
   // Purely scroll-driven -- a `|| swipeFrost` used to force this branch
   // during a ProjectStackSwipe drag too; removed per Josh, see the note
   // where that state used to be declared above.
-  const frostClass = scrolled
-    ? `${atBottom ? "animate-[nav-pill-landing_650ms_ease-in-out]" : "animate-[nav-pill-pop_650ms_ease-in-out]"} border-transparent bg-canvas/15 shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] backdrop-blur-md backdrop-saturate-150`
+  //
+  // This recipe used to live in one `frostClass` variable, applied
+  // byte-identically to all three shapes. It's now split into two
+  // breakpoint-scoped copies below (shapeFrostClassDesktop,
+  // barFrostClassMobile) so the frost can live on the three individual
+  // shapes at md+ but move to the shared <nav> bar below md — see that
+  // comment for why a single runtime-prefixed variable can't do this.
+  //
+  // "mobile nav bar needs to be one shape, include jM and cart in the same
+  // nav bar as the rest," per Josh — a sixth pass at unifying the three
+  // shapes, mobile only this time (desktop keeps pass 5's three separate
+  // circles/pill exactly as documented above). The SVG goo-filter fusion
+  // pass 3 tried broke backdrop-blur sitewide; this avoids that entirely —
+  // no filter, just one shared border/background moved from the three
+  // individual shapes onto <nav> itself, which already spans jM-to-Cart's
+  // full width. `md:`/`max-md:`-prefixed duplicates of frostClass's own
+  // three branches, not a runtime `md:${frostClass}` prefix — Tailwind's
+  // scanner only generates CSS for exact class strings it finds literally
+  // in the source, so a prefix built by string-concatenation at runtime
+  // would silently generate no CSS at all (confirmed against this exact
+  // trap once already, see jM's own "unscannable token" comment below).
+  const shapeFrostClassDesktop = scrolled
+    ? `${atBottom ? "md:animate-[nav-pill-landing_650ms_ease-in-out]" : "md:animate-[nav-pill-pop_650ms_ease-in-out]"} md:border-transparent md:bg-canvas/15 md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] md:backdrop-blur-md md:backdrop-saturate-150`
     : hasFrostedOnce
-      ? "animate-[nav-pill-landing_650ms_ease-in-out] border-transparent bg-transparent"
-      : "border-transparent bg-transparent";
+      ? "md:animate-[nav-pill-landing_650ms_ease-in-out] md:border-transparent md:bg-transparent"
+      : "md:border-transparent md:bg-transparent";
+  const barFrostClassMobile = scrolled
+    ? `${atBottom ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out]" : "max-md:animate-[nav-pill-pop_650ms_ease-in-out]"} max-md:border-transparent max-md:bg-canvas/15 max-md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] max-md:backdrop-blur-md max-md:backdrop-saturate-150`
+    : hasFrostedOnce
+      ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out] max-md:border-transparent max-md:bg-transparent"
+      : "max-md:border-transparent max-md:bg-transparent";
 
   return (
     <>
@@ -490,7 +529,18 @@ export function Nav() {
       <header ref={headerRef} className="sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)]">
         <nav
           aria-label="Primary"
-          className="mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 md:px-gutter"
+          // max-md: this element carries the ONE shared shape now — border,
+          // background, blur and the scroll-driven bounce all move here
+          // from the three children (see barFrostClassMobile/
+          // shapeFrostClassDesktop above), so jM, the links and Cart read
+          // as one continuous bar rather than three separate touching
+          // shapes. max-md:border unconditional (colour comes from
+          // barFrostClassMobile, transparent at rest) for the same
+          // no-layout-shift-on-frost reason the three shapes' own border
+          // always was. md: stays exactly the plain, unstyled grid
+          // container it always was — desktop's three shapes still carry
+          // their own chrome individually.
+          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-full max-md:border max-md:px-2 max-md:py-2 ${barFrostClassMobile}`}
         >
           {/* jM circle -- pinned to the frame's left edge (justify-self:
               start), the same edge the pre-pill nav always had it at.
@@ -506,8 +556,8 @@ export function Nav() {
               as animate or fun," per Josh). A third distinct name always
               differs from whatever the base is currently playing, so it
               retriggers every hover regardless of scroll state.
-              Unconditional (outside frostClass, which only covers the
-              scroll-driven state) so it plays on every fresh hover/tap
+              Unconditional (outside shapeFrostClassDesktop, which only
+              covers the scroll-driven state) so it plays on every fresh hover/tap
               regardless of whether the pill is currently frosted or
               not. */}
           <div className="justify-self-start">
@@ -515,7 +565,11 @@ export function Nav() {
               href="/"
               aria-label="Josh McKenna — home"
               onClick={() => scrollToTopIfCurrent("/")}
-              className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
+              // max-md:border-0 -- this circle's own border/background move
+              // to the shared <nav> bar now (see shapeFrostClassDesktop's
+              // own comment); md:border keeps desktop's separate-circle
+              // border exactly as before.
+              className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-full max-md:border-0 md:border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${shapeFrostClassDesktop}`}
             >
               {/* Home link -- always routes to "/", every page, every
                   state. Josh's own jM logomark now (public/icons/
@@ -630,7 +684,9 @@ export function Nav() {
             // this box doesn't kill the menu before the cursor lands.
             onMouseEnter={cancelWorkMenuClose}
             onMouseLeave={scheduleWorkMenuClose}
-            className={`relative flex items-center gap-3 rounded-full border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${frostClass}`}
+            // max-md:border-0 -- own border/background move to the shared
+            // <nav> bar now, same as jM/Cart (see shapeFrostClassDesktop).
+            className={`relative flex items-center gap-3 rounded-full max-md:border-0 md:border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${shapeFrostClassDesktop}`}
           >
             {workMenuOpen && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3">
@@ -816,7 +872,9 @@ export function Nav() {
               aria-current={isActive("/shop") ? "page" : undefined}
               aria-label="Cart"
               onClick={() => scrollToTopIfCurrent("/shop")}
-              className={`group flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${frostClass}`}
+              // max-md:border-0 -- own border/background move to the shared
+              // <nav> bar now, same as jM (see shapeFrostClassDesktop).
+              className={`group flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-full max-md:border-0 md:border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${shapeFrostClassDesktop}`}
             >
               {/* group-hover (keyed to the circle <Link> above, via
                   `group`), not a plain hover: on the icon itself -- the
