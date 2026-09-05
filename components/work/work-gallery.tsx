@@ -710,7 +710,11 @@ export function WorkGallery({
             reason; the min-h-[102px] reservation above already assumes
             this exact 3-line shape, so this doesn't add any new height,
             just moves the search pill into space that was already set
-            aside for it. */}
+            aside for it. Confirmed against Josh's own first reaction --
+            "it shouldnt be on it's own row?" read as a request to
+            revert, but the very next message clarified: "it goes to
+            it's own row nicely" -- the own-row placement itself was
+            never the problem, just testing it out loud. */}
         <span aria-hidden="true" className="h-0 basis-full md:hidden" />
         <span
           className={`group/search relative inline-flex items-center ${pillEntrance(filters.length).className}`}
@@ -803,9 +807,9 @@ export function WorkGallery({
             // derived from a shared formula; if the pills' own py/text
             // ever changes, re-measure both rather than assume either
             // scales with it.
-            // group-has button:hover — hovering the clear-× grows the
-            // bar itself, same gesture as the × (below), so the two
-            // read as one move. Width, not `scale` — the × is a solid
+            // pointer-fine:group-has button:hover — hovering the clear-×
+            // grows the bar itself, same gesture as the × (below), so the
+            // two read as one move. Width, not `scale` — the × is a solid
             // fill with no stroke to distort, but this element has a
             // 1px border, and a transform-scale rasterises the box at
             // its base size before enlarging the bitmap, which softens
@@ -815,7 +819,24 @@ export function WorkGallery({
             // Only width, not py — the pill's height has to keep
             // matching its neighbours' (see the py/text-metrics note
             // above), and growing padding on hover would break that.
-            className={`font-grotesque rounded-full border bg-transparent py-[7.85px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
+            // pointer-fine: is load-bearing, not decorative — Tailwind's
+            // own semantic `hover:` variant auto-wraps itself in
+            // `@media (hover: hover)` specifically so a tap can't leave a
+            // touch device stuck "hovering" a control forever, but that
+            // safety net only covers the literal `hover:` prefix.
+            // `group-has-[button:hover]` is a raw arbitrary selector that
+            // happens to reference `:hover` — Tailwind never wraps it, so
+            // it inherited none of that protection. Confirmed live on a
+            // touch-emulated tap: `button.matches(":hover")` stayed true
+            // and this pill sat stuck at 184px (only sliding back to 34px
+            // once the pointer moved elsewhere) — "hitting the x just
+            // removes the highlight when it should shrink," per Josh,
+            // since the visible border-colour change (part of `searchOpen`
+            // going false) landed fine while this width rule stayed stuck
+            // on. pointer-fine: restores the exact same guard `hover:`
+            // gets for free, matching PrideFilterButton's own
+            // pointer-coarse:/pointer-fine: split elsewhere in this file.
+            className={`font-grotesque rounded-full border bg-transparent py-[7.85px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none pointer-fine:group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
                 ? "w-44 border-brand pr-9 pl-8"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
