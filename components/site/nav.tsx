@@ -58,16 +58,15 @@ import { CartIcon } from "@/components/ui/social-icons";
  *      Josh, seeing it live — <header> picked up its own max-md:px-6 to
  *      inset the whole bar in from the edge (see that className's own
  *      comment for why it lives there and not on <nav>'s existing px-6).
- *      Its corners are rounded-full — the full stadium curve, half the
- *      bar's own height. A rounded-frame version (the sitewide 26.5px
- *      frame token) was tried in between, off "the round corner ratio
- *      must match the rest of the site frames," per Josh — and reverted
- *      the moment he saw it rendered: "you've made the whole nav bar
- *      more square in shape. it has to be circle like before." At this
- *      bar's ~70px height the token's 26.5px reads as a rounded
- *      rectangle, not a pill; the nav is chrome, not a framed artwork
- *      surface, and its shape language is the capsule. Don't re-match it
- *      to the frame token.
+ *      Its corners are a tuned 30px — bracketed from both ends: the
+ *      sitewide rounded-frame token (26.5px, asked for as "the round
+ *      corner ratio must match the rest of the site frames") read as
+ *      "more square in shape. it has to be circle like before," per
+ *      Josh, but the full rounded-full capsule he sent it back to then
+ *      read a touch too bulbous — "I like the nav being a pill again
+ *      but i think it needs to be a bit tighter to match the radius of
+ *      the frames corners." 30px holds the pill read while leaning
+ *      toward the frame curvature; see the className's own comment.
  *
  * `position: sticky`, not `fixed` — sits in normal document flow, so a
  * spacer div is no longer needed to reserve its space. This used to be
@@ -572,17 +571,20 @@ export function Nav() {
           // no-layout-shift-on-frost reason the three shapes' own border
           // always was. md: stays exactly the plain, unstyled grid
           // container it always was — desktop's three shapes still carry
-          // their own chrome individually. max-md:rounded-full, the full
-          // stadium capsule -- a rounded-frame version (the sitewide
-          // 26.5px token, asked for as "the round corner ratio must
-          // match the rest of the site frames") was tried and reverted
-          // on sight: "you've made the whole nav bar more square in
-          // shape. it has to be circle like before," per Josh. At this
-          // bar's ~70px height the frame token reads as a rounded
-          // rectangle, not a pill -- the nav is chrome, not framed
-          // artwork, and its shape language is the capsule (see pass 6
-          // in the top doc comment).
-          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-full max-md:border max-md:px-2 max-md:py-2 ${barFrostClassMobile}`}
+          // their own chrome individually. max-md:rounded-[30px] is a
+          // tuned midpoint, arrived at by bracketing: rounded-frame
+          // (the sitewide 26.5px token, asked for as "the round corner
+          // ratio must match the rest of the site frames") read as
+          // "more square in shape. it has to be circle like before,"
+          // per Josh — but the full rounded-full capsule (~34.7px at
+          // this bar's ~69px height) then read a touch too bulbous
+          // against the site's frames: "I like the nav being a pill
+          // again but i think it needs to be a bit tighter to match
+          // the radius of the frames corners." 30px keeps the pill
+          // read while leaning toward the frame token's curvature —
+          // a bespoke chrome number like the 53px circles and 88px
+          // header around it, not a candidate for tokenising.
+          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-[30px] max-md:border max-md:px-2 max-md:py-2 ${barFrostClassMobile}`}
         >
           {/* jM circle -- pinned to the frame's left edge (justify-self:
               start), the same edge the pre-pill nav always had it at.
