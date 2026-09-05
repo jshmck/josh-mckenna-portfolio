@@ -3,9 +3,13 @@
 import { useEffect, useRef } from "react";
 
 type ProjectTitleProps = {
-  /** Every word except the last — "" for a single-word title. */
+  /** Everything before the mobile break — "" for a title that doesn't
+   *  break at all. Usually every word but the last (see page.tsx's
+   *  displayTitleHead), but `titleBreakIndex` (lib/projects.ts) can move
+   *  the split earlier for a title the default rule groups wrong. */
   head: string;
-  /** The final word, always rendered. */
+  /** Everything from the break onward — usually just the final word, but
+   *  can be several when `titleBreakIndex` moves the split earlier. */
   last: string;
   className?: string;
 };

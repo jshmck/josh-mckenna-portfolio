@@ -18,11 +18,16 @@ export async function generateMetadata({
 
   if (!project) return {};
 
+  // Same fallback chain as ProjectContent's own displayTitle — the
+  // browser tab/OG title should always match what the page's H1 actually
+  // shows, pageTitle included (see its own doc comment in lib/projects.ts).
+  const displayTitle = project.pageTitle ?? project.cardTitle ?? project.title;
+
   return {
-    title: project.title,
+    title: displayTitle,
     description: `${project.summary} ${project.discipline} for ${project.client}, ${project.yearLabel ?? project.year}.`,
     openGraph: {
-      title: `${project.title} — Josh McKenna`,
+      title: `${displayTitle} — Josh McKenna`,
       description: project.summary,
     },
   };

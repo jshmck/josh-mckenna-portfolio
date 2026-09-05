@@ -152,17 +152,17 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
     { label: "Deliverables", value: project.deliverables },
   ];
 
-  // The page's H1 and breadcrumb now render the same displayTitle the
-  // /work grid card's hover shows — "the project title in the Work /
-  // Wagamama Pride pages [wasn't] matching the hover titles... make sure
-  // they're all the same," per Josh. cardTitle used to be scoped to the
-  // grid card only (the page kept the real project.title, e.g. "Wagamama
-  // Pride" under a "Pride Windows" hover); that split is gone now — a
-  // visitor who clicks through should see the same name they hovered.
-  // generateMetadata (app/work/[slug]/page.tsx) still uses the real
-  // project.title for the browser tab / OG tags — not a visible mismatch
-  // a visitor would notice.
-  const displayTitle = project.cardTitle ?? project.title;
+  // The page's H1 and breadcrumb render the same name the /work grid
+  // card's hover shows — "the project title in the Work / Wagamama Pride
+  // pages [wasn't] matching the hover titles... make sure they're all the
+  // same," per Josh — UNLESS `pageTitle` opts a project out, for the
+  // reverse case: several projects deliberately sharing one generic
+  // `cardTitle` ("Editorial") on the grid while the page itself keeps each
+  // piece's own specific name. See pageTitle's own doc comment in
+  // lib/projects.ts. generateMetadata (app/work/[slug]/page.tsx) uses the
+  // same fallback chain for the browser tab / OG title, so that's never a
+  // visible mismatch either.
+  const displayTitle = project.pageTitle ?? project.cardTitle ?? project.title;
 
   // Mobile only ("in the projects themselves on mobile," per Josh) — the
   // same brand line the /work grid card's hover shows under its title,
@@ -180,13 +180,17 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
   // so titles read inconsistently phone to phone. "The project name
   // needs to be on two lines," per Josh. Breaking before the last word
   // (not one-word-per-line) keeps three-word titles ("The Gay Divide")
-  // to exactly two lines as well. The split is computed here but
-  // rendered by ProjectTitle (a client component — see its own doc
-  // comment), which also shrinks the font if either resulting line is
-  // still too wide for the viewport.
+  // to exactly two lines as well. `titleBreakIndex` opts a project out of
+  // that generic rule when it groups words wrong — "Honda Super N" wants
+  // "Honda" / "Super N", not "Honda Super" / "N" — see its own doc
+  // comment in lib/projects.ts. The split is computed here but rendered
+  // by ProjectTitle (a client component — see its own doc comment),
+  // which also shrinks the font if either resulting line is still too
+  // wide for the viewport.
   const displayTitleWords = displayTitle.split(" ");
-  const displayTitleHead = displayTitleWords.slice(0, -1).join(" ");
-  const displayTitleLast = displayTitleWords[displayTitleWords.length - 1];
+  const displayTitleBreakIndex = project.titleBreakIndex ?? displayTitleWords.length - 1;
+  const displayTitleHead = displayTitleWords.slice(0, displayTitleBreakIndex).join(" ");
+  const displayTitleLast = displayTitleWords.slice(displayTitleBreakIndex).join(" ");
   const headerIllustrations = project.headerIllustrations;
 
   // The exact set of images HeroLightbox renders below, computed once so it
