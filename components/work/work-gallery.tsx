@@ -639,7 +639,20 @@ export function WorkGallery({
         // entrance animations — see entranceRun's own comment.
         key={entranceRun}
         ref={pillRowRef}
-        className="flex flex-wrap items-center justify-center gap-2"
+        // max-md:min-h-[102px] + content-start: below md this row wraps
+        // to 2 lines closed, 3 open (the search pill's w-44 no longer
+        // fits the second line) — with no reserved height, that third
+        // line pushed the illustration row (and everything below it)
+        // down the instant search was focused. "leave enough gap under
+        // the categories so that when you click search the ipad
+        // illustration doesn't have to move down," per Josh. 102px is
+        // the row's own measured open-state height at this breakpoint
+        // (live-measured, not derived from a formula — see the search
+        // pill's own sizing comment for why these two elements don't
+        // reduce to clean math); content-start keeps the two closed-
+        // state lines packed at the top rather than the flex-wrap
+        // default spreading them to fill the reserved height.
+        className="flex flex-wrap content-start items-center justify-center gap-2 max-md:min-h-[102px]"
         role="group"
         aria-label="Filter work by discipline"
       >
@@ -701,17 +714,23 @@ export function WorkGallery({
             // group-hover: the glass goes brand with the border — "make
             // sure the mag glass is blue on hover like the rest of the
             // pills," per Josh. Position is transform-only off a fixed
-            // left-0 (11px centres it in the closed 34px pill, 14px is
-            // the old left-3.5 docked spot): the earlier left-1/2 ↔
-            // left-3.5 move animated `left` — a layout property — against
-            // a width that was itself mid-transition, and that compound
-            // path is what read as janky on collapse.
+            // left-0 (12px centres the 10px glyph in the closed 34px
+            // pill, 14px is the old left-3.5 docked spot): the earlier
+            // left-1/2 ↔ left-3.5 move animated `left` — a layout
+            // property — against a width that was itself mid-transition,
+            // and that compound path is what read as janky on collapse.
+            // h-2.5 w-2.5, not h-3 w-3 -- "the mag glass is bigger than
+            // the other pills," per Josh: at 12px the glyph (a ~7px
+            // circle plus a diagonal handle reaching toward the corner)
+            // read larger than the 11px pill text's own cap-height
+            // sitting right next to it — 10px brings the two to the same
+            // visual weight without touching the pill's own box model.
             // transition-[translate,...], not transform — Tailwind v4's
             // translate-x-* emits the standalone CSS `translate`
             // property (same trap ProjectCard's title notes), so
             // transitioning `transform` would snap instead of glide.
-            className={`pointer-events-none absolute left-0 h-3 w-3 transition-[translate,color] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/search:text-brand ${
-              searchOpen ? "translate-x-[14px] text-brand" : "translate-x-[11px] text-ink"
+            className={`pointer-events-none absolute left-0 h-2.5 w-2.5 transition-[translate,color] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/search:text-brand ${
+              searchOpen ? "translate-x-[14px] text-brand" : "translate-x-[12px] text-ink"
             }`}
             fill="none"
             stroke="currentColor"
@@ -750,12 +769,20 @@ export function WorkGallery({
             // to keep in sync. [&::-webkit-search-cancel-button]:hidden
             // — the circled × below is the one clear affordance;
             // WebKit's native cancel button would double it up.
-            // max-md: 16px type with the padding trimmed to keep the
-            // pill's 32px height — anything under 16px makes iOS Safari
-            // auto-zoom the whole page into a focused input, which is
-            // what "pushes the screen to the right" on mobile (the page
-            // wasn't overflowing, the viewport was zooming). Desktop
-            // keeps the row's 11px.
+            // max-md: 16px type with the padding trimmed to match the
+            // pills' own rendered height — anything under 16px makes iOS
+            // Safari auto-zoom the whole page into a focused input, which
+            // is what "pushes the screen to the right" on mobile (the
+            // page wasn't overflowing, the viewport was zooming). Desktop
+            // keeps the row's 11px, where the same py as the pills lands
+            // on the same height with no trim needed. py-[5.8px], not a
+            // rounder number: a `<button>` and a native `<input>` don't
+            // render an identical box from identical padding/font-size
+            // (confirmed by measuring both live) — "the search pill... is
+            // bigger than the other pills," per Josh. This value is
+            // reverse-engineered from that gap, not derived from a clean
+            // formula; if the pills' own py/text ever changes, re-measure
+            // rather than assume this scales with it.
             // group-has button:hover — hovering the clear-× grows the
             // bar itself, same gesture as the × (below), so the two
             // read as one move. Width, not `scale` — the × is a solid
@@ -768,7 +795,7 @@ export function WorkGallery({
             // Only width, not py — the pill's height has to keep
             // matching its neighbours' (see the py/text-metrics note
             // above), and growing padding on hover would break that.
-            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:w-[184px] max-md:py-[7px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
+            className={`font-grotesque rounded-full border bg-transparent py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
                 ? "w-44 border-brand pr-9 pl-8"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
