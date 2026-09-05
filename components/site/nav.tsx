@@ -58,15 +58,14 @@ import { CartIcon } from "@/components/ui/social-icons";
  *      Josh, seeing it live — <header> picked up its own max-md:px-6 to
  *      inset the whole bar in from the edge (see that className's own
  *      comment for why it lives there and not on <nav>'s existing px-6).
- *      Its corners are a tuned 30px — bracketed from both ends: the
- *      sitewide rounded-frame token (26.5px, asked for as "the round
- *      corner ratio must match the rest of the site frames") read as
- *      "more square in shape. it has to be circle like before," per
- *      Josh, but the full rounded-full capsule he sent it back to then
- *      read a touch too bulbous — "I like the nav being a pill again
- *      but i think it needs to be a bit tighter to match the radius of
- *      the frames corners." 30px holds the pill read while leaning
- *      toward the frame curvature; see the className's own comment.
+ *      Its corners carry the sitewide rounded-frame token AND read as a
+ *      full pill at once — possible only because the bar's vertical
+ *      padding is zero, putting its height at ~55px, where the 26.5px
+ *      token is (within a px) the capsule radius. Getting here burned
+ *      three radius values on the old, taller (py-2, ~71px) bar, where
+ *      the two goals genuinely conflicted — the resolution came from
+ *      Josh himself: "does it mean the jM padding has to be tighter?"
+ *      See the className's own comment for the numbers.
  *
  * `position: sticky`, not `fixed` — sits in normal document flow, so a
  * spacer div is no longer needed to reserve its space. This used to be
@@ -571,20 +570,26 @@ export function Nav() {
           // no-layout-shift-on-frost reason the three shapes' own border
           // always was. md: stays exactly the plain, unstyled grid
           // container it always was — desktop's three shapes still carry
-          // their own chrome individually. max-md:rounded-[30px] is a
-          // tuned midpoint, arrived at by bracketing: rounded-frame
-          // (the sitewide 26.5px token, asked for as "the round corner
-          // ratio must match the rest of the site frames") read as
-          // "more square in shape. it has to be circle like before,"
-          // per Josh — but the full rounded-full capsule (~34.7px at
-          // this bar's ~69px height) then read a touch too bulbous
-          // against the site's frames: "I like the nav being a pill
-          // again but i think it needs to be a bit tighter to match
-          // the radius of the frames corners." 30px keeps the pill
-          // read while leaning toward the frame token's curvature —
-          // a bespoke chrome number like the 53px circles and 88px
-          // header around it, not a candidate for tokenising.
-          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-[30px] max-md:border max-md:px-2 max-md:py-2 ${barFrostClassMobile}`}
+          // their own chrome individually. max-md:rounded-frame +
+          // max-md:py-0, resolved together — a capsule's corner radius
+          // is half its own height, so "a true pill" and "corners that
+          // match the site's frames" are the SAME shape only at one
+          // specific height: 2 × the 26.5px frame token = 53px, which
+          // is exactly the jM/Cart boxes' own height. Three radius
+          // values were tried on the old ~71px-tall bar (py-2 around
+          // the 53px boxes) and every one read wrong, because at that
+          // height the two goals genuinely conflict: rounded-frame
+          // "more square in shape," rounded-full a pill but not the
+          // frame curvature, a 30px midpoint "rectangle again" —
+          // "what's it got to take to match the frame radius? does it
+          // mean the jM padding has to be tighter?" per Josh, calling
+          // the actual fix: drop the bar's vertical padding to zero so
+          // it hugs the (invisible below md — they're max-md:border-0)
+          // circle boxes at ~55px tall, where the frame token IS the
+          // capsule radius. px-2 stays for horizontal breathing; the
+          // jM mark itself keeps ~7px of clearance inside its own
+          // 53px box, so nothing visually touches the bar's edge.
+          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-frame max-md:border max-md:px-2 max-md:py-0 ${barFrostClassMobile}`}
         >
           {/* jM circle -- pinned to the frame's left edge (justify-self:
               start), the same edge the pre-pill nav always had it at.
