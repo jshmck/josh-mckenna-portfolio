@@ -58,12 +58,16 @@ import { CartIcon } from "@/components/ui/social-icons";
  *      Josh, seeing it live — <header> picked up its own max-md:px-6 to
  *      inset the whole bar in from the edge (see that className's own
  *      comment for why it lives there and not on <nav>'s existing px-6).
- *      Its corners started as rounded-full too, which read as a much
- *      rounder stadium curve than any other framed surface on the site —
- *      "the round corner ratio must match the rest of the site frames,"
- *      per Josh — swapped for rounded-frame, the same token every Plate/
- *      video/lightbox frame uses (and, not coincidentally, jM/Cart's own
- *      circles' literal radius at rest).
+ *      Its corners are rounded-full — the full stadium curve, half the
+ *      bar's own height. A rounded-frame version (the sitewide 26.5px
+ *      frame token) was tried in between, off "the round corner ratio
+ *      must match the rest of the site frames," per Josh — and reverted
+ *      the moment he saw it rendered: "you've made the whole nav bar
+ *      more square in shape. it has to be circle like before." At this
+ *      bar's ~70px height the token's 26.5px reads as a rounded
+ *      rectangle, not a pill; the nav is chrome, not a framed artwork
+ *      surface, and its shape language is the capsule. Don't re-match it
+ *      to the frame token.
  *
  * `position: sticky`, not `fixed` — sits in normal document flow, so a
  * spacer div is no longer needed to reserve its space. This used to be
@@ -568,17 +572,17 @@ export function Nav() {
           // no-layout-shift-on-frost reason the three shapes' own border
           // always was. md: stays exactly the plain, unstyled grid
           // container it always was — desktop's three shapes still carry
-          // their own chrome individually. max-md:rounded-frame, not
-          // rounded-full -- "the round corner ratio must match the rest
-          // of the site frames," per Josh: rounded-full on a wide bar
-          // caps at half its own height, a much tighter stadium curve
-          // than any other framed surface on the site uses. rounded-frame
-          // is the sitewide token every Plate/video/lightbox frame shares
-          // (26.5px below md) -- it's also, not coincidentally, jM/Cart's
-          // own circles' literal radius at rest, so the bar's corners now
-          // read as the same curvature as the icons sitting inside it
-          // rather than a distinct, rounder shape of their own.
-          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-frame max-md:border max-md:px-2 max-md:py-2 ${barFrostClassMobile}`}
+          // their own chrome individually. max-md:rounded-full, the full
+          // stadium capsule -- a rounded-frame version (the sitewide
+          // 26.5px token, asked for as "the round corner ratio must
+          // match the rest of the site frames") was tried and reverted
+          // on sight: "you've made the whole nav bar more square in
+          // shape. it has to be circle like before," per Josh. At this
+          // bar's ~70px height the frame token reads as a rounded
+          // rectangle, not a pill -- the nav is chrome, not framed
+          // artwork, and its shape language is the capsule (see pass 6
+          // in the top doc comment).
+          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-full max-md:border max-md:px-2 max-md:py-2 ${barFrostClassMobile}`}
         >
           {/* jM circle -- pinned to the frame's left edge (justify-self:
               start), the same edge the pre-pill nav always had it at.
