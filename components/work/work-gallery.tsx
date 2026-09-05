@@ -639,20 +639,17 @@ export function WorkGallery({
         // entrance animations — see entranceRun's own comment.
         key={entranceRun}
         ref={pillRowRef}
-        // max-md:min-h-[102px] + content-start: below md this row wraps
-        // to 2 lines closed, 3 open (the search pill's w-44 no longer
-        // fits the second line) — with no reserved height, that third
-        // line pushed the illustration row (and everything below it)
-        // down the instant search was focused. "leave enough gap under
-        // the categories so that when you click search the ipad
-        // illustration doesn't have to move down," per Josh. 102px is
-        // the row's own measured open-state height at this breakpoint
-        // (live-measured, not derived from a formula — see the search
-        // pill's own sizing comment for why these two elements don't
-        // reduce to clean math); content-start keeps the two closed-
-        // state lines packed at the top rather than the flex-wrap
-        // default spreading them to fill the reserved height.
-        className="flex flex-wrap content-start items-center justify-center gap-2 max-md:min-h-[102px]"
+        // No reserved height any more — two earlier fixes for "leave
+        // enough gap under the categories so that when you click search
+        // the ipad illustration doesn't have to move down" (a measured
+        // max-md:min-h reservation, then a basis-full break putting
+        // search on its own third line) are both gone: the search pill's
+        // wrapper now keeps a fixed 34px footprint in this row whether
+        // open or closed (see its own comment below), so opening search
+        // changes NOTHING about this row's layout — no extra line, no
+        // height change, nothing below it ever moves. The row is simply
+        // however many lines its pills wrap to.
+        className="flex flex-wrap items-center justify-center gap-2"
         role="group"
         aria-label="Filter work by discipline"
       >
@@ -692,32 +689,37 @@ export function WorkGallery({
             </span>
           );
         })}
-        {/* max-md:basis-full -- forces the search pill onto its own
-            wrapped line below md, collapsed or open, the classic empty-
-            flex-item line-break trick (an item claiming the row's full
-            width leaves nothing for whatever follows to share it with).
-            Without this, the COLLAPSED circle sat inline after the last
-            text pill (fitting the row), but OPENING it grew past the
-            room left on that line, so it reflowed to the start of the
-            next one -- a hard teleport from wherever it sat next to
-            "3D" to a completely different x position, not a grow-in-
-            place. "when you click it goes off to the side again like it
-            did before," per Josh. Own-line now in BOTH states, so
-            opening only ever widens it in place -- nothing to reflow
-            since it already has the rest of the line to itself. md:hidden
-            -- desktop never wraps this row at all, so forcing a break
-            there would orphan search onto a phantom empty line for no
-            reason; the min-h-[102px] reservation above already assumes
-            this exact 3-line shape, so this doesn't add any new height,
-            just moves the search pill into space that was already set
-            aside for it. Confirmed against Josh's own first reaction --
-            "it shouldnt be on it's own row?" read as a request to
-            revert, but the very next message clarified: "it goes to
-            it's own row nicely" -- the own-row placement itself was
-            never the problem, just testing it out loud. */}
-        <span aria-hidden="true" className="h-0 basis-full md:hidden" />
+        {/* max-md:w-[34px]: the wrapper keeps the COLLAPSED pill's exact
+            footprint in the row at all times below md — the input inside
+            is shrink-0, so opening grows it straight out of this box
+            (overflow stays visible) without the row ever re-measuring
+            anything. That single property is the whole fix for a bug
+            that went through two wrong answers first: the open pill
+            doesn't fit the space left on its wrapped line, so flex-wrap
+            used to reflow it to the next line's START the instant it
+            opened — a hard teleport ("when you click it goes off to the
+            side again like it did before," per Josh). Fix #1 reserved
+            row height; fix #2 gave it its own line via a basis-full
+            break — "youve also put search pill on a third row, it
+            should be at the end of the pills," per Josh, which is the
+            binding constraint this version finally satisfies: the pill
+            sits inline after the last category pill in BOTH states, and
+            since its layout box never changes size, there is nothing
+            for flex-wrap to move — the growth happens purely in paint.
+            Direction: the input grows rightward in flow but a matching
+            -translate-x (see its className) slides it back the same
+            distance, so the RIGHT edge stays pinned where the circle
+            sat and the bar extends leftward OVER the neighbouring
+            pills — width and translate share one duration/curve, so the
+            two cancel exactly every frame of the animation, not just at
+            the ends. max-md:z-10 makes the expanded bar paint above
+            those covered pills (they're canvas-backed buttons; without
+            an explicit index the pride pill's own stacking context wins
+            the overlap). Desktop is untouched: the row never wraps
+            there, so the wrapper stays auto-width and the input grows
+            in flow exactly as before. */}
         <span
-          className={`group/search relative inline-flex items-center ${pillEntrance(filters.length).className}`}
+          className={`group/search relative inline-flex items-center max-md:z-10 max-md:w-[34px] ${pillEntrance(filters.length).className}`}
           style={pillEntrance(filters.length).style}
         >
           {/* Inline SVG glyphs, stroke currentColor — the site has no
@@ -749,8 +751,16 @@ export function WorkGallery({
             // translate-x-* emits the standalone CSS `translate`
             // property (same trap ProjectCard's title notes), so
             // transitioning `transform` would snap instead of glide.
+            // max-md open: -128px, not 14px — below md the open input is
+            // slid 142px left of the wrapper this svg is anchored to
+            // (see the input's own comment), so "14px in from the
+            // input's left edge" is −142 + 14 = −128 relative to the
+            // wrapper. If w-44 (176) or the collapsed 34 ever change,
+            // this and the input's −142 both change with them.
             className={`pointer-events-none absolute left-0 h-2.5 w-2.5 transition-[translate,color] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover/search:text-brand ${
-              searchOpen ? "translate-x-[14px] text-brand" : "translate-x-[12px] text-ink"
+              searchOpen
+                ? "translate-x-[14px] max-md:-translate-x-[128px] text-brand"
+                : "translate-x-[12px] text-ink"
             }`}
             fill="none"
             stroke="currentColor"
@@ -836,9 +846,34 @@ export function WorkGallery({
             // on. pointer-fine: restores the exact same guard `hover:`
             // gets for free, matching PrideFilterButton's own
             // pointer-coarse:/pointer-fine: split elsewhere in this file.
-            className={`font-grotesque rounded-full border bg-transparent py-[7.85px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none pointer-fine:group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
+            // shrink-0 + bg-canvas + the max-md open translate are the
+            // input's half of the wrapper's fixed-footprint scheme (see
+            // the span's own comment above): shrink-0 lets it grow past
+            // the wrapper's pinned 34px instead of being flex-squeezed
+            // to fit it; −142px is exactly the overgrowth (w-44's 176 −
+            // the collapsed 34), so as width and translate animate on
+            // the same duration/curve the right edge holds perfectly
+            // still while the left edge extends over the pill row.
+            // bg-canvas (was bg-transparent — identical on this page's
+            // canvas ground) is what makes that extension COVER the
+            // pills it slides over rather than letting them read
+            // through the open bar. The open state adds a 6px canvas
+            // halo (spread-only box-shadow, no blur) around the bar:
+            // the pills it covers span 179.2px of row (MOTION + gap +
+            // 3D + gap + the 34px the circle occupied — constant, same
+            // pills at every viewport) against the bar's 176px, so the
+            // covered pill's leftmost ~3px of border arc peeked out
+            // past the bar's own rounded corner. The halo erases that
+            // sliver plus a little breathing room, and box-shadow rides
+            // the same transition-all as the width/translate. var() in
+            // an arbitrary shadow value is the established pattern here
+            // (the dot chrome and nav frost do the same with
+            // --color-brand); the never-bracket-a-var rule is about
+            // colour utilities eating opacity modifiers, which shadows
+            // don't take.
+            className={`font-grotesque rounded-full border bg-canvas py-[7.85px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shrink-0 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none pointer-fine:group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
-                ? "w-44 border-brand pr-9 pl-8"
+                ? "w-44 border-brand pr-9 pl-8 max-md:-translate-x-[142px] max-md:shadow-[0_0_0_6px_var(--color-canvas)]"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
             }`}
           />
