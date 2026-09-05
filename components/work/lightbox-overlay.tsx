@@ -694,14 +694,14 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     // not the source's native aspect" (GalleryGrid's own comment) means a
     // file can genuinely be wider than the square/portrait/etc. crop its
     // thumbnail promises. Leaving width "auto" let a curatorially-cropped
-    // file's TRUE shape leak through once uncropped by this stage's own
-    // object-fit:contain, so a thumbnail that reads as a 1:1 square opened
-    // as a wide, unrounded-looking rectangle instead — "the small frames
-    // [Honda Super N's four square shots]... should be curved 1:1," per
-    // Josh. Deriving width from ratio × the already-capped height instead
-    // means the FRAME always matches what the thumbnail showed; any extra
-    // file content past that crop just letterboxes inside it via
-    // object-fit:contain rather than reshaping the frame around it.
+    // file's TRUE shape leak through once this stage's own object-fit
+    // stopped cropping it, so a thumbnail that reads as a 1:1 square
+    // opened as a wide rectangle instead — "the small frames [Honda Super
+    // N's four square shots]... should be curved 1:1," per Josh. Deriving
+    // width from ratio × the already-capped height instead means the
+    // FRAME always matches what the thumbnail showed; any extra file
+    // content past that crop is what object-fit:cover (below) then crops
+    // away, rather than the frame reshaping around it.
     const widthFromRatio =
       heightCapPx !== undefined ? Math.round(heightCapPx * ratio) : undefined;
     // Mirrors the inline frame's own square-corner treatment (see
@@ -735,23 +735,38 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     // shape. maxWidth stays on as a guard for the widest frame, where
     // sub-percent drift between declared and true ratio could otherwise
     // poke past the stage.
-    // objectFit: "contain" — a second, independent safety net alongside
-    // the explicit widthFromRatio above: this component doesn't render
-    // through Plate (which always sets object-fit itself), so a still-
-    // square photo declared at a 2/3 ratio for its Plate card used to
-    // render visibly stretched into that ratio here instead of letterboxed
-    // — "LA Pride logomark is stretched to fit — make sure this doesn't
-    // happen anywhere site wide," per Josh. contain is what every other
-    // image renderer on the site already leans on for exactly this, and
-    // every ratio-accurate image (the overwhelming majority) looks
-    // identical with it on, since there's nothing for it to letterbox.
+    // objectFit follows the SAME per-image `fit` field Plate already
+    // reads everywhere else on the site (`image.fit ?? "cover"`, Plate's
+    // own default) — this component didn't render through Plate, so it
+    // had its own hardcoded "contain" instead, unconditionally. That
+    // fixed the original bug (a still-square photo declared at a 2/3
+    // ratio for its Plate card used to render visibly STRETCHED into
+    // that ratio here — "LA Pride logomark is stretched to fit — make
+    // sure this doesn't happen anywhere site wide," per Josh) but
+    // over-corrected: "contain" doesn't just stop stretching, it also
+    // stops CROPPING — so a genuine curatorial crop (Honda Super N's
+    // four square shots, files that are natively wider than their
+    // declared 1:1) now sized its frame correctly (widthFromRatio,
+    // above) but still showed the file's full, uncropped, letterboxed
+    // width inside it — the actual visible photo pixels stayed a wide
+    // rectangle, just with invisible transparent padding above/below to
+    // pad it into a technically-square, technically-rounded box. "the
+    // small frames... still not rounded corners on lightbox," per Josh,
+    // confirmed live: the corners WERE rounded, just on padding with
+    // nothing visible for the rounding to cut into. `cover` crops to the
+    // declared ratio instead of letterboxing past it — matching what the
+    // thumbnail already shows (Plate renders that exact crop) — while
+    // still never stretching, since cover preserves aspect ratio same as
+    // contain does; only `fit: "contain"` opt-ins (flat lockups/logos
+    // whose own edges are the content) keep letterboxing here, same
+    // opt-in Plate already uses this field for.
     const style =
       fit === "uniform" && heightCapPx
         ? {
             width: widthFromRatio,
             height: Math.round(heightCapPx),
             maxWidth: widthCapPx,
-            objectFit: "contain" as const,
+            objectFit: (image.fit === "contain" ? "contain" : "cover") as "contain" | "cover",
           }
         : {
             width: "auto" as const,
