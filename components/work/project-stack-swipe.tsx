@@ -6,8 +6,8 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { HomeBelowHero } from "@/components/home/below-hero";
 import { ProjectContent } from "@/components/work/project-content";
 import { WorkGallery, type Filter } from "@/components/work/work-gallery";
-import { readBackTarget, recordBackTarget, type BackPeekTarget } from "@/lib/back-peek";
-import { PROJECT_CATEGORIES, getAllProjects, getProject, type Project } from "@/lib/projects";
+import { propagateBackTarget, readBackTarget, type BackPeekTarget } from "@/lib/back-peek";
+import { PROJECT_CATEGORIES, getAllProjects, type Project } from "@/lib/projects";
 
 /** The persistent nav (nav.tsx: `min-h-[88px]`, sticky, shared across
  *  every route from the root layout) is never duplicated inside the
@@ -141,27 +141,23 @@ function StackPeek({ project }: { project: Project }) {
  * toggle — no per-frame updates in the touchmove handler.
  *
  * The one motion the content DOES carry is a static translateY baked in
- * from `target.scrollY` (and `anchorTop` for a gallery context) — see
- * BackPeekTarget's own doc comment for the geometry. Without it every
- * peek would render its content starting at scroll position 0, which is
- * only ever correct for a genuinely fresh page load, not "wherever the
- * visitor happened to leave the gallery."
+ * from `target.scrollY` and `anchorTop` — see BackPeekTarget's own doc
+ * comment for the geometry. Without it every peek would render its
+ * content starting at scroll position 0, which is only ever correct for
+ * a genuinely fresh page load, not "wherever the visitor happened to
+ * leave the gallery."
+ *
+ * Always the gallery or Home, never an intermediate project someone
+ * swiped through to get here — propagateBackTarget (lib/back-peek.ts)
+ * forwards the ROOT of the chain to every project reached from another
+ * one, specifically so this never has to render a project at all. "I
+ * want it to always show the gallery, even after swiping to the next
+ * project," per Josh, after confirming the immediate-predecessor version
+ * worked exactly as designed — showing the gallery instead means a
+ * completed drag has to jump the whole chain in one go rather than a
+ * plain one-step back(); see `target.steps` in settle() below.
  */
 function BackTargetPeek({ target }: { target: BackPeekTarget }) {
-  if (target.kind === "project") {
-    const project = getProject(target.slug);
-    if (!project) return null;
-    return (
-      <div aria-hidden="true" className="pointer-events-none h-full w-full overflow-hidden bg-canvas">
-        <div style={{ transform: `translate3d(0, ${-target.scrollY}px, 0)` }}>
-          <article>
-            <ProjectContent project={project} />
-          </article>
-        </div>
-      </div>
-    );
-  }
-
   const allProjects = getAllProjects();
   const content =
     target.context === "home" ? (
@@ -531,6 +527,27 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Jumps all the way back to this page's own recorded root (the
+    // gallery/Home) in one native navigation when one's on record —
+    // `history.go(-steps)` for however many project-to-project hops
+    // separate here from there, letting the browser restore that entry's
+    // real scroll position itself, same as a plain back() already did
+    // for a single step. Falls back to a plain back() when there's no
+    // record (a direct link deep into a chain) — one step is still the
+    // best guess, and matches this gesture's behaviour before back-peek
+    // existed at all. Read fresh from storage rather than the `backTarget`
+    // state this component also keeps for rendering the peek -- that
+    // state can lag a tick behind a mount-time effect, where this needs
+    // to be correct the instant a drag can possibly complete.
+    const navigateToRoot = () => {
+      const target = readBackTarget(slug);
+      if (target) {
+        window.history.go(-target.steps);
+      } else {
+        router.back();
+      }
+    };
+
     // Reduced motion: the original ProjectSwipeNav behaviour, no drag
     // visuals at all — see the doc comment above for why this doesn't
     // try to keep a stripped-down version of the motion instead.
@@ -561,18 +578,18 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         // eligibility rule as the animated version below, just without any
         // drag-follow to show for it under reduced motion.
         if (deltaY >= COMPLETE_DISTANCE && Math.abs(deltaY) > Math.abs(deltaX) * DOMINANCE && startScrollY <= 0) {
-          router.back();
+          navigateToRoot();
           return;
         }
         if (Math.abs(deltaX) < COMPLETE_DISTANCE) return;
         if (Math.abs(deltaX) < Math.abs(deltaY) * DOMINANCE) return;
         // neighbourSlug, not `slug` -- this scope also closes over the
-        // component's own `slug` prop (the CURRENT project), which the
-        // recordBackTarget call below needs kept distinct from the
-        // destination being navigated to.
+        // component's own `slug` prop (the CURRENT project), which
+        // propagateBackTarget needs kept distinct from the destination
+        // being navigated to.
         const neighbourSlug = deltaX < 0 ? next?.slug : previous?.slug;
         if (neighbourSlug) {
-          recordBackTarget(neighbourSlug, { kind: "project", slug, scrollY: startScrollY });
+          propagateBackTarget(slug, neighbourSlug);
           router.push(`/work/${neighbourSlug}`);
         }
       };
@@ -757,18 +774,19 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
 
       if (activeDirection === "back") {
         if (lastResisted >= COMPLETE_DISTANCE) {
-          // Committed — finish the fall away and hand off to the browser's
-          // own back navigation, which is what restores the exact scroll
-          // position Work (or Home) was left at; router.back() rather than
-          // router.push('/work') specifically so that's true regardless of
-          // which page this project was opened from.
+          // Committed — finish the fall away and hand off to the
+          // browser's own back navigation (navigateToRoot, which is a
+          // plain back() one step for a direct-link arrival, or a
+          // multi-step history.go() when this chain reaches back to a
+          // recorded gallery/Home root) — that's what restores the exact
+          // scroll position left behind, wherever this chain started.
           slab.style.transition = "transform 260ms ease-in, opacity 260ms ease-in";
           slab.style.transform = `translate3d(0, ${lastResisted + 160}px, 0) scale(0.9)`;
           slab.style.opacity = "0";
           // Left visible, no fade-out -- the slab keeps falling away over
           // it for the remainder of this animation and the component
           // unmounts with the route change moments later anyway.
-          window.setTimeout(() => router.back(), 260);
+          window.setTimeout(navigateToRoot, 260);
         } else {
           slab.style.transition = "transform 420ms var(--ease-bounce), opacity 420ms var(--ease-bounce)";
           slab.style.transform = "";
@@ -803,12 +821,11 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         // accent, so leaving it means no visible jump across the
         // navigation). The whole component unmounts with the route
         // change anyway.
-        // This page is what a later pull-down-to-go-back on the
-        // neighbour should reveal -- startScrollY, not window.scrollY:
-        // the drag's own preventDefault() has frozen real scrolling
-        // since touchstart, but startScrollY is the value that was true
-        // before this handler ever touched anything.
-        recordBackTarget(neighbourSlug, { kind: "project", slug, scrollY: startScrollY });
+        // Forwards this page's own recorded root on to the neighbour --
+        // see propagateBackTarget's doc comment for why a pull-down
+        // there should reveal the gallery/Home this chain started from,
+        // not this page itself.
+        propagateBackTarget(slug, neighbourSlug);
         router.push(`/work/${neighbourSlug}`);
       } else {
         // Cleared to "" (falls back to no transform at all), not set to

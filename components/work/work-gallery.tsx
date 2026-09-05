@@ -611,12 +611,12 @@ export function WorkGallery({
     const slug = projectSlugFromHref(anchor?.getAttribute("href") ?? null);
     if (!slug) return;
     recordBackTarget(slug, {
-      kind: "gallery",
       context: recordContext,
       scrollY: window.scrollY,
       anchorTop: measureGalleryAnchorTop(recordContext),
       category: filter,
       query,
+      steps: 1,
     });
   }
 
