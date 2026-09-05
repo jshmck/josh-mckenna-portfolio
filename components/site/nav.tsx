@@ -51,7 +51,13 @@ import { CartIcon } from "@/components/ui/social-icons";
  *      shapeFrostClassDesktop keeps desktop's separate circles/pill
  *      exactly as pass 5 left them, untouched. Grid layout (and therefore
  *      jM/Cart sitting at the frame's real edges) stays the same at every
- *      breakpoint; only which element(s) paint the frost changed.
+ *      breakpoint; only which element(s) paint the frost changed. Once
+ *      that one-shape bar made <nav>'s own edge visible for the first
+ *      time, it read as sitting flush against the literal screen edge —
+ *      "bring jM and cart inwards and therefore the pill inwards," per
+ *      Josh, seeing it live — <header> picked up its own max-md:px-6 to
+ *      inset the whole bar in from the edge (see that className's own
+ *      comment for why it lives there and not on <nav>'s existing px-6).
  *
  * `position: sticky`, not `fixed` — sits in normal document flow, so a
  * spacer div is no longer needed to reserve its space. This used to be
@@ -526,7 +532,24 @@ export function Nav() {
           above already reads this element's own live rendered height for
           exactly this reason -- a hardcoded 88 would undercount on
           whichever devices this padding actually does something. */}
-      <header ref={headerRef} className="sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)]">
+      {/* max-md:px-6 -- since the one-shape bar (pass 6, above) made <nav>'s
+          own edge visible (border/frost) for the first time, and <nav> is
+          `w-full` of this header with no cap of its own below md
+          (max-w-frame's 1344px only ever binds well above phone widths),
+          that border was sitting flush against the literal screen edge --
+          "bring jM and cart inwards and therefore the pill inwards," per
+          Josh, after seeing it live: a full-bleed bar doesn't read as a
+          floating pill. This inset lives on <header>, not on <nav>'s own
+          px-6 -- that padding is INSIDE the bar (the gap between its
+          border and jM/Cart) and already does its own job; stacking a
+          second inset on top of it here keeps the two concerns (padding
+          within the shape vs. margin around the shape) separately
+          tunable. Same px-6 value as the sitewide mobile gutter, for
+          visual consistency with how every other page's content sits in
+          from the edge -- not overridden at md+, where the header was
+          never meant to gain a margin (the three separate shapes there
+          already sit exactly at the frame's own edges, unchanged). */}
+      <header ref={headerRef} className="sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)] max-md:px-6">
         <nav
           aria-label="Primary"
           // max-md: this element carries the ONE shared shape now — border,
