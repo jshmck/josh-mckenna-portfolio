@@ -9,6 +9,7 @@ import { ProjectVideo } from "@/components/work/project-video";
 import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
+import { ProjectNavLink } from "@/components/work/project-nav-link";
 import { ProjectTitle } from "@/components/work/project-title";
 import { getProjectNeighbours, type Project, type ProjectImage } from "@/lib/projects";
 
@@ -319,23 +320,27 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
               {(previous || next) && (
                 <p className="flex shrink-0 items-center font-mono text-[16px] text-ink">
                   {previous && (
-                    <Link
+                    <ProjectNavLink
+                      toSlug={previous.slug}
+                      fromSlug={project.slug}
                       href={`/work/${previous.slug}`}
                       aria-label="Previous project"
                       className="-m-3 inline-block p-3 transition-[font-weight,transform] duration-200 ease-in-out hover:scale-110 hover:font-bold hover:duration-300 hover:ease-drift active:scale-110 active:font-bold"
                     >
                       {"<"}
-                    </Link>
+                    </ProjectNavLink>
                   )}
                   {previous && next && <span className="w-5" aria-hidden="true" />}
                   {next && (
-                    <Link
+                    <ProjectNavLink
+                      toSlug={next.slug}
+                      fromSlug={project.slug}
                       href={`/work/${next.slug}`}
                       aria-label="Next project"
                       className="-m-3 inline-block p-3 transition-[font-weight,transform] duration-200 ease-in-out hover:scale-110 hover:font-bold hover:duration-300 hover:ease-drift active:scale-110 active:font-bold"
                     >
                       {">"}
-                    </Link>
+                    </ProjectNavLink>
                   )}
                 </p>
               )}
@@ -667,20 +672,24 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
           <BackToTopLink />
           <div className="flex items-center gap-10">
             {previous && (
-              <Link
+              <ProjectNavLink
+                toSlug={previous.slug}
+                fromSlug={project.slug}
                 href={`/work/${previous.slug}`}
                 className="type-label inline-block text-ink transition-[font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:font-bold hover:duration-300 hover:ease-drift"
               >
                 Previous project
-              </Link>
+              </ProjectNavLink>
             )}
             {next && (
-              <Link
+              <ProjectNavLink
+                toSlug={next.slug}
+                fromSlug={project.slug}
                 href={`/work/${next.slug}`}
                 className="type-label inline-block text-ink transition-[font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:font-bold hover:duration-300 hover:ease-drift"
               >
                 Next project
-              </Link>
+              </ProjectNavLink>
             )}
           </div>
         </div>

@@ -3,8 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
+import { HomeBelowHero } from "@/components/home/below-hero";
 import { ProjectContent } from "@/components/work/project-content";
-import { getAllProjects, type Project } from "@/lib/projects";
+import { WorkGallery, type Filter } from "@/components/work/work-gallery";
+import { readBackTarget, recordBackTarget, type BackPeekTarget } from "@/lib/back-peek";
+import { PROJECT_CATEGORIES, getAllProjects, getProject, type Project } from "@/lib/projects";
 
 /** The persistent nav (nav.tsx: `min-h-[88px]`, sticky, shared across
  *  every route from the root layout) is never duplicated inside the
@@ -120,6 +123,76 @@ function StackPeek({ project }: { project: Project }) {
 }
 
 /**
+ * What's genuinely behind this project page — rendered behind the "back"
+ * (pull-down) drag instead of bare canvas, so lifting the card away
+ * reveals a faithful mirror of the gallery, Home, or the previous project
+ * as it was actually left, not just a guess. See lib/back-peek.ts for
+ * where `target` comes from and why it can't be re-derived from the
+ * current page alone.
+ *
+ * Unlike StackPeek (previous/next), this needs no drag-driven transform
+ * of its own — the horizontal peeks simulate a new page sliding in from
+ * off-screen, but "back" is the opposite geometry: what's behind is
+ * already sitting exactly where it belongs, and the falling slab just
+ * uncovers progressively more of it as it drags away, the way lifting
+ * the top sheet off a stack of paper reveals the one underneath without
+ * the underneath one moving at all. So this only ever needs a single,
+ * precomputed position (see the translate below) and a plain opacity
+ * toggle — no per-frame updates in the touchmove handler.
+ *
+ * The one motion the content DOES carry is a static translateY baked in
+ * from `target.scrollY` (and `anchorTop` for a gallery context) — see
+ * BackPeekTarget's own doc comment for the geometry. Without it every
+ * peek would render its content starting at scroll position 0, which is
+ * only ever correct for a genuinely fresh page load, not "wherever the
+ * visitor happened to leave the gallery."
+ */
+function BackTargetPeek({ target }: { target: BackPeekTarget }) {
+  if (target.kind === "project") {
+    const project = getProject(target.slug);
+    if (!project) return null;
+    return (
+      <div aria-hidden="true" className="pointer-events-none h-full w-full overflow-hidden bg-canvas">
+        <div style={{ transform: `translate3d(0, ${-target.scrollY}px, 0)` }}>
+          <article>
+            <ProjectContent project={project} />
+          </article>
+        </div>
+      </div>
+    );
+  }
+
+  const allProjects = getAllProjects();
+  const content =
+    target.context === "home" ? (
+      <HomeBelowHero
+        projects={allProjects}
+        categories={[...PROJECT_CATEGORIES]}
+        peek={{ category: target.category, query: target.query }}
+      />
+    ) : (
+      <div className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
+        <h1 className="sr-only">Work</h1>
+        <WorkGallery
+          projects={allProjects}
+          categories={[...PROJECT_CATEGORIES]}
+          interactive={false}
+          initialFilter={target.category as Filter}
+          initialQuery={target.query}
+        />
+      </div>
+    );
+
+  return (
+    <div aria-hidden="true" className="pointer-events-none h-full w-full overflow-hidden bg-canvas">
+      <div style={{ transform: `translate3d(0, ${-(target.scrollY - target.anchorTop)}px, 0)` }}>
+        {content}
+      </div>
+    </div>
+  );
+}
+
+/**
  * Swipe-to-navigate between project pages — "I want the projects to be
  * swipable from one to another... kind of like a stack of paper and
  * you're swiping the top one away," per Josh, replacing the first cut
@@ -186,10 +259,30 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
   const slabRef = useRef<HTMLDivElement>(null);
   const previousPeekRef = useRef<HTMLDivElement>(null);
   const nextPeekRef = useRef<HTMLDivElement>(null);
+  const backPeekRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLDivElement>(null);
   const accentDotRef = useRef<HTMLSpanElement>(null);
   const dotChromeRef = useRef<HTMLSpanElement>(null);
   const [navHeight, setNavHeight] = useState(NAV_HEIGHT_FALLBACK);
+  // What's behind this page, for the pull-down peek — resolved in an
+  // effect (not a lazy useState initializer) so the server-rendered
+  // markup and the first client render agree (null, no peek) before
+  // sessionStorage can be read; see lib/back-peek.ts. Read once per
+  // mount: the record a swipe/click wrote just before landing here
+  // doesn't change for the lifetime of this page view.
+  const [backTarget, setBackTarget] = useState<BackPeekTarget | null>(null);
+  useEffect(() => {
+    // One-time sessionStorage read after mount, not a subscription — same
+    // "browser API unavailable during SSR" shape as the navHeight effect
+    // just above, which this rule doesn't flag only because that one
+    // routes through a named function it also happens to pass to
+    // addEventListener. There's no ongoing external event to subscribe to
+    // here (sessionStorage's own `storage` event doesn't fire same-tab or
+    // for sessionStorage at all in most browsers), so a single post-mount
+    // read is the correct shape, not a workaround for one.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setBackTarget(readBackTarget(slug));
+  }, [slug]);
 
   // The floating dot strip's window into the full project list — same
   // Instagram-style clamped 5-dot window the breadcrumb-zone version
@@ -473,8 +566,15 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         }
         if (Math.abs(deltaX) < COMPLETE_DISTANCE) return;
         if (Math.abs(deltaX) < Math.abs(deltaY) * DOMINANCE) return;
-        const slug = deltaX < 0 ? next?.slug : previous?.slug;
-        if (slug) router.push(`/work/${slug}`);
+        // neighbourSlug, not `slug` -- this scope also closes over the
+        // component's own `slug` prop (the CURRENT project), which the
+        // recordBackTarget call below needs kept distinct from the
+        // destination being navigated to.
+        const neighbourSlug = deltaX < 0 ? next?.slug : previous?.slug;
+        if (neighbourSlug) {
+          recordBackTarget(neighbourSlug, { kind: "project", slug, scrollY: startScrollY });
+          router.push(`/work/${neighbourSlug}`);
+        }
       };
 
       const onTouchCancel = () => {
@@ -571,6 +671,14 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           captured = true;
           activeDirection = "back";
           slab.style.transition = "";
+          // Instant, no fade -- see BackTargetPeek's own doc comment for
+          // why this needs no drag-linked animation of its own: it's
+          // already sitting at its final position, just waiting to be
+          // uncovered as the slab (falling away below) exposes it.
+          if (backPeekRef.current) {
+            backPeekRef.current.style.transition = "";
+            backPeekRef.current.style.opacity = "1";
+          }
         } else {
           if (Math.abs(deltaX) < ACTIVATION_DISTANCE) return;
           captured = true;
@@ -602,12 +710,22 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       if (activeDirection === "back") {
         const resisted = resist(deltaY);
         lastResisted = resisted;
-        // Same "falling away" read as the lightbox's own pull-to-close —
-        // scales down and fades slightly as it's pulled, on top of the
-        // translate, rather than just a flat drag.
+        // Scales down slightly as it's pulled, on top of the translate,
+        // rather than just a flat drag -- same "falling away" read as
+        // the lightbox's own pull-to-close. No opacity fade during the
+        // live drag any more, though: that used to fade the slab toward
+        // transparent the same way the lightbox does, which was
+        // invisible before this gesture had anything real behind it to
+        // show through (just matching-colour canvas). Now that
+        // BackTargetPeek renders the actual gallery/project behind it,
+        // even a partial fade let its own colours ghost through the
+        // "opaque" card mid-drag -- confirmed live, an unrelated-looking
+        // image bleeding through the card's own text. The reveal already
+        // reads correctly from the translate alone (a solid card lifting
+        // to uncover what's under it), so the fade was pure liability
+        // once there was something behind worth NOT x-raying.
         const progress = Math.min(1, resisted / COMPLETE_DISTANCE);
         slab.style.transform = `translate3d(0, ${resisted}px, 0) scale(${1 - progress * 0.04})`;
-        slab.style.opacity = `${1 - progress * 0.25}`;
         return;
       }
 
@@ -647,11 +765,18 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           slab.style.transition = "transform 260ms ease-in, opacity 260ms ease-in";
           slab.style.transform = `translate3d(0, ${lastResisted + 160}px, 0) scale(0.9)`;
           slab.style.opacity = "0";
+          // Left visible, no fade-out -- the slab keeps falling away over
+          // it for the remainder of this animation and the component
+          // unmounts with the route change moments later anyway.
           window.setTimeout(() => router.back(), 260);
         } else {
           slab.style.transition = "transform 420ms var(--ease-bounce), opacity 420ms var(--ease-bounce)";
           slab.style.transform = "";
           slab.style.opacity = "";
+          if (backPeekRef.current) {
+            backPeekRef.current.style.transition = "opacity 420ms var(--ease-bounce)";
+            backPeekRef.current.style.opacity = "0";
+          }
         }
         tracking = false;
         captured = false;
@@ -678,6 +803,12 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         // accent, so leaving it means no visible jump across the
         // navigation). The whole component unmounts with the route
         // change anyway.
+        // This page is what a later pull-down-to-go-back on the
+        // neighbour should reveal -- startScrollY, not window.scrollY:
+        // the drag's own preventDefault() has frozen real scrolling
+        // since touchstart, but startScrollY is the value that was true
+        // before this handler ever touched anything.
+        recordBackTarget(neighbourSlug, { kind: "project", slug, scrollY: startScrollY });
         router.push(`/work/${neighbourSlug}`);
       } else {
         // Cleared to "" (falls back to no transform at all), not set to
@@ -722,7 +853,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       container.removeEventListener("touchend", onTouchEnd);
       container.removeEventListener("touchcancel", onTouchCancel);
     };
-  }, [previous, next, router, accentRestOffset, applyDotShrink]);
+  }, [slug, previous, next, router, accentRestOffset, applyDotShrink]);
 
   return (
     // overflow-x-clip, NOT overflow-x-hidden -- per CSS, a hidden x-axis
@@ -846,6 +977,25 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           style={{ top: navHeight, transform: "translate3d(100%, 0, 0) scale(0.94)", opacity: 0 }}
         >
           <StackPeek project={next} />
+        </div>
+      )}
+      {/* The "back" peek — what a pull-down-to-go-back reveals. Only
+          rendered once backTarget resolves (client-only, sessionStorage
+          — see the effect above), so there's no SSR/hydration flash to
+          bake a resting style against the way the previous/next peeks
+          need to. No horizontal offset or scale of its own: unlike a
+          sideways swipe, which simulates a whole new page sliding in
+          from off-screen, "back" just uncovers a page that was already
+          sitting exactly where it belongs the entire time — see
+          BackTargetPeek's own doc comment. */}
+      {backTarget && (
+        <div
+          ref={backPeekRef}
+          data-stack-peek="back"
+          className="fixed inset-x-0 bottom-0 z-0 will-change-transform"
+          style={{ top: navHeight, opacity: 0 }}
+        >
+          <BackTargetPeek target={backTarget} />
         </div>
       )}
       {/* will-change-transform is back on the slab and both peeks (it

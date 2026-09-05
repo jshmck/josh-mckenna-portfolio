@@ -26,7 +26,11 @@ export default function WorkPage() {
             react to the active filter (swaps to a Pride piece when that
             pill's selected), so it moved to the client component that
             already owns that state. See components/work/work-gallery.tsx. */}
-        <WorkGallery projects={projects} categories={[...PROJECT_CATEGORIES]} />
+        <WorkGallery
+          projects={projects}
+          categories={[...PROJECT_CATEGORIES]}
+          recordContext="work"
+        />
       </div>
     </PageEndCard>
   );
