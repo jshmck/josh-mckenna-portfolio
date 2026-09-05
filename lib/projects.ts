@@ -700,28 +700,37 @@ export const projects: Project[] = [
       {
         // "You can drop the captions of the four little frames," per
         // Josh — alt stays for accessibility, caption: false just hides
-        // ImageStack's printed <p>.
+        // ImageStack's printed <p>. -v3: replaced with Josh's own true
+        // 2160x2160 square exports ("replace the honda sq images with
+        // the recently uploaded") — the -v2 files were center crops from
+        // the same wide 3840x2160 renders the full-width shots use,
+        // which is exactly the "curatorial crop, not the source's native
+        // aspect" case the lightbox fix (see lightbox-overlay.tsx) was
+        // written for; these new exports are genuinely square at the
+        // source, so there's no crop for the lightbox to even need to
+        // apply. New filename, not an in-place swap — Next's image
+        // cache keys on the URL.
         ratio: "1/1",
         alt: "Super N — head on",
-        src: "/work/honda-super-n/05-super-n-front-v2.webp",
+        src: "/work/honda-super-n/05-super-n-front-v3.webp",
         caption: false,
       },
       {
         ratio: "1/1",
         alt: "Super N — from behind",
-        src: "/work/honda-super-n/06-super-n-back-v2.webp",
+        src: "/work/honda-super-n/06-super-n-back-v3.webp",
         caption: false,
       },
       {
         ratio: "1/1",
         alt: "Head on",
-        src: "/work/honda-super-n/07-n-one-front-v2.webp",
+        src: "/work/honda-super-n/07-n-one-front-v3.webp",
         caption: false,
       },
       {
         ratio: "1/1",
         alt: "From behind",
-        src: "/work/honda-super-n/08-n-one-rear-v2.webp",
+        src: "/work/honda-super-n/08-n-one-rear-v3.webp",
         caption: false,
       },
     ],

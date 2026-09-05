@@ -692,10 +692,26 @@ export function WorkGallery({
             </span>
           );
         })}
-        {/* Search rides the same woosh, last in the stagger — "at the
-            very end i want there to be a search bar," per Josh. Styled
-            as one more pill; grows a little on focus, same gloopy
-            spring as the pills' own hover. */}
+        {/* max-md:basis-full -- forces the search pill onto its own
+            wrapped line below md, collapsed or open, the classic empty-
+            flex-item line-break trick (an item claiming the row's full
+            width leaves nothing for whatever follows to share it with).
+            Without this, the COLLAPSED circle sat inline after the last
+            text pill (fitting the row), but OPENING it grew past the
+            room left on that line, so it reflowed to the start of the
+            next one -- a hard teleport from wherever it sat next to
+            "3D" to a completely different x position, not a grow-in-
+            place. "when you click it goes off to the side again like it
+            did before," per Josh. Own-line now in BOTH states, so
+            opening only ever widens it in place -- nothing to reflow
+            since it already has the rest of the line to itself. md:hidden
+            -- desktop never wraps this row at all, so forcing a break
+            there would orphan search onto a phantom empty line for no
+            reason; the min-h-[102px] reservation above already assumes
+            this exact 3-line shape, so this doesn't add any new height,
+            just moves the search pill into space that was already set
+            aside for it. */}
+        <span aria-hidden="true" className="h-0 basis-full md:hidden" />
         <span
           className={`group/search relative inline-flex items-center ${pillEntrance(filters.length).className}`}
           style={pillEntrance(filters.length).style}
