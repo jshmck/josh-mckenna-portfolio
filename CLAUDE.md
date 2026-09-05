@@ -61,7 +61,7 @@ Tailwind v4 has **no `tailwind.config.js`**. Tokens live in the `@theme` block i
   a real `src` exists, so the site is fully reviewable before any final artwork
   lands. Always pass `sizes` — without it Next serves the largest candidate to
   every viewport. The one exception is the drifting-hero cut-outs: they're
-  transparent PNGs rendered with `object-contain` (no rounded frame or surface),
+  transparent cut-outs (alpha WebP) rendered with `object-contain` (no rounded frame or surface),
   so they use `next/image` directly — still with `sizes`.
 - **Guard every animation.** The global `prefers-reduced-motion` rule in
   `globals.css` neutralises CSS `animation` and `transition`, but it **cannot

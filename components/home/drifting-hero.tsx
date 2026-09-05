@@ -100,7 +100,7 @@ type DriftObject = {
 const OBJECTS: DriftObject[] = [
   {
     id: "ambient-1",
-    src: "/illustrations/objects/face.png",
+    src: "/illustrations/objects/face.webp",
     alt: "",
     /* 0.185 -> 0.17 -> 0.135 per Josh -- the blue head, smaller again. */
     width: 0.135,
@@ -112,7 +112,7 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "work",
-    src: "/illustrations/objects/car-super-n.png",
+    src: "/illustrations/objects/car-super-n.webp",
     alt: "",
     /* Swapped from the blue Honda to the purple Super N, sized up per Josh. */
     width: 0.3,
@@ -148,7 +148,7 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "contact",
-    src: "/illustrations/objects/flowers.png",
+    src: "/illustrations/objects/flowers.webp",
     alt: "",
     width: 0.175,
     aspect: 1.112,
@@ -160,9 +160,9 @@ const OBJECTS: DriftObject[] = [
   {
     id: "ambient-7",
     /* No-key crop per Josh -- the keys/"Last Call" tag stay on the
-       Contact page version (/illustrations/last-call.png), just the
+       Contact page version (/illustrations/last-call.webp), just the
        hat here. */
-    src: "/illustrations/objects/cowboy-hat.png",
+    src: "/illustrations/objects/cowboy-hat.webp",
     alt: "",
     width: 0.18,
     aspect: 1.331,
@@ -173,7 +173,7 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-8",
-    src: "/illustrations/objects/pato.png",
+    src: "/illustrations/objects/pato.webp",
     alt: "",
     width: 0.16,
     aspect: 0.8,
@@ -184,7 +184,7 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-9",
-    src: "/illustrations/objects/twingo-silver-final.png",
+    src: "/illustrations/objects/twingo-silver-final.webp",
     alt: "",
     width: 0.28,
     aspect: 2.058,

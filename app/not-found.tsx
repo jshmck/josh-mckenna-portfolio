@@ -19,7 +19,7 @@ export default function NotFound() {
           style={{ aspectRatio: "0.8" }}
         >
           <Image
-            src="/illustrations/objects/pato.png"
+            src="/illustrations/objects/pato.webp"
             alt=""
             fill
             sizes="(max-width: 768px) 160px, 224px"
