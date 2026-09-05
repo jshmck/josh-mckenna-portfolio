@@ -689,6 +689,21 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     const heightCapPx = heightCeiling !== undefined
       ? Math.min(heightCeiling, widthCapPx / heightRatio)
       : undefined;
+    // Computed from the DECLARED ratio, not left for the browser to derive
+    // from the file's own decoded pixels — "ratio is a curatorial crop,
+    // not the source's native aspect" (GalleryGrid's own comment) means a
+    // file can genuinely be wider than the square/portrait/etc. crop its
+    // thumbnail promises. Leaving width "auto" let a curatorially-cropped
+    // file's TRUE shape leak through once uncropped by this stage's own
+    // object-fit:contain, so a thumbnail that reads as a 1:1 square opened
+    // as a wide, unrounded-looking rectangle instead — "the small frames
+    // [Honda Super N's four square shots]... should be curved 1:1," per
+    // Josh. Deriving width from ratio × the already-capped height instead
+    // means the FRAME always matches what the thumbnail showed; any extra
+    // file content past that crop just letterboxes inside it via
+    // object-fit:contain rather than reshaping the frame around it.
+    const widthFromRatio =
+      heightCapPx !== undefined ? Math.round(heightCapPx * ratio) : undefined;
     // Mirrors the inline frame's own square-corner treatment (see
     // ProjectImage.square in lib/projects.ts, and HeroLightbox's
     // `image.square ? "" : "rounded-frame"`) — without this the enlarged
@@ -697,41 +712,43 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     // mobile only for now — max-md: rather than dropping rounded-frame
     // outright, so desktop's lightbox is untouched until he says otherwise.
     const effectiveRadius = image.square ? `max-md:rounded-none ${radius}` : radius;
-    // "uniform" pins the rendered height outright instead of capping it.
-    // Capping alone (max-height + width/height:auto) lets the browser fall
-    // back to each file's srcset-derived intrinsic size whenever the cap
-    // doesn't bind — and that intrinsic size varies per file and per device
-    // pixel ratio (next/image's srcset keeps its width descriptors even when
-    // a source file is smaller than the candidate it's serving), which is
-    // exactly the "every image is a different size" bug on Retina screens.
-    // An explicit height leaves the browser nothing to derive: same height
-    // for every frame, width following the image's own ratio via
-    // width:auto. maxWidth stays on as a guard for the widest frame, where
+    // "uniform" pins BOTH rendered dimensions outright instead of capping
+    // one and leaving the other to `auto`. Capping alone (max-height +
+    // width/height:auto) lets the browser fall back to each file's
+    // srcset-derived intrinsic size whenever the cap doesn't bind — and
+    // that intrinsic size varies per file and per device pixel ratio
+    // (next/image's srcset keeps its width descriptors even when a source
+    // file is smaller than the candidate it's serving), which is exactly
+    // the "every image is a different size" bug on Retina screens. An
+    // explicit height fixes that: same height for every frame. Width used
+    // to stay "auto" (following the image's own ratio) on the theory that
+    // the declared and true ratios only ever drift by a sub-percent
+    // rounding amount — true for the overwhelming majority of images, but
+    // not for a genuine curatorial crop, where the file is deliberately
+    // WIDER than what its thumbnail shows (see the objectFit paragraph
+    // below). For those, `auto` derived width from the file's real decoded
+    // aspect once it loaded, not the declared one — a 1:1-cropped thumbnail
+    // opening as a wide, stretched-looking rectangle in the lightbox
+    // instead of the square it promised. Width is now computed explicitly
+    // from the same declared ratio (`widthFromRatio`, above) instead, so
+    // the frame always matches the thumbnail regardless of the file's real
+    // shape. maxWidth stays on as a guard for the widest frame, where
     // sub-percent drift between declared and true ratio could otherwise
     // poke past the stage.
-    // objectFit: "contain" — a safety net, not a crop/fill choice: this
-    // box's width/height are sized off the DECLARED ratio (`image.ratio`),
-    // which the data model deliberately lets drift from a file's true
-    // aspect for curatorial crops elsewhere on the site ("ratio is a
-    // curatorial crop, not the source's native aspect," per GalleryGrid's
-    // own la-pride comment) — Plate is safe from that by always setting
-    // object-fit itself, but this component wasn't, and wasn't rendering
-    // through Plate to inherit it. Most of the time an `auto` dimension
-    // quietly falls back to the image's own true intrinsic ratio and
-    // nothing looks wrong — until max-width/max-height actually binds
-    // and clamps that auto value, at which point CSS does NOT re-derive
-    // the other (fixed) dimension to match, and a still-square photo
-    // declared at a 2/3 ratio for its Plate card rendered visibly
-    // stretched into that ratio here instead of letterboxed. "LA Pride
-    // logomark is stretched to fit — make sure this doesn't happen
-    // anywhere site wide," per Josh: contain is what every other image
-    // renderer on the site already leans on for exactly this, and every
-    // ratio-accurate image (the overwhelming majority) looks identical
-    // with it on, since there's nothing for it to letterbox.
+    // objectFit: "contain" — a second, independent safety net alongside
+    // the explicit widthFromRatio above: this component doesn't render
+    // through Plate (which always sets object-fit itself), so a still-
+    // square photo declared at a 2/3 ratio for its Plate card used to
+    // render visibly stretched into that ratio here instead of letterboxed
+    // — "LA Pride logomark is stretched to fit — make sure this doesn't
+    // happen anywhere site wide," per Josh. contain is what every other
+    // image renderer on the site already leans on for exactly this, and
+    // every ratio-accurate image (the overwhelming majority) looks
+    // identical with it on, since there's nothing for it to letterbox.
     const style =
       fit === "uniform" && heightCapPx
         ? {
-            width: "auto" as const,
+            width: widthFromRatio,
             height: Math.round(heightCapPx),
             maxWidth: widthCapPx,
             objectFit: "contain" as const,
