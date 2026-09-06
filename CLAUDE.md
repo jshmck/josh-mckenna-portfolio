@@ -142,7 +142,7 @@ These are specified in the wireframe annotations, not invented. Preserve them:
 | ---------------- | ------------------------------------------------------------------------ |
 | Hero objects     | Drift on independent vectors, reverse at the bounds, never pause          |
 | Hero cursor      | Nearby objects lean away with linear falloff; hover scales 1.06           |
-| Hero semantics   | 3 of 6 objects are real navigation; the other 3 are `aria-hidden`         |
+| Hero semantics   | All drift objects are decorative `aria-hidden` cut-outs, none focusable   |
 | Signature illo   | Trails scroll at 0.85×                                                   |
 | Marquee          | Loops seamlessly, left, forever                                          |
 | Project images   | Fade + rise once on first view, never replay                              |
@@ -164,6 +164,9 @@ Before calling anything done, run `/verify`. It gates on:
 1. `npm run build` — types included, and every route still static
 2. `npm run lint`
 3. `/design-review` — token, type, motion and a11y drift on the diff
+   (accessibility ground rules + the consciously-accepted contrast list
+   live in [ACCESSIBILITY.md](ACCESSIBILITY.md) — don't "fix" items on
+   that list in passing)
 4. A real browser pass with console checked, including reduced motion
 
 ## Commands

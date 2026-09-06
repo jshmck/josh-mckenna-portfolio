@@ -47,9 +47,17 @@ export function FeatureGallery({ images }: FeatureGalleryProps) {
     // the placeholder blue would fringe the rounded corners where the
     // cover images antialias (same fix as Plate's loaded-image surface).
     <div className="group relative aspect-[16/9] overflow-hidden rounded-frame bg-canvas">
+      {/* tabIndex + role + label (a11y audit 2026-09-06, WCAG 2.1.1):
+          a scrollable region with no focusable content is keyboard-
+          unreachable in Safari/Firefox (Chrome quietly auto-focuses
+          scrollers, which is why it half-worked). aria-label names it
+          for AT; the prev/next buttons remain the primary controls. */}
       <div
         ref={trackRef}
         onScroll={handleScroll}
+        tabIndex={0}
+        role="group"
+        aria-label="Photo carousel"
         className="flex h-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {images.map((image, i) => (

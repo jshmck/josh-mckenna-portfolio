@@ -1091,7 +1091,7 @@ export function DriftingHero() {
           type="button"
           aria-label="Scroll down to more about Josh"
           onClick={() => document.getElementById("home-who")?.scrollIntoView()}
-          className="absolute left-1/2 top-[calc(100svh_-_144px)] z-30 hidden h-12 w-11 -translate-x-1/2 items-center justify-center text-ink/25 max-md:flex"
+          className="absolute left-1/2 top-[calc(100svh_-_144px)] z-30 hidden h-12 w-11 -translate-x-1/2 items-center justify-center text-ink/60 max-md:flex"
         >
           <svg
             aria-hidden="true"

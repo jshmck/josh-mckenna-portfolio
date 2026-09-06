@@ -838,7 +838,7 @@ export function WorkGallery({
             // on. pointer-fine: restores the exact same guard `hover:`
             // gets for free, matching PrideFilterButton's own
             // pointer-coarse:/pointer-fine: split elsewhere in this file.
-            className={`font-grotesque rounded-full border bg-transparent py-[7.85px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none pointer-fine:group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
+            className={`font-grotesque rounded-full border bg-transparent py-[7.85px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] pointer-fine:group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
                 ? "w-44 border-brand pr-9 pl-8"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
@@ -899,7 +899,7 @@ export function WorkGallery({
             // squish; releasing hands off into the existing clear/close
             // motion, so the click reads as press-then-release rather
             // than a flat tap.
-            className={`absolute right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-[transform,opacity,scale] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+            className={`absolute right-1 flex h-6 w-6 items-center justify-center rounded-full bg-brand font-mono text-[12px] leading-none text-canvas transition-[transform,opacity,scale] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
               searchOpen
                 ? "animate-[search-x-roll_550ms_var(--ease-bounce)_both] hover:duration-500 hover:scale-125 active:scale-90 active:duration-100"
                 : "pointer-events-none scale-0 opacity-0"
@@ -954,6 +954,13 @@ export function WorkGallery({
           surfaces match the page background and the seam between them
           disappears. */}
       <div className="mt-12">
+        {/* sr-only h2 (a11y audit 2026-09-06, WCAG 1.3.1): the mobile
+            cards' visible title strips are h3s, which jumped straight
+            from the page h1 (axe heading-order). This slots the missing
+            level in for both /work (sr-only "Work" h1) and the
+            home-embedded gallery (whose sibling sections' h2s it
+            matches). Invisible by design, same as /work's own h1. */}
+        <h2 className="sr-only">Projects</h2>
         <MasonryGrid
           // Filtered views repack densely — they're not the curated ALL
           // order, so levelling the columns wins ("when you click a

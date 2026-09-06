@@ -205,7 +205,7 @@ function NavWorkSearch({ delayMs }: { delayMs: number }) {
         onChange={(event) =>
           window.dispatchEvent(new CustomEvent("worklist:search", { detail: event.target.value }))
         }
-        className={`font-grotesque rounded-full border bg-canvas py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none [&::-webkit-search-cancel-button]:hidden ${
+        className={`font-grotesque rounded-full border bg-canvas py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] [&::-webkit-search-cancel-button]:hidden ${
           open
             ? "w-40 border-brand pr-4 pl-8"
             : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
@@ -254,6 +254,18 @@ export function Nav() {
   const closeMenuNow = () => {
     cancelWorkMenuClose();
     setWorkMenuOpen(false);
+  };
+  /** Opens the Work category menu unless the page's own filter row is
+   *  on screen (opening over it doubles the pills — see the Link's
+   *  comment). Shared by the Work link's mouseenter and keyboard focus. */
+  const openWorkMenuIfRowOffscreen = () => {
+    const row = document.querySelector('[aria-label="Filter work by discipline"]');
+    if (row) {
+      const rect = row.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < window.innerHeight) return;
+    }
+    cancelWorkMenuClose();
+    setWorkMenuOpen(true);
   };
   const scheduleWorkMenuClose = () => {
     cancelWorkMenuClose();
@@ -557,7 +569,7 @@ export function Nav() {
           from the edge -- not overridden at md+, where the header was
           never meant to gain a margin (the three separate shapes there
           already sit exactly at the frame's own edges, unchanged). */}
-      <header ref={headerRef} className="sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)] max-md:px-6">
+      <header ref={headerRef} className="sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)] max-md:px-6 max-[359px]:px-2">
         <nav
           aria-label="Primary"
           // max-md: this element carries the ONE shared shape now — border,
@@ -589,7 +601,7 @@ export function Nav() {
           // capsule radius. px-2 stays for horizontal breathing; the
           // jM mark itself keeps ~7px of clearance inside its own
           // 53px box, so nothing visually touches the bar's edge.
-          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-frame max-md:border max-md:px-2 max-md:py-0 ${barFrostClassMobile}`}
+          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-frame max-md:border max-md:px-2 max-md:py-0 max-[359px]:px-1 ${barFrostClassMobile}`}
         >
           {/* jM circle -- pinned to the frame's left edge (justify-self:
               start), the same edge the pre-pill nav always had it at.
@@ -733,9 +745,22 @@ export function Nav() {
             // this box doesn't kill the menu before the cursor lands.
             onMouseEnter={cancelWorkMenuClose}
             onMouseLeave={scheduleWorkMenuClose}
+            // Keyboard parity for the hover plumbing (a11y audit
+            // 2026-06; M3): focus moving between pill and menu cancels
+            // the pending close the same way the cursor does; focus
+            // leaving the whole box schedules it; Escape closes now.
+            onFocus={cancelWorkMenuClose}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                scheduleWorkMenuClose();
+              }
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") closeMenuNow();
+            }}
             // max-md:border-0 -- own border/background move to the shared
             // <nav> bar now, same as jM/Cart (see shapeFrostClassDesktop).
-            className={`relative flex items-center gap-3 rounded-full max-md:border-0 md:border px-3.5 py-3 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${shapeFrostClassDesktop}`}
+            className={`relative flex items-center gap-3 rounded-full max-md:border-0 md:border px-3.5 py-3 max-[359px]:px-1 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${shapeFrostClassDesktop}`}
           >
             {workMenuOpen && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3">
@@ -785,7 +810,7 @@ export function Nav() {
                 </div>
               </div>
             )}
-            <ul className="flex items-center gap-3 md:gap-10">
+            <ul className="flex items-center gap-3 md:gap-10 max-[359px]:gap-1">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   {/* Same nav-pill-hover squash-and-stretch as jM/Cart's
@@ -841,12 +866,16 @@ export function Nav() {
                       each round of "make X bigger" was paid for by
                       shrinking something else to stay under that width,
                       which is why the same numbers kept bouncing instead
-                      of settling. This pass breaks that cycle: 320px
-                      (iPhone 5/SE-1st-gen, discontinued years ago) is left
-                      to overflow slightly rather than shrinking legible
-                      text again -- verified 360px (the common Android
-                      floor) and 375px+ both still fit cleanly, which
-                      covers every device actually in use today. jM/Cart's
+                      of settling. This pass breaks that cycle: nothing at
+                      360px+ (the common Android floor, covering every
+                      device actually in use today) shrinks again. Below
+                      360px, max-[359px]: variants (header inset, link
+                      gap, pill padding — never text size) compress the
+                      chrome instead of overflowing: "left to overflow
+                      slightly" was a real WCAG 1.4.10 reflow failure at
+                      the 320px test width (a11y audit 2026-09-06), and
+                      spacing-only compression clears it without reopening
+                      the legibility fight above. jM/Cart's
                       circle size (h-[53px]/w-[53px] below) started out
                       picked to land on this pill's own rendered height
                       exactly -- "prefer to be same height," per Josh --
@@ -879,21 +908,16 @@ export function Nav() {
                     // at the top the menu dropped directly over the real
                     // row as a doubled stack ("make sure this doesnt
                     // happen on return to top").
-                    onMouseEnter={
-                      link.href === "/work" && pathname === "/work"
-                        ? () => {
-                            const row = document.querySelector(
-                              '[aria-label="Filter work by discipline"]',
-                            );
-                            if (row) {
-                              const rect = row.getBoundingClientRect();
-                              if (rect.bottom > 0 && rect.top < window.innerHeight) return;
-                            }
-                            cancelWorkMenuClose();
-                            setWorkMenuOpen(true);
-                          }
-                        : undefined
-                    }
+                    {...(link.href === "/work" && pathname === "/work"
+                      ? {
+                          // Shared by mouseenter AND keyboard focus (a11y
+                          // audit 2026-09-06, WCAG 2.1.1 — the menu was
+                          // hover-only; the in-page filter row was the
+                          // only keyboard path).
+                          onMouseEnter: openWorkMenuIfRowOffscreen,
+                          onFocus: openWorkMenuIfRowOffscreen,
+                        }
+                      : {})}
                     className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
                         ? "font-bold text-accent"
@@ -919,7 +943,7 @@ export function Nav() {
             <Link
               href="/shop"
               aria-current={isActive("/shop") ? "page" : undefined}
-              aria-label="Cart"
+              aria-label="Shop"
               onClick={() => scrollToTopIfCurrent("/shop")}
               // max-md:border-0 -- own border/background move to the shared
               // <nav> bar now, same as jM (see shapeFrostClassDesktop).

@@ -108,13 +108,24 @@ const DOT_GAP = 6;
  *  unlikely — it's also why the peek automatically picked up the mobile
  *  "card" look (rounded corners, inset margin, shadow — see
  *  ProjectContent's own doc comment) the moment that shipped, with no
- *  changes needed here at all. `aria-hidden` — this is a second,
- *  non-interactive copy of page content that shouldn't register with
- *  assistive tech, on top of already being `pointer-events-none` for
- *  sighted/mouse interaction. */
+ *  changes needed here at all. `inert` + `aria-hidden` — this is a
+ *  second, non-interactive copy of page content that shouldn't register
+ *  with assistive tech, on top of already being `pointer-events-none`
+ *  for sighted/mouse interaction. `inert` is the load-bearing one for
+ *  keyboards: aria-hidden alone leaves every button and link in the
+ *  copy tab-focusable, which put ~28 invisible tab stops on every
+ *  project page — with the previous-project peek's stops BEFORE the
+ *  real content — and let Enter on an invisible decoy open the
+ *  neighbouring project's lightbox (a11y audit 2026-09-06, WCAG 2.4.3 /
+ *  4.1.2 critical). One attribute removes the whole subtree from tab
+ *  order, AT, and hit-testing at once. */
 function StackPeek({ project }: { project: Project }) {
   return (
-    <div aria-hidden="true" className="pointer-events-none h-full w-full overflow-hidden bg-canvas">
+    <div
+      inert
+      aria-hidden="true"
+      className="pointer-events-none h-full w-full overflow-hidden bg-canvas"
+    >
       <article>
         <ProjectContent project={project} />
       </article>
@@ -180,7 +191,14 @@ function BackTargetPeek({ target }: { target: BackPeekTarget }) {
     );
 
   return (
-    <div aria-hidden="true" className="pointer-events-none h-full w-full overflow-hidden bg-canvas">
+    // inert for the same keyboard reason as StackPeek above — this copy
+    // embeds the ENTIRE Work gallery (or Home), so without it every
+    // filter pill and card in the invisible mirror was tab-reachable.
+    <div
+      inert
+      aria-hidden="true"
+      className="pointer-events-none h-full w-full overflow-hidden bg-canvas"
+    >
       <div style={{ transform: `translate3d(0, ${-(target.scrollY - target.anchorTop)}px, 0)` }}>
         {content}
       </div>

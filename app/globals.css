@@ -135,11 +135,17 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Josh's work is the loudest thing on the page — the focus ring should be
-     unmistakable without competing with it. Brand blue keeps contrast on white
-     and on the blue marquee band, where a purple ring would disappear. */
+  /* Keyboard focus ring: ink, not brand — the brand-blue ring measured
+     2.13:1 against canvas (a11y audit 2026-09-06; WCAG 1.4.11 wants 3:1
+     for focus indicators), which is exactly the population that most
+     needs to see it. "Plain black ring," per Josh, choosing it over a
+     blue-ring-with-ink-edge composite — it also matches the pills' and
+     inputs' own ink borders, so focus speaks the site's existing line
+     language. Ink on canvas measures 19.95:1; on the brand-blue marquee
+     band/CTAs it measures 9.34:1 — passing everywhere brand blue
+     couldn't. */
   :focus-visible {
-    outline: 2px solid var(--color-brand);
+    outline: 2px solid var(--color-ink);
     outline-offset: 3px;
     border-radius: 2px;
   }
