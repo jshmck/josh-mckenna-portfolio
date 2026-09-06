@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { siteConfig } from "@/lib/site";
 
@@ -21,14 +21,30 @@ type Errors = Partial<Record<"name" | "email" | "message", string>>;
 // page on focus for any input under 16px, which reads as the form being
 // broken on a phone even though nothing is visually wrong. md: restores the
 // original 15px now that desktop has no such threshold.
+//
+// No focus:outline-none anymore (a11y audit 2026-09-06): suppressing the
+// outline left the blue border swap as the only focus indicator, and
+// brand-on-canvas measures 2.13:1 (WCAG 1.4.11 wants 3:1). The global
+// ink :focus-visible ring (globals.css) now shows alongside the border
+// swap — browsers apply :focus-visible to text fields on any focus, so
+// mouse users see it too; that's the standard trade for fields.
 const FIELD =
-  "mt-2 w-full rounded-md border border-ink bg-canvas px-3 py-2.5 font-body text-[16px] text-ink transition-colors placeholder:text-ink-muted focus:border-brand focus:outline-none md:text-[15px]";
+  "mt-2 w-full rounded-md border border-ink bg-canvas px-3 py-2.5 font-body text-[16px] text-ink transition-colors placeholder:text-ink-muted focus:border-brand md:text-[15px]";
 
 export function EnquiryForm() {
   const [sent, setSent] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  // Focused when the success panel replaces the form (a11y audit
+  // 2026-09-06, WCAG 4.1.3): the swap otherwise dropped keyboard focus to
+  // <body> and announced nothing — a screen-reader user pressed HOWDY and
+  // heard silence. Focusing the panel (tabIndex={-1}) announces its
+  // content and puts the keyboard somewhere real.
+  const sentRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (sent) sentRef.current?.focus();
+  }, [sent]);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -78,7 +94,7 @@ export function EnquiryForm() {
 
   if (sent) {
     return (
-      <div className="rounded-frame border border-ink p-8">
+      <div ref={sentRef} tabIndex={-1} className="rounded-frame border border-ink p-8">
         <h2 className="type-heading text-ink">Got it!</h2>
         <p className="type-lede mt-4 text-ink-muted">
           Thanks for getting in touch.
@@ -127,7 +143,7 @@ export function EnquiryForm() {
             className={FIELD}
           />
           {errors.name && (
-            <p id="name-error" className="type-label mt-2 text-accent">
+            <p id="name-error" role="alert" className="type-label mt-2 text-accent">
               {errors.name}
             </p>
           )}
@@ -147,7 +163,7 @@ export function EnquiryForm() {
             className={FIELD}
           />
           {errors.email && (
-            <p id="email-error" className="type-label mt-2 text-accent">
+            <p id="email-error" role="alert" className="type-label mt-2 text-accent">
               {errors.email}
             </p>
           )}
@@ -166,7 +182,7 @@ export function EnquiryForm() {
             className={`${FIELD} resize-y`}
           />
           {errors.message && (
-            <p id="message-error" className="type-label mt-2 text-accent">
+            <p id="message-error" role="alert" className="type-label mt-2 text-accent">
               {errors.message}
             </p>
           )}
@@ -177,7 +193,7 @@ export function EnquiryForm() {
           — this is the single place the "email directly" fallback gets
           added, so it's never duplicated regardless of which error fired. */}
       {submitError && (
-        <p className="type-label mt-4 text-accent">
+        <p role="alert" className="type-label mt-4 text-accent">
           {submitError} Email{" "}
           <a href={`mailto:${siteConfig.email}`} className="underline">
             {siteConfig.email}

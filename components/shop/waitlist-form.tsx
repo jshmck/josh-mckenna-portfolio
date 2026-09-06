@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Waitlist capture for the unopened shop.
@@ -14,6 +14,13 @@ export function WaitlistForm() {
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // Focused when the confirmation replaces the form — same WCAG 4.1.3 fix
+  // as the contact form's success panel (a11y audit 2026-09-06): without
+  // it the swap dropped focus to <body> and announced nothing.
+  const sentRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (sent) sentRef.current?.focus();
+  }, [sent]);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -56,7 +63,7 @@ export function WaitlistForm() {
 
   if (sent) {
     return (
-      <p className="type-lede text-ink">
+      <p ref={sentRef} tabIndex={-1} className="type-lede text-ink">
         You&apos;re on the list — we&apos;ll email you the moment the shop opens.
       </p>
     );
@@ -91,7 +98,7 @@ export function WaitlistForm() {
           autoComplete="email"
           aria-invalid={Boolean(error)}
           aria-describedby={error ? "waitlist-error" : undefined}
-          className="w-full rounded-full border border-ink bg-canvas px-5 py-3 font-body text-[15px] text-ink transition-colors placeholder:text-ink-muted focus:border-brand focus:outline-none sm:w-72"
+          className="w-full rounded-full border border-ink bg-canvas px-5 py-3 font-body text-[15px] text-ink transition-colors placeholder:text-ink-muted focus:border-brand sm:w-72"
         />
         {/* Styled like the Work page's filter chips / the contact form's
             HOWDY button, not the shared Button component — same rest/hover
@@ -106,7 +113,7 @@ export function WaitlistForm() {
         </button>
       </div>
       {error && (
-        <p id="waitlist-error" className="type-label mt-3 text-accent">
+        <p id="waitlist-error" role="alert" className="type-label mt-3 text-accent">
           {error}
         </p>
       )}
