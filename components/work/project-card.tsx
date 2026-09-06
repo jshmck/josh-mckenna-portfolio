@@ -120,7 +120,17 @@ export function ProjectCard({
           />
         ) : (
           <Plate
-            image={{ ...baseImage, ratio: effectiveRatio }}
+            // hover-caption (grid) cards: the Link itself carries the
+            // accessible name and mobile shows a visible title strip, so
+            // a matching image alt made SRs announce every card twice
+            // ("Pato, Pato" — a11y audit 2026-09-06, axe
+            // image-redundant-alt). Decorative-empty alt on the card
+            // context only; project-page Plates keep their real alts.
+            image={{
+              ...baseImage,
+              ratio: effectiveRatio,
+              alt: hoverCaption ? "" : baseImage.alt,
+            }}
             sizes={sizes}
             priority={priority}
             radius={hoverCaption ? "" : undefined}

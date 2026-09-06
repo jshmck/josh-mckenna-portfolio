@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type YouTubeEmbedProps = {
   /** The YouTube video id (the `v=` param), not a full URL. */
@@ -27,11 +27,19 @@ type YouTubeEmbedProps = {
  */
 export function YouTubeEmbed({ videoId, poster, alt }: YouTubeEmbedProps) {
   const [playing, setPlaying] = useState(false);
+  // The Play button unmounts on click, which dropped keyboard focus to
+  // <body> (a11y audit 2026-09-06, WCAG 2.4.3) — hand it to the iframe
+  // (which has a descriptive title) so the keyboard lands on the player.
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  useEffect(() => {
+    if (playing) iframeRef.current?.focus();
+  }, [playing]);
 
   return (
     <div className="relative aspect-[16/9] overflow-hidden rounded-frame bg-ink">
       {playing ? (
         <iframe
+          ref={iframeRef}
           className="absolute inset-0 h-full w-full"
           src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`}
           title={alt}
