@@ -177,10 +177,11 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
     if (event.key !== "Tab") return;
     const root = dialogRef.current;
     if (!root) return;
-    // Filter to VISIBLE controls — the arrows exist twice (md-up edge
-    // set, mobile counter-row set) with display:none hiding the
-    // off-breakpoint copy; a hidden element can't take focus, so
-    // wrapping onto one would silently drop the trap.
+    // Filter to VISIBLE controls — a hidden element can't take focus,
+    // so wrapping onto one would silently drop the trap. (Nothing in
+    // the dialog is currently ever hidden, but this guard is what made
+    // the interim two-breakpoint arrow sets safe and it stays as cheap
+    // insurance for the next responsive control.)
     const focusables = [
       ...root.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
@@ -1008,40 +1009,39 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
         )}
       </div>
 
-      {/* Bare controls at the standard lightbox positions, replacing the
-          frosted toolbar pill (a clone of the header's centre pill) --
-          "lightbox nav bar needs rethinking too - no frost bubble," per
-          Josh, with corners + edges as the chosen layout: × top-right
-          (where every lightbox puts it), < > vertically centred at the
-          screen edges from md up, and below md -- where paging is the
-          swipe gesture this dialog already handles -- just a small mono
-          counter under the image instead of arrows. All plain ink
-          glyphs on the light backdrop, no containers, no nav-pill
-          bounces (that motion belongs to the header's frost language).
+      {/* Bare controls, no frosted toolbar pill -- "lightbox nav bar
+          needs rethinking too - no frost bubble," per Josh: × top-right
+          (where every lightbox puts it), and the < 1/7 > paging row
+          under the image (below). All plain ink glyphs on the light
+          backdrop, no containers, no nav-pill bounces (that motion
+          belongs to the header's frost language).
 
           Glyph notes carried over from the pill era: "<" / ">" not
           arrows ("change the arrows from arrows to < and >," per Josh);
           × is U+00D7, not U+2715 -- the mono face has the former, and
           math operators share the face's stroke weight by design so the
-          three glyphs match for free. The inner spans exist purely to
-          carry the one-shot arrow-hint nudge on their own transform,
-          off the button's, which the hover scale animates. Every
-          control stopPropagation()s so the dialog's own click-anywhere
-          close doesn't also fire; data-lightbox-control keeps a touch
-          that starts on a control from doubling as a page-swipe (see
-          onTouchStart above). */}
-      {images.length > 1 && (
-        <>
-          {/* md-up: the classic edge arrows, exactly as they've always
-              sat. Below md they're hidden — mobile's tap-paging moved
-              into the counter row below ("move next/prev lightbox nav
-              to the lower section where it says number count and make
-              it match the same font," per Josh, refining the first cut
-              that floated these same 30px glyphs at the screen edges
-              mid-image). The mobile buttons are a second render of the
-              same controls, not a repositioning — display:none keeps
-              whichever set is off-breakpoint out of tab order and AT;
-              trapTab filters to visible controls for the same reason. */}
+          glyphs match for free. Every control stopPropagation()s so the
+          dialog's own click-anywhere close doesn't also fire;
+          data-lightbox-control keeps a touch that starts on a control
+          from doubling as a page-swipe (see onTouchStart above). */}
+      {/* Paging row at EVERY width now: < 1/7 > grouped under the image,
+          all in the counter's own type-label voice. Mobile got this
+          treatment first ("move next/prev lightbox nav to the lower
+          section where it says number count and make it match the same
+          font"), then desktop unified onto it ("add the same arrows and
+          1/10 type of counter on desktop under the images," per Josh) —
+          retiring the 30px screen-edge glyphs the desktop lightbox had
+          carried since the toolbar-pill era (and the arrow-hint nudge
+          keyframes with them; the visible counter is the paging cue
+          now). The single-tap paging WCAG 2.5.7 needs everywhere, too.
+          p-3 keeps each glyph's tap/click target ≥24px despite the
+          small type; bottom-3 seats the padded buttons' glyphs on the
+          baseline the bare counter used to sit at with bottom-6, inside
+          the stage's own reserved band (stageReserve) so the row never
+          overlaps the artwork. Hover mirrors the close x's brand swap;
+          active: covers touch, where hover never fires. */}
+      {images.length > 1 && openIndex !== null && (
+        <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1">
           <button
             type="button"
             data-lightbox-dir="prev"
@@ -1051,12 +1051,13 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
               goPrev();
             }}
             aria-label="Previous image"
-            className={`${LIGHTBOX_BUTTON_CLASS} absolute left-3 top-1/2 hidden -translate-y-1/2 md:block`}
+            className="p-3 text-ink transition-colors hover:text-brand active:text-brand"
           >
-            <span className="inline-block text-[30px] animate-[arrow-hint-left_1.1s_ease-in-out_600ms]">
-              {"<"}
-            </span>
+            <span className="type-label">{"<"}</span>
           </button>
+          <p className="type-label text-ink">
+            {openIndex + 1} / {images.length}
+          </p>
           <button
             type="button"
             data-lightbox-dir="next"
@@ -1066,52 +1067,11 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
               goNext();
             }}
             aria-label="Next image"
-            className={`${LIGHTBOX_BUTTON_CLASS} absolute right-3 top-1/2 hidden -translate-y-1/2 md:block`}
+            className="p-3 text-ink transition-colors hover:text-brand active:text-brand"
           >
-            <span className="inline-block text-[30px] animate-[arrow-hint-right_1.1s_ease-in-out_600ms]">
-              {">"}
-            </span>
+            <span className="type-label">{">"}</span>
           </button>
-          {/* Mobile paging row: < 1/7 > grouped at the counter's spot,
-              all in the counter's own type-label voice — the single-tap
-              paging equivalent WCAG 2.5.7 needs (swipe still works).
-              p-3 keeps each glyph's tap target ≥24px despite the small
-              type; bottom-3 seats the padded buttons' glyphs on the
-              same baseline the bare counter sits at with bottom-6. */}
-          {openIndex !== null && (
-            <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1 md:hidden">
-              <button
-                type="button"
-                data-lightbox-dir="prev"
-                data-lightbox-control
-                onClick={(event) => {
-                  event.stopPropagation();
-                  goPrev();
-                }}
-                aria-label="Previous image"
-                className="p-3 text-ink transition-colors active:text-brand"
-              >
-                <span className="type-label">{"<"}</span>
-              </button>
-              <p className="type-label text-ink">
-                {openIndex + 1} / {images.length}
-              </p>
-              <button
-                type="button"
-                data-lightbox-dir="next"
-                data-lightbox-control
-                onClick={(event) => {
-                  event.stopPropagation();
-                  goNext();
-                }}
-                aria-label="Next image"
-                className="p-3 text-ink transition-colors active:text-brand"
-              >
-                <span className="type-label">{">"}</span>
-              </button>
-            </div>
-          )}
-        </>
+        </div>
       )}
       {/* Paging announcement for screen readers (WCAG 4.1.3) — arrow keys
           and swipes update the dialog's aria-label, but a label change on
