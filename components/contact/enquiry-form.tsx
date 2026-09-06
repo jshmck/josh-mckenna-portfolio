@@ -79,7 +79,7 @@ export function EnquiryForm() {
   if (sent) {
     return (
       <div className="rounded-frame border border-ink p-8">
-        <h2 className="type-heading text-ink">Got it</h2>
+        <h2 className="type-heading text-ink">Got it!</h2>
         <p className="type-lede mt-4 text-ink-muted">
           Thanks for getting in touch.
         </p>
