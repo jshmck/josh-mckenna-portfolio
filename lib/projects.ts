@@ -3050,10 +3050,18 @@ export const projects: Project[] = [
       src: "/work/la-pride/01-la-pride-4x5.webp",
     },
     // Murals pill leads with the flyposted wall instead of the lockup —
-    // same "more relevant image per category" ask as Wagamama's.
+    // same "more relevant image per category" ask as Wagamama's. 4/5,
+    // matching this project's own cardRatio above — "when in Murals the
+    // frame is very tall, put it back to 4/5," per Josh. Unlike Wagamama
+    // and Atlanta's Murals/Editorial overrides (5/3, landscape span-2
+    // spreads), this cover is a portrait crop of the same wall photo used
+    // at 2/3 inside the project page's own gallery — that curatorial
+    // ratio belongs to the full-width in-page image, not the grid card,
+    // which stays in the site's standard portrait family regardless of
+    // which pill is active.
     cardImageByCategory: {
       Murals: {
-        ratio: "2/3",
+        ratio: "4/5",
         alt: "Flyposted lineup sheet and site map",
         src: "/work/la-pride/07-flyposted-lineup.webp",
       },
