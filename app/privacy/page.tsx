@@ -11,7 +11,11 @@ export const metadata: Metadata = {
  * Structure follows the standard Shopify-generated policy shape (the
  * same one used on hattiestewart.com/policies/privacy-policy) at
  * Josh's request, but every sentence describes this site's own setup
- * — not copied from hers. Shop/Shopify/cookies sections describe what
+ * — not copied from hers. Analytics/host placeholders were filled
+ * 2026-09-06 when Vercel Web Analytics went live (issue #8) — it's
+ * cookieless and anonymous, which is why the Cookies section points
+ * back at Device & Usage instead of listing analytics cookies.
+ * Shop/Shopify/cookies sections describe what
  * will be true once Shop launches (commerce channel is still an open
  * decision, see DESIGN.md); update the bracketed placeholders once
  * Shopify, the analytics provider and the host are actually wired in.
@@ -33,7 +37,7 @@ export default function PrivacyPage() {
             Privacy Policy.
           </h1>
           <p className="font-body mt-2 text-[12px] text-ink-muted">
-            Last updated: [date to be confirmed at launch]
+            Last updated: 6 September 2026
           </p>
 
           <p className="font-body mt-8 text-[13px] leading-relaxed text-ink">
@@ -67,11 +71,14 @@ export default function PrivacyPage() {
               </p>
               <p className={P}>
                 <span className={H3}>Device and usage information.</span>{" "}
-                We automatically collect certain information about the
-                device you use to visit this website, including your
-                browser type, IP address, time zone, and how you interact
-                with the site, using cookies and our analytics provider.
-                See <span className="italic">Cookies</span> below.
+                We collect anonymous, aggregated usage data through
+                Vercel Web Analytics: which pages are viewed, the
+                referring site, and coarse device information (browser,
+                operating system, device type, and country derived from
+                your IP address, which is not stored). This is done
+                without cookies and without building any profile of you
+                — individual visitors are not identified or tracked
+                across other websites.
               </p>
             </div>
 
@@ -101,8 +108,10 @@ export default function PrivacyPage() {
                   Shopify, which processes shop orders and payment once
                   the shop is live;
                 </li>
-                <li>[analytics provider], which processes usage data;</li>
-                <li>[hosting provider], which hosts this website.</li>
+                <li>
+                  Vercel, which hosts this website and processes anonymous,
+                  aggregated usage data through Vercel Web Analytics.
+                </li>
               </ul>
               <p className={P}>
                 We may also disclose personal information to comply with
@@ -165,10 +174,11 @@ export default function PrivacyPage() {
                 cannot be switched off.
               </p>
               <p className={P}>
-                <span className={H3}>Analytics cookies.</span> We use
-                [analytics provider] to understand how visitors use this
-                website, such as which pages and projects are viewed. You
-                can control or block these through your browser settings.
+                <span className={H3}>Analytics.</span> Our analytics
+                (Vercel Web Analytics) does not use cookies at all — see
+                <span className="italic"> Device and usage information</span>{" "}
+                above. This website sets no analytics or advertising
+                cookies of its own.
               </p>
             </div>
 
@@ -190,8 +200,10 @@ export default function PrivacyPage() {
                 and is deleted once it is no longer needed for that
                 purpose. Order information is kept for as long as
                 required for accounting, tax and consumer-protection
-                obligations. Analytics data is retained according to
-                [analytics provider]&rsquo;s default retention period.
+                obligations. Analytics data is anonymous
+                and aggregated from the moment of collection, and is
+                retained according to Vercel Web Analytics&rsquo;s
+                standard retention period for our plan.
               </p>
             </div>
 
