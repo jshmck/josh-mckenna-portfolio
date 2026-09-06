@@ -141,6 +141,63 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   const PULL_TO_CLOSE_DISTANCE = 120;
   const PAGE_SETTLE_MS = 200;
 
+  // Focus management for the dialog (a11y audit 2026-09-06, WCAG 2.4.3 /
+  // dialog pattern). aria-modal="true" promises AT that everything
+  // outside the dialog is out of play — a promise only kept if focus
+  // actually MOVES into the dialog on open, stays inside while it's up,
+  // and returns to the trigger on close. None of that is automatic for a
+  // hand-rolled dialog: without this, focus stayed on the page trigger
+  // behind the backdrop and Tab walked the covered page's controls while
+  // the "modal" was showing.
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
+  const isOpen = openImage !== null;
+
+  useEffect(() => {
+    if (!isOpen) return;
+    // The element that opened the dialog (an "Open larger view" button),
+    // captured before focus moves so close can hand focus straight back.
+    restoreFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    // Focus the dialog root itself (tabIndex={-1} below): screen readers
+    // announce its aria-label (the open image's alt) on arrival, and the
+    // first Tab lands on the first control. Focusing a specific button
+    // instead would skip that announcement.
+    dialogRef.current?.focus();
+    return () => {
+      restoreFocusRef.current?.focus();
+      restoreFocusRef.current = null;
+    };
+  }, [isOpen]);
+
+  /** Wrap Tab/Shift+Tab inside the dialog — the portal renders as a body
+   *  child, so without this Tab walks straight out into the page behind
+   *  the backdrop. */
+  const trapTab = (event: React.KeyboardEvent) => {
+    if (event.key !== "Tab") return;
+    const root = dialogRef.current;
+    if (!root) return;
+    const focusables = root.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    );
+    if (focusables.length === 0) {
+      event.preventDefault();
+      return;
+    }
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement;
+    if (event.shiftKey) {
+      if (active === first || active === root) {
+        event.preventDefault();
+        last.focus();
+      }
+    } else if (active === last || active === root) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
   // A drag-committed page already animates the incoming peek all the way
   // into its resting position during the 200ms settle below — by the time
   // goNext/goPrev swaps openIndex, the peek IS the new open image, just
@@ -816,6 +873,9 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   // in the root stacking context, same as any other top-level overlay.
   return createPortal(
     <div
+      ref={dialogRef}
+      tabIndex={-1}
+      onKeyDown={trapTab}
       role="dialog"
       aria-modal="true"
       aria-label={openImage.alt}
@@ -975,7 +1035,12 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
               goPrev();
             }}
             aria-label="Previous image"
-            className={`${LIGHTBOX_BUTTON_CLASS} absolute left-3 top-1/2 hidden -translate-y-1/2 md:block`}
+            // Visible at EVERY width now, not md-up — below md paging was
+            // swipe-only, which locks out anyone who can't perform the
+            // gesture (WCAG 2.5.7; a11y audit 2026-09-06, "show arrows on
+            // mobile" per Josh). The swipe still works; these are the
+            // single-tap equivalent.
+            className={`${LIGHTBOX_BUTTON_CLASS} absolute left-3 top-1/2 block -translate-y-1/2`}
           >
             <span className="inline-block text-[30px] animate-[arrow-hint-left_1.1s_ease-in-out_600ms]">
               {"<"}
@@ -990,22 +1055,32 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
               goNext();
             }}
             aria-label="Next image"
-            className={`${LIGHTBOX_BUTTON_CLASS} absolute right-3 top-1/2 hidden -translate-y-1/2 md:block`}
+            className={`${LIGHTBOX_BUTTON_CLASS} absolute right-3 top-1/2 block -translate-y-1/2`}
           >
             <span className="inline-block text-[30px] animate-[arrow-hint-right_1.1s_ease-in-out_600ms]">
               {">"}
             </span>
           </button>
-          {/* Position counter, mobile only -- with the arrows gone below
-              md there's otherwise no cue that the gallery pages at all;
-              "1 / 12" is the caption-voice hint that a swipe has
-              somewhere to go, cousin of the breadcrumb dot strip. */}
+          {/* Position counter, mobile only -- the caption-voice cue that
+              a swipe/tap has somewhere to go, cousin of the breadcrumb
+              dot strip. (Arrows render at every width now — see their
+              own comment — but the counter stays mobile-only: from md up
+              the arrows alone carried the cue before and still do.) */}
           {openIndex !== null && (
             <p className="type-label absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-ink md:hidden">
               {openIndex + 1} / {images.length}
             </p>
           )}
         </>
+      )}
+      {/* Paging announcement for screen readers (WCAG 4.1.3) — arrow keys
+          and swipes update the dialog's aria-label, but a label change on
+          an already-focused ancestor announces nothing; this status
+          region speaks each new image as it lands. */}
+      {openIndex !== null && (
+        <p className="sr-only" role="status">
+          Image {openIndex + 1} of {images.length}: {openImage.alt}
+        </p>
       )}
       <button
         type="button"
