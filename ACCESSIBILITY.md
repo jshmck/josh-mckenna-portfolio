@@ -32,8 +32,10 @@ conversation, not a lint cleanup.
 
 Peek decoys made `inert` (invisible tab stops / wrong-project lightbox);
 lightbox focus moved/trapped/restored + SR paging announcements + arrows at
-every width; form errors `role="alert"` + focused success panels; focus ring
-switched to ink sitewide and `outline-none` suppressions removed; sub-360px
+every width (mobile's tap-paging lives in the counter row); form errors
+`role="alert"` + focused success panels; focus ring switched to ink sitewide
+(form fields keep it; the search pills instead signal focus with an ink
+border swap + their own 34→176px expansion, per Josh — no ring); sub-360px
 nav compression (320px reflow); Work drop-down keyboard parity; feature
 gallery track focusable; heading-order h2; search-clear hit area; cart
 labelled "Shop"; scroll-cue chevron contrast; card image alt de-duplication;

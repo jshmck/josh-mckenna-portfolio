@@ -205,9 +205,9 @@ function NavWorkSearch({ delayMs }: { delayMs: number }) {
         onChange={(event) =>
           window.dispatchEvent(new CustomEvent("worklist:search", { detail: event.target.value }))
         }
-        className={`font-grotesque rounded-full border bg-canvas py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] [&::-webkit-search-cancel-button]:hidden ${
+        className={`font-grotesque rounded-full border bg-canvas py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none [&::-webkit-search-cancel-button]:hidden ${
           open
-            ? "w-40 border-brand pr-4 pl-8"
+            ? "w-40 border-ink pr-4 pl-8"
             : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
         }`}
       />

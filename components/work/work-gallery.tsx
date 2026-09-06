@@ -838,9 +838,9 @@ export function WorkGallery({
             // on. pointer-fine: restores the exact same guard `hover:`
             // gets for free, matching PrideFilterButton's own
             // pointer-coarse:/pointer-fine: split elsewhere in this file.
-            className={`font-grotesque rounded-full border bg-transparent py-[7.85px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] pointer-fine:group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
+            className={`font-grotesque rounded-full border bg-transparent py-[7.85px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none pointer-fine:group-has-[button:hover]/search:w-[184px] max-md:py-[5.8px] max-md:text-[16px] [&::-webkit-search-cancel-button]:hidden ${
               searchOpen
-                ? "w-44 border-brand pr-9 pl-8"
+                ? "w-44 border-ink pr-9 pl-8"
                 : "w-[34px] cursor-pointer border-ink px-0 hover:border-brand"
             }`}
           />
