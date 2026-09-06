@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo_Black, Space_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 
 import { Footer } from "@/components/site/footer";
 import { Nav } from "@/components/site/nav";
@@ -136,6 +137,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
+        {/* Vercel Web Analytics (issue #8) — cookieless, anonymous,
+            aggregate page views + referrers only, so no consent banner
+            and nothing personal to disclose beyond /privacy's Analytics
+            section. The /next entry point tracks App Router client-side
+            navigations as page views automatically (a plain script tag
+            would only count hard loads). Renders nothing; the ~1KB
+            collector script no-ops entirely until Web Analytics is
+            switched on for the project in the Vercel dashboard, and on
+            localhost it stays in debug mode without sending. Keeps every
+            route fully static — the component just injects the script
+            client-side. */}
+        <Analytics />
       </body>
     </html>
   );
