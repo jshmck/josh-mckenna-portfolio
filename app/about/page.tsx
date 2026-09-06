@@ -112,7 +112,16 @@ export default function AboutPage() {
               across the row instead of trailing right under its own quote. */}
           <ul className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
             {pressQuotes.map((press, index) => (
-              <li key={press.source}>
+              <li
+                key={press.source}
+                // Mobile drops every quote but Gestalten's, keeping the
+                // floating Pride stickers above (untouched — this only
+                // hides the <li>, not FloatingStickers itself) — "on
+                // mobile drop all quotes except gestalten," per Josh.
+                className={
+                  press.source.startsWith("Gestalten") ? undefined : "max-md:hidden"
+                }
+              >
                 <Reveal
                   delay={index * 60}
                   className="flex h-full flex-col justify-between"

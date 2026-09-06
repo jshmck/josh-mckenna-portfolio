@@ -79,8 +79,8 @@ export type PressQuote = {
 export const pressQuotes: PressQuote[] = [
   {
     quote:
-      "Devoted Instagram users will no doubt recognise the sassy red-heeled character in the mural, which appeared in the Pride-themed Stories sticker pack Instagram released in May.",
-    source: "Vogue Magazine (2017)",
+      "East London-based designer and illustrator Josh McKenna wooed us with his lucid, playful pastel visions which feel at once retro and contemporary, minimal yet full of life.",
+    source: "Crack Magazine",
   },
   {
     quote:
