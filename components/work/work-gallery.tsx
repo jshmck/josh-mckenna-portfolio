@@ -982,7 +982,17 @@ export function WorkGallery({
               mobileCaptionPx: MOBILE_CAPTION_RESERVE_PX,
               node: (
                 <MasonryCard
-                  project={project}
+                  // cardVideo (Instagram Sticker) plays project.heroVideo
+                  // unconditionally inside ProjectCard, with no way to
+                  // know a categoryImage override is active — so a
+                  // filtered pill kept the turnaround animation instead
+                  // of switching to the Murals/Icons still ("make sure
+                  // the IG sticker switches," per Josh, which the video
+                  // was silently winning against). Disabling it on this
+                  // one render, only when an override applies, is
+                  // simpler than threading a new prop through
+                  // ProjectCard for what's still a single-project trial.
+                  project={categoryImage ? { ...project, cardVideo: false } : project}
                   index={index}
                   ratio={cardRatio}
                   image={categoryImage ?? project.cardImage}
