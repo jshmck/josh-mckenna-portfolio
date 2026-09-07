@@ -15,10 +15,14 @@ export const metadata: Metadata = {
  * 2026-09-06 when Vercel Web Analytics went live (issue #8) — it's
  * cookieless and anonymous, which is why the Cookies section points
  * back at Device & Usage instead of listing analytics cookies.
- * Shop/Shopify/cookies sections describe what
- * will be true once Shop launches (commerce channel is still an open
- * decision, see DESIGN.md); update the bracketed placeholders once
- * Shopify, the analytics provider and the host are actually wired in.
+ * Shop/cookies sections describe what
+ * will be true once Shop launches via Big Cartel (see DESIGN.md); update
+ * once the shop is actually wired in. Order/sharing sections name Big
+ * Cartel and its payment processor separately (checked against Hattie's
+ * live policy 2026-09-07, which names Shopify for payments specifically)
+ * since payment details flow through whichever processor is connected,
+ * not Big Cartel itself — kept generic rather than naming Stripe/PayPal
+ * so this doesn't need editing again if that choice changes.
  * Not reviewed by a solicitor — see GH #6. Plain font-body throughout
  * (bold headings, regular body), no display/accent treatment —
  * deliberately formal, no decoration.
@@ -65,9 +69,10 @@ export default function PrivacyPage() {
               <p className={P}>
                 <span className={H3}>Order information.</span> Once the
                 shop is live, if you purchase a print, we — through our
-                shop platform, Shopify — collect your name, billing and
-                shipping address, email address, and payment information,
-                in order to fulfil your order.
+                shop platform, Big Cartel, and its connected payment
+                processor — collect your name, billing and shipping
+                address, email address, and payment information, in order
+                to fulfil your order.
               </p>
               <p className={P}>
                 <span className={H3}>Device and usage information.</span>{" "}
@@ -105,8 +110,12 @@ export default function PrivacyPage() {
               <ul className="font-body mt-3 list-disc space-y-2 pl-5 text-[13px] leading-relaxed text-ink">
                 <li>Resend, which delivers contact and waitlist messages;</li>
                 <li>
-                  Shopify, which processes shop orders and payment once
+                  Big Cartel, which processes and fulfils shop orders once
                   the shop is live;
+                </li>
+                <li>
+                  Big Cartel&rsquo;s connected payment processor, which
+                  handles payment and fraud prevention for shop orders;
                 </li>
                 <li>
                   Vercel, which hosts this website and processes anonymous,
@@ -168,7 +177,7 @@ export default function PrivacyPage() {
               <h2 className={H2}>6. Cookies</h2>
               <p className={P}>
                 <span className={H3}>Necessary cookies.</span> Once the
-                shop is live, Shopify sets cookies that are required for
+                shop is live, Big Cartel sets cookies that are required for
                 the shop to function — for example, to keep items in your
                 cart and to keep you signed in during checkout. These
                 cannot be switched off.
