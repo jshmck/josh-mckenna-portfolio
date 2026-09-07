@@ -12,7 +12,7 @@ import { features, pressQuotes } from "@/lib/about";
 export const metadata: Metadata = {
   title: "Info",
   description:
-    "Over a decade of drawing for magazines, record sleeves, cereal boxes and one negotiable tattoo.",
+    "Josh McKenna is an illustrator with over a decade's experience, from the Instagram Pride sticker to murals for Facebook.",
 };
 
 /**
