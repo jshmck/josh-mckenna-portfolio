@@ -103,8 +103,12 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
           eyebrow role. Only the heading stays inside the frame — the logo
           ticker runs full-bleed, per Josh ("an animated bar, so the logos
           are just going along from right to left"), so ClientLogos sits
-          outside the padded container. */}
-      <section className="pb-16">
+          outside the padded container. No bottom padding of its own —
+          the gap down to the embedded gallery's filter pills is owned
+          entirely by #home-work's pt-6 ("close the gap between clients
+          and the work nav pill," per Josh — was pb-16 + pt-16, then
+          pt-10, still "a wee bit" too roomy). */}
+      <section>
         <div className="mx-auto max-w-frame px-6 md:px-gutter">
           <h2 className="type-label text-ink-muted">Selected Clients</h2>
         </div>
@@ -119,7 +123,7 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
           The id is the landmark Nav's scroll-spy reads to hand the active
           highlight from Home to Work — see components/site/nav.tsx. */}
       <section id="home-work">
-        <div className="mx-auto max-w-frame px-6 pb-32 pt-16 md:px-gutter">
+        <div className="mx-auto max-w-frame px-6 pb-32 pt-6 md:px-gutter">
           {/* showIllustrations=false -- the Twingo/iPad row is /work's
               own top-of-page illustration, not something that should
               duplicate into Home's embedded gallery. */}

@@ -463,16 +463,20 @@ export function WorkGallery({
   // nav drop-down's links, which change the filter via the URL without
   // going through any click handler here. Watching `filter` rather than
   // hooking every call site is what keeps the two rules from fighting:
-  // typing sets the filter to "All", which this effect deliberately
-  // ignores. Skipped for a frozen peek — filter is a constant there, so
-  // this would only ever fire once on mount and clobber initialQuery.
-  useEffect(() => {
-    if (!interactive) return;
+  // typing sets the filter to "All", which this rule deliberately
+  // ignores. Done as a during-render adjustment (React's "adjusting
+  // state when a prop changes" pattern) rather than an effect — same
+  // trigger, but the cleared state lands in this very render instead of
+  // a second commit. Guarded for a frozen peek — filter is a constant
+  // there, so this must never clobber initialQuery.
+  const [prevFilter, setPrevFilter] = useState(filter);
+  if (interactive && prevFilter !== filter) {
+    setPrevFilter(filter);
     if (filter !== "All") {
       setQuery("");
       setSearchOpen(false);
     }
-  }, [interactive, filter]);
+  }
 
   // One-shot entrance for the filter row — "when you click on Work in
   // the nav bar, the All pill drops down, and all the categories kind of
