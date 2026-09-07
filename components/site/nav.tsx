@@ -167,6 +167,24 @@ import { CartIcon } from "@/components/ui/social-icons";
 const MERGE_ENTER = 96; // just past the 88px header
 const MERGE_EXIT = 160;
 
+/** True while the page's own filter row (work-gallery.tsx's chips +
+ * search pill) is anywhere in the viewport. The Work drop-down must never
+ * stack over that real row — this check gates opening
+ * (openWorkMenuIfRowOffscreen) and, because the doubled state is
+ * reachable without a fresh open, also force-closes an already-open menu
+ * from the scroll loop (see update()): a search typed into the
+ * drop-down shrinks the results — and with them the whole document —
+ * until the browser clamps scrollY, surfacing the row behind the nav
+ * with the menu still open on top of it. Module scope (pure DOM read,
+ * no state) so the scroll effect can call it without growing its
+ * dependency list. */
+function isWorkFilterRowOnScreen(): boolean {
+  const row = document.querySelector('[aria-label="Filter work by discipline"]');
+  if (!row) return false;
+  const rect = row.getBoundingClientRect();
+  return rect.bottom > 0 && rect.top < window.innerHeight;
+}
+
 /** The nav's own copy of the Work search, inside the hover drop-down. Used
  * to render full-width unconditionally — "the search is the full length,
  * not the smaller circle with mag like it is at the top of the page," per
@@ -174,7 +192,23 @@ const MERGE_EXIT = 160;
  * echo. A standalone component rather than inline JSX so its own `open`
  * state remounts fresh (collapsed) every time the drop-down itself mounts
  * on hover — no effect needed to reset it back to closed between opens. */
-function NavWorkSearch({ delayMs }: { delayMs: number }) {
+function NavWorkSearch({
+  delayMs,
+  onHandoff,
+}: {
+  delayMs: number;
+  /** Called on the first real (non-empty) keystroke — the gallery takes
+   *  the query over from here (focus + scroll-to-top, see
+   *  work-gallery.tsx's onSearch hand-off), so the menu must close NOW,
+   *  in the same React update. The blur-grace and row-on-screen closes
+   *  still exist as backstops, but both land a beat later (300ms timer /
+   *  next scroll frame), and that beat is visible: with the page already
+   *  back at top, the in-page row sat under a still-open drop-down for
+   *  a moment — "the one i'm typing in is above, and then the one below
+   *  appears," per Josh, on the very first fix that relied on the
+   *  backstops alone. */
+  onHandoff: () => void;
+}) {
   const [open, setOpen] = useState(false);
   return (
     <span
@@ -202,9 +236,13 @@ function NavWorkSearch({ delayMs }: { delayMs: number }) {
         onBlur={(event) => {
           if (!event.target.value.trim()) setOpen(false);
         }}
-        onChange={(event) =>
-          window.dispatchEvent(new CustomEvent("worklist:search", { detail: event.target.value }))
-        }
+        onChange={(event) => {
+          window.dispatchEvent(new CustomEvent("worklist:search", { detail: event.target.value }));
+          // After the dispatch, not before — the gallery's listener
+          // moves focus to the in-page input synchronously during it,
+          // so by the time the menu unmounts nothing here holds focus.
+          if (event.target.value.trim()) onHandoff();
+        }}
         className={`font-grotesque rounded-full border bg-canvas py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none [&::-webkit-search-cancel-button]:hidden ${
           open
             ? "w-40 border-ink pr-4 pl-8"
@@ -259,11 +297,7 @@ export function Nav() {
    *  on screen (opening over it doubles the pills — see the Link's
    *  comment). Shared by the Work link's mouseenter and keyboard focus. */
   const openWorkMenuIfRowOffscreen = () => {
-    const row = document.querySelector('[aria-label="Filter work by discipline"]');
-    if (row) {
-      const rect = row.getBoundingClientRect();
-      if (rect.bottom > 0 && rect.top < window.innerHeight) return;
-    }
+    if (isWorkFilterRowOnScreen()) return;
     cancelWorkMenuClose();
     setWorkMenuOpen(true);
   };
@@ -391,6 +425,18 @@ export function Nav() {
         setHomeWorkActive(false);
       }
 
+      // The no-doubled-pills rule, enforced while OPEN too: the guard on
+      // openWorkMenuIfRowOffscreen only covers opening, but the menu can
+      // end up over the page's own filter row without a fresh open —
+      // typing in its search collapses the results/document height until
+      // the browser clamps scrollY (surfacing the row with no deliberate
+      // scroll — Josh hit it searching "LEVI" from halfway down /work),
+      // or the page is scrolled with the cursor parked inside the menu.
+      // Functional setter: `open` short-circuits the DOM read while
+      // closed, and the effect keeps its [pathname]-only deps. Any
+      // grace-period close timer left dangling is harmless — it only
+      // ever sets false (see prevPathname's comment).
+      setWorkMenuOpen((open) => (open && isWorkFilterRowOnScreen() ? false : open));
     };
 
     const onScroll = () => {
@@ -805,7 +851,10 @@ export function Nav() {
                       NavWorkSearch (above Nav) owns the collapsed/open
                       sizing itself, mirroring work-gallery.tsx's pill. */}
                   {pathname === "/work" && (
-                    <NavWorkSearch delayMs={(getActiveCategories().length + 1) * 55} />
+                    <NavWorkSearch
+                      delayMs={(getActiveCategories().length + 1) * 55}
+                      onHandoff={closeMenuNow}
+                    />
                   )}
                 </div>
               </div>
