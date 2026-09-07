@@ -63,7 +63,12 @@ export function ShopGrid() {
                 className={!buyable ? "opacity-40" : undefined}
               />
               {status && (
-                <span className="type-label absolute left-3 top-3 rounded-full bg-canvas px-3 py-1 text-ink-muted">
+                // Centred rather than corner-pinned -- at left-3 it sat
+                // inside the frame's 40px corner curve (rounded-frame),
+                // poking into the curved zone instead of the flat part
+                // of the image. Centring sidesteps that regardless of
+                // card size/ratio.
+                <span className="type-label absolute left-1/2 top-3 -translate-x-1/2 rounded-full bg-canvas px-3 py-1 text-ink-muted">
                   {status}
                 </span>
               )}
