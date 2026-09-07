@@ -44,6 +44,13 @@ export const siteConfig = {
   },
   /** Used for absolute OG image + canonical URLs. */
   url: "https://joshmckenna.com",
+  /** Big Cartel store — see lib/shop.ts. Store itself decides per-product
+   *  whether something's actually buyable (`status: "active"`); this is
+   *  just where to find it. */
+  shop: {
+    subdomain: "joshmckenna",
+    url: "https://joshmckenna.bigcartel.com",
+  },
 } as const;
 
 /* Deviates from the original Figma nav (node 85:420, HOME · WORK · INFO ·
