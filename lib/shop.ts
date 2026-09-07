@@ -25,6 +25,12 @@ export type BigCartelProductOption = {
   sold_out: boolean;
 };
 
+export type BigCartelCategory = {
+  id: number;
+  name: string;
+  permalink: string;
+};
+
 export type BigCartelProduct = {
   id: number;
   name: string;
@@ -35,7 +41,37 @@ export type BigCartelProduct = {
   url: string;
   images: { url: string; width: number; height: number }[];
   options: BigCartelProductOption[];
+  categories: BigCartelCategory[];
 };
+
+/** Shop grid section order — matches the categories set up in Big Cartel,
+ *  per Josh: "Prints, Stickers, Small Things." A category created later
+ *  that isn't in this list still shows, just after these three. */
+const CATEGORY_ORDER = ["Prints", "Stickers", "Small Things"];
+
+export type ShopSection = { name: string; products: BigCartelProduct[] };
+
+/** Groups by each product's first category (falling back to "Other" for
+ *  anything uncategorised), ordered per CATEGORY_ORDER. */
+export function groupByCategory(products: BigCartelProduct[]): ShopSection[] {
+  const groups = new Map<string, BigCartelProduct[]>();
+  for (const product of products) {
+    const name = product.categories[0]?.name ?? "Other";
+    const group = groups.get(name) ?? [];
+    group.push(product);
+    groups.set(name, group);
+  }
+
+  const ordered = CATEGORY_ORDER.filter((name) => groups.has(name));
+  const rest = [...groups.keys()].filter(
+    (name) => !CATEGORY_ORDER.includes(name),
+  );
+
+  return [...ordered, ...rest].map((name) => ({
+    name,
+    products: groups.get(name)!,
+  }));
+}
 
 export async function fetchShopProducts(): Promise<BigCartelProduct[]> {
   const response = await fetch(
