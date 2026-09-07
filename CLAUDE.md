@@ -85,7 +85,7 @@ app/
   page.tsx             home
   work/page.tsx        gallery index
   work/[slug]/page.tsx project template (generateStaticParams)
-  about/ contact/ shop/
+  info/ contact/ shop/
 components/
   site/     nav · footer · marquee · cta-band     (chrome — nav and footer
                                                      are both in the root
@@ -125,7 +125,7 @@ crosses the header. When testing this with scripted scrolling, use
 `behavior: 'instant'` — the sitewide smooth-scroll CSS otherwise races a
 scripted check against an in-flight scroll animation. Info used to merge
 into Contact the same way; that embed was removed per Josh, so Info
-(`/about`) is a self-contained page again and `ContactContent`
+(`/info`) is a self-contained page again and `ContactContent`
 (`components/contact/contact-content.tsx`) is only rendered by
 `/contact` now.
 

@@ -156,7 +156,7 @@ import { CartIcon } from "@/components/ui/social-icons";
  * URL never changes, only the nav's read of where you are. Every other
  * route's active-state stays pure pathname-matching, untouched by this.
  * Info used to merge into Contact the same way; that embed was removed
- * per Josh, so "/about" is back to plain pathname-matching too.
+ * per Josh, so "/info" is back to plain pathname-matching too.
  */
 
 // getBoundingClientRect().top thresholds, px, for handing the nav's active
