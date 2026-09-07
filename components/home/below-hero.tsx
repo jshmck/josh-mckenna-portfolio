@@ -100,13 +100,16 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
           other Waldeck title on the page (Who and Work both go title-less),
           so the big purple version read as too bold and colourful sitting
           on its own here. type-label instead, matching the site's quiet
-          eyebrow role. */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 pb-16 md:px-gutter">
+          eyebrow role. Only the heading stays inside the frame — the logo
+          ticker runs full-bleed, per Josh ("an animated bar, so the logos
+          are just going along from right to left"), so ClientLogos sits
+          outside the padded container. */}
+      <section className="pb-16">
+        <div className="mx-auto max-w-frame px-6 md:px-gutter">
           <h2 className="type-label text-ink-muted">Selected Clients</h2>
-          <div className="mt-8">
-            <ClientLogos />
-          </div>
+        </div>
+        <div className="mt-8">
+          <ClientLogos />
         </div>
       </section>
 
