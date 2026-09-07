@@ -592,13 +592,21 @@ export function WorkGallery({
     // AND the two, so searching from a filtered view silently missed
     // most of the portfolio). The category filter takes back over the
     // moment the query clears.
-    const q = query.trim().toLowerCase();
+    // Apostrophe-blind matching — "levis" has to find "Levi's" ("make
+    // sure when user types levis in search that the levi's project
+    // appears," per Josh). Both sides drop straight ('), curly (’) and
+    // modifier (ʼ) apostrophes before comparing, so levis / levi's /
+    // levi’s (iOS smart punctuation autocorrects to the curly one) all
+    // collapse to the same string. Only apostrophes — everything else
+    // stays a literal substring match, not fuzzy search.
+    const normalize = (s: string) => s.toLowerCase().replace(/['’ʼ]/g, "");
+    const q = normalize(query.trim());
     if (q) {
       return projects.filter(
         (project) =>
           [project.title, project.cardTitle, project.cardLabel, project.client, ...project.categories]
             .filter(Boolean)
-            .some((field) => String(field).toLowerCase().includes(q)) ||
+            .some((field) => normalize(String(field)).includes(q)) ||
           project.categories.some((category) => aliasHit(category, q)),
       );
     }
