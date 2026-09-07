@@ -3319,6 +3319,45 @@ export const projects: Project[] = [
     },
     gallery: [],
   },
+  {
+    slug: "hsbc-pride-logo",
+    title: "HSBC Pride Logo",
+    cardTitle: "Pride Logo",
+    cardLabel: "HSBC",
+    pageTitle: "HSBC Pride Logo",
+    client: "HSBC",
+    year: 2023,
+    discipline: "Illustration & Animation",
+    deliverables: "1 animation",
+    categories: ["LGBTQ+", "Motion"],
+    summary: "The HSBC hex, reimagined as a canvas for Pride.",
+    heroCaption: "A held frame from the animation, 2023.",
+    brief: [
+      "Studio La Plage, HSBC's creative partner agency, called on LGBTQIA+ creatives to reinterpret the HSBC hex as a canvas, platforming queer artistic talent across disciplines. HSBC has been recognised for LGBTQIA+ inclusion for years — Stonewall named it top LGBTQIA+ employer in 2015, 2016, 2017, 2019 and 2020. The animation ran across HSBC's own social channels.",
+      "Two figures move through the hex's red diamond against a Wild West set — palm trees, cactus, a saloon front — with a rainbow arcing beneath them and a heart that drifts and fades on a six-second loop.",
+    ],
+    credits: [
+      { role: "Illustration & Animation", name: "Josh McKenna" },
+      { role: "Agency", name: "Studio La Plage" },
+      { role: "Client", name: "HSBC" },
+    ],
+    // Native ratio (source is 1080x1080); no crop needed on the /work card.
+    cardRatio: "1/1",
+    // The whole piece is the animation — the grid card plays it rather
+    // than sitting on the still frame like every other video-backed card.
+    cardVideo: true,
+    hero: {
+      ratio: "1/1",
+      alt: "The hex, mid-animation",
+      src: "/work/hsbc-pride-logo/01-hsbc-pride-logo-hero.webp",
+    },
+    heroVideo: {
+      src: "/work/hsbc-pride-logo/02-hsbc-pride-logo.mp4",
+      alt: "The HSBC Pride hex animation, looping",
+      ratio: "1/1",
+    },
+    gallery: [],
+  },
 ];
 
 /* ==========================================================================
