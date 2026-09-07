@@ -448,6 +448,32 @@ export function WorkGallery({
       if (value.trim() && new URLSearchParams(window.location.search).get(CATEGORY_PARAM)) {
         setFilter("All");
       }
+      // Hand-off: a real query typed into the nav drop-down moves the
+      // caret HERE, into the in-page pill (same value, so the word
+      // continues mid-keystroke), and brings the page back to the top
+      // of the results. Without this, shrinking results shrink the
+      // whole document until the browser clamps scrollY — which
+      // surfaces this row half-behind the nav with the drop-down still
+      // open over it, a doubled stack no deliberate scroll ever asked
+      // for (Josh hit it live searching "LEVI" from halfway down
+      // /work). Focus leaving the drop-down is also what lets the nav
+      // close it — its blur schedules a close, and the row-visible
+      // check in nav.tsx's scroll loop lands it. preventScroll so the
+      // browser's own focus-scroll (which knows nothing about the
+      // sticky header) doesn't fight the explicit scroll. behavior:
+      // "instant", NOT the bare scrollTo(0,0) that inherits the
+      // sitewide smooth glide: the NEXT keystroke shrinks the document
+      // again mid-glide, the browser clamps scrollY to the new maximum,
+      // and that clamp is itself a scroll — it cancels the in-flight
+      // smooth animation, stranding the page wherever the clamp landed
+      // (measured: 141px, the filter row clipped half off the top of
+      // the viewport). Instant lands at 0 before any later keystroke
+      // can interfere, and reads consistently with the menu's own
+      // category links, whose navigation scroll is instant too.
+      if (value.trim()) {
+        searchInputRef.current?.focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
     };
     window.addEventListener("worklist:search", onSearch);
     return () => window.removeEventListener("worklist:search", onSearch);
