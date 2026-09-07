@@ -42,9 +42,25 @@ export function ShopGrid() {
 
   if (!products || products.length === 0) return null;
 
+  const sections = groupByCategory(products);
+  // A single populated category has nothing to distinguish itself from —
+  // the heading would just be an extra line above what's still one flat
+  // row of products. Only worth labelling once there's more than one.
+  if (sections.length === 1) {
+    return (
+      <ul className="mt-24 grid gap-8 md:grid-cols-3">
+        {sections[0].products.map((product) => (
+          <li key={product.id}>
+            <ProductCard product={product} />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   return (
     <div className="mt-24 space-y-16">
-      {groupByCategory(products).map((section) => (
+      {sections.map((section) => (
         <div key={section.name}>
           <h2 className="type-label text-ink-muted">{section.name}</h2>
           <ul className="mt-6 grid gap-8 md:grid-cols-3">
