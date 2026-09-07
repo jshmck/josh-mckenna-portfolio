@@ -12,7 +12,7 @@ export const metadata: Metadata = {
  * Two things bundled into one page, per Josh: commission terms (the
  * original ask in GH #5 — copyright/licensing, deposits, revisions,
  * cancellation, delivery, usage scope), and online store terms once
- * Shop is live via Shopify, in the same coverage shape as the
+ * Shop is live via Big Cartel, in the same coverage shape as the
  * Shopify-generated terms on hattiestewart.com/policies/terms-of-service
  * — but Hattie's page has no commission section at all, since her site
  * is print-shop only. Every sentence describes this site's own setup,
@@ -106,7 +106,7 @@ export default function TermsPage() {
               <h2 className={H2}>3. Online store</h2>
               <p className={P}>
                 Once the shop is live, purchases are processed through
-                our shop platform, Shopify. We reserve the right to
+                our shop platform, Big Cartel. We reserve the right to
                 refuse or limit any order, including orders that appear
                 to be placed by resellers, and to limit quantities
                 available per person, household, or order.
