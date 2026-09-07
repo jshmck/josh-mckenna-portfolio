@@ -43,16 +43,14 @@ function Logo({ client }: { client: Client }) {
 function TickerRow({
   items,
   duration,
-  className = "",
 }: {
   items: Client[];
-  /** CSS time, e.g. "45s". Row widths differ, so each row picks its own
+  /** CSS time, e.g. "34s". Row widths differ, so each row picks its own
    *  duration to keep the px/s pace roughly equal. */
   duration: string;
-  className?: string;
 }) {
   return (
-    <div className={`ticker-fade-x overflow-hidden ${className}`}>
+    <div className="ticker-fade-x overflow-hidden">
       <div
         className="flex w-max items-center"
         style={{
@@ -74,9 +72,12 @@ function TickerRow({
 
 /** The Selected Clients strip — an animated logo ticker, right to left,
  *  full-bleed (the section in below-hero.tsx keeps its heading inside the
- *  frame and lets this run edge to edge). Two staggered lines on desktop,
- *  one on mobile. Slightly different desktop durations stop the rows
- *  scrolling in lockstep.
+ *  frame and lets this run edge to edge). Two staggered lines at every
+ *  width — the first pass ran mobile as one long line, revised to match
+ *  desktop ("you can put the clients on two rows in mobile too," per
+ *  Josh, along with "make them move a bit faster" — hence 34s/40s, up
+ *  from 45s/52s). Slightly different durations stop the rows scrolling
+ *  in lockstep.
  *
  *  Reduced motion gets the previous static wrap grid instead — the global
  *  reduced-motion rule would only freeze the ticker on its first frame,
@@ -95,12 +96,12 @@ export function ClientLogos() {
         ))}
       </ul>
 
-      <div aria-hidden="true" className="motion-reduce:hidden">
-        <TickerRow items={clients} duration="90s" className="md:hidden" />
-        <div className="hidden md:flex md:flex-col md:gap-y-6">
-          <TickerRow items={rows[0]} duration="45s" />
-          <TickerRow items={rows[1]} duration="52s" />
-        </div>
+      <div
+        aria-hidden="true"
+        className="flex flex-col gap-y-6 motion-reduce:hidden"
+      >
+        <TickerRow items={rows[0]} duration="34s" />
+        <TickerRow items={rows[1]} duration="40s" />
       </div>
 
       {/* Container padding is re-applied here because the ticker above is
