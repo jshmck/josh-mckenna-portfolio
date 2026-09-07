@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
+import { ShopGrid } from "@/components/shop/shop-grid";
 import { WaitlistForm } from "@/components/shop/waitlist-form";
 import { PageEndCard } from "@/components/ui/page-end-card";
-import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 
 export const metadata: Metadata = {
@@ -12,20 +12,14 @@ export const metadata: Metadata = {
 };
 
 /**
- * Placeholder shop.
- *
- * The commerce channel is still undecided (see DESIGN.md → Open decisions), and
- * that choice changes this page structurally — a Shopify or Stripe build is a
- * different information architecture, not a restyle. So this ships as an honest
- * waitlist rather than a fake storefront, and the ghosted cards below set the
- * expectation without pretending to be buyable.
+ * Commerce channel is Big Cartel (see DESIGN.md → Open decisions) — but the
+ * shop isn't open to real orders yet (Josh is still finalising shipping,
+ * payment and legal details), so the page keeps the waitlist front and
+ * centre rather than presenting a fully live storefront. ShopGrid renders
+ * whatever's actually listed in Big Cartel underneath it — right now
+ * that's real products marked "coming soon", not placeholder ghosts, so
+ * the page already reflects the real catalogue as it fills in.
  */
-
-const GHOSTED = [
-  { title: "Print title", detail: "£00 · A3 giclée" },
-  { title: "Print title", detail: "£00 · A3 giclée" },
-  { title: "Print title", detail: "£00 · A3 giclée" },
-];
 
 export default function ShopPage() {
   return (
@@ -52,25 +46,7 @@ export default function ShopPage() {
           </Reveal>
         </div>
 
-        <ul
-          aria-hidden="true"
-          className="mt-24 grid gap-8 opacity-40 md:grid-cols-3"
-        >
-          {GHOSTED.map((item, index) => (
-            <li key={index}>
-              <Plate
-                image={{ ratio: "4/5", alt: item.title }}
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-              <div className="mt-3 flex items-baseline justify-between gap-4">
-                <p className="font-body text-[15px] font-medium text-ink">
-                  {item.title}
-                </p>
-                <p className="type-label text-ink-muted">{item.detail}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <ShopGrid />
       </div>
     </PageEndCard>
   );
