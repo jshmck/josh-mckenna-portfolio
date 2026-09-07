@@ -25,6 +25,12 @@ export type BigCartelProductOption = {
   sold_out: boolean;
 };
 
+export type BigCartelCategory = {
+  id: number;
+  name: string;
+  permalink: string;
+};
+
 export type BigCartelProduct = {
   id: number;
   name: string;
@@ -35,7 +41,23 @@ export type BigCartelProduct = {
   url: string;
   images: { url: string; width: number; height: number }[];
   options: BigCartelProductOption[];
+  categories: BigCartelCategory[];
 };
+
+/** Sort order for the shop grid, per Josh: "Prints, Stickers, Small
+ *  Things" — a flat re-sort, not a visual grouping. Anything in a
+ *  category not listed here sorts after these three. */
+const CATEGORY_ORDER = ["Prints", "Stickers", "Small Things"];
+
+export function sortByCategory(
+  products: BigCartelProduct[],
+): BigCartelProduct[] {
+  const rank = (product: BigCartelProduct) => {
+    const index = CATEGORY_ORDER.indexOf(product.categories[0]?.name ?? "");
+    return index === -1 ? CATEGORY_ORDER.length : index;
+  };
+  return [...products].sort((a, b) => rank(a) - rank(b));
+}
 
 export async function fetchShopProducts(): Promise<BigCartelProduct[]> {
   const response = await fetch(

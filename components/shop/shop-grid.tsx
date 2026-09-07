@@ -9,6 +9,7 @@ import {
   formatPrice,
   isBuyable,
   isSoldOut,
+  sortByCategory,
   type BigCartelProduct,
 } from "@/lib/shop";
 
@@ -43,7 +44,7 @@ export function ShopGrid() {
 
   return (
     <ul className="mt-24 grid gap-8 md:grid-cols-3">
-      {products.map((product) => {
+      {sortByCategory(products).map((product) => {
         const buyable = isBuyable(product);
         const soldOut = isSoldOut(product);
         const image = product.images[0];
