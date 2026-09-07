@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { ClientLogos } from "@/components/site/client-logos";
+import { InlineIcon } from "@/components/ui/inline-icon";
 import { Parallax } from "@/components/ui/parallax";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
@@ -43,9 +44,16 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
       <section id="home-who" className="scroll-mt-20">
         <div className="mx-auto grid max-w-frame gap-16 px-6 pb-24 pt-16 md:grid-cols-2 md:items-center md:px-gutter md:pb-16">
           <Reveal>
+            {/* Josh's inline icons sit inside the sentence like glyphs
+                (see components/ui/inline-icon.tsx). The spaces either
+                side of each icon are real text so it gets normal word
+                spacing -- keep each icon on the same source line as its
+                neighbouring words, or JSX drops the whitespace. */}
             <h2 className="type-heading text-ink">
-              British illustrator working across character design, LGBTQ+
-              themes, icons, social media brand campaigns and automotive art
+              British <InlineIcon name="cloud" /> illustrator working across
+              character design, LGBTQ+ <InlineIcon name="heart" /> themes,
+              social media icons, brand campaigns and automotive{" "}
+              <InlineIcon name="car" /> art
             </h2>
             <p className="type-lede mt-6 max-w-lg text-ink-muted">
               He&apos;s drawn for the likes of Apple — loud, friendly, queer
