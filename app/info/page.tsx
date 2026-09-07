@@ -12,7 +12,7 @@ import { features, pressQuotes } from "@/lib/about";
 export const metadata: Metadata = {
   title: "Info",
   description:
-    "Ten years of drawing for magazines, record sleeves, cereal boxes and one negotiable tattoo.",
+    "Over a decade of drawing for magazines, record sleeves, cereal boxes and one negotiable tattoo.",
 };
 
 /**
