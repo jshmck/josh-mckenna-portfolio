@@ -469,8 +469,8 @@ export const projects: Project[] = [
     heroCaption:
       "Made for the Rainbow Rodeo at Levi's Haus, Los Angeles, June 2024 — hosted by Benny Drama, with DJ sets from Violet Chachki and Tinashe.",
     brief: [
-      "For Pride 2024, Levi's threw a Rainbow Rodeo at Levi's Haus in Los Angeles and wanted the whole event drawn as one world — invite, enamel pins, cups and a tee, all riffing on classic western Americana with the cowboys made explicitly queer.",
-      "The same few characters carry every piece: two riders sharing a horse, a bucking bronco, a rope heart, a hat under a rainbow. Each pin ran in multiple colourways, and the tee's back print carries the two cowboys in an embrace.",
+      "For Pride 2024, Levi's threw a Rainbow Rodeo at Levi's Haus in Los Angeles and wanted the whole event drawn in one style — invite, enamel pins, cups and a tee, all riffing on classic western Americana with the cowboys made explicitly queer.",
+      "The same few characters repeat across every piece: two riders sharing a horse, a bucking bronco, a rope heart, a hat under a rainbow. Each pin ran in multiple colourways, and the tee's back print carries the two cowboys in an embrace.",
     ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
@@ -562,7 +562,7 @@ export const projects: Project[] = [
     summary: "A riverside scene wrapped around a champagne tin for Pride.",
     heroCaption: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut.",
     brief: [
-      "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month gift tin — the house's Cuvée Brut wrapped in scenes of friendship and connection by the river, with a rainbow hot-air balloon drifting over town. It followed the house's collaboration with David Doran the year before.",
+      "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month gift tin — the house's Cuvée Brut wrapped in a riverside scene — friends by the water, a rainbow hot-air balloon over town. It followed the house's collaboration with David Doran the year before.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -598,10 +598,10 @@ export const projects: Project[] = [
     discipline: "Campaign Illustration",
     deliverables: "2 illustrations",
     categories: [],
-    summary: "Beach couples for WhatsApp, close enough that nobody else hears a word.",
+    summary: "Beach couples, for WhatsApp's campaign about private messaging.",
     heroCaption: "For WhatsApp's \"It's between you\" campaign, 2018.",
     brief: [
-      "WhatsApp commissioned illustrations for \"It's between you,\" its campaign about private messaging — couples on the beach in close conversation, the parasol doing the work of a closed door.",
+      "WhatsApp commissioned illustrations for \"It's between you,\" its campaign about private messaging — couples on the beach in close conversation under a parasol.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -642,7 +642,7 @@ export const projects: Project[] = [
     summary: "A kei car on stretched wheels, sitting far too low.",
     heroCaption: "",
     brief: [
-      "No brief — love for the Honda N-One, so it had to be drawn. Even cooler with a bolt-on bodykit, so it got drawn again: slammed, cambered, a spoiler it doesn't need.",
+      "Drawn twice out of love for the Honda N-One — once stock, once slammed and cambered with a bolt-on bodykit.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // The hero (true 16/9, 3840x2160) is untouched, but the /work grid
@@ -794,11 +794,11 @@ export const projects: Project[] = [
     discipline: "Mural",
     deliverables: "1 mural",
     categories: ["Murals"],
-    summary: "Seven cyclists, a peach, and some advice about gas.",
+    summary: "Seven cyclists and a peach, painted on a West Hollywood bike shop.",
     heroCaption:
       "Painted at La Cienega and Santa Monica Boulevards, West Hollywood, December 2020.",
     brief: [
-      "The wall is the side of a bike-rental and organised-hike shop at the corner of La Cienega and Santa Monica Boulevards in West Hollywood, directly under a Kylie Skin billboard. Anything painted there has to read from a moving car, so it works the way the billboard above it does: a few big shapes and five words — pump less gas, pump more. The peach finishes the sentence.",
+      "The wall is the side of a bike-rental and organised-hike shop at the corner of La Cienega and Santa Monica Boulevards in West Hollywood, directly under a Kylie Skin billboard. Anything painted there has to read from a moving car, like the billboard above it: a few big shapes and five words — pump less gas, pump more.",
     ],
     credits: [
       { role: "Illustration, Mural & Creative Direction", name: "Josh McKenna" },
@@ -853,7 +853,7 @@ export const projects: Project[] = [
     summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
     heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
     brief: [
-      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme — twenty-four stickers celebrating the LGBTQ+ community, from a finger snap to a full wedding.",
+      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme — twenty-four LGBTQ+ stickers, from a finger snap to a full wedding.",
       "The set went on to win an Applied Arts Photography & Illustration Award in the Conceptual Illustration category, Spring 2018.",
     ],
     credits: [
@@ -902,10 +902,10 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "2 illustrations",
     categories: [],
-    summary: "Two attempts at an angle a phone was never built for.",
+    summary: "Two ways to photograph your own arsehole.",
     heroCaption: "",
     brief: [
-      "Cake Boy magazine wanted a two-part illustration for a feature on the different ways to photograph your own arsehole — technique over vanity, apparently.",
+      "Cake Boy magazine wanted a two-part illustration for a feature on the different ways to photograph your own arsehole.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     cardRatio: "4/5",
@@ -931,11 +931,11 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Key Art",
     categories: [],
-    summary: "Working on an even tan, one way or another.",
+    summary: "2020's strangest wellness trend.",
     heroCaption: "",
     brief: [
-      "2020's wellness trend of the moment was perineum sunning — thirty seconds of direct sun, no shade, for the vitamin D nobody could actually measure.",
-      "No brief, no clinical backing — just the pose, drawn straight enough that you can decide for yourself whether it's worth doing.",
+      "2020's wellness trend of the moment was perineum sunning — thirty seconds of direct sun, no shade.",
+      "No clinical backing — just the pose, drawn straight.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     cardRatio: "1/1",
@@ -955,10 +955,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Key Art",
     categories: ["Cars"],
-    summary: "A carport doing its one job, in Palm Springs.",
+    summary: "A mid-century carport in Palm Springs.",
     heroCaption: "",
     brief: [
-      "No brief — just an excuse to draw a mid-century carport roofline against the San Jacinto mountains, with a two-tone convertible parked underneath.",
+      "A mid-century carport roofline against the San Jacinto mountains, with a two-tone convertible parked underneath.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     cardRatio: "1/1",
@@ -990,7 +990,7 @@ export const projects: Project[] = [
     summary: "The new Bronco, reveal day.",
     heroCaption: "",
     brief: [
-      "No brief — just an excuse to draw the new Bronco, out in the desert on the week it was revealed.",
+      "Drawn in the week the new Bronco was revealed, parked out in the desert.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     cardRatio: "1/1",
@@ -1027,10 +1027,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Illustrations for Animation",
     categories: ["Motion"],
-    summary: "Three rice pouches, three flavours, three animations.",
+    summary: "Illustrations for three animated Tilda ads, one per flavour.",
     heroCaption: "Illustration for three animated Tilda Rice ads — Katsu Curry, Indonesian Fried Rice and Masala — 2022.",
     brief: [
-      "Tilda commissioned illustration work for a set of three animated ads, one per flavour — Katsu Curry, Indonesian Fried Rice and Masala — brought to life by animation studio Rave Growl via agency Havas.",
+      "Tilda commissioned illustration work for a set of three animated ads, one per flavour — Katsu Curry, Indonesian Fried Rice and Masala — animated by Rave Growl via agency Havas.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -1125,7 +1125,7 @@ export const projects: Project[] = [
     summary: "A Pride parade, wrapped around a jar of face cream.",
     heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
     brief: [
-      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project — a parade scene built into limited-edition packaging across Kiehl's product line, with the same artwork on a float in the New York City Pride parade. A portion of proceeds from the products went to The Trevor Project.",
+      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project — a parade scene built into limited-edition packaging across Kiehl's product line, with the same artwork on a float in the New York City Pride parade. A portion of proceeds went to the charity.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -1170,7 +1170,7 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "3 Posters",
     categories: [],
-    summary: "Three hotels, three vintage travel posters, one coastline.",
+    summary: "Vintage-style travel posters for three Costa Smeralda hotels.",
     heroCaption: "A set of travel posters for three Costa Smeralda hotels — Cala di Volpe, Romazzino and Cervo — 2022.",
     hideHeroCaptions: true,
     brief: [
@@ -1238,11 +1238,11 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
-    summary: "Three ears, three AirPods, one dollar coin doing the talking.",
+    summary: "Ears wearing AirPods, for a piece on headphones as a status symbol.",
     heroCaption: "For \"Do AirPods Make You Look Rich? These Millennials Think So,\" by Jacob Gallagher, WSJ, February 2019.",
     hideHeroCaptions: true,
     brief: [
-      "Jacob Gallagher's piece was about AirPods becoming a status symbol on sight — a $159 pair of headphones read as wealth from across a subway platform, whether or not that was true.",
+      "Jacob Gallagher's piece was about AirPods becoming a status symbol on sight — a $159 pair of headphones read as wealth from across a subway platform.",
     ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
@@ -1277,10 +1277,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Icons"],
-    summary: "The ampersand, sat cross-legged and fully aware of it.",
+    summary: "Ace & Tate's ampersand, redrawn as a seated figure.",
     heroCaption: "For \"re/viewed,\" Ace & Tate's series inviting illustrators to reinterpret their logo, 2019.",
     brief: [
-      "Ace & Tate asked me to reinterpret their logo for \"re/viewed,\" a series putting the brand mark in different illustrators' hands. At the time I was drawing voluptuous, feminine characters almost exclusively, so the brief became: find her inside the ampersand.",
+      "Ace & Tate asked me to reinterpret their logo for \"re/viewed,\" a series putting the brand mark in different illustrators' hands. At the time I was drawing voluptuous, feminine characters almost exclusively, so I went looking for her inside the ampersand.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -1322,7 +1322,7 @@ export const projects: Project[] = [
     summary: "A stiletto heel, cracking under its own weight.",
     heroCaption: "For \"Downward Trend,\" Sophie Grove's piece on the decline of the high heel, Monocle, October 2018.",
     brief: [
-      "A spot illustration for Monocle, alongside Sophie Grove's piece on high heels falling out of fashion — runways and front rows moving toward flats and trainers as comfort and practicality took over from a shoe once built on status and restriction.",
+      "A spot illustration for Monocle, alongside Sophie Grove's piece on high heels falling out of fashion — runways and front rows moving toward flats and trainers.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -1358,7 +1358,7 @@ export const projects: Project[] = [
     summary: "Two couples, a rainbow and a sunbather, sized to fit on a suitcase.",
     heroCaption: "A set of five Pride stickers, available in Away's stores throughout Pride month, 2019.",
     brief: [
-      "Away commissioned a set of five Pride stickers, available in-store throughout Pride month 2019 — designed to go anywhere, but it looked great on their aluminium luggage.",
+      "Away commissioned a set of five Pride stickers, available in-store throughout Pride month 2019. They looked great on the aluminium luggage.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -1416,11 +1416,11 @@ export const projects: Project[] = [
     discipline: "Pride Campaign",
     deliverables: "Vinyl Window Display",
     categories: ["LGBTQ+", "Murals"],
-    summary: "Two Pride windows, one restaurant chain, a year apart.",
+    summary: "Pride windows for Wagamama — every UK restaurant in 2022, then Brighton's own in 2023.",
     heroCaption: "The full artwork, designed for Wagamama's Brighton window, 2023.",
     brief: [
       "For Pride month 2022, Wagamama wanted one window design that could run across every UK restaurant at once — the same artwork, resized and cropped differently at each site's own glass, from a full corner window at Marble Arch to an equally huge run at Old Street.",
-      "The year after, Wagamama's Brighton restaurant got its own dedicated window — eight characters spread across the glass as a joyful tribute to the city's diverse and inclusive spirit. It's stayed up as a permanent feature ever since.",
+      "The year after, Wagamama's Brighton restaurant got its own dedicated window — eight characters spread across the glass. It's stayed up as a permanent feature ever since.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -1495,10 +1495,10 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
     categories: ["LGBTQ+", "Editorial"],
-    summary: "Every letter of the acronym, spelled out so nobody has to ask twice.",
+    summary: "Every letter of the LGBTQIA2+ acronym in one illustration.",
     heroCaption: "For Atlanta Magazine's October 2022 feature \"Alphabet Soup,\" written by Taylor Alxndr.",
     brief: [
-      "Atlanta Magazine's October 2022 issue ran a piece by Taylor Alxndr explaining the growing LGBTQIA2+ acronym letter by letter, for readers who wanted to keep up but didn't know where to start. The illustration needed to hold the whole term at once, legibly, rather than breaking it into ten separate icons.",
+      "Atlanta Magazine's October 2022 issue ran a piece by Taylor Alxndr explaining the growing LGBTQIA2+ acronym letter by letter. The illustration needed to hold the whole term at once, legibly.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -1550,7 +1550,7 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "5 Icons",
     categories: ["Icons"],
-    summary: "A hot dog, a bottle, a pizza slice — Coke turns up in all of them.",
+    summary: "Five everyday-moment icons for Coca-Cola.",
     heroCaption: "One of five \"everyday moments\" icons made for Coca-Cola, 2022.",
     // No visible captions on this one -- "Poolside" turned out to be a
     // wrong guess at what one of these actually shows, and rather than
@@ -1558,7 +1558,7 @@ export const projects: Project[] = [
     // alt text stays for accessibility.
     hideHeroCaptions: true,
     brief: [
-      "Commissioned via Momentum for Coca-Cola — a set of everyday moments, each one built around capturing a genuine Coke moment rather than posing the drink as the hero shot.",
+      "Commissioned via Momentum for Coca-Cola — a set of everyday moments with the Coke sitting inside each scene.",
       "Five square icons, one flat style throughout, so they'd run interchangeably across social.",
     ],
     credits: [
@@ -1628,7 +1628,7 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
-    summary: "A dayboat, tethered to a sun of its own.",
+    summary: "A solar-powered dayboat, for a feature on solar yachts.",
     heroCaption: "For Boat International's December 2024 feature on solar-powered yachts.",
     brief: [
       "Boat International commissioned this for a piece by Sam Fortescue on solar tech finally reaching mid-sized yachts — the 12- to 24-metre range that's always been stuck between too much power-hungry kit and not enough battery capacity to run it quietly.",
@@ -1675,10 +1675,10 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "1 Cover Illustration",
     categories: ["Editorial"],
-    summary: "One house, cut open to show every tax lurking inside.",
+    summary: "One house, cut open to show every tax inside.",
     heroCaption: "The cover for STEP Journal's August/September 2019 issue, Volume 27/Issue 7.",
     brief: [
-      "STEP Journal's cover story was about the tax complexity buried in owning property — capital gains, inheritance, income tax, all stacking up in ways most owners never see coming. The brief needed one image that read that complexity at a glance, for an audience of trust and estate professionals who already know the subject cold.",
+      "STEP Journal's cover story was about the tax complexity buried in owning property — capital gains, inheritance, income tax, all stacking up. The brief needed one image that read that complexity at a glance, for an audience of trust and estate professionals who already know the subject.",
       "A knife cuts straight through the house, exposing it like a cross-section — each layer labelled with the tax that applies to it.",
     ],
     credits: [
@@ -1726,7 +1726,7 @@ export const projects: Project[] = [
     summary: "A mechanic, rising from under the hood in heels.",
     heroCaption: "Illustrated for \"The Gay Divide,\" Weapons of Reason's The Inequality Issue, 2019.",
     brief: [
-      "Weapons of Reason commissioned illustration for \"The Gay Divide,\" a feature in The Inequality Issue on how the LGB+ pay gap may have its roots in homophobic bullying and a lack of LGBTQ+ education in schools — following two people's experiences of how that bullying shaped the classes they took, the subjects they could focus on and the careers they went on to pursue.",
+      "Weapons of Reason commissioned illustration for \"The Gay Divide,\" a feature in The Inequality Issue on how the LGB+ pay gap may have its roots in homophobic bullying and a lack of LGBTQ+ education in schools — following two people's experiences of how that bullying shaped the classes they took and the careers that followed.",
       "The brief asked for ruthlessly simple, iconic concepts within Weapons of Reason's prescribed 19-colour palette — each piece limited to 2–5 of those colours to keep a consistent brand feel across the issue.",
     ],
     credits: [
@@ -1838,7 +1838,7 @@ export const projects: Project[] = [
     summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
     heroCaption: "Tanning Tips — the first of a three-part series on tanning safely.",
     brief: [
-      "I created a three-part editorial illustration series for Vogue Magazine, focusing on how to tan safely. The artwork visually guides readers through essential sun protection tips, including applying SPF, seeking shade during peak hours, and incorporating protective clothing and accessories.",
+      "A three-part editorial series for Vogue on how to tan safely — SPF, shade during peak hours, protective clothing.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
     // True ratio (1.5), not the old 16/10 — Josh's refreshed exports are
@@ -1895,17 +1895,16 @@ export const projects: Project[] = [
       ratio: "9/16",
     },
     summary:
-      "I created an iconic Pride sticker for Instagram Stories: a sassy, muscular bloke in red high heels. Meant to last a month, it stayed live for five years, used by millions and turned into a symbol of queer culture and self-expression.",
+      "I created a Pride sticker for Instagram Stories: a sassy, muscular bloke in red high heels. Meant to last a month, it stayed live for five years, used by millions.",
     heroCaption: "The original character design, created for Instagram's 2017 Pride sticker set.",
     brief: [
       "In 2017, Jeffrey Gerson, then Instagram's Senior Product Marketing Lead, found my work in queer mag Hello Mr, a piece I'd done on David Hockney, and reached out.",
-      "Instagram wanted a sticker that celebrated Pride using queer iconography as part of a new sticker set for Stories, with other LGBTQ+ artists (Carra Sykes, Andy Simmonds, Cute Brute and José Antonio Roda), available throughout Pride month.",
+      "Instagram wanted a Pride sticker as part of a new sticker set for Stories, with other LGBTQ+ artists (Carra Sykes, Andy Simmonds, Cute Brute and José Antonio Roda), available throughout Pride month.",
       "So I created a sassy, muscular bloke in red high heels, designed to read clearly at sticker size, a couple of cm on a phone screen. The artwork reflects where my style was at that point: bold shapes, a simple palette, diverse characters, a tongue-in-cheek sense of humour. It's true to masculinity and sexuality, my real lived experience and personal take on Pride.",
       "Its popularity meant it stayed embedded in the app for five years. Millions used it, including celebrities I never expected to see sharing my art (Michelle Obama!).",
-      "What started as a small icon on a phone screen went way beyond the app: a 10ft-high float at Sydney Mardi Gras, murals at Trafalgar Square and Meta's head offices, an Instagram takeover of Vogue's account, a feature in a Gestalten book and public talks I'm still giving today. It was mad.",
-      "Almost a decade on, it's still doing work. I've had hundreds, maybe thousands, of messages from folk thanking me for representing them in my work. Everybody posted it, referenced it, used it as their own way of feeling fierce and self-expression (Jonathan Van Ness talks about this on Queer Eye!).",
-      "It opened the door to years of Pride and charity work that followed, including a project Mel C from the Spice Girls put her name behind.",
-      "Not bad for a sticker that was only meant to last a month.",
+      "The sticker went way beyond the app: a 10ft-high float at Sydney Mardi Gras, murals at Trafalgar Square and Meta's head offices, an Instagram takeover of Vogue's account, a feature in a Gestalten book and public talks I'm still giving today. It was mad.",
+      "Almost a decade on, I've had hundreds, maybe thousands, of messages from folk thanking me for representing them in my work. Everybody posted it, referenced it, used it (Jonathan Van Ness talks about this on Queer Eye!).",
+      "It led to years of Pride and charity work, including a project Mel C from the Spice Girls put her name behind.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -2125,7 +2124,7 @@ export const projects: Project[] = [
     discipline: "3D Illustration",
     deliverables: "1 Turnaround · 3 Renders",
     categories: ["Cars", "3D"],
-    summary: "My favourite car, rendered because I wanted an excuse to model it.",
+    summary: "My favourite car, modelled in Womp.",
     heroCaption: "",
     brief: [
       "Modelled in Womp, a browser-based 3D tool — a gloopy, wompy homage to my favourite car, the Jimny.",
@@ -2170,10 +2169,10 @@ export const projects: Project[] = [
     discipline: "3D Illustration",
     deliverables: "2 Renders",
     categories: ["Cars", "3D"],
-    summary: "Same little city car, once yellow under pink light and once black under red.",
+    summary: "The Renault Twingo, remixed and rendered twice.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool — my own take on the Renault Twingo, a remix of the MK1 and the new Twingo EV, with side vents and chunky arches nodding to the Renaultsport Espace and the turbo era.",
+      "Modelled in Womp, a browser-based 3D tool — my own take on the Renault Twingo, a remix of the MK1 and the new Twingo EV, with side vents and chunky arches borrowed from the Renaultsport Espace and the turbo era.",
       "Same car rendered twice — yellow under pink light, black under red.",
     ],
     credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
@@ -2307,10 +2306,10 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
     categories: ["Editorial", "Icons"],
-    summary: "Composting, fishing and shouting into a megaphone, drawn at the same scale.",
+    summary: "Ten spot icons for a feature on regenerative living.",
     heroCaption: "Illustrated for \"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
     brief: [
-      "Ten regenerative-living habits — composting, fishing responsibly, buying secondhand — needed one icon each for \"Living Regeneratively,\" a feature written by Dustin Beatty for The Rooted Journal's Spring 2025 issue. Each habit runs as its own call-out box, so every illustration had to work as a single self-contained icon rather than part of a larger scene.",
+      "Ten regenerative-living habits — composting, fishing responsibly, buying secondhand — needed one icon each for \"Living Regeneratively,\" a feature written by Dustin Beatty for The Rooted Journal's Spring 2025 issue. Each habit runs as its own call-out box, so every illustration had to work as a single self-contained icon.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -2436,10 +2435,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
-    summary: "Mind the closing doors — and whatever's still in your hand.",
+    summary: "Mind the closing doors.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw — \"mind the closing doors,\" with the Underground roundel split down the middle like the doors themselves, a hand and a bag caught right in the gap.",
+      "Made in Figma Draw — \"mind the closing doors,\" with the Underground roundel split down the middle, a hand and a bag caught in the gap.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -2461,10 +2460,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
-    summary: "LA's chaotic sidewalk bots, forever stalling out halfway across a crossing.",
+    summary: "LA's chaotic sidewalk delivery bots.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw — a nod to Serve Robotics' sidewalk delivery bots, the chaotic little things that tear up LA's pavements and stop dead halfway along a crossing.",
+      "Made in Figma Draw — Serve Robotics' sidewalk delivery bots, the chaotic little things that tear up LA's pavements and stop dead halfway along a crossing.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -2486,8 +2485,8 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
-    summary: "A chair, repeated as wallpaper, in case the first one wasn't clear enough.",
-    heroCaption: "A tribute to a great design collaboration — Vitra × Virgil Abloh, 2025.",
+    summary: "The Vitra × Virgil Abloh chair, repeated as wallpaper.",
+    heroCaption: "Vitra × Virgil Abloh, 2025.",
     brief: ["Made in Figma Draw — the Vitra × Virgil Abloh chair."],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -2541,10 +2540,10 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
-    summary: "One hand for the case, one for the content.",
+    summary: "The ribbed aluminium Rimowa, at speed.",
     heroCaption: "",
     brief: [
-      "Made in Figma Draw — the ribbed aluminium Rimowa, dragged flat-out by someone who still found a hand for the selfie.",
+      "Made in Figma Draw — the ribbed aluminium Rimowa, dragged flat-out mid-selfie.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -2572,12 +2571,12 @@ export const projects: Project[] = [
     deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
     // "remove 505 from icons," per Josh.
     categories: ["Cars"],
-    summary: "Livery and posters for a wheel launch, field-tested on camera in Josh's own Land Cruiser.",
+    summary: "Livery and posters for Nomad's 505 wheel launch, filmed on Josh's own Land Cruiser.",
     heroCaption:
       "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch, styled after vintage Dakar rally posters (and my actual Land Cruiser — yep that's me driving).",
     brief: [
-      "Nomad Wheel Co. asked for a full graphic package around the launch of the 505 Touring wheel — vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. The same marks — the Nomad globe, the 505 script, the sponsor lockups for Toyo Tires and DVR — had to survive full-bleed on a print poster and cropped square for a phone screen.",
-      "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film — the closest I've come to field-testing my own artwork.",
+      "Nomad Wheel Co. asked for a full graphic package around the launch of the 505 Touring wheel — vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. The same marks — the Nomad globe, the 505 script, the sponsor lockups for Toyo Tires and DVR — had to work full-bleed on a print poster and cropped square for a phone screen.",
+      "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film.",
     ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
@@ -2727,10 +2726,10 @@ export const projects: Project[] = [
     // photo's true 3/2 — checked against the actual spread, nothing
     // essential is cropped. Same fix as Bombay Sapphire below.
     cardRatio: "5/3",
-    summary: "Six UAL colleges, six colour-ways, one shared case of first-week nerves.",
+    summary: "Welcome booklets for UAL's six colleges, each in its own colour-way.",
     heroCaption: "One interior spread, reused across all six 2017–2020 college editions.",
     brief: [
-      "UAL is six separate colleges, and the welcome guide had to work for all of them at once — one set of content, run six times in six colour-ways, so a fresher landing at Chelsea didn't get handed Central Saint Martins' copy by mistake.",
+      "UAL is six separate colleges, and the welcome guide had to work for all of them at once — one set of content, run six times in six colour-ways.",
       "Same drawings throughout: a wayfinding map, campus-life spots, the ID card queue. Ran for four editions, 2017 to 2020.",
     ],
     credits: [{ role: "Illustration", name: "Josh McKenna" }],
@@ -2823,7 +2822,7 @@ export const projects: Project[] = [
     summary: "Eleven characters, cut into pins, flags, cases and tees.",
     heroCaption: "",
     brief: [
-      "For VOXI, a side brand of Vodafone, I designed a Pride campaign and merchandise for the LGBTQIA+ community — the same set of characters, built out across phone cases, flags, pins, social posts and tees.",
+      "For VOXI, a side brand of Vodafone, I designed a Pride campaign and merchandise for the LGBTQIA+ community — the same set of characters, repeated across phone cases, flags, pins, social posts and tees.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -2904,11 +2903,11 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
     categories: [],
-    summary: "One new poster, every time Beefbar opens somewhere new. Still counting.",
+    summary: "A new poster each time Beefbar opens somewhere new, ongoing since 2017.",
     heroCaption: "The Monte Carlo poster — Beefbar's flagship, part of the ongoing series.",
     brief: [
-      "Every new Beefbar opening gets a poster, designed by me — one per city, taking cues from whatever's actually there: Baku's Flame Towers, Comporta's dunes, the local landmarks and culture. The same artwork doubles as the menu cover. This is a selection, not the full series.",
-      "Only the 'beefbar' script and the city's name stay fixed across every poster. Everything else comes from the place itself — Malta's is set inside the dining room instead of out on the street.",
+      "Every new Beefbar opening gets a poster, designed by me — one per city, taking cues from whatever's actually there — Baku's Flame Towers, Comporta's dunes. The same artwork doubles as the menu cover. This is a selection from the series.",
+      "Only the 'beefbar' script and the city's name stay fixed across every poster — Malta's is set inside the dining room instead of out on the street.",
     ],
     credits: [{ role: "Graphic Design & Illustration", name: "Josh McKenna" }],
     galleryLayout: "poster-grid",
@@ -3041,8 +3040,8 @@ export const projects: Project[] = [
     summary: "An L and an A, built out of people, stretched across a park.",
     heroCaption: "",
     brief: [
-      "LA Pride's been running since 1970, and by 2024 the bill included Ricky Martin, Muna and Jojo Siwa. James Junk and I got the call to rebuild the whole visual identity from the ground up — the logo, the typeface, posters, wayfinding, every banner on site, the stage livery, digital assets for the venue's screens, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there we built the letters themselves out of people, stacking characters into the L and the A. It had to hold up at every scale there is — stage-header-sized and cap-badge-sized, same drawing.",
-      "James handled the type, I drew the characters. Fifty years is a long time to be handed the keys to. Scroll on, you'll see what we did with them.",
+      "LA Pride's been running since 1970, and by 2024 the bill included Ricky Martin, Muna and Jojo Siwa. James Junk and I rebuilt the whole visual identity — the logo, the typeface, posters, wayfinding, every banner on site, the stage livery, digital assets for the venue's screens, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there we built the letters themselves out of people, stacking characters into the L and the A. Everything had to work at stage-header size and cap-badge size from the same drawing.",
+      "James handled the type, I drew the characters.",
     ],
     credits: [
       {
@@ -3187,10 +3186,10 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "Key Art · Magazine Mockup",
     categories: ["Cars", "Editorial"],
-    summary: "A hot-pink electric sports car makes the case for keeping the noise.",
+    summary: "A hot-pink electric sports car, drawn for an editorial on engine noise.",
     heroCaption: "The finished key art.",
     brief: [
-      "An editorial about the debate between rumbling exhaust notes and the futuristic hum of instant torque.",
+      "An editorial about the debate over exhaust notes versus electric motor hum.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
@@ -3240,7 +3239,7 @@ export const projects: Project[] = [
       "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
     heroCaption: "The Stir Creativity mural, live in Bombay Sapphire's Shoreditch pop-up.",
     brief: [
-      "Bombay Sapphire's CANVAS was a four-day pop-up in Shoreditch built around one line: Stir Creativity. I was one of fifteen artists asked to contribute, working across three pieces instead of one — a mural painted live in the window, a back-of-jacket embroidery, and fifty hand-finished bottles.",
+      "Bombay Sapphire's CANVAS was a four-day pop-up in Shoreditch built around one line: Stir Creativity. I was one of fifteen artists asked to contribute, working across three pieces — a mural painted live in the window, a back-of-jacket embroidery, and fifty hand-finished bottles.",
       "The starting point was a Grains of Paradise pod from a trip to the distillery — earthy for the first few seconds, then this fiery burst. I wanted the work to feel the same way, harvesty and celebratory at once, so the mural and the jacket both lean on the same botanical shapes and hot orange-on-blue palette.",
     ],
     credits: [
@@ -3299,7 +3298,7 @@ export const projects: Project[] = [
     summary: "A Mini convertible, animated for a five-second loop.",
     heroCaption: "A held frame from the animation, 2017.",
     brief: [
-      "No brief — a personal animation exercise, a Mini convertible driving past palm trees on a five-second loop.",
+      "A personal animation exercise — a Mini convertible driving past palm trees on a five-second loop.",
     ],
     credits: [{ role: "Illustration, Animation & Creative Direction", name: "Josh McKenna" }],
     // True 16/9 (source is 1220x686) on the project page; cropped to 1/1
