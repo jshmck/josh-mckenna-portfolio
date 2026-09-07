@@ -7,7 +7,6 @@ import {
   checkoutUrl,
   fetchShopProducts,
   formatPrice,
-  groupByCategory,
   isBuyable,
   isSoldOut,
   type BigCartelProduct,
@@ -42,74 +41,58 @@ export function ShopGrid() {
 
   if (!products || products.length === 0) return null;
 
-  const sections = groupByCategory(products);
-  // A single populated category has nothing to distinguish itself from —
-  // the heading would just be an extra line above what's still one flat
-  // row of products. Only worth labelling once there's more than one.
-  if (sections.length === 1) {
-    return (
-      <ul className="mt-24 grid gap-8 md:grid-cols-3">
-        {sections[0].products.map((product) => (
-          <li key={product.id}>
-            <ProductCard product={product} />
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
   return (
-    <div className="mt-24 space-y-16">
-      {sections.map((section) => (
-        <div key={section.name}>
-          <h2 className="type-label text-ink-muted">{section.name}</h2>
-          <ul className="mt-6 grid gap-8 md:grid-cols-3">
-            {section.products.map((product) => (
-              <li key={product.id}>
-                <ProductCard product={product} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  );
-}
+    <ul className="mt-24 grid gap-8 md:grid-cols-3">
+      {products.map((product) => {
+        const buyable = isBuyable(product);
+        const soldOut = isSoldOut(product);
+        const image = product.images[0];
+        const status = buyable ? null : soldOut ? "Sold out" : "Coming soon";
 
-function ProductCard({ product }: { product: BigCartelProduct }) {
-  const buyable = isBuyable(product);
-  const soldOut = isSoldOut(product);
-  const image = product.images[0];
-  const status = buyable ? null : soldOut ? "Sold out" : "Coming soon";
+        const card = (
+          <>
+            <div className="relative">
+              <Plate
+                image={{
+                  ratio: "4/5",
+                  alt: product.name,
+                  src: image?.url,
+                }}
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className={!buyable ? "opacity-40" : undefined}
+              />
+              {status && (
+                <span className="type-label absolute left-3 top-3 rounded-full bg-canvas px-3 py-1 text-ink-muted">
+                  {status}
+                </span>
+              )}
+            </div>
+            <div className="mt-3 flex items-baseline justify-between gap-4">
+              <p className="font-body text-[15px] font-medium text-ink">
+                {product.name}
+              </p>
+              <p className="type-label text-ink-muted">
+                {formatPrice(product)}
+              </p>
+            </div>
+          </>
+        );
 
-  const card = (
-    <>
-      <div className="relative">
-        <Plate
-          image={{ ratio: "4/5", alt: product.name, src: image?.url }}
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className={!buyable ? "opacity-40" : undefined}
-        />
-        {status && (
-          <span className="type-label absolute left-3 top-3 rounded-full bg-canvas px-3 py-1 text-ink-muted">
-            {status}
-          </span>
-        )}
-      </div>
-      <div className="mt-3 flex items-baseline justify-between gap-4">
-        <p className="font-body text-[15px] font-medium text-ink">
-          {product.name}
-        </p>
-        <p className="type-label text-ink-muted">{formatPrice(product)}</p>
-      </div>
-    </>
-  );
-
-  return buyable ? (
-    <a href={checkoutUrl(product)} className="block transition-opacity hover:opacity-80">
-      {card}
-    </a>
-  ) : (
-    card
+        return (
+          <li key={product.id}>
+            {buyable ? (
+              <a
+                href={checkoutUrl(product)}
+                className="block transition-opacity hover:opacity-80"
+              >
+                {card}
+              </a>
+            ) : (
+              card
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
