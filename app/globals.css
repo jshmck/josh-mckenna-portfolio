@@ -242,6 +242,21 @@
   text-box: trim-both cap alphabetic;
 }
 
+/* Fades both clipped edges of the client-logo ticker (client-logos.tsx) so
+   logos dissolve at the viewport edge instead of being sliced mid-mark. The
+   black/transparent stops are mask alpha, not rendered colour — the
+   colour-token rule doesn't apply to mask-image. 2.5rem matches the
+   ticker's gap-x-10 rhythm. */
+@utility ticker-fade-x {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 2.5rem,
+    black calc(100% - 2.5rem),
+    transparent
+  );
+}
+
 /* ==========================================================================
    Motion
    The hero objects, marquee and scroll reveals are all decorative motion.
