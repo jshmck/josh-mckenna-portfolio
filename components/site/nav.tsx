@@ -192,7 +192,23 @@ function isWorkFilterRowOnScreen(): boolean {
  * echo. A standalone component rather than inline JSX so its own `open`
  * state remounts fresh (collapsed) every time the drop-down itself mounts
  * on hover — no effect needed to reset it back to closed between opens. */
-function NavWorkSearch({ delayMs }: { delayMs: number }) {
+function NavWorkSearch({
+  delayMs,
+  onHandoff,
+}: {
+  delayMs: number;
+  /** Called on the first real (non-empty) keystroke — the gallery takes
+   *  the query over from here (focus + scroll-to-top, see
+   *  work-gallery.tsx's onSearch hand-off), so the menu must close NOW,
+   *  in the same React update. The blur-grace and row-on-screen closes
+   *  still exist as backstops, but both land a beat later (300ms timer /
+   *  next scroll frame), and that beat is visible: with the page already
+   *  back at top, the in-page row sat under a still-open drop-down for
+   *  a moment — "the one i'm typing in is above, and then the one below
+   *  appears," per Josh, on the very first fix that relied on the
+   *  backstops alone. */
+  onHandoff: () => void;
+}) {
   const [open, setOpen] = useState(false);
   return (
     <span
@@ -220,9 +236,13 @@ function NavWorkSearch({ delayMs }: { delayMs: number }) {
         onBlur={(event) => {
           if (!event.target.value.trim()) setOpen(false);
         }}
-        onChange={(event) =>
-          window.dispatchEvent(new CustomEvent("worklist:search", { detail: event.target.value }))
-        }
+        onChange={(event) => {
+          window.dispatchEvent(new CustomEvent("worklist:search", { detail: event.target.value }));
+          // After the dispatch, not before — the gallery's listener
+          // moves focus to the in-page input synchronously during it,
+          // so by the time the menu unmounts nothing here holds focus.
+          if (event.target.value.trim()) onHandoff();
+        }}
         className={`font-grotesque rounded-full border bg-canvas py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] outline-none [&::-webkit-search-cancel-button]:hidden ${
           open
             ? "w-40 border-ink pr-4 pl-8"
@@ -831,7 +851,10 @@ export function Nav() {
                       NavWorkSearch (above Nav) owns the collapsed/open
                       sizing itself, mirroring work-gallery.tsx's pill. */}
                   {pathname === "/work" && (
-                    <NavWorkSearch delayMs={(getActiveCategories().length + 1) * 55} />
+                    <NavWorkSearch
+                      delayMs={(getActiveCategories().length + 1) * 55}
+                      onHandoff={closeMenuNow}
+                    />
                   )}
                 </div>
               </div>
