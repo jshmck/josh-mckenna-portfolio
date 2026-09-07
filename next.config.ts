@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [{ source: "/about", destination: "/info", permanent: true }];
   },
+  // Shop product photos are fetched live from Big Cartel (lib/shop.ts) and
+  // served from their asset host, not public/ — next/image needs the
+  // domain allowlisted to optimise them.
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "assets.bigcartel.com" },
+    ],
+  },
 };
 
 export default nextConfig;
