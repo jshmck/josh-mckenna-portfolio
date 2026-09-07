@@ -17,7 +17,7 @@ export const siteConfig = {
   location: "London",
   tagline: "Drawings that misbehave.",
   description:
-    "Josh McKenna is an illustrator drawing loud, friendly, slightly queer characters for magazines, record sleeves and packaging.",
+    "Josh McKenna is a British illustrator working across character design, LGBTQ+ themes, social media icons, brand campaigns and automotive art.",
   email: "hello@joshmckenna.com",
   /** For enquiries that go through representation rather than direct. */
   agencyEmail: "info@ba-reps.com",

@@ -7,8 +7,7 @@ import { Reveal } from "@/components/ui/reveal";
 
 export const metadata: Metadata = {
   title: "Shop",
-  description:
-    "Prints, stickers and other small things. Not open yet — leave an email and you'll hear first.",
+  description: "Prints, stickers and other small things.",
 };
 
 /**

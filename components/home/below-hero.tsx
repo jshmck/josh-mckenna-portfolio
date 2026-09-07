@@ -64,10 +64,9 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
               <InlineIcon name="car" /> art
             </h2>
             <p className="type-lede mt-6 max-w-lg text-ink-muted">
-              He&apos;s drawn for the likes of Apple — loud, friendly, queer
-              characters, always diverse. 2D mostly, 3D lately. Restaurant
-              posters are his bread and butter. Cars are the thing he draws
-              for free.
+              Loud, proud, diverse characters. 2D mostly, a bit of 3D lately.
+              Restaurant posters are his bread and butter. Cars are the thing
+              he draws for free.
             </p>
             <Link
               href="/info"
