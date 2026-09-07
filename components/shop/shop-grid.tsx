@@ -63,17 +63,16 @@ export function ShopGrid() {
                 className={!buyable ? "opacity-40" : undefined}
               />
               {status && (
-                // Centred rather than corner-pinned -- at left-3 it sat
-                // inside the frame's 40px corner curve (rounded-frame),
-                // poking into the curved zone instead of the flat part
-                // of the image. Centring sidesteps that regardless of
-                // card size/ratio. border-ink + this padding matches the
-                // sitewide pill shape (Work's filters, nav search, the
-                // waitlist/HOWDY buttons) -- bg-canvas stays (unlike
-                // those) since this is the only pill that sits on top of
-                // a photo rather than the plain page background, and
-                // needs the fill to stay legible over it.
-                <span className="type-label absolute left-1/2 top-3 -translate-x-1/2 rounded-full border border-ink bg-canvas px-4 py-[9.5px] text-ink-muted">
+                // Dead centre of the faded image, per Josh -- reads as a
+                // state overlay (the classic "sold out" treatment) rather
+                // than a floating tag. Earlier corner-pinned and top-edge
+                // placements both clashed with the frame's 40px radius.
+                // Same font/size/padding recipe as the Work filter pills
+                // and the waitlist/HOWDY buttons (font-grotesque, not
+                // type-label's Space Mono) so it reads as the same chip;
+                // bg-canvas stays, unlike those, since this is the one
+                // pill sitting on a photo rather than the page background.
+                <span className="font-grotesque absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ink bg-canvas px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink-muted text-trim-caps">
                   {status}
                 </span>
               )}
