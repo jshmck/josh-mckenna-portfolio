@@ -67,8 +67,13 @@ export function ShopGrid() {
                 // inside the frame's 40px corner curve (rounded-frame),
                 // poking into the curved zone instead of the flat part
                 // of the image. Centring sidesteps that regardless of
-                // card size/ratio.
-                <span className="type-label absolute left-1/2 top-3 -translate-x-1/2 rounded-full bg-canvas px-3 py-1 text-ink-muted">
+                // card size/ratio. border-ink + this padding matches the
+                // sitewide pill shape (Work's filters, nav search, the
+                // waitlist/HOWDY buttons) -- bg-canvas stays (unlike
+                // those) since this is the only pill that sits on top of
+                // a photo rather than the plain page background, and
+                // needs the fill to stay legible over it.
+                <span className="type-label absolute left-1/2 top-3 -translate-x-1/2 rounded-full border border-ink bg-canvas px-4 py-[9.5px] text-ink-muted">
                   {status}
                 </span>
               )}
