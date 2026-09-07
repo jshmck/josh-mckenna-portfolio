@@ -230,6 +230,52 @@
   font-weight: 400;
 }
 
+/* Inline icons -- Josh's own stroke icons set inside sentences like glyphs
+   (components/ui/inline-icon.tsx). One shared base plus a metrics utility
+   per icon. Heights are em so they scale with the surrounding type at any
+   font size; `width: auto` lets the viewBox set the aspect. The icon sits
+   on the text baseline like a letter, then vertical-align nudges it a hair
+   below to recreate the overshoot a round letter has (car wheels dip like
+   the bowl of an "o"). Metrics live in custom properties rather than
+   direct height/vertical-align so the per-icon utility wins no matter how
+   Tailwind orders the two classes. `display: inline` is not decoration:
+   Tailwind's preflight makes every <svg> display:block, which would put
+   each icon on a line of its own.
+
+   Heights were measured optically in Figma against the site typeface at
+   58px type (outlined icon height ÷ font size) and are final -- do not
+   tidy them to one value; cap-height shapes (car, heart, cloud) sit under
+   the H height on purpose and ascender-height ones (bike, ~0.78em) sit
+   over it. Nudges are the Figma starting points, tuned by eye in the
+   browser against the rendered sentence, then locked. */
+@utility icon-inline {
+  display: inline;
+  height: var(--icon-height, 0.7em);
+  width: auto;
+  vertical-align: var(--icon-nudge, baseline);
+  fill: currentColor;
+}
+
+@utility icon-car {
+  --icon-height: 0.72em;
+  --icon-nudge: -0.02em;
+}
+
+@utility icon-cloud {
+  --icon-height: 0.73em;
+  --icon-nudge: -0.02em;
+}
+
+/* Optical kern: the heart only ever follows "LGBTQ+", and the plus's open
+   right side reads as a wider gap than a word space, so pull the heart in
+   on that side only -- "tighten the gap between + and the heart," per
+   Josh. Start side only; the trailing space stays a normal word space. */
+@utility icon-heart {
+  --icon-height: 0.69em;
+  --icon-nudge: -0.02em;
+  margin-inline-start: -0.1em;
+}
+
 /* Optical centring for caps-only chip/pill labels (the Work filters, the
    HOWDY/NOTIFY ME buttons). Uppercase Helvetica has no descenders, but the
    line box still reserves descender space below the baseline, so flex-
