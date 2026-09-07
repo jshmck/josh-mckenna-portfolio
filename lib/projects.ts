@@ -473,7 +473,7 @@ export const projects: Project[] = [
       "The same few characters carry every piece: two riders sharing a horse, a bucking bronco, a rope heart, a hat under a rainbow. Each pin ran in multiple colourways, and the tee's back print carries the two cowboys in an embrace.",
     ],
     credits: [
-      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
       { role: "Client", name: "Levi's" },
     ],
     // The camera shots themselves are true 2/3 (6000x4000 Canon frames and
@@ -644,7 +644,7 @@ export const projects: Project[] = [
     brief: [
       "No brief — love for the Honda N-One, so it had to be drawn. Even cooler with a bolt-on bodykit, so it got drawn again: slammed, cambered, a spoiler it doesn't need.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // The hero (true 16/9, 3840x2160) is untouched, but the /work grid
     // card frame uses 5/3, not 16/9 — same fix as Wagamama/Atlanta/etc:
     // a span-2 card at true 16/9 renders ~32px shorter than a single-
@@ -754,7 +754,7 @@ export const projects: Project[] = [
       "Comic Relief, in partnership with Sink The Pink, commissioned tote bag artwork for Red Nose Day 2020 — two couple pairings, printed across the range.",
     ],
     credits: [
-      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
       { role: "Client", name: "Comic Relief" },
       { role: "Partner", name: "Sink The Pink" },
     ],
@@ -801,7 +801,7 @@ export const projects: Project[] = [
       "The wall is the side of a bike-rental and organised-hike shop at the corner of La Cienega and Santa Monica Boulevards in West Hollywood, directly under a Kylie Skin billboard. Anything painted there has to read from a moving car, so it works the way the billboard above it does: a few big shapes and five words — pump less gas, pump more. The peach finishes the sentence.",
     ],
     credits: [
-      { role: "Illustration & Mural", name: "Josh McKenna" },
+      { role: "Illustration, Mural & Creative Direction", name: "Josh McKenna" },
       { role: "Client", name: "Hikes and Bikes LA" },
     ],
     // Pinned to the photo's true 4/5 so RATIO_CYCLE can't crop the
@@ -937,7 +937,7 @@ export const projects: Project[] = [
       "2020's wellness trend of the moment was perineum sunning — thirty seconds of direct sun, no shade, for the vitamin D nobody could actually measure.",
       "No brief, no clinical backing — just the pose, drawn straight enough that you can decide for yourself whether it's worth doing.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     cardRatio: "1/1",
     hero: {
       ratio: "1/1",
@@ -960,7 +960,7 @@ export const projects: Project[] = [
     brief: [
       "No brief — just an excuse to draw a mid-century carport roofline against the San Jacinto mountains, with a two-tone convertible parked underneath.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     cardRatio: "1/1",
     hero: {
       ratio: "1/1",
@@ -992,7 +992,7 @@ export const projects: Project[] = [
     brief: [
       "No brief — just an excuse to draw the new Bronco, out in the desert on the week it was revealed.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     cardRatio: "1/1",
     // "In car category, change the bronco to 4/5 to better fit next to
     // honda," per Josh — taller frame reads better beside Honda's 16/9
@@ -1245,7 +1245,7 @@ export const projects: Project[] = [
       "Jacob Gallagher's piece was about AirPods becoming a status symbol on sight — a $159 pair of headphones read as wealth from across a subway platform, whether or not that was true.",
     ],
     credits: [
-      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
       { role: "Writer", name: "Jacob Gallagher" },
       { role: "Client", name: "The Wall Street Journal" },
     ],
@@ -2053,7 +2053,7 @@ export const projects: Project[] = [
     brief: [
       "Modelled in Womp, a browser-based 3D tool — the first character I built in 3D, before Pato, Jimny or Last Call. Wanted to push my 2D character features into three dimensions.",
     ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
     // happened to also give 1/1, but only by chance of array position.
     cardRatio: "1/1",
@@ -2082,7 +2082,7 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — a glossy figure bent double, taking a selfie of its own backside.",
       "A 3D take on [Bum Selfie](/work/bum-selfie), the flat illustration it started from.",
     ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
     // Pinned — this was the one Womp 3D project left unpinned, so the
     // /work grid silently handed it whatever RATIO_CYCLE landed on for
     // its position (including landscape values the portrait render was
@@ -2130,7 +2130,7 @@ export const projects: Project[] = [
     brief: [
       "Modelled in Womp, a browser-based 3D tool — a gloopy, wompy homage to my favourite car, the Jimny.",
     ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
     // Not the true 1/1 — Josh's call, 4/5 reads better here than the
     // RATIO_CYCLE-by-chance square did. Pinned explicitly either way.
     cardRatio: "4/5",
@@ -2176,7 +2176,7 @@ export const projects: Project[] = [
       "Modelled in Womp, a browser-based 3D tool — my own take on the Renault Twingo, a remix of the MK1 and the new Twingo EV, with side vents and chunky arches nodding to the Renaultsport Espace and the turbo era.",
       "Same car rendered twice — yellow under pink light, black under red.",
     ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
     // happened to also give 4/5, but only by chance of array position.
     cardRatio: "4/5",
@@ -2208,7 +2208,7 @@ export const projects: Project[] = [
     brief: [
       "Modelled in Womp, a browser-based 3D tool — coffee cups, a bench, coins scattered mid-fall, in two versions: one with company, one alone.",
     ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
     // was giving this 1/1 by chance.
     cardRatio: "4/5",
@@ -2237,7 +2237,7 @@ export const projects: Project[] = [
     brief: [
       "Modelled in Womp, a browser-based 3D tool — Pato, my three-legged dog.",
     ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
     // True ratio — was silently cropping to 1/1 via RATIO_CYCLE's chance
     // assignment; the actual renders are 4/5.
     cardRatio: "4/5",
@@ -2276,7 +2276,7 @@ export const projects: Project[] = [
     brief: [
       "Modelled in Womp, a browser-based 3D tool — a cowboy hat and a \"Last Call\" keyring.",
     ],
-    credits: [{ role: "3D Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
     // happened to also give 4/5, but only by chance of array position.
     cardRatio: "4/5",
@@ -2415,7 +2415,7 @@ export const projects: Project[] = [
     brief: [
       "Made in Figma Draw — a yeti figure lounging inside a YETI-brand cooler, blue duotone.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
@@ -2441,7 +2441,7 @@ export const projects: Project[] = [
     brief: [
       "Made in Figma Draw — \"mind the closing doors,\" with the Underground roundel split down the middle like the doors themselves, a hand and a bag caught right in the gap.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
@@ -2466,7 +2466,7 @@ export const projects: Project[] = [
     brief: [
       "Made in Figma Draw — a nod to Serve Robotics' sidewalk delivery bots, the chaotic little things that tear up LA's pavements and stop dead halfway along a crossing.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
@@ -2489,7 +2489,7 @@ export const projects: Project[] = [
     summary: "A chair, repeated as wallpaper, in case the first one wasn't clear enough.",
     heroCaption: "A tribute to a great design collaboration — Vitra × Virgil Abloh, 2025.",
     brief: ["Made in Figma Draw — the Vitra × Virgil Abloh chair."],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
@@ -2515,7 +2515,7 @@ export const projects: Project[] = [
     brief: [
       "Made in Figma Draw — the BMW Z1 got the most attention of the set, a second background and a four-colour carousel.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
@@ -2546,7 +2546,7 @@ export const projects: Project[] = [
     brief: [
       "Made in Figma Draw — the ribbed aluminium Rimowa, dragged flat-out by someone who still found a hand for the selfie.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
     cardRatio: "4/5",
@@ -2580,7 +2580,7 @@ export const projects: Project[] = [
       "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film — the closest I've come to field-testing my own artwork.",
     ],
     credits: [
-      { role: "Creative Direction & Illustration", name: "Josh McKenna" },
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
       { role: "Client", name: "Nomad Wheel Co." },
     ],
     // Josh's own re-crop, a true 4/5 with no empty margin — used as-is for
@@ -2631,7 +2631,7 @@ export const projects: Project[] = [
       "Mr Porter needed two invitations for the same Miami event — one for day, one for night.",
     ],
     credits: [
-      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
       { role: "Client", name: "Mr Porter" },
     ],
     // True 707/1000 ratio (a near-exact 1/√2, ISO-paper proportions) —
@@ -3192,7 +3192,7 @@ export const projects: Project[] = [
     brief: [
       "An editorial about the debate between rumbling exhaust notes and the futuristic hum of instant torque.",
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
     // was giving this 1/1 by chance.
     cardRatio: "4/5",
@@ -3301,7 +3301,7 @@ export const projects: Project[] = [
     brief: [
       "No brief — a personal animation exercise, a Mini convertible driving past palm trees on a five-second loop.",
     ],
-    credits: [{ role: "Illustration & Animation", name: "Josh McKenna" }],
+    credits: [{ role: "Illustration, Animation & Creative Direction", name: "Josh McKenna" }],
     // True 16/9 (source is 1220x686) on the project page; cropped to 1/1
     // on the /work card per Josh.
     cardRatio: "1/1",
