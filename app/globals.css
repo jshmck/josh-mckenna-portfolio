@@ -257,7 +257,7 @@
 }
 
 @utility icon-car {
-  --icon-height: 0.69em;
+  --icon-height: 0.72em;
   --icon-nudge: -0.02em;
 }
 
@@ -266,9 +266,14 @@
   --icon-nudge: -0.02em;
 }
 
+/* Optical kern: the heart only ever follows "LGBTQ+", and the plus's open
+   right side reads as a wider gap than a word space, so pull the heart in
+   on that side only -- "tighten the gap between + and the heart," per
+   Josh. Start side only; the trailing space stays a normal word space. */
 @utility icon-heart {
   --icon-height: 0.69em;
   --icon-nudge: -0.02em;
+  margin-inline-start: -0.1em;
 }
 
 /* Optical centring for caps-only chip/pill labels (the Work filters, the
