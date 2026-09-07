@@ -42,19 +42,21 @@ function Logo({ client }: { client: Client }) {
  *  it, so the loop would visibly jump half a gap every cycle. */
 function TickerRow({
   items,
-  duration,
+  durationClass,
 }: {
   items: Client[];
-  /** CSS time, e.g. "34s". Row widths differ, so each row picks its own
-   *  duration to keep the px/s pace roughly equal. */
-  duration: string;
+  /** Static Tailwind classes setting --ticker-dur, e.g. "[--ticker-dur:34s]"
+   *  — a class rather than an inline style so one row can run at
+   *  different speeds per breakpoint ("md:[--ticker-dur:36s]"). Must be
+   *  written out literally at the call site for Tailwind to generate it. */
+  durationClass: string;
 }) {
   return (
-    <div className="ticker-fade-x overflow-hidden">
+    <div className={`ticker-fade-x overflow-hidden ${durationClass}`}>
       <div
         className="flex w-max items-center"
         style={{
-          animation: `marquee ${duration} linear infinite`,
+          animation: "marquee var(--ticker-dur) linear infinite",
           willChange: "transform",
         }}
       >
@@ -75,9 +77,11 @@ function TickerRow({
  *  frame and lets this run edge to edge). Two staggered lines at every
  *  width — the first pass ran mobile as one long line, revised to match
  *  desktop ("you can put the clients on two rows in mobile too," per
- *  Josh, along with "make them move a bit faster" — hence 34s/40s, up
- *  from 45s/52s). Slightly different durations stop the rows scrolling
- *  in lockstep.
+ *  Josh). Speeds are Josh-tuned in two rounds: 45s/52s → 34s/40s
+ *  everywhere ("make them move a bit faster"), then the bottom row to
+ *  36s on desktop only ("bottom line can be a bit faster" — mobile was
+ *  already signed off as-is, so it keeps 40s). Slightly different
+ *  durations stop the rows scrolling in lockstep.
  *
  *  Reduced motion gets the previous static wrap grid instead — the global
  *  reduced-motion rule would only freeze the ticker on its first frame,
@@ -100,8 +104,11 @@ export function ClientLogos() {
         aria-hidden="true"
         className="flex flex-col gap-y-6 motion-reduce:hidden"
       >
-        <TickerRow items={rows[0]} duration="34s" />
-        <TickerRow items={rows[1]} duration="40s" />
+        <TickerRow items={rows[0]} durationClass="[--ticker-dur:34s]" />
+        <TickerRow
+          items={rows[1]}
+          durationClass="[--ticker-dur:40s] md:[--ticker-dur:36s]"
+        />
       </div>
 
       {/* Container padding is re-applied here because the ticker above is
