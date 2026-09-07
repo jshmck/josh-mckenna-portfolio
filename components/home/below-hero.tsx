@@ -48,11 +48,19 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
                 (see components/ui/inline-icon.tsx). The spaces either
                 side of each icon are real text so it gets normal word
                 spacing -- keep each icon on the same source line as its
-                neighbouring words, or JSX drops the whitespace. */}
+                neighbouring words, or JSX drops the whitespace. The list
+                ends "brand campaigns, automotive" with no final "and":
+                the heading column caps at 596px on every desktop width,
+                and "and automotive [car] art" is ~40px too wide for it,
+                which left "art" alone on a last line. The comma version
+                breaks as "automotive [car] art" at every width, the same
+                last line as mobile and the Figma reference. Moving the
+                car before "automotive" was measured and doesn't help --
+                same four things on the line either way. */}
             <h2 className="type-heading text-ink">
               British <InlineIcon name="cloud" /> illustrator working across
               character design, LGBTQ+ <InlineIcon name="heart" /> themes,
-              social media icons, brand campaigns and automotive{" "}
+              social media icons, brand campaigns, automotive{" "}
               <InlineIcon name="car" /> art
             </h2>
             <p className="type-lede mt-6 max-w-lg text-ink-muted">
