@@ -7,7 +7,7 @@ import { PROJECT_CATEGORIES, getAllProjects } from "@/lib/projects";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Josh McKenna's work spans LGBTQ+ campaigns, editorial illustration, murals, cars, icons, motion and 3D — everything worth showing, newest first.",
+    "Josh McKenna's work spans LGBTQ+ campaigns, editorial illustration, murals, cars, icons, motion and 3D.",
 };
 
 export default function WorkPage() {
