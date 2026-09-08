@@ -1895,7 +1895,7 @@ export const projects: Project[] = [
       ratio: "9/16",
     },
     summary:
-      "I created a Pride sticker for Instagram Stories: a sassy, muscular bloke in red high heels. Meant to last a month, it stayed live for five years, used by millions.",
+      "I created a Pride sticker for Instagram Stories: a sassy, muscular bloke in red high heels. Meant to last a month, it stayed live for years, used by millions.",
     heroCaption: "The original character design, created for Instagram's 2017 Pride sticker set.",
     brief: [
       "In 2017, Jeffrey Gerson, then Instagram's Senior Product Marketing Lead, found my work in queer mag Hello Mr, a piece I'd done on David Hockney, and reached out.",
@@ -1952,11 +1952,12 @@ export const projects: Project[] = [
         src: "/work/instagram-sticker/05-sticker-set-hr.webp",
       },
     },
-    // Leads the gallery (afterIndex: 0, before the two-up pair) — the
+    // Leads the gallery (afterIndex: 0, before everything) — the
     // sticker's own animation, right after the write-up. Video sits right
-    // after the two-up pair (afterIndex: 2 = after gallery[0] and [1]),
-    // keeping the whole Mardi Gras beat — float photo, float detail,
-    // footage — together before Sticker Set breaks to a new subject.
+    // after the Mardi Gras pair (afterIndex: 4 = after the sticker set,
+    // the 2020 remake and both float photos), keeping the whole Mardi
+    // Gras beat — float photo, float detail, footage — together before
+    // the LA row breaks to a new subject.
     // Same clip as the card above — Josh's new pink-background render
     // (H.264 transcode of his HEVC export, which Chromium/Firefox can't
     // decode), replacing the old white 10- file. The 1/1 frame is kept,
@@ -1971,26 +1972,38 @@ export const projects: Project[] = [
       src: "/work/instagram-sticker/09-mardi-gras-video.mp4",
       alt: "Footage from the Sydney Mardi Gras parade, courtesy of Pedestrian TV.",
       sound: true,
-      afterIndex: 3,
+      afterIndex: 4,
     },
     // Sticker Set (16/9) leads as a standalone single, above the float, per
     // Josh — it can't sit in a two-up pair with either Mardi Gras photo
     // (3/4) without mismatching heights, so gallerySpans skips the default
     // "first two auto-pair" and takes manual control of the whole layout
-    // from index 0: Mardi Gras 2019 + Detail pair at indices 1-2, the three
-    // LA composites (indices 3-5, all true 9/16) share a row, and the book
-    // feature + Meta mural (indices 6-7, both 4/5) — the two "lonely"
+    // from index 0: the 2020 remake runs as its own small single at index
+    // 1, Mardi Gras 2019 + Detail pair at indices 2-3, the three LA
+    // composites (indices 4-6, all true 9/16) share a row, and the book
+    // feature + Meta mural (indices 7-8, both 4/5) — the two "lonely"
     // single-image features — pair up too.
     gallerySpans: [
-      { startIndex: 1, count: 2 },
-      { startIndex: 3, count: 3 },
-      { startIndex: 6, count: 2 },
+      { startIndex: 2, count: 2 },
+      { startIndex: 4, count: 3 },
+      { startIndex: 7, count: 2 },
     ],
     gallery: [
       {
         ratio: "16/9",
         alt: "The sticker as it appeared within the Pride set.",
         src: "/work/instagram-sticker/05-sticker-set-hr.webp",
+      },
+      {
+        // The 2020 remake Josh mentions in the brief — a 1200px transparent
+        // cut-out, so contain-on-canvas (the usual real-alpha fix) and
+        // `small` to keep the 1200px source honest rather than upscaling
+        // it to the gallery's full width.
+        ratio: "1/1",
+        small: true,
+        fit: "contain",
+        alt: "The 2020 remake of the sticker.",
+        src: "/work/instagram-sticker/12-sticker-2020-remake.webp",
       },
       {
         ratio: "3/4",
