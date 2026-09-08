@@ -39,8 +39,7 @@ export default function AboutPage() {
           It's Nice That's sits out (still in lib/about.ts, one line to
           restore). Text takes 3/5 of the row, photo 2/5, so the bio's
           measure fills out ("the text looks a bit sparse"). */}
-      <section className="relative">
-        <FloatingStickers />
+      <section>
         {/* pt-10/md:pt-24 — "about josh needs to be much lower," per
             Josh; one notch past Contact's pt-10/md:pt-20 precedent for
             a page opening on a heading. Was pt-8 back when the bio
@@ -55,49 +54,59 @@ export default function AboutPage() {
               bio keeps the same mt-12 rhythm Talks uses below its own
               heading. */}
           <div className="grid gap-x-10 gap-y-16 md:grid-cols-5 md:items-start">
-            <div className="md:col-span-3">
-              <h2 className="type-heading text-ink">About Josh</h2>
-              <Reveal>
-                <p className="mt-12 type-lede text-ink-muted">
-                  Josh McKenna is an illustrator with over a decade of
-                  experience moving between digital products and
-                  physical spaces. He studied illustration at Falmouth
-                  University before going freelance in 2014, working with
-                  brands from Apple to the Wall Street Journal. From the
-                  iconic Instagram Pride sticker to murals for Facebook, his
-                  work uses simple vector shapes to evolve 2D characters
-                  into 3D forms.
-                </p>
-              </Reveal>
+            {/* The floating Pride stickers scope to this column now, not
+                the whole section — "lets have the moving IG stickers
+                lower, they can be circling the about me paragraph and
+                quotes area," per Josh. The inner relative wrapper keeps
+                the text painting above the absolutely-positioned
+                stickers (positioned-after wins the stacking order),
+                exactly how the old Press section layered them. */}
+            <div className="relative md:col-span-3">
+              <FloatingStickers />
+              <div className="relative">
+                <h2 className="type-heading text-ink">About Josh</h2>
+                <Reveal>
+                  <p className="mt-12 type-lede text-ink-muted">
+                    Josh McKenna is an illustrator with over a decade of
+                    experience moving between digital products and
+                    physical spaces. He studied illustration at Falmouth
+                    University before going freelance in 2014, working with
+                    brands from Apple to the Wall Street Journal. From the
+                    iconic Instagram Pride sticker to murals for Facebook, his
+                    work uses simple vector shapes to evolve 2D characters
+                    into 3D forms.
+                  </p>
+                </Reveal>
 
-              {/* Same quote markup the old Press section used, sliced to
-                  the first two entries. The Gestalten-only mobile rule
-                  carries over — "on mobile drop all quotes except
-                  gestalten," per Josh. */}
-              <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
-                {pressQuotes.slice(0, 2).map((press, index) => (
-                  <li
-                    key={press.source}
-                    className={
-                      press.source.startsWith("Gestalten")
-                        ? undefined
-                        : "max-md:hidden"
-                    }
-                  >
-                    <Reveal
-                      delay={index * 60}
-                      className="flex h-full flex-col justify-between"
+                {/* Same quote markup the old Press section used, sliced to
+                    the first two entries. The Gestalten-only mobile rule
+                    carries over — "on mobile drop all quotes except
+                    gestalten," per Josh. */}
+                <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
+                  {pressQuotes.slice(0, 2).map((press, index) => (
+                    <li
+                      key={press.source}
+                      className={
+                        press.source.startsWith("Gestalten")
+                          ? undefined
+                          : "max-md:hidden"
+                      }
                     >
-                      <blockquote className="font-body text-[15px] text-ink">
-                        &ldquo;{press.quote}&rdquo;
-                      </blockquote>
-                      <p className="type-label mt-4 text-ink-muted">
-                        {press.source}
-                      </p>
-                    </Reveal>
-                  </li>
-                ))}
-              </ul>
+                      <Reveal
+                        delay={index * 60}
+                        className="flex h-full flex-col justify-between"
+                      >
+                        <blockquote className="font-body text-[15px] text-ink">
+                          &ldquo;{press.quote}&rdquo;
+                        </blockquote>
+                        <p className="type-label mt-4 text-ink-muted">
+                          {press.source}
+                        </p>
+                      </Reveal>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
             {/* 4/5 per Josh — "same rule as gallery", the portrait ratio

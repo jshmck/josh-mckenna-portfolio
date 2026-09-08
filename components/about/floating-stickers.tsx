@@ -4,8 +4,9 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 /**
- * A handful of small Pride sticker cut-outs drifting around the Press
- * section, echoing the homepage hero's orbit mechanic at icon scale.
+ * A handful of small Pride sticker cut-outs drifting around Info's
+ * bio + quotes column, echoing the homepage hero's orbit mechanic at
+ * icon scale.
  * Purely decorative (`aria-hidden`, `pointer-events-none`) — sits behind
  * the quotes, never blocks them, which is also why the cursor-repel below
  * tracks `pointermove` on `window` rather than on this component's own
@@ -46,8 +47,11 @@ const STICKERS: Sticker[] = [
 ];
 
 const CENTRE_X = 0.5;
-/** Still too low at 0.26 in practice -- pulled up further. */
-const CENTRE_Y = 0.19;
+/** 0.5 since the frame shrank to Info's bio+quotes column ("they can
+ *  be circling the about me paragraph and quotes area," per Josh) —
+ *  the orbit rings the block's middle. The old 0.19 was tuned for the
+ *  full-height Press section this used to float over. */
+const CENTRE_Y = 0.5;
 const STICKER_SIZES = "48px";
 
 /** How close the pointer must get before a sticker gets pushed away. */
