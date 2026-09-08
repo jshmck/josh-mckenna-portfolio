@@ -47,7 +47,12 @@ export default function AboutPage() {
             paragraph started the page with no heading above it. */}
         <div className="relative mx-auto max-w-frame px-6 pb-28 pt-10 md:px-gutter md:pt-24">
           <h2 className="type-heading text-ink">About Josh</h2>
-          <div className="mt-12 grid gap-x-10 gap-y-16 md:grid-cols-5 md:items-center">
+          {/* items-start, not center — centering floated the bio block
+              toward the photo's vertical middle, opening a gap under the
+              heading; "it can be tighter to the bio like talks and
+              features next to the videos," per Josh. Same mt-12 as the
+              Talks heading→grid spacing. */}
+          <div className="mt-12 grid gap-x-10 gap-y-16 md:grid-cols-5 md:items-start">
             <div className="md:col-span-3">
               <Reveal>
                 <p className="type-lede text-ink-muted">
@@ -101,8 +106,7 @@ export default function AboutPage() {
                 cap had room to spare. The filename names the shot, not
                 just "portrait": Next's image cache keys on the URL, so
                 swapping a different photo in under the same name serves
-                the stale one. The grid's md:items-center keeps the bio
-                paragraph vertically centred beside this taller frame.
+                the stale one.
                 Capped at max-w-sm and tucked to the right edge on desktop
                 ("it feels quite big on the page," per Josh — full column
                 width read as a hero image, not a headshot); mobile keeps
