@@ -30,16 +30,21 @@ export default function AboutPage() {
     <PageEndCard>
       <h1 className="sr-only">Info</h1>
 
-      {/* The person — one short paragraph, plus a placeholder portrait
-          on the right per Josh. */}
-      <section>
-        <div className="mx-auto max-w-frame px-6 pb-28 pt-8 md:px-gutter">
-          {/* Text + portrait, same two-column shape as Home's "Who"
-              section (app/page.tsx) — paragraph left, framed image
-              right. Plate shows the taupe placeholder until Josh sends
-              a real photo. */}
-          <div className="grid gap-16 md:grid-cols-2 md:items-center">
-            <div>
+      {/* The person — one merged section now: title, bio, two press
+          quotes under the bio, portrait alongside ("i wonder if it all
+          needs a reshape. the quotes drop to two and have them live
+          under the bio but next to the photo," per Josh). Replaces the
+          old standalone Press section; FloatingStickers moved here with
+          the quotes. Crack Magazine + Gestalten are the two kept —
+          It's Nice That's sits out (still in lib/about.ts, one line to
+          restore). Text takes 3/5 of the row, photo 2/5, so the bio's
+          measure fills out ("the text looks a bit sparse"). */}
+      <section className="relative">
+        <FloatingStickers />
+        <div className="relative mx-auto max-w-frame px-6 pb-28 pt-8 md:px-gutter">
+          <h2 className="type-heading text-ink">About Josh</h2>
+          <div className="mt-12 grid gap-x-10 gap-y-16 md:grid-cols-5 md:items-center">
+            <div className="md:col-span-3">
               <Reveal>
                 <p className="type-lede text-ink-muted">
                   Josh McKenna is an illustrator with over a decade of
@@ -52,6 +57,35 @@ export default function AboutPage() {
                   into 3D forms.
                 </p>
               </Reveal>
+
+              {/* Same quote markup the old Press section used, sliced to
+                  the first two entries. The Gestalten-only mobile rule
+                  carries over — "on mobile drop all quotes except
+                  gestalten," per Josh. */}
+              <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
+                {pressQuotes.slice(0, 2).map((press, index) => (
+                  <li
+                    key={press.source}
+                    className={
+                      press.source.startsWith("Gestalten")
+                        ? undefined
+                        : "max-md:hidden"
+                    }
+                  >
+                    <Reveal
+                      delay={index * 60}
+                      className="flex h-full flex-col justify-between"
+                    >
+                      <blockquote className="font-body text-[15px] text-ink">
+                        &ldquo;{press.quote}&rdquo;
+                      </blockquote>
+                      <p className="type-label mt-4 text-ink-muted">
+                        {press.source}
+                      </p>
+                    </Reveal>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* 4/5 per Josh — "same rule as gallery", the portrait ratio
@@ -70,7 +104,7 @@ export default function AboutPage() {
                 width read as a hero image, not a headshot); mobile keeps
                 the standard full-width stack. */}
             <Plate
-              className="w-full md:max-w-sm md:justify-self-end"
+              className="w-full md:col-span-2 md:max-w-sm md:justify-self-end"
               image={{
                 ratio: "4/5",
                 alt: "Josh McKenna in profile, wearing a cap, against a blue studio backdrop",
@@ -79,47 +113,6 @@ export default function AboutPage() {
               sizes="(max-width: 768px) 100vw, 384px"
             />
           </div>
-        </div>
-      </section>
-
-      {/* Press — short third-party credibility, right after the intro
-          paragraph rather than after the heavier Talks & Features grid;
-          eases from personal copy into a bigger visual section instead of
-          jumping straight there. Small Pride sticker cut-outs drift around
-          the quotes -- see components/about/floating-stickers.tsx. */}
-      <section className="relative">
-        <FloatingStickers />
-        <div className="relative mx-auto max-w-frame px-6 pb-28 md:px-gutter">
-          {/* items-stretch (grid's default) makes each <li> match the row's
-              tallest quote; the Reveal wrapper below fills that height as a
-              flex column so the attribution lands on a shared baseline
-              across the row instead of trailing right under its own quote. */}
-          <ul className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
-            {pressQuotes.map((press, index) => (
-              <li
-                key={press.source}
-                // Mobile drops every quote but Gestalten's, keeping the
-                // floating Pride stickers above (untouched — this only
-                // hides the <li>, not FloatingStickers itself) — "on
-                // mobile drop all quotes except gestalten," per Josh.
-                className={
-                  press.source.startsWith("Gestalten") ? undefined : "max-md:hidden"
-                }
-              >
-                <Reveal
-                  delay={index * 60}
-                  className="flex h-full flex-col justify-between"
-                >
-                  <blockquote className="font-body text-[15px] text-ink">
-                    &ldquo;{press.quote}&rdquo;
-                  </blockquote>
-                  <p className="type-label mt-4 text-ink-muted">
-                    {press.source}
-                  </p>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
