@@ -204,6 +204,17 @@ const OBJECTS: DriftObject[] = [
     ry: 0.33,
     spin: rad(5.6),
   },
+  {
+    id: "ambient-11",
+    src: "/illustrations/objects/yeti.png",
+    alt: "",
+    width: 0.155,
+    aspect: 0.8,
+    angle: rad(110),
+    rx: 0.33,
+    ry: 0.34,
+    spin: rad(-5.9),
+  },
 ];
 
 /** Orbit centre — the middle of the frame, under the wordmark. */
