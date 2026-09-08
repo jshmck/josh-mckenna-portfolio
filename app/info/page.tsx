@@ -41,7 +41,11 @@ export default function AboutPage() {
           measure fills out ("the text looks a bit sparse"). */}
       <section className="relative">
         <FloatingStickers />
-        <div className="relative mx-auto max-w-frame px-6 pb-28 pt-8 md:px-gutter">
+        {/* pt-10/md:pt-24 — "about josh needs to be much lower," per
+            Josh; one notch past Contact's pt-10/md:pt-20 precedent for
+            a page opening on a heading. Was pt-8 back when the bio
+            paragraph started the page with no heading above it. */}
+        <div className="relative mx-auto max-w-frame px-6 pb-28 pt-10 md:px-gutter md:pt-24">
           <h2 className="type-heading text-ink">About Josh</h2>
           <div className="mt-12 grid gap-x-10 gap-y-16 md:grid-cols-5 md:items-center">
             <div className="md:col-span-3">
