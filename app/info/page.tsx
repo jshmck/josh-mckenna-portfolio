@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { FeatureGallery } from "@/components/about/feature-gallery";
 import { FloatingStickers } from "@/components/about/floating-stickers";
 import { YouTubeEmbed } from "@/components/about/youtube-embed";
+import { InlineIcon } from "@/components/ui/inline-icon";
 import { PageEndCard } from "@/components/ui/page-end-card";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
@@ -53,20 +54,22 @@ export default function AboutPage() {
               </Reveal>
             </div>
 
-            {/* portrait-studio.jpg is pre-cropped to 4/3 from the
-                near-square master (Desktop/Website Projects Folder/
-                JoshStudio.png) — object-cover's centre crop would clip
-                the cap. The cowboy-hat portrait (Josh.JPG) was tried
-                here first; Josh called the crop weird in the 4/3 frame
-                and picked this studio shot instead. The filename names
-                the shot, not just "portrait": Next's image cache keys
-                on the URL, so swapping a different photo in under the
-                same name serves the stale one. */}
+            {/* 4/5 per Josh — "same rule as gallery", the portrait ratio
+                the /work grid uses. Pre-cropped from the 3:4 master
+                (Desktop/Website Projects Folder/Side-2 copy.jpg) with the
+                whole trim taken off the top: the tee's printed graphics
+                run to the literal bottom edge of the shot, so any bottom
+                crop slices the text mid-line, and the headroom above the
+                cap had room to spare. The filename names the shot, not
+                just "portrait": Next's image cache keys on the URL, so
+                swapping a different photo in under the same name serves
+                the stale one. The grid's md:items-center keeps the bio
+                paragraph vertically centred beside this taller frame. */}
             <Plate
               image={{
-                ratio: "4/3",
-                alt: "Josh McKenna at his desk, working on an illustration",
-                src: "/about/portrait-studio.jpg",
+                ratio: "4/5",
+                alt: "Josh McKenna in profile, wearing a cap, against a blue studio backdrop",
+                src: "/about/portrait-blue-profile.jpg",
               }}
               sizes="(max-width: 768px) 100vw, 45vw"
             />
@@ -126,7 +129,9 @@ export default function AboutPage() {
           as-is since the deeper padding still reads right without it.) */}
       <section>
         <div className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
-          <h2 className="type-heading text-ink">Talks and features</h2>
+          <h2 className="type-heading text-ink">
+            Talks and features <InlineIcon name="heart" />
+          </h2>
           <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
             {features.map((feature, index) => (
               <li key={feature.alt}>
