@@ -1901,10 +1901,8 @@ export const projects: Project[] = [
       "In 2017, Jeffrey Gerson, then Instagram's Senior Product Marketing Lead, found my work in queer mag Hello Mr, a piece I'd done on David Hockney, and reached out.",
       "Instagram wanted a Pride sticker as part of a new sticker set for Stories, with other LGBTQ+ artists (Carra Sykes, Andy Simmonds, Cute Brute and José Antonio Roda), available throughout Pride month.",
       "So I created a sassy, muscular bloke in red high heels, designed to read clearly at sticker size, a couple of cm on a phone screen. The artwork reflects where my style was at that point: bold shapes, a simple palette, diverse characters, a tongue-in-cheek sense of humour. It's true to masculinity and sexuality, my real lived experience and personal take on Pride.",
-      "Its popularity meant it stayed embedded in the app for five years. Millions used it, including celebrities I never expected to see sharing my art (Michelle Obama!).",
-      "The sticker went way beyond the app: a 10ft-high float at Sydney Mardi Gras, murals at Trafalgar Square and Meta's head offices, an Instagram takeover of Vogue's account, a feature in a Gestalten book and public talks I'm still giving today. It was mad.",
-      "Almost a decade on, I've had hundreds, maybe thousands, of messages from folk thanking me for representing them in my work. Everybody posted it, referenced it, used it (Jonathan Van Ness talks about this on Queer Eye!).",
-      "It led to years of Pride and charity work, including a project Mel C from the Spice Girls put her name behind.",
+      "Its popularity meant it stayed embedded in the app for years, with a remake commissioned in 2020. Millions used it, including celebrities I never expected to see sharing my art (Michelle Obama!).",
+      "The sticker went way beyond the app: a 10ft-high float at Sydney Mardi Gras, murals at Trafalgar Square and Meta's head offices, an Instagram takeover of Vogue's account, a feature in a Gestalten book and public talks I'm still giving today.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -2006,7 +2004,7 @@ export const projects: Project[] = [
       },
       {
         ratio: "9/16",
-        alt: "The character placed on Venice Beach's Pride-painted lifeguard tower, part of a personal series of the character around LA.",
+        alt: "A personal series of the character placed around LA.",
         src: "/work/instagram-sticker/01-06.webp",
       },
       {
