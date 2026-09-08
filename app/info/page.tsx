@@ -6,7 +6,6 @@ import { YouTubeEmbed } from "@/components/about/youtube-embed";
 import { PageEndCard } from "@/components/ui/page-end-card";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
-import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { features, pressQuotes } from "@/lib/about";
 
 export const metadata: Metadata = {
@@ -52,29 +51,6 @@ export default function AboutPage() {
                   into 3D forms.
                 </p>
               </Reveal>
-
-              {/* Same treatment as the Contact page illustration and
-                  Work's Twingo/iPad: next/image direct, object-contain,
-                  no Plate frame or background surface, plus the same
-                  cursor-follow tilt as Work
-                  (components/ui/tilt-illustration.tsx). Both are homepage
-                  hero objects, copied to their own paths so the
-                  standalone pages stay independent of the hero's orbit.
-                  Height matches Work's illustrations (115px) for
-                  consistency across all three pages. Below the paragraph
-                  per Josh, not above it. */}
-              <div className="mt-10 flex flex-wrap items-end gap-6">
-                <TiltIllustration
-                  src="/illustrations/hand.png"
-                  aspect="641/873"
-                  height={115}
-                />
-                <TiltIllustration
-                  src="/illustrations/bearded.png"
-                  aspect="977/929"
-                  height={115}
-                />
-              </div>
             </div>
 
             {/* portrait-studio.jpg is pre-cropped to 4/3 from the
