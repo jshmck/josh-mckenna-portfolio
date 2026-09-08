@@ -3339,10 +3339,10 @@ export const projects: Project[] = [
     summary: "The HSBC hex, reimagined as a canvas for Pride.",
     heroCaption: "A held frame from the animation, 2023.",
     brief: [
-      "Studio La Plage, HSBC's creative partner agency, called on LGBTQIA+ creatives to reinterpret the HSBC hex as a canvas, platforming queer artistic talent across disciplines. HSBC has been recognised for LGBTQIA+ inclusion for years: Stonewall named it top LGBTQIA+ employer in 2015, 2016, 2017, 2019 and 2020. The animation ran across HSBC's own social channels.",
+      "Studio La Plage, HSBC's creative partner agency, called on LGBTQIA+ creatives to reinterpret the HSBC hex as a canvas. My interpretation was about my journey of self discovery when I moved to North America and ran across HSBC's own social channels.",
     ],
     credits: [
-      { role: "Illustration & Animation", name: "Josh McKenna" },
+      { role: "Illustration", name: "Josh McKenna" },
       { role: "Agency", name: "Studio La Plage" },
       { role: "Client", name: "HSBC" },
     ],
