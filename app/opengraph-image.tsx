@@ -3,21 +3,19 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
-// The Instagram Pride Sticker character, Josh's most Meta-relevant credit
-// (commissioned by Instagram, five years live in the app, murals painted in
-// Meta's own offices) — see lib/projects.ts's "instagram-sticker" entry.
-// Pre-cropped to its alpha bounding box; #FE939E is the coral sampled from
-// its existing /work card background (01-instagram-sticker-bg2-hr.webp), so
-// this reads as the same piece of art rather than a new crop of it.
+// Flat snapshot of the hero's drift objects around the "JOSH McKENNA"
+// wordmark — same art as the animated home hero, composited once for a
+// static share card. 2000x1050 source, same 1.905 ratio as the OG frame.
+// PNG, not WebP — Satori (next/og's renderer) can't decode WebP.
 export const alt = "Josh McKenna — Illustrator";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const characterData = await readFile(
-  join(process.cwd(), "public/illustrations/instagram-sticker-og.png"),
+const heroData = await readFile(
+  join(process.cwd(), "public/illustrations/og-hero.png"),
   "base64",
 );
-const characterSrc = `data:image/png;base64,${characterData}`;
+const heroSrc = `data:image/png;base64,${heroData}`;
 
 export default async function Image() {
   return new ImageResponse(
@@ -27,12 +25,15 @@ export default async function Image() {
           width: "100%",
           height: "100%",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "#FE939E",
+          background: "#faf9f6", // --color-canvas (app/globals.css); ImageResponse can't read CSS vars
         }}
       >
-        <img src={characterSrc} height={560} alt="" />
+        <img
+          src={heroSrc}
+          width={size.width}
+          height={size.height}
+          alt=""
+        />
       </div>
     ),
     { ...size },
