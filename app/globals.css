@@ -244,16 +244,26 @@
 
    Heights were measured optically in Figma against the site typeface at
    58px type (outlined icon height ÷ font size) and are final -- do not
-   tidy them to one value; cap-height shapes (car, heart, cloud) sit under
-   the H height on purpose and ascender-height ones (bike, ~0.78em) sit
-   over it. Nudges are the Figma starting points, tuned by eye in the
-   browser against the rendered sentence, then locked. */
+   tidy them to one value; every shape so far (car, heart, cloud, bike,
+   brush) sits under the H height on purpose. Nudges are the Figma
+   starting points, tuned by eye in the browser against the rendered
+   sentence, then locked. */
 @utility icon-inline {
   display: inline;
   height: var(--icon-height, 0.7em);
   width: auto;
   vertical-align: var(--icon-nudge, baseline);
   fill: currentColor;
+}
+
+@utility icon-bike {
+  --icon-height: 0.72em;
+  --icon-nudge: -0.02em;
+}
+
+@utility icon-brush {
+  --icon-height: 0.71em;
+  --icon-nudge: -0.02em;
 }
 
 @utility icon-car {
@@ -263,6 +273,11 @@
 
 @utility icon-cloud {
   --icon-height: 0.73em;
+  --icon-nudge: -0.02em;
+}
+
+@utility icon-coffee {
+  --icon-height: 0.76em;
   --icon-nudge: -0.02em;
 }
 
