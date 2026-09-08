@@ -64,14 +64,19 @@ export default function AboutPage() {
                 just "portrait": Next's image cache keys on the URL, so
                 swapping a different photo in under the same name serves
                 the stale one. The grid's md:items-center keeps the bio
-                paragraph vertically centred beside this taller frame. */}
+                paragraph vertically centred beside this taller frame.
+                Capped at max-w-sm and tucked to the right edge on desktop
+                ("it feels quite big on the page," per Josh — full column
+                width read as a hero image, not a headshot); mobile keeps
+                the standard full-width stack. */}
             <Plate
+              className="w-full md:max-w-sm md:justify-self-end"
               image={{
                 ratio: "4/5",
                 alt: "Josh McKenna in profile, wearing a cap, against a blue studio backdrop",
                 src: "/about/portrait-blue-profile.jpg",
               }}
-              sizes="(max-width: 768px) 100vw, 45vw"
+              sizes="(max-width: 768px) 100vw, 384px"
             />
           </div>
         </div>
