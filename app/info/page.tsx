@@ -46,16 +46,19 @@ export default function AboutPage() {
             a page opening on a heading. Was pt-8 back when the bio
             paragraph started the page with no heading above it. */}
         <div className="relative mx-auto max-w-frame px-6 pb-28 pt-10 md:px-gutter md:pt-24">
-          <h2 className="type-heading text-ink">About Josh</h2>
           {/* items-start, not center — centering floated the bio block
               toward the photo's vertical middle, opening a gap under the
               heading; "it can be tighter to the bio like talks and
-              features next to the videos," per Josh. Same mt-12 as the
-              Talks heading→grid spacing. */}
-          <div className="mt-12 grid gap-x-10 gap-y-16 md:grid-cols-5 md:items-start">
+              features next to the videos," per Josh. The heading lives
+              inside the text column ("bring it down to the top of the
+              photo frame") so its top sits flush with the Plate's; the
+              bio keeps the same mt-12 rhythm Talks uses below its own
+              heading. */}
+          <div className="grid gap-x-10 gap-y-16 md:grid-cols-5 md:items-start">
             <div className="md:col-span-3">
+              <h2 className="type-heading text-ink">About Josh</h2>
               <Reveal>
-                <p className="type-lede text-ink-muted">
+                <p className="mt-12 type-lede text-ink-muted">
                   Josh McKenna is an illustrator with over a decade of
                   experience moving between digital products and
                   physical spaces. He studied illustration at Falmouth
