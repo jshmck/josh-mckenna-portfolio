@@ -206,7 +206,7 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-11",
-    src: "/illustrations/objects/yeti.png",
+    src: "/illustrations/objects/yeti-cooler.webp",
     alt: "",
     width: 0.175,
     aspect: 0.8,
