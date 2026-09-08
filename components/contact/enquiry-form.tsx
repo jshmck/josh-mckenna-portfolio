@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { InlineIcon } from "@/components/ui/inline-icon";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -109,10 +110,9 @@ export function EnquiryForm() {
       noValidate
       className="relative rounded-frame border border-ink p-6 md:p-8"
     >
-      {/* "SAy HeLLO" is the Waldeck brand-casing quirk (e/j/k/g/t/y stay
-          lowercase), pre-transformed here per the literal-constant
-          convention from the retired lib/waldeck-case.ts — not a typo. */}
-      <h2 className="type-heading-waldeck text-brand">SAy HeLLO</h2>
+      <h2 className="type-heading text-ink">
+        Say hello <InlineIcon name="coffee" />
+      </h2>
 
       {/* Honeypot — hidden from sighted and screen-reader visitors alike;
           bots that fill every field trip the server-side check in

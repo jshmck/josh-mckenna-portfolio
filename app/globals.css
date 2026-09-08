@@ -165,11 +165,12 @@
 /* The primary Waldeck surface: the "jOSH MCkeNNA" homepage hero
    wordmark (components/home/drifting-hero.tsx). Waldeck is retired
    from general use — Josh: "anywhere else on the site needs to be changed
-   to Helvetica Neue in Bold until i find a more suitable font" — with one
-   deliberate exception, the contact form's "Say hello" (see
-   type-heading-waldeck below). Kept as its own role so the rest of the
-   site can move off Waldeck without touching this one call site. ~200px
-   at 1344px, fluid down to phones. */
+   to Helvetica Neue in Bold until i find a more suitable font". The
+   contact form's "Say hello" briefly returned to Waldeck (2026-09-03)
+   and has since moved back to type-heading, so this is the only Waldeck
+   surface left. Kept as its own role so the rest of the site can move
+   off Waldeck without touching this one call site. ~200px at 1344px,
+   fluid down to phones. */
 @utility type-wordmark {
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 9.8vw, 8.25rem);
@@ -189,20 +190,6 @@
   line-height: 1.02;
   letter-spacing: -0.02em;
   font-weight: 700;
-}
-
-/* Waldeck's second surface, returned per Josh (2026-09-03): the contact
-   form's "SAy HeLLO" heading (components/contact/enquiry-form.tsx),
-   quirk-cased and in brand blue at the call site — the form is the
-   commission path. Same scale as type-heading, but set in Waldeck Black —
-   note the face's non-standard 100-340 wght axis, hence the token
-   instead of 700. */
-@utility type-heading-waldeck {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.75rem);
-  line-height: 1.02;
-  letter-spacing: -0.01em;
-  font-weight: var(--font-weight-waldeck-black);
 }
 
 /* Marquee-only remnant of the old mid-size display role — the band isn't
