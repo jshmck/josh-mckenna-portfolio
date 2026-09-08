@@ -672,16 +672,22 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
             BACK TO TOP on the left. Hover is the breadcrumb Work link's
             own scale + bold, kept identical across all three so the
             row reads as one family. */}
-        <div className="mx-auto hidden max-w-frame items-center justify-between gap-8 px-6 pb-20 md:flex md:px-gutter">
+        {/* Grid matches WriteUp's [1fr_260px] column split exactly (same
+            gap-14) so the Previous/Next pair lands left-aligned under the
+            credits sidebar rather than pinned to the frame's right edge. */}
+        <div className="mx-auto hidden max-w-frame items-center gap-14 px-6 pb-20 md:grid md:grid-cols-[1fr_260px] md:px-gutter">
           <BackToTopLink />
-          <div className="flex items-center gap-10">
+          <div className="flex items-center gap-10 whitespace-nowrap">
             {previous && (
               <ProjectNavLink
                 toSlug={previous.slug}
                 fromSlug={project.slug}
                 href={`/work/${previous.slug}`}
-                className="type-label inline-block text-ink transition-[font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:font-bold hover:duration-300 hover:ease-drift"
+                className="type-label inline-flex items-center gap-1.5 text-ink transition-[font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:font-bold hover:duration-300 hover:ease-drift"
               >
+                <span aria-hidden="true" className="font-mono">
+                  {"<"}
+                </span>
                 Previous project
               </ProjectNavLink>
             )}
@@ -690,9 +696,12 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
                 toSlug={next.slug}
                 fromSlug={project.slug}
                 href={`/work/${next.slug}`}
-                className="type-label inline-block text-ink transition-[font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:font-bold hover:duration-300 hover:ease-drift"
+                className="type-label inline-flex items-center gap-1.5 text-ink transition-[font-weight,transform] duration-200 ease-in-out hover:scale-105 hover:font-bold hover:duration-300 hover:ease-drift"
               >
                 Next project
+                <span aria-hidden="true" className="font-mono">
+                  {">"}
+                </span>
               </ProjectNavLink>
             )}
           </div>
