@@ -804,12 +804,12 @@ export const projects: Project[] = [
       { role: "Client", name: "Hikes and Bikes LA" },
     ],
     // Pinned to the photo's true 4/5 so RATIO_CYCLE can't crop the
-    // billboard out of the top of the card — the Kylie Skin sign is
+    // billboard out of the top of the card — the Kylie billboard is
     // the joke and has to survive the crop.
     cardRatio: "4/5",
     hero: {
       ratio: "4/5",
-      alt: "The wall, under the Kylie Skin billboard",
+      alt: "The wall, under the Kylie Jenner billboard",
       src: "/work/hikes-n-bikes/01-mural-kylie-billboard.webp",
     },
     // The 15s ladder clip sits beside the finished-wall photo in the
@@ -2904,8 +2904,8 @@ export const projects: Project[] = [
     // TRIAL: "Posters > Beefbar," per Josh — see Project.cardTitle.
     cardTitle: "Posters",
     cardLabel: "Beefbar",
-    year: 2017,
-    yearLabel: "2017–Present Day",
+    year: 2019,
+    yearLabel: "2019–Present Day",
     pinnedRank: 6,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
