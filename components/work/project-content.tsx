@@ -672,10 +672,7 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
             BACK TO TOP on the left. Hover is the breadcrumb Work link's
             own scale + bold, kept identical across all three so the
             row reads as one family. */}
-        {/* Grid matches WriteUp's [1fr_260px] column split exactly (same
-            gap-14) so the Previous/Next pair lands left-aligned under the
-            credits sidebar rather than pinned to the frame's right edge. */}
-        <div className="mx-auto hidden max-w-frame items-center gap-14 px-6 pb-20 md:grid md:grid-cols-[1fr_260px] md:px-gutter">
+        <div className="mx-auto hidden max-w-frame items-center justify-between gap-8 px-6 pb-20 md:flex md:px-gutter">
           <BackToTopLink />
           <div className="flex items-center gap-10 whitespace-nowrap">
             {previous && (
