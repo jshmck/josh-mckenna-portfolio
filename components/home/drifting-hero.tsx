@@ -112,11 +112,13 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "work",
-    src: "/illustrations/objects/car-super-n.webp",
+    src: "/illustrations/objects/car-super-n-34.webp",
     alt: "",
-    /* Swapped from the blue Honda to the purple Super N, sized up per Josh. */
+    /* Swapped from the blue Honda to the purple Super N, sized up per Josh.
+       Later swapped again for a 3/4-angle render of the same car (drop
+       shadow baked into the artwork kept as-is, per Josh). */
     width: 0.3,
-    aspect: 1.923,
+    aspect: 1.178,
     angle: rad(320),
     rx: 0.3,
     ry: 0.31,
