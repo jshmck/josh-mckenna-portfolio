@@ -116,8 +116,9 @@ const OBJECTS: DriftObject[] = [
     alt: "",
     /* Swapped from the blue Honda to the purple Super N, sized up per Josh.
        Later swapped again for a 3/4-angle render of the same car (drop
-       shadow baked into the artwork kept as-is, per Josh). */
-    width: 0.3,
+       shadow baked into the artwork kept as-is, per Josh), then sized
+       down 20% (0.3 -> 0.24) since the new angle read too large. */
+    width: 0.24,
     aspect: 1.178,
     angle: rad(320),
     rx: 0.3,
