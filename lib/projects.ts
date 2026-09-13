@@ -2284,7 +2284,7 @@ export const projects: Project[] = [
       {
         ratio: "1/1",
         fit: "contain",
-        alt: "Choose Regenerative Travel",
+        alt: "Support Local, Organic Farmers",
         src: "/work/rooted-journal-editorial/01-support-local.webp",
       },
       {
@@ -2326,7 +2326,7 @@ export const projects: Project[] = [
       {
         ratio: "1/1",
         fit: "contain",
-        alt: "Support Local, Organic Farmers",
+        alt: "Compost Food Scraps",
         src: "/work/rooted-journal-editorial/08-compost.webp",
       },
       {
