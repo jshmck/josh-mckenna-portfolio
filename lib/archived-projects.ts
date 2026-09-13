@@ -82,4 +82,76 @@ export const archivedProjects: Project[] = [
     },
     gallery: [],
   },
+  {
+    slug: "coca-cola-moments",
+    title: "Coca-Cola Moments",
+    client: "Coca-Cola",
+    // TRIAL: "Moments" is the deliverable series name, reads fine alone
+    // — see Project.cardTitle.
+    cardTitle: "Moments",
+    year: 2022,
+    discipline: "Illustration",
+    deliverables: "5 Icons",
+    categories: ["Icons"],
+    summary: "Five everyday-moment icons for Coca-Cola.",
+    heroCaption: "One of five \"everyday moments\" icons made for Coca-Cola, 2022.",
+    // No visible captions on this one -- "Poolside" turned out to be a
+    // wrong guess at what one of these actually shows, and rather than
+    // fix the wording, Josh asked to just drop captions here entirely.
+    // alt text stays for accessibility.
+    hideHeroCaptions: true,
+    brief: [
+      "Commissioned via Momentum for Coca-Cola: a set of everyday moments.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Agency", name: "Momentum" },
+      { role: "Client", name: "Coca-Cola" },
+    ],
+    // Every source image here is a true 1/1 square — pin the /work card to
+    // match instead of leaving it to RATIO_CYCLE's alternation, which can
+    // land it on 4/5 depending on array position (see the same fix on
+    // monocle-spot-illo).
+    cardRatio: "1/1",
+    // Source files were only recovered at web resolution (1276x1276) --
+    // capped to the same max-w-lg small path Instagram Sticker's Vogue
+    // takeover uses, sitewide, rather than let them run full-frame and
+    // betray it. "Low-res so make them all smaller," per Josh.
+    hero: {
+      ratio: "1/1",
+      alt: "The bottle",
+      src: "/work/coca-cola-moments/02-02.webp",
+      small: true,
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "A hot dog and a Coca-Cola Zero Sugar, on a napkin",
+        src: "/work/coca-cola-moments/01-01.webp",
+        small: true,
+        caption: false,
+      },
+      {
+        ratio: "1/1",
+        alt: "Mid-sip",
+        src: "/work/coca-cola-moments/03-03.webp",
+        small: true,
+        caption: false,
+      },
+      {
+        ratio: "1/1",
+        alt: "A sunny afternoon",
+        src: "/work/coca-cola-moments/04-04.webp",
+        small: true,
+        caption: false,
+      },
+      {
+        ratio: "1/1",
+        alt: "Pizza night",
+        src: "/work/coca-cola-moments/05-05.webp",
+        small: true,
+        caption: false,
+      },
+    ],
+  },
 ];
