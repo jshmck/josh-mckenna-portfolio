@@ -127,23 +127,21 @@ export type FeatureItem = {
  */
 export const features: FeatureItem[] = [
   {
+    title: "Application Accepted — SXSW 2027",
+    description:
+      "Josh's PanelPicker proposal was voted through — SXSW 2027 runs 15–21 March in Austin, Texas.",
+    alt: "SXSW 2027 PanelPicker voting card for Josh's proposal",
+    // The promo master is natively 1920x1080, so at the 16/9 card ratio
+    // it goes in untouched. (An earlier 16/10 grid needed a version with
+    // its flat bands extended — gone now the frames match the asset.)
+    image: { src: "/about/sxsw-panelpicker-169.jpg" },
+  },
+  {
     title: "Speaker — Config 2026",
     description:
       "‘Dimensional shift: sculpting in Figma Draw’ — Josh's talk at Config, Figma's annual design conference.",
     alt: "Config 2026 talk — Dimensional shift: sculpting in Figma Draw",
     youtube: { id: "0ZoW_ym83JQ", poster: "/about/config-2026-poster.jpg" },
-  },
-  {
-    title: "A Minute With — Josh McKenna",
-    description:
-      "Sixty seconds on the practice — a one-minute filmed interview with Josh for his agency, B&A.",
-    alt: "A Minute With — a one-minute filmed interview with Josh McKenna",
-    video: {
-      src: "/about/a-minute-with.mp4",
-      // The ~1:02 frame, per Josh — the film's B&A endcard, fronted by
-      // the dog. (Replaced the earlier 0:28 drawing frame.)
-      poster: "/about/a-minute-with-poster-102.jpg",
-    },
   },
   {
     title: "Art Lab & Apple Today — Apple",
