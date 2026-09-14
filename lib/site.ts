@@ -19,8 +19,6 @@ export const siteConfig = {
   description:
     "Josh McKenna is a British illustrator working across character design, LGBTQ+ themes, social media icons, brand campaigns and automotive art.",
   email: "hello@joshmckenna.com",
-  /** For enquiries that go through representation rather than direct. */
-  agencyEmail: "info@ba-reps.com",
   instagram: {
     handle: "@jshmck",
     url: "https://www.instagram.com/jshmck/?hl=en",

@@ -5,8 +5,8 @@ import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { siteConfig } from "@/lib/site";
 
 /**
- * The actual Contact page body — intro, direct/agency emails,
- * illustration and the enquiry form. Used by app/contact/page.tsx. Kept
+ * The actual Contact page body — intro, direct email, illustration and
+ * the enquiry form. Used by app/contact/page.tsx. Kept
  * as its own component (rather than folded into the page) since it used
  * to also be embedded at the end of Info — that merge was removed per
  * Josh, but the split is still a reasonable seam if a similar embed is
@@ -67,16 +67,6 @@ export function ContactContent() {
               className="inline-block font-body text-[15px] text-ink-muted underline transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
             >
               {siteConfig.email}
-            </a>
-          </div>
-
-          <div className="mt-5">
-            <p className="type-label text-ink-muted">Agency Contact</p>
-            <a
-              href={`mailto:${siteConfig.agencyEmail}`}
-              className="inline-block font-body text-[15px] text-ink-muted underline transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
-            >
-              {siteConfig.agencyEmail}
             </a>
           </div>
         </Reveal>
