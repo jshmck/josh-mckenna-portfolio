@@ -112,13 +112,15 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "work",
-    src: "/illustrations/objects/car-super-n-34.webp",
+    src: "/illustrations/objects/car-super-n-body.webp",
     alt: "",
     /* Swapped from the blue Honda to the purple Super N, sized up per Josh.
        Later swapped again for a 3/4-angle render of the same car (drop
        shadow baked into the artwork kept as-is, per Josh), sized down
        20% (0.3 -> 0.24) since the new angle read too large, then a
-       further 2% (0.24 -> 0.2352) once the final artwork pass landed. */
+       further 2% (0.24 -> 0.2352) once that artwork pass landed. Swapped
+       again for Josh's "Super N Body" render -- same 3/4 angle and pixel
+       dimensions, no baked-in shadow this time. */
     width: 0.2352,
     aspect: 1.178,
     angle: rad(320),
