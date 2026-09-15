@@ -201,10 +201,11 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-10",
-    src: "/illustrations/objects/pride-sticker.png",
+    // Updated render of the Instagram Pride sticker character, per Josh.
+    src: "/illustrations/objects/pride-sticker.webp",
     alt: "",
     width: 0.095,
-    aspect: 0.774,
+    aspect: 0.781,
     angle: rad(260),
     rx: 0.34,
     ry: 0.33,
