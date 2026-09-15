@@ -1824,6 +1824,9 @@ export const projects: Project[] = [
     summary:
       "I created a Pride sticker for Instagram Stories: a sassy, muscular bloke in red high heels. Meant to last a month, it stayed live for years, used by millions.",
     heroCaption: "The original character design, created for Instagram's 2017 Pride sticker set.",
+    // No visible caption under the new hero — "drop the caption on project
+    // image," per Josh.
+    hideHeroCaptions: true,
     brief: [
       "In 2017, Jeffrey Gerson, then Instagram's Senior Product Marketing Lead, found my work in queer mag Hello Mr, a piece I'd done on David Hockney, and reached out.",
       "Instagram wanted a Pride sticker as part of a new sticker set for Stories, with other LGBTQ+ artists (Carra Sykes, Andy Simmonds, Cute Brute and José Antonio Roda), available throughout Pride month.",
@@ -1840,15 +1843,17 @@ export const projects: Project[] = [
       ratio: "1/1",
       alt: "The Instagram Pride sticker character",
       // Updated render, its own pink background baked in (no transparency,
-      // so no fit: "contain" needed this time) — per Josh. Capped small:
-      // "it was only ever a small sticker," so the full-bleed 1344px hero
-      // every other project gets would overstate it.
-      src: "/work/instagram-sticker/13-instagram-sticker-pink.webp",
+      // so no fit: "contain" needed this time) — per Josh. PNG, not the
+      // site's usual WebP, per Josh: kept lossless so the flat pink field
+      // doesn't pick up compression artefacts. Capped small: "it was only
+      // ever a small sticker," so the full-bleed 1344px hero every other
+      // project gets would overstate it.
+      src: "/work/instagram-sticker/13-instagram-sticker-pink.png",
       small: true,
     },
-    // /work card only — same character on a solid lavender fill instead of
-    // the hero's transparent PNG, so the card needs no contain/canvas-
-    // letterbox workaround. The project page's own hero above is untouched.
+    // /work card only — same character, its own solid lavender fill rather
+    // than the hero's pink one. The project page's own hero above is
+    // untouched.
     cardImage: {
       ratio: "1/1",
       alt: "The Instagram Pride sticker character",
