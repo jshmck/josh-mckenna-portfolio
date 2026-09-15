@@ -1842,18 +1842,20 @@ export const projects: Project[] = [
     hero: {
       ratio: "1/1",
       alt: "The Instagram Pride sticker character",
-      // Updated render, its own pink background baked in (no transparency,
-      // so no fit: "contain" needed this time) — per Josh. PNG, not the
-      // site's usual WebP, per Josh: kept lossless so the flat pink field
-      // doesn't pick up compression artefacts. Capped small: "it was only
-      // ever a small sticker," so the full-bleed 1344px hero every other
-      // project gets would overstate it.
-      src: "/work/instagram-sticker/13-instagram-sticker-pink.png",
+      // Updated render, transparent again (a pink-background pass was
+      // tried and reverted — "i meant transparent bg," per Josh). contain
+      // uses bg-canvas instead of cover's placeholder surface bleeding
+      // through the transparent margin, same fix as any transparent
+      // artwork (see Plate). Capped small: "it was only ever a small
+      // sticker," so the full-bleed 1344px hero every other project gets
+      // would overstate it.
+      src: "/work/instagram-sticker/14-instagram-sticker-transparent.webp",
+      fit: "contain",
       small: true,
     },
-    // /work card only — same character, its own solid lavender fill rather
-    // than the hero's pink one. The project page's own hero above is
-    // untouched.
+    // /work card only — same character on a solid lavender fill instead of
+    // the hero's transparent artwork, so the card needs no contain/canvas-
+    // letterbox workaround. The project page's own hero above is untouched.
     cardImage: {
       ratio: "1/1",
       alt: "The Instagram Pride sticker character",
