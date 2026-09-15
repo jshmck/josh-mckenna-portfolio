@@ -1839,12 +1839,12 @@ export const projects: Project[] = [
     hero: {
       ratio: "1/1",
       alt: "The Instagram Pride sticker character",
-      src: "/work/instagram-sticker/03-instagram-sticker.webp",
-      // Transparent PNG — cover's default bg-placeholder surface (brand
-      // blue) would show through the transparent margin around the
-      // figure. contain uses bg-canvas instead, the same fix real
-      // artwork with transparency always needs (see Plate).
-      fit: "contain",
+      // Updated render, its own pink background baked in (no transparency,
+      // so no fit: "contain" needed this time) — per Josh. Capped small:
+      // "it was only ever a small sticker," so the full-bleed 1344px hero
+      // every other project gets would overstate it.
+      src: "/work/instagram-sticker/13-instagram-sticker-pink.webp",
+      small: true,
     },
     // /work card only — same character on a solid lavender fill instead of
     // the hero's transparent PNG, so the card needs no contain/canvas-
