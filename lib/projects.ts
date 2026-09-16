@@ -636,14 +636,23 @@ export const projects: Project[] = [
     // remaining right slot behind it. See Bronco's own pinnedRank comment.
     pinnedRank: 17,
     discipline: "Illustration",
-    deliverables: "Key Art",
+    deliverables: "Key Art · Animation",
     categories: ["Cars"],
     summary: "A kei car on stretched wheels, sitting far too low.",
     heroCaption: "",
     brief: [
       "I drew the Honda N-One when I first saw it, cut to today and it's now available as a Super N. Slammed, with a body kit, wide arches and spoiler. I want one.",
+      "Illustrated in Figma, animated in Cavalry.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Turntable animation leads the page — muted/looping ambient clip
+    // (sound: false, the same treatment every silent hero clip on the
+    // site uses), poster falls back to `hero.src` below.
+    heroVideo: {
+      src: "/work/honda-super-n/09-super-n-animation.mp4",
+      alt: "The Super N, turning",
+      ratio: "16/9",
+    },
     // The hero (true 16/9, 3840x2160) is untouched, but the /work grid
     // card frame uses 5/3, not 16/9 — same fix as Wagamama/Atlanta/etc:
     // a span-2 card at true 16/9 renders ~32px shorter than a single-
