@@ -3278,6 +3278,66 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "hp-print-over-hate",
+    title: "HP Print Over Hate",
+    client: "HP",
+    year: 2017,
+    discipline: "Illustration",
+    deliverables: "Building Wrap · Campaign Film",
+    // Murals only, and hidden from the default "All" /work view and search
+    // — "campaign film should be under the mural section only," per Josh.
+    // Still fully reachable at /work/hp-print-over-hate and visible under
+    // the Murals pill.
+    categories: ["Murals"],
+    hiddenFromAll: true,
+    summary:
+      "A building-scale wrap for HP's Print Over Hate campaign, covering hate speech on Dublin's oldest gay bar.",
+    heroCaption: "",
+    brief: [
+      "On May 20th, 2017, The George — Dublin's oldest gay pub — was defaced with hate speech. HP printed my artwork across the whole building, floor to roof, on their own Latex presses, to cover it.",
+      "It ran as part of Print Over Hate, HP's initiative committing $2 million over two years to help communities everywhere do the same wherever hate speech turns up.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Same fix as Wagamama/Atlanta/Bombay Sapphire above: 5/3, not the
+    // true 16/9, so the landscape /work card matches a single-column
+    // neighbour's height at this site's actual column width.
+    cardRatio: "5/3",
+    heroVideo: {
+      src: "/work/hp-print-over-hate/06-print-over-hate-film.mp4",
+      alt: "HP's Print Over Hate campaign film, ending on The George fully wrapped",
+      poster: "/work/hp-print-over-hate/01-the-george-poster.webp",
+      sound: true,
+      ratio: "16/9",
+    },
+    hero: {
+      ratio: "16/9",
+      alt: "The George, fully wrapped in Josh's artwork",
+      src: "/work/hp-print-over-hate/01-the-george-poster.webp",
+    },
+    gallery: [
+      {
+        ratio: "16/9",
+        alt: "Josh in front of the finished wrap",
+        src: "/work/hp-print-over-hate/02-josh-at-the-george.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "Printing the wrap on HP's Latex press",
+        src: "/work/hp-print-over-hate/03-latex-press-printing.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "The artwork, fresh off the press",
+        src: "/work/hp-print-over-hate/04-artwork-macro.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "A Pride flag outside The George",
+        src: "/work/hp-print-over-hate/05-pride-flag.webp",
+      },
+    ],
+  },
   // Bershka lived here — archived to lib/archived-projects.ts per Josh
   // ("not strong enough"), not deleted; see that file for the restore path.
   {
