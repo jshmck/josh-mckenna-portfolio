@@ -689,29 +689,25 @@ export const projects: Project[] = [
     },
     // Full-width rows for every three-quarter view — "i liked the large
     // view on the project page," per Josh. Hierarchy per Josh: front 3/4
-    // views first (white stock N-One, then purple Super N build), then
-    // rear 3/4 views the same way (white, then purple) — hero leads with
-    // the stock car's front, gallery[0-2] carry the rest of the set. The
-    // four head-on/tail views close the page as one row of 1/1 squares
-    // (count: 4) — centre crops of the 16/9 sources, safe because the
-    // car sits dead centre in every render. The count: 1 spans keep the
-    // full-width rows out of the default two-up pairing.
+    // first (white stock N-One as the hero), then Super N's own front and
+    // rear 3/4 (purple) — there's no genuine N-One rear 3/4 render, only
+    // straight front/rear shots, which belong in the squares below, not
+    // here ("anything straight on front or rear view is to remain in the
+    // small squares," per Josh). The four head-on/tail views close the
+    // page as one row of 1/1 squares (count: 4) — centre crops of the
+    // 16/9 sources, safe because the car sits dead centre in every
+    // render. The count: 1 spans keep the full-width rows out of the
+    // default two-up pairing.
     gallerySpans: [
       { startIndex: 0, count: 1 },
       { startIndex: 1, count: 1 },
-      { startIndex: 2, count: 1 },
-      { startIndex: 3, count: 4 },
+      { startIndex: 2, count: 4 },
     ],
     gallery: [
       {
         ratio: "16/9",
         alt: "Honda Super N",
         src: "/work/honda-super-n/12-super-n-front-final.webp",
-      },
-      {
-        ratio: "16/9",
-        alt: "The stock N-One — rear three-quarter",
-        src: "/work/honda-super-n/20-n-one-rear-final.webp",
       },
       {
         ratio: "16/9",
@@ -740,9 +736,12 @@ export const projects: Project[] = [
         caption: false,
       },
       {
+        // Purple-bg re-export replacing the earlier green-bg square —
+        // "the purple BG rear white car is to replace the green bg rear
+        // white car," per Josh.
         ratio: "1/1",
         alt: "From behind",
-        src: "/work/honda-super-n/18-n-one-square-back-final.webp",
+        src: "/work/honda-super-n/20-n-one-rear-final.webp",
         caption: false,
       },
     ],
