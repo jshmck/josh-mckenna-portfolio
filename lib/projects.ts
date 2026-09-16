@@ -649,7 +649,7 @@ export const projects: Project[] = [
     // (sound: false, the same treatment every silent hero clip on the
     // site uses), poster falls back to `hero.src` below.
     heroVideo: {
-      src: "/work/honda-super-n/09-super-n-animation.mp4",
+      src: "/work/honda-super-n/10-super-n-animation-v2.mp4",
       alt: "The Super N, turning",
       ratio: "16/9",
     },
