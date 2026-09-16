@@ -180,7 +180,7 @@ export function FloatingStickers() {
             }}
           >
             <Image
-              src="/illustrations/objects/pride-sticker.png"
+              src="/illustrations/objects/pride-sticker.webp"
               alt=""
               fill
               sizes={STICKER_SIZES}
