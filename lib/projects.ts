@@ -2378,11 +2378,9 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
-    summary: "A cowboy in a mushroom-and-rose-embroidered leather jacket.",
+    summary: "Stone-faced cowboy — an experiment in leather texture.",
     heroCaption: "",
-    brief: [
-      "A cowboy, stone-faced under a pale Stetson, in a black leather jacket embroidered with mushrooms and roses down the trouser legs.",
-    ],
+    brief: ["Stone-faced cowboy — an experiment in leather texture."],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
