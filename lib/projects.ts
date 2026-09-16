@@ -651,11 +651,14 @@ export const projects: Project[] = [
     // Nomad Wheels' promo film: never force sound on a visitor who didn't
     // ask for it. The title card ("SUPER-N" on the lime pill) is composited
     // in as the literal final frame, held for 1.5s — "make the title card
-    // of the video the final frame," per Josh. Poster falls back to
-    // `hero.src` below.
+    // of the video the final frame," per Josh. Poster is the clip's own
+    // sticker-badge frame (extracted at 7.95s, just before the title card),
+    // not the default hero.src fallback — "make this the cover photo of
+    // the video," per Josh.
     heroVideo: {
       src: "/work/honda-super-n/19-super-n-animation-final.mp4",
       alt: "The Super N, turning, ending on the Super-N title card",
+      poster: "/work/honda-super-n/21-super-n-video-poster.webp",
       sound: true,
       ratio: "16/9",
     },
