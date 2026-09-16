@@ -645,12 +645,15 @@ export const projects: Project[] = [
       "Illustrated in Figma, animated in Cavalry.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Turntable animation leads the page — muted/looping ambient clip
-    // (sound: false, the same treatment every silent hero clip on the
-    // site uses), poster falls back to `hero.src` below.
+    // Turntable animation leads the page. This one has a real audio track
+    // Josh wants audible — sound: true swaps the muted/looping ambient
+    // treatment for native controls (play/pause, mute, volume) and no
+    // autoplay, same as Nomad Wheels' promo film: never force sound on a
+    // visitor who didn't ask for it. Poster falls back to `hero.src` below.
     heroVideo: {
-      src: "/work/honda-super-n/10-super-n-animation-v2.mp4",
+      src: "/work/honda-super-n/11-super-n-animation-v3.mp4",
       alt: "The Super N, turning",
+      sound: true,
       ratio: "16/9",
     },
     // The hero (true 16/9, 3840x2160) is untouched, but the /work grid
