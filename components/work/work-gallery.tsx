@@ -604,14 +604,18 @@ export function WorkGallery({
     if (q) {
       return projects.filter(
         (project) =>
-          [project.title, project.cardTitle, project.cardLabel, project.client, ...project.categories]
+          !project.hiddenFromAll &&
+          ([project.title, project.cardTitle, project.cardLabel, project.client, ...project.categories]
             .filter(Boolean)
             .some((field) => normalize(String(field)).includes(q)) ||
-          project.categories.some((category) => aliasHit(category, q)),
+            project.categories.some((category) => aliasHit(category, q))),
       );
     }
+    // hiddenFromAll projects sit out of the unfiltered grid (and Home's
+    // embedded copy of it) but still appear the moment their own category
+    // pill is picked — see the field's doc comment in lib/projects.ts.
     return filter === "All"
-      ? projects
+      ? projects.filter((project) => !project.hiddenFromAll)
       : projects.filter((project) => project.categories.includes(filter));
   }, [filter, query, projects]);
 

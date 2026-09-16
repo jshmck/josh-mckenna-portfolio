@@ -153,6 +153,15 @@ export type Project = {
   deliverables: string;
   /** A project can sit under more than one filter pill on /work. */
   categories: ProjectCategory[];
+  /**
+   * Leaves the project out of /work's default "All" view and out of
+   * free-text search results — it only surfaces when a visitor clicks
+   * directly into one of its `categories` pills. Still fully reachable
+   * at its own /work/[slug] URL. For pieces Josh wants filed under a
+   * category without fronting the main gallery or Home's embedded copy
+   * of it.
+   */
+  hiddenFromAll?: boolean;
   /** One line under the card title in grids. */
   summary: string;
   /** Caption printed under the hero image. */
