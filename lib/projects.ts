@@ -630,11 +630,13 @@ export const projects: Project[] = [
     titleBreakIndex: 1,
     client: "Personal",
     year: 2026,
-    // Ranked just ahead of Bronco (18) so the Cars category's dense pack
-    // seats Honda first in a fresh row — as the wider span-2 card it then
-    // claims the row's left two columns, leaving Bronco to land in the
-    // remaining right slot behind it. See Bronco's own pinnedRank comment.
-    pinnedRank: 17,
+    // Bumped up "above vogue and below atl mag," per Josh — sits right
+    // after Atlanta Magazine (4) and ahead of Vogue (10). Ranked just
+    // ahead of Bronco (6) so the Cars category's dense pack seats Honda
+    // first in a fresh row — as the wider span-2 card it then claims the
+    // row's left two columns, leaving Bronco to land in the remaining
+    // right slot behind it. See Bronco's own pinnedRank comment.
+    pinnedRank: 5,
     discipline: "Illustration",
     deliverables: "Key Art · Animation",
     categories: ["Cars"],
@@ -670,17 +672,20 @@ export const projects: Project[] = [
     // "same height" actually requires. Landscape card still spans two
     // grid columns either way.
     cardRatio: "5/3",
-    // The grid card hovers from the stock white car to the purple build
-    // ("make sure the hover image on the gallery grid goes from purple
-    // to white honda," per Josh, back when the hero led purple — hero is
-    // the stock N-One now, so the hover direction flips to match: white
-    // by default, purple on hover) — explicit, because the gallery now
-    // leads with white angles and getCardHoverImage would pick one of
-    // those instead.
-    cardHoverImage: {
+    // Grid card leads with the lime/purple Super N build, then hovers to
+    // the stock white N-One on purple — "green background purple car
+    // first, then purple bg white car," per Josh. Explicit on both,
+    // because the gallery now leads with white angles and the
+    // hero/getCardHoverImage fallbacks would each pick the wrong one.
+    cardImage: {
       ratio: "16/9",
       alt: "Honda Super N",
       src: "/work/honda-super-n/12-super-n-front-final.webp",
+    },
+    cardHoverImage: {
+      ratio: "16/9",
+      alt: "The stock N-One",
+      src: "/work/honda-super-n/14-n-one-front-final.webp",
     },
     // -final filenames throughout — Josh's final export pass swapped every
     // render's background (purple car on lime, white N-One on purple),
@@ -993,10 +998,12 @@ export const projects: Project[] = [
     // up and to the right of honda," per Josh. Unpinned items sort
     // Infinity-after any finite rank regardless of value, so nudging
     // Bronco ahead of Jimny/Twingo (both unpinned, 2026) needs a real
-    // pinnedRank. 18, one after Honda's 17 — Honda ranking first means
+    // pinnedRank. 6, one after Honda's 5 — Honda ranking first means
     // it claims a fresh row's left two columns as the wider span-2 card,
-    // leaving Bronco the remaining right slot right behind it.
-    pinnedRank: 18,
+    // leaving Bronco the remaining right slot right behind it. Both moved
+    // up together when Honda got bumped above Vogue, per Josh, so this
+    // pairing survives the reorder.
+    pinnedRank: 6,
     discipline: "Illustration",
     deliverables: "Key Art",
     categories: ["Cars"],
@@ -1768,7 +1775,7 @@ export const projects: Project[] = [
     // Pinned to the middle of /work's curated block, regardless of year
     // — Josh wants this one prominent despite being older than most of
     // the rest, just not leading the page.
-    pinnedRank: 8,
+    pinnedRank: 10,
     discipline: "Editorial Illustration",
     deliverables: "3 Spot Illustrations",
     categories: ["Editorial"],
@@ -2157,7 +2164,7 @@ export const projects: Project[] = [
     title: "Money Bench",
     client: "Personal",
     year: 2026,
-    pinnedRank: 11,
+    pinnedRank: 13,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
     categories: ["Editorial", "3D"],
@@ -2225,7 +2232,7 @@ export const projects: Project[] = [
     title: "Last Call",
     client: "Personal",
     year: 2026,
-    pinnedRank: 14,
+    pinnedRank: 16,
     discipline: "3D Illustration",
     deliverables: "1 Render · 1 Turnaround",
     categories: ["3D"],
@@ -2260,7 +2267,7 @@ export const projects: Project[] = [
     cardTitle: "Living Regeneratively",
     cardLabel: "The Rooted Journal",
     year: 2025,
-    pinnedRank: 5,
+    pinnedRank: 7,
     yearLabel: "Spring 2025",
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
@@ -2364,7 +2371,7 @@ export const projects: Project[] = [
     title: "Yeti",
     client: "Personal",
     year: 2025,
-    pinnedRank: 7,
+    pinnedRank: 9,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
@@ -2413,7 +2420,7 @@ export const projects: Project[] = [
     title: "Underground",
     client: "Personal",
     year: 2025,
-    pinnedRank: 16,
+    pinnedRank: 18,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
@@ -2487,7 +2494,7 @@ export const projects: Project[] = [
     title: "BMW Z1",
     client: "Personal",
     year: 2025,
-    pinnedRank: 15,
+    pinnedRank: 17,
     discipline: "Illustration",
     deliverables: "2 Illustrations",
     categories: ["Cars"],
@@ -2548,7 +2555,7 @@ export const projects: Project[] = [
     client: "Nomad Wheel Co.",
     cardLabel: "Nomad Wheel Co.",
     year: 2024,
-    pinnedRank: 12,
+    pinnedRank: 14,
     discipline: "Automotive Livery",
     deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
     // "remove 505 from icons," per Josh.
@@ -2663,7 +2670,7 @@ export const projects: Project[] = [
     // "Editorial" both Monocle pieces share.
     pageTitle: "Sumo Spot Illustration",
     year: 2018,
-    pinnedRank: 9,
+    pinnedRank: 11,
     // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
     // square export, and leaving this to the cycle meant a pinnedRank
     // reorder elsewhere could silently flip this card's parity and crop it
@@ -2881,7 +2888,7 @@ export const projects: Project[] = [
     cardLabel: "Beefbar",
     year: 2019,
     yearLabel: "2019–Present Day",
-    pinnedRank: 6,
+    pinnedRank: 8,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
     categories: [],
@@ -3163,7 +3170,7 @@ export const projects: Project[] = [
     title: "The Sound of Driving",
     client: "Personal",
     year: 2026,
-    pinnedRank: 10,
+    pinnedRank: 12,
     discipline: "Editorial Illustration",
     deliverables: "Key Art · Magazine Mockup",
     categories: ["Cars", "Editorial"],
@@ -3208,7 +3215,7 @@ export const projects: Project[] = [
     cardTitle: "Stir Creativity",
     cardLabel: "Bombay Sapphire",
     year: 2018,
-    pinnedRank: 13,
+    pinnedRank: 15,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
     categories: ["Murals"],
