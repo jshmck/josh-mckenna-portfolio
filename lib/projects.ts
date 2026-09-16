@@ -2371,6 +2371,31 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
+    slug: "cowboy",
+    title: "Cowboy",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: [],
+    summary: "A cowboy in a mushroom-and-rose-embroidered leather jacket.",
+    heroCaption: "",
+    brief: [
+      "A cowboy, stone-faced under a pale Stetson, in a black leather jacket embroidered with mushrooms and roses down the trouser legs.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "3/4",
+    heroSize: "spot",
+    hero: {
+      ratio: "3/4",
+      alt: "The cowboy, in his embroidered jacket",
+      src: "/work/cowboy/01-cowboy-hr.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "figma-underground",
     title: "Underground",
     client: "Personal",
