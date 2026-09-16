@@ -667,49 +667,56 @@ export const projects: Project[] = [
     // "same height" actually requires. Landscape card still spans two
     // grid columns either way.
     cardRatio: "5/3",
-    // The grid card hovers from the purple build to the stock white car
+    // The grid card hovers from the stock white car to the purple build
     // ("make sure the hover image on the gallery grid goes from purple
-    // to white honda," per Josh) — explicit, because the gallery now
-    // leads with purple angles and getCardHoverImage would pick one of
+    // to white honda," per Josh, back when the hero led purple — hero is
+    // the stock N-One now, so the hover direction flips to match: white
+    // by default, purple on hover) — explicit, because the gallery now
+    // leads with white angles and getCardHoverImage would pick one of
     // those instead.
     cardHoverImage: {
       ratio: "16/9",
-      alt: "The stock N-One",
-      src: "/work/honda-super-n/14-n-one-front-final.webp",
+      alt: "Honda Super N",
+      src: "/work/honda-super-n/12-super-n-front-final.webp",
     },
     // -final filenames throughout — Josh's final export pass swapped every
     // render's background (purple car on lime, white N-One on purple),
     // new names so Next's image cache can't serve an old shade.
     hero: {
       ratio: "16/9",
-      alt: "Honda Super N",
-      src: "/work/honda-super-n/12-super-n-front-final.webp",
+      alt: "The stock N-One",
+      src: "/work/honda-super-n/14-n-one-front-final.webp",
     },
     // Full-width rows for every three-quarter view — "i liked the large
-    // view on the project page," per Josh: purple front and rear 3/4
-    // lead (hero + gallery[0]), the white 3/4 follows the same way. The
+    // view on the project page," per Josh. Hierarchy per Josh: front 3/4
+    // views first (white stock N-One, then purple Super N build), then
+    // rear 3/4 views the same way (white, then purple) — hero leads with
+    // the stock car's front, gallery[0-2] carry the rest of the set. The
     // four head-on/tail views close the page as one row of 1/1 squares
     // (count: 4) — centre crops of the 16/9 sources, safe because the
     // car sits dead centre in every render. The count: 1 spans keep the
     // full-width rows out of the default two-up pairing.
-    // Stock N-One's rear three-quarter dropped ("you can remove the
-    // stock rear 3/4 view," per Josh) — front 3/4 is the only stock
-    // angle left besides the two small squares.
     gallerySpans: [
       { startIndex: 0, count: 1 },
       { startIndex: 1, count: 1 },
-      { startIndex: 2, count: 4 },
+      { startIndex: 2, count: 1 },
+      { startIndex: 3, count: 4 },
     ],
     gallery: [
       {
         ratio: "16/9",
-        alt: "Super N — rear three-quarter",
-        src: "/work/honda-super-n/13-super-n-rear-final.webp",
+        alt: "Honda Super N",
+        src: "/work/honda-super-n/12-super-n-front-final.webp",
       },
       {
         ratio: "16/9",
-        alt: "The stock N-One",
-        src: "/work/honda-super-n/14-n-one-front-final.webp",
+        alt: "The stock N-One — rear three-quarter",
+        src: "/work/honda-super-n/20-n-one-rear-final.webp",
+      },
+      {
+        ratio: "16/9",
+        alt: "Super N — rear three-quarter",
+        src: "/work/honda-super-n/13-super-n-rear-final.webp",
       },
       {
         // "You can drop the captions of the four little frames," per
