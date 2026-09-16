@@ -645,14 +645,17 @@ export const projects: Project[] = [
       "Illustrated in Figma, animated in Cavalry.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Turntable animation leads the page. This one has a real audio track
-    // Josh wants audible — sound: true swaps the muted/looping ambient
-    // treatment for native controls (play/pause, mute, volume) and no
-    // autoplay, same as Nomad Wheels' promo film: never force sound on a
-    // visitor who didn't ask for it. Poster falls back to `hero.src` below.
+    // Turntable animation leads the page. Real audio track Josh wants
+    // audible — sound: true swaps the muted/looping ambient treatment for
+    // native controls (play/pause, mute, volume) and no autoplay, same as
+    // Nomad Wheels' promo film: never force sound on a visitor who didn't
+    // ask for it. The title card ("SUPER-N" on the lime pill) is composited
+    // in as the literal final frame, held for 1.5s — "make the title card
+    // of the video the final frame," per Josh. Poster falls back to
+    // `hero.src` below.
     heroVideo: {
-      src: "/work/honda-super-n/11-super-n-animation-v3.mp4",
-      alt: "The Super N, turning",
+      src: "/work/honda-super-n/19-super-n-animation-final.mp4",
+      alt: "The Super N, turning, ending on the Super-N title card",
       sound: true,
       ratio: "16/9",
     },
@@ -672,25 +675,25 @@ export const projects: Project[] = [
     cardHoverImage: {
       ratio: "16/9",
       alt: "The stock N-One",
-      src: "/work/honda-super-n/03-n-one-side-v2.webp",
+      src: "/work/honda-super-n/14-n-one-front-final.webp",
     },
-    // -v2 filenames throughout — Josh re-exported all eight renders on a
-    // brighter red field ("i just updated the BG colour so swap them"),
-    // new names so Next's image cache can't serve the old shade.
+    // -final filenames throughout — Josh's final export pass swapped every
+    // render's background (purple car on lime, white N-One on purple),
+    // new names so Next's image cache can't serve an old shade.
     hero: {
       ratio: "16/9",
       alt: "Honda Super N",
-      src: "/work/honda-super-n/01-super-n-side-v2.webp",
+      src: "/work/honda-super-n/12-super-n-front-final.webp",
     },
     // Full-width rows for every three-quarter view — "i liked the large
     // view on the project page," per Josh: purple front and rear 3/4
-    // lead (hero + gallery[0]), the white 3/4s follow the same way. The
+    // lead (hero + gallery[0]), the white 3/4 follows the same way. The
     // four head-on/tail views close the page as one row of 1/1 squares
     // (count: 4) — centre crops of the 16/9 sources, safe because the
     // car sits dead centre in every render. The count: 1 spans keep the
     // full-width rows out of the default two-up pairing.
     // Stock N-One's rear three-quarter dropped ("you can remove the
-    // stock rear 3/4 view," per Josh) — side view is the only stock
+    // stock rear 3/4 view," per Josh) — front 3/4 is the only stock
     // angle left besides the two small squares.
     gallerySpans: [
       { startIndex: 0, count: 1 },
@@ -701,47 +704,38 @@ export const projects: Project[] = [
       {
         ratio: "16/9",
         alt: "Super N — rear three-quarter",
-        src: "/work/honda-super-n/02-super-n-rear-quarter-v2.webp",
+        src: "/work/honda-super-n/13-super-n-rear-final.webp",
       },
       {
         ratio: "16/9",
         alt: "The stock N-One",
-        src: "/work/honda-super-n/03-n-one-side-v2.webp",
+        src: "/work/honda-super-n/14-n-one-front-final.webp",
       },
       {
         // "You can drop the captions of the four little frames," per
         // Josh — alt stays for accessibility, caption: false just hides
-        // ImageStack's printed <p>. -v3: replaced with Josh's own true
-        // 2160x2160 square exports ("replace the honda sq images with
-        // the recently uploaded") — the -v2 files were center crops from
-        // the same wide 3840x2160 renders the full-width shots use,
-        // which is exactly the "curatorial crop, not the source's native
-        // aspect" case the lightbox fix (see lightbox-overlay.tsx) was
-        // written for; these new exports are genuinely square at the
-        // source, so there's no crop for the lightbox to even need to
-        // apply. New filename, not an in-place swap — Next's image
-        // cache keys on the URL.
+        // ImageStack's printed <p>.
         ratio: "1/1",
         alt: "Super N — head on",
-        src: "/work/honda-super-n/05-super-n-front-v3.webp",
+        src: "/work/honda-super-n/15-super-n-square-front-final.webp",
         caption: false,
       },
       {
         ratio: "1/1",
         alt: "Super N — from behind",
-        src: "/work/honda-super-n/06-super-n-back-v3.webp",
+        src: "/work/honda-super-n/16-super-n-square-back-final.webp",
         caption: false,
       },
       {
         ratio: "1/1",
         alt: "Head on",
-        src: "/work/honda-super-n/07-n-one-front-v3.webp",
+        src: "/work/honda-super-n/17-n-one-square-front-final.webp",
         caption: false,
       },
       {
         ratio: "1/1",
         alt: "From behind",
-        src: "/work/honda-super-n/08-n-one-rear-v3.webp",
+        src: "/work/honda-super-n/18-n-one-square-back-final.webp",
         caption: false,
       },
     ],
