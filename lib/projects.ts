@@ -1798,8 +1798,7 @@ export const projects: Project[] = [
     categories: ["Editorial"],
     // Standardized to 16/9 with the other landscape /work cards, not the
     // hero's true 1.6 — still clears LANDSCAPE_SPAN_RATIO (1.3) either way,
-    // so it spans two columns automatically, same as UAL Booklets and
-    // Bombay Sapphire.
+    // so it spans two columns automatically, same as Bombay Sapphire.
     cardRatio: "5/3",
     summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
     heroCaption: "Tanning Tips, the first of a three-part series on tanning safely.",
@@ -2764,10 +2763,14 @@ export const projects: Project[] = [
     discipline: "Illustration",
     deliverables: "Covers · Inside Pages · Spots · Maps",
     categories: ["Editorial"],
-    // Standardized to 16/9 with the other landscape /work cards, not the
-    // photo's true 3/2 — checked against the actual spread, nothing
-    // essential is cropped. Same fix as Bombay Sapphire below.
-    cardRatio: "5/3",
+    // Square, not the old 5/3 landscape span — "UAL can be square if
+    // it's trouble," per Josh, and it was: near the bottom of the ALL
+    // grid it sat back-to-back with the other tail landscapes (Bombay
+    // Sapphire, HP Print Over Hate), and consecutive 2-span cards at the
+    // tail strand a column with nothing left to fill it. As a 1/1 single
+    // it fills a column instead of needing one filled. Centre crop of
+    // the 3/2 spread photo — the ID card queue sits mid-frame, checked.
+    cardRatio: "1/1",
     summary: "Welcome booklets for UAL's six colleges, each in its own colour-way.",
     heroCaption: "One interior spread, reused across all six 2017–2020 college editions.",
     brief: [
@@ -3265,7 +3268,7 @@ export const projects: Project[] = [
     categories: ["Murals"],
     // Standardized to 16/9 with the other landscape /work cards, not the
     // hero's true 1.5 — checked against the actual storefront shot,
-    // nothing essential is cropped. Same fix as UAL Booklets above.
+    // nothing essential is cropped. Same fix as Vogue's series above.
     cardRatio: "5/3",
     summary:
       "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
