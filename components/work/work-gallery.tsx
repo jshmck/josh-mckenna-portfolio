@@ -422,6 +422,10 @@ export function WorkGallery({
   // bookmarking). ANDs with the category filter rather than replacing it.
   // A frozen peek seeds from initialQuery and never calls setQuery again.
   const [query, setQuery] = useState(interactive ? "" : (initialQuery ?? ""));
+  // Neither a category filter nor a search is the curated ALL order, so
+  // both get densely repacked — see the MasonryGrid `dense` prop's own
+  // comment below.
+  const isDense = filter !== "All" || Boolean(query.trim());
   // Collapsed to a bare mag-glass pill until focused — "no word for
   // SEARCH, just the mag glass in a small pill, then when you click an
   // x in a circle gloopy rolls to the right making space to type," per
@@ -1004,10 +1008,16 @@ export function WorkGallery({
             matches). Invisible by design, same as /work's own h1. */}
         <h2 className="sr-only">Projects</h2>
         <MasonryGrid
-          // Filtered views repack densely — they're not the curated ALL
-          // order, so levelling the columns wins ("when you click a
-          // category, can the rules of the grid change?" per Josh).
-          dense={filter !== "All"}
+          // Filtered AND searched views repack densely — neither is the
+          // curated ALL order, so levelling the columns wins ("when you
+          // click a category, can the rules of the grid change?" per
+          // Josh). Search used to fall through to the strict-order,
+          // native-ratio pack whenever the ALL pill was still active
+          // (the common case — searching doesn't touch the filter), which
+          // is exactly the small-subset-of-odd-ratios scenario most
+          // likely to leave a visible hole ("i dont want any gaps...
+          // inside the search," per Josh).
+          dense={isDense}
           items={visible.map((project, index) => {
             // Filtered views can lead with a category-specific cover; when
             // one applies, hover swaps back to the original lead instead
@@ -1019,10 +1029,23 @@ export function WorkGallery({
             // cardImageByCategory.
             const categoryImage =
               filter !== "All" ? project.cardImageByCategory?.[filter] : undefined;
-            const cardRatio =
+            const naturalCardRatio =
               categoryImage?.ratio ?? effectiveCardRatio(project, index, ratioCycle);
+            const naturalRatio = ratioToNumber(naturalCardRatio);
+            const span = naturalRatio >= LANDSCAPE_SPAN_RATIO ? 2 : 1;
+            // Dense views force every card to exactly one of two frames —
+            // 1/1, or 25/12 for the landscape span-2 slot — instead of
+            // each project's own crop, so every row lands level with zero
+            // packing dead space ("i want 1/1 frames, then whatever
+            // height matches the landscape images best," per Josh; see
+            // the "25/12" ImageRatio's own comment for why that specific
+            // ratio). categoryImage overrides are exempt — each of those
+            // ratios was hand-picked for a specific crop reason (see
+            // cardImageByCategory's own doc comment), so forcing them
+            // here would undo that.
+            const cardRatio: ImageRatio =
+              isDense && !categoryImage ? (span === 2 ? "25/12" : "1/1") : naturalCardRatio;
             const ratio = ratioToNumber(cardRatio);
-            const span = ratio >= LANDSCAPE_SPAN_RATIO ? 2 : 1;
             return {
               key: project.slug,
               ratio,
