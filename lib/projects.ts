@@ -905,69 +905,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    // Single overview sheet for now — Josh is redrawing the set in a new
-    // style, so the individual stickers land later.
-    slug: "its-all-love",
-    title: "It's All Love",
-    client: "Google",
-    // TRIAL: the original confirmed example for this whole mechanism —
-    // see Project.cardTitle.
-    cardLabel: "Google",
-    year: 2017,
-    // Grouped with HSBC (19) and Voxi (20) into one consecutive block —
-    // "on their own line" needs them adjacent in sequence for the packer
-    // to actually seat them together rather than scattered among the
-    // 4/5 cards ("hsbc, voxi and google can be 1/1 on their own line,"
-    // per Josh). denseSquare (see its own doc comment) is what actually
-    // keeps this one square in dense views.
-    pinnedRank: 21,
-    denseSquare: true,
-    discipline: "Stickers & Iconography",
-    deliverables: "Sticker Set · 24 Stickers",
-    categories: ["LGBTQ+", "Icons"],
-    summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
-    heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
-    brief: [
-      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme: twenty-four stickers, from a finger snap to a full lesbian wedding.",
-      "The set went on to win an Applied Arts Photography & Illustration Award in the Conceptual Illustration category, Spring 2018.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Agency", name: "Anyways" },
-      { role: "Client", name: "Google" },
-    ],
-    // /work card only, per Josh — a four-sticker composite on a solid
-    // light-pink fill, so the card gets a real surface instead of the
-    // overview sheet's transparent float. The project page above keeps
-    // the full sheet; this never renders there. Pinned to its true 1/1
-    // ("make sure it stays at 1/1") so RATIO_CYCLE can't crop it.
-    cardRatio: "1/1",
-    cardImage: {
-      ratio: "1/1",
-      alt: "Four stickers from the set",
-      src: "/work/its-all-love/04-hero-light.webp",
-    },
-    // Rainbow_2 flattened onto the composite's own pink (sampled
-    // 255/230/246) — the hover overlay renders with no surface of its
-    // own, so a transparent sticker would float over the four-sticker
-    // card instead of replacing it.
-    cardHoverImage: {
-      ratio: "1/1",
-      alt: "The rainbow sticker",
-      src: "/work/its-all-love/05-rainbow-hover-light.webp",
-    },
-    hero: {
-      ratio: "1/1",
-      alt: "The full sticker set",
-      src: "/work/its-all-love/01-overview-01.webp",
-      // Transparent PNG — same fix as the Instagram sticker's hero:
-      // contain sits on bg-canvas, so no placeholder tone shows through
-      // the transparent background.
-      fit: "contain",
-    },
-    gallery: [],
-  },
-  {
     slug: "bum-selfie",
     title: "Bum Selfie",
     client: "Cake Boy Magazine",
@@ -1404,6 +1341,9 @@ export const projects: Project[] = [
     pageTitle: "Downward Trend",
     year: 2018,
     yearLabel: "October 2018, Issue 117",
+    // Backfills It's All Love's old slot once it unpinned to the very
+    // bottom — "monocle heel higher," per Josh.
+    pinnedRank: 21,
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
     categories: ["Editorial"],
@@ -1793,8 +1733,8 @@ export const projects: Project[] = [
     year: 2019,
     yearLabel: "OPTO Issue 03, Jan/Feb 2019",
     // See rooted-journal-editorial's own pinnedRank comment — grouped
-    // with it (22) and Monocle's sumo spot (23) so all three 1/1 cards
-    // seat together.
+    // with it (22) and First 3D Character (23, "Blue head") so all
+    // three 1/1 cards seat together.
     pinnedRank: 24,
     denseSquare: true,
     discipline: "Editorial Illustration",
@@ -2088,6 +2028,11 @@ export const projects: Project[] = [
     title: "First 3D Character",
     client: "Personal",
     year: 2026,
+    // Backfills Monocle's sumo spot's old slot in the Rooted Journal/
+    // OPTO square row once Sumo moved back to 9 — "blue head higher,"
+    // per Josh. See rooted-journal-editorial's own pinnedRank comment.
+    pinnedRank: 23,
+    denseSquare: true,
     discipline: "3D Illustration",
     deliverables: "1 Render",
     categories: ["3D"],
@@ -2350,14 +2295,16 @@ export const projects: Project[] = [
     cardTitle: "Living Regeneratively",
     cardLabel: "The Rooted Journal",
     year: 2025,
-    // Grouped with Monocle's sumo spot (23) and OPTO (24) into one
-    // consecutive block, same denseSquare mechanism as HSBC/Voxi/Google
-    // — "rooted journal, sumo and... opto can be square to fit the grid
-    // better... everything else is ok to be taller frame, just ensure
-    // the frame next to the two horizontals are the taller ones," per
-    // Josh. All three already carry a native cardRatio: "1/1"; moved off
-    // 5 (which sat right next to Atlanta's horizontal) so that slot goes
-    // to a 4/5 card instead.
+    // Grouped with First 3D Character (23, "Blue head") and OPTO (24)
+    // into one consecutive block, same denseSquare mechanism as
+    // HSBC/Voxi — "rooted journal, sumo and... opto can be square to fit
+    // the grid better... everything else is ok to be taller frame, just
+    // ensure the frame next to the two horizontals are the taller ones,"
+    // per Josh. All three already carry a native cardRatio: "1/1"; moved
+    // off 5 (which sat right next to Atlanta's horizontal) so that slot
+    // goes to a 4/5 card instead. Monocle's sumo spot, this trio's
+    // original third member, moved back to 9 ("sumo higher," per Josh);
+    // First 3D Character backfilled 23 so the row stays a trio.
     pinnedRank: 22,
     denseSquare: true,
     yearLabel: "Spring 2025",
@@ -2492,6 +2439,9 @@ export const projects: Project[] = [
     title: "Cowboy",
     client: "Personal",
     year: 2025,
+    // Backfills Underground's old slot once it moved up to 5 —
+    // "cowboy higher," per Josh.
+    pinnedRank: 16,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
@@ -2515,7 +2465,9 @@ export const projects: Project[] = [
     title: "Underground",
     client: "Personal",
     year: 2025,
-    pinnedRank: 16,
+    // Moved up from 16 to 5 (Underground's old slot backfilled by
+    // Cowboy) — "bring underground up higher," per Josh.
+    pinnedRank: 5,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: [],
@@ -2765,11 +2717,12 @@ export const projects: Project[] = [
     // "Editorial" both Monocle pieces share.
     pageTitle: "Sumo Spot Illustration",
     year: 2018,
-    // See rooted-journal-editorial's own pinnedRank comment — grouped
-    // with it (22) and OPTO (24) so all three 1/1 cards seat together.
-    // Moved off 9, which sat right next to Vogue's horizontal.
-    pinnedRank: 23,
-    denseSquare: true,
+    // Back to 9, next to Vogue's horizontal (its slot before the Rooted
+    // Journal/OPTO square-row grouping pulled it to 23) — "sumo higher,"
+    // per Josh. First 3D Character now fills 23 in its place, so the
+    // Rooted Journal/OPTO trio stays a trio — see that pinnedRank
+    // comment. No longer denseSquare since it's not part of that row.
+    pinnedRank: 9,
     // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
     // square export, and leaving this to the cycle meant a pinnedRank
     // reorder elsewhere could silently flip this card's parity and crop it
@@ -2905,8 +2858,11 @@ export const projects: Project[] = [
     cardTitle: "Pride Campaign",
     cardLabel: "VOXI by Vodafone",
     year: 2019,
-    // See its-all-love's own pinnedRank comment — grouped with HSBC (19)
-    // and It's All Love (21) so all three 1/1 cards seat together.
+    // Grouped with HSBC (19) so both 1/1 cards seat together —
+    // "hsbc, voxi and google can be 1/1 on their own line," per Josh.
+    // It's All Love, this row's original third member, has since
+    // unpinned to the very bottom of the gallery ("bring it's all love
+    // way down to the bottom," per Josh), leaving this a duo.
     pinnedRank: 20,
     denseSquare: true,
     discipline: "Pride Campaign",
@@ -3443,8 +3399,9 @@ export const projects: Project[] = [
     pageTitle: "HSBC Pride Logo",
     client: "HSBC",
     year: 2023,
-    // See its-all-love's own pinnedRank comment — grouped with Voxi (20)
-    // and It's All Love (21) so all three 1/1 cards seat together.
+    // Grouped with Voxi (20) — see its own pinnedRank comment. Was a
+    // trio with It's All Love before it unpinned to the bottom of the
+    // gallery, per Josh.
     pinnedRank: 19,
     denseSquare: true,
     discipline: "Illustration & Animation",
@@ -3474,6 +3431,73 @@ export const projects: Project[] = [
       src: "/work/hsbc-pride-logo/02-hsbc-pride-logo.mp4",
       alt: "The HSBC Pride hex animation, looping",
       ratio: "1/1",
+    },
+    gallery: [],
+  },
+  {
+    // Single overview sheet for now — Josh is redrawing the set in a new
+    // style, so the individual stickers land later.
+    //
+    // Unpinned and moved to the very end of this array — "bring it's all
+    // love by google way down to the bottom of the gallery," per Josh.
+    // A pinnedRank always sorts before every unpinned project (see
+    // getAllProjects), so landing at the true bottom means dropping the
+    // rank entirely rather than setting a large one. Its year (2017) ties
+    // with a few other unpinned projects (UAL Booklets, HP Print Over
+    // Hate, Mini Animation); getAllProjects' sort is stable, so this only
+    // lands after them, at the literal end of the gallery, because it's
+    // also the last entry in this array — moving it here later would
+    // undo that. HSBC (19) and Voxi (20) — its old square-row
+    // groupmates — are now a duo; see their own pinnedRank comments.
+    slug: "its-all-love",
+    title: "It's All Love",
+    client: "Google",
+    // TRIAL: the original confirmed example for this whole mechanism —
+    // see Project.cardTitle.
+    cardLabel: "Google",
+    year: 2017,
+    discipline: "Stickers & Iconography",
+    deliverables: "Sticker Set · 24 Stickers",
+    categories: ["LGBTQ+", "Icons"],
+    summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
+    heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
+    brief: [
+      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme: twenty-four stickers, from a finger snap to a full lesbian wedding.",
+      "The set went on to win an Applied Arts Photography & Illustration Award in the Conceptual Illustration category, Spring 2018.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Agency", name: "Anyways" },
+      { role: "Client", name: "Google" },
+    ],
+    // /work card only, per Josh — a four-sticker composite on a solid
+    // light-pink fill, so the card gets a real surface instead of the
+    // overview sheet's transparent float. The project page above keeps
+    // the full sheet; this never renders there. Pinned to its true 1/1
+    // ("make sure it stays at 1/1") so RATIO_CYCLE can't crop it.
+    cardRatio: "1/1",
+    cardImage: {
+      ratio: "1/1",
+      alt: "Four stickers from the set",
+      src: "/work/its-all-love/04-hero-light.webp",
+    },
+    // Rainbow_2 flattened onto the composite's own pink (sampled
+    // 255/230/246) — the hover overlay renders with no surface of its
+    // own, so a transparent sticker would float over the four-sticker
+    // card instead of replacing it.
+    cardHoverImage: {
+      ratio: "1/1",
+      alt: "The rainbow sticker",
+      src: "/work/its-all-love/05-rainbow-hover-light.webp",
+    },
+    hero: {
+      ratio: "1/1",
+      alt: "The full sticker set",
+      src: "/work/its-all-love/01-overview-01.webp",
+      // Transparent PNG — same fix as the Instagram sticker's hero:
+      // contain sits on bg-canvas, so no placeholder tone shows through
+      // the transparent background.
+      fit: "contain",
     },
     gallery: [],
   },
