@@ -94,6 +94,7 @@ export function Plate({
           fill
           sizes={sizes}
           priority={priority}
+          style={image.position ? { objectPosition: image.position } : undefined}
           className={fit === "contain" ? "object-contain" : "object-cover"}
         />
       ) : showPlaceholderCaption ? (
