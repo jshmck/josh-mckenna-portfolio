@@ -2972,11 +2972,6 @@ export const projects: Project[] = [
         src: "/work/beefbar-posters/02-beefbar-st-tropez.webp",
       },
       {
-        ratio: "15/22",
-        alt: "Esencia",
-        src: "/work/beefbar-posters/03-esencia.webp",
-      },
-      {
         ratio: "12/17",
         alt: "Santorini",
         src: "/work/beefbar-posters/11-santorini.webp",
@@ -2995,21 +2990,6 @@ export const projects: Project[] = [
         ratio: "12/17",
         alt: "Méribel",
         src: "/work/beefbar-posters/07-meribel.webp",
-      },
-      {
-        ratio: "12/17",
-        alt: "Dubai",
-        src: "/work/beefbar-posters/01-dubai.webp",
-      },
-      {
-        ratio: "12/17",
-        alt: "Edinburgh",
-        src: "/work/beefbar-posters/02-edinburgh.webp",
-      },
-      {
-        ratio: "12/17",
-        alt: "Paris",
-        src: "/work/beefbar-posters/10-paris.webp",
       },
       {
         ratio: "12/17",
