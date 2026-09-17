@@ -179,8 +179,10 @@ const MOBILE_CAPTION_RESERVE_PX = 28;
  *  rather than snapping at a breakpoint. */
 const ILLUSTRATIONS = [
   {
-    src: "/illustrations/ipad.png",
-    aspect: "961/655",
+    // Refreshed export, per Josh — new aspect (1080x1080 source, was a
+    // 961x655 landscape crop) since the crop is square now.
+    src: "/illustrations/ipad-2.webp",
+    aspect: "1/1",
     height: "clamp(60px, 20vw, 115px)",
   },
 ];

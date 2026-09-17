@@ -1168,6 +1168,10 @@ export const projects: Project[] = [
     cardTitle: "Editorial",
     cardLabel: "California Magazine",
     year: 2019,
+    // Takes Womp Money Bench's old slot right after Vogue's horizontal —
+    // "the 4/5 frames i want next to the two horizontals are: sound of
+    // driving as is and the california egg," per Josh.
+    pinnedRank: 11,
     discipline: "Editorial Illustration",
     deliverables: "Half-Page Illustration",
     categories: ["Editorial"],
@@ -2239,7 +2243,11 @@ export const projects: Project[] = [
     title: "Money Bench",
     client: "Personal",
     year: 2026,
-    pinnedRank: 11,
+    // Nudged to 11.5 so California Magazine (11) can take this slot right
+    // after Vogue's horizontal instead — see its own pinnedRank comment.
+    // Stays just ahead of Womp Last Call (14), so this is still first in
+    // the 3D category's own dense pack.
+    pinnedRank: 11.5,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
     categories: ["Editorial", "3D"],
