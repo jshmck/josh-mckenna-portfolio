@@ -65,6 +65,11 @@ export function ProjectVideo({
       muted={!sound}
       loop={!sound}
       controls={sound}
+      // Deterrents, not protection — the file is still a public URL. But
+      // they remove the two one-click paths: Chromium's download button in
+      // the native control bar, and right-click → "Save video as".
+      controlsList="nodownload"
+      onContextMenu={(event) => event.preventDefault()}
       playsInline
       preload="metadata"
     />
