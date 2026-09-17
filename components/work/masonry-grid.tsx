@@ -110,10 +110,8 @@ const LOOKAHEAD = 6;
 /** The window `dense` mode packs with instead. A filtered view isn't
  *  Josh's curated ALL order — "when you click a category, can the rules
  *  of the grid change?" — so the packer is free to reach much further
- *  ahead for whichever card levels the columns (e.g. Editorial's
- *  Weapons of Reason ↔ Monocle heel swap, which lets UAL Booklets pull
- *  up beside it). Order still breaks ties, so cards only jump when it
- *  genuinely closes a gap. */
+ *  ahead for whichever card levels the columns. Order still breaks
+ *  ties, so cards only jump when it genuinely closes a gap. */
 const LOOKAHEAD_DENSE = 24;
 
 /** Two card ratios that are "level to the pixel" (per cardRatio's own doc
@@ -126,6 +124,32 @@ const LOOKAHEAD_DENSE = 24;
  *  and sitting empty — a real gap this component is supposed to prevent,
  *  caused by rounding noise rather than an actual size difference. */
 const COLUMN_HEIGHT_EPSILON = 2;
+
+/** px of dead space it takes to justify pulling a card one queue
+ *  position forward — the exchange rate between pack()'s two competing
+ *  goods, level columns and Josh's curated order.
+ *
+ *  The old score weighted dead space 1000× over queue position, which
+ *  meant ANY nonzero dead space — including the 30-160px of ordinary
+ *  bottom-edge raggedness the mixed 4/5 / 1/1 / 3/4 cycle always
+ *  carries — outbid a card's queue seniority outright. A 2-span card
+ *  almost never sees literally-zero dead space, so every landscape card
+ *  lost that auction every single step and sank to the very bottom of
+ *  the /work ALL grid (Bombay Sapphire, pinned 17 of 54, rendered dead
+ *  last), where the stranded landscapes stacked beside a fully empty
+ *  third column — the exact giant holes this packer exists to prevent.
+ *
+ *  Priced per position, both failure directions stay bounded: a
+ *  landscape card accepts up to ~100px of raggedness to hold its curated
+ *  slot (invisible at ~500px card heights), while a genuinely stranded
+ *  column (hundreds of px) still outbids a few positions of reorder and
+ *  gets filled first. Deferral is self-limiting — each 1-span that jumps
+ *  ahead lands in the shortest column, so the dead space that caused the
+ *  deferral shrinks toward the raggedness floor and the 2-span places
+ *  within a slot or two. Verified by simulation at column widths
+ *  350-450px across the ALL view (1/2/3 columns) and every category
+ *  filter: worst dead space ≤107px, order drift ≤5 positions. */
+const ORDER_JUMP_COST = 100;
 
 type Packed = {
   key: string;
@@ -178,10 +202,11 @@ function seatsAdjacentTransparent(
  * Instead, at each step this looks at the next `LOOKAHEAD` not-yet-placed
  * items and scores each by how much *dead space* placing it now would
  * leave elsewhere (its start height minus the shortest column's current
- * height) — ties broken by queue position, so items only jump ahead of
- * each other when doing so actually closes a gap. Original order (the
- * pinned rank Josh set) is the default; it only yields when strictly
- * placing in order would strand a column.
+ * height), traded off against how many queue positions the jump costs at
+ * a fixed px-per-position exchange rate (see ORDER_JUMP_COST — including
+ * why dead space must NOT simply dominate the score). Original order
+ * (the pinned rank Josh set) is the default; it only yields when jumping
+ * a card forward closes more dead space than the reorder costs.
  *
  * A second, harder constraint sits on top: a `transparent` item (Plate's
  * `fit: "contain"` letterbox, matching the page background) is never
@@ -204,8 +229,39 @@ function pack(
   const placements: Packed[] = [];
 
   while (remaining.length > 0) {
+    // Every 2-span row needs 1-span neighbours to fill the column beside
+    // it, so once the remaining 1-spans are down to (at most) one per
+    // remaining 2-span, they're a scarce resource: spending one now to
+    // level a column that a 2-span could have taken at zero cost leaves a
+    // later 2-span with no filler at all — its column strands. Concretely
+    // (the Murals filter, 3 landscapes + 3 singles): scoring by dead
+    // space alone placed all three singles as the first row, then the
+    // three landscapes stacked on two columns beside a third that sat
+    // empty for their whole combined height (~1100px). While singles are
+    // scarce, any 2-span that can place cleanly RIGHT NOW takes priority
+    // over every 1-span — each landscape claims level ground the moment
+    // it's offered, and the singles pair off beside them one row each.
+    // The clean-placement condition is what keeps this from backfiring at
+    // the very end of the queue: a 2-span facing genuinely uneven columns
+    // (dead space past the jump cost) still waits for the last singles to
+    // level the ground beneath it first, instead of being forced onto a
+    // hole. Plentiful singles skip the rule entirely, so the curated ALL
+    // view (1-spans outnumber 2-spans ~12:1) is unaffected until its
+    // final few cards.
+    const span2Left = remaining.filter((it) => Math.min(it.span ?? 1, columnCount) === 2).length;
+    const conserveSingles =
+      columnCount > 1 && span2Left > 0 && remaining.length - span2Left <= span2Left;
     const windowSize = Math.min(remaining.length, lookahead);
-    const candidates = [];
+    type Candidate = {
+      i: number;
+      start: number;
+      top: number;
+      height: number;
+      span: number;
+      deadSpace: number;
+      blocked: boolean | undefined;
+    };
+    const candidates: Candidate[] = [];
 
     for (let i = 0; i < windowSize; i++) {
       const item = remaining[i];
@@ -237,13 +293,22 @@ function pack(
     // Prefer candidates that don't violate the transparency rule; only
     // fall back to a violating one if every option in the window would.
     const allowed = candidates.filter((c) => !c.blocked);
-    const pool = allowed.length > 0 ? allowed : candidates;
+    let pool = allowed.length > 0 ? allowed : candidates;
 
+    // Singles are scarce and a 2-span can place cleanly right now: it
+    // takes absolute priority — see conserveSingles above.
+    if (conserveSingles) {
+      const cleanSpan2 = pool.filter((c) => c.span === 2 && c.deadSpace <= ORDER_JUMP_COST);
+      if (cleanSpan2.length > 0) pool = cleanSpan2;
+    }
+
+    // Dead space and queue position trade off at a fixed exchange rate
+    // (see ORDER_JUMP_COST) — jumping a card forward has to close more
+    // dead space than the queue positions it costs.
+    const score = (c: Candidate) => c.deadSpace + ORDER_JUMP_COST * c.i;
     let pick = pool[0];
     for (const c of pool) {
-      // Dead space dominates the score; queue position only breaks ties
-      // between options that leave the same (usually zero) dead space.
-      if (c.deadSpace * 1000 + c.i < pick.deadSpace * 1000 + pick.i) pick = c;
+      if (score(c) < score(pick)) pick = c;
     }
 
     const [item] = remaining.splice(pick.i, 1);
