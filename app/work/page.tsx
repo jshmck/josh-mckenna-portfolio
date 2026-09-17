@@ -22,10 +22,6 @@ export default function WorkPage() {
             "Work" via metadata above. */}
         <h1 className="sr-only">Work</h1>
 
-        {/* Top illustration row now lives inside WorkGallery -- it needs to
-            react to the active filter (swaps to a Pride piece when that
-            pill's selected), so it moved to the client component that
-            already owns that state. See components/work/work-gallery.tsx. */}
         <WorkGallery
           projects={projects}
           categories={[...PROJECT_CATEGORIES]}

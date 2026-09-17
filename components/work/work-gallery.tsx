@@ -5,7 +5,6 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 
 import { MasonryGrid } from "@/components/work/masonry-grid";
 import { ProjectCard } from "@/components/work/project-card";
-import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { measureGalleryAnchorTop, projectSlugFromHref, recordBackTarget } from "@/lib/back-peek";
 import { getCardHoverImage } from "@/lib/projects";
 import type { ImageRatio, Project, ProjectCategory, ProjectImage } from "@/lib/projects";
@@ -15,11 +14,6 @@ export type Filter = ProjectCategory | "All";
 type WorkGalleryProps = {
   projects: Project[];
   categories: ProjectCategory[];
-  /** Only the standalone /work page wants the top illustration row --
-   *  Home embeds this same component for its "#home-work" section, and
-   *  that row isn't meant to duplicate there. Defaults true since /work
-   *  is the more common caller; Home explicitly opts out. */
-  showIllustrations?: boolean;
   /**
    * False renders a frozen, non-interactive snapshot instead of the live
    * gallery — used by the pull-down back peek (project-stack-swipe.tsx)
@@ -159,33 +153,6 @@ const LANDSCAPE_SPAN_RATIO = 1.3;
  *  shortest card in a row; under-reserving is the failure mode (captions
  *  overlapping the row beneath), so round up rather than measure exact. */
 const MOBILE_CAPTION_RESERVE_PX = 28;
-
-/** Top-of-page illustration row, /work only (see showIllustrations
- *  above). Lives here rather than in app/work/page.tsx because it used
- *  to react to the active filter category -- that per-category logic
- *  was tried and reverted, but the row stayed here since this is still
- *  the natural place to key it off `filter` once real per-category art
- *  exists. Same regardless of filter for now.
- *
- *  Was a pair (green Twingo + iPad) -- Josh dropped the Twingo once the
- *  row moved to a centered layout to match the nav/filter pills; a single
- *  centered illustration reads cleaner there than a pair would.
- *
- *  height is a clamp(), not a flat 115 -- at a flat height ipad's width
- *  doesn't fit a phone-width container and wraps. clamp's preferred value
- *  (20vw) only drops below its 115px ceiling under ~575px of viewport
- *  width, so every breakpoint this project treats as "desktop" renders at
- *  exactly 115px, identical to before -- only phones shrink, continuously
- *  rather than snapping at a breakpoint. */
-const ILLUSTRATIONS = [
-  {
-    // Refreshed export, per Josh — new aspect (1080x1080 source, was a
-    // 961x655 landscape crop) since the crop is square now.
-    src: "/illustrations/ipad-2.webp",
-    aspect: "1/1",
-    height: "clamp(60px, 20vw, 115px)",
-  },
-];
 
 /** Rainbow fill, top to bottom — bright/saturated to match Josh's mockup
  *  rather than the deeper "official" flag hex values. */
@@ -388,7 +355,6 @@ function MasonryCard({
 export function WorkGallery({
   projects,
   categories,
-  showIllustrations = true,
   interactive = true,
   initialFilter,
   initialQuery,
@@ -673,15 +639,6 @@ export function WorkGallery({
     // that adds no box of its own, so it can't affect the grid/section
     // layout either page embeds this component into.
     <div className="contents" onClickCapture={handleGalleryLinkClick}>
-      {/* Static -- no orbit, no drift -- but each leans toward the cursor
-          on hover, same tilt math as the homepage hero's floating
-          objects. See components/ui/tilt-illustration.tsx. Same pair on
-          every filter for now -- tried hiding it / swapping to a
-          Pride-specific piece per category, but Josh wants to build
-          real per-category illustrations later rather than have this
-          guess at it. /work only (showIllustrations) -- moving this row
-          into WorkGallery made it start showing up on Home's embedded
-          gallery too, which it never did before. */}
       <div
         // key: a fresh mount per entranceRun bump is what replays the
         // entrance animations — see entranceRun's own comment.
@@ -698,10 +655,8 @@ export function WorkGallery({
         // pills"). The reservation is what keeps the wrap from moving
         // anything else: the row is pre-sized to its own measured
         // 3-line open height, so the third line appears inside space
-        // that was already there and the iPad illustration below never
-        // shifts ("leave enough gap under the categories so that when
-        // you click search the ipad illustration doesn't have to move
-        // down," per Josh). content-start packs the closed state's 2
+        // that was already there and the gallery below never shifts.
+        // content-start packs the closed state's 2
         // lines at the top instead of flex-wrap's default spreading
         // them across the reserved height. 102px is live-measured at
         // this breakpoint, not derived — see the search input's own
@@ -962,31 +917,6 @@ export function WorkGallery({
         <p className="type-label mt-12 text-center text-ink-muted">
           Nothing matches — try another word.
         </p>
-      )}
-
-      {/* Below the pills, not above — "move the ipad illustration below
-          the categories," per Josh (mt-10 replaces the old mb-10 now the
-          row sits under what it used to sit over). Same tilt-toward-
-          cursor pair as before, /work only (showIllustrations). */}
-      {showIllustrations && (
-        // Empty search result: the pair wobbles once ("i love the
-        // 'nothing matches' screen with the ipad there, can you have the
-        // ipad illustration wobble or gloopy at this moment," per Josh).
-        // Class-only, no key — an earlier cut keyed this div on the
-        // query to re-wobble per keystroke, but that remounts the
-        // next/image inside every keypress, which is the mobile
-        // "flicker when typing". Adding the class plays the keyframe
-        // once per entry into the empty state; leaving and re-entering
-        // it replays naturally.
-        <div
-          className={`mt-10 flex flex-nowrap items-end justify-center gap-4 sm:gap-6 ${
-            visible.length === 0 ? "animate-[empty-wobble_800ms_ease-in-out]" : ""
-          }`}
-        >
-          {ILLUSTRATIONS.map(({ src, aspect, height }) => (
-            <TiltIllustration key={src} src={src} aspect={aspect} height={height} />
-          ))}
-        </div>
       )}
 
       {/* True masonry via MasonryGrid (bin-packed from each card's known

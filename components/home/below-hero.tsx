@@ -143,13 +143,9 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
           highlight from Home to Work — see components/site/nav.tsx. */}
       <section id="home-work">
         <div className="mx-auto max-w-frame px-6 pb-32 pt-10 max-md:pt-7 md:px-gutter">
-          {/* showIllustrations=false -- the Twingo/iPad row is /work's
-              own top-of-page illustration, not something that should
-              duplicate into Home's embedded gallery. */}
           <WorkGallery
             projects={projects}
             categories={categories}
-            showIllustrations={false}
             interactive={!peek}
             initialFilter={peek?.category as Filter | undefined}
             initialQuery={peek?.query}
