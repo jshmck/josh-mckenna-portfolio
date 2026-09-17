@@ -1045,20 +1045,27 @@ export function WorkGallery({
             // but neighbours cycling through 3/4/1/1/5/4 still didn't
             // match them without this).
             //
-            // One deliberate exception: a project's own explicit `cardRatio`
-            // of exactly "1/1" stays square instead of forcing to "4/5" —
-            // "hsbc, voxi and google can be 1/1 on their own line," per
-            // Josh. Unlike a cardImageByCategory override (any ratio,
-            // picked per-pill, no longer exempted) this is a fixed,
-            // deliberate per-project choice already in the data model, and
-            // 1/1 cards are only ever level with each other, so grouping
-            // them stays gap-free as long as they land adjacent — which
-            // the dense packer's own dead-space search (LOOKAHEAD_DENSE)
-            // already reaches for.
+            // One deliberate exception: `project.denseSquare` stays square
+            // instead of forcing to "4/5" — currently just HSBC, Voxi and
+            // Google's sticker set, deliberately grouped to seat together
+            // as their own row ("hsbc, voxi and google can be 1/1 on
+            // their own line," per Josh). NOT the same check as a plain
+            // `cardRatio: "1/1"` — plenty of projects use that for the
+            // curated ALL view or their own project page with no
+            // intention of forcing dense views square too, and forcing
+            // them square paired a 1/1 card against 4/5 neighbours on the
+            // same row and left them at different heights ("kiehls
+            // should be taller, to match the other two on the row...
+            // same as gay divide and pride totes," per Josh — see
+            // denseSquare's own doc comment). A single-span card next to
+            // a landscape one always takes "4/5" — only a project
+            // explicitly opted into denseSquare, or grouped alongside
+            // other denseSquare cards, ever renders square in a dense
+            // view.
             const cardRatio: ImageRatio = isDense
               ? span === 2
                 ? "5/3"
-                : project.cardRatio === "1/1"
+                : project.denseSquare
                   ? "1/1"
                   : "4/5"
               : naturalCardRatio;
