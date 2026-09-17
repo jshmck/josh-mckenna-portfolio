@@ -363,6 +363,22 @@ export type Project = {
    */
   cardRatio?: ImageRatio;
   /**
+   * Keeps the /work grid card at 1/1 in a dense (filtered/searched) view,
+   * instead of the standing "4/5 single-span / 5/3 landscape" forcing
+   * every other card gets (see WorkGallery's cardRatio comment). Not the
+   * same signal as `cardRatio: "1/1"` — plenty of projects use that for
+   * the curated ALL view or their own project page with no intention of
+   * forcing dense views square too, and forcing them square there paired
+   * a 1/1 card against 4/5 neighbours on the same row and left them at
+   * different heights ("kiehls should be taller, to match the other two
+   * on the row... same as gay divide and pride totes," per Josh — all
+   * three carry `cardRatio: "1/1"` but were never meant to). Only set
+   * this on projects that are deliberately grouped to seat together as
+   * their own square row — currently HSBC, Voxi and Google's sticker set
+   * (see their own pinnedRank comments).
+   */
+  denseSquare?: boolean;
+  /**
    * Trial: plays `heroVideo` autoplaying/looping on the /work and
    * home-embedded gallery card, instead of the usual still `hero`/`cardImage`
    * frame — mini-animation only for now, since the animation itself is the
@@ -648,18 +664,18 @@ export const projects: Project[] = [
     titleBreakIndex: 1,
     client: "Personal",
     year: 2026,
-    // Swapped ranks with Bombay Sapphire (17, see its own comment) to move
-    // Honda up in the main grid — "squeeze the honda under atl and above
-    // vogue," per Josh. Both are 5/3 landscape span-2 cards, so trading
-    // pinnedRank swaps only the two of them; every other card's column
-    // and position is untouched (verified — a plain insertion earlier in
-    // the sequence reflowed ~20 other cards, since MasonryGrid's bin-
-    // packer carries column-height state forward from wherever a span-2
-    // card lands). Lands just after Vogue rather than literally before
-    // it — the nearest slot that doesn't disturb anything else. Bronco
-    // still lands immediately after Honda in the Cars category's own
-    // dense pack (verified), even though Honda's no longer first there.
-    pinnedRank: 13,
+    // First swapped ranks with Bombay Sapphire to sit just after Vogue
+    // ("squeeze the honda under atl and above vogue," per Josh), then
+    // swapped again with Wagamama Pride (2, see its own comment) to move
+    // "almost at the top," per Josh. Both swaps traded with another 5/3
+    // landscape span-2 card, so only the two involved ever move — every
+    // other card's column and position stays untouched (verified each
+    // time — a plain insertion instead reflowed ~20 other cards, since
+    // MasonryGrid's bin-packer carries column-height state forward from
+    // wherever a span-2 card lands). Bronco no longer lands next to
+    // Honda in the Cars category's own dense pack now that Honda's this
+    // far up — see Bronco's own pinnedRank comment.
+    pinnedRank: 2,
     discipline: "Illustration",
     deliverables: "Key Art · Animation",
     // Motion added alongside Cars — the turntable animation is a real
@@ -896,13 +912,13 @@ export const projects: Project[] = [
     cardLabel: "Google",
     year: 2017,
     // Grouped with HSBC (19) and Voxi (20) into one consecutive block —
-    // all three keep their own explicit 1/1 cardRatio in the dense grid
-    // (see WorkGallery's cardRatio comment) instead of being forced to
-    // 4/5, and "on their own line" needs them adjacent in sequence for
-    // the packer to actually seat them together rather than scattered
-    // among the 4/5 cards ("hsbc, voxi and google can be 1/1 on their
-    // own line," per Josh).
+    // "on their own line" needs them adjacent in sequence for the packer
+    // to actually seat them together rather than scattered among the
+    // 4/5 cards ("hsbc, voxi and google can be 1/1 on their own line,"
+    // per Josh). denseSquare (see its own doc comment) is what actually
+    // keeps this one square in dense views.
     pinnedRank: 21,
+    denseSquare: true,
     discipline: "Stickers & Iconography",
     deliverables: "Sticker Set · 24 Stickers",
     categories: ["LGBTQ+", "Icons"],
@@ -1030,14 +1046,16 @@ export const projects: Project[] = [
     title: "Ford Bronco",
     client: "Personal",
     year: 2021,
-    // Promoted so the Cars category filter's dense pack lands it beside
-    // Honda instead of Jimny — "swap jimny for the bronco, bring bronco
-    // up and to the right of honda," per Josh. Unpinned items sort
-    // Infinity-after any finite rank regardless of value, so nudging
-    // Bronco ahead of Jimny/Twingo (both unpinned, 2026) needs a real
-    // pinnedRank. Honda moved up to 13 (see its own comment) but the
-    // dense pack still seats Bronco immediately behind it here (verified)
-    // even though Honda's no longer first in the category.
+    // Originally promoted so the Cars category filter's dense pack
+    // landed it beside Honda instead of Jimny — "swap jimny for the
+    // bronco, bring bronco up and to the right of honda," per Josh.
+    // Unpinned items sort Infinity-after any finite rank regardless of
+    // value, so nudging Bronco ahead of Jimny/Twingo (both unpinned,
+    // 2026) needs a real pinnedRank. Honda's since moved to rank 2 (see
+    // its own comment) — Sound of Driving, Nomad Wheels and Figma BMW Z1
+    // now sit between them in the Cars-filtered dense pack, so this no
+    // longer seats Bronco right behind Honda specifically, just ahead of
+    // Jimny/Twingo as originally intended.
     pinnedRank: 18,
     discipline: "Illustration",
     deliverables: "Key Art",
@@ -1475,7 +1493,11 @@ export const projects: Project[] = [
     cardLabel: "Wagamama",
     year: 2023,
     yearLabel: "2022–2023",
-    pinnedRank: 2,
+    // Swapped down into Honda's old slot so Honda could move "almost at
+    // the top," per Josh — same 5/3 landscape span-2 shape, so trading
+    // pinnedRank only swaps the two of them. See honda-super-n's own
+    // comment.
+    pinnedRank: 13,
     discipline: "Pride Campaign",
     deliverables: "Vinyl Window Display",
     categories: ["LGBTQ+", "Murals"],
@@ -2857,6 +2879,7 @@ export const projects: Project[] = [
     // See its-all-love's own pinnedRank comment — grouped with HSBC (19)
     // and It's All Love (21) so all three 1/1 cards seat together.
     pinnedRank: 20,
+    denseSquare: true,
     discipline: "Pride Campaign",
     deliverables: "Phone Cases · Flags · Pins · Social · Tees",
     categories: ["LGBTQ+"],
@@ -3247,10 +3270,10 @@ export const projects: Project[] = [
     cardTitle: "Stir Creativity",
     cardLabel: "Bombay Sapphire",
     year: 2018,
-    // Swapped down into Honda's old slot so Honda could move up into this
-    // one without reflowing anything else in the main grid — same 5/3
-    // landscape span-2 shape, so trading pinnedRank only swaps the two of
-    // them. See honda-super-n's own comment.
+    // Landed here in a swap with Honda's old slot (since moved on again,
+    // see honda-super-n's own comment) — same 5/3 landscape span-2 shape
+    // as whatever it trades pinnedRank with, so a swap only ever moves
+    // the two cards involved, never reflows the rest of the grid.
     pinnedRank: 17,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
@@ -3394,6 +3417,7 @@ export const projects: Project[] = [
     // See its-all-love's own pinnedRank comment — grouped with Voxi (20)
     // and It's All Love (21) so all three 1/1 cards seat together.
     pinnedRank: 19,
+    denseSquare: true,
     discipline: "Illustration & Animation",
     deliverables: "1 animation",
     categories: ["LGBTQ+", "Motion"],
