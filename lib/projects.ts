@@ -604,11 +604,14 @@ export const projects: Project[] = [
     // The only asset is the campaign's own 469px product render ("product
     // shot only," per Josh — the press-kit pages were dropped). `spot`
     // keeps it at the small centred width the resolution can honestly
-    // fill, same reasoning as Monocle's heel. True ratio 0.586 sits on
-    // 9/16 (4% letterbox, invisible under `contain`); the ingester's 3/4
-    // snap would have cropped a quarter of the tin.
+    // fill, same reasoning as Monocle's heel.
     heroSize: "spot",
-    cardRatio: "9/16",
+    // 9/16 (matching the hero's own true ratio) ran the /work grid card
+    // far taller than its neighbours — "piper needs to be in a square
+    // and shrunk, or 4/5," per Josh. 4/5 is the site's standard portrait
+    // frame (see cardRatio's own doc comment); the tin is `fit: contain`
+    // on canvas, so the shorter frame just letterboxes more, no crop.
+    cardRatio: "4/5",
     hero: {
       ratio: "9/16",
       alt: "The tin, beside the bottle",
