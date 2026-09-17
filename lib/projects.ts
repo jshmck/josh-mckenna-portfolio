@@ -363,6 +363,22 @@ export type Project = {
    */
   cardRatio?: ImageRatio;
   /**
+   * Keeps the /work grid card at 1/1 in a dense (filtered/searched) view,
+   * instead of the standing "4/5 single-span / 5/3 landscape" forcing
+   * every other card gets (see WorkGallery's cardRatio comment). Not the
+   * same signal as `cardRatio: "1/1"` — plenty of projects use that for
+   * the curated ALL view or their own project page with no intention of
+   * forcing dense views square too, and forcing them square there paired
+   * a 1/1 card against 4/5 neighbours on the same row and left them at
+   * different heights ("kiehls should be taller, to match the other two
+   * on the row... same as gay divide and pride totes," per Josh — all
+   * three carry `cardRatio: "1/1"` but were never meant to). Only set
+   * this on projects that are deliberately grouped to seat together as
+   * their own square row — currently HSBC, Voxi and Google's sticker set
+   * (see their own pinnedRank comments).
+   */
+  denseSquare?: boolean;
+  /**
    * Trial: plays `heroVideo` autoplaying/looping on the /work and
    * home-embedded gallery card, instead of the usual still `hero`/`cardImage`
    * frame — mini-animation only for now, since the animation itself is the
@@ -682,6 +698,10 @@ export const projects: Project[] = [
     // sticker-badge frame (extracted at 7.95s, just before the title card),
     // not the default hero.src fallback — "make this the cover photo of
     // the video," per Josh.
+    // Grid card autoplays the same clip muted/looping (ProjectCard never
+    // forwards heroVideo's sound flag to the card), same mechanism as
+    // Instagram Sticker's turnaround.
+    cardVideo: true,
     heroVideo: {
       src: "/work/honda-super-n/19-super-n-animation-final.mp4",
       alt: "The Super N, turning, ending on the Super-N title card",
@@ -892,13 +912,13 @@ export const projects: Project[] = [
     cardLabel: "Google",
     year: 2017,
     // Grouped with HSBC (19) and Voxi (20) into one consecutive block —
-    // all three keep their own explicit 1/1 cardRatio in the dense grid
-    // (see WorkGallery's cardRatio comment) instead of being forced to
-    // 4/5, and "on their own line" needs them adjacent in sequence for
-    // the packer to actually seat them together rather than scattered
-    // among the 4/5 cards ("hsbc, voxi and google can be 1/1 on their
-    // own line," per Josh).
+    // "on their own line" needs them adjacent in sequence for the packer
+    // to actually seat them together rather than scattered among the
+    // 4/5 cards ("hsbc, voxi and google can be 1/1 on their own line,"
+    // per Josh). denseSquare (see its own doc comment) is what actually
+    // keeps this one square in dense views.
     pinnedRank: 21,
+    denseSquare: true,
     discipline: "Stickers & Iconography",
     deliverables: "Sticker Set · 24 Stickers",
     categories: ["LGBTQ+", "Icons"],
@@ -2853,6 +2873,7 @@ export const projects: Project[] = [
     // See its-all-love's own pinnedRank comment — grouped with HSBC (19)
     // and It's All Love (21) so all three 1/1 cards seat together.
     pinnedRank: 20,
+    denseSquare: true,
     discipline: "Pride Campaign",
     deliverables: "Phone Cases · Flags · Pins · Social · Tees",
     categories: ["LGBTQ+"],
@@ -3284,9 +3305,9 @@ export const projects: Project[] = [
         src: "/work/bombay-sapphire/04-embroidery-macro.webp",
       },
       {
-        ratio: "5/4",
+        ratio: "1/1",
         alt: "Sketching the design on iPad before it went to embroidery",
-        src: "/work/bombay-sapphire/05-ipad-sketch.webp",
+        src: "/work/bombay-sapphire/05-ipad-sketch-v2.webp",
       },
       {
         ratio: "3/2",
@@ -3390,6 +3411,7 @@ export const projects: Project[] = [
     // See its-all-love's own pinnedRank comment — grouped with Voxi (20)
     // and It's All Love (21) so all three 1/1 cards seat together.
     pinnedRank: 19,
+    denseSquare: true,
     discipline: "Illustration & Animation",
     deliverables: "1 animation",
     categories: ["LGBTQ+", "Motion"],
