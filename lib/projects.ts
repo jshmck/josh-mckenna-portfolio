@@ -639,11 +639,18 @@ export const projects: Project[] = [
     titleBreakIndex: 1,
     client: "Personal",
     year: 2026,
-    // Ranked just ahead of Bronco (18) so the Cars category's dense pack
-    // seats Honda first in a fresh row — as the wider span-2 card it then
-    // claims the row's left two columns, leaving Bronco to land in the
-    // remaining right slot behind it. See Bronco's own pinnedRank comment.
-    pinnedRank: 17,
+    // Swapped ranks with Bombay Sapphire (17, see its own comment) to move
+    // Honda up in the main grid — "squeeze the honda under atl and above
+    // vogue," per Josh. Both are 5/3 landscape span-2 cards, so trading
+    // pinnedRank swaps only the two of them; every other card's column
+    // and position is untouched (verified — a plain insertion earlier in
+    // the sequence reflowed ~20 other cards, since MasonryGrid's bin-
+    // packer carries column-height state forward from wherever a span-2
+    // card lands). Lands just after Vogue rather than literally before
+    // it — the nearest slot that doesn't disturb anything else. Bronco
+    // still lands immediately after Honda in the Cars category's own
+    // dense pack (verified), even though Honda's no longer first there.
+    pinnedRank: 13,
     discipline: "Illustration",
     deliverables: "Key Art · Animation",
     categories: ["Cars"],
@@ -1005,9 +1012,9 @@ export const projects: Project[] = [
     // up and to the right of honda," per Josh. Unpinned items sort
     // Infinity-after any finite rank regardless of value, so nudging
     // Bronco ahead of Jimny/Twingo (both unpinned, 2026) needs a real
-    // pinnedRank. 18, one after Honda's 17 — Honda ranking first means
-    // it claims a fresh row's left two columns as the wider span-2 card,
-    // leaving Bronco the remaining right slot right behind it.
+    // pinnedRank. Honda moved up to 13 (see its own comment) but the
+    // dense pack still seats Bronco immediately behind it here (verified)
+    // even though Honda's no longer first in the category.
     pinnedRank: 18,
     discipline: "Illustration",
     deliverables: "Key Art",
@@ -3220,7 +3227,11 @@ export const projects: Project[] = [
     cardTitle: "Stir Creativity",
     cardLabel: "Bombay Sapphire",
     year: 2018,
-    pinnedRank: 13,
+    // Swapped down into Honda's old slot so Honda could move up into this
+    // one without reflowing anything else in the main grid — same 5/3
+    // landscape span-2 shape, so trading pinnedRank only swaps the two of
+    // them. See honda-super-n's own comment.
+    pinnedRank: 17,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
     categories: ["Murals"],
