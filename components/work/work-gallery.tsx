@@ -1036,18 +1036,32 @@ export function WorkGallery({
             // cardRatio's own doc comment: verified pixel-level against
             // each other, "any horizontal frame on the grid has to
             // follow the same 5/3 rule," per Josh) — instead of whichever
-            // ratio the project, a cardImageByCategory override, or
-            // RATIO_CYCLE would otherwise pick, so every row lands level
-            // with zero packing dead space regardless of what any single
-            // card would normally use ("lets keep the same rule... the
-            // levis pins should be the same height as the IG sticker,"
-            // per Josh — both already used the standing 5/3 for their own
-            // override, but neighbours cycling through 3/4/1/1/5/4 still
-            // didn't match them without this). No exemptions: a
-            // cardImageByCategory override keeps its own chosen `src`
-            // (still the more on-topic pick for this pill) but not its
-            // own `ratio`.
-            const cardRatio: ImageRatio = isDense ? (span === 2 ? "5/3" : "4/5") : naturalCardRatio;
+            // ratio a cardImageByCategory override or RATIO_CYCLE would
+            // otherwise pick, so every row lands level with zero packing
+            // dead space regardless of what any single card would
+            // normally use ("lets keep the same rule... the levis pins
+            // should be the same height as the IG sticker," per Josh —
+            // both already used the standing 5/3 for their own override,
+            // but neighbours cycling through 3/4/1/1/5/4 still didn't
+            // match them without this).
+            //
+            // One deliberate exception: a project's own explicit `cardRatio`
+            // of exactly "1/1" stays square instead of forcing to "4/5" —
+            // "hsbc, voxi and google can be 1/1 on their own line," per
+            // Josh. Unlike a cardImageByCategory override (any ratio,
+            // picked per-pill, no longer exempted) this is a fixed,
+            // deliberate per-project choice already in the data model, and
+            // 1/1 cards are only ever level with each other, so grouping
+            // them stays gap-free as long as they land adjacent — which
+            // the dense packer's own dead-space search (LOOKAHEAD_DENSE)
+            // already reaches for.
+            const cardRatio: ImageRatio = isDense
+              ? span === 2
+                ? "5/3"
+                : project.cardRatio === "1/1"
+                  ? "1/1"
+                  : "4/5"
+              : naturalCardRatio;
             const ratio = ratioToNumber(cardRatio);
             return {
               key: project.slug,

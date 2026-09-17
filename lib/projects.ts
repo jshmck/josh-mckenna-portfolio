@@ -891,6 +891,14 @@ export const projects: Project[] = [
     // see Project.cardTitle.
     cardLabel: "Google",
     year: 2017,
+    // Grouped with HSBC (19) and Voxi (20) into one consecutive block —
+    // all three keep their own explicit 1/1 cardRatio in the dense grid
+    // (see WorkGallery's cardRatio comment) instead of being forced to
+    // 4/5, and "on their own line" needs them adjacent in sequence for
+    // the packer to actually seat them together rather than scattered
+    // among the 4/5 cards ("hsbc, voxi and google can be 1/1 on their
+    // own line," per Josh).
+    pinnedRank: 21,
     discipline: "Stickers & Iconography",
     deliverables: "Sticker Set · 24 Stickers",
     categories: ["LGBTQ+", "Icons"],
@@ -2842,6 +2850,9 @@ export const projects: Project[] = [
     cardTitle: "Pride Campaign",
     cardLabel: "VOXI by Vodafone",
     year: 2019,
+    // See its-all-love's own pinnedRank comment — grouped with HSBC (19)
+    // and It's All Love (21) so all three 1/1 cards seat together.
+    pinnedRank: 20,
     discipline: "Pride Campaign",
     deliverables: "Phone Cases · Flags · Pins · Social · Tees",
     categories: ["LGBTQ+"],
@@ -3376,6 +3387,9 @@ export const projects: Project[] = [
     pageTitle: "HSBC Pride Logo",
     client: "HSBC",
     year: 2023,
+    // See its-all-love's own pinnedRank comment — grouped with Voxi (20)
+    // and It's All Love (21) so all three 1/1 cards seat together.
+    pinnedRank: 19,
     discipline: "Illustration & Animation",
     deliverables: "1 animation",
     categories: ["LGBTQ+", "Motion"],
