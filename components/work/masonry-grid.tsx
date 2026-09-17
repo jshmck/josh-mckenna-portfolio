@@ -116,6 +116,17 @@ const LOOKAHEAD = 6;
  *  genuinely closes a gap. */
 const LOOKAHEAD_DENSE = 24;
 
+/** Two card ratios that are "level to the pixel" (per cardRatio's own doc
+ *  comment) still round to column heights a px or two apart at some real
+ *  column widths — e.g. 5/3 at 827px and 4/5 at 397px both round to
+ *  ~496px, but not always exactly the same one. Without this tolerance
+ *  the start-column search below reads that 1px as a genuine height
+ *  difference and prefers the "shorter" column every time, which snowballs
+ *  across a whole dense grid into one column falling permanently behind
+ *  and sitting empty — a real gap this component is supposed to prevent,
+ *  caused by rounding noise rather than an actual size difference. */
+const COLUMN_HEIGHT_EPSILON = 2;
+
 type Packed = {
   key: string;
   node: React.ReactNode;
@@ -204,7 +215,10 @@ function pack(
       let bestTop = Infinity;
       for (let start = 0; start <= columnCount - span; start++) {
         const rangeHeight = Math.max(...columnHeights.slice(start, start + span));
-        if (rangeHeight < bestTop) {
+        // Only switch to a later start when it's genuinely shorter, not
+        // just shorter by rounding noise — see COLUMN_HEIGHT_EPSILON.
+        // Ties keep the earliest start already found, same as before.
+        if (rangeHeight < bestTop - COLUMN_HEIGHT_EPSILON) {
           bestTop = rangeHeight;
           bestStart = start;
         }

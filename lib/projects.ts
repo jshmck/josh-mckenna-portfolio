@@ -78,20 +78,7 @@ export type ImageRatio =
   // Hikes n Bikes' full mural artwork — a wall-wide 7500x3300 strip
   // (reduced 25/11). Nearest existing ratio (16/10) would have cropped
   // the palms, nozzle and pump off both ends.
-  | "25/11"
-  // Card-frame-only, like 5/3 above but tuned against a 1/1 neighbour
-  // instead of a 4/5 one — WorkGallery's dense (filtered/searched) grid
-  // forces every card to either 1/1 or this ratio instead of each
-  // project's own crop, so every row lands level with zero packing dead
-  // space ("i want 1/1 frames, then whatever height matches the
-  // landscape images best... i dont want any gaps," per Josh). At a
-  // span-2 card's real rendered width (2 columns + 1 gap) this comes out
-  // level with a 1/1 column at the site's actual ~426-430px desktop
-  // column width; drifts a few px at the narrow end of the 3-column
-  // range (viewport near 1024px) where gap is a bigger fraction of a
-  // (then-smaller) column, same accepted tolerance 5/3 above already
-  // lives with.
-  | "25/12";
+  | "25/11";
 
 export type ProjectImage = {
   ratio: ImageRatio;

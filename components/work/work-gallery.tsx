@@ -1021,30 +1021,33 @@ export function WorkGallery({
           items={visible.map((project, index) => {
             // Filtered views can lead with a category-specific cover; when
             // one applies, hover swaps back to the original lead instead
-            // of the usual second-image pick, and the override's own ratio
-            // becomes the card frame — a 16/9 spread override renders as a
-            // full two-column spread rather than centre-cropped into the
-            // project's usual frame (Weapons of Reason's double page, which
-            // lost half its headline to the 1/1 crop). See
-            // cardImageByCategory.
+            // of the usual second-image pick. The override's own ratio
+            // decided span (landscape overrides span two columns, same as
+            // a landscape cardRatio) before dense forcing below took over
+            // deciding the actual frame. See cardImageByCategory.
             const categoryImage =
               filter !== "All" ? project.cardImageByCategory?.[filter] : undefined;
             const naturalCardRatio =
               categoryImage?.ratio ?? effectiveCardRatio(project, index, ratioCycle);
             const naturalRatio = ratioToNumber(naturalCardRatio);
             const span = naturalRatio >= LANDSCAPE_SPAN_RATIO ? 2 : 1;
-            // Dense views force every card to exactly one of two frames —
-            // 1/1, or 25/12 for the landscape span-2 slot — instead of
-            // each project's own crop, so every row lands level with zero
-            // packing dead space ("i want 1/1 frames, then whatever
-            // height matches the landscape images best," per Josh; see
-            // the "25/12" ImageRatio's own comment for why that specific
-            // ratio). categoryImage overrides are exempt — each of those
-            // ratios was hand-picked for a specific crop reason (see
-            // cardImageByCategory's own doc comment), so forcing them
-            // here would undo that.
-            const cardRatio: ImageRatio =
-              isDense && !categoryImage ? (span === 2 ? "25/12" : "1/1") : naturalCardRatio;
+            // Dense views force every card to the site's own standing
+            // frame ratios — "5/3" landscape, "4/5" everything else (see
+            // cardRatio's own doc comment: verified pixel-level against
+            // each other, "any horizontal frame on the grid has to
+            // follow the same 5/3 rule," per Josh) — instead of whichever
+            // ratio the project, a cardImageByCategory override, or
+            // RATIO_CYCLE would otherwise pick, so every row lands level
+            // with zero packing dead space regardless of what any single
+            // card would normally use ("lets keep the same rule... the
+            // levis pins should be the same height as the IG sticker,"
+            // per Josh — both already used the standing 5/3 for their own
+            // override, but neighbours cycling through 3/4/1/1/5/4 still
+            // didn't match them without this). No exemptions: a
+            // cardImageByCategory override keeps its own chosen `src`
+            // (still the more on-topic pick for this pill) but not its
+            // own `ratio`.
+            const cardRatio: ImageRatio = isDense ? (span === 2 ? "5/3" : "4/5") : naturalCardRatio;
             const ratio = ratioToNumber(cardRatio);
             return {
               key: project.slug,
