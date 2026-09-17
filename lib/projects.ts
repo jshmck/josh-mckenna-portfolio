@@ -664,18 +664,18 @@ export const projects: Project[] = [
     titleBreakIndex: 1,
     client: "Personal",
     year: 2026,
-    // Swapped ranks with Bombay Sapphire (17, see its own comment) to move
-    // Honda up in the main grid — "squeeze the honda under atl and above
-    // vogue," per Josh. Both are 5/3 landscape span-2 cards, so trading
-    // pinnedRank swaps only the two of them; every other card's column
-    // and position is untouched (verified — a plain insertion earlier in
-    // the sequence reflowed ~20 other cards, since MasonryGrid's bin-
-    // packer carries column-height state forward from wherever a span-2
-    // card lands). Lands just after Vogue rather than literally before
-    // it — the nearest slot that doesn't disturb anything else. Bronco
-    // still lands immediately after Honda in the Cars category's own
-    // dense pack (verified), even though Honda's no longer first there.
-    pinnedRank: 13,
+    // First swapped ranks with Bombay Sapphire to sit just after Vogue
+    // ("squeeze the honda under atl and above vogue," per Josh), then
+    // swapped again with Wagamama Pride (2, see its own comment) to move
+    // "almost at the top," per Josh. Both swaps traded with another 5/3
+    // landscape span-2 card, so only the two involved ever move — every
+    // other card's column and position stays untouched (verified each
+    // time — a plain insertion instead reflowed ~20 other cards, since
+    // MasonryGrid's bin-packer carries column-height state forward from
+    // wherever a span-2 card lands). Bronco no longer lands next to
+    // Honda in the Cars category's own dense pack now that Honda's this
+    // far up — see Bronco's own pinnedRank comment.
+    pinnedRank: 2,
     discipline: "Illustration",
     deliverables: "Key Art · Animation",
     // Motion added alongside Cars — the turntable animation is a real
@@ -1046,14 +1046,16 @@ export const projects: Project[] = [
     title: "Ford Bronco",
     client: "Personal",
     year: 2021,
-    // Promoted so the Cars category filter's dense pack lands it beside
-    // Honda instead of Jimny — "swap jimny for the bronco, bring bronco
-    // up and to the right of honda," per Josh. Unpinned items sort
-    // Infinity-after any finite rank regardless of value, so nudging
-    // Bronco ahead of Jimny/Twingo (both unpinned, 2026) needs a real
-    // pinnedRank. Honda moved up to 13 (see its own comment) but the
-    // dense pack still seats Bronco immediately behind it here (verified)
-    // even though Honda's no longer first in the category.
+    // Originally promoted so the Cars category filter's dense pack
+    // landed it beside Honda instead of Jimny — "swap jimny for the
+    // bronco, bring bronco up and to the right of honda," per Josh.
+    // Unpinned items sort Infinity-after any finite rank regardless of
+    // value, so nudging Bronco ahead of Jimny/Twingo (both unpinned,
+    // 2026) needs a real pinnedRank. Honda's since moved to rank 2 (see
+    // its own comment) — Sound of Driving, Nomad Wheels and Figma BMW Z1
+    // now sit between them in the Cars-filtered dense pack, so this no
+    // longer seats Bronco right behind Honda specifically, just ahead of
+    // Jimny/Twingo as originally intended.
     pinnedRank: 18,
     discipline: "Illustration",
     deliverables: "Key Art",
@@ -1491,7 +1493,11 @@ export const projects: Project[] = [
     cardLabel: "Wagamama",
     year: 2023,
     yearLabel: "2022–2023",
-    pinnedRank: 2,
+    // Swapped down into Honda's old slot so Honda could move "almost at
+    // the top," per Josh — same 5/3 landscape span-2 shape, so trading
+    // pinnedRank only swaps the two of them. See honda-super-n's own
+    // comment.
+    pinnedRank: 13,
     discipline: "Pride Campaign",
     deliverables: "Vinyl Window Display",
     categories: ["LGBTQ+", "Murals"],
@@ -3264,10 +3270,10 @@ export const projects: Project[] = [
     cardTitle: "Stir Creativity",
     cardLabel: "Bombay Sapphire",
     year: 2018,
-    // Swapped down into Honda's old slot so Honda could move up into this
-    // one without reflowing anything else in the main grid — same 5/3
-    // landscape span-2 shape, so trading pinnedRank only swaps the two of
-    // them. See honda-super-n's own comment.
+    // Landed here in a swap with Honda's old slot (since moved on again,
+    // see honda-super-n's own comment) — same 5/3 landscape span-2 shape
+    // as whatever it trades pinnedRank with, so a swap only ever moves
+    // the two cards involved, never reflows the rest of the grid.
     pinnedRank: 17,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
