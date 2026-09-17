@@ -3284,9 +3284,9 @@ export const projects: Project[] = [
         src: "/work/bombay-sapphire/04-embroidery-macro.webp",
       },
       {
-        ratio: "5/4",
+        ratio: "1/1",
         alt: "Sketching the design on iPad before it went to embroidery",
-        src: "/work/bombay-sapphire/05-ipad-sketch.webp",
+        src: "/work/bombay-sapphire/05-ipad-sketch-v2.webp",
       },
       {
         ratio: "3/2",
