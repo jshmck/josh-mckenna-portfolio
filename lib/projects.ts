@@ -1788,6 +1788,11 @@ export const projects: Project[] = [
     cardLabel: "CMC Markets",
     year: 2019,
     yearLabel: "OPTO Issue 03, Jan/Feb 2019",
+    // See rooted-journal-editorial's own pinnedRank comment — grouped
+    // with it (22) and Monocle's sumo spot (23) so all three 1/1 cards
+    // seat together.
+    pinnedRank: 24,
+    denseSquare: true,
     discipline: "Editorial Illustration",
     deliverables: "Cover + 2 Opener Illustrations",
     categories: ["Editorial"],
@@ -2337,7 +2342,16 @@ export const projects: Project[] = [
     cardTitle: "Living Regeneratively",
     cardLabel: "The Rooted Journal",
     year: 2025,
-    pinnedRank: 5,
+    // Grouped with Monocle's sumo spot (23) and OPTO (24) into one
+    // consecutive block, same denseSquare mechanism as HSBC/Voxi/Google
+    // — "rooted journal, sumo and... opto can be square to fit the grid
+    // better... everything else is ok to be taller frame, just ensure
+    // the frame next to the two horizontals are the taller ones," per
+    // Josh. All three already carry a native cardRatio: "1/1"; moved off
+    // 5 (which sat right next to Atlanta's horizontal) so that slot goes
+    // to a 4/5 card instead.
+    pinnedRank: 22,
+    denseSquare: true,
     yearLabel: "Spring 2025",
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
@@ -2743,7 +2757,11 @@ export const projects: Project[] = [
     // "Editorial" both Monocle pieces share.
     pageTitle: "Sumo Spot Illustration",
     year: 2018,
-    pinnedRank: 9,
+    // See rooted-journal-editorial's own pinnedRank comment — grouped
+    // with it (22) and OPTO (24) so all three 1/1 cards seat together.
+    // Moved off 9, which sat right next to Vogue's horizontal.
+    pinnedRank: 23,
+    denseSquare: true,
     // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
     // square export, and leaving this to the cycle meant a pinnedRank
     // reorder elsewhere could silently flip this card's parity and crop it
