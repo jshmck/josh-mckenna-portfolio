@@ -100,7 +100,7 @@ type DriftObject = {
 const OBJECTS: DriftObject[] = [
   {
     id: "ambient-1",
-    src: "/illustrations/objects/josh-face.webp",
+    src: "/illustrations/objects/josh-face-2.webp",
     alt: "",
     /* 0.185 -> 0.17 -> 0.135 per Josh -- the blue head, smaller again.
        Swapped for Josh's own illustrated portrait, new aspect (1937x2136
@@ -134,23 +134,10 @@ const OBJECTS: DriftObject[] = [
     spin: rad(-4.5),
   },
   {
-    id: "info",
-    src: "/illustrations/objects/bearded.png",
-    alt: "",
-    /* 0.19 -> 0.15 -> 0.12 per Josh, in two passes -- this is "his
-       head," reading too large next to the rest of the set. */
-    width: 0.12,
-    aspect: 1.052,
-    angle: rad(150),
-    rx: 0.35,
-    ry: 0.33,
-    spin: rad(5.5),
-  },
-  {
     id: "shop",
     // Swapped for the new hand-and-iPhone render, per Josh — new aspect
     // (1722x1914 source) since the crop differs from the old hand's.
-    src: "/illustrations/objects/hand-air.webp",
+    src: "/illustrations/objects/hand-air-2.webp",
     alt: "",
     width: 0.145,
     aspect: 0.9,
