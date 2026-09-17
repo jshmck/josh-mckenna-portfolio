@@ -653,7 +653,9 @@ export const projects: Project[] = [
     pinnedRank: 13,
     discipline: "Illustration",
     deliverables: "Key Art · Animation",
-    categories: ["Cars"],
+    // Motion added alongside Cars — the turntable animation is a real
+    // deliverable here, not just a hero flourish, per Josh.
+    categories: ["Cars", "Motion"],
     summary: "A kei car on stretched wheels, sitting far too low.",
     heroCaption: "",
     brief: [
@@ -2050,7 +2052,9 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D"],
+    // Motion added — the turnaround is a real animated deliverable, same
+    // as the other Womp turnarounds and Honda Super N's own turntable.
+    categories: ["3D", "Motion"],
     summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
     // Displayed caption, distinct from hero.alt (screen readers still get
     // the plain description) — per Josh: "Who wants this as a resin
@@ -2102,7 +2106,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "1 Turnaround · 3 Renders",
-    categories: ["Cars", "3D"],
+    categories: ["Cars", "3D", "Motion"],
     summary: "My favourite car, modelled in Womp.",
     heroCaption: "",
     brief: [
@@ -2208,7 +2212,7 @@ export const projects: Project[] = [
     year: 2026,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D"],
+    categories: ["3D", "Motion"],
     summary: "Three legs, full confidence.",
     heroCaption: "",
     brief: [
@@ -2247,7 +2251,7 @@ export const projects: Project[] = [
     pinnedRank: 14,
     discipline: "3D Illustration",
     deliverables: "1 Render · 1 Turnaround",
-    categories: ["3D"],
+    categories: ["3D", "Motion"],
     summary: "Last call at the bar for this lost cowboy.",
     heroCaption: "The Last Call hat and keyring",
     brief: [
