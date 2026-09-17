@@ -682,6 +682,10 @@ export const projects: Project[] = [
     // sticker-badge frame (extracted at 7.95s, just before the title card),
     // not the default hero.src fallback — "make this the cover photo of
     // the video," per Josh.
+    // Grid card autoplays the same clip muted/looping (ProjectCard never
+    // forwards heroVideo's sound flag to the card), same mechanism as
+    // Instagram Sticker's turnaround.
+    cardVideo: true,
     heroVideo: {
       src: "/work/honda-super-n/19-super-n-animation-final.mp4",
       alt: "The Super N, turning, ending on the Super-N title card",
