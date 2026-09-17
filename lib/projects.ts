@@ -2287,7 +2287,10 @@ export const projects: Project[] = [
     yearLabel: "Spring 2025",
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
-    categories: ["Editorial", "Icons"],
+    // Icons dropped — Editorial alone covers this; "Icons" is reserved
+    // for sticker/logo/pictogram sets (Levi's, Away, Instagram, Ace &
+    // Tate), a different kind of work than an editorial spot illo.
+    categories: ["Editorial"],
     summary: "Ten spot icons for a feature on regenerative living.",
     heroCaption: "\"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
     brief: [
@@ -2694,7 +2697,8 @@ export const projects: Project[] = [
     cardRatio: "1/1",
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
-    categories: ["Editorial", "Icons"],
+    // Icons dropped — same reasoning as Rooted Journal's own comment.
+    categories: ["Editorial"],
     summary: "A sumo wrestler's whole physique, reduced to a knot and a topknot.",
     heroCaption: "",
     brief: [
