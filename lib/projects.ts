@@ -3315,28 +3315,8 @@ export const projects: Project[] = [
       alt: "The George, fully wrapped in Josh's artwork",
       src: "/work/hp-print-over-hate/01-the-george-poster.webp",
     },
-    gallery: [
-      {
-        ratio: "16/9",
-        alt: "Josh in front of the finished wrap",
-        src: "/work/hp-print-over-hate/02-josh-at-the-george.webp",
-      },
-      {
-        ratio: "16/9",
-        alt: "Printing the wrap on HP's Latex press",
-        src: "/work/hp-print-over-hate/03-latex-press-printing.webp",
-      },
-      {
-        ratio: "16/9",
-        alt: "The artwork, fresh off the press",
-        src: "/work/hp-print-over-hate/04-artwork-macro.webp",
-      },
-      {
-        ratio: "16/9",
-        alt: "A Pride flag outside The George",
-        src: "/work/hp-print-over-hate/05-pride-flag.webp",
-      },
-    ],
+    // The film is the whole piece — no gallery underneath, per Josh.
+    gallery: [],
   },
   // Bershka lived here — archived to lib/archived-projects.ts per Josh
   // ("not strong enough"), not deleted; see that file for the restore path.
