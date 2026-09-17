@@ -96,6 +96,15 @@ export type ProjectImage = {
    */
   fit?: "cover" | "contain";
   /**
+   * CSS `object-position` for a `cover` crop, when dead-centre crops
+   * into the subject — a square source recropped into a taller /work
+   * grid frame keeps the image's full height and crops its sides
+   * instead, so a subject sitting left- or right-of-centre in the
+   * source (rather than the frame's own centre) can lose more of itself
+   * on one side than the other. Defaults to Plate's own centred crop.
+   */
+  position?: string;
+  /**
    * Set to `false` to skip the visible caption ImageStack prints under a
    * gallery image, while keeping `alt` for accessibility — trial, wired
    * up in ImageStack's row-grouped images only so far (Instagram
@@ -1327,6 +1336,14 @@ export const projects: Project[] = [
       ratio: "1/1",
       alt: "A seated figure, built from the Ace & Tate ampersand",
       src: "/work/ace-tate-logo/01-illustration.webp",
+      // The figure sits right-of-centre in the square source (its own
+      // hand almost touches the right edge); a dead-centre crop into the
+      // /work grid's forced-4/5 dense frame cropped that hand off while
+      // leaving empty red on the left. Shifts the crop window right to
+      // keep the whole figure in frame either way — no effect on the
+      // project page, where this renders at its native 1/1 with nothing
+      // cropped.
+      position: "80% 50%",
     },
     gallery: [
       {
