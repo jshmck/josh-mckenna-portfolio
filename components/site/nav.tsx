@@ -615,14 +615,16 @@ export function Nav() {
       {/* The liquid displacement nav-liquid-warp's backdrop-filter points
           at (see that utility in globals.css, and liquidGlass above for
           why the warp is gated at runtime) — same recipe as the hero
-          chair's #hero-liquid-glass but defined here because the nav is on
-          every page, and STRONGER (scale 36 vs 28): the first pass ran
-          scale 22 under the full 12px frost and the blur swamped it —
-          "i'm in chrome" and still couldn't see it, per Josh. The warp
-          variant also eases its blur to 8px (see nav-liquid-warp) so the
-          displacement reads; legibility holds because the links sit ON
-          the bar, not behind it, and Safari's plain-frost fallback keeps
-          the original 12px untouched. Zero-size but must NOT be
+          chair's #hero-liquid-glass — a byte-identical copy of its recipe
+          now ("could you copy the vitra chair effect," per Josh, after
+          two frostier passes read as lost): scale 28 displacement, a
+          1.2px smoothing blur inside the filter, and no CSS frost blur
+          at all in the warp variant. Defined here rather than shared
+          because the nav is on every page and the hero is Home-only.
+          Legibility comes from the active link flipping to white while
+          the liquid is on (see the link classes) and the pill's own
+          wash/glow; Safari's plain-frost fallback keeps the original
+          12px frost untouched. Zero-size but must NOT be
           display:hidden — a hidden SVG's filter is inert in Chromium and
           the backdrop-filter referencing it would silently no-op. */}
       <svg aria-hidden="true" focusable="false" className="absolute h-0 w-0">
@@ -644,10 +646,11 @@ export function Nav() {
           <feDisplacementMap
             in="SourceGraphic"
             in2="noise"
-            scale="36"
+            scale="28"
             xChannelSelector="R"
             yChannelSelector="G"
           />
+          <feGaussianBlur stdDeviation="1.2" />
         </filter>
       </svg>
       {/* min-h-[88px], not a fixed h-[88px] -- pt-[env(safe-area-inset-top)]
@@ -1035,7 +1038,17 @@ export function Nav() {
                       : {})}
                     className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
-                        ? "font-bold text-accent"
+                        ? // White while the liquid glass is on — the
+                          // chair-clear warp barely lightens the artwork
+                          // behind the bar, and brand blue was sinking
+                          // into it ("maybe the selected text is white?
+                          // just thinking of legibility options," per
+                          // Josh). text-canvas is the site's white token.
+                          // Safari (plain frost, liquidGlass false) and
+                          // the unfrosted at-rest bar keep brand blue.
+                          scrolled && liquidGlass
+                          ? "font-bold text-canvas"
+                          : "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
                     }`}
                   >
