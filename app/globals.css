@@ -243,21 +243,30 @@
   fill: currentColor;
 }
 
-/* The nav's frosted glass with the hero chair's liquid warp folded in —
-   "is it possible to give that same treatment to the nav bar? i think
-   it'll have to be frosted though for legibility," per Josh: same
-   blur-md + saturate-150 the bar has always run (legibility, and the
-   blue inset glow lives in the shadow recipe, untouched), plus the SVG
-   displacement (#nav-liquid-glass, defined in nav.tsx since the nav is
-   on every page) bending the backdrop before it frosts. Three
-   declarations on purpose — the classic progressive-enhancement
-   cascade: browsers that can't take url() in backdrop-filter (Safari)
-   fail the LAST declaration and keep the plain-frost one above it, so
-   they render exactly the pre-liquid nav; Chromium parses the last one
-   and the warp wins. */
+/* The nav's frosted glass, in two mutually-exclusive utilities — "is it
+   possible to give that same treatment to the nav bar? i think it'll
+   have to be frosted though for legibility," per Josh: same blur-md +
+   saturate-150 the bar has always run (legibility, and the blue inset
+   glow lives in the shadow recipe, untouched), with the hero chair's
+   SVG displacement (#nav-liquid-glass, defined in nav.tsx since the nav
+   is on every page) bending the backdrop before it frosts.
+
+   Why two classes swapped at runtime instead of one with a CSS
+   fallback: every CSS-side mechanism fails here, verified against the
+   live site. A duplicate-declaration cascade got collapsed to the url()
+   form by the production minifier, and @supports can't help either —
+   WebKit PARSES url() in backdrop-filter (computed style carries it)
+   but renders nothing, so any rule Safari accepts replaces the frost
+   with literally no effect and the nav loses its blur entirely. The
+   parser lies; only a runtime engine check (see liquidGlass in nav.tsx)
+   can tell renderers apart. Frost is the universal first paint; Blink,
+   the one engine verified to render SVG-referenced backdrop filters,
+   swaps to the warp a tick after mount. */
 @utility nav-liquid-frost {
   -webkit-backdrop-filter: blur(12px) saturate(1.5);
   backdrop-filter: blur(12px) saturate(1.5);
+}
+@utility nav-liquid-warp {
   backdrop-filter: url(#nav-liquid-glass) blur(12px) saturate(1.5);
 }
 
