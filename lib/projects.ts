@@ -1293,52 +1293,8 @@ export const projects: Project[] = [
     },
     gallery: [],
   },
-  {
-    slug: "ace-tate-logo",
-    title: "Ace & Tate",
-    client: "Ace & Tate",
-    // TRIAL: "Re/Viewed > Ace & Tate," per Josh — the actual series name
-    // this ran under ("re/viewed", see the brief below). See
-    // Project.cardTitle.
-    cardTitle: "Re/Viewed",
-    cardLabel: "Ace & Tate",
-    year: 2019,
-    discipline: "Illustration",
-    deliverables: "1 Illustration",
-    categories: ["Icons"],
-    summary: "Ace & Tate's ampersand, redrawn as a seated figure.",
-    heroCaption: "For \"re/viewed,\" Ace & Tate's series inviting illustrators to reinterpret their logo, 2019.",
-    brief: [
-      "Ace & Tate asked me to reinterpret their logo for \"re/viewed,\" a series putting the brand mark in different illustrators' hands. At the time I was drawing voluptuous, feminine characters almost exclusively, so I went looking for her inside the ampersand.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "Ace & Tate" },
-    ],
-    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, same
-    // fix as Sumo/Boat Int./Coca-Cola earlier this session.
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "A seated figure, built from the Ace & Tate ampersand",
-      src: "/work/ace-tate-logo/01-illustration.webp",
-      // The figure sits right-of-centre in the square source (its own
-      // hand almost touches the right edge); a dead-centre crop into the
-      // /work grid's forced-4/5 dense frame cropped that hand off while
-      // leaving empty red on the left. Shifts the crop window right to
-      // keep the whole figure in frame either way — no effect on the
-      // project page, where this renders at its native 1/1 with nothing
-      // cropped.
-      position: "80% 50%",
-    },
-    gallery: [
-      {
-        ratio: "16/9",
-        alt: "The Ace & Tate wordmark",
-        src: "/work/ace-tate-logo/02-logo.webp",
-      },
-    ],
-  },
+  // Ace & Tate lived here — archived to lib/archived-projects.ts per
+  // Josh, not deleted; see that file for the restore path.
   {
     slug: "monocle-downward-trend",
     title: "Monocle Editorial",
@@ -2283,7 +2239,13 @@ export const projects: Project[] = [
     title: "Last Call",
     client: "Personal",
     year: 2026,
-    pinnedRank: 14,
+    // Unpinned — "swap mr porter with 3d cowboy hat last call," per
+    // Josh: Mr Porter took this project's old rank 14. This can't land
+    // in Mr Porter's exact old slot (the unpinned band sorts by year,
+    // and 2026 is the newest on the site), so it leads the unpinned
+    // band instead, right after the pinned block. The rest of the Womp
+    // 3D series stays sunk at the bottom; this was the "except cowboy
+    // hat" carve-out and remains the one Womp piece above it.
     discipline: "3D Illustration",
     deliverables: "1 Render · 1 Turnaround",
     categories: ["3D", "Motion"],
@@ -2330,8 +2292,8 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
     // Icons dropped — Editorial alone covers this; "Icons" is reserved
-    // for sticker/logo/pictogram sets (Levi's, Away, Instagram, Ace &
-    // Tate), a different kind of work than an editorial spot illo.
+    // for sticker/logo/pictogram sets (Levi's, Away, Instagram), a
+    // different kind of work than an editorial spot illo.
     categories: ["Editorial"],
     summary: "Ten spot icons for a feature on regenerative living.",
     heroCaption: "\"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
@@ -2428,19 +2390,19 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "figma-yeti",
-    title: "Yeti",
+    slug: "figma-vitra-virgil",
+    title: "Vitra",
     client: "Personal",
     year: 2025,
+    // Takes Yeti's old rank 7 — "swap yeti and vitra on the gallery,"
+    // per Josh; Yeti took this entry's old unpinned array slot.
     pinnedRank: 7,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: [],
-    summary: "A YETI cooler, occupied.",
+    categories: ["Editorial"],
+    summary: "The Vitra × Virgil Abloh chair, repeated as wallpaper.",
     heroCaption: "",
-    brief: [
-      "Made in Figma Draw. An ice cold yeti lounging inside a YETI cooler, cos why not?",
-    ],
+    brief: ["Made in Figma Draw. A tribute to a great design collaboration: Vitra × Virgil Abloh, 2025."],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
@@ -2448,8 +2410,8 @@ export const projects: Project[] = [
     heroSize: "spot",
     hero: {
       ratio: "4/5",
-      alt: "The YETI cooler",
-      src: "/work/figma-yeti/01-yeti-hr.webp",
+      alt: "Vitra × Virgil Abloh",
+      src: "/work/figma-vitra-virgil/01-vitgr-hr3.webp",
     },
     gallery: [],
   },
@@ -2538,16 +2500,21 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
-    slug: "figma-vitra-virgil",
-    title: "Vitra",
+    slug: "figma-yeti",
+    title: "Yeti",
     client: "Personal",
     year: 2025,
+    // Unpinned — "swap yeti and vitra on the gallery," per Josh: Vitra
+    // took this project's old rank 7, and this entry took Vitra's old
+    // array slot among the unpinned 2025 pieces.
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Editorial"],
-    summary: "The Vitra × Virgil Abloh chair, repeated as wallpaper.",
+    categories: [],
+    summary: "A YETI cooler, occupied.",
     heroCaption: "",
-    brief: ["Made in Figma Draw. A tribute to a great design collaboration: Vitra × Virgil Abloh, 2025."],
+    brief: [
+      "Made in Figma Draw. An ice cold yeti lounging inside a YETI cooler, cos why not?",
+    ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
@@ -2555,8 +2522,8 @@ export const projects: Project[] = [
     heroSize: "spot",
     hero: {
       ratio: "4/5",
-      alt: "Vitra × Virgil Abloh",
-      src: "/work/figma-vitra-virgil/01-vitgr-hr3.webp",
+      alt: "The YETI cooler",
+      src: "/work/figma-yeti/01-yeti-hr.webp",
     },
     gallery: [],
   },
@@ -2675,6 +2642,10 @@ export const projects: Project[] = [
     cardTitle: "Miami Invites",
     cardLabel: "Mr Porter",
     year: 2021,
+    // Takes Last Call's old rank — "swap mr porter with 3d cowboy hat
+    // last call," per Josh; Last Call leads the unpinned band now (see
+    // its own comment).
+    pinnedRank: 14,
     discipline: "Event Invitation",
     deliverables: "2 Invitations",
     categories: [],
