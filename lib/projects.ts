@@ -2961,13 +2961,21 @@ export const projects: Project[] = [
     ],
     credits: [{ role: "Graphic Design & Illustration", name: "Josh McKenna" }],
     galleryLayout: "poster-grid",
-    cardRatio: "12/17",
-    // No cardImage override — used to be Luxembourg, because the /work
-    // card's round-corner clip cut across whichever poster's own printed
-    // border was showing and Baku's (the hero then) read badly there.
-    // Monte Carlo (the hero now) is a no-border export, so it doesn't have
-    // that problem; the /work card falls back to hero (getCardHoverImage,
-    // lib/projects.ts) with no override needed.
+    // True ratio of the dedicated cover below (3000×3750 = an exact 4/5)
+    // — the card frame follows the cover, not the 12/17 the poster
+    // exports share.
+    cardRatio: "4/5",
+    // Dedicated /work-card cover ("replace the cover photo on work
+    // gallery," per Josh) — a borderless 4/5 Monte Carlo crop, so the
+    // card's round-corner clip has no printed border to cut across (the
+    // reason earlier covers came and went; see git history). Card only —
+    // the project page's poster grid still leads with the 12/17
+    // no-border Monte Carlo hero below.
+    cardImage: {
+      ratio: "4/5",
+      alt: "Beefbar Monte Carlo",
+      src: "/work/beefbar-posters/12-beefbar-cover.webp",
+    },
     // True ratio (1358×1920 = 0.7073) snaps far closer to 12/17 (0.7059)
     // than to the ingester's auto-picked 3/4 (0.75, a 5.9% crop) — 12/17
     // also matches every other poster in this grid.
