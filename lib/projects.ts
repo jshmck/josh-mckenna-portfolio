@@ -1341,8 +1341,8 @@ export const projects: Project[] = [
     pageTitle: "Downward Trend",
     year: 2018,
     yearLabel: "October 2018, Issue 117",
-    // Backfills It's All Love's old slot once it unpinned to the very
-    // bottom — "monocle heel higher," per Josh.
+    // Backfills It's All Love's old slot once it unpinned — "monocle
+    // heel higher," per Josh. (It's All Love has since been archived.)
     pinnedRank: 21,
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
@@ -2863,9 +2863,8 @@ export const projects: Project[] = [
     year: 2019,
     // Grouped with HSBC (19) so both 1/1 cards seat together —
     // "hsbc, voxi and google can be 1/1 on their own line," per Josh.
-    // It's All Love, this row's original third member, has since
-    // unpinned to the very bottom of the gallery ("bring it's all love
-    // way down to the bottom," per Josh), leaving this a duo.
+    // It's All Love, this row's original third member, has since been
+    // archived to lib/archived-projects.ts, leaving this a duo.
     pinnedRank: 20,
     denseSquare: true,
     discipline: "Pride Campaign",
@@ -3403,8 +3402,8 @@ export const projects: Project[] = [
     client: "HSBC",
     year: 2023,
     // Grouped with Voxi (20) — see its own pinnedRank comment. Was a
-    // trio with It's All Love before it unpinned to the bottom of the
-    // gallery, per Josh.
+    // trio with It's All Love before that project was archived, per
+    // Josh.
     pinnedRank: 19,
     denseSquare: true,
     discipline: "Illustration & Animation",
@@ -3437,73 +3436,10 @@ export const projects: Project[] = [
     },
     gallery: [],
   },
-  {
-    // Single overview sheet for now — Josh is redrawing the set in a new
-    // style, so the individual stickers land later.
-    //
-    // Unpinned and moved to the very end of this array — "bring it's all
-    // love by google way down to the bottom of the gallery," per Josh.
-    // A pinnedRank always sorts before every unpinned project (see
-    // getAllProjects), so landing at the true bottom means dropping the
-    // rank entirely rather than setting a large one. Its year (2017) ties
-    // with a few other unpinned projects (UAL Booklets, HP Print Over
-    // Hate, Mini Animation); getAllProjects' sort is stable, so this only
-    // lands after them, at the literal end of the gallery, because it's
-    // also the last entry in this array — moving it here later would
-    // undo that. HSBC (19) and Voxi (20) — its old square-row
-    // groupmates — are now a duo; see their own pinnedRank comments.
-    slug: "its-all-love",
-    title: "It's All Love",
-    client: "Google",
-    // TRIAL: the original confirmed example for this whole mechanism —
-    // see Project.cardTitle.
-    cardLabel: "Google",
-    year: 2017,
-    discipline: "Stickers & Iconography",
-    deliverables: "Sticker Set · 24 Stickers",
-    categories: ["LGBTQ+", "Icons"],
-    summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
-    heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
-    brief: [
-      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme: twenty-four stickers, from a finger snap to a full lesbian wedding.",
-      "The set went on to win an Applied Arts Photography & Illustration Award in the Conceptual Illustration category, Spring 2018.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Agency", name: "Anyways" },
-      { role: "Client", name: "Google" },
-    ],
-    // /work card only, per Josh — a four-sticker composite on a solid
-    // light-pink fill, so the card gets a real surface instead of the
-    // overview sheet's transparent float. The project page above keeps
-    // the full sheet; this never renders there. Pinned to its true 1/1
-    // ("make sure it stays at 1/1") so RATIO_CYCLE can't crop it.
-    cardRatio: "1/1",
-    cardImage: {
-      ratio: "1/1",
-      alt: "Four stickers from the set",
-      src: "/work/its-all-love/04-hero-light.webp",
-    },
-    // Rainbow_2 flattened onto the composite's own pink (sampled
-    // 255/230/246) — the hover overlay renders with no surface of its
-    // own, so a transparent sticker would float over the four-sticker
-    // card instead of replacing it.
-    cardHoverImage: {
-      ratio: "1/1",
-      alt: "The rainbow sticker",
-      src: "/work/its-all-love/05-rainbow-hover-light.webp",
-    },
-    hero: {
-      ratio: "1/1",
-      alt: "The full sticker set",
-      src: "/work/its-all-love/01-overview-01.webp",
-      // Transparent PNG — same fix as the Instagram sticker's hero:
-      // contain sits on bg-canvas, so no placeholder tone shows through
-      // the transparent background.
-      fit: "contain",
-    },
-    gallery: [],
-  },
+  // It's All Love (Google stickers) lived here, last in the array after
+  // "bring it's all love way down to the bottom of the gallery" —
+  // archived to lib/archived-projects.ts per Josh the day after, not
+  // deleted; see that file for the restore path.
 ];
 
 /* ==========================================================================
