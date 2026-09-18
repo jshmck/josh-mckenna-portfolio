@@ -636,10 +636,16 @@ export function Nav() {
           height="140%"
           colorInterpolationFilters="sRGB"
         >
+          {/* One octave at a lower frequency than the chair's noise — the
+              second octave's fine ripple made long flat edges (card
+              tops, landscape horizons) read as torn paper under the
+              bar, "a bit bumpy," per Josh. A single low-frequency
+              octave bends the same edges into long smooth waves; the
+              slightly higher smoothing blur rounds what's left. */}
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.012 0.016"
-            numOctaves="2"
+            baseFrequency="0.007 0.011"
+            numOctaves="1"
             seed="7"
             result="noise"
           />
@@ -650,7 +656,7 @@ export function Nav() {
             xChannelSelector="R"
             yChannelSelector="G"
           />
-          <feGaussianBlur stdDeviation="1.2" />
+          <feGaussianBlur stdDeviation="1.6" />
         </filter>
       </svg>
       {/* min-h-[88px], not a fixed h-[88px] -- pt-[env(safe-area-inset-top)]
@@ -1044,10 +1050,16 @@ export function Nav() {
                           // into it ("maybe the selected text is white?
                           // just thinking of legibility options," per
                           // Josh). text-canvas is the site's white token.
-                          // Safari (plain frost, liquidGlass false) and
-                          // the unfrosted at-rest bar keep brand blue.
+                          // The soft ink halo is what keeps the white
+                          // alive over the cream canvas gaps between
+                          // cards ("the white gets lost," per Josh) —
+                          // over artwork it's imperceptible, over canvas
+                          // it's the letterform's whole edge. Safari
+                          // (plain frost, liquidGlass false) and the
+                          // unfrosted at-rest bar keep brand blue,
+                          // no halo.
                           scrolled && liquidGlass
-                          ? "font-bold text-canvas"
+                          ? "font-bold text-canvas [text-shadow:0_0_10px_rgba(0,0,0,0.4),0_1px_2px_rgba(0,0,0,0.28)]"
                           : "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
                     }`}
