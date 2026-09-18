@@ -12,7 +12,7 @@ import { features, pressQuotes } from "@/lib/about";
 export const metadata: Metadata = {
   title: "Info",
   description:
-    "Josh McKenna is an illustrator with over a decade's experience, from the Instagram Pride sticker to murals for Facebook.",
+    "Josh McKenna is an illustrator with over a decade of experience, from the Instagram Pride sticker to murals for Facebook and the environmental branding for LA Pride 2024.",
 };
 
 /**
@@ -68,13 +68,15 @@ export default function AboutPage() {
                 <Reveal>
                   <p className="mt-12 type-lede text-ink-muted">
                     Josh McKenna is an illustrator with over a decade of
-                    experience moving between digital products and
-                    physical spaces. He studied illustration at Falmouth
+                    experience working across digital products, editorial,
+                    and physical spaces. He studied illustration at Falmouth
                     University before going freelance in 2014, working with
-                    brands from Apple to the Wall Street Journal. From the
-                    iconic Instagram Pride sticker to murals for Facebook, his
-                    work uses simple vector shapes to evolve 2D characters
-                    into 3D forms.
+                    brands from Apple to the Guardian. From the iconic
+                    Instagram Pride sticker to murals for Facebook and the
+                    full environmental branding for LA Pride 2024, his work
+                    centres bold, inclusive characters and an obsession with
+                    cars. He draws, animates and occasionally makes things
+                    in 3D.
                   </p>
                 </Reveal>
 
