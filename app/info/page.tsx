@@ -110,13 +110,14 @@ export default function AboutPage() {
             </div>
 
             {/* 4/5 per Josh — "same rule as gallery", the portrait ratio
-                the /work grid uses. Pre-cropped from the 3:4 master
-                (Desktop/Website Projects Folder/Side-2 copy.jpg) with the
-                whole trim taken off the top: the tee's printed graphics
-                run to the literal bottom edge of the shot, so any bottom
-                crop slices the text mid-line, and the headroom above the
-                cap had room to spare. The filename names the shot, not
-                just "portrait": Next's image cache keys on the URL, so
+                the /work grid uses, kept when the photo was swapped
+                ("keep the frame the same size," per Josh). Pre-cropped
+                from the 2:3 studio master (Desktop/Website Projects
+                Folder/Josh.JPG): a light 100px trim off the top keeps
+                real headroom above the hat, the rest comes off the
+                bottom so the crop ends at the knee rather than slicing
+                the sock mid-shin. The filename names the shot, not just
+                "portrait": Next's image cache keys on the URL, so
                 swapping a different photo in under the same name serves
                 the stale one.
                 Capped at max-w-sm and tucked to the right edge on desktop
@@ -127,8 +128,8 @@ export default function AboutPage() {
               className="w-full md:col-span-2 md:max-w-sm md:justify-self-end"
               image={{
                 ratio: "4/5",
-                alt: "Josh McKenna in profile, wearing a cap, against a blue studio backdrop",
-                src: "/about/portrait-blue-profile.jpg",
+                alt: "Josh McKenna in a cowboy hat, holding a red rose, against a studio backdrop",
+                src: "/about/portrait-cowboy-rose.jpg",
               }}
               sizes="(max-width: 768px) 100vw, 384px"
             />
