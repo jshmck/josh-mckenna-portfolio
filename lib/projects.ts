@@ -11,13 +11,14 @@
 // Trimmed from ten pills to seven, per Josh (Sep 2026) — Character,
 // Hospitality and Logo were dropped outright (their projects show under
 // All only unless retagged), Pride became LGBTQ+, Mural→Murals and
-// Automotive→Cars. Order here is pill order on /work.
+// Automotive→Cars. Icons followed ("remove icons category from the nav
+// bar too") once the 2026-09-18 archive batch left it three members.
+// Order here is pill order on /work.
 export const PROJECT_CATEGORIES = [
   "LGBTQ+",
   "Editorial",
   "Murals",
   "Cars",
-  "Icons",
   "Motion",
   "3D",
 ] as const;
@@ -500,7 +501,7 @@ export const projects: Project[] = [
     pinnedRank: 1,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set · Mural · Parade Float",
-    categories: ["LGBTQ+", "Murals", "Icons"],
+    categories: ["LGBTQ+", "Murals"],
     featured: true,
     // 4/5 frame even though cardImage is a true 1/1 — "put instagram
     // sticker in 4/5 frame to help with the grid," per Josh: leading the
@@ -562,29 +563,20 @@ export const projects: Project[] = [
       alt: "The Instagram Pride sticker character",
       src: "/work/instagram-sticker/01-instagram-sticker-bg2-hr.webp",
     },
-    // Murals/Icons pills lead with a more on-topic photo instead of the
+    // The Murals pill leads with a more on-topic photo instead of the
     // usual lavender still — same mechanism as Wagamama/L.A. Pride's
     // Murals covers. "Make sure the IG sticker switches to the painted
     // three figures, or the float (float might be more impressive)" —
     // going with the float; the Meta mural is one swap away if he'd
-    // rather have that instead. "Same when icons are selected, use the
-    // phone image" — the sticker set live on a phone screen, this
-    // project's most literal "icon." True ratios: the float crop is
-    // already 3/4 (this same file's own gallery entry); the phone photo
-    // is a true 16/9, but any landscape grid override has to be "5/3,"
-    // never the true ratio, per the standing rule (see cardRatio's own
-    // doc comment) — a ~6% tighter crop the centred phone easily
-    // survives.
+    // rather have that instead. True ratio: the float crop is already
+    // 3/4 (this same file's own gallery entry). An Icons override (the
+    // sticker set on a phone screen) lived here too until that category
+    // was retired with the pill.
     cardImageByCategory: {
       Murals: {
         ratio: "3/4",
         alt: "The character reimagined as a 10ft-high float, watched by an estimated 500,000 spectators at the Sydney Mardi Gras parade.",
         src: "/work/instagram-sticker/06-sydney-mardi-gras-1.webp",
-      },
-      Icons: {
-        ratio: "5/3",
-        alt: "The sticker set, live in Instagram Stories on a phone screen.",
-        src: "/work/instagram-sticker/05-sticker-set-hr.webp",
       },
     },
     // Leads the gallery (afterIndex: 0, before everything) — the
@@ -1816,9 +1808,10 @@ export const projects: Project[] = [
     yearLabel: "Spring 2025",
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
-    // Icons dropped — Editorial alone covers this; "Icons" is reserved
-    // for sticker/logo/pictogram sets (Levi's, Away, Instagram), a
-    // different kind of work than an editorial spot illo.
+    // Icons dropped — Editorial alone covers this; Icons was reserved
+    // for sticker/logo/pictogram sets, a different kind of work than an
+    // editorial spot illo. (The whole Icons category has since been
+    // retired from the pills — see PROJECT_CATEGORIES.)
     categories: ["Editorial"],
     summary: "Ten spot icons for a feature on regenerative living.",
     heroCaption: "\"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
@@ -2209,7 +2202,7 @@ export const projects: Project[] = [
     year: 2024,
     discipline: "Pride Campaign",
     deliverables: "1 invite · 3 enamel pins · 1 tee · bar accessories",
-    categories: ["LGBTQ+", "Icons"],
+    categories: ["LGBTQ+"],
     summary: "Two cowboys sharing a horse, printed on pins, cups and tees for Pride.",
     heroCaption:
       "Made for the Rainbow Rodeo at Levi's Haus, Los Angeles, June 2024.",
@@ -2600,7 +2593,7 @@ export const projects: Project[] = [
     year: 2019,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set",
-    categories: ["LGBTQ+", "Icons"],
+    categories: ["LGBTQ+"],
     summary: "Two couples, a rainbow and a sunbather, sized to fit on a suitcase.",
     heroCaption: "A set of five Pride stickers, available in Away's stores throughout Pride month, 2019.",
     brief: [

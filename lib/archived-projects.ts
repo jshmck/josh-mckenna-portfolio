@@ -94,7 +94,9 @@ export const archivedProjects: Project[] = [
     year: 2022,
     discipline: "Illustration",
     deliverables: "5 Icons",
-    categories: ["Icons"],
+    // Icons category retired 2026-09-18 (see PROJECT_CATEGORIES) — tag
+    // removed so this entry stays restorable as-is.
+    categories: [],
     summary: "Five everyday-moment icons for Coca-Cola.",
     heroCaption: "One of five \"everyday moments\" icons made for Coca-Cola, 2022.",
     // No visible captions on this one -- "Poolside" turned out to be a
@@ -175,7 +177,9 @@ export const archivedProjects: Project[] = [
     year: 2017,
     discipline: "Stickers & Iconography",
     deliverables: "Sticker Set · 24 Stickers",
-    categories: ["LGBTQ+", "Icons"],
+    // Icons category retired 2026-09-18 (see PROJECT_CATEGORIES) — tag
+    // removed so this entry stays restorable as-is.
+    categories: ["LGBTQ+"],
     summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
     heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
     brief: [
@@ -234,7 +238,9 @@ export const archivedProjects: Project[] = [
     year: 2019,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Icons"],
+    // Icons category retired 2026-09-18 (see PROJECT_CATEGORIES) — tag
+    // removed so this entry stays restorable as-is.
+    categories: [],
     summary: "Ace & Tate's ampersand, redrawn as a seated figure.",
     heroCaption: "For \"re/viewed,\" Ace & Tate's series inviting illustrators to reinterpret their logo, 2019.",
     brief: [
