@@ -1642,11 +1642,12 @@ export const projects: Project[] = [
     cardTitle: "Stir Creativity",
     cardLabel: "Bombay Sapphire",
     year: 2018,
-    // Landed here in a swap with Honda's old slot (since moved on again,
-    // see honda-super-n's own comment) — same 5/3 landscape span-2 shape
-    // as whatever it trades pinnedRank with, so a swap only ever moves
-    // the two cards involved, never reflows the rest of the grid.
-    pinnedRank: 17,
+    // Dropped from 17 to close the pinned block, just after Costa
+    // Smeralda (24) — "drop bombay sapphire lower in the grid," per
+    // Josh, choosing end-of-pinned over mid-gallery/bottom. Safe spot
+    // for a 5/3 span-2: every other landscape sits high in the grid, so
+    // the unpinned singles right below fill the column beside it.
+    pinnedRank: 25,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
     categories: ["Murals"],
