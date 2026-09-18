@@ -243,6 +243,24 @@
   fill: currentColor;
 }
 
+/* The nav's frosted glass with the hero chair's liquid warp folded in —
+   "is it possible to give that same treatment to the nav bar? i think
+   it'll have to be frosted though for legibility," per Josh: same
+   blur-md + saturate-150 the bar has always run (legibility, and the
+   blue inset glow lives in the shadow recipe, untouched), plus the SVG
+   displacement (#nav-liquid-glass, defined in nav.tsx since the nav is
+   on every page) bending the backdrop before it frosts. Three
+   declarations on purpose — the classic progressive-enhancement
+   cascade: browsers that can't take url() in backdrop-filter (Safari)
+   fail the LAST declaration and keep the plain-frost one above it, so
+   they render exactly the pre-liquid nav; Chromium parses the last one
+   and the warp wins. */
+@utility nav-liquid-frost {
+  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+  backdrop-filter: blur(12px) saturate(1.5);
+  backdrop-filter: url(#nav-liquid-glass) blur(12px) saturate(1.5);
+}
+
 @utility icon-bike {
   --icon-height: 0.72em;
   --icon-nudge: -0.02em;
