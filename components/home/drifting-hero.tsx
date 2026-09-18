@@ -126,8 +126,17 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "work",
-    src: "/illustrations/objects/car-super-n-body-honda.webp",
+    // -glass: same render with the window fills thinned to ~42% of their
+    // exported alpha (band-remapped in the artwork's upper region only —
+    // passengers, reflections and the drop shadow untouched) so the
+    // liquid warp below actually transmits — "add the vitra liquid glass
+    // effect to the windows of the cars," per Josh. New filename per the
+    // image-cache rule.
+    src: "/illustrations/objects/car-super-n-body-honda-glass.webp",
     alt: "",
+    // Thresholded from the same alpha band as the thinning — exactly the
+    // window glass, shadows and solids excluded.
+    glassMask: "/illustrations/objects/car-super-n-body-honda-glass-mask.webp",
     /* Swapped from the blue Honda to the purple Super N, sized up per Josh.
        Later swapped again for a 3/4-angle render of the same car (drop
        shadow baked into the artwork kept as-is, per Josh), sized down
@@ -196,8 +205,11 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-9",
-    src: "/illustrations/objects/twingo-silver-final.webp",
+    // -glass: window fills thinned + liquid warp, same treatment as the
+    // Honda above — see its comment.
+    src: "/illustrations/objects/twingo-silver-glass.webp",
     alt: "",
+    glassMask: "/illustrations/objects/twingo-silver-glass-mask.webp",
     width: 0.28,
     aspect: 2.058,
     angle: rad(70),
@@ -1111,8 +1123,12 @@ export function DriftingHero() {
               >
                 {/* Live glass — see DriftObject.glassMask. Painted before
                     the <Image> so the backdrop filter only touches what's
-                    BEHIND the object (this object is last in OBJECTS, so
-                    earlier siblings drift under it at the shared z-0);
+                    BEHIND the object — at the shared z-0 that means
+                    earlier siblings in OBJECTS (for the chair, last in
+                    the array, that's everyone; the two cars warp
+                    whatever drifts behind their windows and are passed
+                    in front of by later siblings, which is how glass
+                    behaves);
                     the artwork's own tint and highlights stay crisp on
                     top. backdrop-filter honours the element's mask, so
                     the effect is clipped to exactly the glass panels.
