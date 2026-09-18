@@ -223,11 +223,13 @@ const OBJECTS: DriftObject[] = [
     // per Josh (the Vitra × Virgil Abloh chair, matching the project's
     // move up the /work grid). Same orbit slot and footprint; only the
     // artwork and its true aspect (1633×1885) changed.
-    src: "/illustrations/objects/chair-vitra-virgil.webp",
+    // -2: Josh's recoloured export (brighter orange frame, whiter glass)
+    // — new filenames so Next's image cache can't serve the first pass.
+    src: "/illustrations/objects/chair-vitra-virgil-2.webp",
     alt: "",
     // Thresholded from the export's own alpha channel (shell reads at
     // ~7.5% opacity, solids at 100%) — exactly the two glass panels.
-    glassMask: "/illustrations/objects/chair-vitra-virgil-glass-mask.webp",
+    glassMask: "/illustrations/objects/chair-vitra-virgil-glass-mask-2.webp",
     width: 0.175,
     aspect: 0.866,
     angle: rad(110),
