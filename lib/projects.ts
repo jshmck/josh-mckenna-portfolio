@@ -2432,75 +2432,9 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    slug: "tilda-rice",
-    title: "Tilda Rice",
-    client: "Tilda",
-    // TRIAL: "Flavour Animations > Tilda Rice," per Josh — cardLabel
-    // spells out the full "Tilda Rice" rather than falling back to the
-    // bare client field. See Project.cardTitle.
-    cardTitle: "Flavour Animations",
-    cardLabel: "Tilda Rice",
-    year: 2022,
-    discipline: "Illustration",
-    deliverables: "Illustrations for Animation",
-    categories: ["Motion"],
-    summary: "Illustrations for three animated Tilda ads, one per flavour.",
-    heroCaption: "Illustration for three animated Tilda Rice ads (Katsu Curry, Indonesian Fried Rice and Masala), 2022.",
-    brief: [
-      "Tilda commissioned illustration work for a set of three animated ads, one per flavour (Katsu Curry, Indonesian Fried Rice and Masala), animated by Rave Growl via agency Havas.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Animation", name: "Rave Growl" },
-      { role: "Agency", name: "Havas" },
-      { role: "Client", name: "Tilda" },
-    ],
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "Tilda Indonesian Fried Rice packaging",
-      src: "/work/tilda-rice/01-fried-rice.webp",
-    },
-    // Sits above the write-up, hero stays out of the page body — see
-    // Project.videoRow and Project.heroHiddenOnPage. `hero` still picks the
-    // /work gallery card's thumbnail (see ProjectCard's baseImage) even
-    // though it doesn't render on the project page itself.
-    heroHiddenOnPage: true,
-    // Posters are each flavour's own product shot — these clips have sound,
-    // so they never autoplay, and without a poster the row sits on whatever
-    // first frame the browser bothers to decode.
-    videoRow: [
-      {
-        src: "/work/tilda-rice/katsu.mp4",
-        alt: "Katsu Curry Rice animation",
-        poster: "/work/tilda-rice/02-katsu-curry.webp",
-        sound: true,
-      },
-      {
-        src: "/work/tilda-rice/fried-rice.mp4",
-        alt: "Indonesian Fried Rice animation",
-        poster: "/work/tilda-rice/01-fried-rice.webp",
-        sound: true,
-      },
-      {
-        src: "/work/tilda-rice/masala.mp4",
-        alt: "Masala Rice animation",
-        poster: "/work/tilda-rice/03-masala-rice.webp",
-        sound: true,
-      },
-    ],
-    // The product shots moved onto the clips above as posters — an empty
-    // gallery keeps them off the page body, but getCardHoverImage would
-    // then find no second image, so the /work card's hover swap is pinned
-    // to the same katsu shot it auto-picked when the gallery was here.
-    cardHoverImage: {
-      ratio: "1/1",
-      alt: "Tilda Katsu Curry Rice packaging",
-      src: "/work/tilda-rice/02-katsu-curry.webp",
-    },
-    gallery: [],
-  },
+  // Tilda Rice lived here — archived to lib/archived-projects.ts per
+  // Josh (kept browsable on /archive), not deleted; see that file
+  // for the restore path.
   {
     slug: "costa-smeralda",
     title: "Costa Smeralda",
@@ -2602,162 +2536,18 @@ export const projects: Project[] = [
     },
     gallery: [],
   },
-  {
-    slug: "comic-relief-sink-the-pink",
-    title: "Comic Relief x Sink The Pink",
-    client: "Comic Relief",
-    clientPartner: "Sink The Pink",
-    // TRIAL: "Pride Totes > Comic Relief," per Josh — see Project.cardTitle.
-    cardTitle: "Pride Totes",
-    cardLabel: "Comic Relief",
-    year: 2020,
-    discipline: "Pride Campaign",
-    deliverables: "2 tote designs",
-    categories: ["LGBTQ+"],
-    summary: "Two couples in one embrace, printed for Red Nose Day. One ended up on a Spice Girl's shoulder.",
-    heroCaption:
-      "One of two couple pairings, printed onto canvas totes.",
-    brief: [
-      "Comic Relief, in partnership with Sink The Pink, commissioned tote bag artwork for Red Nose Day 2020: two couple pairings, printed across the range.",
-    ],
-    credits: [
-      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Client", name: "Comic Relief" },
-      { role: "Partner", name: "Sink The Pink" },
-    ],
-    // True ratio (2000x2000) — pinned rather than left to RATIO_CYCLE's
-    // chance assignment, same fix as the other unpinned cards found
-    // alongside the Bum Selfie 3D report.
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "Tote artwork — pairing one",
-      src: "/work/comic-relief-sink-the-pink/01-tote-women.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "Tote artwork — pairing two",
-      src: "/work/comic-relief-sink-the-pink/02-tote-men.webp",
-    },
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "Mel C, of the Spice Girls, posted this online",
-        // Low-res screenshot — the original photo file is lost.
-        small: true,
-        src: "/work/comic-relief-sink-the-pink/03-mel-c-tote.webp",
-      },
-    ],
-  },
-  {
-    slug: "hikes-n-bikes",
-    title: "Hikes n Bikes",
-    client: "Hikes and Bikes LA",
-    // TRIAL: "Wall Mural > Hikes and Bikes LA," per Josh — see
-    // Project.cardTitle.
-    cardTitle: "Wall Mural",
-    cardLabel: "Hikes and Bikes LA",
-    year: 2020,
-    discipline: "Mural",
-    deliverables: "1 mural",
-    categories: ["Murals"],
-    summary: "Seven cyclists and a peach, painted on a West Hollywood bike shop.",
-    heroCaption:
-      "Painted at La Cienega and Santa Monica Boulevards, West Hollywood, December 2020.",
-    brief: [
-      "The wall is the side of a bike-rental and organised-hike shop at the corner of La Cienega and Santa Monica Boulevards in West Hollywood, directly under a Kylie Jenner billboard. A few big shapes and five words: pump less gas, pump more...ass.",
-    ],
-    credits: [
-      { role: "Illustration, Mural & Creative Direction", name: "Josh McKenna" },
-      { role: "Client", name: "Hikes and Bikes LA" },
-    ],
-    // Pinned to the photo's true 4/5 so RATIO_CYCLE can't crop the
-    // billboard out of the top of the card — the Kylie billboard is
-    // the joke and has to survive the crop.
-    cardRatio: "4/5",
-    hero: {
-      ratio: "4/5",
-      alt: "The wall, under the Kylie Jenner billboard",
-      src: "/work/hikes-n-bikes/01-mural-kylie-billboard.webp",
-    },
-    // The 15s ladder clip sits beside the finished-wall photo in the
-    // hero two-up (Last Call precedent). Declared 4/5 to match the
-    // hero's height — the source is a 9:16 phone clip, and the cover
-    // crop trims sky and ground, not the ladder.
-    heroVideo: {
-      src: "/work/hikes-n-bikes/03-painting-process.mp4",
-      alt: "Painting the peach's leaves, day one",
-      position: "pair",
-      ratio: "4/5",
-    },
-    // A lone gallery image defaults into the two-up row's left column at
-    // half width — a wall-wide strip wants the full frame instead.
-    gallerySpans: [{ startIndex: 0, count: 1 }],
-    gallery: [
-      {
-        ratio: "25/11",
-        // Transparent PNG — contain sits on bg-canvas so the
-        // placeholder tone can't show through the background.
-        fit: "contain",
-        alt: "The full artwork — pump less gas, pump more",
-        src: "/work/hikes-n-bikes/02-mural-artwork.webp",
-      },
-    ],
-  },
-  {
-    slug: "bum-selfie",
-    title: "Bum Selfie",
-    client: "Cake Boy Magazine",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
-    cardLabel: "Cake Boy Magazine",
-    year: 2020,
-    discipline: "Editorial Illustration",
-    deliverables: "2 illustrations",
-    categories: [],
-    summary: "Two ways to photograph your own arsehole.",
-    heroCaption: "",
-    brief: [
-      "Cake Boy magazine wanted a two-part illustration for a feature on the different ways to photograph your own arsehole.",
-    ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
-    cardRatio: "4/5",
-    hero: {
-      ratio: "4/5",
-      alt: "An updated version",
-      src: "/work/bum-selfie/02-butt-selfie-2.webp",
-    },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "Bend over",
-        src: "/work/bum-selfie/03-bend-over-4-5.webp",
-      },
-    ],
-    featured: false,
-  },
-  {
-    slug: "perineum-sunning",
-    title: "Perineum Sunning",
-    client: "Personal",
-    year: 2020,
-    discipline: "Illustration",
-    deliverables: "Key Art",
-    categories: [],
-    summary: "2020's strangest wellness trend.",
-    heroCaption: "",
-    brief: [
-      "2020's wellness trend of the moment was perineum sunning: thirty seconds of direct sun, no shade.",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "Sunbathing, from an unusual angle",
-      src: "/work/perineum-sunning/01-perineum-sunning.webp",
-    },
-    gallery: [],
-    featured: false,
-  },
+  // Comic Relief x Sink The Pink lived here — archived to lib/archived-projects.ts per
+  // Josh (kept browsable on /archive), not deleted; see that file
+  // for the restore path.
+  // Hikes n Bikes lived here — archived to lib/archived-projects.ts per
+  // Josh (kept browsable on /archive), not deleted; see that file
+  // for the restore path.
+  // Bum Selfie lived here — archived to lib/archived-projects.ts per
+  // Josh (kept browsable on /archive), not deleted; see that file
+  // for the restore path.
+  // Perineum Sunning lived here — archived to lib/archived-projects.ts per
+  // Josh (kept browsable on /archive), not deleted; see that file
+  // for the restore path.
   // LGBTQ Centre lived here — archived to lib/archived-projects.ts per
   // Josh ("don't want it displayed rn"), not deleted; see that file for
   // the restore path.
@@ -3134,38 +2924,9 @@ export const projects: Project[] = [
   },
   // Bershka lived here — archived to lib/archived-projects.ts per Josh
   // ("not strong enough"), not deleted; see that file for the restore path.
-  {
-    slug: "mini-animation",
-    title: "Mini Animation",
-    client: "Personal",
-    year: 2017,
-    discipline: "Illustration & Animation",
-    deliverables: "1 animation",
-    categories: ["Cars", "Motion"],
-    summary: "A Mini convertible, animated for a five-second loop.",
-    heroCaption: "A held frame from the animation, 2017.",
-    brief: [
-      "A personal animation exercise: a Mini convertible driving past palm trees on a five-second loop.",
-    ],
-    credits: [{ role: "Illustration, Animation & Creative Direction", name: "Josh McKenna" }],
-    // True 16/9 (source is 1220x686) on the project page; cropped to 1/1
-    // on the /work card per Josh.
-    cardRatio: "1/1",
-    // The whole piece is the animation — the grid card plays it rather
-    // than sitting on the still frame like every other video-backed card.
-    cardVideo: true,
-    hero: {
-      ratio: "16/9",
-      alt: "The Mini, mid-drive",
-      src: "/work/mini-animation/01-mini-driving-hero.webp",
-    },
-    heroVideo: {
-      src: "/work/mini-animation/02-mini-driving.mp4",
-      alt: "The Mini animation, looping",
-      ratio: "16/9",
-    },
-    gallery: [],
-  },
+  // Mini Animation lived here — archived to lib/archived-projects.ts per
+  // Josh (kept browsable on /archive), not deleted; see that file
+  // for the restore path.
   {
     slug: "womp-money-bench",
     title: "Money Bench",
@@ -3287,53 +3048,9 @@ export const projects: Project[] = [
     },
     gallery: [],
   },
-  {
-    slug: "womp-jimny",
-    title: "Jimny",
-    client: "Personal",
-    year: 2026,
-    // In the Womp 3D block closing this array — see Money Bench's own
-    // comment.
-    discipline: "3D Illustration",
-    deliverables: "1 Turnaround · 3 Renders",
-    categories: ["Cars", "3D", "Motion"],
-    summary: "My favourite car, modelled in Womp.",
-    heroCaption: "",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool. A gloopy, wompy homage to my favourite car, the Jimny.",
-    ],
-    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Not the true 1/1 — Josh's call, 4/5 reads better here than the
-    // RATIO_CYCLE-by-chance square did. Pinned explicitly either way.
-    cardRatio: "4/5",
-    // Closes the page instead of leading it — see the "outro" case in
-    // Project.heroVideo's position doc comment. `hero` still carries a
-    // still (used for the /work card).
-    heroVideo: {
-      src: "/work/womp-jimny/00-turnaround.mp4",
-      alt: "The Jimny, turning",
-      position: "outro",
-    },
-    // Three renders side by side up top, captions off — see heroThird's
-    // doc comment.
-    hideHeroCaptions: true,
-    hero: {
-      ratio: "1/1",
-      alt: "The Jimny, front three-quarter",
-      src: "/work/womp-jimny/02-front.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "The Jimny, from the back",
-      src: "/work/womp-jimny/01-back.webp",
-    },
-    heroThird: {
-      ratio: "1/1",
-      alt: "The Jimny, side profile",
-      src: "/work/womp-jimny/03-side.webp",
-    },
-    gallery: [],
-  },
+  // Jimny lived here — archived to lib/archived-projects.ts per
+  // Josh (kept browsable on /archive), not deleted; see that file
+  // for the restore path.
   {
     slug: "womp-twingo",
     title: "Twingo",
