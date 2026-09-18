@@ -2239,7 +2239,13 @@ export const projects: Project[] = [
     title: "Last Call",
     client: "Personal",
     year: 2026,
-    pinnedRank: 14,
+    // Unpinned — "swap mr porter with 3d cowboy hat last call," per
+    // Josh: Mr Porter took this project's old rank 14. This can't land
+    // in Mr Porter's exact old slot (the unpinned band sorts by year,
+    // and 2026 is the newest on the site), so it leads the unpinned
+    // band instead, right after the pinned block. The rest of the Womp
+    // 3D series stays sunk at the bottom; this was the "except cowboy
+    // hat" carve-out and remains the one Womp piece above it.
     discipline: "3D Illustration",
     deliverables: "1 Render · 1 Turnaround",
     categories: ["3D", "Motion"],
@@ -2636,6 +2642,10 @@ export const projects: Project[] = [
     cardTitle: "Miami Invites",
     cardLabel: "Mr Porter",
     year: 2021,
+    // Takes Last Call's old rank — "swap mr porter with 3d cowboy hat
+    // last call," per Josh; Last Call leads the unpinned band now (see
+    // its own comment).
+    pinnedRank: 14,
     discipline: "Event Invitation",
     deliverables: "2 Invitations",
     categories: [],
