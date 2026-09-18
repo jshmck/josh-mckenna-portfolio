@@ -2050,55 +2050,71 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "opto-markets-2019",
-    title: "OPTO Mag",
-    client: "CMC Markets",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
-    cardLabel: "CMC Markets",
-    year: 2019,
-    yearLabel: "OPTO Issue 03, Jan/Feb 2019",
-    // Last of the pinned block. Its old rank-22/23/24 square row is
-    // dissolved (denseSquare dropped with it) — see
-    // rooted-journal-editorial's own pinnedRank comment.
+    slug: "costa-smeralda",
+    title: "Costa Smeralda",
+    client: "Costa Smeralda",
+    // TRIAL: "Posters > Costa Smeralda," per Josh — see Project.cardTitle.
+    cardTitle: "Posters",
+    cardLabel: "Costa Smeralda",
+    year: 2022,
+    // Takes OPTO's old rank 24, last of the pinned block — "swap costa
+    // smeralda with opto," per Josh; OPTO took this entry's old
+    // unpinned array slot.
     pinnedRank: 24,
-    discipline: "Editorial Illustration",
-    deliverables: "Cover + 2 Opener Illustrations",
-    categories: ["Editorial"],
-    summary: "Two oversized numerals, packed with everything trading in 2019.",
-    heroCaption: "One of two opener illustrations for OPTO's Issue 03 cover story, \"The Markets in 2019,\" CMC Markets, Jan/Feb 2019.",
+    discipline: "Illustration",
+    deliverables: "3 Posters",
+    categories: [],
+    summary: "Vintage-style travel posters for three Costa Smeralda hotels.",
+    heroCaption: "A set of travel posters for three Costa Smeralda hotels (Cala di Volpe, Romazzino and Cervo), 2022.",
+    hideHeroCaptions: true,
     brief: [
-      "CMC Markets commissioned the cover and two opener illustrations for OPTO magazine's Issue 03 cover story, \"The Markets in 2019\": trading intelligence on what was coming next across retail, cars, tech, media, banks, AI & AR, cannabis, medtech, fintech and esports, with a sector's icons built into the oversized \"2019\" numerals themselves.",
+      "A set of travel posters for three Costa Smeralda hotels: Cala di Volpe, Romazzino and Cervo.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "CMC Markets" },
+      { role: "Client", name: "Costa Smeralda" },
     ],
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "The '2019' opener, packed with delivery drones, self-driving cars and social platform icons",
-      src: "/work/opto-markets-2019/02-opener-1-final.webp",
+    // No-border crops, specifically for the /work card — Romazzino leads,
+    // Cala di Volpe swaps in on hover.
+    cardRatio: "4/5",
+    cardImage: {
+      ratio: "4/5",
+      alt: "Hotel Romazzino",
+      src: "/work/costa-smeralda/02-romazzino-no-border.webp",
     },
-    heroPair: {
-      ratio: "1/1",
-      alt: "The second '2019' opener, packed with cannabis, gaming and fintech icons",
-      src: "/work/opto-markets-2019/03-opener-2-final.webp",
-    },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
-        src: "/work/opto-markets-2019/01-front-cover.webp",
-      },
-    ],
-    // Explicit, not getCardHoverImage's default (heroPair wins first, so
-    // it'd swap in the second opener) — Josh wants the cover as the
-    // /work hover swap specifically.
     cardHoverImage: {
       ratio: "4/5",
-      alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
-      src: "/work/opto-markets-2019/01-front-cover.webp",
+      alt: "Hotel Cala di Volpe",
+      src: "/work/costa-smeralda/01-cala-di-volpe-no-border.webp",
     },
+    // All three side by side, each keeping its own printed border — square
+    // corners rather than the sitewide rounded frame, same reasoning as
+    // Beefbar's posters: a rounded clip would cut into a border that's
+    // already part of the artwork.
+    hero: {
+      ratio: "3/4",
+      alt: "Hotel Cala di Volpe",
+      src: "/work/costa-smeralda/01-cala-di-volpe.webp",
+      square: true,
+    },
+    heroPair: {
+      // True ratio updated to match Cala di Volpe's — Josh re-exported
+      // Romazzino specifically so all three posters would match height on
+      // the project page.
+      ratio: "3/4",
+      alt: "Hotel Romazzino",
+      src: "/work/costa-smeralda/02-romazzino.webp",
+      square: true,
+    },
+    heroThird: {
+      // True ratio (0.7072) — closer to 12/17 than the 3/4 this would
+      // otherwise snap to.
+      ratio: "12/17",
+      alt: "Hotel Cervo",
+      src: "/work/costa-smeralda/03-smeralda-cervo.webp",
+      square: true,
+    },
+    gallery: [],
   },
   {
     slug: "palm-springs",
@@ -2439,67 +2455,55 @@ export const projects: Project[] = [
   // Josh (kept browsable on /archive), not deleted; see that file
   // for the restore path.
   {
-    slug: "costa-smeralda",
-    title: "Costa Smeralda",
-    client: "Costa Smeralda",
-    // TRIAL: "Posters > Costa Smeralda," per Josh — see Project.cardTitle.
-    cardTitle: "Posters",
-    cardLabel: "Costa Smeralda",
-    year: 2022,
-    discipline: "Illustration",
-    deliverables: "3 Posters",
-    categories: [],
-    summary: "Vintage-style travel posters for three Costa Smeralda hotels.",
-    heroCaption: "A set of travel posters for three Costa Smeralda hotels (Cala di Volpe, Romazzino and Cervo), 2022.",
-    hideHeroCaptions: true,
+    slug: "opto-markets-2019",
+    title: "OPTO Mag",
+    client: "CMC Markets",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "CMC Markets",
+    year: 2019,
+    yearLabel: "OPTO Issue 03, Jan/Feb 2019",
+    // Unpinned — "swap costa smeralda with opto," per Josh: Costa took
+    // this project's old rank 24 (last of the pinned block; the old
+    // rank-22/23/24 square row was already dissolved), and this entry
+    // took Costa's old array slot. Array order is the gallery order.
+    discipline: "Editorial Illustration",
+    deliverables: "Cover + 2 Opener Illustrations",
+    categories: ["Editorial"],
+    summary: "Two oversized numerals, packed with everything trading in 2019.",
+    heroCaption: "One of two opener illustrations for OPTO's Issue 03 cover story, \"The Markets in 2019,\" CMC Markets, Jan/Feb 2019.",
     brief: [
-      "A set of travel posters for three Costa Smeralda hotels: Cala di Volpe, Romazzino and Cervo.",
+      "CMC Markets commissioned the cover and two opener illustrations for OPTO magazine's Issue 03 cover story, \"The Markets in 2019\": trading intelligence on what was coming next across retail, cars, tech, media, banks, AI & AR, cannabis, medtech, fintech and esports, with a sector's icons built into the oversized \"2019\" numerals themselves.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "Costa Smeralda" },
+      { role: "Client", name: "CMC Markets" },
     ],
-    // No-border crops, specifically for the /work card — Romazzino leads,
-    // Cala di Volpe swaps in on hover.
-    cardRatio: "4/5",
-    cardImage: {
-      ratio: "4/5",
-      alt: "Hotel Romazzino",
-      src: "/work/costa-smeralda/02-romazzino-no-border.webp",
-    },
-    cardHoverImage: {
-      ratio: "4/5",
-      alt: "Hotel Cala di Volpe",
-      src: "/work/costa-smeralda/01-cala-di-volpe-no-border.webp",
-    },
-    // All three side by side, each keeping its own printed border — square
-    // corners rather than the sitewide rounded frame, same reasoning as
-    // Beefbar's posters: a rounded clip would cut into a border that's
-    // already part of the artwork.
+    cardRatio: "1/1",
     hero: {
-      ratio: "3/4",
-      alt: "Hotel Cala di Volpe",
-      src: "/work/costa-smeralda/01-cala-di-volpe.webp",
-      square: true,
+      ratio: "1/1",
+      alt: "The '2019' opener, packed with delivery drones, self-driving cars and social platform icons",
+      src: "/work/opto-markets-2019/02-opener-1-final.webp",
     },
     heroPair: {
-      // True ratio updated to match Cala di Volpe's — Josh re-exported
-      // Romazzino specifically so all three posters would match height on
-      // the project page.
-      ratio: "3/4",
-      alt: "Hotel Romazzino",
-      src: "/work/costa-smeralda/02-romazzino.webp",
-      square: true,
+      ratio: "1/1",
+      alt: "The second '2019' opener, packed with cannabis, gaming and fintech icons",
+      src: "/work/opto-markets-2019/03-opener-2-final.webp",
     },
-    heroThird: {
-      // True ratio (0.7072) — closer to 12/17 than the 3/4 this would
-      // otherwise snap to.
-      ratio: "12/17",
-      alt: "Hotel Cervo",
-      src: "/work/costa-smeralda/03-smeralda-cervo.webp",
-      square: true,
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
+        src: "/work/opto-markets-2019/01-front-cover.webp",
+      },
+    ],
+    // Explicit, not getCardHoverImage's default (heroPair wins first, so
+    // it'd swap in the second opener) — Josh wants the cover as the
+    // /work hover swap specifically.
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
+      src: "/work/opto-markets-2019/01-front-cover.webp",
     },
-    gallery: [],
   },
   {
     slug: "womp-last-call",
