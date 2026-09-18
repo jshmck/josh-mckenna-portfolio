@@ -476,1323 +476,19 @@ export type Project = {
   featured?: boolean;
   /**
    * Sorts before every non-pinned project, lowest rank first —
-   * Josh's own curated lead-in to /work, independent of year.
-   * getAllProjects() otherwise sorts strictly by year descending, which
-   * would sink a genuinely old piece (Beefbar and Pride Sticker both
-   * predate 2018) to the bottom regardless of how much Josh wants it
-   * visible. Ties (or the default, unset) fall back to the normal year
-   * sort — every unpinned project keeps sorting exactly as before.
+   * Josh's own curated lead-in to /work. Everything WITHOUT a rank
+   * keeps this array's literal order: there is no year sort — "there
+   * should be no 'year' organisation, it's being ordered how i
+   * suggest," per Josh (getAllProjects sorted the unpinned tail by
+   * year descending until then, which made exact placements
+   * impossible — a new piece always floated to the top of the unpinned
+   * band). The array reads top-to-bottom as the gallery; moving an
+   * unpinned entry IS moving its card.
    */
   pinnedRank?: number;
-  /**
-   * Mirror of pinnedRank for the other end of the gallery: sorts after
-   * every non-sunk project, lowest first. Exists because "put it at the
-   * bottom" can't be done by just unpinning a NEW piece — getAllProjects'
-   * year-descending fallback floats a 2026 project straight to the top of
-   * the unpinned section (the Womp 3D series, which Josh wants at the
-   * bottom, is the newest work on the site). It's All Love got to the
-   * bottom by being 2017 + last in this array; that trick only works for
-   * the oldest year on the site. Mutually exclusive with pinnedRank —
-   * pinnedRank wins if both are ever set.
-   */
-  sinkRank?: number;
 };
 
 export const projects: Project[] = [
-  {
-    slug: "levis-rainbow-rodeo",
-    title: "Levi's Rainbow Rodeo",
-    client: "Levi's",
-    // TRIAL: grid card trims the redundant "Levi's" now that the client
-    // renders as its own label underneath — Josh's own example for this
-    // whole mechanism. See Project.cardTitle.
-    cardTitle: "Rainbow Rodeo",
-    year: 2024,
-    discipline: "Pride Campaign",
-    deliverables: "1 invite · 3 enamel pins · 1 tee · bar accessories",
-    categories: ["LGBTQ+", "Icons"],
-    summary: "Two cowboys sharing a horse, printed on pins, cups and tees for Pride.",
-    heroCaption:
-      "Made for the Rainbow Rodeo at Levi's Haus, Los Angeles, June 2024.",
-    brief: [
-      "For Pride 2024, Levi's threw a Rainbow Rodeo at Levi's Haus in Los Angeles hosted by Benny Drama, with DJ sets from Violet Chachki and Tinashe. Invite, enamel pins, bar accessories and a tee, all riffing on classic western Americana with the cowboys made explicitly queer.",
-    ],
-    credits: [
-      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Client", name: "Levi's" },
-    ],
-    // The camera shots themselves are true 2/3 (6000x4000 Canon frames and
-    // Josh's own portrait crops of them) — that ratio is used as-is on the
-    // project page. But left as cardRatio it ran the grid card far taller
-    // than the 4/5–1/1 range the rest of the grid cycles through, reading
-    // like a 9/16 sliver next to its neighbours. Cropped to 4/5 instead
-    // ("stick to the rules of the grid, either 4/5 or 1/1 — both would
-    // work with the pins here").
-    cardRatio: "4/5",
-    // Josh picked the pins over the invite poster to lead — the poster
-    // rides alongside as the pair instead.
-    hero: {
-      ratio: "2/3",
-      alt: "Enamel pins — all three designs",
-      src: "/work/levis-rainbow-rodeo/02-pins-trio.webp",
-    },
-    // The full poster's cream frame got clipped mid-stroke by Plate's
-    // rounded corners, both here and on the grid-card hover swap, so both
-    // slots use a copy cropped to the red field instead of the original
-    // ("cropped until there is no border/stroke being cut off"). -v2
-    // filename since the old 01-poster.webp path is gone from git but
-    // may still be sitting in a browser/CDN cache.
-    heroPair: {
-      ratio: "4/5",
-      alt: "The invite",
-      src: "/work/levis-rainbow-rodeo/01-poster-v2.webp",
-    },
-    cardHoverImage: {
-      ratio: "4/5",
-      alt: "The invite",
-      src: "/work/levis-rainbow-rodeo/01-poster-v2.webp",
-    },
-    // Merch photos only — no process sketches, per Josh. The three pin
-    // shots run as one row of three, cups and the worn tee pair up, and
-    // the landscape back print closes full width.
-    gallerySpans: [
-      { startIndex: 0, count: 3 },
-      { startIndex: 3, count: 2 },
-    ],
-    gallery: [
-      {
-        ratio: "2/3",
-        alt: "Pins — the bronco rider",
-        src: "/work/levis-rainbow-rodeo/03-pins-red.webp",
-      },
-      {
-        ratio: "2/3",
-        alt: "Pins — the yellow colourway",
-        src: "/work/levis-rainbow-rodeo/04-pins-yellow.webp",
-      },
-      {
-        ratio: "2/3",
-        alt: "Pins — the hat",
-        src: "/work/levis-rainbow-rodeo/05-pins-pink.webp",
-      },
-      {
-        ratio: "2/3",
-        alt: "Cups at the bar",
-        src: "/work/levis-rainbow-rodeo/06-cups.webp",
-      },
-      {
-        ratio: "2/3",
-        alt: "The tee, worn",
-        src: "/work/levis-rainbow-rodeo/07-tee-front.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "The back print",
-        src: "/work/levis-rainbow-rodeo/08-tee-back.webp",
-      },
-    ],
-  },
-  {
-    slug: "piper-heidsieck",
-    title: "Piper-Heidsieck",
-    client: "Piper-Heidsieck",
-    // TRIAL: "Bottle Packaging > Piper-Heidsieck," per Josh — see
-    // Project.cardTitle.
-    cardTitle: "Bottle Packaging",
-    cardLabel: "Piper-Heidsieck",
-    year: 2024,
-    discipline: "Illustration",
-    deliverables: "1 gift tin",
-    categories: ["LGBTQ+"],
-    summary: "A riverside scene wrapped around a champagne tin for Pride.",
-    heroCaption: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut.",
-    brief: [
-      "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month gift tin: the house's Cuvée Brut wrapped in queer scenes by the river, with a rainbow hot-air balloon drifting over town.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "Piper-Heidsieck" },
-    ],
-    // The only asset is the campaign's own 469px product render ("product
-    // shot only," per Josh — the press-kit pages were dropped). `spot`
-    // keeps it at the small centred width the resolution can honestly
-    // fill, same reasoning as Monocle's heel.
-    heroSize: "spot",
-    // 9/16 (matching the hero's own true ratio) ran the /work grid card
-    // far taller than its neighbours — "piper needs to be in a square
-    // and shrunk, or 4/5," per Josh. 4/5 is the site's standard portrait
-    // frame (see cardRatio's own doc comment); the tin is `fit: contain`
-    // on canvas, so the shorter frame just letterboxes more, no crop.
-    cardRatio: "4/5",
-    hero: {
-      ratio: "9/16",
-      alt: "The tin, beside the bottle",
-      src: "/work/piper-heidsieck/01-tin.webp",
-      // Transparent background — contain on bg-canvas, the usual
-      // real-alpha fix (see Plate).
-      fit: "contain",
-    },
-    gallery: [],
-  },
-  {
-    slug: "whatsapp",
-    title: "WhatsApp",
-    client: "WhatsApp",
-    // TRIAL: "Privacy Campaign > WhatsApp," per Josh — see
-    // Project.cardTitle.
-    cardTitle: "Privacy Campaign",
-    cardLabel: "WhatsApp",
-    year: 2018,
-    discipline: "Campaign Illustration",
-    deliverables: "2 illustrations",
-    categories: [],
-    summary: "Beach couples, for WhatsApp's campaign about private messaging.",
-    heroCaption: "For WhatsApp's \"It's between you\" campaign, 2018.",
-    brief: [
-      "WhatsApp commissioned illustrations for \"It's between you,\" its campaign about private messaging: couples in close conversation under a parasol.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "WhatsApp" },
-    ],
-    // Both source squares are true 1/1 — pinned so RATIO_CYCLE can't crop
-    // the lockup. The campaign version leads, per Josh; the clean
-    // illustration rides beside it.
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "\"It's between you.\"",
-      src: "/work/whatsapp/01-between-you.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "Under the parasol",
-      src: "/work/whatsapp/02-ladies.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "honda-super-n",
-    title: "Honda Super N",
-    // "Honda" / "Super N", not the generic last-word-only rule's "Honda
-    // Super" / "N" — see titleBreakIndex's own doc comment.
-    titleBreakIndex: 1,
-    client: "Personal",
-    year: 2026,
-    // First swapped ranks with Bombay Sapphire to sit just after Vogue
-    // ("squeeze the honda under atl and above vogue," per Josh), then
-    // swapped again with Wagamama Pride (2, see its own comment) to move
-    // "almost at the top," per Josh. Both swaps traded with another 5/3
-    // landscape span-2 card, so only the two involved ever move — every
-    // other card's column and position stays untouched (verified each
-    // time — a plain insertion instead reflowed ~20 other cards, since
-    // MasonryGrid's bin-packer carries column-height state forward from
-    // wherever a span-2 card lands). Bronco no longer lands next to
-    // Honda in the Cars category's own dense pack now that Honda's this
-    // far up — see Bronco's own pinnedRank comment.
-    pinnedRank: 2,
-    discipline: "Illustration",
-    deliverables: "Key Art · Animation",
-    // Motion added alongside Cars — the turntable animation is a real
-    // deliverable here, not just a hero flourish, per Josh.
-    categories: ["Cars", "Motion"],
-    summary: "A kei car on stretched wheels, sitting far too low.",
-    heroCaption: "",
-    brief: [
-      "I drew the Honda N-One when I first saw it, cut to today and it's now available as a Super N. Slammed, with a body kit, wide arches and spoiler. I want one.",
-      "Illustrated in Figma, animated in Cavalry.",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Turntable animation leads the page. Real audio track Josh wants
-    // audible — sound: true swaps the muted/looping ambient treatment for
-    // native controls (play/pause, mute, volume) and no autoplay, same as
-    // Nomad Wheels' promo film: never force sound on a visitor who didn't
-    // ask for it. The title card ("SUPER-N" on the lime pill) is composited
-    // in as the literal final frame, held for 1.5s — "make the title card
-    // of the video the final frame," per Josh. Poster is the clip's own
-    // sticker-badge frame (extracted at 7.95s, just before the title card),
-    // not the default hero.src fallback — "make this the cover photo of
-    // the video," per Josh.
-    // Grid card autoplays the same clip muted/looping (ProjectCard never
-    // forwards heroVideo's sound flag to the card), same mechanism as
-    // Instagram Sticker's turnaround.
-    cardVideo: true,
-    heroVideo: {
-      src: "/work/honda-super-n/19-super-n-animation-final.mp4",
-      alt: "The Super N, turning, ending on the Super-N title card",
-      poster: "/work/honda-super-n/21-super-n-video-poster.webp",
-      sound: true,
-      ratio: "16/9",
-    },
-    // The hero (true 16/9, 3840x2160) is untouched, but the /work grid
-    // card frame uses 5/3, not 16/9 — same fix as Wagamama/Atlanta/etc:
-    // a span-2 card at true 16/9 renders ~32px shorter than a single-
-    // column 4/5 neighbour at this site's actual column width, so 5/3
-    // (the ratio that cancels that gap-vs-width difference) is what
-    // "same height" actually requires. Landscape card still spans two
-    // grid columns either way.
-    cardRatio: "5/3",
-    // Grid card leads with the lime/purple Super N build, then hovers to
-    // the stock white N-One on purple — "green background purple car
-    // first, then purple bg white car," per Josh. Explicit on both,
-    // because the gallery now leads with white angles and the
-    // hero/getCardHoverImage fallbacks would each pick the wrong one.
-    cardImage: {
-      ratio: "16/9",
-      alt: "Honda Super N",
-      src: "/work/honda-super-n/12-super-n-front-final.webp",
-    },
-    cardHoverImage: {
-      ratio: "16/9",
-      alt: "The stock N-One",
-      src: "/work/honda-super-n/14-n-one-front-final.webp",
-    },
-    // -final filenames throughout — Josh's final export pass swapped every
-    // render's background (purple car on lime, white N-One on purple),
-    // new names so Next's image cache can't serve an old shade.
-    hero: {
-      ratio: "16/9",
-      alt: "The stock N-One",
-      src: "/work/honda-super-n/14-n-one-front-final.webp",
-    },
-    // Full-width rows for every three-quarter view — "i liked the large
-    // view on the project page," per Josh. Hierarchy per Josh: front 3/4
-    // first (white stock N-One as the hero), then Super N's own front and
-    // rear 3/4 (purple) — there's no genuine N-One rear 3/4 render, only
-    // straight front/rear shots, which belong in the squares below, not
-    // here ("anything straight on front or rear view is to remain in the
-    // small squares," per Josh). The four head-on/tail views close the
-    // page as one row of 1/1 squares (count: 4) — centre crops of the
-    // 16/9 sources, safe because the car sits dead centre in every
-    // render. The count: 1 spans keep the full-width rows out of the
-    // default two-up pairing.
-    gallerySpans: [
-      { startIndex: 0, count: 1 },
-      { startIndex: 1, count: 1 },
-      { startIndex: 2, count: 4 },
-    ],
-    gallery: [
-      {
-        ratio: "16/9",
-        alt: "Honda Super N",
-        src: "/work/honda-super-n/12-super-n-front-final.webp",
-      },
-      {
-        ratio: "16/9",
-        alt: "Super N — rear three-quarter",
-        src: "/work/honda-super-n/13-super-n-rear-final.webp",
-      },
-      {
-        // "You can drop the captions of the four little frames," per
-        // Josh — alt stays for accessibility, caption: false just hides
-        // ImageStack's printed <p>.
-        ratio: "1/1",
-        alt: "Super N — head on",
-        src: "/work/honda-super-n/15-super-n-square-front-final.webp",
-        caption: false,
-      },
-      {
-        ratio: "1/1",
-        alt: "Super N — from behind",
-        src: "/work/honda-super-n/16-super-n-square-back-final.webp",
-        caption: false,
-      },
-      {
-        ratio: "1/1",
-        alt: "Head on",
-        src: "/work/honda-super-n/17-n-one-square-front-final.webp",
-        caption: false,
-      },
-      {
-        // Purple-bg re-export replacing the earlier green-bg square —
-        // "the purple BG rear white car is to replace the green bg rear
-        // white car," per Josh.
-        ratio: "1/1",
-        alt: "From behind",
-        src: "/work/honda-super-n/20-n-one-rear-final.webp",
-        caption: false,
-      },
-    ],
-  },
-  {
-    slug: "comic-relief-sink-the-pink",
-    title: "Comic Relief x Sink The Pink",
-    client: "Comic Relief",
-    clientPartner: "Sink The Pink",
-    // TRIAL: "Pride Totes > Comic Relief," per Josh — see Project.cardTitle.
-    cardTitle: "Pride Totes",
-    cardLabel: "Comic Relief",
-    year: 2020,
-    discipline: "Pride Campaign",
-    deliverables: "2 tote designs",
-    categories: ["LGBTQ+"],
-    summary: "Two couples in one embrace, printed for Red Nose Day. One ended up on a Spice Girl's shoulder.",
-    heroCaption:
-      "One of two couple pairings, printed onto canvas totes.",
-    brief: [
-      "Comic Relief, in partnership with Sink The Pink, commissioned tote bag artwork for Red Nose Day 2020: two couple pairings, printed across the range.",
-    ],
-    credits: [
-      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Client", name: "Comic Relief" },
-      { role: "Partner", name: "Sink The Pink" },
-    ],
-    // True ratio (2000x2000) — pinned rather than left to RATIO_CYCLE's
-    // chance assignment, same fix as the other unpinned cards found
-    // alongside the Bum Selfie 3D report.
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "Tote artwork — pairing one",
-      src: "/work/comic-relief-sink-the-pink/01-tote-women.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "Tote artwork — pairing two",
-      src: "/work/comic-relief-sink-the-pink/02-tote-men.webp",
-    },
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "Mel C, of the Spice Girls, posted this online",
-        // Low-res screenshot — the original photo file is lost.
-        small: true,
-        src: "/work/comic-relief-sink-the-pink/03-mel-c-tote.webp",
-      },
-    ],
-  },
-  {
-    slug: "hikes-n-bikes",
-    title: "Hikes n Bikes",
-    client: "Hikes and Bikes LA",
-    // TRIAL: "Wall Mural > Hikes and Bikes LA," per Josh — see
-    // Project.cardTitle.
-    cardTitle: "Wall Mural",
-    cardLabel: "Hikes and Bikes LA",
-    year: 2020,
-    discipline: "Mural",
-    deliverables: "1 mural",
-    categories: ["Murals"],
-    summary: "Seven cyclists and a peach, painted on a West Hollywood bike shop.",
-    heroCaption:
-      "Painted at La Cienega and Santa Monica Boulevards, West Hollywood, December 2020.",
-    brief: [
-      "The wall is the side of a bike-rental and organised-hike shop at the corner of La Cienega and Santa Monica Boulevards in West Hollywood, directly under a Kylie Jenner billboard. A few big shapes and five words: pump less gas, pump more...ass.",
-    ],
-    credits: [
-      { role: "Illustration, Mural & Creative Direction", name: "Josh McKenna" },
-      { role: "Client", name: "Hikes and Bikes LA" },
-    ],
-    // Pinned to the photo's true 4/5 so RATIO_CYCLE can't crop the
-    // billboard out of the top of the card — the Kylie billboard is
-    // the joke and has to survive the crop.
-    cardRatio: "4/5",
-    hero: {
-      ratio: "4/5",
-      alt: "The wall, under the Kylie Jenner billboard",
-      src: "/work/hikes-n-bikes/01-mural-kylie-billboard.webp",
-    },
-    // The 15s ladder clip sits beside the finished-wall photo in the
-    // hero two-up (Last Call precedent). Declared 4/5 to match the
-    // hero's height — the source is a 9:16 phone clip, and the cover
-    // crop trims sky and ground, not the ladder.
-    heroVideo: {
-      src: "/work/hikes-n-bikes/03-painting-process.mp4",
-      alt: "Painting the peach's leaves, day one",
-      position: "pair",
-      ratio: "4/5",
-    },
-    // A lone gallery image defaults into the two-up row's left column at
-    // half width — a wall-wide strip wants the full frame instead.
-    gallerySpans: [{ startIndex: 0, count: 1 }],
-    gallery: [
-      {
-        ratio: "25/11",
-        // Transparent PNG — contain sits on bg-canvas so the
-        // placeholder tone can't show through the background.
-        fit: "contain",
-        alt: "The full artwork — pump less gas, pump more",
-        src: "/work/hikes-n-bikes/02-mural-artwork.webp",
-      },
-    ],
-  },
-  {
-    slug: "bum-selfie",
-    title: "Bum Selfie",
-    client: "Cake Boy Magazine",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
-    cardLabel: "Cake Boy Magazine",
-    year: 2020,
-    discipline: "Editorial Illustration",
-    deliverables: "2 illustrations",
-    categories: [],
-    summary: "Two ways to photograph your own arsehole.",
-    heroCaption: "",
-    brief: [
-      "Cake Boy magazine wanted a two-part illustration for a feature on the different ways to photograph your own arsehole.",
-    ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
-    cardRatio: "4/5",
-    hero: {
-      ratio: "4/5",
-      alt: "An updated version",
-      src: "/work/bum-selfie/02-butt-selfie-2.webp",
-    },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "Bend over",
-        src: "/work/bum-selfie/03-bend-over-4-5.webp",
-      },
-    ],
-    featured: false,
-  },
-  {
-    slug: "perineum-sunning",
-    title: "Perineum Sunning",
-    client: "Personal",
-    year: 2020,
-    discipline: "Illustration",
-    deliverables: "Key Art",
-    categories: [],
-    summary: "2020's strangest wellness trend.",
-    heroCaption: "",
-    brief: [
-      "2020's wellness trend of the moment was perineum sunning: thirty seconds of direct sun, no shade.",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "Sunbathing, from an unusual angle",
-      src: "/work/perineum-sunning/01-perineum-sunning.webp",
-    },
-    gallery: [],
-    featured: false,
-  },
-  {
-    slug: "palm-springs",
-    title: "Palm Springs",
-    client: "Personal",
-    year: 2025,
-    discipline: "Illustration",
-    deliverables: "Key Art",
-    categories: ["Cars"],
-    summary: "A mid-century carport in Palm Springs.",
-    heroCaption: "",
-    brief: [
-      "A mid-century carport roofline against the San Jacinto mountains, with a two-tone convertible parked underneath.",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "Palm Springs — a mid-century carport",
-      src: "/work/palm-springs/01-palm-springs.webp",
-    },
-    gallery: [],
-    featured: true,
-  },
-  {
-    slug: "ford-bronco",
-    title: "Ford Bronco",
-    client: "Personal",
-    year: 2021,
-    // Originally promoted so the Cars category filter's dense pack
-    // landed it beside Honda instead of Jimny — "swap jimny for the
-    // bronco, bring bronco up and to the right of honda," per Josh.
-    // Unpinned items sort Infinity-after any finite rank regardless of
-    // value, so nudging Bronco ahead of Jimny/Twingo (both unpinned,
-    // 2026) needs a real pinnedRank. Honda's since moved to rank 2 (see
-    // its own comment) — Sound of Driving, Nomad Wheels and Figma BMW Z1
-    // now sit between them in the Cars-filtered dense pack, so this no
-    // longer seats Bronco right behind Honda specifically, just ahead of
-    // Jimny/Twingo as originally intended.
-    pinnedRank: 18,
-    discipline: "Illustration",
-    deliverables: "Key Art",
-    categories: ["Cars"],
-    summary: "The new Bronco, reveal day.",
-    heroCaption: "",
-    brief: [
-      "I used to own an 80's Bronco, so when the new one was released I was obsessed. Had to draw my favourite combo out in the desert.",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    cardRatio: "1/1",
-    // "In car category, change the bronco to 4/5 to better fit next to
-    // honda," per Josh — taller frame reads better beside Honda's 16/9
-    // span than the square. Same cardImageByCategory mechanism as
-    // Wagamama/L.A. Pride's Murals covers; every other view keeps the
-    // 1/1 above untouched.
-    cardImageByCategory: {
-      Cars: {
-        ratio: "4/5",
-        alt: "Ford Bronco, three-quarter rear, parked in the desert",
-        src: "/work/ford-bronco/01-bronco-2021.webp",
-      },
-    },
-    hero: {
-      ratio: "1/1",
-      alt: "Ford Bronco, three-quarter rear, parked in the desert",
-      src: "/work/ford-bronco/01-bronco-2021.webp",
-    },
-    gallery: [],
-    featured: false,
-  },
-  {
-    slug: "tilda-rice",
-    title: "Tilda Rice",
-    client: "Tilda",
-    // TRIAL: "Flavour Animations > Tilda Rice," per Josh — cardLabel
-    // spells out the full "Tilda Rice" rather than falling back to the
-    // bare client field. See Project.cardTitle.
-    cardTitle: "Flavour Animations",
-    cardLabel: "Tilda Rice",
-    year: 2022,
-    discipline: "Illustration",
-    deliverables: "Illustrations for Animation",
-    categories: ["Motion"],
-    summary: "Illustrations for three animated Tilda ads, one per flavour.",
-    heroCaption: "Illustration for three animated Tilda Rice ads (Katsu Curry, Indonesian Fried Rice and Masala), 2022.",
-    brief: [
-      "Tilda commissioned illustration work for a set of three animated ads, one per flavour (Katsu Curry, Indonesian Fried Rice and Masala), animated by Rave Growl via agency Havas.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Animation", name: "Rave Growl" },
-      { role: "Agency", name: "Havas" },
-      { role: "Client", name: "Tilda" },
-    ],
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "Tilda Indonesian Fried Rice packaging",
-      src: "/work/tilda-rice/01-fried-rice.webp",
-    },
-    // Sits above the write-up, hero stays out of the page body — see
-    // Project.videoRow and Project.heroHiddenOnPage. `hero` still picks the
-    // /work gallery card's thumbnail (see ProjectCard's baseImage) even
-    // though it doesn't render on the project page itself.
-    heroHiddenOnPage: true,
-    // Posters are each flavour's own product shot — these clips have sound,
-    // so they never autoplay, and without a poster the row sits on whatever
-    // first frame the browser bothers to decode.
-    videoRow: [
-      {
-        src: "/work/tilda-rice/katsu.mp4",
-        alt: "Katsu Curry Rice animation",
-        poster: "/work/tilda-rice/02-katsu-curry.webp",
-        sound: true,
-      },
-      {
-        src: "/work/tilda-rice/fried-rice.mp4",
-        alt: "Indonesian Fried Rice animation",
-        poster: "/work/tilda-rice/01-fried-rice.webp",
-        sound: true,
-      },
-      {
-        src: "/work/tilda-rice/masala.mp4",
-        alt: "Masala Rice animation",
-        poster: "/work/tilda-rice/03-masala-rice.webp",
-        sound: true,
-      },
-    ],
-    // The product shots moved onto the clips above as posters — an empty
-    // gallery keeps them off the page body, but getCardHoverImage would
-    // then find no second image, so the /work card's hover swap is pinned
-    // to the same katsu shot it auto-picked when the gallery was here.
-    cardHoverImage: {
-      ratio: "1/1",
-      alt: "Tilda Katsu Curry Rice packaging",
-      src: "/work/tilda-rice/02-katsu-curry.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "california-magazine",
-    title: "California Magazine",
-    client: "California Magazine",
-    // TRIAL: same Editorial pattern as Boat International — see
-    // Project.cardTitle.
-    cardTitle: "Editorial",
-    cardLabel: "California Magazine",
-    year: 2019,
-    // Takes Womp Money Bench's old slot right after Vogue's horizontal —
-    // "the 4/5 frames i want next to the two horizontals are: sound of
-    // driving as is and the california egg," per Josh.
-    pinnedRank: 11,
-    discipline: "Editorial Illustration",
-    deliverables: "Half-Page Illustration",
-    categories: ["Editorial"],
-    summary: "An egg, nested in a bed of California poppies.",
-    heroCaption: "A half-page illustration for California Magazine, on the state's growing fertility industry, 2019.",
-    brief: [
-      "A half-page illustration for California Magazine, running alongside a piece on the state becoming a hub for fertility development: an egg held in a bed of California poppies, the state flower.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "California Magazine" },
-    ],
-    cardRatio: "4/5",
-    hero: {
-      ratio: "4/5",
-      alt: "An egg, nested in California poppies",
-      src: "/work/california-magazine/01-california-mag.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "kiehls-trevor-project",
-    title: "Kiehl's Pride Campaign",
-    client: "Kiehl's",
-    // TRIAL: same trim as Levi's Rainbow Rodeo — see Project.cardTitle.
-    cardTitle: "Pride Campaign",
-    year: 2023,
-    discipline: "Pride Campaign",
-    deliverables: "Packaging · Parade Float",
-    categories: ["LGBTQ+"],
-    summary: "A Pride parade, wrapped around a jar of face cream.",
-    heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
-    brief: [
-      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project: a parade scene built into limited-edition packaging across Kiehl's product line, with the same artwork on a float in the New York City Pride parade. A portion of proceeds went to the charity.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Agency", name: "Havas" },
-      { role: "Client", name: "Kiehl's" },
-    ],
-    // True ratio (2400x2400) — pinned rather than left to RATIO_CYCLE's
-    // chance assignment, same fix as the other unpinned cards found
-    // alongside the Bum Selfie 3D report.
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "Limited-edition Kiehl's Ultra Facial Cream, Pride campaign packaging",
-      src: "/work/kiehls-trevor-project/01-kiehls-trevor-project-face-cream-ultra-facial-cream.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "The full cast of characters",
-      src: "/work/kiehls-trevor-project/02-characters-1.webp",
-    },
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "The full cast of characters",
-        src: "/work/kiehls-trevor-project/03-characters-2.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Kiehl's × Josh McKenna",
-        src: "/work/kiehls-trevor-project/04-press-quote.webp",
-      },
-    ],
-  },
-  {
-    slug: "costa-smeralda",
-    title: "Costa Smeralda",
-    client: "Costa Smeralda",
-    // TRIAL: "Posters > Costa Smeralda," per Josh — see Project.cardTitle.
-    cardTitle: "Posters",
-    cardLabel: "Costa Smeralda",
-    year: 2022,
-    discipline: "Illustration",
-    deliverables: "3 Posters",
-    categories: [],
-    summary: "Vintage-style travel posters for three Costa Smeralda hotels.",
-    heroCaption: "A set of travel posters for three Costa Smeralda hotels (Cala di Volpe, Romazzino and Cervo), 2022.",
-    hideHeroCaptions: true,
-    brief: [
-      "A set of travel posters for three Costa Smeralda hotels: Cala di Volpe, Romazzino and Cervo.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "Costa Smeralda" },
-    ],
-    // No-border crops, specifically for the /work card — Romazzino leads,
-    // Cala di Volpe swaps in on hover.
-    cardRatio: "4/5",
-    cardImage: {
-      ratio: "4/5",
-      alt: "Hotel Romazzino",
-      src: "/work/costa-smeralda/02-romazzino-no-border.webp",
-    },
-    cardHoverImage: {
-      ratio: "4/5",
-      alt: "Hotel Cala di Volpe",
-      src: "/work/costa-smeralda/01-cala-di-volpe-no-border.webp",
-    },
-    // All three side by side, each keeping its own printed border — square
-    // corners rather than the sitewide rounded frame, same reasoning as
-    // Beefbar's posters: a rounded clip would cut into a border that's
-    // already part of the artwork.
-    hero: {
-      ratio: "3/4",
-      alt: "Hotel Cala di Volpe",
-      src: "/work/costa-smeralda/01-cala-di-volpe.webp",
-      square: true,
-    },
-    heroPair: {
-      // True ratio updated to match Cala di Volpe's — Josh re-exported
-      // Romazzino specifically so all three posters would match height on
-      // the project page.
-      ratio: "3/4",
-      alt: "Hotel Romazzino",
-      src: "/work/costa-smeralda/02-romazzino.webp",
-      square: true,
-    },
-    heroThird: {
-      // True ratio (0.7072) — closer to 12/17 than the 3/4 this would
-      // otherwise snap to.
-      ratio: "12/17",
-      alt: "Hotel Cervo",
-      src: "/work/costa-smeralda/03-smeralda-cervo.webp",
-      square: true,
-    },
-    gallery: [],
-  },
-  // LGBTQ Centre lived here — archived to lib/archived-projects.ts per
-  // Josh ("don't want it displayed rn"), not deleted; see that file for
-  // the restore path.
-  {
-    slug: "wsj-airpods-rich",
-    title: "Wall Street Journal",
-    client: "The Wall Street Journal",
-    // TRIAL: "Editorial > The Wall Street Journal," per Josh — see
-    // Project.cardTitle.
-    cardTitle: "Editorial",
-    cardLabel: "The Wall Street Journal",
-    year: 2019,
-    yearLabel: "February 2019",
-    discipline: "Editorial Illustration",
-    deliverables: "1 Illustration",
-    categories: ["Editorial"],
-    summary: "Ears wearing AirPods, for a piece on headphones as a status symbol.",
-    heroCaption: "For \"Do AirPods Make You Look Rich? These Millennials Think So,\" by Jacob Gallagher, WSJ, February 2019.",
-    hideHeroCaptions: true,
-    brief: [
-      "Jacob Gallagher's piece was about AirPods becoming a status symbol on sight: a $159 pair of headphones read as wealth from across a subway platform.",
-    ],
-    credits: [
-      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Writer", name: "Jacob Gallagher" },
-      { role: "Client", name: "The Wall Street Journal" },
-    ],
-    // Pinned, not left to RATIO_CYCLE — per Josh, the /work card can't land
-    // on 4/5 for this one.
-    cardRatio: "1/1",
-    hero: {
-      ratio: "3/2",
-      alt: "Three ears in a row, each wearing an AirPod",
-      src: "/work/wsj-airpods-rich/01-illustration.webp",
-    },
-    heroPair: {
-      ratio: "172/273",
-      alt: "The piece as it ran on WSJ.com",
-      src: "/work/wsj-airpods-rich/02-article.webp",
-    },
-    gallery: [],
-  },
-  // Ace & Tate lived here — archived to lib/archived-projects.ts per
-  // Josh, not deleted; see that file for the restore path.
-  {
-    slug: "monocle-downward-trend",
-    title: "Monocle Editorial",
-    client: "Monocle",
-    // TRIAL: "trim it anyway," per Josh — same Editorial/Monocle pattern
-    // as monocle-spot-illo. See Project.cardTitle.
-    cardTitle: "Editorial",
-    cardLabel: "Monocle",
-    // The page itself keeps the piece's real name (matches the article
-    // it ran alongside — see heroCaption below) even though the grid
-    // card shows the generic "Editorial" both Monocle pieces share.
-    pageTitle: "Downward Trend",
-    year: 2018,
-    yearLabel: "October 2018, Issue 117",
-    // Nudged up from 21, seating between Bombay Sapphire (17) and
-    // Bronco (18) — "bring the monocle heel up a little," per Josh.
-    pinnedRank: 17.5,
-    discipline: "Editorial Illustration",
-    deliverables: "1 Spot Illo",
-    categories: ["Editorial"],
-    summary: "A stiletto heel, cracking under its own weight.",
-    heroCaption: "For \"Downward Trend,\" Sophie Grove's piece on the decline of the high heel, Monocle, October 2018.",
-    brief: [
-      "A spot illustration for Monocle, alongside Sophie Grove's piece on high heels falling out of fashion: runways and front rows moving toward flats and trainers.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Writer", name: "Sophie Grove" },
-      { role: "Client", name: "Monocle" },
-    ],
-    // Drawn to run small next to a column of text, same as Sumo — the
-    // usual full-bleed hero shows it at a scale it was never meant to be
-    // seen at.
-    heroSize: "spot",
-    // True ratio (1049x1311, an exact 4/5) — pinned rather than left to
-    // RATIO_CYCLE's chance assignment, same fix as the other unpinned
-    // cards found alongside the Bum Selfie 3D report.
-    cardRatio: "4/5",
-    hero: {
-      ratio: "4/5",
-      alt: "A stiletto heel, cracked clean through",
-      src: "/work/monocle-downward-trend/01-monocle-heel-snap.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "away-pride-stickers",
-    title: "Away",
-    client: "Away",
-    // TRIAL: "Pride Sticker Set > Away," per Josh — see Project.cardTitle.
-    cardTitle: "Pride Sticker Set",
-    cardLabel: "Away",
-    year: 2019,
-    discipline: "Pride Campaign",
-    deliverables: "Sticker Set",
-    categories: ["LGBTQ+", "Icons"],
-    summary: "Two couples, a rainbow and a sunbather, sized to fit on a suitcase.",
-    heroCaption: "A set of five Pride stickers, available in Away's stores throughout Pride month, 2019.",
-    brief: [
-      "Away commissioned a set of five Pride stickers, available in-store throughout Pride month 2019. They looked great on the aluminium luggage.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "Away" },
-    ],
-    // The /work card leads with the luggage mockup now, per Josh — hover
-    // swaps to the flat sticker set. True ratio (2000x2328, reduced
-    // 250/291), matching cardImage so the card isn't cropped.
-    cardRatio: "250/291",
-    cardImage: {
-      ratio: "250/291",
-      alt: "The sticker set, applied to Away luggage",
-      src: "/work/away-pride-stickers/01-sticker-luggage.webp",
-    },
-    cardHoverImage: {
-      ratio: "4/5",
-      alt: "The full sticker set",
-      src: "/work/away-pride-stickers/02-sticker-set.webp",
-    },
-    // Both true 4/5 now that the mockup's been re-exported at high res —
-    // paired side by side, full column width (not `small`, per Josh — the
-    // resolution isn't a concern anymore, so no reason to cap them).
-    hero: {
-      ratio: "4/5",
-      alt: "The full sticker set",
-      src: "/work/away-pride-stickers/02-sticker-set.webp",
-    },
-    // True ratio (2000x2328, reduced 250/291) — the reshoot's crop is no
-    // longer an exact 4/5.
-    heroPair: {
-      ratio: "250/291",
-      alt: "The sticker set, applied to Away luggage",
-      src: "/work/away-pride-stickers/01-sticker-luggage.webp",
-      caption: false,
-    },
-    gallery: [],
-  },
-  {
-    // Merged with the former wagamama-brighton project — two Wagamama Pride
-    // window commissions a year apart, character work similar enough
-    // between them that they read better as one project than two. Brighton
-    // (2023, the stronger piece) leads as hero; the 2022 UK-wide "Proud
-    // Beyond Pride" vinyl and its installation photos moved into the
-    // gallery, along with one kept Brighton detail shot (the other three —
-    // close-up character crops, the most repetitive part — were dropped).
-    slug: "wagamama-pride",
-    title: "Wagamama Pride",
-    client: "Wagamama",
-    // TRIAL: "Pride Windows > Wagamama," per Josh — see Project.cardTitle.
-    cardTitle: "Pride Windows",
-    cardLabel: "Wagamama",
-    year: 2023,
-    yearLabel: "2022–2023",
-    // Swapped down into Honda's old slot so Honda could move "almost at
-    // the top," per Josh — same 5/3 landscape span-2 shape, so trading
-    // pinnedRank only swaps the two of them. See honda-super-n's own
-    // comment.
-    pinnedRank: 13,
-    discipline: "Pride Campaign",
-    deliverables: "Vinyl Window Display",
-    categories: ["LGBTQ+", "Murals"],
-    summary: "Pride windows for Wagamama: every UK restaurant in 2022, then Brighton's own in 2023.",
-    heroCaption: "The full artwork, designed for Wagamama's Brighton window, 2023.",
-    brief: [
-      "For Pride month 2022, Wagamama wanted one window design that could run across every UK restaurant at once: the same artwork, resized and designed differently at each site's own window shape, from a full corner display at Marble Arch to an equally huge multi-window front at Old Street.",
-      "The year after, Wagamama's Brighton restaurant got its own dedicated window which is now a permanent feature.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Installation Photography", name: "Peter O'Sullivan" },
-      { role: "Client", name: "Wagamama" },
-    ],
-    // Card and hero share 16/9 now — Josh's clearer re-export of the
-    // Brighton artwork (Sep 2026, latest revision natively 3631x2042)
-    // retired the 1063/640 crop (and its ImageRatio member) the hero
-    // used to carry.
-    cardRatio: "5/3",
-    // On the Murals pill the card leads with the installed glass instead
-    // of the flat artwork — "the image is of the large window vinyl,"
-    // per Josh (Old Street, his pick over Marble Arch/Brighton). 5/3,
-    // not the photo's true 3/2 — "any horizontal frame on the grid has
-    // to follow the same 5/3 rule," per Josh, so a span-2 override
-    // levels against its row-mate the same way a span-2 cardRatio does.
-    cardImageByCategory: {
-      Murals: {
-        ratio: "5/3",
-        alt: "The window at Wagamama's Old Street",
-        src: "/work/wagamama-pride/03-old-street.webp",
-      },
-    },
-    hero: {
-      ratio: "16/9",
-      alt: "The full Wagamama Brighton Pride artwork",
-      src: "/work/wagamama-pride/01-brighton-hr-v2.webp",
-    },
-    // The first three run one after another, full width; the last two —
-    // both documentary installation shots — pair up instead, per Josh.
-    gallerySpans: [{ startIndex: 3, count: 2 }],
-    gallery: [
-      {
-        ratio: "16/9",
-        alt: "The full \"Proud Beyond Pride\" artwork",
-        src: "/work/wagamama-pride/02-proud-beyond-pride-full-hr.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "The window at Wagamama's Old Street",
-        src: "/work/wagamama-pride/03-old-street.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "The window at Wagamama's Marble Arch",
-        src: "/work/wagamama-pride/04-marble-arch.webp",
-      },
-      {
-        ratio: "2/3",
-        alt: "The sandwich board outside Wagamama's Old Street",
-        src: "/work/wagamama-pride/05-sandwich-board.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "The finished window, installed at Wagamama Brighton",
-        src: "/work/wagamama-pride/06-window-install.webp",
-      },
-    ],
-  },
-  {
-    slug: "atlanta-magazine",
-    title: "Atlanta Magazine",
-    client: "Atlanta Magazine",
-    // TRIAL: "Alphabet Soup > Atlanta Magazine," per Josh — the actual
-    // feature title (see brief below). See Project.cardTitle.
-    cardTitle: "Alphabet Soup",
-    cardLabel: "Atlanta Magazine",
-    year: 2022,
-    pinnedRank: 4,
-    yearLabel: "October 2022",
-    discipline: "Editorial Illustration",
-    deliverables: "1 Illustration",
-    categories: ["LGBTQ+", "Editorial"],
-    summary: "Every letter of the LGBTQIA2+ acronym in one illustration.",
-    heroCaption: "For Atlanta Magazine's October 2022 feature \"Alphabet Soup,\" written by Taylor Alxndr.",
-    brief: [
-      "Atlanta Magazine's October 2022 issue ran a piece by Taylor Alxndr explaining the growing LGBTQIA2+ acronym letter by letter.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Writer", name: "Taylor Alxndr" },
-      { role: "Client", name: "Atlanta Magazine" },
-    ],
-    // The artwork itself is a wide 16/9 wordmark banner — force the /work
-    // grid card to the same landscape shape instead of RATIO_CYCLE's default
-    // portrait, so the card isn't cropping down a wide piece.
-    cardRatio: "5/3",
-    cardImage: {
-      ratio: "16/9",
-      alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
-      src: "/work/atlanta-magazine/01-lgbtqiqa.webp",
-    },
-    // Editorial pill leads with the printed piece — "editorial
-    // section should show any mock as cover image," per Josh. Hover
-    // swaps back to the artwork itself (see WorkGallery). 5/3, not the
-    // photo's true 4/3 — same levelling rule as every other span-2
-    // frame on the grid.
-    cardImageByCategory: {
-      Editorial: {
-        ratio: "5/3",
-        alt: "The spread on the printed page.",
-        src: "/work/atlanta-magazine/02-magazine-landscape.webp",
-      },
-    },
-    hero: {
-      ratio: "16/9",
-      alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
-      src: "/work/atlanta-magazine/01-lgbtqiqa.webp",
-    },
-    gallery: [
-      {
-        ratio: "4/3",
-        alt: "The spread on the printed page.",
-        src: "/work/atlanta-magazine/02-magazine-landscape.webp",
-      },
-    ],
-  },
-  // Coca-Cola Moments lived here — archived to lib/archived-projects.ts
-  // per Josh, not deleted; see that file for the restore path.
-  {
-    slug: "boat-international",
-    title: "Boat International",
-    client: "Boat International",
-    // TRIAL: title === client verbatim, nothing to trim — "things like
-    // 'Boat International' need a title, so maybe editorial, by boat
-    // international," per Josh. Grid card reads "Editorial" over "By
-    // Boat International" instead of repeating the bare client name
-    // twice. Full page title untouched. See Project.cardTitle.
-    cardTitle: "Editorial",
-    cardLabel: "By Boat International",
-    year: 2024,
-    yearLabel: "December 2024",
-    discipline: "Editorial Illustration",
-    deliverables: "1 Illustration",
-    categories: ["Editorial"],
-    summary: "A solar-powered dayboat, for a feature on solar yachts.",
-    heroCaption: "For Boat International's December 2024 feature on solar-powered yachts.",
-    brief: [
-      "Boat International commissioned this for a piece by Sam Fortescue on solar tech finally reaching mid-sized yachts, the 12- to 24-metre range that's always been stuck between too much power-hungry kit and not enough battery capacity to run it quietly.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "Boat International" },
-    ],
-    // The artwork is a true 4/5, not RATIO_CYCLE's default alternation —
-    // same fix as monocle-spot-illo and coca-cola-moments.
-    cardRatio: "4/5",
-    // Editorial pill leads with the printed piece — "editorial
-    // section should show any mock as cover image," per Josh. Hover
-    // swaps back to the artwork itself (see WorkGallery).
-    cardImageByCategory: {
-      Editorial: {
-        ratio: "4/5",
-        alt: "The spread on the printed page.",
-        src: "/work/boat-international/02-boat-international-mockup.webp",
-      },
-    },
-    hero: {
-      ratio: "4/5",
-      alt: "A dayboat at anchor, tethered to a sun-shaped solar balloon.",
-      src: "/work/boat-international/01-boat-international.webp",
-    },
-    heroPair: {
-      ratio: "4/5",
-      alt: "The spread on the printed page.",
-      src: "/work/boat-international/02-boat-international-mockup.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "step-journal",
-    title: "Step Journal",
-    client: "STEP Journal",
-    // TRIAL: "Magazine Cover > Step Journal," per Josh — see
-    // Project.cardTitle.
-    cardTitle: "Magazine Cover",
-    cardLabel: "Step Journal",
-    year: 2019,
-    yearLabel: "August/September 2019",
-    discipline: "Editorial Illustration",
-    deliverables: "1 Cover Illustration",
-    categories: ["Editorial"],
-    summary: "One house, cut open to show every tax inside.",
-    heroCaption: "The cover for STEP Journal's August/September 2019 issue, Volume 27/Issue 7.",
-    brief: [
-      "STEP Journal's cover story was about the tax complexity buried in owning property: capital gains, inheritance, income tax, all stacking up. The brief needed one image that read that complexity at a glance, for an audience of trust and estate professionals who already know the subject.",
-      "A knife cuts straight through the house, exposing it like a cross-section, each layer labelled with the tax that applies to it.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "STEP Journal" },
-    ],
-    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
-    // happened to also give 4/5, but only by chance of array position.
-    cardRatio: "4/5",
-    // Editorial pill leads with the printed piece — "editorial
-    // section should show any mock as cover image," per Josh. Hover
-    // swaps back to the artwork itself (see WorkGallery).
-    cardImageByCategory: {
-      Editorial: {
-        ratio: "4/5",
-        alt: "The cover on the printed issue.",
-        src: "/work/step-journal/02-step-journal-cover-mockup.webp",
-      },
-    },
-    hero: {
-      ratio: "4/5",
-      alt: "A house sliced open by a knife, its layers labelled with capital gains, inheritance and income tax.",
-      src: "/work/step-journal/01-step-journal.webp",
-    },
-    heroPair: {
-      ratio: "4/5",
-      alt: "The cover on the printed issue.",
-      src: "/work/step-journal/02-step-journal-cover-mockup.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "weapons-of-reason-gay-divide",
-    title: "Weapons of Reason",
-    client: "Weapons of Reason",
-    // TRIAL: "The Gay Divide > Weapons of Reason," per Josh — the actual
-    // feature title (see brief below). See Project.cardTitle.
-    cardTitle: "The Gay Divide",
-    cardLabel: "Weapons of Reason",
-    year: 2019,
-    yearLabel: "The Inequality Issue, 2019",
-    discipline: "Editorial Illustration",
-    deliverables: "Editorial Illustration",
-    categories: ["LGBTQ+", "Editorial"],
-    summary: "A mechanic, rising from under the hood in heels.",
-    heroCaption: "Illustrated for \"The Gay Divide,\" Weapons of Reason's The Inequality Issue, 2019.",
-    brief: [
-      "Weapons of Reason commissioned illustration for \"The Gay Divide,\" a feature in The Inequality Issue on how the LGB+ pay gap may have its roots in homophobic bullying and a lack of LGBTQ+ education in schools, following two people's experiences of how that bullying shaped the classes they took and the careers that followed.",
-      "The brief asked for ruthlessly simple, iconic concepts within Weapons of Reason's prescribed 19-colour palette, each piece limited to 2–5 of those colours to keep a consistent brand feel across the issue.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Words", name: "Jamie Broadway" },
-      { role: "Client", name: "Weapons of Reason" },
-    ],
-    cardRatio: "1/1",
-    cardImage: {
-      ratio: "1/1",
-      alt: "A mechanic, living his truth in pink heels",
-      src: "/work/weapons-of-reason-gay-divide/04-mechanic-bg.webp",
-    },
-    // True ratio 1.7637 (4000x2268) — close enough to 16/9 (1.7778) to snap
-    // with no visible crop. Full-width, no heroPair, so the spread reads
-    // as wide as the site's usual two-up hero grid instead of one column
-    // of it — per Josh, the spread should lead the page. Replaced the
-    // original flat export with Josh's mockup-shadow render.
-    hero: {
-      ratio: "16/9",
-      alt: "The Gay Divide spread, opening page",
-      src: "/work/weapons-of-reason-gay-divide/01-spread-final-hr.webp",
-    },
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "A mechanic, living his truth in pink heels",
-        src: "/work/weapons-of-reason-gay-divide/04-mechanic-bg.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "The spread, held open and read in print",
-        src: "/work/weapons-of-reason-gay-divide/01-ins-post-arrive-2.webp",
-      },
-    ],
-  },
-  {
-    slug: "opto-markets-2019",
-    title: "OPTO Mag",
-    client: "CMC Markets",
-    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
-    cardLabel: "CMC Markets",
-    year: 2019,
-    yearLabel: "OPTO Issue 03, Jan/Feb 2019",
-    // Last of the pinned block. Its old rank-22/23/24 square row is
-    // dissolved (denseSquare dropped with it) — see
-    // rooted-journal-editorial's own pinnedRank comment.
-    pinnedRank: 24,
-    discipline: "Editorial Illustration",
-    deliverables: "Cover + 2 Opener Illustrations",
-    categories: ["Editorial"],
-    summary: "Two oversized numerals, packed with everything trading in 2019.",
-    heroCaption: "One of two opener illustrations for OPTO's Issue 03 cover story, \"The Markets in 2019,\" CMC Markets, Jan/Feb 2019.",
-    brief: [
-      "CMC Markets commissioned the cover and two opener illustrations for OPTO magazine's Issue 03 cover story, \"The Markets in 2019\": trading intelligence on what was coming next across retail, cars, tech, media, banks, AI & AR, cannabis, medtech, fintech and esports, with a sector's icons built into the oversized \"2019\" numerals themselves.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "CMC Markets" },
-    ],
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "The '2019' opener, packed with delivery drones, self-driving cars and social platform icons",
-      src: "/work/opto-markets-2019/02-opener-1-final.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "The second '2019' opener, packed with cannabis, gaming and fintech icons",
-      src: "/work/opto-markets-2019/03-opener-2-final.webp",
-    },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
-        src: "/work/opto-markets-2019/01-front-cover.webp",
-      },
-    ],
-    // Explicit, not getCardHoverImage's default (heroPair wins first, so
-    // it'd swap in the second opener) — Josh wants the cover as the
-    // /work hover swap specifically.
-    cardHoverImage: {
-      ratio: "4/5",
-      alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
-      src: "/work/opto-markets-2019/01-front-cover.webp",
-    },
-  },
-  {
-    slug: "vogue-sun-tan",
-    title: "Vogue Magazine",
-    client: "Vogue Magazine",
-    // TRIAL: same Editorial pattern as the other magazine credits — see
-    // Project.cardTitle.
-    cardTitle: "Editorial",
-    cardLabel: "Vogue Magazine",
-    // The page itself keeps the piece's real name (matches the series'
-    // subject — see summary below) even though the grid card shows the
-    // generic "Editorial" every magazine credit shares.
-    pageTitle: "Safe Tanning Editorial",
-    year: 2018,
-    // Pinned to the middle of /work's curated block, regardless of year
-    // — Josh wants this one prominent despite being older than most of
-    // the rest, just not leading the page.
-    pinnedRank: 8,
-    discipline: "Editorial Illustration",
-    deliverables: "3 Spot Illustrations",
-    categories: ["Editorial"],
-    // Standardized to 16/9 with the other landscape /work cards, not the
-    // hero's true 1.6 — still clears LANDSCAPE_SPAN_RATIO (1.3) either way,
-    // so it spans two columns automatically, same as Bombay Sapphire.
-    cardRatio: "5/3",
-    summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
-    heroCaption: "Tanning Tips, the first of a three-part series on tanning safely.",
-    brief: [
-      "A three-part editorial series for Vogue on how to tan safely: SPF, shade during peak hours, protective clothing.",
-    ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
-    // True ratio (1.5), not the old 16/10 — Josh's refreshed exports are
-    // natively 3:2, same fix as UAL Booklets' reshoot.
-    hero: {
-      ratio: "3/2",
-      alt: "Applying sunscreen, hat pulled low against the sun.",
-      src: "/work/vogue-sun-tan/01-vogue-sun-1.webp",
-    },
-    gallery: [
-      {
-        ratio: "3/2",
-        alt: "SPF protection is key.",
-        src: "/work/vogue-sun-tan/02-vogue-sun-2.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Covering up and avoiding midday sun.",
-        src: "/work/vogue-sun-tan/03-vogue-sun-3.webp",
-      },
-    ],
-  },
   {
     slug: "instagram-sticker",
     title: "Instagram Pride Sticker",
@@ -1990,1041 +686,145 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "womp-first-3d-character",
-    title: "First 3D Character",
+    slug: "honda-super-n",
+    title: "Honda Super N",
+    // "Honda" / "Super N", not the generic last-word-only rule's "Honda
+    // Super" / "N" — see titleBreakIndex's own doc comment.
+    titleBreakIndex: 1,
     client: "Personal",
     year: 2026,
-    // Sunk with the rest of the Womp 3D series — "put all 3d except
-    // cowboy hat at the bottom," per Josh, ending its one-day stint at
-    // 23 in the Rooted Journal/OPTO square row (denseSquare dropped with
-    // it; that row is dissolved, see rooted-journal-editorial's own
-    // comment). See Project.sinkRank.
-    sinkRank: 2,
-    discipline: "3D Illustration",
-    deliverables: "1 Render",
-    categories: ["3D"],
-    summary: "A beanie, a moustache, an earring: the first character built in Womp.",
+    // First swapped ranks with Bombay Sapphire to sit just after Vogue
+    // ("squeeze the honda under atl and above vogue," per Josh), then
+    // swapped again with Wagamama Pride (2, see its own comment) to move
+    // "almost at the top," per Josh. Both swaps traded with another 5/3
+    // landscape span-2 card, so only the two involved ever move — every
+    // other card's column and position stays untouched (verified each
+    // time — a plain insertion instead reflowed ~20 other cards, since
+    // MasonryGrid's bin-packer carries column-height state forward from
+    // wherever a span-2 card lands). Bronco no longer lands next to
+    // Honda in the Cars category's own dense pack now that Honda's this
+    // far up — see Bronco's own pinnedRank comment.
+    pinnedRank: 2,
+    discipline: "Illustration",
+    deliverables: "Key Art · Animation",
+    // Motion added alongside Cars — the turntable animation is a real
+    // deliverable here, not just a hero flourish, per Josh.
+    categories: ["Cars", "Motion"],
+    summary: "A kei car on stretched wheels, sitting far too low.",
     heroCaption: "",
     brief: [
-      "Modelled in Womp, a browser-based 3D tool. This is the first character I built in 3D, before Pato. Wanted to push my 2D character features like round ears, tiny eyes, silver capped tooth and bring them into three dimensions.",
+      "I drew the Honda N-One when I first saw it, cut to today and it's now available as a Super N. Slammed, with a body kit, wide arches and spoiler. I want one.",
+      "Illustrated in Figma, animated in Cavalry.",
     ],
-    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
-    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
-    // happened to also give 1/1, but only by chance of array position.
-    cardRatio: "1/1",
-    heroSize: "spot",
-    hero: {
-      ratio: "1/1",
-      alt: "A beanie, a moustache, an earring",
-      src: "/work/womp-first-3d-character/01-blue-face.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "womp-bum-selfie",
-    title: "Bum Selfie",
-    client: "Personal",
-    year: 2026,
-    // Sunk with the rest of the Womp 3D series — see Money Bench's own
-    // sinkRank comment (Last Call alone stays pinned).
-    sinkRank: 3,
-    discipline: "3D Illustration",
-    deliverables: "2 Renders · 1 Turnaround",
-    // Motion added — the turnaround is a real animated deliverable, same
-    // as the other Womp turnarounds and Honda Super N's own turntable.
-    categories: ["3D", "Motion"],
-    summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
-    // Displayed caption, distinct from hero.alt (screen readers still get
-    // the plain description) — per Josh: "Who wants this as a resin
-    // collectible?!"
-    heroCaption: "Who wants this as a collectible?!",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool. A glossy figure bent over taking a selfie of its own ass.",
-      "A 3D take on [Bum Selfie](/work/bum-selfie), the flat illustration it started from.",
-    ],
-    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Pinned — this was the one Womp 3D project left unpinned, so the
-    // /work grid silently handed it whatever RATIO_CYCLE landed on for
-    // its position (including landscape values the portrait render was
-    // never shot for). "It should be 1/1," per Josh.
-    cardRatio: "1/1",
-    // 4/5 across all three frames in the row — per Josh, over each
-    // asset's own true ratio (renders are 8/9, the video's 1078x1438 is
-    // ≈3/4), so hero/heroPair/video crop to a matching frame instead of
-    // each keeping its native shape.
-    hero: {
-      ratio: "4/5",
-      alt: "Bum selfie",
-      src: "/work/womp-bum-selfie/01-orang.webp",
-    },
-    heroPair: {
-      ratio: "4/5",
-      alt: "Bum selfie, head-on",
-      // Only one caption line for the row — heroCaption already carries
-      // it under the first frame.
-      caption: false,
-      src: "/work/womp-bum-selfie/02-bum-selfie-front.webp",
-    },
-    // Video sits beside the pair, third-up, rather than full-width below —
-    // at full width the portrait clip ran oversized next to the two
-    // renders above it. Same "pair" position Last Call uses, extended to
-    // a three-across row when heroPair is also set.
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Turntable animation leads the page. Real audio track Josh wants
+    // audible — sound: true swaps the muted/looping ambient treatment for
+    // native controls (play/pause, mute, volume) and no autoplay, same as
+    // Nomad Wheels' promo film: never force sound on a visitor who didn't
+    // ask for it. The title card ("SUPER-N" on the lime pill) is composited
+    // in as the literal final frame, held for 1.5s — "make the title card
+    // of the video the final frame," per Josh. Poster is the clip's own
+    // sticker-badge frame (extracted at 7.95s, just before the title card),
+    // not the default hero.src fallback — "make this the cover photo of
+    // the video," per Josh.
+    // Grid card autoplays the same clip muted/looping (ProjectCard never
+    // forwards heroVideo's sound flag to the card), same mechanism as
+    // Instagram Sticker's turnaround.
+    cardVideo: true,
     heroVideo: {
-      src: "/work/womp-bum-selfie/03-bum-selfie-video.mp4",
-      alt: "The bum selfie, turning",
-      position: "pair",
-      ratio: "4/5",
-    },
-    gallery: [],
-  },
-  {
-    slug: "womp-jimny",
-    title: "Jimny",
-    client: "Personal",
-    year: 2026,
-    // Sunk with the rest of the Womp 3D series — see Money Bench's own
-    // sinkRank comment.
-    sinkRank: 4,
-    discipline: "3D Illustration",
-    deliverables: "1 Turnaround · 3 Renders",
-    categories: ["Cars", "3D", "Motion"],
-    summary: "My favourite car, modelled in Womp.",
-    heroCaption: "",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool. A gloopy, wompy homage to my favourite car, the Jimny.",
-    ],
-    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Not the true 1/1 — Josh's call, 4/5 reads better here than the
-    // RATIO_CYCLE-by-chance square did. Pinned explicitly either way.
-    cardRatio: "4/5",
-    // Closes the page instead of leading it — see the "outro" case in
-    // Project.heroVideo's position doc comment. `hero` still carries a
-    // still (used for the /work card).
-    heroVideo: {
-      src: "/work/womp-jimny/00-turnaround.mp4",
-      alt: "The Jimny, turning",
-      position: "outro",
-    },
-    // Three renders side by side up top, captions off — see heroThird's
-    // doc comment.
-    hideHeroCaptions: true,
-    hero: {
-      ratio: "1/1",
-      alt: "The Jimny, front three-quarter",
-      src: "/work/womp-jimny/02-front.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "The Jimny, from the back",
-      src: "/work/womp-jimny/01-back.webp",
-    },
-    heroThird: {
-      ratio: "1/1",
-      alt: "The Jimny, side profile",
-      src: "/work/womp-jimny/03-side.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "womp-twingo",
-    title: "Twingo",
-    client: "Personal",
-    year: 2026,
-    // Sunk with the rest of the Womp 3D series — see Money Bench's own
-    // sinkRank comment.
-    sinkRank: 5,
-    discipline: "3D Illustration",
-    deliverables: "2 Renders",
-    categories: ["Cars", "3D"],
-    summary: "The Renault Twingo, remixed and rendered twice.",
-    heroCaption: "",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool. My own take on the Renault Twingo, a remix of the MK1 and the new Twingo EV, with side vents and chunky arches borrowed from the RenaultSport Espace and the turbo era.",
-    ],
-    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
-    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
-    // happened to also give 4/5, but only by chance of array position.
-    cardRatio: "4/5",
-    // Only two images, both the same subject in two colourways — side by
-    // side reads better than a full-width hero and a lone gallery image.
-    hero: {
-      ratio: "4/5",
-      alt: "The Twingo, in yellow",
-      src: "/work/womp-twingo/01-yellow.webp",
-    },
-    heroPair: {
-      ratio: "4/5",
-      alt: "The Twingo, in black",
-      src: "/work/womp-twingo/02-black.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "womp-money-bench",
-    title: "Money Bench",
-    client: "Personal",
-    year: 2026,
-    // Sunk with the rest of the Womp 3D series — "put all 3d except
-    // cowboy hat at the bottom," per Josh (the cowboy hat is Last Call,
-    // which keeps its pinnedRank 14). Leads the sunk block since it led
-    // the series while pinned (11.5). See Project.sinkRank.
-    sinkRank: 1,
-    discipline: "3D Illustration",
-    deliverables: "2 Renders",
-    categories: ["Editorial", "3D"],
-    summary: "Tapping into the coffee fund.",
-    heroCaption: "",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool. A couple sat on their credit card with falling cash, tapping into that coffee fund.",
-    ],
-    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
-    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
-    // was giving this 1/1 by chance.
-    cardRatio: "4/5",
-    hero: {
-      ratio: "4/5",
-      alt: "Two on the bench",
-      src: "/work/womp-money-bench/01-bench.webp",
-    },
-    heroPair: {
-      ratio: "4/5",
-      alt: "Alone on the bench",
-      src: "/work/womp-money-bench/02-bench-blue-guy-02.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "womp-pato",
-    title: "Pato",
-    client: "Personal",
-    year: 2026,
-    // Sunk with the rest of the Womp 3D series — see Money Bench's own
-    // sinkRank comment.
-    sinkRank: 6,
-    discipline: "3D Illustration",
-    deliverables: "2 Renders · 1 Turnaround",
-    categories: ["3D", "Motion"],
-    summary: "Three legs, full confidence.",
-    heroCaption: "",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool. Pato, my three-legged dog.",
-    ],
-    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
-    // True ratio — was silently cropping to 1/1 via RATIO_CYCLE's chance
-    // assignment; the actual renders are 4/5.
-    cardRatio: "4/5",
-    // Video sits below the two renders rather than leading the page —
-    // the renders are the artwork, the clip is supplementary.
-    heroVideo: {
-      src: "/work/womp-pato/03-pato-video.mp4",
-      alt: "Pato, turning",
-      position: "bottom",
-    },
-    hero: {
-      ratio: "4/5",
-      alt: "Pato",
-      src: "/work/womp-pato/01-pato.webp",
-    },
-    heroPair: {
-      // Josh recropped the render itself to 4/5, matching hero — no
-      // CSS crop needed to land the two frames at the same size.
-      ratio: "4/5",
-      alt: "Pato, from behind",
-      src: "/work/womp-pato/02-pato-back.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "womp-last-call",
-    title: "Last Call",
-    client: "Personal",
-    year: 2026,
-    // Unpinned — "swap mr porter with 3d cowboy hat last call," per
-    // Josh: Mr Porter took this project's old rank 14. This can't land
-    // in Mr Porter's exact old slot (the unpinned band sorts by year,
-    // and 2026 is the newest on the site), so it leads the unpinned
-    // band instead, right after the pinned block. The rest of the Womp
-    // 3D series stays sunk at the bottom; this was the "except cowboy
-    // hat" carve-out and remains the one Womp piece above it.
-    discipline: "3D Illustration",
-    deliverables: "1 Render · 1 Turnaround",
-    categories: ["3D", "Motion"],
-    summary: "Last call at the bar for this lost cowboy.",
-    heroCaption: "The Last Call hat and keyring",
-    brief: [
-      "Modelled in Womp, a browser-based 3D tool. A cowboy that missed his last train.",
-    ],
-    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
-    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
-    // happened to also give 4/5, but only by chance of array position.
-    cardRatio: "4/5",
-    heroVideo: {
-      src: "/work/womp-last-call/02-last-call-video.mp4",
-      alt: "The Last Call hat and keyring, turning",
-      position: "pair",
-      ratio: "4/5",
-    },
-    hero: {
-      ratio: "4/5",
-      alt: "The Last Call hat and keyring",
-      src: "/work/womp-last-call/01-last-call.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "rooted-journal-editorial",
-    title: "Rooted Journal",
-    client: "The Rooted Journal",
-    // TRIAL: "Living Regeneratively > The Rooted Journal," per Josh —
-    // see Project.cardTitle.
-    cardTitle: "Living Regeneratively",
-    cardLabel: "The Rooted Journal",
-    year: 2025,
-    // Nudged up from 22, seating between Bronco (18) and HSBC (19) —
-    // "bring... the rooted journal [up a little]," per Josh. That move
-    // dissolved the old rank-22/23/24 square row (First 3D Character
-    // sank to the bottom with the Womp series the same day, leaving
-    // OPTO partnerless at 24), so denseSquare came off all three —
-    // a lone denseSquare 1/1 seated against 4/5 neighbours in a dense
-    // view is exactly the uneven-row problem the flag exists to avoid.
-    pinnedRank: 18.5,
-    yearLabel: "Spring 2025",
-    discipline: "Editorial Illustration",
-    deliverables: "10 Spot Illustrations",
-    // Icons dropped — Editorial alone covers this; "Icons" is reserved
-    // for sticker/logo/pictogram sets (Levi's, Away, Instagram), a
-    // different kind of work than an editorial spot illo.
-    categories: ["Editorial"],
-    summary: "Ten spot icons for a feature on regenerative living.",
-    heroCaption: "\"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
-    brief: [
-      "Ten spot illustrations showing regenerative-living habits, a feature written by Dustin Beatty for The Rooted Journal.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "The Rooted Journal" },
-    ],
-    // Ten small spot icons — a full-width hero or a two-column gallery
-    // blows any one of them up far past the scale they were drawn at.
-    // poster-grid (Beefbar's pattern) skips the big hero and opens
-    // straight into a grid instead — five columns, so the ten icons land
-    // as two clean rows with the reference photos trailing in their own
-    // partial row after.
-    galleryLayout: "poster-grid",
-    posterGridColumns: 5,
-    // The /work grid card leads with its own standalone illustration, not
-    // any of the ten spot icons below — Josh's call. Solid brown
-    // background, so no contain/canvas-letterbox workaround needed here
-    // either. cardRatio forces the card frame itself square to match.
-    cardRatio: "1/1",
-    cardImage: {
-      ratio: "1/1",
-      alt: "A woman kneeling among wildflowers",
-      src: "/work/rooted-journal-editorial/01-rooted-journal2.webp",
-    },
-    hero: {
-      // PNG exports (Josh replaced the original JPEG-derived set) — real
-      // alpha around each icon's halo shape, not a baked-in white square.
-      // `contain` shows the true edges against canvas instead of letting
-      // the transparent corners reveal the placeholder-blue surface.
-      ratio: "1/1",
-      fit: "contain",
-      alt: "Engage in Forest Restoration",
-      src: "/work/rooted-journal-editorial/06-reforest.webp",
-    },
-    gallery: [
-      {
-        ratio: "1/1",
-        fit: "contain",
-        alt: "Support Local, Organic Farmers",
-        src: "/work/rooted-journal-editorial/01-support-local.webp",
-      },
-      {
-        ratio: "1/1",
-        fit: "contain",
-        alt: "Plant Native Species",
-        src: "/work/rooted-journal-editorial/02-plant-native.webp",
-      },
-      {
-        ratio: "1/1",
-        fit: "contain",
-        alt: "Preserve Heirloom Seeds",
-        src: "/work/rooted-journal-editorial/07-preserve-heirloom.webp",
-      },
-      {
-        ratio: "1/1",
-        fit: "contain",
-        alt: "Harvest Rainwater",
-        src: "/work/rooted-journal-editorial/04-harvest-rainwater.webp",
-      },
-      {
-        ratio: "1/1",
-        fit: "contain",
-        alt: "Reduce Single-Use Plastics",
-        src: "/work/rooted-journal-editorial/03-fishing.webp",
-      },
-      {
-        ratio: "1/1",
-        fit: "contain",
-        alt: "Buy Secondhand",
-        src: "/work/rooted-journal-editorial/05-buy-seconds.webp",
-      },
-      {
-        ratio: "1/1",
-        fit: "contain",
-        alt: "Upcycle or Repair Items",
-        src: "/work/rooted-journal-editorial/09-upcycle.webp",
-      },
-      {
-        ratio: "1/1",
-        fit: "contain",
-        alt: "Compost Food Scraps",
-        src: "/work/rooted-journal-editorial/08-compost.webp",
-      },
-      {
-        ratio: "1/1",
-        fit: "contain",
-        alt: "Advocate for Sustainable Policies",
-        src: "/work/rooted-journal-editorial/10-advocate.webp",
-      },
-    ],
-  },
-  {
-    slug: "figma-vitra-virgil",
-    title: "Vitra",
-    client: "Personal",
-    year: 2025,
-    // Takes Yeti's old rank 7 — "swap yeti and vitra on the gallery,"
-    // per Josh; Yeti took this entry's old unpinned array slot.
-    pinnedRank: 7,
-    discipline: "Illustration",
-    deliverables: "1 Illustration",
-    categories: ["Editorial"],
-    summary: "The Vitra × Virgil Abloh chair, repeated as wallpaper.",
-    heroCaption: "",
-    brief: ["Made in Figma Draw. A tribute to a great design collaboration: Vitra × Virgil Abloh, 2025."],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Portrait source — RATIO_CYCLE would otherwise land the /work card
-    // on a square or landscape slot depending on position.
-    cardRatio: "4/5",
-    heroSize: "spot",
-    hero: {
-      ratio: "4/5",
-      alt: "Vitra × Virgil Abloh",
-      src: "/work/figma-vitra-virgil/01-vitgr-hr3.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "cowboy",
-    title: "Cowboy",
-    client: "Personal",
-    year: 2025,
-    // Backfills Underground's old slot once it moved up to 5 —
-    // "cowboy higher," per Josh.
-    pinnedRank: 16,
-    discipline: "Illustration",
-    deliverables: "1 Illustration",
-    categories: [],
-    summary: "Stone-faced cowboy — an experiment in leather texture.",
-    heroCaption: "",
-    brief: ["Stone-faced cowboy — an experiment in leather texture."],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Portrait source — pinned so RATIO_CYCLE can't land the /work card
-    // on a square or landscape slot depending on position. 4/5 is the
-    // replacement artwork's exact ratio (1638×2048); the original
-    // closer-crop export was 3/4.
-    cardRatio: "4/5",
-    heroSize: "spot",
-    // Full-figure replacement on yellow — "replace the cowboy with
-    // this," per Josh. New filename so Next's image cache can't serve
-    // the old crop.
-    hero: {
-      ratio: "4/5",
-      alt: "The cowboy, in his embroidered jacket",
-      src: "/work/cowboy/02-cowboy-full-hr.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "figma-underground",
-    title: "Underground",
-    client: "Personal",
-    year: 2025,
-    // Moved up from 16 to 5 (Underground's old slot backfilled by
-    // Cowboy) — "bring underground up higher," per Josh.
-    pinnedRank: 5,
-    discipline: "Illustration",
-    deliverables: "1 Illustration",
-    categories: [],
-    summary: "Mind the closing doors.",
-    heroCaption: "",
-    brief: [
-      "Made in Figma Draw. \"Mind the closing doors,\" with the Underground roundel split down the middle, a hand and a bag caught in the gap.",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Portrait source — RATIO_CYCLE would otherwise land the /work card
-    // on a square or landscape slot depending on position.
-    cardRatio: "4/5",
-    heroSize: "spot",
-    hero: {
-      ratio: "4/5",
-      alt: "Underground roundel",
-      src: "/work/figma-underground/01-underground-final-hr.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "figma-servebots",
-    title: "Servebots",
-    client: "Personal",
-    year: 2025,
-    discipline: "Illustration",
-    deliverables: "1 Illustration",
-    categories: [],
-    summary: "LA's chaotic sidewalk delivery bots.",
-    heroCaption: "",
-    brief: [
-      "Made in Figma Draw. A nod to Serve Robotics' sidewalk delivery bots, the chaotic little things that tear up LA's pavements and stop dead halfway along a crossing.",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Portrait source — RATIO_CYCLE would otherwise land the /work card
-    // on a square or landscape slot depending on position.
-    cardRatio: "4/5",
-    heroSize: "spot",
-    hero: {
-      ratio: "4/5",
-      alt: "Servebots on delivery",
-      src: "/work/figma-servebots/01-servebots-hr3.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "figma-yeti",
-    title: "Yeti",
-    client: "Personal",
-    year: 2025,
-    // Unpinned — "swap yeti and vitra on the gallery," per Josh: Vitra
-    // took this project's old rank 7, and this entry took Vitra's old
-    // array slot among the unpinned 2025 pieces.
-    discipline: "Illustration",
-    deliverables: "1 Illustration",
-    categories: [],
-    summary: "A YETI cooler, occupied.",
-    heroCaption: "",
-    brief: [
-      "Made in Figma Draw. An ice cold yeti lounging inside a YETI cooler, cos why not?",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Portrait source — RATIO_CYCLE would otherwise land the /work card
-    // on a square or landscape slot depending on position.
-    cardRatio: "4/5",
-    heroSize: "spot",
-    hero: {
-      ratio: "4/5",
-      alt: "The YETI cooler",
-      src: "/work/figma-yeti/01-yeti-hr.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "figma-bmw-z1",
-    title: "BMW Z1",
-    client: "Personal",
-    year: 2025,
-    pinnedRank: 15,
-    discipline: "Illustration",
-    deliverables: "2 Illustrations",
-    categories: ["Cars"],
-    summary: "A niche favourite, picked for doors that drop straight into the sill.",
-    heroCaption: "",
-    brief: [
-      "Made in Figma Draw. The BMW Z1. A niche favourite, picked for doors that drop straight down into the sill.",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Portrait source — RATIO_CYCLE would otherwise land the /work card
-    // on a square or landscape slot depending on position.
-    cardRatio: "4/5",
-    // Neither alt adds anything past the title above them.
-    hideHeroCaptions: true,
-    hero: {
-      ratio: "4/5",
-      alt: "BMW Z1, four colourways",
-      src: "/work/figma-bmw-z1/01-carousel-hr.webp",
-    },
-    heroPair: {
-      ratio: "4/5",
-      alt: "BMW Z1",
-      src: "/work/figma-bmw-z1/02-single.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "figma-rimowa",
-    title: "Rimowa",
-    client: "Personal",
-    year: 2025,
-    discipline: "Illustration",
-    deliverables: "1 Illustration",
-    categories: [],
-    summary: "The ribbed aluminium Rimowa, at speed.",
-    heroCaption: "",
-    brief: [
-      "Made in Figma Draw. The ribbed aluminium Rimowa, dragged flat-out mid-selfie.",
-    ],
-    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Portrait source — RATIO_CYCLE would otherwise land the /work card
-    // on a square or landscape slot depending on position.
-    cardRatio: "4/5",
-    heroSize: "spot",
-    hero: {
-      ratio: "4/5",
-      alt: "The Rimowa, at speed",
-      src: "/work/figma-rimowa/01-rimowa2.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "nomad-wheels-505-livery",
-    // Renamed from "Nomad 505 Touring" sitewide, per Josh — this is the
-    // real project.title now, not a cardTitle override, so it's what
-    // shows everywhere: H1, breadcrumb, browser tab, OG tags.
-    title: "505 Wheel Launch",
-    client: "Nomad Wheel Co.",
-    cardLabel: "Nomad Wheel Co.",
-    year: 2024,
-    pinnedRank: 12,
-    discipline: "Automotive Livery",
-    deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
-    // "remove 505 from icons," per Josh.
-    categories: ["Cars"],
-    summary: "Livery and posters for Nomad's 505 wheel launch, filmed on Josh's own Land Cruiser.",
-    heroCaption:
-      "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch.",
-    brief: [
-      "Nomad Wheel Co. asked for a full graphic package around the launch of the 505 Touring wheel: vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. I reinterpreted popular brands as plays on the Nomad name.",
-      "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film.",
-    ],
-    credits: [
-      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Client", name: "Nomad Wheel Co." },
-    ],
-    // Josh's own re-crop, a true 4/5 with no empty margin — used as-is for
-    // both the /work card and the project page's own hero, so no separate
-    // cardImage override is needed (ProjectCard falls back to hero).
-    cardRatio: "4/5",
-    // Promo film leads the page (real audio, native controls — sound:
-    // true), with the poster and the flyer as a two-up underneath it
-    // rather than a full-width hero followed by a single gallery image.
-    heroVideo: {
-      src: "/work/nomad-wheels-505-livery/04-touring-promo.mp4",
-      alt: "The 505 Touring launch promotional film",
+      src: "/work/honda-super-n/19-super-n-animation-final.mp4",
+      alt: "The Super N, turning, ending on the Super-N title card",
+      poster: "/work/honda-super-n/21-super-n-video-poster.webp",
       sound: true,
-      poster: "/work/nomad-wheels-505-livery/05-video-poster.webp",
+      ratio: "16/9",
     },
-    hero: {
-      ratio: "4/5",
-      alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
-      src: "/work/nomad-wheels-505-livery/01-nomad-505.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "505 Touring release event flyer",
-      src: "/work/nomad-wheels-505-livery/01-socials-02.webp",
-    },
-    gallery: [],
-  },
-  {
-    slug: "mr-porter-miami-invites",
-    title: "Mr Porter Invites",
-    client: "Mr Porter",
-    // TRIAL: "Miami Invites > Mr Porter," per Josh — see Project.cardTitle.
-    cardTitle: "Miami Invites",
-    cardLabel: "Mr Porter",
-    year: 2021,
-    // Takes Last Call's old rank — "swap mr porter with 3d cowboy hat
-    // last call," per Josh; Last Call leads the unpinned band now (see
-    // its own comment).
-    pinnedRank: 14,
-    discipline: "Event Invitation",
-    deliverables: "2 Invitations",
-    categories: [],
-    // Overrides effectiveCardRatio's RATIO_CYCLE fallback -- without this
-    // the /work grid was landing this card on a square slot regardless of
-    // cardImage's own declared ratio (ProjectCard's `ratio` prop always
-    // wins over the image's own, so both need to agree). "Need to be
-    // 4-5," per Josh.
-    cardRatio: "4/5",
-    summary: "Same building, same car, same palm trees — just moved the sun.",
-    heroCaption: "The day and night invitation designs for the same Mr Porter Miami event.",
-    brief: [
-      "Mr Porter needed two invitations for the same Miami event: one for day, one for night.",
-    ],
-    credits: [
-      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Client", name: "Mr Porter" },
-    ],
-    // True 707/1000 ratio (a near-exact 1/√2, ISO-paper proportions) —
-    // 3/4 would have cropped noticeably. Square corners, not the sitewide
-    // rounded frame — "remove the curved frame radius for these (like
-    // beefbar)," per Josh: these have their own border treatment baked
-    // into the artwork the same way Beefbar's posters do, and rounding
-    // would clip across it.
-    hero: {
-      ratio: "707/1000",
-      alt: "Mr Porter Miami invite — night",
-      src: "/work/mr-porter-miami-invites/01-mr-porter-night.webp",
-      square: true,
-    },
-    heroPair: {
-      ratio: "707/1000",
-      alt: "Mr Porter Miami invite — day",
-      src: "/work/mr-porter-miami-invites/02-mr-porter-day.webp",
-      square: true,
-    },
-    // Card preview gets its own day/night pair, cropped to 4/5 rather
-    // than the hero's true ratio — "in the gallery preview I have
-    // included day cover and night cover to be used... put it in a 4-5
-    // frame," per Josh. Night leads at rest, day crossfades in on hover
-    // (getCardHoverImage) — "need to be... the night image," per Josh.
+    // The hero (true 16/9, 3840x2160) is untouched, but the /work grid
+    // card frame uses 5/3, not 16/9 — same fix as Wagamama/Atlanta/etc:
+    // a span-2 card at true 16/9 renders ~32px shorter than a single-
+    // column 4/5 neighbour at this site's actual column width, so 5/3
+    // (the ratio that cancels that gap-vs-width difference) is what
+    // "same height" actually requires. Landscape card still spans two
+    // grid columns either way.
+    cardRatio: "5/3",
+    // Grid card leads with the lime/purple Super N build, then hovers to
+    // the stock white N-One on purple — "green background purple car
+    // first, then purple bg white car," per Josh. Explicit on both,
+    // because the gallery now leads with white angles and the
+    // hero/getCardHoverImage fallbacks would each pick the wrong one.
     cardImage: {
-      ratio: "4/5",
-      alt: "Mr Porter Miami invite — night",
-      src: "/work/mr-porter-miami-invites/03-mr-porter-night-cover.webp",
+      ratio: "16/9",
+      alt: "Honda Super N",
+      src: "/work/honda-super-n/12-super-n-front-final.webp",
     },
     cardHoverImage: {
-      ratio: "4/5",
-      alt: "Mr Porter Miami invite — day",
-      src: "/work/mr-porter-miami-invites/04-mr-porter-day-cover.webp",
+      ratio: "16/9",
+      alt: "The stock N-One",
+      src: "/work/honda-super-n/14-n-one-front-final.webp",
     },
-    gallery: [],
-  },
-  {
-    slug: "monocle-spot-illo",
-    title: "Monocle - Sumo",
-    client: "Monocle",
-    // TRIAL: generic-category title like Boat International, not a trim
-    // to "Sumo" — "Editorial > Monocle," per Josh. See Project.cardTitle.
-    cardTitle: "Editorial",
-    cardLabel: "Monocle",
-    // The page itself keeps the piece's real name (matches the subject —
-    // see summary below) even though the grid card shows the generic
-    // "Editorial" both Monocle pieces share.
-    pageTitle: "Sumo Spot Illustration",
-    year: 2018,
-    // Back to 9, next to Vogue's horizontal (its slot before the Rooted
-    // Journal/OPTO square-row grouping pulled it to 23) — "sumo higher,"
-    // per Josh. First 3D Character now fills 23 in its place, so the
-    // Rooted Journal/OPTO trio stays a trio — see that pinnedRank
-    // comment. No longer denseSquare since it's not part of that row.
-    pinnedRank: 9,
-    // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
-    // square export, and leaving this to the cycle meant a pinnedRank
-    // reorder elsewhere could silently flip this card's parity and crop it
-    // into 4/5 with no change to this project's own fields at all.
-    cardRatio: "1/1",
-    discipline: "Editorial Illustration",
-    deliverables: "1 Spot Illo",
-    // Icons dropped — same reasoning as Rooted Journal's own comment.
-    categories: ["Editorial"],
-    summary: "A sumo wrestler's whole physique, reduced to a knot and a topknot.",
-    heroCaption: "",
-    brief: [
-      "A spot illustration for Monocle. It ran about 4cm across with text wrapped around it, so it had to stay recognisable through just the topknot and the knotted mawashi belt.",
-    ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
-    // Drawn to run small next to a column of text — the usual full-bleed
-    // hero shows it at a scale it was never meant to be seen at.
-    heroSize: "spot",
-    // Solid teal background, not the old transparent export — cover fit
-    // needs no contain/canvas-letterbox workaround. Last of the /work
-    // pinned set's transparent-bg cards to get one.
+    // -final filenames throughout — Josh's final export pass swapped every
+    // render's background (purple car on lime, white N-One on purple),
+    // new names so Next's image cache can't serve an old shade.
     hero: {
-      ratio: "1/1",
-      alt: "Spot illustration — sumo wrestler",
-      src: "/work/monocle-spot-illo/01-monocle-sumo-26.webp",
+      ratio: "16/9",
+      alt: "The stock N-One",
+      src: "/work/honda-super-n/14-n-one-front-final.webp",
     },
-    gallery: [],
-  },
-  {
-    slug: "ual-welcome-booklets",
-    title: "UAL Booklets",
-    client: "University of the Arts London",
-    // TRIAL: "Welcome Booklets > University of the Arts London," per
-    // Josh — see Project.cardTitle.
-    cardTitle: "Welcome Booklets",
-    cardLabel: "University of the Arts London",
-    year: 2017,
-    yearLabel: "2017/18/19/20",
-    discipline: "Illustration",
-    deliverables: "Covers · Inside Pages · Spots · Maps",
-    categories: ["Editorial"],
-    // Square, not the old 5/3 landscape span — "UAL can be square if
-    // it's trouble," per Josh, and it was: near the bottom of the ALL
-    // grid it sat back-to-back with the other tail landscapes (Bombay
-    // Sapphire, HP Print Over Hate), and consecutive 2-span cards at the
-    // tail strand a column with nothing left to fill it. As a 1/1 single
-    // it fills a column instead of needing one filled. Centre crop of
-    // the 3/2 spread photo — the ID card queue sits mid-frame, checked.
-    cardRatio: "1/1",
-    summary: "Welcome booklets for UAL's six colleges, each in its own colour-way.",
-    heroCaption: "One interior spread, reused across all six 2017–2020 college editions.",
-    brief: [
-      "UAL is six separate colleges, and the welcome guide had to work for all of them at once: one set of content, run six times in six colour-ways.",
-      "Same drawings throughout: a wayfinding map, campus-life spots, the ID card queue. Ran for four editions, 2017 to 2020.",
+    // Full-width rows for every three-quarter view — "i liked the large
+    // view on the project page," per Josh. Hierarchy per Josh: front 3/4
+    // first (white stock N-One as the hero), then Super N's own front and
+    // rear 3/4 (purple) — there's no genuine N-One rear 3/4 render, only
+    // straight front/rear shots, which belong in the squares below, not
+    // here ("anything straight on front or rear view is to remain in the
+    // small squares," per Josh). The four head-on/tail views close the
+    // page as one row of 1/1 squares (count: 4) — centre crops of the
+    // 16/9 sources, safe because the car sits dead centre in every
+    // render. The count: 1 spans keep the full-width rows out of the
+    // default two-up pairing.
+    gallerySpans: [
+      { startIndex: 0, count: 1 },
+      { startIndex: 1, count: 1 },
+      { startIndex: 2, count: 4 },
     ],
-    credits: [{ role: "Illustration", name: "Josh McKenna" }],
-    // Full reshoot -- "replace all images with these new ones," from a
-    // folder Josh named "Blue BG." Hero stays the ID card queue (kept
-    // "the same," per Josh) but now points at that reshoot's own version
-    // of the page. Map gets its own dedicated photo for the first time
-    // (previously the closest thing was a flat grid of covers wrongly
-    // captioned as the map) and leads the gallery -- "I want map to be
-    // featured second, then the covers etc after." Two new pages this
-    // round too: individual cover pairs shot against a blue backdrop
-    // (Wimbledon/LCC/CSM each next to the shared "Your creative future
-    // starts here" cover), and a new interior spread covering
-    // Commonplace, Events and Arts SU.
-    hero: {
-      ratio: "3/2",
-      alt: "Interior spread — the ID card queue",
-      src: "/work/ual-welcome-booklets/01-university-of-the-arts-img-4125.webp",
-    },
     gallery: [
       {
-        ratio: "3/2",
-        alt: "Interior spread — the wayfinding map",
-        src: "/work/ual-welcome-booklets/02-map.webp",
+        ratio: "16/9",
+        alt: "Honda Super N",
+        src: "/work/honda-super-n/12-super-n-front-final.webp",
       },
       {
-        ratio: "3/2",
-        alt: "Covers — six colour-ways",
-        src: "/work/ual-welcome-booklets/03-university-of-the-arts-img-4074.webp",
+        ratio: "16/9",
+        alt: "Super N — rear three-quarter",
+        src: "/work/honda-super-n/13-super-n-rear-final.webp",
       },
       {
-        ratio: "3/2",
-        alt: "Six covers — laid flat",
-        src: "/work/ual-welcome-booklets/04-university-of-the-arts-img-4111.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Wimbledon College of Arts, next to the shared cover design",
-        src: "/work/ual-welcome-booklets/05-university-of-the-arts-img-4037.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Central Saint Martins, next to the shared cover design",
-        src: "/work/ual-welcome-booklets/07-university-of-the-arts-img-4040.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Spines — Welcome Guide 2017/18",
-        src: "/work/ual-welcome-booklets/08-university-of-the-arts-img-4043.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Interior spread — the market stall",
-        src: "/work/ual-welcome-booklets/09-university-of-the-arts-img-4128.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Interior spread — the library page",
-        src: "/work/ual-welcome-booklets/10-university-of-the-arts-img-4067.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Interior spread — moving in",
-        src: "/work/ual-welcome-booklets/11-university-of-the-arts-img-4054.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Interior spread — Commonplace, Events and Arts SU",
-        src: "/work/ual-welcome-booklets/12-university-of-the-arts-img-4071.webp",
-      },
-      {
-        ratio: "3/2",
-        alt: "Interior spread — a student's own words",
-        src: "/work/ual-welcome-booklets/13-university-of-the-arts-img-4129.webp",
-      },
-    ],
-  },
-  {
-    slug: "voxi-pride",
-    title: "Voxi Pride",
-    client: "VOXI by Vodafone",
-    // TRIAL: "Pride Campaign > VOXI by Vodafone," per Josh — see
-    // Project.cardTitle.
-    cardTitle: "Pride Campaign",
-    cardLabel: "VOXI by Vodafone",
-    year: 2019,
-    // Grouped with HSBC (19) so both 1/1 cards seat together —
-    // "hsbc, voxi and google can be 1/1 on their own line," per Josh.
-    // It's All Love, this row's original third member, has since been
-    // archived to lib/archived-projects.ts, leaving this a duo.
-    pinnedRank: 20,
-    denseSquare: true,
-    discipline: "Pride Campaign",
-    deliverables: "Phone Cases · Flags · Pins · Social · Tees",
-    categories: ["LGBTQ+"],
-    summary: "Eleven characters, cut into pins, flags, cases and tees.",
-    heroCaption: "",
-    brief: [
-      "For VOXI, a side brand of Vodafone, I designed a Pride campaign and merchandise for the LGBTQIA+ community: the same set of characters, repeated across phone cases, flags, pins, social posts and tees.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "VOXI by Vodafone" },
-    ],
-    hero: {
-      // True ratio (3.3657), not the site's usual 16/10 — the "Endless
-      // Love" banner crop of the full cast.
-      ratio: "2400/713",
-      alt: "The full \"Endless Love\" banner artwork for VOXI's Pride campaign",
-      src: "/work/voxi-pride/01-banner.webp",
-      // Too narrow (short) a strip for the sitewide rounded frame to read
-      // right — square corners instead, per Josh.
-      square: true,
-    },
-    // The /work card leads with the phone case now, per Josh — hover swaps
-    // to the full-cast crop that used to lead. True ratio (1/1), matching
-    // cardImage so the card isn't cropped.
-    cardRatio: "1/1",
-    cardImage: {
-      ratio: "1/1",
-      alt: "VOXI × Josh McKenna, on a phone case",
-      src: "/work/voxi-pride/07-phone.webp",
-    },
-    cardHoverImage: {
-      ratio: "4/5",
-      alt: "Full cast, cropped for the card",
-      src: "/work/voxi-pride/02-card.webp",
-    },
-    // Uniform two-column grid (see GalleryGrid) rather than the usual
-    // two-up-then-full-width stack — six true-square images read better
-    // even, and it puts the two merch shots (phone case, pins) in their
-    // own row at the end instead of mixed in with the artwork.
-    galleryLayout: "grid",
-    gallery: [
-      {
+        // "You can drop the captions of the four little frames," per
+        // Josh — alt stays for accessibility, caption: false just hides
+        // ImageStack's printed <p>.
         ratio: "1/1",
-        alt: "Endless Love — framed square",
-        src: "/work/voxi-pride/03-vox-9.webp",
+        alt: "Super N — head on",
+        src: "/work/honda-super-n/15-super-n-square-front-final.webp",
+        caption: false,
       },
       {
         ratio: "1/1",
-        alt: "VOXI tile — the leopard print",
-        src: "/work/voxi-pride/04-vox-10.webp",
+        alt: "Super N — from behind",
+        src: "/work/honda-super-n/16-super-n-square-back-final.webp",
+        caption: false,
       },
       {
         ratio: "1/1",
-        alt: "VOXI tile — the peace sign",
-        src: "/work/voxi-pride/05-vox-11.webp",
+        alt: "Head on",
+        src: "/work/honda-super-n/17-n-one-square-front-final.webp",
+        caption: false,
       },
       {
+        // Purple-bg re-export replacing the earlier green-bg square —
+        // "the purple BG rear white car is to replace the green bg rear
+        // white car," per Josh.
         ratio: "1/1",
-        alt: "Endless Love — the kiss",
-        src: "/work/voxi-pride/06-vox-12.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "VOXI × Josh McKenna, on a phone case",
-        src: "/work/voxi-pride/07-phone.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "The artwork on pin badges",
-        src: "/work/voxi-pride/08-pins.webp",
-      },
-    ],
-  },
-  {
-    slug: "beefbar-posters",
-    title: "Beefbar",
-    client: "Beefbar",
-    // TRIAL: "Posters > Beefbar," per Josh — see Project.cardTitle.
-    cardTitle: "Posters",
-    cardLabel: "Beefbar",
-    year: 2019,
-    yearLabel: "2019–Present Day",
-    pinnedRank: 6,
-    discipline: "Illustration",
-    deliverables: "Illustrated Poster & Menu Design",
-    categories: [],
-    summary: "A new poster each time Beefbar opens somewhere new.",
-    heroCaption: "The Monte Carlo poster, Beefbar's flagship, part of the ongoing series.",
-    brief: [
-      "Every new Beefbar restaurant opening gets a poster, and matching menu design designed by me. Taking cues from the local culture and landmarks. An ongoing series since 2019, with a total of 40 designs.",
-    ],
-    credits: [{ role: "Graphic Design & Illustration", name: "Josh McKenna" }],
-    galleryLayout: "poster-grid",
-    // True ratio of the dedicated cover below (3000×3750 = an exact 4/5)
-    // — the card frame follows the cover, not the 12/17 the poster
-    // exports share.
-    cardRatio: "4/5",
-    // Dedicated /work-card cover ("replace the cover photo on work
-    // gallery," per Josh) — a borderless 4/5 Monte Carlo crop, so the
-    // card's round-corner clip has no printed border to cut across (the
-    // reason earlier covers came and went; see git history). Card only —
-    // the project page's poster grid still leads with the 12/17
-    // no-border Monte Carlo hero below.
-    cardImage: {
-      ratio: "4/5",
-      alt: "Beefbar Monte Carlo",
-      src: "/work/beefbar-posters/12-beefbar-cover.webp",
-    },
-    // True ratio (1358×1920 = 0.7073) snaps far closer to 12/17 (0.7059)
-    // than to the ingester's auto-picked 3/4 (0.75, a 5.9% crop) — 12/17
-    // also matches every other poster in this grid.
-    hero: {
-      ratio: "12/17",
-      alt: "Monte Carlo",
-      src: "/work/beefbar-posters/01-monte-carlo-no-border.webp",
-    },
-    // Each poster's own printed border is part of the artwork, kept
-    // visible — the grid runs square corners (see PosterGrid) instead of
-    // cropping it out. Luxembourg leads (was the cardImage override, still
-    // deserves prominence) so it lands second overall, right after Monte
-    // Carlo the hero; everything after that stays chronological, per Josh.
-    gallery: [
-      {
-        ratio: "12/17",
-        alt: "Luxembourg",
-        src: "/work/beefbar-posters/05-luxembourg.webp",
-      },
-      {
-        ratio: "12/17",
-        alt: "Belgrade",
-        src: "/work/beefbar-posters/03-belgrade-web.webp",
-      },
-      {
-        ratio: "12/17",
-        alt: "Comporta",
-        src: "/work/beefbar-posters/04-comporta-4.webp",
-      },
-      {
-        ratio: "15/22",
-        alt: "Malta",
-        src: "/work/beefbar-posters/01-malta-city-hr.webp",
-      },
-      {
-        ratio: "15/22",
-        alt: "St Tropez",
-        src: "/work/beefbar-posters/02-beefbar-st-tropez.webp",
-      },
-      {
-        ratio: "12/17",
-        alt: "Santorini",
-        src: "/work/beefbar-posters/11-santorini.webp",
-      },
-      {
-        ratio: "12/17",
-        alt: "Méribel",
-        src: "/work/beefbar-posters/07-meribel.webp",
-      },
-      {
-        ratio: "12/17",
-        alt: "Monaco",
-        src: "/work/beefbar-posters/08-monaco.webp",
+        alt: "From behind",
+        src: "/work/honda-super-n/20-n-one-rear-final.webp",
+        caption: false,
       },
     ],
   },
@@ -3192,6 +992,306 @@ export const projects: Project[] = [
     galleryLayout: "grid",
   },
   {
+    slug: "atlanta-magazine",
+    title: "Atlanta Magazine",
+    client: "Atlanta Magazine",
+    // TRIAL: "Alphabet Soup > Atlanta Magazine," per Josh — the actual
+    // feature title (see brief below). See Project.cardTitle.
+    cardTitle: "Alphabet Soup",
+    cardLabel: "Atlanta Magazine",
+    year: 2022,
+    pinnedRank: 4,
+    yearLabel: "October 2022",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Illustration",
+    categories: ["LGBTQ+", "Editorial"],
+    summary: "Every letter of the LGBTQIA2+ acronym in one illustration.",
+    heroCaption: "For Atlanta Magazine's October 2022 feature \"Alphabet Soup,\" written by Taylor Alxndr.",
+    brief: [
+      "Atlanta Magazine's October 2022 issue ran a piece by Taylor Alxndr explaining the growing LGBTQIA2+ acronym letter by letter.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Writer", name: "Taylor Alxndr" },
+      { role: "Client", name: "Atlanta Magazine" },
+    ],
+    // The artwork itself is a wide 16/9 wordmark banner — force the /work
+    // grid card to the same landscape shape instead of RATIO_CYCLE's default
+    // portrait, so the card isn't cropping down a wide piece.
+    cardRatio: "5/3",
+    cardImage: {
+      ratio: "16/9",
+      alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
+      src: "/work/atlanta-magazine/01-lgbtqiqa.webp",
+    },
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery). 5/3, not the
+    // photo's true 4/3 — same levelling rule as every other span-2
+    // frame on the grid.
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "5/3",
+        alt: "The spread on the printed page.",
+        src: "/work/atlanta-magazine/02-magazine-landscape.webp",
+      },
+    },
+    hero: {
+      ratio: "16/9",
+      alt: "The LGBTQIA2+ acronym rendered as a wordmark, with figures posed in and around the letters.",
+      src: "/work/atlanta-magazine/01-lgbtqiqa.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/3",
+        alt: "The spread on the printed page.",
+        src: "/work/atlanta-magazine/02-magazine-landscape.webp",
+      },
+    ],
+  },
+  {
+    slug: "figma-underground",
+    title: "Underground",
+    client: "Personal",
+    year: 2025,
+    // Moved up from 16 to 5 (Underground's old slot backfilled by
+    // Cowboy) — "bring underground up higher," per Josh.
+    pinnedRank: 5,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: [],
+    summary: "Mind the closing doors.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw. \"Mind the closing doors,\" with the Underground roundel split down the middle, a hand and a bag caught in the gap.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    heroSize: "spot",
+    hero: {
+      ratio: "4/5",
+      alt: "Underground roundel",
+      src: "/work/figma-underground/01-underground-final-hr.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "beefbar-posters",
+    title: "Beefbar",
+    client: "Beefbar",
+    // TRIAL: "Posters > Beefbar," per Josh — see Project.cardTitle.
+    cardTitle: "Posters",
+    cardLabel: "Beefbar",
+    year: 2019,
+    yearLabel: "2019–Present Day",
+    pinnedRank: 6,
+    discipline: "Illustration",
+    deliverables: "Illustrated Poster & Menu Design",
+    categories: [],
+    summary: "A new poster each time Beefbar opens somewhere new.",
+    heroCaption: "The Monte Carlo poster, Beefbar's flagship, part of the ongoing series.",
+    brief: [
+      "Every new Beefbar restaurant opening gets a poster, and matching menu design designed by me. Taking cues from the local culture and landmarks. An ongoing series since 2019, with a total of 40 designs.",
+    ],
+    credits: [{ role: "Graphic Design & Illustration", name: "Josh McKenna" }],
+    galleryLayout: "poster-grid",
+    // True ratio of the dedicated cover below (3000×3750 = an exact 4/5)
+    // — the card frame follows the cover, not the 12/17 the poster
+    // exports share.
+    cardRatio: "4/5",
+    // Dedicated /work-card cover ("replace the cover photo on work
+    // gallery," per Josh) — a borderless 4/5 Monte Carlo crop, so the
+    // card's round-corner clip has no printed border to cut across (the
+    // reason earlier covers came and went; see git history). Card only —
+    // the project page's poster grid still leads with the 12/17
+    // no-border Monte Carlo hero below.
+    cardImage: {
+      ratio: "4/5",
+      alt: "Beefbar Monte Carlo",
+      src: "/work/beefbar-posters/12-beefbar-cover.webp",
+    },
+    // True ratio (1358×1920 = 0.7073) snaps far closer to 12/17 (0.7059)
+    // than to the ingester's auto-picked 3/4 (0.75, a 5.9% crop) — 12/17
+    // also matches every other poster in this grid.
+    hero: {
+      ratio: "12/17",
+      alt: "Monte Carlo",
+      src: "/work/beefbar-posters/01-monte-carlo-no-border.webp",
+    },
+    // Each poster's own printed border is part of the artwork, kept
+    // visible — the grid runs square corners (see PosterGrid) instead of
+    // cropping it out. Luxembourg leads (was the cardImage override, still
+    // deserves prominence) so it lands second overall, right after Monte
+    // Carlo the hero; everything after that stays chronological, per Josh.
+    gallery: [
+      {
+        ratio: "12/17",
+        alt: "Luxembourg",
+        src: "/work/beefbar-posters/05-luxembourg.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Belgrade",
+        src: "/work/beefbar-posters/03-belgrade-web.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Comporta",
+        src: "/work/beefbar-posters/04-comporta-4.webp",
+      },
+      {
+        ratio: "15/22",
+        alt: "Malta",
+        src: "/work/beefbar-posters/01-malta-city-hr.webp",
+      },
+      {
+        ratio: "15/22",
+        alt: "St Tropez",
+        src: "/work/beefbar-posters/02-beefbar-st-tropez.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Santorini",
+        src: "/work/beefbar-posters/11-santorini.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Méribel",
+        src: "/work/beefbar-posters/07-meribel.webp",
+      },
+      {
+        ratio: "12/17",
+        alt: "Monaco",
+        src: "/work/beefbar-posters/08-monaco.webp",
+      },
+    ],
+  },
+  {
+    slug: "figma-vitra-virgil",
+    title: "Vitra",
+    client: "Personal",
+    year: 2025,
+    // Takes Yeti's old rank 7 — "swap yeti and vitra on the gallery,"
+    // per Josh; Yeti took this entry's old unpinned array slot.
+    pinnedRank: 7,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Editorial"],
+    summary: "The Vitra × Virgil Abloh chair, repeated as wallpaper.",
+    heroCaption: "",
+    brief: ["Made in Figma Draw. A tribute to a great design collaboration: Vitra × Virgil Abloh, 2025."],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    heroSize: "spot",
+    hero: {
+      ratio: "4/5",
+      alt: "Vitra × Virgil Abloh",
+      src: "/work/figma-vitra-virgil/01-vitgr-hr3.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "vogue-sun-tan",
+    title: "Vogue Magazine",
+    client: "Vogue Magazine",
+    // TRIAL: same Editorial pattern as the other magazine credits — see
+    // Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "Vogue Magazine",
+    // The page itself keeps the piece's real name (matches the series'
+    // subject — see summary below) even though the grid card shows the
+    // generic "Editorial" every magazine credit shares.
+    pageTitle: "Safe Tanning Editorial",
+    year: 2018,
+    // Pinned to the middle of /work's curated block, regardless of year
+    // — Josh wants this one prominent despite being older than most of
+    // the rest, just not leading the page.
+    pinnedRank: 8,
+    discipline: "Editorial Illustration",
+    deliverables: "3 Spot Illustrations",
+    categories: ["Editorial"],
+    // Standardized to 16/9 with the other landscape /work cards, not the
+    // hero's true 1.6 — still clears LANDSCAPE_SPAN_RATIO (1.3) either way,
+    // so it spans two columns automatically, same as Bombay Sapphire.
+    cardRatio: "5/3",
+    summary: "A three-part series on how to tan safely, from SPF to shade to protective clothing.",
+    heroCaption: "Tanning Tips, the first of a three-part series on tanning safely.",
+    brief: [
+      "A three-part editorial series for Vogue on how to tan safely: SPF, shade during peak hours, protective clothing.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // True ratio (1.5), not the old 16/10 — Josh's refreshed exports are
+    // natively 3:2, same fix as UAL Booklets' reshoot.
+    hero: {
+      ratio: "3/2",
+      alt: "Applying sunscreen, hat pulled low against the sun.",
+      src: "/work/vogue-sun-tan/01-vogue-sun-1.webp",
+    },
+    gallery: [
+      {
+        ratio: "3/2",
+        alt: "SPF protection is key.",
+        src: "/work/vogue-sun-tan/02-vogue-sun-2.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Covering up and avoiding midday sun.",
+        src: "/work/vogue-sun-tan/03-vogue-sun-3.webp",
+      },
+    ],
+  },
+  {
+    slug: "monocle-spot-illo",
+    title: "Monocle - Sumo",
+    client: "Monocle",
+    // TRIAL: generic-category title like Boat International, not a trim
+    // to "Sumo" — "Editorial > Monocle," per Josh. See Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "Monocle",
+    // The page itself keeps the piece's real name (matches the subject —
+    // see summary below) even though the grid card shows the generic
+    // "Editorial" both Monocle pieces share.
+    pageTitle: "Sumo Spot Illustration",
+    year: 2018,
+    // Back to 9, next to Vogue's horizontal (its slot before the Rooted
+    // Journal/OPTO square-row grouping pulled it to 23) — "sumo higher,"
+    // per Josh. First 3D Character now fills 23 in its place, so the
+    // Rooted Journal/OPTO trio stays a trio — see that pinnedRank
+    // comment. No longer denseSquare since it's not part of that row.
+    pinnedRank: 9,
+    // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
+    // square export, and leaving this to the cycle meant a pinnedRank
+    // reorder elsewhere could silently flip this card's parity and crop it
+    // into 4/5 with no change to this project's own fields at all.
+    cardRatio: "1/1",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Spot Illo",
+    // Icons dropped — same reasoning as Rooted Journal's own comment.
+    categories: ["Editorial"],
+    summary: "A sumo wrestler's whole physique, reduced to a knot and a topknot.",
+    heroCaption: "",
+    brief: [
+      "A spot illustration for Monocle. It ran about 4cm across with text wrapped around it, so it had to stay recognisable through just the topknot and the knotted mawashi belt.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // Drawn to run small next to a column of text — the usual full-bleed
+    // hero shows it at a scale it was never meant to be seen at.
+    heroSize: "spot",
+    // Solid teal background, not the old transparent export — cover fit
+    // needs no contain/canvas-letterbox workaround. Last of the /work
+    // pinned set's transparent-bg cards to get one.
+    hero: {
+      ratio: "1/1",
+      alt: "Spot illustration — sumo wrestler",
+      src: "/work/monocle-spot-illo/01-monocle-sumo-26.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "sound-of-driving",
     title: "The Sound of Driving",
     client: "Personal",
@@ -3231,6 +1331,306 @@ export const projects: Project[] = [
     },
     gallery: [],
     featured: true,
+  },
+  {
+    slug: "california-magazine",
+    title: "California Magazine",
+    client: "California Magazine",
+    // TRIAL: same Editorial pattern as Boat International — see
+    // Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "California Magazine",
+    year: 2019,
+    // Takes Womp Money Bench's old slot right after Vogue's horizontal —
+    // "the 4/5 frames i want next to the two horizontals are: sound of
+    // driving as is and the california egg," per Josh.
+    pinnedRank: 11,
+    discipline: "Editorial Illustration",
+    deliverables: "Half-Page Illustration",
+    categories: ["Editorial"],
+    summary: "An egg, nested in a bed of California poppies.",
+    heroCaption: "A half-page illustration for California Magazine, on the state's growing fertility industry, 2019.",
+    brief: [
+      "A half-page illustration for California Magazine, running alongside a piece on the state becoming a hub for fertility development: an egg held in a bed of California poppies, the state flower.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "California Magazine" },
+    ],
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "An egg, nested in California poppies",
+      src: "/work/california-magazine/01-california-mag.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "nomad-wheels-505-livery",
+    // Renamed from "Nomad 505 Touring" sitewide, per Josh — this is the
+    // real project.title now, not a cardTitle override, so it's what
+    // shows everywhere: H1, breadcrumb, browser tab, OG tags.
+    title: "505 Wheel Launch",
+    client: "Nomad Wheel Co.",
+    cardLabel: "Nomad Wheel Co.",
+    year: 2024,
+    pinnedRank: 12,
+    discipline: "Automotive Livery",
+    deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
+    // "remove 505 from icons," per Josh.
+    categories: ["Cars"],
+    summary: "Livery and posters for Nomad's 505 wheel launch, filmed on Josh's own Land Cruiser.",
+    heroCaption:
+      "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch.",
+    brief: [
+      "Nomad Wheel Co. asked for a full graphic package around the launch of the 505 Touring wheel: vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. I reinterpreted popular brands as plays on the Nomad name.",
+      "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film.",
+    ],
+    credits: [
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
+      { role: "Client", name: "Nomad Wheel Co." },
+    ],
+    // Josh's own re-crop, a true 4/5 with no empty margin — used as-is for
+    // both the /work card and the project page's own hero, so no separate
+    // cardImage override is needed (ProjectCard falls back to hero).
+    cardRatio: "4/5",
+    // Promo film leads the page (real audio, native controls — sound:
+    // true), with the poster and the flyer as a two-up underneath it
+    // rather than a full-width hero followed by a single gallery image.
+    heroVideo: {
+      src: "/work/nomad-wheels-505-livery/04-touring-promo.mp4",
+      alt: "The 505 Touring launch promotional film",
+      sound: true,
+      poster: "/work/nomad-wheels-505-livery/05-video-poster.webp",
+    },
+    hero: {
+      ratio: "4/5",
+      alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
+      src: "/work/nomad-wheels-505-livery/01-nomad-505.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "505 Touring release event flyer",
+      src: "/work/nomad-wheels-505-livery/01-socials-02.webp",
+    },
+    gallery: [],
+  },
+  {
+    // Merged with the former wagamama-brighton project — two Wagamama Pride
+    // window commissions a year apart, character work similar enough
+    // between them that they read better as one project than two. Brighton
+    // (2023, the stronger piece) leads as hero; the 2022 UK-wide "Proud
+    // Beyond Pride" vinyl and its installation photos moved into the
+    // gallery, along with one kept Brighton detail shot (the other three —
+    // close-up character crops, the most repetitive part — were dropped).
+    slug: "wagamama-pride",
+    title: "Wagamama Pride",
+    client: "Wagamama",
+    // TRIAL: "Pride Windows > Wagamama," per Josh — see Project.cardTitle.
+    cardTitle: "Pride Windows",
+    cardLabel: "Wagamama",
+    year: 2023,
+    yearLabel: "2022–2023",
+    // Swapped down into Honda's old slot so Honda could move "almost at
+    // the top," per Josh — same 5/3 landscape span-2 shape, so trading
+    // pinnedRank only swaps the two of them. See honda-super-n's own
+    // comment.
+    pinnedRank: 13,
+    discipline: "Pride Campaign",
+    deliverables: "Vinyl Window Display",
+    categories: ["LGBTQ+", "Murals"],
+    summary: "Pride windows for Wagamama: every UK restaurant in 2022, then Brighton's own in 2023.",
+    heroCaption: "The full artwork, designed for Wagamama's Brighton window, 2023.",
+    brief: [
+      "For Pride month 2022, Wagamama wanted one window design that could run across every UK restaurant at once: the same artwork, resized and designed differently at each site's own window shape, from a full corner display at Marble Arch to an equally huge multi-window front at Old Street.",
+      "The year after, Wagamama's Brighton restaurant got its own dedicated window which is now a permanent feature.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Installation Photography", name: "Peter O'Sullivan" },
+      { role: "Client", name: "Wagamama" },
+    ],
+    // Card and hero share 16/9 now — Josh's clearer re-export of the
+    // Brighton artwork (Sep 2026, latest revision natively 3631x2042)
+    // retired the 1063/640 crop (and its ImageRatio member) the hero
+    // used to carry.
+    cardRatio: "5/3",
+    // On the Murals pill the card leads with the installed glass instead
+    // of the flat artwork — "the image is of the large window vinyl,"
+    // per Josh (Old Street, his pick over Marble Arch/Brighton). 5/3,
+    // not the photo's true 3/2 — "any horizontal frame on the grid has
+    // to follow the same 5/3 rule," per Josh, so a span-2 override
+    // levels against its row-mate the same way a span-2 cardRatio does.
+    cardImageByCategory: {
+      Murals: {
+        ratio: "5/3",
+        alt: "The window at Wagamama's Old Street",
+        src: "/work/wagamama-pride/03-old-street.webp",
+      },
+    },
+    hero: {
+      ratio: "16/9",
+      alt: "The full Wagamama Brighton Pride artwork",
+      src: "/work/wagamama-pride/01-brighton-hr-v2.webp",
+    },
+    // The first three run one after another, full width; the last two —
+    // both documentary installation shots — pair up instead, per Josh.
+    gallerySpans: [{ startIndex: 3, count: 2 }],
+    gallery: [
+      {
+        ratio: "16/9",
+        alt: "The full \"Proud Beyond Pride\" artwork",
+        src: "/work/wagamama-pride/02-proud-beyond-pride-full-hr.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The window at Wagamama's Old Street",
+        src: "/work/wagamama-pride/03-old-street.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The window at Wagamama's Marble Arch",
+        src: "/work/wagamama-pride/04-marble-arch.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "The sandwich board outside Wagamama's Old Street",
+        src: "/work/wagamama-pride/05-sandwich-board.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "The finished window, installed at Wagamama Brighton",
+        src: "/work/wagamama-pride/06-window-install.webp",
+      },
+    ],
+  },
+  {
+    slug: "mr-porter-miami-invites",
+    title: "Mr Porter Invites",
+    client: "Mr Porter",
+    // TRIAL: "Miami Invites > Mr Porter," per Josh — see Project.cardTitle.
+    cardTitle: "Miami Invites",
+    cardLabel: "Mr Porter",
+    year: 2021,
+    // Takes Last Call's old rank — "swap mr porter with 3d cowboy hat
+    // last call," per Josh; Last Call sits in this project's old slot
+    // after Costa Smeralda (see its own comment).
+    pinnedRank: 14,
+    discipline: "Event Invitation",
+    deliverables: "2 Invitations",
+    categories: [],
+    // Overrides effectiveCardRatio's RATIO_CYCLE fallback -- without this
+    // the /work grid was landing this card on a square slot regardless of
+    // cardImage's own declared ratio (ProjectCard's `ratio` prop always
+    // wins over the image's own, so both need to agree). "Need to be
+    // 4-5," per Josh.
+    cardRatio: "4/5",
+    summary: "Same building, same car, same palm trees — just moved the sun.",
+    heroCaption: "The day and night invitation designs for the same Mr Porter Miami event.",
+    brief: [
+      "Mr Porter needed two invitations for the same Miami event: one for day, one for night.",
+    ],
+    credits: [
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
+      { role: "Client", name: "Mr Porter" },
+    ],
+    // True 707/1000 ratio (a near-exact 1/√2, ISO-paper proportions) —
+    // 3/4 would have cropped noticeably. Square corners, not the sitewide
+    // rounded frame — "remove the curved frame radius for these (like
+    // beefbar)," per Josh: these have their own border treatment baked
+    // into the artwork the same way Beefbar's posters do, and rounding
+    // would clip across it.
+    hero: {
+      ratio: "707/1000",
+      alt: "Mr Porter Miami invite — night",
+      src: "/work/mr-porter-miami-invites/01-mr-porter-night.webp",
+      square: true,
+    },
+    heroPair: {
+      ratio: "707/1000",
+      alt: "Mr Porter Miami invite — day",
+      src: "/work/mr-porter-miami-invites/02-mr-porter-day.webp",
+      square: true,
+    },
+    // Card preview gets its own day/night pair, cropped to 4/5 rather
+    // than the hero's true ratio — "in the gallery preview I have
+    // included day cover and night cover to be used... put it in a 4-5
+    // frame," per Josh. Night leads at rest, day crossfades in on hover
+    // (getCardHoverImage) — "need to be... the night image," per Josh.
+    cardImage: {
+      ratio: "4/5",
+      alt: "Mr Porter Miami invite — night",
+      src: "/work/mr-porter-miami-invites/03-mr-porter-night-cover.webp",
+    },
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "Mr Porter Miami invite — day",
+      src: "/work/mr-porter-miami-invites/04-mr-porter-day-cover.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "figma-bmw-z1",
+    title: "BMW Z1",
+    client: "Personal",
+    year: 2025,
+    pinnedRank: 15,
+    discipline: "Illustration",
+    deliverables: "2 Illustrations",
+    categories: ["Cars"],
+    summary: "A niche favourite, picked for doors that drop straight into the sill.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw. The BMW Z1. A niche favourite, picked for doors that drop straight down into the sill.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    // Neither alt adds anything past the title above them.
+    hideHeroCaptions: true,
+    hero: {
+      ratio: "4/5",
+      alt: "BMW Z1, four colourways",
+      src: "/work/figma-bmw-z1/01-carousel-hr.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "BMW Z1",
+      src: "/work/figma-bmw-z1/02-single.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "cowboy",
+    title: "Cowboy",
+    client: "Personal",
+    year: 2025,
+    // Backfills Underground's old slot once it moved up to 5 —
+    // "cowboy higher," per Josh.
+    pinnedRank: 16,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: [],
+    summary: "Stone-faced cowboy — an experiment in leather texture.",
+    heroCaption: "",
+    brief: ["Stone-faced cowboy — an experiment in leather texture."],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Portrait source — pinned so RATIO_CYCLE can't land the /work card
+    // on a square or landscape slot depending on position. 4/5 is the
+    // replacement artwork's exact ratio (1638×2048); the original
+    // closer-crop export was 3/4.
+    cardRatio: "4/5",
+    heroSize: "spot",
+    // Full-figure replacement on yellow — "replace the cowboy with
+    // this," per Josh. New filename so Next's image cache can't serve
+    // the old crop.
+    hero: {
+      ratio: "4/5",
+      alt: "The cowboy, in his embroidered jacket",
+      src: "/work/cowboy/02-cowboy-full-hr.webp",
+    },
+    gallery: [],
   },
   {
     slug: "bombay-sapphire",
@@ -3300,6 +1700,1395 @@ export const projects: Project[] = [
         ratio: "4/3",
         alt: "Bottle detail — botanicals from the Grains of Paradise",
         src: "/work/bombay-sapphire/08-bottles-macro.webp",
+      },
+    ],
+  },
+  // Ace & Tate lived here — archived to lib/archived-projects.ts per
+  // Josh, not deleted; see that file for the restore path.
+  {
+    slug: "monocle-downward-trend",
+    title: "Monocle Editorial",
+    client: "Monocle",
+    // TRIAL: "trim it anyway," per Josh — same Editorial/Monocle pattern
+    // as monocle-spot-illo. See Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "Monocle",
+    // The page itself keeps the piece's real name (matches the article
+    // it ran alongside — see heroCaption below) even though the grid
+    // card shows the generic "Editorial" both Monocle pieces share.
+    pageTitle: "Downward Trend",
+    year: 2018,
+    yearLabel: "October 2018, Issue 117",
+    // Nudged up from 21, seating between Bombay Sapphire (17) and
+    // Bronco (18) — "bring the monocle heel up a little," per Josh.
+    pinnedRank: 17.5,
+    discipline: "Editorial Illustration",
+    deliverables: "1 Spot Illo",
+    categories: ["Editorial"],
+    summary: "A stiletto heel, cracking under its own weight.",
+    heroCaption: "For \"Downward Trend,\" Sophie Grove's piece on the decline of the high heel, Monocle, October 2018.",
+    brief: [
+      "A spot illustration for Monocle, alongside Sophie Grove's piece on high heels falling out of fashion: runways and front rows moving toward flats and trainers.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Writer", name: "Sophie Grove" },
+      { role: "Client", name: "Monocle" },
+    ],
+    // Drawn to run small next to a column of text, same as Sumo — the
+    // usual full-bleed hero shows it at a scale it was never meant to be
+    // seen at.
+    heroSize: "spot",
+    // True ratio (1049x1311, an exact 4/5) — pinned rather than left to
+    // RATIO_CYCLE's chance assignment, same fix as the other unpinned
+    // cards found alongside the Bum Selfie 3D report.
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "A stiletto heel, cracked clean through",
+      src: "/work/monocle-downward-trend/01-monocle-heel-snap.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "ford-bronco",
+    title: "Ford Bronco",
+    client: "Personal",
+    year: 2021,
+    // Originally promoted so the Cars category filter's dense pack
+    // landed it beside Honda instead of Jimny — "swap jimny for the
+    // bronco, bring bronco up and to the right of honda," per Josh.
+    // Unpinned items sort Infinity-after any finite rank regardless of
+    // value, so nudging Bronco ahead of Jimny/Twingo (both unpinned,
+    // 2026) needs a real pinnedRank. Honda's since moved to rank 2 (see
+    // its own comment) — Sound of Driving, Nomad Wheels and Figma BMW Z1
+    // now sit between them in the Cars-filtered dense pack, so this no
+    // longer seats Bronco right behind Honda specifically, just ahead of
+    // Jimny/Twingo as originally intended.
+    pinnedRank: 18,
+    discipline: "Illustration",
+    deliverables: "Key Art",
+    categories: ["Cars"],
+    summary: "The new Bronco, reveal day.",
+    heroCaption: "",
+    brief: [
+      "I used to own an 80's Bronco, so when the new one was released I was obsessed. Had to draw my favourite combo out in the desert.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    cardRatio: "1/1",
+    // "In car category, change the bronco to 4/5 to better fit next to
+    // honda," per Josh — taller frame reads better beside Honda's 16/9
+    // span than the square. Same cardImageByCategory mechanism as
+    // Wagamama/L.A. Pride's Murals covers; every other view keeps the
+    // 1/1 above untouched.
+    cardImageByCategory: {
+      Cars: {
+        ratio: "4/5",
+        alt: "Ford Bronco, three-quarter rear, parked in the desert",
+        src: "/work/ford-bronco/01-bronco-2021.webp",
+      },
+    },
+    hero: {
+      ratio: "1/1",
+      alt: "Ford Bronco, three-quarter rear, parked in the desert",
+      src: "/work/ford-bronco/01-bronco-2021.webp",
+    },
+    gallery: [],
+    featured: false,
+  },
+  {
+    slug: "rooted-journal-editorial",
+    title: "Rooted Journal",
+    client: "The Rooted Journal",
+    // TRIAL: "Living Regeneratively > The Rooted Journal," per Josh —
+    // see Project.cardTitle.
+    cardTitle: "Living Regeneratively",
+    cardLabel: "The Rooted Journal",
+    year: 2025,
+    // Nudged up from 22, seating between Bronco (18) and HSBC (19) —
+    // "bring... the rooted journal [up a little]," per Josh. That move
+    // dissolved the old rank-22/23/24 square row (First 3D Character
+    // sank to the bottom with the Womp series the same day, leaving
+    // OPTO partnerless at 24), so denseSquare came off all three —
+    // a lone denseSquare 1/1 seated against 4/5 neighbours in a dense
+    // view is exactly the uneven-row problem the flag exists to avoid.
+    pinnedRank: 18.5,
+    yearLabel: "Spring 2025",
+    discipline: "Editorial Illustration",
+    deliverables: "10 Spot Illustrations",
+    // Icons dropped — Editorial alone covers this; "Icons" is reserved
+    // for sticker/logo/pictogram sets (Levi's, Away, Instagram), a
+    // different kind of work than an editorial spot illo.
+    categories: ["Editorial"],
+    summary: "Ten spot icons for a feature on regenerative living.",
+    heroCaption: "\"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
+    brief: [
+      "Ten spot illustrations showing regenerative-living habits, a feature written by Dustin Beatty for The Rooted Journal.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "The Rooted Journal" },
+    ],
+    // Ten small spot icons — a full-width hero or a two-column gallery
+    // blows any one of them up far past the scale they were drawn at.
+    // poster-grid (Beefbar's pattern) skips the big hero and opens
+    // straight into a grid instead — five columns, so the ten icons land
+    // as two clean rows with the reference photos trailing in their own
+    // partial row after.
+    galleryLayout: "poster-grid",
+    posterGridColumns: 5,
+    // The /work grid card leads with its own standalone illustration, not
+    // any of the ten spot icons below — Josh's call. Solid brown
+    // background, so no contain/canvas-letterbox workaround needed here
+    // either. cardRatio forces the card frame itself square to match.
+    cardRatio: "1/1",
+    cardImage: {
+      ratio: "1/1",
+      alt: "A woman kneeling among wildflowers",
+      src: "/work/rooted-journal-editorial/01-rooted-journal2.webp",
+    },
+    hero: {
+      // PNG exports (Josh replaced the original JPEG-derived set) — real
+      // alpha around each icon's halo shape, not a baked-in white square.
+      // `contain` shows the true edges against canvas instead of letting
+      // the transparent corners reveal the placeholder-blue surface.
+      ratio: "1/1",
+      fit: "contain",
+      alt: "Engage in Forest Restoration",
+      src: "/work/rooted-journal-editorial/06-reforest.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        fit: "contain",
+        alt: "Support Local, Organic Farmers",
+        src: "/work/rooted-journal-editorial/01-support-local.webp",
+      },
+      {
+        ratio: "1/1",
+        fit: "contain",
+        alt: "Plant Native Species",
+        src: "/work/rooted-journal-editorial/02-plant-native.webp",
+      },
+      {
+        ratio: "1/1",
+        fit: "contain",
+        alt: "Preserve Heirloom Seeds",
+        src: "/work/rooted-journal-editorial/07-preserve-heirloom.webp",
+      },
+      {
+        ratio: "1/1",
+        fit: "contain",
+        alt: "Harvest Rainwater",
+        src: "/work/rooted-journal-editorial/04-harvest-rainwater.webp",
+      },
+      {
+        ratio: "1/1",
+        fit: "contain",
+        alt: "Reduce Single-Use Plastics",
+        src: "/work/rooted-journal-editorial/03-fishing.webp",
+      },
+      {
+        ratio: "1/1",
+        fit: "contain",
+        alt: "Buy Secondhand",
+        src: "/work/rooted-journal-editorial/05-buy-seconds.webp",
+      },
+      {
+        ratio: "1/1",
+        fit: "contain",
+        alt: "Upcycle or Repair Items",
+        src: "/work/rooted-journal-editorial/09-upcycle.webp",
+      },
+      {
+        ratio: "1/1",
+        fit: "contain",
+        alt: "Compost Food Scraps",
+        src: "/work/rooted-journal-editorial/08-compost.webp",
+      },
+      {
+        ratio: "1/1",
+        fit: "contain",
+        alt: "Advocate for Sustainable Policies",
+        src: "/work/rooted-journal-editorial/10-advocate.webp",
+      },
+    ],
+  },
+  {
+    slug: "hsbc-pride-logo",
+    title: "HSBC Pride Logo",
+    cardTitle: "Pride Logo",
+    cardLabel: "HSBC",
+    pageTitle: "HSBC Pride Logo",
+    client: "HSBC",
+    year: 2023,
+    // Grouped with Voxi (20) — see its own pinnedRank comment. Was a
+    // trio with It's All Love before that project was archived, per
+    // Josh.
+    pinnedRank: 19,
+    denseSquare: true,
+    discipline: "Illustration & Animation",
+    deliverables: "1 animation",
+    categories: ["LGBTQ+", "Motion"],
+    summary: "The HSBC hex, reimagined as a canvas for Pride.",
+    heroCaption: "A held frame from the animation, 2023.",
+    brief: [
+      "Studio La Plage, HSBC's creative partner agency, called on LGBTQIA+ creatives to reinterpret the HSBC hex as a canvas. My interpretation was about my journey of self discovery when I moved to North America. It ran across HSBC's own social channels.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Agency", name: "Studio La Plage" },
+      { role: "Client", name: "HSBC" },
+    ],
+    // Native ratio (source is 1080x1080); no crop needed on the /work card.
+    cardRatio: "1/1",
+    // The whole piece is the animation — the grid card plays it rather
+    // than sitting on the still frame like every other video-backed card.
+    cardVideo: true,
+    hero: {
+      ratio: "1/1",
+      alt: "The hex, mid-animation",
+      src: "/work/hsbc-pride-logo/01-hsbc-pride-logo-hero.webp",
+    },
+    heroVideo: {
+      src: "/work/hsbc-pride-logo/02-hsbc-pride-logo.mp4",
+      alt: "The HSBC Pride hex animation, looping",
+      ratio: "1/1",
+    },
+    gallery: [],
+  },
+  {
+    slug: "voxi-pride",
+    title: "Voxi Pride",
+    client: "VOXI by Vodafone",
+    // TRIAL: "Pride Campaign > VOXI by Vodafone," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Pride Campaign",
+    cardLabel: "VOXI by Vodafone",
+    year: 2019,
+    // Grouped with HSBC (19) so both 1/1 cards seat together —
+    // "hsbc, voxi and google can be 1/1 on their own line," per Josh.
+    // It's All Love, this row's original third member, has since been
+    // archived to lib/archived-projects.ts, leaving this a duo.
+    pinnedRank: 20,
+    denseSquare: true,
+    discipline: "Pride Campaign",
+    deliverables: "Phone Cases · Flags · Pins · Social · Tees",
+    categories: ["LGBTQ+"],
+    summary: "Eleven characters, cut into pins, flags, cases and tees.",
+    heroCaption: "",
+    brief: [
+      "For VOXI, a side brand of Vodafone, I designed a Pride campaign and merchandise for the LGBTQIA+ community: the same set of characters, repeated across phone cases, flags, pins, social posts and tees.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "VOXI by Vodafone" },
+    ],
+    hero: {
+      // True ratio (3.3657), not the site's usual 16/10 — the "Endless
+      // Love" banner crop of the full cast.
+      ratio: "2400/713",
+      alt: "The full \"Endless Love\" banner artwork for VOXI's Pride campaign",
+      src: "/work/voxi-pride/01-banner.webp",
+      // Too narrow (short) a strip for the sitewide rounded frame to read
+      // right — square corners instead, per Josh.
+      square: true,
+    },
+    // The /work card leads with the phone case now, per Josh — hover swaps
+    // to the full-cast crop that used to lead. True ratio (1/1), matching
+    // cardImage so the card isn't cropped.
+    cardRatio: "1/1",
+    cardImage: {
+      ratio: "1/1",
+      alt: "VOXI × Josh McKenna, on a phone case",
+      src: "/work/voxi-pride/07-phone.webp",
+    },
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "Full cast, cropped for the card",
+      src: "/work/voxi-pride/02-card.webp",
+    },
+    // Uniform two-column grid (see GalleryGrid) rather than the usual
+    // two-up-then-full-width stack — six true-square images read better
+    // even, and it puts the two merch shots (phone case, pins) in their
+    // own row at the end instead of mixed in with the artwork.
+    galleryLayout: "grid",
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "Endless Love — framed square",
+        src: "/work/voxi-pride/03-vox-9.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "VOXI tile — the leopard print",
+        src: "/work/voxi-pride/04-vox-10.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "VOXI tile — the peace sign",
+        src: "/work/voxi-pride/05-vox-11.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Endless Love — the kiss",
+        src: "/work/voxi-pride/06-vox-12.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "VOXI × Josh McKenna, on a phone case",
+        src: "/work/voxi-pride/07-phone.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "The artwork on pin badges",
+        src: "/work/voxi-pride/08-pins.webp",
+      },
+    ],
+  },
+  {
+    slug: "opto-markets-2019",
+    title: "OPTO Mag",
+    client: "CMC Markets",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "CMC Markets",
+    year: 2019,
+    yearLabel: "OPTO Issue 03, Jan/Feb 2019",
+    // Last of the pinned block. Its old rank-22/23/24 square row is
+    // dissolved (denseSquare dropped with it) — see
+    // rooted-journal-editorial's own pinnedRank comment.
+    pinnedRank: 24,
+    discipline: "Editorial Illustration",
+    deliverables: "Cover + 2 Opener Illustrations",
+    categories: ["Editorial"],
+    summary: "Two oversized numerals, packed with everything trading in 2019.",
+    heroCaption: "One of two opener illustrations for OPTO's Issue 03 cover story, \"The Markets in 2019,\" CMC Markets, Jan/Feb 2019.",
+    brief: [
+      "CMC Markets commissioned the cover and two opener illustrations for OPTO magazine's Issue 03 cover story, \"The Markets in 2019\": trading intelligence on what was coming next across retail, cars, tech, media, banks, AI & AR, cannabis, medtech, fintech and esports, with a sector's icons built into the oversized \"2019\" numerals themselves.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "CMC Markets" },
+    ],
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "The '2019' opener, packed with delivery drones, self-driving cars and social platform icons",
+      src: "/work/opto-markets-2019/02-opener-1-final.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "The second '2019' opener, packed with cannabis, gaming and fintech icons",
+      src: "/work/opto-markets-2019/03-opener-2-final.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
+        src: "/work/opto-markets-2019/01-front-cover.webp",
+      },
+    ],
+    // Explicit, not getCardHoverImage's default (heroPair wins first, so
+    // it'd swap in the second opener) — Josh wants the cover as the
+    // /work hover swap specifically.
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "The OPTO Issue 03 cover, \"The Markets in 2019\"",
+      src: "/work/opto-markets-2019/01-front-cover.webp",
+    },
+  },
+  {
+    slug: "palm-springs",
+    title: "Palm Springs",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "Key Art",
+    categories: ["Cars"],
+    summary: "A mid-century carport in Palm Springs.",
+    heroCaption: "",
+    brief: [
+      "A mid-century carport roofline against the San Jacinto mountains, with a two-tone convertible parked underneath.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "Palm Springs — a mid-century carport",
+      src: "/work/palm-springs/01-palm-springs.webp",
+    },
+    gallery: [],
+    featured: true,
+  },
+  {
+    slug: "figma-servebots",
+    title: "Servebots",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: [],
+    summary: "LA's chaotic sidewalk delivery bots.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw. A nod to Serve Robotics' sidewalk delivery bots, the chaotic little things that tear up LA's pavements and stop dead halfway along a crossing.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    heroSize: "spot",
+    hero: {
+      ratio: "4/5",
+      alt: "Servebots on delivery",
+      src: "/work/figma-servebots/01-servebots-hr3.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "figma-yeti",
+    title: "Yeti",
+    client: "Personal",
+    year: 2025,
+    // Unpinned — "swap yeti and vitra on the gallery," per Josh: Vitra
+    // took this project's old rank 7, and this entry took Vitra's old
+    // array slot among the unpinned 2025 pieces.
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: [],
+    summary: "A YETI cooler, occupied.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw. An ice cold yeti lounging inside a YETI cooler, cos why not?",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    heroSize: "spot",
+    hero: {
+      ratio: "4/5",
+      alt: "The YETI cooler",
+      src: "/work/figma-yeti/01-yeti-hr.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "figma-rimowa",
+    title: "Rimowa",
+    client: "Personal",
+    year: 2025,
+    discipline: "Illustration",
+    deliverables: "1 Illustration",
+    categories: [],
+    summary: "The ribbed aluminium Rimowa, at speed.",
+    heroCaption: "",
+    brief: [
+      "Made in Figma Draw. The ribbed aluminium Rimowa, dragged flat-out mid-selfie.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Portrait source — RATIO_CYCLE would otherwise land the /work card
+    // on a square or landscape slot depending on position.
+    cardRatio: "4/5",
+    heroSize: "spot",
+    hero: {
+      ratio: "4/5",
+      alt: "The Rimowa, at speed",
+      src: "/work/figma-rimowa/01-rimowa2.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "levis-rainbow-rodeo",
+    title: "Levi's Rainbow Rodeo",
+    client: "Levi's",
+    // TRIAL: grid card trims the redundant "Levi's" now that the client
+    // renders as its own label underneath — Josh's own example for this
+    // whole mechanism. See Project.cardTitle.
+    cardTitle: "Rainbow Rodeo",
+    year: 2024,
+    discipline: "Pride Campaign",
+    deliverables: "1 invite · 3 enamel pins · 1 tee · bar accessories",
+    categories: ["LGBTQ+", "Icons"],
+    summary: "Two cowboys sharing a horse, printed on pins, cups and tees for Pride.",
+    heroCaption:
+      "Made for the Rainbow Rodeo at Levi's Haus, Los Angeles, June 2024.",
+    brief: [
+      "For Pride 2024, Levi's threw a Rainbow Rodeo at Levi's Haus in Los Angeles hosted by Benny Drama, with DJ sets from Violet Chachki and Tinashe. Invite, enamel pins, bar accessories and a tee, all riffing on classic western Americana with the cowboys made explicitly queer.",
+    ],
+    credits: [
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
+      { role: "Client", name: "Levi's" },
+    ],
+    // The camera shots themselves are true 2/3 (6000x4000 Canon frames and
+    // Josh's own portrait crops of them) — that ratio is used as-is on the
+    // project page. But left as cardRatio it ran the grid card far taller
+    // than the 4/5–1/1 range the rest of the grid cycles through, reading
+    // like a 9/16 sliver next to its neighbours. Cropped to 4/5 instead
+    // ("stick to the rules of the grid, either 4/5 or 1/1 — both would
+    // work with the pins here").
+    cardRatio: "4/5",
+    // Josh picked the pins over the invite poster to lead — the poster
+    // rides alongside as the pair instead.
+    hero: {
+      ratio: "2/3",
+      alt: "Enamel pins — all three designs",
+      src: "/work/levis-rainbow-rodeo/02-pins-trio.webp",
+    },
+    // The full poster's cream frame got clipped mid-stroke by Plate's
+    // rounded corners, both here and on the grid-card hover swap, so both
+    // slots use a copy cropped to the red field instead of the original
+    // ("cropped until there is no border/stroke being cut off"). -v2
+    // filename since the old 01-poster.webp path is gone from git but
+    // may still be sitting in a browser/CDN cache.
+    heroPair: {
+      ratio: "4/5",
+      alt: "The invite",
+      src: "/work/levis-rainbow-rodeo/01-poster-v2.webp",
+    },
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "The invite",
+      src: "/work/levis-rainbow-rodeo/01-poster-v2.webp",
+    },
+    // Merch photos only — no process sketches, per Josh. The three pin
+    // shots run as one row of three, cups and the worn tee pair up, and
+    // the landscape back print closes full width.
+    gallerySpans: [
+      { startIndex: 0, count: 3 },
+      { startIndex: 3, count: 2 },
+    ],
+    gallery: [
+      {
+        ratio: "2/3",
+        alt: "Pins — the bronco rider",
+        src: "/work/levis-rainbow-rodeo/03-pins-red.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "Pins — the yellow colourway",
+        src: "/work/levis-rainbow-rodeo/04-pins-yellow.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "Pins — the hat",
+        src: "/work/levis-rainbow-rodeo/05-pins-pink.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "Cups at the bar",
+        src: "/work/levis-rainbow-rodeo/06-cups.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "The tee, worn",
+        src: "/work/levis-rainbow-rodeo/07-tee-front.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The back print",
+        src: "/work/levis-rainbow-rodeo/08-tee-back.webp",
+      },
+    ],
+  },
+  {
+    slug: "piper-heidsieck",
+    title: "Piper-Heidsieck",
+    client: "Piper-Heidsieck",
+    // TRIAL: "Bottle Packaging > Piper-Heidsieck," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Bottle Packaging",
+    cardLabel: "Piper-Heidsieck",
+    year: 2024,
+    discipline: "Illustration",
+    deliverables: "1 gift tin",
+    categories: ["LGBTQ+"],
+    summary: "A riverside scene wrapped around a champagne tin for Pride.",
+    heroCaption: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut.",
+    brief: [
+      "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month gift tin: the house's Cuvée Brut wrapped in queer scenes by the river, with a rainbow hot-air balloon drifting over town.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Piper-Heidsieck" },
+    ],
+    // The only asset is the campaign's own 469px product render ("product
+    // shot only," per Josh — the press-kit pages were dropped). `spot`
+    // keeps it at the small centred width the resolution can honestly
+    // fill, same reasoning as Monocle's heel.
+    heroSize: "spot",
+    // 9/16 (matching the hero's own true ratio) ran the /work grid card
+    // far taller than its neighbours — "piper needs to be in a square
+    // and shrunk, or 4/5," per Josh. 4/5 is the site's standard portrait
+    // frame (see cardRatio's own doc comment); the tin is `fit: contain`
+    // on canvas, so the shorter frame just letterboxes more, no crop.
+    cardRatio: "4/5",
+    hero: {
+      ratio: "9/16",
+      alt: "The tin, beside the bottle",
+      src: "/work/piper-heidsieck/01-tin.webp",
+      // Transparent background — contain on bg-canvas, the usual
+      // real-alpha fix (see Plate).
+      fit: "contain",
+    },
+    gallery: [],
+  },
+  // Coca-Cola Moments lived here — archived to lib/archived-projects.ts
+  // per Josh, not deleted; see that file for the restore path.
+  {
+    slug: "boat-international",
+    title: "Boat International",
+    client: "Boat International",
+    // TRIAL: title === client verbatim, nothing to trim — "things like
+    // 'Boat International' need a title, so maybe editorial, by boat
+    // international," per Josh. Grid card reads "Editorial" over "By
+    // Boat International" instead of repeating the bare client name
+    // twice. Full page title untouched. See Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "By Boat International",
+    year: 2024,
+    yearLabel: "December 2024",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Editorial"],
+    summary: "A solar-powered dayboat, for a feature on solar yachts.",
+    heroCaption: "For Boat International's December 2024 feature on solar-powered yachts.",
+    brief: [
+      "Boat International commissioned this for a piece by Sam Fortescue on solar tech finally reaching mid-sized yachts, the 12- to 24-metre range that's always been stuck between too much power-hungry kit and not enough battery capacity to run it quietly.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Boat International" },
+    ],
+    // The artwork is a true 4/5, not RATIO_CYCLE's default alternation —
+    // same fix as monocle-spot-illo and coca-cola-moments.
+    cardRatio: "4/5",
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/5",
+        alt: "The spread on the printed page.",
+        src: "/work/boat-international/02-boat-international-mockup.webp",
+      },
+    },
+    hero: {
+      ratio: "4/5",
+      alt: "A dayboat at anchor, tethered to a sun-shaped solar balloon.",
+      src: "/work/boat-international/01-boat-international.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "The spread on the printed page.",
+      src: "/work/boat-international/02-boat-international-mockup.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "kiehls-trevor-project",
+    title: "Kiehl's Pride Campaign",
+    client: "Kiehl's",
+    // TRIAL: same trim as Levi's Rainbow Rodeo — see Project.cardTitle.
+    cardTitle: "Pride Campaign",
+    year: 2023,
+    discipline: "Pride Campaign",
+    deliverables: "Packaging · Parade Float",
+    categories: ["LGBTQ+"],
+    summary: "A Pride parade, wrapped around a jar of face cream.",
+    heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
+    brief: [
+      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project: a parade scene built into limited-edition packaging across Kiehl's product line, with the same artwork on a float in the New York City Pride parade. A portion of proceeds went to the charity.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Agency", name: "Havas" },
+      { role: "Client", name: "Kiehl's" },
+    ],
+    // True ratio (2400x2400) — pinned rather than left to RATIO_CYCLE's
+    // chance assignment, same fix as the other unpinned cards found
+    // alongside the Bum Selfie 3D report.
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "Limited-edition Kiehl's Ultra Facial Cream, Pride campaign packaging",
+      src: "/work/kiehls-trevor-project/01-kiehls-trevor-project-face-cream-ultra-facial-cream.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "The full cast of characters",
+      src: "/work/kiehls-trevor-project/02-characters-1.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "The full cast of characters",
+        src: "/work/kiehls-trevor-project/03-characters-2.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Kiehl's × Josh McKenna",
+        src: "/work/kiehls-trevor-project/04-press-quote.webp",
+      },
+    ],
+  },
+  {
+    slug: "tilda-rice",
+    title: "Tilda Rice",
+    client: "Tilda",
+    // TRIAL: "Flavour Animations > Tilda Rice," per Josh — cardLabel
+    // spells out the full "Tilda Rice" rather than falling back to the
+    // bare client field. See Project.cardTitle.
+    cardTitle: "Flavour Animations",
+    cardLabel: "Tilda Rice",
+    year: 2022,
+    discipline: "Illustration",
+    deliverables: "Illustrations for Animation",
+    categories: ["Motion"],
+    summary: "Illustrations for three animated Tilda ads, one per flavour.",
+    heroCaption: "Illustration for three animated Tilda Rice ads (Katsu Curry, Indonesian Fried Rice and Masala), 2022.",
+    brief: [
+      "Tilda commissioned illustration work for a set of three animated ads, one per flavour (Katsu Curry, Indonesian Fried Rice and Masala), animated by Rave Growl via agency Havas.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Animation", name: "Rave Growl" },
+      { role: "Agency", name: "Havas" },
+      { role: "Client", name: "Tilda" },
+    ],
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "Tilda Indonesian Fried Rice packaging",
+      src: "/work/tilda-rice/01-fried-rice.webp",
+    },
+    // Sits above the write-up, hero stays out of the page body — see
+    // Project.videoRow and Project.heroHiddenOnPage. `hero` still picks the
+    // /work gallery card's thumbnail (see ProjectCard's baseImage) even
+    // though it doesn't render on the project page itself.
+    heroHiddenOnPage: true,
+    // Posters are each flavour's own product shot — these clips have sound,
+    // so they never autoplay, and without a poster the row sits on whatever
+    // first frame the browser bothers to decode.
+    videoRow: [
+      {
+        src: "/work/tilda-rice/katsu.mp4",
+        alt: "Katsu Curry Rice animation",
+        poster: "/work/tilda-rice/02-katsu-curry.webp",
+        sound: true,
+      },
+      {
+        src: "/work/tilda-rice/fried-rice.mp4",
+        alt: "Indonesian Fried Rice animation",
+        poster: "/work/tilda-rice/01-fried-rice.webp",
+        sound: true,
+      },
+      {
+        src: "/work/tilda-rice/masala.mp4",
+        alt: "Masala Rice animation",
+        poster: "/work/tilda-rice/03-masala-rice.webp",
+        sound: true,
+      },
+    ],
+    // The product shots moved onto the clips above as posters — an empty
+    // gallery keeps them off the page body, but getCardHoverImage would
+    // then find no second image, so the /work card's hover swap is pinned
+    // to the same katsu shot it auto-picked when the gallery was here.
+    cardHoverImage: {
+      ratio: "1/1",
+      alt: "Tilda Katsu Curry Rice packaging",
+      src: "/work/tilda-rice/02-katsu-curry.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "costa-smeralda",
+    title: "Costa Smeralda",
+    client: "Costa Smeralda",
+    // TRIAL: "Posters > Costa Smeralda," per Josh — see Project.cardTitle.
+    cardTitle: "Posters",
+    cardLabel: "Costa Smeralda",
+    year: 2022,
+    discipline: "Illustration",
+    deliverables: "3 Posters",
+    categories: [],
+    summary: "Vintage-style travel posters for three Costa Smeralda hotels.",
+    heroCaption: "A set of travel posters for three Costa Smeralda hotels (Cala di Volpe, Romazzino and Cervo), 2022.",
+    hideHeroCaptions: true,
+    brief: [
+      "A set of travel posters for three Costa Smeralda hotels: Cala di Volpe, Romazzino and Cervo.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Costa Smeralda" },
+    ],
+    // No-border crops, specifically for the /work card — Romazzino leads,
+    // Cala di Volpe swaps in on hover.
+    cardRatio: "4/5",
+    cardImage: {
+      ratio: "4/5",
+      alt: "Hotel Romazzino",
+      src: "/work/costa-smeralda/02-romazzino-no-border.webp",
+    },
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "Hotel Cala di Volpe",
+      src: "/work/costa-smeralda/01-cala-di-volpe-no-border.webp",
+    },
+    // All three side by side, each keeping its own printed border — square
+    // corners rather than the sitewide rounded frame, same reasoning as
+    // Beefbar's posters: a rounded clip would cut into a border that's
+    // already part of the artwork.
+    hero: {
+      ratio: "3/4",
+      alt: "Hotel Cala di Volpe",
+      src: "/work/costa-smeralda/01-cala-di-volpe.webp",
+      square: true,
+    },
+    heroPair: {
+      // True ratio updated to match Cala di Volpe's — Josh re-exported
+      // Romazzino specifically so all three posters would match height on
+      // the project page.
+      ratio: "3/4",
+      alt: "Hotel Romazzino",
+      src: "/work/costa-smeralda/02-romazzino.webp",
+      square: true,
+    },
+    heroThird: {
+      // True ratio (0.7072) — closer to 12/17 than the 3/4 this would
+      // otherwise snap to.
+      ratio: "12/17",
+      alt: "Hotel Cervo",
+      src: "/work/costa-smeralda/03-smeralda-cervo.webp",
+      square: true,
+    },
+    gallery: [],
+  },
+  {
+    slug: "womp-last-call",
+    title: "Last Call",
+    client: "Personal",
+    year: 2026,
+    // Unpinned — "swap mr porter with 3d cowboy hat last call," per
+    // Josh: Mr Porter took this project's old rank 14, and this entry
+    // sits in Mr Porter's exact old slot (after Costa Smeralda). It
+    // briefly led the unpinned band instead, while the unpinned tail
+    // still sorted by year — the complaint that killed the year sort
+    // ("no 'year' organisation," see getAllProjects). The rest of the
+    // Womp 3D series closes the array; this was the "except cowboy hat"
+    // carve-out and remains the one Womp piece above it.
+    discipline: "3D Illustration",
+    deliverables: "1 Render · 1 Turnaround",
+    categories: ["3D", "Motion"],
+    summary: "Last call at the bar for this lost cowboy.",
+    heroCaption: "The Last Call hat and keyring",
+    brief: [
+      "Modelled in Womp, a browser-based 3D tool. A cowboy that missed his last train.",
+    ],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // happened to also give 4/5, but only by chance of array position.
+    cardRatio: "4/5",
+    heroVideo: {
+      src: "/work/womp-last-call/02-last-call-video.mp4",
+      alt: "The Last Call hat and keyring, turning",
+      position: "pair",
+      ratio: "4/5",
+    },
+    hero: {
+      ratio: "4/5",
+      alt: "The Last Call hat and keyring",
+      src: "/work/womp-last-call/01-last-call.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "comic-relief-sink-the-pink",
+    title: "Comic Relief x Sink The Pink",
+    client: "Comic Relief",
+    clientPartner: "Sink The Pink",
+    // TRIAL: "Pride Totes > Comic Relief," per Josh — see Project.cardTitle.
+    cardTitle: "Pride Totes",
+    cardLabel: "Comic Relief",
+    year: 2020,
+    discipline: "Pride Campaign",
+    deliverables: "2 tote designs",
+    categories: ["LGBTQ+"],
+    summary: "Two couples in one embrace, printed for Red Nose Day. One ended up on a Spice Girl's shoulder.",
+    heroCaption:
+      "One of two couple pairings, printed onto canvas totes.",
+    brief: [
+      "Comic Relief, in partnership with Sink The Pink, commissioned tote bag artwork for Red Nose Day 2020: two couple pairings, printed across the range.",
+    ],
+    credits: [
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
+      { role: "Client", name: "Comic Relief" },
+      { role: "Partner", name: "Sink The Pink" },
+    ],
+    // True ratio (2000x2000) — pinned rather than left to RATIO_CYCLE's
+    // chance assignment, same fix as the other unpinned cards found
+    // alongside the Bum Selfie 3D report.
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "Tote artwork — pairing one",
+      src: "/work/comic-relief-sink-the-pink/01-tote-women.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "Tote artwork — pairing two",
+      src: "/work/comic-relief-sink-the-pink/02-tote-men.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "Mel C, of the Spice Girls, posted this online",
+        // Low-res screenshot — the original photo file is lost.
+        small: true,
+        src: "/work/comic-relief-sink-the-pink/03-mel-c-tote.webp",
+      },
+    ],
+  },
+  {
+    slug: "hikes-n-bikes",
+    title: "Hikes n Bikes",
+    client: "Hikes and Bikes LA",
+    // TRIAL: "Wall Mural > Hikes and Bikes LA," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Wall Mural",
+    cardLabel: "Hikes and Bikes LA",
+    year: 2020,
+    discipline: "Mural",
+    deliverables: "1 mural",
+    categories: ["Murals"],
+    summary: "Seven cyclists and a peach, painted on a West Hollywood bike shop.",
+    heroCaption:
+      "Painted at La Cienega and Santa Monica Boulevards, West Hollywood, December 2020.",
+    brief: [
+      "The wall is the side of a bike-rental and organised-hike shop at the corner of La Cienega and Santa Monica Boulevards in West Hollywood, directly under a Kylie Jenner billboard. A few big shapes and five words: pump less gas, pump more...ass.",
+    ],
+    credits: [
+      { role: "Illustration, Mural & Creative Direction", name: "Josh McKenna" },
+      { role: "Client", name: "Hikes and Bikes LA" },
+    ],
+    // Pinned to the photo's true 4/5 so RATIO_CYCLE can't crop the
+    // billboard out of the top of the card — the Kylie billboard is
+    // the joke and has to survive the crop.
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "The wall, under the Kylie Jenner billboard",
+      src: "/work/hikes-n-bikes/01-mural-kylie-billboard.webp",
+    },
+    // The 15s ladder clip sits beside the finished-wall photo in the
+    // hero two-up (Last Call precedent). Declared 4/5 to match the
+    // hero's height — the source is a 9:16 phone clip, and the cover
+    // crop trims sky and ground, not the ladder.
+    heroVideo: {
+      src: "/work/hikes-n-bikes/03-painting-process.mp4",
+      alt: "Painting the peach's leaves, day one",
+      position: "pair",
+      ratio: "4/5",
+    },
+    // A lone gallery image defaults into the two-up row's left column at
+    // half width — a wall-wide strip wants the full frame instead.
+    gallerySpans: [{ startIndex: 0, count: 1 }],
+    gallery: [
+      {
+        ratio: "25/11",
+        // Transparent PNG — contain sits on bg-canvas so the
+        // placeholder tone can't show through the background.
+        fit: "contain",
+        alt: "The full artwork — pump less gas, pump more",
+        src: "/work/hikes-n-bikes/02-mural-artwork.webp",
+      },
+    ],
+  },
+  {
+    slug: "bum-selfie",
+    title: "Bum Selfie",
+    client: "Cake Boy Magazine",
+    // TRIAL: plain client label, title unchanged — see Project.cardTitle.
+    cardLabel: "Cake Boy Magazine",
+    year: 2020,
+    discipline: "Editorial Illustration",
+    deliverables: "2 illustrations",
+    categories: [],
+    summary: "Two ways to photograph your own arsehole.",
+    heroCaption: "",
+    brief: [
+      "Cake Boy magazine wanted a two-part illustration for a feature on the different ways to photograph your own arsehole.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "An updated version",
+      src: "/work/bum-selfie/02-butt-selfie-2.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "Bend over",
+        src: "/work/bum-selfie/03-bend-over-4-5.webp",
+      },
+    ],
+    featured: false,
+  },
+  {
+    slug: "perineum-sunning",
+    title: "Perineum Sunning",
+    client: "Personal",
+    year: 2020,
+    discipline: "Illustration",
+    deliverables: "Key Art",
+    categories: [],
+    summary: "2020's strangest wellness trend.",
+    heroCaption: "",
+    brief: [
+      "2020's wellness trend of the moment was perineum sunning: thirty seconds of direct sun, no shade.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "Sunbathing, from an unusual angle",
+      src: "/work/perineum-sunning/01-perineum-sunning.webp",
+    },
+    gallery: [],
+    featured: false,
+  },
+  // LGBTQ Centre lived here — archived to lib/archived-projects.ts per
+  // Josh ("don't want it displayed rn"), not deleted; see that file for
+  // the restore path.
+  {
+    slug: "wsj-airpods-rich",
+    title: "Wall Street Journal",
+    client: "The Wall Street Journal",
+    // TRIAL: "Editorial > The Wall Street Journal," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Editorial",
+    cardLabel: "The Wall Street Journal",
+    year: 2019,
+    yearLabel: "February 2019",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Illustration",
+    categories: ["Editorial"],
+    summary: "Ears wearing AirPods, for a piece on headphones as a status symbol.",
+    heroCaption: "For \"Do AirPods Make You Look Rich? These Millennials Think So,\" by Jacob Gallagher, WSJ, February 2019.",
+    hideHeroCaptions: true,
+    brief: [
+      "Jacob Gallagher's piece was about AirPods becoming a status symbol on sight: a $159 pair of headphones read as wealth from across a subway platform.",
+    ],
+    credits: [
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
+      { role: "Writer", name: "Jacob Gallagher" },
+      { role: "Client", name: "The Wall Street Journal" },
+    ],
+    // Pinned, not left to RATIO_CYCLE — per Josh, the /work card can't land
+    // on 4/5 for this one.
+    cardRatio: "1/1",
+    hero: {
+      ratio: "3/2",
+      alt: "Three ears in a row, each wearing an AirPod",
+      src: "/work/wsj-airpods-rich/01-illustration.webp",
+    },
+    heroPair: {
+      ratio: "172/273",
+      alt: "The piece as it ran on WSJ.com",
+      src: "/work/wsj-airpods-rich/02-article.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "away-pride-stickers",
+    title: "Away",
+    client: "Away",
+    // TRIAL: "Pride Sticker Set > Away," per Josh — see Project.cardTitle.
+    cardTitle: "Pride Sticker Set",
+    cardLabel: "Away",
+    year: 2019,
+    discipline: "Pride Campaign",
+    deliverables: "Sticker Set",
+    categories: ["LGBTQ+", "Icons"],
+    summary: "Two couples, a rainbow and a sunbather, sized to fit on a suitcase.",
+    heroCaption: "A set of five Pride stickers, available in Away's stores throughout Pride month, 2019.",
+    brief: [
+      "Away commissioned a set of five Pride stickers, available in-store throughout Pride month 2019. They looked great on the aluminium luggage.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Away" },
+    ],
+    // The /work card leads with the luggage mockup now, per Josh — hover
+    // swaps to the flat sticker set. True ratio (2000x2328, reduced
+    // 250/291), matching cardImage so the card isn't cropped.
+    cardRatio: "250/291",
+    cardImage: {
+      ratio: "250/291",
+      alt: "The sticker set, applied to Away luggage",
+      src: "/work/away-pride-stickers/01-sticker-luggage.webp",
+    },
+    cardHoverImage: {
+      ratio: "4/5",
+      alt: "The full sticker set",
+      src: "/work/away-pride-stickers/02-sticker-set.webp",
+    },
+    // Both true 4/5 now that the mockup's been re-exported at high res —
+    // paired side by side, full column width (not `small`, per Josh — the
+    // resolution isn't a concern anymore, so no reason to cap them).
+    hero: {
+      ratio: "4/5",
+      alt: "The full sticker set",
+      src: "/work/away-pride-stickers/02-sticker-set.webp",
+    },
+    // True ratio (2000x2328, reduced 250/291) — the reshoot's crop is no
+    // longer an exact 4/5.
+    heroPair: {
+      ratio: "250/291",
+      alt: "The sticker set, applied to Away luggage",
+      src: "/work/away-pride-stickers/01-sticker-luggage.webp",
+      caption: false,
+    },
+    gallery: [],
+  },
+  {
+    slug: "step-journal",
+    title: "Step Journal",
+    client: "STEP Journal",
+    // TRIAL: "Magazine Cover > Step Journal," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Magazine Cover",
+    cardLabel: "Step Journal",
+    year: 2019,
+    yearLabel: "August/September 2019",
+    discipline: "Editorial Illustration",
+    deliverables: "1 Cover Illustration",
+    categories: ["Editorial"],
+    summary: "One house, cut open to show every tax inside.",
+    heroCaption: "The cover for STEP Journal's August/September 2019 issue, Volume 27/Issue 7.",
+    brief: [
+      "STEP Journal's cover story was about the tax complexity buried in owning property: capital gains, inheritance, income tax, all stacking up. The brief needed one image that read that complexity at a glance, for an audience of trust and estate professionals who already know the subject.",
+      "A knife cuts straight through the house, exposing it like a cross-section, each layer labelled with the tax that applies to it.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "STEP Journal" },
+    ],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // happened to also give 4/5, but only by chance of array position.
+    cardRatio: "4/5",
+    // Editorial pill leads with the printed piece — "editorial
+    // section should show any mock as cover image," per Josh. Hover
+    // swaps back to the artwork itself (see WorkGallery).
+    cardImageByCategory: {
+      Editorial: {
+        ratio: "4/5",
+        alt: "The cover on the printed issue.",
+        src: "/work/step-journal/02-step-journal-cover-mockup.webp",
+      },
+    },
+    hero: {
+      ratio: "4/5",
+      alt: "A house sliced open by a knife, its layers labelled with capital gains, inheritance and income tax.",
+      src: "/work/step-journal/01-step-journal.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "The cover on the printed issue.",
+      src: "/work/step-journal/02-step-journal-cover-mockup.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "weapons-of-reason-gay-divide",
+    title: "Weapons of Reason",
+    client: "Weapons of Reason",
+    // TRIAL: "The Gay Divide > Weapons of Reason," per Josh — the actual
+    // feature title (see brief below). See Project.cardTitle.
+    cardTitle: "The Gay Divide",
+    cardLabel: "Weapons of Reason",
+    year: 2019,
+    yearLabel: "The Inequality Issue, 2019",
+    discipline: "Editorial Illustration",
+    deliverables: "Editorial Illustration",
+    categories: ["LGBTQ+", "Editorial"],
+    summary: "A mechanic, rising from under the hood in heels.",
+    heroCaption: "Illustrated for \"The Gay Divide,\" Weapons of Reason's The Inequality Issue, 2019.",
+    brief: [
+      "Weapons of Reason commissioned illustration for \"The Gay Divide,\" a feature in The Inequality Issue on how the LGB+ pay gap may have its roots in homophobic bullying and a lack of LGBTQ+ education in schools, following two people's experiences of how that bullying shaped the classes they took and the careers that followed.",
+      "The brief asked for ruthlessly simple, iconic concepts within Weapons of Reason's prescribed 19-colour palette, each piece limited to 2–5 of those colours to keep a consistent brand feel across the issue.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Words", name: "Jamie Broadway" },
+      { role: "Client", name: "Weapons of Reason" },
+    ],
+    cardRatio: "1/1",
+    cardImage: {
+      ratio: "1/1",
+      alt: "A mechanic, living his truth in pink heels",
+      src: "/work/weapons-of-reason-gay-divide/04-mechanic-bg.webp",
+    },
+    // True ratio 1.7637 (4000x2268) — close enough to 16/9 (1.7778) to snap
+    // with no visible crop. Full-width, no heroPair, so the spread reads
+    // as wide as the site's usual two-up hero grid instead of one column
+    // of it — per Josh, the spread should lead the page. Replaced the
+    // original flat export with Josh's mockup-shadow render.
+    hero: {
+      ratio: "16/9",
+      alt: "The Gay Divide spread, opening page",
+      src: "/work/weapons-of-reason-gay-divide/01-spread-final-hr.webp",
+    },
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "A mechanic, living his truth in pink heels",
+        src: "/work/weapons-of-reason-gay-divide/04-mechanic-bg.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "The spread, held open and read in print",
+        src: "/work/weapons-of-reason-gay-divide/01-ins-post-arrive-2.webp",
+      },
+    ],
+  },
+  {
+    slug: "whatsapp",
+    title: "WhatsApp",
+    client: "WhatsApp",
+    // TRIAL: "Privacy Campaign > WhatsApp," per Josh — see
+    // Project.cardTitle.
+    cardTitle: "Privacy Campaign",
+    cardLabel: "WhatsApp",
+    year: 2018,
+    discipline: "Campaign Illustration",
+    deliverables: "2 illustrations",
+    categories: [],
+    summary: "Beach couples, for WhatsApp's campaign about private messaging.",
+    heroCaption: "For WhatsApp's \"It's between you\" campaign, 2018.",
+    brief: [
+      "WhatsApp commissioned illustrations for \"It's between you,\" its campaign about private messaging: couples in close conversation under a parasol.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "WhatsApp" },
+    ],
+    // Both source squares are true 1/1 — pinned so RATIO_CYCLE can't crop
+    // the lockup. The campaign version leads, per Josh; the clean
+    // illustration rides beside it.
+    cardRatio: "1/1",
+    hero: {
+      ratio: "1/1",
+      alt: "\"It's between you.\"",
+      src: "/work/whatsapp/01-between-you.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "Under the parasol",
+      src: "/work/whatsapp/02-ladies.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "ual-welcome-booklets",
+    title: "UAL Booklets",
+    client: "University of the Arts London",
+    // TRIAL: "Welcome Booklets > University of the Arts London," per
+    // Josh — see Project.cardTitle.
+    cardTitle: "Welcome Booklets",
+    cardLabel: "University of the Arts London",
+    year: 2017,
+    yearLabel: "2017/18/19/20",
+    discipline: "Illustration",
+    deliverables: "Covers · Inside Pages · Spots · Maps",
+    categories: ["Editorial"],
+    // Square, not the old 5/3 landscape span — "UAL can be square if
+    // it's trouble," per Josh, and it was: near the bottom of the ALL
+    // grid it sat back-to-back with the other tail landscapes (Bombay
+    // Sapphire, HP Print Over Hate), and consecutive 2-span cards at the
+    // tail strand a column with nothing left to fill it. As a 1/1 single
+    // it fills a column instead of needing one filled. Centre crop of
+    // the 3/2 spread photo — the ID card queue sits mid-frame, checked.
+    cardRatio: "1/1",
+    summary: "Welcome booklets for UAL's six colleges, each in its own colour-way.",
+    heroCaption: "One interior spread, reused across all six 2017–2020 college editions.",
+    brief: [
+      "UAL is six separate colleges, and the welcome guide had to work for all of them at once: one set of content, run six times in six colour-ways.",
+      "Same drawings throughout: a wayfinding map, campus-life spots, the ID card queue. Ran for four editions, 2017 to 2020.",
+    ],
+    credits: [{ role: "Illustration", name: "Josh McKenna" }],
+    // Full reshoot -- "replace all images with these new ones," from a
+    // folder Josh named "Blue BG." Hero stays the ID card queue (kept
+    // "the same," per Josh) but now points at that reshoot's own version
+    // of the page. Map gets its own dedicated photo for the first time
+    // (previously the closest thing was a flat grid of covers wrongly
+    // captioned as the map) and leads the gallery -- "I want map to be
+    // featured second, then the covers etc after." Two new pages this
+    // round too: individual cover pairs shot against a blue backdrop
+    // (Wimbledon/LCC/CSM each next to the shared "Your creative future
+    // starts here" cover), and a new interior spread covering
+    // Commonplace, Events and Arts SU.
+    hero: {
+      ratio: "3/2",
+      alt: "Interior spread — the ID card queue",
+      src: "/work/ual-welcome-booklets/01-university-of-the-arts-img-4125.webp",
+    },
+    gallery: [
+      {
+        ratio: "3/2",
+        alt: "Interior spread — the wayfinding map",
+        src: "/work/ual-welcome-booklets/02-map.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Covers — six colour-ways",
+        src: "/work/ual-welcome-booklets/03-university-of-the-arts-img-4074.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Six covers — laid flat",
+        src: "/work/ual-welcome-booklets/04-university-of-the-arts-img-4111.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Wimbledon College of Arts, next to the shared cover design",
+        src: "/work/ual-welcome-booklets/05-university-of-the-arts-img-4037.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Central Saint Martins, next to the shared cover design",
+        src: "/work/ual-welcome-booklets/07-university-of-the-arts-img-4040.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Spines — Welcome Guide 2017/18",
+        src: "/work/ual-welcome-booklets/08-university-of-the-arts-img-4043.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Interior spread — the market stall",
+        src: "/work/ual-welcome-booklets/09-university-of-the-arts-img-4128.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Interior spread — the library page",
+        src: "/work/ual-welcome-booklets/10-university-of-the-arts-img-4067.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Interior spread — moving in",
+        src: "/work/ual-welcome-booklets/11-university-of-the-arts-img-4054.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Interior spread — Commonplace, Events and Arts SU",
+        src: "/work/ual-welcome-booklets/12-university-of-the-arts-img-4071.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Interior spread — a student's own words",
+        src: "/work/ual-welcome-booklets/13-university-of-the-arts-img-4129.webp",
       },
     ],
   },
@@ -3378,45 +3167,243 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
-    slug: "hsbc-pride-logo",
-    title: "HSBC Pride Logo",
-    cardTitle: "Pride Logo",
-    cardLabel: "HSBC",
-    pageTitle: "HSBC Pride Logo",
-    client: "HSBC",
-    year: 2023,
-    // Grouped with Voxi (20) — see its own pinnedRank comment. Was a
-    // trio with It's All Love before that project was archived, per
-    // Josh.
-    pinnedRank: 19,
-    denseSquare: true,
-    discipline: "Illustration & Animation",
-    deliverables: "1 animation",
-    categories: ["LGBTQ+", "Motion"],
-    summary: "The HSBC hex, reimagined as a canvas for Pride.",
-    heroCaption: "A held frame from the animation, 2023.",
+    slug: "womp-money-bench",
+    title: "Money Bench",
+    client: "Personal",
+    year: 2026,
+    // The Womp 3D series closes this array — "put all 3d except cowboy
+    // hat at the bottom," per Josh (the cowboy hat is Last Call, which
+    // sits mid-gallery in Mr Porter's old slot; see its own comment).
+    // Array order is the gallery order (see getAllProjects), so last in
+    // the file means last on the page. Leads the block since it led the
+    // series while pinned (11.5).
+    discipline: "3D Illustration",
+    deliverables: "2 Renders",
+    categories: ["Editorial", "3D"],
+    summary: "Tapping into the coffee fund.",
+    heroCaption: "",
     brief: [
-      "Studio La Plage, HSBC's creative partner agency, called on LGBTQIA+ creatives to reinterpret the HSBC hex as a canvas. My interpretation was about my journey of self discovery when I moved to North America. It ran across HSBC's own social channels.",
+      "Modelled in Womp, a browser-based 3D tool. A couple sat on their credit card with falling cash, tapping into that coffee fund.",
     ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Agency", name: "Studio La Plage" },
-      { role: "Client", name: "HSBC" },
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // was giving this 1/1 by chance.
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "Two on the bench",
+      src: "/work/womp-money-bench/01-bench.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "Alone on the bench",
+      src: "/work/womp-money-bench/02-bench-blue-guy-02.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "womp-first-3d-character",
+    title: "First 3D Character",
+    client: "Personal",
+    year: 2026,
+    // In the Womp 3D block closing this array — "put all 3d except
+    // cowboy hat at the bottom," per Josh, ending its one-day stint at
+    // 23 in the Rooted Journal/OPTO square row (denseSquare dropped with
+    // it; that row is dissolved, see rooted-journal-editorial's own
+    // comment). See Money Bench's own comment.
+    discipline: "3D Illustration",
+    deliverables: "1 Render",
+    categories: ["3D"],
+    summary: "A beanie, a moustache, an earring: the first character built in Womp.",
+    heroCaption: "",
+    brief: [
+      "Modelled in Womp, a browser-based 3D tool. This is the first character I built in 3D, before Pato. Wanted to push my 2D character features like round ears, tiny eyes, silver capped tooth and bring them into three dimensions.",
     ],
-    // Native ratio (source is 1080x1080); no crop needed on the /work card.
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // happened to also give 1/1, but only by chance of array position.
     cardRatio: "1/1",
-    // The whole piece is the animation — the grid card plays it rather
-    // than sitting on the still frame like every other video-backed card.
-    cardVideo: true,
+    heroSize: "spot",
     hero: {
       ratio: "1/1",
-      alt: "The hex, mid-animation",
-      src: "/work/hsbc-pride-logo/01-hsbc-pride-logo-hero.webp",
+      alt: "A beanie, a moustache, an earring",
+      src: "/work/womp-first-3d-character/01-blue-face.webp",
     },
+    gallery: [],
+  },
+  {
+    slug: "womp-bum-selfie",
+    title: "Bum Selfie",
+    client: "Personal",
+    year: 2026,
+    // In the Womp 3D block closing this array — see Money Bench's own
+    // comment (Last Call alone sits higher, mid-gallery).
+    discipline: "3D Illustration",
+    deliverables: "2 Renders · 1 Turnaround",
+    // Motion added — the turnaround is a real animated deliverable, same
+    // as the other Womp turnarounds and Honda Super N's own turntable.
+    categories: ["3D", "Motion"],
+    summary: "A selfie, bent double, camera pointed at exactly the wrong angle.",
+    // Displayed caption, distinct from hero.alt (screen readers still get
+    // the plain description) — per Josh: "Who wants this as a resin
+    // collectible?!"
+    heroCaption: "Who wants this as a collectible?!",
+    brief: [
+      "Modelled in Womp, a browser-based 3D tool. A glossy figure bent over taking a selfie of its own ass.",
+      "A 3D take on [Bum Selfie](/work/bum-selfie), the flat illustration it started from.",
+    ],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Pinned — this was the one Womp 3D project left unpinned, so the
+    // /work grid silently handed it whatever RATIO_CYCLE landed on for
+    // its position (including landscape values the portrait render was
+    // never shot for). "It should be 1/1," per Josh.
+    cardRatio: "1/1",
+    // 4/5 across all three frames in the row — per Josh, over each
+    // asset's own true ratio (renders are 8/9, the video's 1078x1438 is
+    // ≈3/4), so hero/heroPair/video crop to a matching frame instead of
+    // each keeping its native shape.
+    hero: {
+      ratio: "4/5",
+      alt: "Bum selfie",
+      src: "/work/womp-bum-selfie/01-orang.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "Bum selfie, head-on",
+      // Only one caption line for the row — heroCaption already carries
+      // it under the first frame.
+      caption: false,
+      src: "/work/womp-bum-selfie/02-bum-selfie-front.webp",
+    },
+    // Video sits beside the pair, third-up, rather than full-width below —
+    // at full width the portrait clip ran oversized next to the two
+    // renders above it. Same "pair" position Last Call uses, extended to
+    // a three-across row when heroPair is also set.
     heroVideo: {
-      src: "/work/hsbc-pride-logo/02-hsbc-pride-logo.mp4",
-      alt: "The HSBC Pride hex animation, looping",
+      src: "/work/womp-bum-selfie/03-bum-selfie-video.mp4",
+      alt: "The bum selfie, turning",
+      position: "pair",
+      ratio: "4/5",
+    },
+    gallery: [],
+  },
+  {
+    slug: "womp-jimny",
+    title: "Jimny",
+    client: "Personal",
+    year: 2026,
+    // In the Womp 3D block closing this array — see Money Bench's own
+    // comment.
+    discipline: "3D Illustration",
+    deliverables: "1 Turnaround · 3 Renders",
+    categories: ["Cars", "3D", "Motion"],
+    summary: "My favourite car, modelled in Womp.",
+    heroCaption: "",
+    brief: [
+      "Modelled in Womp, a browser-based 3D tool. A gloopy, wompy homage to my favourite car, the Jimny.",
+    ],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
+    // Not the true 1/1 — Josh's call, 4/5 reads better here than the
+    // RATIO_CYCLE-by-chance square did. Pinned explicitly either way.
+    cardRatio: "4/5",
+    // Closes the page instead of leading it — see the "outro" case in
+    // Project.heroVideo's position doc comment. `hero` still carries a
+    // still (used for the /work card).
+    heroVideo: {
+      src: "/work/womp-jimny/00-turnaround.mp4",
+      alt: "The Jimny, turning",
+      position: "outro",
+    },
+    // Three renders side by side up top, captions off — see heroThird's
+    // doc comment.
+    hideHeroCaptions: true,
+    hero: {
       ratio: "1/1",
+      alt: "The Jimny, front three-quarter",
+      src: "/work/womp-jimny/02-front.webp",
+    },
+    heroPair: {
+      ratio: "1/1",
+      alt: "The Jimny, from the back",
+      src: "/work/womp-jimny/01-back.webp",
+    },
+    heroThird: {
+      ratio: "1/1",
+      alt: "The Jimny, side profile",
+      src: "/work/womp-jimny/03-side.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "womp-twingo",
+    title: "Twingo",
+    client: "Personal",
+    year: 2026,
+    // In the Womp 3D block closing this array — see Money Bench's own
+    // comment.
+    discipline: "3D Illustration",
+    deliverables: "2 Renders",
+    categories: ["Cars", "3D"],
+    summary: "The Renault Twingo, remixed and rendered twice.",
+    heroCaption: "",
+    brief: [
+      "Modelled in Womp, a browser-based 3D tool. My own take on the Renault Twingo, a remix of the MK1 and the new Twingo EV, with side vents and chunky arches borrowed from the RenaultSport Espace and the turbo era.",
+    ],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
+    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, which
+    // happened to also give 4/5, but only by chance of array position.
+    cardRatio: "4/5",
+    // Only two images, both the same subject in two colourways — side by
+    // side reads better than a full-width hero and a lone gallery image.
+    hero: {
+      ratio: "4/5",
+      alt: "The Twingo, in yellow",
+      src: "/work/womp-twingo/01-yellow.webp",
+    },
+    heroPair: {
+      ratio: "4/5",
+      alt: "The Twingo, in black",
+      src: "/work/womp-twingo/02-black.webp",
+    },
+    gallery: [],
+  },
+  {
+    slug: "womp-pato",
+    title: "Pato",
+    client: "Personal",
+    year: 2026,
+    // In the Womp 3D block closing this array — see Money Bench's own
+    // comment.
+    discipline: "3D Illustration",
+    deliverables: "2 Renders · 1 Turnaround",
+    categories: ["3D", "Motion"],
+    summary: "Three legs, full confidence.",
+    heroCaption: "",
+    brief: [
+      "Modelled in Womp, a browser-based 3D tool. Pato, my three-legged dog.",
+    ],
+    credits: [{ role: "3D Illustration & Creative Direction", name: "Josh McKenna" }],
+    // True ratio — was silently cropping to 1/1 via RATIO_CYCLE's chance
+    // assignment; the actual renders are 4/5.
+    cardRatio: "4/5",
+    // Video sits below the two renders rather than leading the page —
+    // the renders are the artwork, the clip is supplementary.
+    heroVideo: {
+      src: "/work/womp-pato/03-pato-video.mp4",
+      alt: "Pato, turning",
+      position: "bottom",
+    },
+    hero: {
+      ratio: "4/5",
+      alt: "Pato",
+      src: "/work/womp-pato/01-pato.webp",
+    },
+    heroPair: {
+      // Josh recropped the render itself to 4/5, matching hero — no
+      // CSS crop needed to land the two frames at the same size.
+      ratio: "4/5",
+      alt: "Pato, from behind",
+      src: "/work/womp-pato/02-pato-back.webp",
     },
     gallery: [],
   },
@@ -3430,20 +3417,20 @@ export const projects: Project[] = [
    Access helpers — pages should use these, never `projects` directly.
    ========================================================================== */
 
-/** Newest first, except any pinnedRank project sorts to the front first
- *  (lowest rank first) and any sinkRank project sorts to the back last
- *  (lowest sink first) — see Project.pinnedRank / Project.sinkRank. */
+/** pinnedRank projects first (lowest rank first), then everything else
+ *  in this file's own array order. NO year sort — "there should be no
+ *  'year' organisation, it's being ordered how i suggest," per Josh;
+ *  the array reads top-to-bottom as the gallery. See Project.pinnedRank. */
 export function getAllProjects(): Project[] {
-  // Three bands, compared band-first: pinned (0), plain (1), sunk (2).
-  // Within pinned/sunk the rank orders; within plain, year descending.
-  const band = (p: Project) => (p.pinnedRank !== undefined ? 0 : p.sinkRank !== undefined ? 2 : 1);
+  // Array.prototype.sort is stable, so returning 0 for two unpinned
+  // projects keeps their relative array order — that stability IS the
+  // ordering mechanism for everything without a rank.
   return [...projects].sort((a, b) => {
-    const bandA = band(a);
-    const bandB = band(b);
-    if (bandA !== bandB) return bandA - bandB;
-    if (bandA === 0) return a.pinnedRank! - b.pinnedRank!;
-    if (bandA === 2) return a.sinkRank! - b.sinkRank!;
-    return b.year - a.year;
+    const pinnedA = a.pinnedRank !== undefined;
+    const pinnedB = b.pinnedRank !== undefined;
+    if (pinnedA !== pinnedB) return pinnedA ? -1 : 1;
+    if (pinnedA && pinnedB) return a.pinnedRank! - b.pinnedRank!;
+    return 0;
   });
 }
 
