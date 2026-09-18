@@ -484,6 +484,18 @@ export type Project = {
    * sort — every unpinned project keeps sorting exactly as before.
    */
   pinnedRank?: number;
+  /**
+   * Mirror of pinnedRank for the other end of the gallery: sorts after
+   * every non-sunk project, lowest first. Exists because "put it at the
+   * bottom" can't be done by just unpinning a NEW piece — getAllProjects'
+   * year-descending fallback floats a 2026 project straight to the top of
+   * the unpinned section (the Womp 3D series, which Josh wants at the
+   * bottom, is the newest work on the site). It's All Love got to the
+   * bottom by being 2017 + last in this array; that trick only works for
+   * the oldest year on the site. Mutually exclusive with pinnedRank —
+   * pinnedRank wins if both are ever set.
+   */
+  sinkRank?: number;
 };
 
 export const projects: Project[] = [
@@ -1341,9 +1353,9 @@ export const projects: Project[] = [
     pageTitle: "Downward Trend",
     year: 2018,
     yearLabel: "October 2018, Issue 117",
-    // Backfills It's All Love's old slot once it unpinned — "monocle
-    // heel higher," per Josh. (It's All Love has since been archived.)
-    pinnedRank: 21,
+    // Nudged up from 21, seating between Bombay Sapphire (17) and
+    // Bronco (18) — "bring the monocle heel up a little," per Josh.
+    pinnedRank: 17.5,
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
     categories: ["Editorial"],
@@ -1732,11 +1744,10 @@ export const projects: Project[] = [
     cardLabel: "CMC Markets",
     year: 2019,
     yearLabel: "OPTO Issue 03, Jan/Feb 2019",
-    // See rooted-journal-editorial's own pinnedRank comment — grouped
-    // with it (22) and First 3D Character (23, "Blue head") so all
-    // three 1/1 cards seat together.
+    // Last of the pinned block. Its old rank-22/23/24 square row is
+    // dissolved (denseSquare dropped with it) — see
+    // rooted-journal-editorial's own pinnedRank comment.
     pinnedRank: 24,
-    denseSquare: true,
     discipline: "Editorial Illustration",
     deliverables: "Cover + 2 Opener Illustrations",
     categories: ["Editorial"],
@@ -2027,11 +2038,12 @@ export const projects: Project[] = [
     title: "First 3D Character",
     client: "Personal",
     year: 2026,
-    // Backfills Monocle's sumo spot's old slot in the Rooted Journal/
-    // OPTO square row once Sumo moved back to 9 — "blue head higher,"
-    // per Josh. See rooted-journal-editorial's own pinnedRank comment.
-    pinnedRank: 23,
-    denseSquare: true,
+    // Sunk with the rest of the Womp 3D series — "put all 3d except
+    // cowboy hat at the bottom," per Josh, ending its one-day stint at
+    // 23 in the Rooted Journal/OPTO square row (denseSquare dropped with
+    // it; that row is dissolved, see rooted-journal-editorial's own
+    // comment). See Project.sinkRank.
+    sinkRank: 2,
     discipline: "3D Illustration",
     deliverables: "1 Render",
     categories: ["3D"],
@@ -2057,6 +2069,9 @@ export const projects: Project[] = [
     title: "Bum Selfie",
     client: "Personal",
     year: 2026,
+    // Sunk with the rest of the Womp 3D series — see Money Bench's own
+    // sinkRank comment (Last Call alone stays pinned).
+    sinkRank: 3,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
     // Motion added — the turnaround is a real animated deliverable, same
@@ -2111,6 +2126,9 @@ export const projects: Project[] = [
     title: "Jimny",
     client: "Personal",
     year: 2026,
+    // Sunk with the rest of the Womp 3D series — see Money Bench's own
+    // sinkRank comment.
+    sinkRank: 4,
     discipline: "3D Illustration",
     deliverables: "1 Turnaround · 3 Renders",
     categories: ["Cars", "3D", "Motion"],
@@ -2156,6 +2174,9 @@ export const projects: Project[] = [
     title: "Twingo",
     client: "Personal",
     year: 2026,
+    // Sunk with the rest of the Womp 3D series — see Money Bench's own
+    // sinkRank comment.
+    sinkRank: 5,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
     categories: ["Cars", "3D"],
@@ -2187,11 +2208,11 @@ export const projects: Project[] = [
     title: "Money Bench",
     client: "Personal",
     year: 2026,
-    // Nudged to 11.5 so California Magazine (11) can take this slot right
-    // after Vogue's horizontal instead — see its own pinnedRank comment.
-    // Stays just ahead of Womp Last Call (14), so this is still first in
-    // the 3D category's own dense pack.
-    pinnedRank: 11.5,
+    // Sunk with the rest of the Womp 3D series — "put all 3d except
+    // cowboy hat at the bottom," per Josh (the cowboy hat is Last Call,
+    // which keeps its pinnedRank 14). Leads the sunk block since it led
+    // the series while pinned (11.5). See Project.sinkRank.
+    sinkRank: 1,
     discipline: "3D Illustration",
     deliverables: "2 Renders",
     categories: ["Editorial", "3D"],
@@ -2221,6 +2242,9 @@ export const projects: Project[] = [
     title: "Pato",
     client: "Personal",
     year: 2026,
+    // Sunk with the rest of the Womp 3D series — see Money Bench's own
+    // sinkRank comment.
+    sinkRank: 6,
     discipline: "3D Illustration",
     deliverables: "2 Renders · 1 Turnaround",
     categories: ["3D", "Motion"],
@@ -2294,18 +2318,14 @@ export const projects: Project[] = [
     cardTitle: "Living Regeneratively",
     cardLabel: "The Rooted Journal",
     year: 2025,
-    // Grouped with First 3D Character (23, "Blue head") and OPTO (24)
-    // into one consecutive block, same denseSquare mechanism as
-    // HSBC/Voxi — "rooted journal, sumo and... opto can be square to fit
-    // the grid better... everything else is ok to be taller frame, just
-    // ensure the frame next to the two horizontals are the taller ones,"
-    // per Josh. All three already carry a native cardRatio: "1/1"; moved
-    // off 5 (which sat right next to Atlanta's horizontal) so that slot
-    // goes to a 4/5 card instead. Monocle's sumo spot, this trio's
-    // original third member, moved back to 9 ("sumo higher," per Josh);
-    // First 3D Character backfilled 23 so the row stays a trio.
-    pinnedRank: 22,
-    denseSquare: true,
+    // Nudged up from 22, seating between Bronco (18) and HSBC (19) —
+    // "bring... the rooted journal [up a little]," per Josh. That move
+    // dissolved the old rank-22/23/24 square row (First 3D Character
+    // sank to the bottom with the Womp series the same day, leaving
+    // OPTO partnerless at 24), so denseSquare came off all three —
+    // a lone denseSquare 1/1 seated against 4/5 neighbours in a dense
+    // view is exactly the uneven-row problem the flag exists to avoid.
+    pinnedRank: 18.5,
     yearLabel: "Spring 2025",
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
@@ -3440,12 +3460,18 @@ export const projects: Project[] = [
    ========================================================================== */
 
 /** Newest first, except any pinnedRank project sorts to the front first
- *  (lowest rank first) — see Project.pinnedRank. */
+ *  (lowest rank first) and any sinkRank project sorts to the back last
+ *  (lowest sink first) — see Project.pinnedRank / Project.sinkRank. */
 export function getAllProjects(): Project[] {
+  // Three bands, compared band-first: pinned (0), plain (1), sunk (2).
+  // Within pinned/sunk the rank orders; within plain, year descending.
+  const band = (p: Project) => (p.pinnedRank !== undefined ? 0 : p.sinkRank !== undefined ? 2 : 1);
   return [...projects].sort((a, b) => {
-    const rankA = a.pinnedRank ?? Infinity;
-    const rankB = b.pinnedRank ?? Infinity;
-    if (rankA !== rankB) return rankA - rankB;
+    const bandA = band(a);
+    const bandB = band(b);
+    if (bandA !== bandB) return bandA - bandB;
+    if (bandA === 0) return a.pinnedRank! - b.pinnedRank!;
+    if (bandA === 2) return a.sinkRank! - b.sinkRank!;
     return b.year - a.year;
   });
 }
