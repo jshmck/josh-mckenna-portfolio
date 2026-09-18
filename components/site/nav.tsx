@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { navLinks } from "@/lib/site";
 import { getActiveCategories } from "@/lib/projects";
@@ -253,6 +253,12 @@ function NavWorkSearch({
   );
 }
 
+/** Subscribe no-op for useSyncExternalStore reads of values that never
+ *  change after load (engine detection below). */
+function subscribeNever() {
+  return () => {};
+}
+
 export function Nav() {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
@@ -323,6 +329,28 @@ export function Nav() {
   // frame behind and risk the very first return-to-top after a fresh page
   // load missing its bounce.
   const [hasFrostedOnce, setHasFrostedOnce] = useState(false);
+  // Whether this engine actually RENDERS SVG-referenced backdrop filters
+  // (the nav-liquid-warp utility) — false until proven, so frost is the
+  // universal first paint and there's no hydration mismatch. Feature
+  // detection is impossible here: WebKit parses url() in backdrop-filter
+  // (CSS.supports and computed style both claim it) but renders nothing,
+  // which silently REPLACED the frost with no blur at all in Safari when
+  // this shipped CSS-only — verified against the live site in Playwright
+  // WebKit. navigator.userAgentData marks Blink (Chrome/Arc/Edge/Brave),
+  // the one engine verified to render the warp — chosen over
+  // window.chrome because headless Chromium (the test harness) hides
+  // that but keeps userAgentData. Secure contexts only, which https
+  // production and localhost both are; Safari and Firefox keep the
+  // plain frost until proven otherwise.
+  // useSyncExternalStore, not a mount effect — the value never changes
+  // after load, the server snapshot keeps SSR/hydration on the frost
+  // branch, and the lint rule (rightly) rejects synchronous setState in
+  // an effect.
+  const liquidGlass = useSyncExternalStore(
+    subscribeNever,
+    () => "userAgentData" in navigator,
+    () => false,
+  );
   // Whether scroll has reached the very bottom of the page -- "make the
   // bounce thing happen when I hit the bottom too," per Josh. Reuses the
   // exact same nav-pill-landing keyframe the top-of-page return already
@@ -572,20 +600,21 @@ export function Nav() {
   // would silently generate no CSS at all (confirmed against this exact
   // trap once already, see jM's own "unscannable token" comment below).
   const shapeFrostClassDesktop = scrolled
-    ? `${atBottom ? "md:animate-[nav-pill-landing_650ms_ease-in-out]" : "md:animate-[nav-pill-pop_650ms_ease-in-out]"} md:border-transparent md:bg-canvas/15 md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] md:nav-liquid-frost`
+    ? `${atBottom ? "md:animate-[nav-pill-landing_650ms_ease-in-out]" : "md:animate-[nav-pill-pop_650ms_ease-in-out]"} md:border-transparent md:bg-canvas/15 md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] ${liquidGlass ? "md:nav-liquid-warp" : "md:nav-liquid-frost"}`
     : hasFrostedOnce
       ? "md:animate-[nav-pill-landing_650ms_ease-in-out] md:border-transparent md:bg-transparent"
       : "md:border-transparent md:bg-transparent";
   const barFrostClassMobile = scrolled
-    ? `${atBottom ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out]" : "max-md:animate-[nav-pill-pop_650ms_ease-in-out]"} max-md:border-transparent max-md:bg-canvas/15 max-md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] max-md:nav-liquid-frost`
+    ? `${atBottom ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out]" : "max-md:animate-[nav-pill-pop_650ms_ease-in-out]"} max-md:border-transparent max-md:bg-canvas/15 max-md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] ${liquidGlass ? "max-md:nav-liquid-warp" : "max-md:nav-liquid-frost"}`
     : hasFrostedOnce
       ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out] max-md:border-transparent max-md:bg-transparent"
       : "max-md:border-transparent max-md:bg-transparent";
 
   return (
     <>
-      {/* The liquid displacement nav-liquid-frost's backdrop-filter points
-          at (see that utility in globals.css) — same recipe as the hero
+      {/* The liquid displacement nav-liquid-warp's backdrop-filter points
+          at (see that utility in globals.css, and liquidGlass above for
+          why the warp is gated at runtime) — same recipe as the hero
           chair's #hero-liquid-glass but defined here because the nav is on
           every page, and slightly gentler (scale 22 vs 28): the bar sits
           over body text far more often than the chair does, and the frost
