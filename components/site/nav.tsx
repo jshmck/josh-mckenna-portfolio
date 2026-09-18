@@ -572,18 +572,51 @@ export function Nav() {
   // would silently generate no CSS at all (confirmed against this exact
   // trap once already, see jM's own "unscannable token" comment below).
   const shapeFrostClassDesktop = scrolled
-    ? `${atBottom ? "md:animate-[nav-pill-landing_650ms_ease-in-out]" : "md:animate-[nav-pill-pop_650ms_ease-in-out]"} md:border-transparent md:bg-canvas/15 md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] md:backdrop-blur-md md:backdrop-saturate-150`
+    ? `${atBottom ? "md:animate-[nav-pill-landing_650ms_ease-in-out]" : "md:animate-[nav-pill-pop_650ms_ease-in-out]"} md:border-transparent md:bg-canvas/15 md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] md:nav-liquid-frost`
     : hasFrostedOnce
       ? "md:animate-[nav-pill-landing_650ms_ease-in-out] md:border-transparent md:bg-transparent"
       : "md:border-transparent md:bg-transparent";
   const barFrostClassMobile = scrolled
-    ? `${atBottom ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out]" : "max-md:animate-[nav-pill-pop_650ms_ease-in-out]"} max-md:border-transparent max-md:bg-canvas/15 max-md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] max-md:backdrop-blur-md max-md:backdrop-saturate-150`
+    ? `${atBottom ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out]" : "max-md:animate-[nav-pill-pop_650ms_ease-in-out]"} max-md:border-transparent max-md:bg-canvas/15 max-md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] max-md:nav-liquid-frost`
     : hasFrostedOnce
       ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out] max-md:border-transparent max-md:bg-transparent"
       : "max-md:border-transparent max-md:bg-transparent";
 
   return (
     <>
+      {/* The liquid displacement nav-liquid-frost's backdrop-filter points
+          at (see that utility in globals.css) — same recipe as the hero
+          chair's #hero-liquid-glass but defined here because the nav is on
+          every page, and slightly gentler (scale 22 vs 28): the bar sits
+          over body text far more often than the chair does, and the frost
+          on top already carries legibility. Zero-size but must NOT be
+          display:hidden — a hidden SVG's filter is inert in Chromium and
+          the backdrop-filter referencing it would silently no-op. */}
+      <svg aria-hidden="true" focusable="false" className="absolute h-0 w-0">
+        <filter
+          id="nav-liquid-glass"
+          x="-20%"
+          y="-20%"
+          width="140%"
+          height="140%"
+          colorInterpolationFilters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.012 0.016"
+            numOctaves="2"
+            seed="7"
+            result="noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="22"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </svg>
       {/* min-h-[88px], not a fixed h-[88px] -- pt-[env(safe-area-inset-top)]
           (see app/layout.tsx's viewportFit: "cover" for the other half of
           this) pushes the jM/pill/Cart shapes down clear of a notch/
