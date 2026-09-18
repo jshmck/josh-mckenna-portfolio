@@ -235,7 +235,14 @@ const OBJECTS: DriftObject[] = [
     angle: rad(110),
     rx: 0.33,
     ry: 0.34,
-    spin: rad(-5.9),
+    // Calmed from the slot's original -5.9 — the fastest big-object
+    // spin, inherited from the yeti cooler, whose chunky art never made
+    // the speed legible. The spindly glass chair made the same velocity
+    // READ (~44px/s vs its neighbours' 23-28), which Josh felt as "a
+    // different magnet/polar behaviour than the rest" — measured repel
+    // and orbit tracking were identical, only the pace differed. -4.5
+    // sits at the family midrange.
+    spin: rad(-4.5),
   },
 ];
 
