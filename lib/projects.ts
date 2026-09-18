@@ -992,7 +992,10 @@ export const projects: Project[] = [
     cardTitle: "Alphabet Soup",
     cardLabel: "Atlanta Magazine",
     year: 2022,
-    pinnedRank: 4,
+    // Traded 4 for Vogue's 8 — "swap vogue with ATL mag, theyre both
+    // landscape so should work easy," per Josh: both are 5/3 span-2
+    // cards, so the trade moves only these two.
+    pinnedRank: 8,
     yearLabel: "October 2022",
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
@@ -1200,10 +1203,12 @@ export const projects: Project[] = [
     // generic "Editorial" every magazine credit shares.
     pageTitle: "Safe Tanning Editorial",
     year: 2018,
-    // Pinned to the middle of /work's curated block, regardless of year
-    // — Josh wants this one prominent despite being older than most of
-    // the rest, just not leading the page.
-    pinnedRank: 8,
+    // Pinned to /work's curated block regardless of year — Josh wants
+    // this one prominent despite being older than most of the rest,
+    // just not leading the page. Traded 8 for Atlanta's 4 ("swap vogue
+    // with ATL mag" — both 5/3 span-2, so the trade moves only these
+    // two).
+    pinnedRank: 4,
     discipline: "Editorial Illustration",
     deliverables: "3 Spot Illustrations",
     categories: ["Editorial"],
