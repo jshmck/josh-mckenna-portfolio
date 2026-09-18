@@ -1900,47 +1900,56 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "hsbc-pride-logo",
-    title: "HSBC Pride Logo",
-    cardTitle: "Pride Logo",
-    cardLabel: "HSBC",
-    pageTitle: "HSBC Pride Logo",
-    client: "HSBC",
+    slug: "kiehls-trevor-project",
+    title: "Kiehl's Pride Campaign",
+    client: "Kiehl's",
+    // TRIAL: same trim as Levi's Rainbow Rodeo — see Project.cardTitle.
+    cardTitle: "Pride Campaign",
     year: 2023,
-    // Grouped with Voxi (20) — see its own pinnedRank comment. Was a
-    // trio with It's All Love before that project was archived, per
-    // Josh.
+    // Takes HSBC's old rank 19 — "swap hsbc with kiehls," per Josh;
+    // HSBC took this entry's old unpinned array slot. No denseSquare
+    // with it: this card stays taller in dense views ("kiehls should
+    // be taller, to match the other two on the row," per Josh).
     pinnedRank: 19,
-    denseSquare: true,
-    discipline: "Illustration & Animation",
-    deliverables: "1 animation",
-    categories: ["LGBTQ+", "Motion"],
-    summary: "The HSBC hex, reimagined as a canvas for Pride.",
-    heroCaption: "A held frame from the animation, 2023.",
+    discipline: "Pride Campaign",
+    deliverables: "Packaging · Parade Float",
+    categories: ["LGBTQ+"],
+    summary: "A Pride parade, wrapped around a jar of face cream.",
+    heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
     brief: [
-      "Studio La Plage, HSBC's creative partner agency, called on LGBTQIA+ creatives to reinterpret the HSBC hex as a canvas. My interpretation was about my journey of self discovery when I moved to North America. It ran across HSBC's own social channels.",
+      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project: a parade scene built into limited-edition packaging across Kiehl's product line, with the same artwork on a float in the New York City Pride parade. A portion of proceeds went to the charity.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
-      { role: "Agency", name: "Studio La Plage" },
-      { role: "Client", name: "HSBC" },
+      { role: "Agency", name: "Havas" },
+      { role: "Client", name: "Kiehl's" },
     ],
-    // Native ratio (source is 1080x1080); no crop needed on the /work card.
+    // True ratio (2400x2400) — pinned rather than left to RATIO_CYCLE's
+    // chance assignment, same fix as the other unpinned cards found
+    // alongside the Bum Selfie 3D report.
     cardRatio: "1/1",
-    // The whole piece is the animation — the grid card plays it rather
-    // than sitting on the still frame like every other video-backed card.
-    cardVideo: true,
     hero: {
       ratio: "1/1",
-      alt: "The hex, mid-animation",
-      src: "/work/hsbc-pride-logo/01-hsbc-pride-logo-hero.webp",
+      alt: "Limited-edition Kiehl's Ultra Facial Cream, Pride campaign packaging",
+      src: "/work/kiehls-trevor-project/01-kiehls-trevor-project-face-cream-ultra-facial-cream.webp",
     },
-    heroVideo: {
-      src: "/work/hsbc-pride-logo/02-hsbc-pride-logo.mp4",
-      alt: "The HSBC Pride hex animation, looping",
+    heroPair: {
       ratio: "1/1",
+      alt: "The full cast of characters",
+      src: "/work/kiehls-trevor-project/02-characters-1.webp",
     },
-    gallery: [],
+    gallery: [
+      {
+        ratio: "1/1",
+        alt: "The full cast of characters",
+        src: "/work/kiehls-trevor-project/03-characters-2.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Kiehl's × Josh McKenna",
+        src: "/work/kiehls-trevor-project/04-press-quote.webp",
+      },
+    ],
   },
   {
     slug: "voxi-pride",
@@ -1951,12 +1960,12 @@ export const projects: Project[] = [
     cardTitle: "Pride Campaign",
     cardLabel: "VOXI by Vodafone",
     year: 2019,
-    // Grouped with HSBC (19) so both 1/1 cards seat together —
-    // "hsbc, voxi and google can be 1/1 on their own line," per Josh.
-    // It's All Love, this row's original third member, has since been
-    // archived to lib/archived-projects.ts, leaving this a duo.
+    // The old HSBC/Voxi square duo ("hsbc, voxi and google can be 1/1
+    // on their own line," per Josh) dissolved when HSBC swapped down
+    // with Kiehl's — denseSquare dropped with it, since a lone forced
+    // square against 4/5 neighbours is the uneven-row problem the flag
+    // exists to avoid.
     pinnedRank: 20,
-    denseSquare: true,
     discipline: "Pride Campaign",
     deliverables: "Phone Cases · Flags · Pins · Social · Tees",
     categories: ["LGBTQ+"],
@@ -2405,51 +2414,48 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
-    slug: "kiehls-trevor-project",
-    title: "Kiehl's Pride Campaign",
-    client: "Kiehl's",
-    // TRIAL: same trim as Levi's Rainbow Rodeo — see Project.cardTitle.
-    cardTitle: "Pride Campaign",
+    slug: "hsbc-pride-logo",
+    title: "HSBC Pride Logo",
+    cardTitle: "Pride Logo",
+    cardLabel: "HSBC",
+    pageTitle: "HSBC Pride Logo",
+    client: "HSBC",
     year: 2023,
-    discipline: "Pride Campaign",
-    deliverables: "Packaging · Parade Float",
-    categories: ["LGBTQ+"],
-    summary: "A Pride parade, wrapped around a jar of face cream.",
-    heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
+    // Unpinned — "swap hsbc with kiehls," per Josh: Kiehl's took this
+    // project's old rank 19 and this entry took Kiehl's old array slot.
+    // denseSquare went with the move: leaving 19 dissolved the old
+    // HSBC/Voxi square duo (Voxi's own denseSquare dropped too), and
+    // down here among 4/5 neighbours a lone forced square is exactly
+    // the uneven-row problem the flag avoids.
+    discipline: "Illustration & Animation",
+    deliverables: "1 animation",
+    categories: ["LGBTQ+", "Motion"],
+    summary: "The HSBC hex, reimagined as a canvas for Pride.",
+    heroCaption: "A held frame from the animation, 2023.",
     brief: [
-      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project: a parade scene built into limited-edition packaging across Kiehl's product line, with the same artwork on a float in the New York City Pride parade. A portion of proceeds went to the charity.",
+      "Studio La Plage, HSBC's creative partner agency, called on LGBTQIA+ creatives to reinterpret the HSBC hex as a canvas. My interpretation was about my journey of self discovery when I moved to North America. It ran across HSBC's own social channels.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
-      { role: "Agency", name: "Havas" },
-      { role: "Client", name: "Kiehl's" },
+      { role: "Agency", name: "Studio La Plage" },
+      { role: "Client", name: "HSBC" },
     ],
-    // True ratio (2400x2400) — pinned rather than left to RATIO_CYCLE's
-    // chance assignment, same fix as the other unpinned cards found
-    // alongside the Bum Selfie 3D report.
+    // Native ratio (source is 1080x1080); no crop needed on the /work card.
     cardRatio: "1/1",
+    // The whole piece is the animation — the grid card plays it rather
+    // than sitting on the still frame like every other video-backed card.
+    cardVideo: true,
     hero: {
       ratio: "1/1",
-      alt: "Limited-edition Kiehl's Ultra Facial Cream, Pride campaign packaging",
-      src: "/work/kiehls-trevor-project/01-kiehls-trevor-project-face-cream-ultra-facial-cream.webp",
+      alt: "The hex, mid-animation",
+      src: "/work/hsbc-pride-logo/01-hsbc-pride-logo-hero.webp",
     },
-    heroPair: {
+    heroVideo: {
+      src: "/work/hsbc-pride-logo/02-hsbc-pride-logo.mp4",
+      alt: "The HSBC Pride hex animation, looping",
       ratio: "1/1",
-      alt: "The full cast of characters",
-      src: "/work/kiehls-trevor-project/02-characters-1.webp",
     },
-    gallery: [
-      {
-        ratio: "1/1",
-        alt: "The full cast of characters",
-        src: "/work/kiehls-trevor-project/03-characters-2.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Kiehl's × Josh McKenna",
-        src: "/work/kiehls-trevor-project/04-press-quote.webp",
-      },
-    ],
+    gallery: [],
   },
   // Tilda Rice lived here — archived to lib/archived-projects.ts per
   // Josh (kept browsable on /archive), not deleted; see that file
