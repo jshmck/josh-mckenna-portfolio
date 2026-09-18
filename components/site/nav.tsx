@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { navLinks } from "@/lib/site";
 import { getActiveCategories } from "@/lib/projects";
@@ -253,12 +253,6 @@ function NavWorkSearch({
   );
 }
 
-/** Subscribe no-op for useSyncExternalStore reads of values that never
- *  change after load (engine detection below). */
-function subscribeNever() {
-  return () => {};
-}
-
 export function Nav() {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
@@ -329,28 +323,6 @@ export function Nav() {
   // frame behind and risk the very first return-to-top after a fresh page
   // load missing its bounce.
   const [hasFrostedOnce, setHasFrostedOnce] = useState(false);
-  // Whether this engine actually RENDERS SVG-referenced backdrop filters
-  // (the nav-liquid-warp utility) — false until proven, so frost is the
-  // universal first paint and there's no hydration mismatch. Feature
-  // detection is impossible here: WebKit parses url() in backdrop-filter
-  // (CSS.supports and computed style both claim it) but renders nothing,
-  // which silently REPLACED the frost with no blur at all in Safari when
-  // this shipped CSS-only — verified against the live site in Playwright
-  // WebKit. navigator.userAgentData marks Blink (Chrome/Arc/Edge/Brave),
-  // the one engine verified to render the warp — chosen over
-  // window.chrome because headless Chromium (the test harness) hides
-  // that but keeps userAgentData. Secure contexts only, which https
-  // production and localhost both are; Safari and Firefox keep the
-  // plain frost until proven otherwise.
-  // useSyncExternalStore, not a mount effect — the value never changes
-  // after load, the server snapshot keeps SSR/hydration on the frost
-  // branch, and the lint rule (rightly) rejects synchronous setState in
-  // an effect.
-  const liquidGlass = useSyncExternalStore(
-    subscribeNever,
-    () => "userAgentData" in navigator,
-    () => false,
-  );
   // Whether scroll has reached the very bottom of the page -- "make the
   // bounce thing happen when I hit the bottom too," per Josh. Reuses the
   // exact same nav-pill-landing keyframe the top-of-page return already
@@ -600,68 +572,18 @@ export function Nav() {
   // would silently generate no CSS at all (confirmed against this exact
   // trap once already, see jM's own "unscannable token" comment below).
   const shapeFrostClassDesktop = scrolled
-    ? `${atBottom ? "md:animate-[nav-pill-landing_650ms_ease-in-out]" : "md:animate-[nav-pill-pop_650ms_ease-in-out]"} md:border-transparent md:bg-canvas/15 md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] ${liquidGlass ? "md:nav-liquid-warp" : "md:nav-liquid-frost"}`
+    ? `${atBottom ? "md:animate-[nav-pill-landing_650ms_ease-in-out]" : "md:animate-[nav-pill-pop_650ms_ease-in-out]"} md:border-transparent md:bg-canvas/15 md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] md:backdrop-blur-md md:backdrop-saturate-150`
     : hasFrostedOnce
       ? "md:animate-[nav-pill-landing_650ms_ease-in-out] md:border-transparent md:bg-transparent"
       : "md:border-transparent md:bg-transparent";
   const barFrostClassMobile = scrolled
-    ? `${atBottom ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out]" : "max-md:animate-[nav-pill-pop_650ms_ease-in-out]"} max-md:border-transparent max-md:bg-canvas/15 max-md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] ${liquidGlass ? "max-md:nav-liquid-warp" : "max-md:nav-liquid-frost"}`
+    ? `${atBottom ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out]" : "max-md:animate-[nav-pill-pop_650ms_ease-in-out]"} max-md:border-transparent max-md:bg-canvas/15 max-md:shadow-[inset_0_1px_8px_rgba(255,255,255,0.6),inset_0_-2px_6px_rgba(255,255,255,0.3),inset_0_0_22px_color-mix(in_srgb,var(--color-brand)_32%,transparent)] max-md:backdrop-blur-md max-md:backdrop-saturate-150`
     : hasFrostedOnce
       ? "max-md:animate-[nav-pill-landing_650ms_ease-in-out] max-md:border-transparent max-md:bg-transparent"
       : "max-md:border-transparent max-md:bg-transparent";
 
   return (
     <>
-      {/* The liquid displacement nav-liquid-warp's backdrop-filter points
-          at (see that utility in globals.css, and liquidGlass above for
-          why the warp is gated at runtime) — same recipe as the hero
-          chair's #hero-liquid-glass in spirit, tuned for the bar: the
-          settled in-between after a full arc of trials ("find an
-          inbetween? ...keep the no torn paper look and liquid
-          distortion but bring the frost back," per Josh — a clear-glass
-          chair copy with a white active link came and went before
-          this). One low-frequency octave keeps flat card edges bending
-          as long smooth waves, never torn paper; scale 44 is what
-          keeps that wave legible through the restored 12px frost
-          (frost averages away small displacement — the first liquid
-          pass died exactly that way at scale 22). No smoothing blur
-          inside the filter: the CSS frost blur does that job now.
-          Defined here rather than shared because the nav is on every
-          page and the hero is Home-only. Safari's plain-frost fallback
-          keeps the original frost untouched. Zero-size but must NOT be
-          display:hidden — a hidden SVG's filter is inert in Chromium and
-          the backdrop-filter referencing it would silently no-op. */}
-      <svg aria-hidden="true" focusable="false" className="absolute h-0 w-0">
-        <filter
-          id="nav-liquid-glass"
-          x="-20%"
-          y="-20%"
-          width="140%"
-          height="140%"
-          colorInterpolationFilters="sRGB"
-        >
-          {/* One octave at a lower frequency than the chair's noise — the
-              second octave's fine ripple made long flat edges (card
-              tops, landscape horizons) read as torn paper under the
-              bar, "a bit bumpy," per Josh. A single low-frequency
-              octave bends the same edges into long smooth waves; the
-              slightly higher smoothing blur rounds what's left. */}
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.007 0.011"
-            numOctaves="1"
-            seed="7"
-            result="noise"
-          />
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="noise"
-            scale="44"
-            xChannelSelector="R"
-            yChannelSelector="G"
-          />
-        </filter>
-      </svg>
       {/* min-h-[88px], not a fixed h-[88px] -- pt-[env(safe-area-inset-top)]
           (see app/layout.tsx's viewportFit: "cover" for the other half of
           this) pushes the jM/pill/Cart shapes down clear of a notch/
@@ -1047,12 +969,7 @@ export function Nav() {
                       : {})}
                     className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
-                        ? // Brand blue in every state — a white active link
-                          // (with and without an ink halo) was trialled for
-                          // the clear-glass liquid and reverted: "drop the
-                          // halo, the white... bring the frost back," per
-                          // Josh. With the frost back, blue reads fine.
-                          "font-bold text-accent"
+                        ? "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
                     }`}
                   >
