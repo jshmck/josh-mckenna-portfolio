@@ -615,16 +615,20 @@ export function Nav() {
       {/* The liquid displacement nav-liquid-warp's backdrop-filter points
           at (see that utility in globals.css, and liquidGlass above for
           why the warp is gated at runtime) — same recipe as the hero
-          chair's #hero-liquid-glass — a byte-identical copy of its recipe
-          now ("could you copy the vitra chair effect," per Josh, after
-          two frostier passes read as lost): scale 28 displacement, a
-          1.2px smoothing blur inside the filter, and no CSS frost blur
-          at all in the warp variant. Defined here rather than shared
-          because the nav is on every page and the hero is Home-only.
-          Legibility comes from the active link flipping to white while
-          the liquid is on (see the link classes) and the pill's own
-          wash/glow; Safari's plain-frost fallback keeps the original
-          12px frost untouched. Zero-size but must NOT be
+          chair's #hero-liquid-glass in spirit, tuned for the bar: the
+          settled in-between after a full arc of trials ("find an
+          inbetween? ...keep the no torn paper look and liquid
+          distortion but bring the frost back," per Josh — a clear-glass
+          chair copy with a white active link came and went before
+          this). One low-frequency octave keeps flat card edges bending
+          as long smooth waves, never torn paper; scale 44 is what
+          keeps that wave legible through the restored 12px frost
+          (frost averages away small displacement — the first liquid
+          pass died exactly that way at scale 22). No smoothing blur
+          inside the filter: the CSS frost blur does that job now.
+          Defined here rather than shared because the nav is on every
+          page and the hero is Home-only. Safari's plain-frost fallback
+          keeps the original frost untouched. Zero-size but must NOT be
           display:hidden — a hidden SVG's filter is inert in Chromium and
           the backdrop-filter referencing it would silently no-op. */}
       <svg aria-hidden="true" focusable="false" className="absolute h-0 w-0">
@@ -652,11 +656,10 @@ export function Nav() {
           <feDisplacementMap
             in="SourceGraphic"
             in2="noise"
-            scale="28"
+            scale="44"
             xChannelSelector="R"
             yChannelSelector="G"
           />
-          <feGaussianBlur stdDeviation="1.6" />
         </filter>
       </svg>
       {/* min-h-[88px], not a fixed h-[88px] -- pt-[env(safe-area-inset-top)]
@@ -1044,23 +1047,12 @@ export function Nav() {
                       : {})}
                     className={`-mx-1 -my-1 inline-block px-1 py-1 font-body text-[15px] transition-[font-weight] duration-200 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:-mx-2 md:-my-1.5 md:px-2 md:py-1.5 md:text-[22px] ${
                       isActive(link.href)
-                        ? // White while the liquid glass is on — the
-                          // chair-clear warp barely lightens the artwork
-                          // behind the bar, and brand blue was sinking
-                          // into it ("maybe the selected text is white?
-                          // just thinking of legibility options," per
-                          // Josh). text-canvas is the site's white token.
-                          // The soft ink halo is what keeps the white
-                          // alive over the cream canvas gaps between
-                          // cards ("the white gets lost," per Josh) —
-                          // over artwork it's imperceptible, over canvas
-                          // it's the letterform's whole edge. Safari
-                          // (plain frost, liquidGlass false) and the
-                          // unfrosted at-rest bar keep brand blue,
-                          // no halo.
-                          scrolled && liquidGlass
-                          ? "font-bold text-canvas [text-shadow:0_0_10px_rgba(0,0,0,0.4),0_1px_2px_rgba(0,0,0,0.28)]"
-                          : "font-bold text-accent"
+                        ? // Brand blue in every state — a white active link
+                          // (with and without an ink halo) was trialled for
+                          // the clear-glass liquid and reverted: "drop the
+                          // halo, the white... bring the frost back," per
+                          // Josh. With the frost back, blue reads fine.
+                          "font-bold text-accent"
                         : "text-ink-muted hover:font-bold hover:text-accent"
                     }`}
                   >
