@@ -73,10 +73,10 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
         </div>
       </div>
 
-      {/* fit="natural": posters never upscale past their own pixels — the
-          New York poster's low-res source stays sharp at its real size
-          rather than being blown up to match the row (Josh's call, see
-          the component comment above). */}
+      {/* fit="natural": posters never upscale past their own pixels — a
+          low-res source stays sharp at its real size rather than being
+          blown up to fill the viewport (Josh's call, originally for the
+          since-removed New York poster). */}
       <LightboxOverlay state={lightbox} radius="" fit="natural" />
     </>
   );
