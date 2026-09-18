@@ -1753,50 +1753,31 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
-    slug: "ford-bronco",
-    title: "Ford Bronco",
+    slug: "palm-springs",
+    title: "Palm Springs",
     client: "Personal",
-    year: 2021,
-    // Originally promoted so the Cars category filter's dense pack
-    // landed it beside Honda instead of Jimny — "swap jimny for the
-    // bronco, bring bronco up and to the right of honda," per Josh.
-    // Unpinned items sort Infinity-after any finite rank regardless of
-    // value, so nudging Bronco ahead of Jimny/Twingo (both unpinned,
-    // 2026) needs a real pinnedRank. Honda's since moved to rank 2 (see
-    // its own comment) — Sound of Driving, Nomad Wheels and Figma BMW Z1
-    // now sit between them in the Cars-filtered dense pack, so this no
-    // longer seats Bronco right behind Honda specifically, just ahead of
-    // Jimny/Twingo as originally intended.
+    year: 2025,
+    // Takes Bronco's old rank 18 — "swap bronco with palm springs,"
+    // per Josh; Bronco took this entry's old array slot leading the
+    // unpinned band.
     pinnedRank: 18,
     discipline: "Illustration",
     deliverables: "Key Art",
     categories: ["Cars"],
-    summary: "The new Bronco, reveal day.",
+    summary: "A mid-century carport in Palm Springs.",
     heroCaption: "",
     brief: [
-      "I used to own an 80's Bronco, so when the new one was released I was obsessed. Had to draw my favourite combo out in the desert.",
+      "A mid-century carport roofline against the San Jacinto mountains, with a two-tone convertible parked underneath.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     cardRatio: "1/1",
-    // "In car category, change the bronco to 4/5 to better fit next to
-    // honda," per Josh — taller frame reads better beside Honda's 16/9
-    // span than the square. Same cardImageByCategory mechanism as
-    // Wagamama/L.A. Pride's Murals covers; every other view keeps the
-    // 1/1 above untouched.
-    cardImageByCategory: {
-      Cars: {
-        ratio: "4/5",
-        alt: "Ford Bronco, three-quarter rear, parked in the desert",
-        src: "/work/ford-bronco/01-bronco-2021.webp",
-      },
-    },
     hero: {
       ratio: "1/1",
-      alt: "Ford Bronco, three-quarter rear, parked in the desert",
-      src: "/work/ford-bronco/01-bronco-2021.webp",
+      alt: "Palm Springs — a mid-century carport",
+      src: "/work/palm-springs/01-palm-springs.webp",
     },
     gallery: [],
-    featured: false,
+    featured: true,
   },
   {
     slug: "rooted-journal-editorial",
@@ -2117,27 +2098,45 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
-    slug: "palm-springs",
-    title: "Palm Springs",
+    slug: "ford-bronco",
+    title: "Ford Bronco",
     client: "Personal",
-    year: 2025,
+    year: 2021,
+    // Unpinned — "swap bronco with palm springs," per Josh: Palm
+    // Springs took this project's old rank 18 and this entry took Palm
+    // Springs' old array slot leading the unpinned band. (An earlier
+    // rank existed to seat Bronco ahead of Jimny/Twingo in the Cars
+    // dense pack — moot since Jimny's archive; array order still keeps
+    // it ahead of Twingo.)
     discipline: "Illustration",
     deliverables: "Key Art",
     categories: ["Cars"],
-    summary: "A mid-century carport in Palm Springs.",
+    summary: "The new Bronco, reveal day.",
     heroCaption: "",
     brief: [
-      "A mid-century carport roofline against the San Jacinto mountains, with a two-tone convertible parked underneath.",
+      "I used to own an 80's Bronco, so when the new one was released I was obsessed. Had to draw my favourite combo out in the desert.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     cardRatio: "1/1",
+    // "In car category, change the bronco to 4/5 to better fit next to
+    // honda," per Josh — taller frame reads better beside Honda's 16/9
+    // span than the square. Same cardImageByCategory mechanism as
+    // Wagamama/L.A. Pride's Murals covers; every other view keeps the
+    // 1/1 above untouched.
+    cardImageByCategory: {
+      Cars: {
+        ratio: "4/5",
+        alt: "Ford Bronco, three-quarter rear, parked in the desert",
+        src: "/work/ford-bronco/01-bronco-2021.webp",
+      },
+    },
     hero: {
       ratio: "1/1",
-      alt: "Palm Springs — a mid-century carport",
-      src: "/work/palm-springs/01-palm-springs.webp",
+      alt: "Ford Bronco, three-quarter rear, parked in the desert",
+      src: "/work/ford-bronco/01-bronco-2021.webp",
     },
     gallery: [],
-    featured: true,
+    featured: false,
   },
   {
     slug: "figma-servebots",
