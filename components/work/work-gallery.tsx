@@ -549,7 +549,6 @@ export function WorkGallery({
       Cars: ["auto", "automotive", "car", "cars", "vehicle", "motor", "driving", "wheels"],
       Murals: ["mural", "wall", "painting", "painted"],
       Editorial: ["magazine", "press", "publication", "article", "journal"],
-      Icons: ["icon", "sticker", "stickers", "emoji", "logo"],
       Motion: ["animation", "animated", "video", "moving", "gif"],
       "3D": ["render", "cgi", "three"],
     };
@@ -1014,7 +1013,7 @@ export function WorkGallery({
                   // unconditionally inside ProjectCard, with no way to
                   // know a categoryImage override is active — so a
                   // filtered pill kept the turnaround animation instead
-                  // of switching to the Murals/Icons still ("make sure
+                  // of switching to the Murals still ("make sure
                   // the IG sticker switches," per Josh, which the video
                   // was silently winning against). Disabling it on this
                   // one render, only when an override applies, is
