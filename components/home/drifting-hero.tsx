@@ -223,13 +223,13 @@ const OBJECTS: DriftObject[] = [
     // per Josh (the Vitra × Virgil Abloh chair, matching the project's
     // move up the /work grid). Same orbit slot and footprint; only the
     // artwork and its true aspect (1633×1885) changed.
-    // -2: Josh's recoloured export (brighter orange frame, whiter glass)
-    // — new filenames so Next's image cache can't serve the first pass.
-    src: "/illustrations/objects/chair-vitra-virgil-2.webp",
+    // -3: Josh's third colour pass — new filenames each time so Next's
+    // image cache can't serve a stale export.
+    src: "/illustrations/objects/chair-vitra-virgil-3.webp",
     alt: "",
     // Thresholded from the export's own alpha channel (shell reads at
     // ~7.5% opacity, solids at 100%) — exactly the two glass panels.
-    glassMask: "/illustrations/objects/chair-vitra-virgil-glass-mask-2.webp",
+    glassMask: "/illustrations/objects/chair-vitra-virgil-glass-mask-3.webp",
     width: 0.175,
     aspect: 0.866,
     angle: rad(110),
@@ -1012,6 +1012,39 @@ export function DriftingHero() {
     // frame read as a huge gap before Who -- desktop has room to spare at
     // that width, mobile doesn't. Smaller below md, unchanged from md up.
     <section className="relative pb-10 md:pb-24">
+      {/* The liquid-glass displacement the chair's backdrop-filter points
+          at (see DriftObject.glassMask). Gentle low-frequency turbulence
+          warps the backdrop like looking through wavy glass — the actual
+          "liquid" — and the tiny blur only takes the ringing off the
+          displaced edges. Zero-size but must NOT be display:hidden: a
+          hidden SVG's filter is inert in Chromium and the backdrop-filter
+          referencing it would silently no-op. */}
+      <svg aria-hidden="true" focusable="false" className="absolute h-0 w-0">
+        <filter
+          id="hero-liquid-glass"
+          x="-20%"
+          y="-20%"
+          width="140%"
+          height="140%"
+          colorInterpolationFilters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.012 0.016"
+            numOctaves="2"
+            seed="7"
+            result="noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="28"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+          <feGaussianBlur stdDeviation="1.2" />
+        </filter>
+      </svg>
       <div
         ref={frameRef}
         // `container-type: size` gives the objects cqw/cqh units, so their
@@ -1070,14 +1103,24 @@ export function DriftingHero() {
                 style={{ aspectRatio: String(object.aspect) }}
               >
                 {/* Live glass — see DriftObject.glassMask. Painted before
-                    the <Image> so the backdrop blur only touches what's
+                    the <Image> so the backdrop filter only touches what's
                     BEHIND the object (this object is last in OBJECTS, so
                     earlier siblings drift under it at the shared z-0);
                     the artwork's own tint and highlights stay crisp on
                     top. backdrop-filter honours the element's mask, so
-                    the blur is clipped to exactly the glass panels. Not
-                    an animation — no reduced-motion guard needed; the
-                    blur is just as valid on a static frame. */}
+                    the effect is clipped to exactly the glass panels.
+
+                    Liquid, not frosted: a plain blur(7px) read as the
+                    nav's frost ("a bit more frosted than i expected...
+                    could you push for a little more liquid glass," per
+                    Josh), so the standard property now runs the backdrop
+                    through the SVG displacement filter below — the
+                    backdrop genuinely warps, with only a whisper of blur.
+                    Safari doesn't take url() filters in backdrop-filter,
+                    and the prefixed property is its own declaration, so
+                    -webkit- carries a lighter frost as the fallback
+                    rather than nothing. Not an animation — no
+                    reduced-motion guard needed either way. */}
                 {object.glassMask && (
                   <div
                     aria-hidden="true"
@@ -1087,8 +1130,8 @@ export function DriftingHero() {
                       WebkitMaskImage: `url(${object.glassMask})`,
                       maskSize: "100% 100%",
                       WebkitMaskSize: "100% 100%",
-                      backdropFilter: "blur(7px) saturate(1.15)",
-                      WebkitBackdropFilter: "blur(7px) saturate(1.15)",
+                      backdropFilter: "url(#hero-liquid-glass) saturate(1.2)",
+                      WebkitBackdropFilter: "blur(3px) saturate(1.2)",
                     }}
                   />
                 )}
