@@ -2448,14 +2448,19 @@ export const projects: Project[] = [
     heroCaption: "",
     brief: ["Stone-faced cowboy — an experiment in leather texture."],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // Portrait source — RATIO_CYCLE would otherwise land the /work card
-    // on a square or landscape slot depending on position.
-    cardRatio: "3/4",
+    // Portrait source — pinned so RATIO_CYCLE can't land the /work card
+    // on a square or landscape slot depending on position. 4/5 is the
+    // replacement artwork's exact ratio (1638×2048); the original
+    // closer-crop export was 3/4.
+    cardRatio: "4/5",
     heroSize: "spot",
+    // Full-figure replacement on yellow — "replace the cowboy with
+    // this," per Josh. New filename so Next's image cache can't serve
+    // the old crop.
     hero: {
-      ratio: "3/4",
+      ratio: "4/5",
       alt: "The cowboy, in his embroidered jacket",
-      src: "/work/cowboy/01-cowboy-hr.webp",
+      src: "/work/cowboy/02-cowboy-full-hr.webp",
     },
     gallery: [],
   },
