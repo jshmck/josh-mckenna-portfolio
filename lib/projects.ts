@@ -1293,52 +1293,8 @@ export const projects: Project[] = [
     },
     gallery: [],
   },
-  {
-    slug: "ace-tate-logo",
-    title: "Ace & Tate",
-    client: "Ace & Tate",
-    // TRIAL: "Re/Viewed > Ace & Tate," per Josh — the actual series name
-    // this ran under ("re/viewed", see the brief below). See
-    // Project.cardTitle.
-    cardTitle: "Re/Viewed",
-    cardLabel: "Ace & Tate",
-    year: 2019,
-    discipline: "Illustration",
-    deliverables: "1 Illustration",
-    categories: ["Icons"],
-    summary: "Ace & Tate's ampersand, redrawn as a seated figure.",
-    heroCaption: "For \"re/viewed,\" Ace & Tate's series inviting illustrators to reinterpret their logo, 2019.",
-    brief: [
-      "Ace & Tate asked me to reinterpret their logo for \"re/viewed,\" a series putting the brand mark in different illustrators' hands. At the time I was drawing voluptuous, feminine characters almost exclusively, so I went looking for her inside the ampersand.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "Ace & Tate" },
-    ],
-    // True ratio — pinned explicitly rather than left to RATIO_CYCLE, same
-    // fix as Sumo/Boat Int./Coca-Cola earlier this session.
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "A seated figure, built from the Ace & Tate ampersand",
-      src: "/work/ace-tate-logo/01-illustration.webp",
-      // The figure sits right-of-centre in the square source (its own
-      // hand almost touches the right edge); a dead-centre crop into the
-      // /work grid's forced-4/5 dense frame cropped that hand off while
-      // leaving empty red on the left. Shifts the crop window right to
-      // keep the whole figure in frame either way — no effect on the
-      // project page, where this renders at its native 1/1 with nothing
-      // cropped.
-      position: "80% 50%",
-    },
-    gallery: [
-      {
-        ratio: "16/9",
-        alt: "The Ace & Tate wordmark",
-        src: "/work/ace-tate-logo/02-logo.webp",
-      },
-    ],
-  },
+  // Ace & Tate lived here — archived to lib/archived-projects.ts per
+  // Josh, not deleted; see that file for the restore path.
   {
     slug: "monocle-downward-trend",
     title: "Monocle Editorial",
@@ -2330,8 +2286,8 @@ export const projects: Project[] = [
     discipline: "Editorial Illustration",
     deliverables: "10 Spot Illustrations",
     // Icons dropped — Editorial alone covers this; "Icons" is reserved
-    // for sticker/logo/pictogram sets (Levi's, Away, Instagram, Ace &
-    // Tate), a different kind of work than an editorial spot illo.
+    // for sticker/logo/pictogram sets (Levi's, Away, Instagram), a
+    // different kind of work than an editorial spot illo.
     categories: ["Editorial"],
     summary: "Ten spot icons for a feature on regenerative living.",
     heroCaption: "\"Living Regeneratively,\" The Rooted Journal Issue 02, Spring 2025.",
