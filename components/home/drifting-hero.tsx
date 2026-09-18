@@ -95,6 +95,18 @@ type DriftObject = {
   ry: number;
   /** Angular velocity, radians per second (sign sets direction). */
   spin: number;
+  /**
+   * Alpha mask (url) of the artwork's transparent-glass region — rendered
+   * as a masked `backdrop-filter` layer UNDER the cut-out art, so whatever
+   * drifts behind that region genuinely blurs through it. Exists because
+   * Figma Draw's glass effect doesn't survive a PNG export (a flat file
+   * can't act on pixels behind it — "i was hoping it would give a liquid
+   * glass effect to the floating objects underneath it," per Josh); the
+   * live backdrop blur is the browser-side reconstruction of that effect.
+   * The export's own faint shell tint + edge highlights still paint on
+   * top, so the glass keeps its drawn character and only the blur is CSS.
+   */
+  glassMask?: string;
 };
 
 const OBJECTS: DriftObject[] = [
@@ -213,6 +225,9 @@ const OBJECTS: DriftObject[] = [
     // artwork and its true aspect (1633×1885) changed.
     src: "/illustrations/objects/chair-vitra-virgil.webp",
     alt: "",
+    // Thresholded from the export's own alpha channel (shell reads at
+    // ~7.5% opacity, solids at 100%) — exactly the two glass panels.
+    glassMask: "/illustrations/objects/chair-vitra-virgil-glass-mask.webp",
     width: 0.175,
     aspect: 0.866,
     angle: rad(110),
@@ -1052,6 +1067,29 @@ export function DriftingHero() {
                 className="relative scale-100 transition-[scale_500ms_var(--ease-drift),rotate_150ms_ease-out] group-hover:scale-[1.03] group-focus-within:scale-[1.03] max-md:scale-[1.25] max-md:group-hover:scale-[1.29] max-md:group-focus-within:scale-[1.29]"
                 style={{ aspectRatio: String(object.aspect) }}
               >
+                {/* Live glass — see DriftObject.glassMask. Painted before
+                    the <Image> so the backdrop blur only touches what's
+                    BEHIND the object (this object is last in OBJECTS, so
+                    earlier siblings drift under it at the shared z-0);
+                    the artwork's own tint and highlights stay crisp on
+                    top. backdrop-filter honours the element's mask, so
+                    the blur is clipped to exactly the glass panels. Not
+                    an animation — no reduced-motion guard needed; the
+                    blur is just as valid on a static frame. */}
+                {object.glassMask && (
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      maskImage: `url(${object.glassMask})`,
+                      WebkitMaskImage: `url(${object.glassMask})`,
+                      maskSize: "100% 100%",
+                      WebkitMaskSize: "100% 100%",
+                      backdropFilter: "blur(7px) saturate(1.15)",
+                      WebkitBackdropFilter: "blur(7px) saturate(1.15)",
+                    }}
+                  />
+                )}
                 <Image
                   src={object.src}
                   alt={object.alt}
