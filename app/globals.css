@@ -267,13 +267,13 @@
   backdrop-filter: blur(12px) saturate(1.5);
 }
 @utility nav-liquid-warp {
-  /* 8px, not the frost's 12 — the first liquid pass kept the full frost
-     blur and it visually swamped the displacement ("i'm in chrome" and
-     still couldn't see it, per Josh). Less blur + a stronger warp (the
-     filter's scale 36, see nav.tsx) is what makes the liquid legible;
-     link legibility is unaffected because the text sits on the bar, not
-     behind it. */
-  backdrop-filter: url(#nav-liquid-glass) blur(8px) saturate(1.5);
+  /* The chair's exact treatment — no CSS frost blur at all; the only
+     softening is the 1.2px smoothing inside the SVG filter, same as
+     #hero-liquid-glass ("could you copy the vitra chair effect," per
+     Josh, after an 8px and a 12px frost both read as lost). Legibility
+     shifts to the active link going white while this is on — see the
+     nav link classes. */
+  backdrop-filter: url(#nav-liquid-glass) saturate(1.2);
 }
 
 @utility icon-bike {
