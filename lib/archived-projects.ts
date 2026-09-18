@@ -154,4 +154,66 @@ export const archivedProjects: Project[] = [
       },
     ],
   },
+  {
+    // Single overview sheet for now — Josh was redrawing the set in a
+    // new style when this was still live; if it's ever restored, the
+    // individual stickers may exist by then.
+    //
+    // Archived the day after "bring it's all love by google way down to
+    // the bottom of the gallery" moved it to the very end of the
+    // projects array — it was the gallery's last card, unpinned, when
+    // Josh pulled it entirely. Its old HSBC (19) / Voxi (20) square-row
+    // groupmates were already a duo by then.
+    slug: "its-all-love",
+    title: "It's All Love",
+    client: "Google",
+    // TRIAL: the original confirmed example for this whole mechanism —
+    // see Project.cardTitle.
+    cardLabel: "Google",
+    year: 2017,
+    discipline: "Stickers & Iconography",
+    deliverables: "Sticker Set · 24 Stickers",
+    categories: ["LGBTQ+", "Icons"],
+    summary: "Twenty-four stickers for Google: hair flicks, butt slaps and one wedding.",
+    heroCaption: "The full 24-sticker set, designed for Google's global sticker programme, 2017.",
+    brief: [
+      "In 2017, Anyways commissioned a Pride sticker set for Google, part of its ongoing global sticker programme: twenty-four stickers, from a finger snap to a full lesbian wedding.",
+      "The set went on to win an Applied Arts Photography & Illustration Award in the Conceptual Illustration category, Spring 2018.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Agency", name: "Anyways" },
+      { role: "Client", name: "Google" },
+    ],
+    // /work card only, per Josh — a four-sticker composite on a solid
+    // light-pink fill, so the card gets a real surface instead of the
+    // overview sheet's transparent float. The project page above keeps
+    // the full sheet; this never renders there. Pinned to its true 1/1
+    // ("make sure it stays at 1/1") so RATIO_CYCLE can't crop it.
+    cardRatio: "1/1",
+    cardImage: {
+      ratio: "1/1",
+      alt: "Four stickers from the set",
+      src: "/work/its-all-love/04-hero-light.webp",
+    },
+    // Rainbow_2 flattened onto the composite's own pink (sampled
+    // 255/230/246) — the hover overlay renders with no surface of its
+    // own, so a transparent sticker would float over the four-sticker
+    // card instead of replacing it.
+    cardHoverImage: {
+      ratio: "1/1",
+      alt: "The rainbow sticker",
+      src: "/work/its-all-love/05-rainbow-hover-light.webp",
+    },
+    hero: {
+      ratio: "1/1",
+      alt: "The full sticker set",
+      src: "/work/its-all-love/01-overview-01.webp",
+      // Transparent PNG — same fix as the Instagram sticker's hero:
+      // contain sits on bg-canvas, so no placeholder tone shows through
+      // the transparent background.
+      fit: "contain",
+    },
+    gallery: [],
+  },
 ];
