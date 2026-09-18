@@ -2384,19 +2384,19 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "figma-yeti",
-    title: "Yeti",
+    slug: "figma-vitra-virgil",
+    title: "Vitra",
     client: "Personal",
     year: 2025,
+    // Takes Yeti's old rank 7 — "swap yeti and vitra on the gallery,"
+    // per Josh; Yeti took this entry's old unpinned array slot.
     pinnedRank: 7,
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: [],
-    summary: "A YETI cooler, occupied.",
+    categories: ["Editorial"],
+    summary: "The Vitra × Virgil Abloh chair, repeated as wallpaper.",
     heroCaption: "",
-    brief: [
-      "Made in Figma Draw. An ice cold yeti lounging inside a YETI cooler, cos why not?",
-    ],
+    brief: ["Made in Figma Draw. A tribute to a great design collaboration: Vitra × Virgil Abloh, 2025."],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
@@ -2404,8 +2404,8 @@ export const projects: Project[] = [
     heroSize: "spot",
     hero: {
       ratio: "4/5",
-      alt: "The YETI cooler",
-      src: "/work/figma-yeti/01-yeti-hr.webp",
+      alt: "Vitra × Virgil Abloh",
+      src: "/work/figma-vitra-virgil/01-vitgr-hr3.webp",
     },
     gallery: [],
   },
@@ -2494,16 +2494,21 @@ export const projects: Project[] = [
     gallery: [],
   },
   {
-    slug: "figma-vitra-virgil",
-    title: "Vitra",
+    slug: "figma-yeti",
+    title: "Yeti",
     client: "Personal",
     year: 2025,
+    // Unpinned — "swap yeti and vitra on the gallery," per Josh: Vitra
+    // took this project's old rank 7, and this entry took Vitra's old
+    // array slot among the unpinned 2025 pieces.
     discipline: "Illustration",
     deliverables: "1 Illustration",
-    categories: ["Editorial"],
-    summary: "The Vitra × Virgil Abloh chair, repeated as wallpaper.",
+    categories: [],
+    summary: "A YETI cooler, occupied.",
     heroCaption: "",
-    brief: ["Made in Figma Draw. A tribute to a great design collaboration: Vitra × Virgil Abloh, 2025."],
+    brief: [
+      "Made in Figma Draw. An ice cold yeti lounging inside a YETI cooler, cos why not?",
+    ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
     // on a square or landscape slot depending on position.
@@ -2511,8 +2516,8 @@ export const projects: Project[] = [
     heroSize: "spot",
     hero: {
       ratio: "4/5",
-      alt: "Vitra × Virgil Abloh",
-      src: "/work/figma-vitra-virgil/01-vitgr-hr3.webp",
+      alt: "The YETI cooler",
+      src: "/work/figma-yeti/01-yeti-hr.webp",
     },
     gallery: [],
   },
