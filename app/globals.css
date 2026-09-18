@@ -267,13 +267,14 @@
   backdrop-filter: blur(12px) saturate(1.5);
 }
 @utility nav-liquid-warp {
-  /* The chair's exact treatment — no CSS frost blur at all; the only
-     softening is the 1.2px smoothing inside the SVG filter, same as
-     #hero-liquid-glass ("could you copy the vitra chair effect," per
-     Josh, after an 8px and a 12px frost both read as lost). Legibility
-     shifts to the active link going white while this is on — see the
-     nav link classes. */
-  backdrop-filter: url(#nav-liquid-glass) saturate(1.2);
+  /* Full frost restored in front of the warp — the settled in-between
+     ("keep the no torn paper look and liquid distortion but bring the
+     frost back," per Josh, ending a clear-glass trial). Same blur and
+     saturate as the frost fallback, so Blink and Safari read
+     identically frosted; only the wave through the glass differs. The
+     displacement survives the blur because the filter runs long
+     low-frequency waves at scale 44 — see #nav-liquid-glass. */
+  backdrop-filter: url(#nav-liquid-glass) blur(12px) saturate(1.5);
 }
 
 @utility icon-bike {
