@@ -2597,58 +2597,9 @@ export const projects: Project[] = [
     },
     gallery: [],
   },
-  {
-    slug: "away-pride-stickers",
-    title: "Away",
-    client: "Away",
-    // TRIAL: "Pride Sticker Set > Away," per Josh — see Project.cardTitle.
-    cardTitle: "Pride Sticker Set",
-    cardLabel: "Away",
-    year: 2019,
-    discipline: "Pride Campaign",
-    deliverables: "Sticker Set",
-    categories: ["LGBTQ+"],
-    summary: "Two couples, a rainbow and a sunbather, sized to fit on a suitcase.",
-    heroCaption: "A set of five Pride stickers, available in Away's stores throughout Pride month, 2019.",
-    brief: [
-      "Away commissioned a set of five Pride stickers, available in-store throughout Pride month 2019. They looked great on the aluminium luggage.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "Away" },
-    ],
-    // The /work card leads with the luggage mockup now, per Josh — hover
-    // swaps to the flat sticker set. True ratio (2000x2328, reduced
-    // 250/291), matching cardImage so the card isn't cropped.
-    cardRatio: "250/291",
-    cardImage: {
-      ratio: "250/291",
-      alt: "The sticker set, applied to Away luggage",
-      src: "/work/away-pride-stickers/01-sticker-luggage.webp",
-    },
-    cardHoverImage: {
-      ratio: "4/5",
-      alt: "The full sticker set",
-      src: "/work/away-pride-stickers/02-sticker-set.webp",
-    },
-    // Both true 4/5 now that the mockup's been re-exported at high res —
-    // paired side by side, full column width (not `small`, per Josh — the
-    // resolution isn't a concern anymore, so no reason to cap them).
-    hero: {
-      ratio: "4/5",
-      alt: "The full sticker set",
-      src: "/work/away-pride-stickers/02-sticker-set.webp",
-    },
-    // True ratio (2000x2328, reduced 250/291) — the reshoot's crop is no
-    // longer an exact 4/5.
-    heroPair: {
-      ratio: "250/291",
-      alt: "The sticker set, applied to Away luggage",
-      src: "/work/away-pride-stickers/01-sticker-luggage.webp",
-      caption: false,
-    },
-    gallery: [],
-  },
+  // Away lived here — archived to lib/archived-projects.ts per Josh
+  // (kept browsable on /archive), not deleted; see that file for the
+  // restore path.
   {
     slug: "step-journal",
     title: "Step Journal",
