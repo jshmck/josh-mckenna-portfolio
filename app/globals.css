@@ -267,7 +267,13 @@
   backdrop-filter: blur(12px) saturate(1.5);
 }
 @utility nav-liquid-warp {
-  backdrop-filter: url(#nav-liquid-glass) blur(12px) saturate(1.5);
+  /* 8px, not the frost's 12 — the first liquid pass kept the full frost
+     blur and it visually swamped the displacement ("i'm in chrome" and
+     still couldn't see it, per Josh). Less blur + a stronger warp (the
+     filter's scale 36, see nav.tsx) is what makes the liquid legible;
+     link legibility is unaffected because the text sits on the bar, not
+     behind it. */
+  backdrop-filter: url(#nav-liquid-glass) blur(8px) saturate(1.5);
 }
 
 @utility icon-bike {

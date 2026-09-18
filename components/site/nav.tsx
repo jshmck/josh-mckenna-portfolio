@@ -616,9 +616,13 @@ export function Nav() {
           at (see that utility in globals.css, and liquidGlass above for
           why the warp is gated at runtime) — same recipe as the hero
           chair's #hero-liquid-glass but defined here because the nav is on
-          every page, and slightly gentler (scale 22 vs 28): the bar sits
-          over body text far more often than the chair does, and the frost
-          on top already carries legibility. Zero-size but must NOT be
+          every page, and STRONGER (scale 36 vs 28): the first pass ran
+          scale 22 under the full 12px frost and the blur swamped it —
+          "i'm in chrome" and still couldn't see it, per Josh. The warp
+          variant also eases its blur to 8px (see nav-liquid-warp) so the
+          displacement reads; legibility holds because the links sit ON
+          the bar, not behind it, and Safari's plain-frost fallback keeps
+          the original 12px untouched. Zero-size but must NOT be
           display:hidden — a hidden SVG's filter is inert in Chromium and
           the backdrop-filter referencing it would silently no-op. */}
       <svg aria-hidden="true" focusable="false" className="absolute h-0 w-0">
@@ -640,7 +644,7 @@ export function Nav() {
           <feDisplacementMap
             in="SourceGraphic"
             in2="noise"
-            scale="22"
+            scale="36"
             xChannelSelector="R"
             yChannelSelector="G"
           />
