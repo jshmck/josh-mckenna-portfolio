@@ -2749,43 +2749,9 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    slug: "whatsapp",
-    title: "WhatsApp",
-    client: "WhatsApp",
-    // TRIAL: "Privacy Campaign > WhatsApp," per Josh — see
-    // Project.cardTitle.
-    cardTitle: "Privacy Campaign",
-    cardLabel: "WhatsApp",
-    year: 2018,
-    discipline: "Campaign Illustration",
-    deliverables: "2 illustrations",
-    categories: [],
-    summary: "Beach couples, for WhatsApp's campaign about private messaging.",
-    heroCaption: "For WhatsApp's \"It's between you\" campaign, 2018.",
-    brief: [
-      "WhatsApp commissioned illustrations for \"It's between you,\" its campaign about private messaging: couples in close conversation under a parasol.",
-    ],
-    credits: [
-      { role: "Illustration", name: "Josh McKenna" },
-      { role: "Client", name: "WhatsApp" },
-    ],
-    // Both source squares are true 1/1 — pinned so RATIO_CYCLE can't crop
-    // the lockup. The campaign version leads, per Josh; the clean
-    // illustration rides beside it.
-    cardRatio: "1/1",
-    hero: {
-      ratio: "1/1",
-      alt: "\"It's between you.\"",
-      src: "/work/whatsapp/01-between-you.webp",
-    },
-    heroPair: {
-      ratio: "1/1",
-      alt: "Under the parasol",
-      src: "/work/whatsapp/02-ladies.webp",
-    },
-    gallery: [],
-  },
+  // WhatsApp lived here — archived to lib/archived-projects.ts per
+  // Josh (kept browsable on /archive), not deleted; see that file
+  // for the restore path.
   {
     slug: "ual-welcome-booklets",
     title: "UAL Booklets",
