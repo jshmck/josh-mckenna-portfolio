@@ -1165,9 +1165,10 @@ export const projects: Project[] = [
     title: "Vitra",
     client: "Personal",
     year: 2025,
-    // Takes Yeti's old rank 7 — "swap yeti and vitra on the gallery,"
-    // per Josh; Yeti took this entry's old unpinned array slot.
-    pinnedRank: 7,
+    // Took Yeti's old rank 7 ("swap yeti and vitra on the gallery"),
+    // then traded down to Mr Porter's 14 — "swap vitra and mr porter,"
+    // per Josh.
+    pinnedRank: 14,
     discipline: "Illustration",
     deliverables: "1 Illustration",
     categories: ["Editorial"],
@@ -1504,10 +1505,11 @@ export const projects: Project[] = [
     cardTitle: "Miami Invites",
     cardLabel: "Mr Porter",
     year: 2021,
-    // Takes Last Call's old rank — "swap mr porter with 3d cowboy hat
-    // last call," per Josh; Last Call sits in this project's old slot
-    // after Costa Smeralda (see its own comment).
-    pinnedRank: 14,
+    // Took Last Call's old 14 ("swap mr porter with 3d cowboy hat last
+    // call"; Last Call sits in this project's old unpinned slot after
+    // Costa Smeralda), then traded up to Vitra's 7 — "swap vitra and mr
+    // porter," per Josh.
+    pinnedRank: 7,
     discipline: "Event Invitation",
     deliverables: "2 Invitations",
     categories: [],
