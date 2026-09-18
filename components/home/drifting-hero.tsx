@@ -207,10 +207,14 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-11",
-    src: "/illustrations/objects/yeti-cooler.webp",
+    // Was the YETI cooler — "swap the yeti floating hero with this one,"
+    // per Josh (the Vitra × Virgil Abloh chair, matching the project's
+    // move up the /work grid). Same orbit slot and footprint; only the
+    // artwork and its true aspect (1633×1885) changed.
+    src: "/illustrations/objects/chair-vitra-virgil.webp",
     alt: "",
     width: 0.175,
-    aspect: 0.8,
+    aspect: 0.866,
     angle: rad(110),
     rx: 0.33,
     ry: 0.34,
