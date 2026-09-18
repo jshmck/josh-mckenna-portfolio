@@ -1367,7 +1367,9 @@ export const projects: Project[] = [
     client: "Nomad Wheel Co.",
     cardLabel: "Nomad Wheel Co.",
     year: 2024,
-    pinnedRank: 12,
+    // Traded 12 for the Monocle heel's 17.5 — "swap 505 and monocle,"
+    // per Josh.
+    pinnedRank: 17.5,
     discipline: "Automotive Livery",
     deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
     // "remove 505 from icons," per Josh.
@@ -1713,9 +1715,10 @@ export const projects: Project[] = [
     pageTitle: "Downward Trend",
     year: 2018,
     yearLabel: "October 2018, Issue 117",
-    // Nudged up from 21, seating between Bombay Sapphire (17) and
-    // Bronco (18) — "bring the monocle heel up a little," per Josh.
-    pinnedRank: 17.5,
+    // Nudged up from 21 to 17.5 ("bring the monocle heel up a little"),
+    // then traded with 505 Wheel Launch — "swap 505 and monocle," per
+    // Josh.
+    pinnedRank: 12,
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illo",
     categories: ["Editorial"],
