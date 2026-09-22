@@ -90,20 +90,28 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
               about. */}
           <Parallax speed={0.85} maxOffset={48}>
             {/* Monte Carlo poster — a car and cityscape in one image,
-                matching the copy beside it. Unbranded version (no "beefbar"
-                script, no "Born In") — this one's for Home, not the Beefbar
-                project itself, so its own project page still leads with the
-                branded two-car poster. True poster ratio (12/17), not the
-                ingester's auto-picked 3/4 — same reasoning as the file it
-                replaces: 1920×2716 snaps closer to 12/17 (0.7059) than 3/4
-                (0.75, a 6% crop). */}
+                matching the copy beside it. Josh's re-cropped 4/5 export
+                (the Miura solo under the MONTE-CARLO title band, no
+                "beefbar" script) replacing the old 12/17 unbranded
+                two-car version — "swap the WHO section image with this
+                newly cropped 4/5 framed one," per Josh. The Beefbar
+                project page still leads with its own branded poster.
+                Capped at max-w-md and tucked to the column's end on
+                desktop ("reduce the size of the frame to fit," per Josh
+                — the 4/5 crop at full column width read bigger than the
+                tall poster it replaced); mobile keeps the standard
+                full-width stack, same recipe as the Info portrait. */}
+            {/* ml-auto, not justify-self-end — the grid child is the
+                Parallax wrapper, not this Plate, so justify-self would
+                no-op; auto-margin does the same tuck inside it. */}
             <Plate
+              className="w-full md:max-w-md md:ml-auto"
               image={{
-                ratio: "12/17",
+                ratio: "4/5",
                 alt: "Monte Carlo poster — a Lamborghini Miura outside the Casino de Monte-Carlo",
-                src: "/work/beefbar-posters/01-monte-carlo-lamb.webp",
+                src: "/work/beefbar-posters/13-monte-carlo-lambo-ig.webp",
               }}
-              sizes="(max-width: 768px) 100vw, 45vw"
+              sizes="(max-width: 768px) 100vw, 448px"
             />
           </Parallax>
         </div>
