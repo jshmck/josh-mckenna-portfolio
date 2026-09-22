@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 
 import { Footer } from "@/components/site/footer";
+import { ImageGuard } from "@/components/site/image-guard";
 import { Nav } from "@/components/site/nav";
 import { siteConfig } from "@/lib/site";
 
@@ -119,6 +120,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <Nav />
+        <ImageGuard />
         {/* The max-md: trio here is one half of the footer's mobile
             curtain reveal (see footer.tsx): the footer pins sticky at
             the viewport bottom *behind* the page, so main needs to

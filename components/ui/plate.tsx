@@ -94,6 +94,10 @@ export function Plate({
           fill
           sizes={sizes}
           priority={priority}
+          // Deterrent: no drag-to-desktop copy. Right-click is blocked
+          // by ImageGuard in the root layout — a handler here would pull
+          // Plate (a server component) into the client bundle.
+          draggable={false}
           style={image.position ? { objectPosition: image.position } : undefined}
           className={fit === "contain" ? "object-contain" : "object-cover"}
         />
