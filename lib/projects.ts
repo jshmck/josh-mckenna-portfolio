@@ -1141,7 +1141,7 @@ export const projects: Project[] = [
     // cardVideoByCategory's doc comment.
     cardVideoByCategory: {
       Motion: {
-        src: "/work/beefbar-posters/14-monte-carlo-lambo-animation.mp4",
+        src: "/work/beefbar-posters/15-monte-carlo-lambo-animation.mp4",
         alt: "Monte Carlo, animated",
       },
     },
@@ -1154,11 +1154,11 @@ export const projects: Project[] = [
     galleryLayout: "poster-grid",
     // The Who section's Monte Carlo animation as a grid tile, seated
     // right after the Monte Carlo poster it animates (afterIndex counts
-    // hero + gallery tiles). Poster is the still it was cut from.
+    // hero + gallery tiles). Poster is the clip's own first frame.
     posterGridVideo: {
-      src: "/work/beefbar-posters/14-monte-carlo-lambo-animation.mp4",
+      src: "/work/beefbar-posters/15-monte-carlo-lambo-animation.mp4",
       alt: "Monte Carlo, animated",
-      poster: "/work/beefbar-posters/13-monte-carlo-lambo-ig.webp",
+      poster: "/work/beefbar-posters/15-monte-carlo-lambo-poster.webp",
       ratio: "4/5",
       afterIndex: 1,
     },

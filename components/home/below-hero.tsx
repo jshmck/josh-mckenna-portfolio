@@ -92,21 +92,24 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
             {/* Monte Carlo animation — the animated cut of the same 4/5
                 Miura-outside-the-Casino crop that sat here as a still
                 ("replace the new who image with this animation and have
-                it autoplay on loop," per Josh). Silent, so ProjectVideo
+                it autoplay on loop," per Josh; re-exported with a
+                tighter framing the same day — "the lambo movie has a
+                shorter crop - swap them out"). Silent, so ProjectVideo
                 autoplays it muted on loop with the reduced-motion guard,
-                same mechanism as the /work card clips; the retired still
-                stays on as the poster frame. True 1080x1350 (4/5), so
-                the frame geometry is unchanged from the still it
-                replaces. */}
+                same mechanism as the /work card clips; the poster is the
+                clip's own first frame (ffmpeg-extracted), so the paused
+                reduced-motion state shows the same framing playback
+                starts from. True 1080x1350 (4/5), so the frame geometry
+                is unchanged from the still this slot used to hold. */}
             {/* ml-auto, not justify-self-end — the grid child is the
                 Parallax wrapper, not this video, so justify-self would
                 no-op; auto-margin does the same tuck inside it. */}
             <ProjectVideo
               className="w-full md:max-w-md md:ml-auto"
               video={{
-                src: "/work/beefbar-posters/14-monte-carlo-lambo-animation.mp4",
+                src: "/work/beefbar-posters/15-monte-carlo-lambo-animation.mp4",
                 alt: "Monte Carlo poster animated — a Lamborghini Miura outside the Casino de Monte-Carlo",
-                poster: "/work/beefbar-posters/13-monte-carlo-lambo-ig.webp",
+                poster: "/work/beefbar-posters/15-monte-carlo-lambo-poster.webp",
               }}
               ratio="4/5"
             />
