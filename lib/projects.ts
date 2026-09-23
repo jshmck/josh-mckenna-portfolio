@@ -473,6 +473,19 @@ export type Project = {
    *  to 4 (Beefbar). Rooted Journal's ten same-size spot icons read as two
    *  clean rows of five rather than 4+4+2, so it opts into 5. */
   posterGridColumns?: 4 | 5;
+  /** `"poster-grid"` only: one silent clip rendered as a grid tile among
+   *  the posters, autoplaying muted on loop via ProjectVideo (same
+   *  mechanism as galleryVideo in ImageStack, which poster-grid layouts
+   *  don't render). `afterIndex` counts within the combined hero+gallery
+   *  tile order; the clip stays out of the lightbox cycle. Beefbar's
+   *  Monte Carlo animation only for now. */
+  posterGridVideo?: {
+    src: string;
+    alt: string;
+    poster?: string;
+    ratio: ImageRatio;
+    afterIndex: number;
+  };
   /** Surfaced in the homepage "Selected work" band. */
   featured?: boolean;
   /**
@@ -1086,8 +1099,28 @@ export const projects: Project[] = [
     deliverables: "Illustrated Poster & Menu Design",
     // Cars per Josh ("add the monte-carlo poster from beefbar into the
     // cars section") — the card leads with the Monte Carlo Miura crop,
-    // so the project reads as a car piece in that filter.
-    categories: ["Cars"],
+    // so the project reads as a car piece in that filter. Motion because
+    // the Monte Carlo animation below is a real deliverable, same
+    // precedent as Super N's turntable.
+    categories: ["Cars", "Motion"],
+    // Same cover as cardImage on purpose: with no override, the filtered
+    // card's hover falls back to the first gallery poster (Luxembourg,
+    // via getCardHoverImage) — "when selecting motion or cars, no other
+    // beefbar posters appear," per Josh. An active override pins hover
+    // back to the lead, so pointing both filters at the cover keeps the
+    // card Monte-Carlo-only there while All keeps its usual hover.
+    cardImageByCategory: {
+      Cars: {
+        ratio: "4/5",
+        alt: "Beefbar Monte Carlo",
+        src: "/work/beefbar-posters/12-beefbar-cover.webp",
+      },
+      Motion: {
+        ratio: "4/5",
+        alt: "Beefbar Monte Carlo",
+        src: "/work/beefbar-posters/12-beefbar-cover.webp",
+      },
+    },
     summary: "A new poster each time Beefbar opens somewhere new.",
     heroCaption: "The Monte Carlo poster, Beefbar's flagship, part of the ongoing series.",
     brief: [
@@ -1095,6 +1128,16 @@ export const projects: Project[] = [
     ],
     credits: [{ role: "Graphic Design & Illustration", name: "Josh McKenna" }],
     galleryLayout: "poster-grid",
+    // The Who section's Monte Carlo animation as a grid tile, seated
+    // right after the Monte Carlo poster it animates (afterIndex counts
+    // hero + gallery tiles). Poster is the still it was cut from.
+    posterGridVideo: {
+      src: "/work/beefbar-posters/14-monte-carlo-lambo-animation.mp4",
+      alt: "Monte Carlo, animated",
+      poster: "/work/beefbar-posters/13-monte-carlo-lambo-ig.webp",
+      ratio: "4/5",
+      afterIndex: 1,
+    },
     // True ratio of the dedicated cover below (3000×3750 = an exact 4/5)
     // — the card frame follows the cover, not the 12/17 the poster
     // exports share.
@@ -2057,7 +2100,20 @@ export const projects: Project[] = [
     pinnedRank: 24,
     discipline: "Illustration",
     deliverables: "3 Posters",
-    categories: [],
+    // Cars per Josh ("add car section to costa smeralda and only use the
+    // romazzino one").
+    categories: ["Cars"],
+    // Same crop as cardImage on purpose — an active override pins the
+    // filtered card's hover back to the lead instead of cardHoverImage's
+    // Cala di Volpe swap, keeping the Cars view Romazzino-only. Same
+    // trick as Beefbar's Cars/Motion entries.
+    cardImageByCategory: {
+      Cars: {
+        ratio: "4/5",
+        alt: "Hotel Romazzino",
+        src: "/work/costa-smeralda/02-romazzino-no-border.webp",
+      },
+    },
     summary: "Vintage-style travel posters for three Costa Smeralda hotels.",
     heroCaption: "A set of travel posters for three Costa Smeralda hotels (Cala di Volpe, Romazzino and Cervo), 2022.",
     hideHeroCaptions: true,
