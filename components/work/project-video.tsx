@@ -23,6 +23,10 @@ type ProjectVideoProps = {
    * most of it.
    */
   ratio?: ImageRatio;
+  /** Corner radius utility, same contract as Plate's — defaults to the
+   *  sitewide frame radius. PosterGrid passes "" so its video tile runs
+   *  the same square corners as the poster tiles around it. */
+  radius?: string;
   className?: string;
 };
 
@@ -38,6 +42,7 @@ export function ProjectVideo({
   video,
   sound = false,
   ratio,
+  radius = "rounded-frame",
   className,
 }: ProjectVideoProps) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -61,7 +66,7 @@ export function ProjectVideo({
       src={video.src}
       poster={video.poster}
       aria-label={video.alt}
-      className={`${ratio ? RATIO_CLASS[ratio] : "aspect-video"} w-full rounded-frame object-cover ${className ?? ""}`}
+      className={`${ratio ? RATIO_CLASS[ratio] : "aspect-video"} w-full ${radius} object-cover ${className ?? ""}`}
       muted={!sound}
       loop={!sound}
       controls={sound}

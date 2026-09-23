@@ -49,6 +49,11 @@ type ProjectCardProps = {
    *  See getCardHoverImage in lib/projects.ts for how this is picked. Only
    *  wired up when `caption="hover"`. */
   hoverImage?: ProjectImage;
+  /** Explicit clip override for this one render — WorkGallery passes the
+   *  active filter's cardVideoByCategory pick here (Beefbar's Motion
+   *  card), taking precedence over the project's own cardVideo/heroVideo
+   *  pairing. Poster stays the card's still, same as cardVideo. */
+  video?: { src: string; alt: string };
   sizes?: string;
   priority?: boolean;
 };
@@ -63,6 +68,7 @@ export function ProjectCard({
   motion = "lift",
   parallax = false,
   hoverImage,
+  video,
   sizes = "(max-width: 768px) 100vw, 33vw",
   priority = false,
 }: ProjectCardProps) {
@@ -89,7 +95,7 @@ export function ProjectCard({
   // ratio the still would've used, poster is that still so there's no flash
   // before playback starts.
   const cardVideo =
-    project.cardVideo && project.heroVideo ? project.heroVideo : undefined;
+    video ?? (project.cardVideo && project.heroVideo ? project.heroVideo : undefined);
   const effectiveRatio = ratio ?? baseImage.ratio;
 
   const plate = (
