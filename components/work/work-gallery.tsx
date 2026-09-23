@@ -313,6 +313,7 @@ function MasonryCard({
   ratio,
   image,
   hoverImage,
+  video,
   sizes = "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw",
 }: {
   project: Project;
@@ -328,11 +329,15 @@ function MasonryCard({
    *  wagamama the pink crowd," per Josh), instead of the usual
    *  getCardHoverImage pick. */
   hoverImage?: ProjectImage;
+  /** Clip override, the video counterpart of `image` — the active
+   *  filter's cardVideoByCategory pick (see that field's doc comment). */
+  video?: { src: string; alt: string };
   sizes?: string;
 }) {
   return (
     <ProjectCard
       project={project}
+      video={video}
       // cardImage lets a project override its lead image (la-pride);
       // hoverImage crossfades to another image from the same
       // project wherever one's available (getCardHoverImage).
@@ -345,7 +350,10 @@ function MasonryCard({
       // gutters read as uneven while scrolling ("it's the scrolling
       // movement you have set up," per Josh). Hover shrink and the
       // one-time reveal stay.
-      hoverImage={hoverImage ?? getCardHoverImage(project)}
+      // A playing clip suppresses the crossfade outright (no
+      // getCardHoverImage fallback either) — fading a still over it
+      // would hide exactly the motion the filter is selecting for.
+      hoverImage={video ? undefined : (hoverImage ?? getCardHoverImage(project))}
       sizes={sizes}
       priority={index < 3}
     />
@@ -958,6 +966,10 @@ export function WorkGallery({
             // deciding the actual frame. See cardImageByCategory.
             const categoryImage =
               filter !== "All" ? project.cardImageByCategory?.[filter] : undefined;
+            // A filter can also swap the card's still for a playing clip
+            // (Beefbar's Motion card) — see Project.cardVideoByCategory.
+            const categoryVideo =
+              filter !== "All" ? project.cardVideoByCategory?.[filter] : undefined;
             const naturalCardRatio =
               categoryImage?.ratio ?? effectiveCardRatio(project, index, ratioCycle);
             const naturalRatio = ratioToNumber(naturalCardRatio);
@@ -1023,8 +1035,16 @@ export function WorkGallery({
                   index={index}
                   ratio={cardRatio}
                   image={categoryImage ?? project.cardImage}
+                  video={categoryVideo}
+                  // No hover crossfade while a category clip plays —
+                  // fading the still over it would hide exactly the
+                  // motion the pill is selecting for.
                   hoverImage={
-                    categoryImage ? (project.cardImage ?? project.hero) : undefined
+                    categoryVideo
+                      ? undefined
+                      : categoryImage
+                        ? (project.cardImage ?? project.hero)
+                        : undefined
                   }
                   sizes={
                     span === 2

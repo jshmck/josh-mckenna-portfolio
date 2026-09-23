@@ -341,6 +341,19 @@ export type Project = {
    */
   cardImageByCategory?: Partial<Record<ProjectCategory, ProjectImage>>;
   /**
+   * Filtered views can swap the card's still for a playing clip — the
+   * Motion pill in practice: Beefbar's card plays the Monte Carlo
+   * animation there ("yes, animate it," per Josh) while Cars and All
+   * keep the static cover. Silent, autoplaying muted on loop via
+   * ProjectVideo inside ProjectCard; the poster is whatever still the
+   * card would otherwise show (cardImageByCategory pick or cardImage),
+   * so there's no flash before playback. Takes precedence over any
+   * cardImageByCategory entry for the same pill, and suppresses the
+   * hover crossfade — fading a still over a playing clip would just
+   * hide the motion the pill is selecting for.
+   */
+  cardVideoByCategory?: Partial<Record<ProjectCategory, { src: string; alt: string }>>;
+  /**
    * Overrides the /work and home-embedded gallery card's frame ratio —
    * WorkGallery otherwise cycles a fixed sequence per card position for the
    * masonry rhythm, regardless of the image's own shape, which is fine for
@@ -1115,10 +1128,21 @@ export const projects: Project[] = [
         alt: "Beefbar Monte Carlo",
         src: "/work/beefbar-posters/12-beefbar-cover.webp",
       },
+      // Motion still needs this entry even though cardVideoByCategory
+      // wins there: it's the clip's poster frame, and it keeps the
+      // single-poster hover pinning if the video entry ever goes.
       Motion: {
         ratio: "4/5",
         alt: "Beefbar Monte Carlo",
         src: "/work/beefbar-posters/12-beefbar-cover.webp",
+      },
+    },
+    // The Motion pill's card plays the animation itself — see
+    // cardVideoByCategory's doc comment.
+    cardVideoByCategory: {
+      Motion: {
+        src: "/work/beefbar-posters/14-monte-carlo-lambo-animation.mp4",
+        alt: "Monte Carlo, animated",
       },
     },
     summary: "A new poster each time Beefbar opens somewhere new.",
