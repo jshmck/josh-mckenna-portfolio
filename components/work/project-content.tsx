@@ -432,6 +432,7 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
           <PosterGrid
             images={[project.hero, ...project.gallery]}
             columns={project.posterGridColumns}
+            video={project.posterGridVideo}
           />
         ) : (
           <ProjectLightboxProvider images={[...heroLightboxImages, ...project.gallery]}>

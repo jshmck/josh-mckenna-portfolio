@@ -1,10 +1,13 @@
 "use client";
 
+import { Fragment } from "react";
+
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { useLightboxState } from "@/components/work/lightbox-core";
 import { LightboxOverlay } from "@/components/work/lightbox-overlay";
-import type { ProjectImage } from "@/lib/projects";
+import { ProjectVideo } from "@/components/work/project-video";
+import type { Project, ProjectImage } from "@/lib/projects";
 
 type PosterGridProps = {
   images: ProjectImage[];
@@ -12,6 +15,11 @@ type PosterGridProps = {
    *  default) vs. Rooted Journal's ten same-size spot icons, which read
    *  better as two clean rows of five than as 4+4+2. */
   columns?: 4 | 5;
+  /** One silent clip as a tile among the posters — see
+   *  Project.posterGridVideo. Not a lightbox member: pausable full-bleed
+   *  video inside the photo-cycle is a bigger feature than one tile
+   *  needs, the same call ImageStack's galleryVideo made. */
+  video?: Project["posterGridVideo"];
 };
 
 /**
@@ -27,7 +35,7 @@ type PosterGridProps = {
  * this layout already combines hero + gallery into one array with no
  * write-up split in between.
  */
-export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
+export function PosterGrid({ images, columns = 4, video }: PosterGridProps) {
   const lightbox = useLightboxState(images);
 
   return (
@@ -48,27 +56,41 @@ export function PosterGrid({ images, columns = 4 }: PosterGridProps) {
           }
         >
           {images.map((image, index) => (
-            <Reveal key={image.alt} delay={(index % columns) * 90}>
-              <button
-                type="button"
-                onClick={() => lightbox.openAt(index)}
-                aria-label={`Open larger view of ${image.alt}`}
-                className="block w-full cursor-zoom-in text-left"
-              >
-                <Plate
-                  image={image}
-                  radius=""
-                  sizes={
-                    columns === 5
-                      ? "(max-width: 640px) 45vw, (max-width: 768px) 30vw, (max-width: 1024px) 22vw, 18vw"
-                      : "(max-width: 640px) 45vw, (max-width: 768px) 30vw, 22vw"
-                  }
-                />
-              </button>
-              <p className="type-label mt-3 text-center text-ink-muted">
-                {image.alt}
-              </p>
-            </Reveal>
+            <Fragment key={image.alt}>
+              <Reveal delay={(index % columns) * 90}>
+                <button
+                  type="button"
+                  onClick={() => lightbox.openAt(index)}
+                  aria-label={`Open larger view of ${image.alt}`}
+                  className="block w-full cursor-zoom-in text-left"
+                >
+                  <Plate
+                    image={image}
+                    radius=""
+                    sizes={
+                      columns === 5
+                        ? "(max-width: 640px) 45vw, (max-width: 768px) 30vw, (max-width: 1024px) 22vw, 18vw"
+                        : "(max-width: 640px) 45vw, (max-width: 768px) 30vw, 22vw"
+                    }
+                  />
+                </button>
+                <p className="type-label mt-3 text-center text-ink-muted">
+                  {image.alt}
+                </p>
+              </Reveal>
+              {video?.afterIndex === index + 1 && (
+                <Reveal delay={((index + 1) % columns) * 90}>
+                  <ProjectVideo
+                    video={{ src: video.src, alt: video.alt, poster: video.poster }}
+                    ratio={video.ratio}
+                    radius=""
+                  />
+                  <p className="type-label mt-3 text-center text-ink-muted">
+                    {video.alt}
+                  </p>
+                </Reveal>
+              )}
+            </Fragment>
           ))}
         </div>
       </div>
