@@ -1084,7 +1084,10 @@ export const projects: Project[] = [
     pinnedRank: 6,
     discipline: "Illustration",
     deliverables: "Illustrated Poster & Menu Design",
-    categories: [],
+    // Cars per Josh ("add the monte-carlo poster from beefbar into the
+    // cars section") — the card leads with the Monte Carlo Miura crop,
+    // so the project reads as a car piece in that filter.
+    categories: ["Cars"],
     summary: "A new poster each time Beefbar opens somewhere new.",
     heroCaption: "The Monte Carlo poster, Beefbar's flagship, part of the ongoing series.",
     brief: [
