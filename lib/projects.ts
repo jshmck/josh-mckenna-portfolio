@@ -1677,6 +1677,11 @@ export const projects: Project[] = [
       alt: "BMW Z1",
       src: "/work/figma-bmw-z1/02-single.webp",
     },
+    // The /work card plays the animation muted on loop ("the work card
+    // should be the animation playing," per Josh) — same mechanism as
+    // Super N's card; ProjectCard never forwards the sound flag, so the
+    // page keeps its sound-on controls while the card stays silent.
+    cardVideo: true,
     // Real soundtrack, so Honda's heroVideo rules apply: native controls,
     // no autoplay. "pair" seats it beside the hero as the second of the
     // two heros rather than full-width above them.
