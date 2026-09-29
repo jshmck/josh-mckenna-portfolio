@@ -53,7 +53,7 @@ type ProjectCardProps = {
    *  active filter's cardVideoByCategory pick here (Beefbar's Motion
    *  card), taking precedence over the project's own cardVideo/heroVideo
    *  pairing. Poster stays the card's still, same as cardVideo. */
-  video?: { src: string; alt: string };
+  video?: { src: string; alt: string; poster?: string };
   sizes?: string;
   priority?: boolean;
 };
@@ -94,8 +94,17 @@ export function ProjectCard({
   // hero clip instead of sitting on its still frame — cropped to the same
   // ratio the still would've used, poster is that still so there's no flash
   // before playback starts.
+  // Object-form cardVideo swaps in a card-specific file (BMW Z1's 15s
+  // silent cut) while inheriting the rest of heroVideo — see the field's
+  // own doc comment.
   const cardVideo =
-    video ?? (project.cardVideo && project.heroVideo ? project.heroVideo : undefined);
+    video ??
+    (project.cardVideo && project.heroVideo
+      ? {
+          ...project.heroVideo,
+          ...(typeof project.cardVideo === "object" ? project.cardVideo : null),
+        }
+      : undefined);
   const effectiveRatio = ratio ?? baseImage.ratio;
 
   const plate = (
@@ -121,7 +130,15 @@ export function ProjectCard({
       >
         {cardVideo ? (
           <ProjectVideo
-            video={{ src: cardVideo.src, alt: cardVideo.alt, poster: baseImage.src }}
+            // The clip's own poster wins over the card still when the
+            // project curated one (Z1's red-on-red frame, Super N's
+            // badge frame — "make this the cover photo of the video,"
+            // per Josh); the still stays the fallback.
+            video={{
+              src: cardVideo.src,
+              alt: cardVideo.alt,
+              poster: cardVideo.poster ?? baseImage.src,
+            }}
             ratio={effectiveRatio}
           />
         ) : (

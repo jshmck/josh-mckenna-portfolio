@@ -404,8 +404,15 @@ export type Project = {
    * whole piece rather than a supporting clip. Requires `heroVideo`; cropped
    * to the card's usual ratio the same way the still image is, and reuses
    * ProjectVideo's own prefers-reduced-motion guard.
+   *
+   * The object form swaps in a card-specific file while keeping every
+   * other heroVideo field (poster, ratio): BMW Z1's card plays a 15s
+   * cut with the end lockup trimmed and the audio track stripped — "cut
+   * the video to 00:15 seconds, as it will auto loop nicer in this
+   * situation without sound," per Josh — while the page keeps the full
+   * clip with its soundtrack.
    */
-  cardVideo?: boolean;
+  cardVideo?: boolean | { src: string };
   /**
    * Crossfades in over the card's lead image on hover/focus. Set this to
    * curate the pick (e.g. la-pride); otherwise `getCardHoverImage` below
@@ -1589,9 +1596,10 @@ export const projects: Project[] = [
     year: 2021,
     // Took Last Call's old 14 ("swap mr porter with 3d cowboy hat last
     // call"; Last Call sits in this project's old unpinned slot after
-    // Costa Smeralda), then traded up to Vitra's 7 — "swap vitra and mr
-    // porter," per Josh.
-    pinnedRank: 7,
+    // Costa Smeralda), traded up to Vitra's 7 ("swap vitra and mr
+    // porter"), then down to BMW Z1's 15 — "swap the mr porter invite
+    // with the BMW z1," per Josh, once the Z1 card became the animation.
+    pinnedRank: 15,
     discipline: "Event Invitation",
     deliverables: "2 Invitations",
     categories: [],
@@ -1650,7 +1658,9 @@ export const projects: Project[] = [
     title: "BMW Z1",
     client: "Personal",
     year: 2025,
-    pinnedRank: 15,
+    // Mr Porter's old 7 — "swap the mr porter invite with the BMW z1,"
+    // per Josh (Mr Porter took this entry's old 15).
+    pinnedRank: 7,
     discipline: "Illustration",
     deliverables: "Animation & 9 Illustrations",
     // Motion joins Cars with the animation — a real deliverable, Super
@@ -1687,9 +1697,11 @@ export const projects: Project[] = [
     },
     // The /work card plays the animation muted on loop ("the work card
     // should be the animation playing," per Josh) — same mechanism as
-    // Super N's card; ProjectCard never forwards the sound flag, so the
-    // page keeps its sound-on controls while the card stays silent.
-    cardVideo: true,
+    // Super N's card. Its own 15s audio-stripped cut, not the page file:
+    // the full clip's last 0.8s fades to black, which read as a stutter
+    // every loop — "cut the video to 00:15 seconds, as it will auto
+    // loop nicer in this situation without sound," per Josh.
+    cardVideo: { src: "/work/figma-bmw-z1/13-z1-animation-card.mp4" },
     // Real soundtrack, but ambient by default: autoplays muted on loop
     // with the controls kept so the soundtrack is one tap away ("auto
     // play loop but on mute? still have option to unmute," per Josh).
@@ -1698,7 +1710,11 @@ export const projects: Project[] = [
     heroVideo: {
       src: "/work/figma-bmw-z1/11-z1-animation.mp4",
       alt: "The Z1 cycling through its swappable body colours",
-      poster: "/work/figma-bmw-z1/12-z1-animation-poster.webp",
+      // The all-red car on the red background, pulled from ~13.5s in —
+      // "have the cover image of the video to be the red on red view,"
+      // per Josh. Shows pre-play and wherever autoplay is held back
+      // (reduced motion); the card prefers this over its still too.
+      poster: "/work/figma-bmw-z1/14-z1-poster-red.webp",
       sound: true,
       autoplay: true,
       ratio: "4/5",
