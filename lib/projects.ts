@@ -1698,11 +1698,13 @@ export const projects: Project[] = [
       { startIndex: 4, count: 4 },
     ],
     gallery: [
-      { ratio: "1/1", alt: "Z1 in cream", src: "/work/figma-bmw-z1/03-z1-cream.webp", caption: false },
+      // Order is Josh's ("swap yellow (top left) with the red, and swap
+      // black with blue"), not the export numbering.
       { ratio: "1/1", alt: "Z1 in red", src: "/work/figma-bmw-z1/04-z1-red.webp", caption: false },
+      { ratio: "1/1", alt: "Z1 in cream", src: "/work/figma-bmw-z1/03-z1-cream.webp", caption: false },
       { ratio: "1/1", alt: "Z1 in teal", src: "/work/figma-bmw-z1/05-z1-teal.webp", caption: false },
-      { ratio: "1/1", alt: "Z1 in blue", src: "/work/figma-bmw-z1/06-z1-blue.webp", caption: false },
       { ratio: "1/1", alt: "Z1 in black", src: "/work/figma-bmw-z1/07-z1-black.webp", caption: false },
+      { ratio: "1/1", alt: "Z1 in blue", src: "/work/figma-bmw-z1/06-z1-blue.webp", caption: false },
       { ratio: "1/1", alt: "Z1 in magenta", src: "/work/figma-bmw-z1/08-z1-magenta.webp", caption: false },
       { ratio: "1/1", alt: "Z1 in silver", src: "/work/figma-bmw-z1/09-z1-silver.webp", caption: false },
       { ratio: "1/1", alt: "Z1 in orange", src: "/work/figma-bmw-z1/10-z1-orange.webp", caption: false },
