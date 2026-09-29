@@ -5,6 +5,7 @@ import { WorkGallery } from "@/components/work/work-gallery";
 import { PROJECT_CATEGORIES, getAllProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/work" },
   title: "Work",
   description:
     "Josh McKenna's work spans LGBTQ+ campaigns, editorial illustration, murals, cars, icons, motion and 3D.",
