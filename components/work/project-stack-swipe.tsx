@@ -285,6 +285,22 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
   // mount: the record a swipe/click wrote just before landing here
   // doesn't change for the lifetime of this page view.
   const [backTarget, setBackTarget] = useState<BackPeekTarget | null>(null);
+  // The previous/next peeks mount client-side only, AFTER hydration —
+  // never in the server HTML. SEO, not cosmetics: SSR'd peeks put the
+  // complete text of both neighbouring projects (h1 included, and ahead
+  // of this page's own) inside every project page's crawled HTML, so
+  // each page read as three pages mashed together and the first heading
+  // Google saw was a neighbour's title. The peeks are touch-gesture
+  // furniture that only needs to exist by the time a finger can drag —
+  // an effect after hydration is comfortably earlier than that. Their
+  // resting transform/opacity still ship as inline styles on first
+  // client render (see the comment below): the flash the SSR baking
+  // guarded against came from an unstyled peek, and a not-yet-rendered
+  // peek shows nothing at all.
+  const [peeksMounted, setPeeksMounted] = useState(false);
+  useEffect(() => {
+    setPeeksMounted(true);
+  }, []);
   useEffect(() => {
     // One-time sessionStorage read after mount, not a subscription — same
     // "browser API unavailable during SSR" shape as the navHeight effect
@@ -994,7 +1010,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           those strips both in the gap between SSR paint and the
           effect's first resetPeek, and *permanently* under reduced
           motion, whose branch never touches peek styles at all. */}
-      {previous && (
+      {peeksMounted && previous && (
         <div
           ref={previousPeekRef}
           data-stack-peek="previous"
@@ -1004,7 +1020,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           <StackPeek project={previous} />
         </div>
       )}
-      {next && (
+      {peeksMounted && next && (
         <div
           ref={nextPeekRef}
           data-stack-peek="next"
