@@ -11,7 +11,20 @@ import { PosterGrid } from "@/components/work/poster-grid";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectNavLink } from "@/components/work/project-nav-link";
 import { ProjectTitle } from "@/components/work/project-title";
-import { getProjectNeighbours, type Project, type ProjectImage } from "@/lib/projects";
+import {
+  getProjectNeighbours,
+  type ImageRatio,
+  type Project,
+  type ProjectImage,
+} from "@/lib/projects";
+
+/** True for a ratio that's taller than wide — drives the centred capped
+ *  column for portrait hero videos below. */
+function isPortraitRatio(ratio: ImageRatio | undefined): boolean {
+  if (!ratio) return false; // ProjectVideo's default is 16/9
+  const [w, h] = ratio.split("/").map(Number);
+  return w < h;
+}
 
 /** Splits a brief paragraph on a single `[label](/href)` cross-link — the
  *  only markdown this field supports, for pointing between related project
@@ -453,7 +466,20 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
               </div>
             )}
 
-            {project.heroSize !== "spot" && !project.heroHiddenOnPage && (
+            {/* heroHiddenOnPage hides the hero IMAGE, not a top-position
+                heroVideo — BMW Z1's animation leads alone ("drop the
+                image of the girl character and just have animation
+                centred," per Josh) while `hero` stays the card/OG face.
+                The image blocks inside all no-op on their own when the
+                hero is hidden: heroLightboxImages is [] and the
+                pair/single ternary falls through to null past a set
+                heroVideo. */}
+            {project.heroSize !== "spot" &&
+              (!project.heroHiddenOnPage ||
+                (project.heroVideo &&
+                  project.heroVideo.position !== "bottom" &&
+                  project.heroVideo.position !== "pair" &&
+                  project.heroVideo.position !== "outro")) && (
               <div
                 // Mobile pt: 0 normally (the header's own max-md:pb-8 is
                 // the whole gap now), but when a videoRow leads the page
@@ -471,13 +497,25 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
                   project.heroVideo.position !== "bottom" &&
                   project.heroVideo.position !== "pair" &&
                   project.heroVideo.position !== "outro" && (
-                    <div className={project.heroPair ? "mb-8" : undefined}>
+                    // Portrait clips centre in a capped column instead of
+                    // spanning the frame — a 4/5 video at full frame width
+                    // (BMW Z1) would run ~1500px tall on desktop. Landscape
+                    // clips (Nomad Wheels) keep the full-width showcase.
+                    <div
+                      className={`${project.heroPair ? "mb-8" : ""} ${
+                        isPortraitRatio(project.heroVideo.ratio)
+                          ? "mx-auto md:max-w-lg"
+                          : ""
+                      }`}
+                    >
                       <ProjectVideo
                         video={{
                           ...project.heroVideo,
                           poster: project.heroVideo.poster ?? project.hero.src,
                         }}
                         sound={project.heroVideo.sound}
+                        autoplay={project.heroVideo.autoplay}
+                        ratio={project.heroVideo.ratio}
                       />
                     </div>
                   )}

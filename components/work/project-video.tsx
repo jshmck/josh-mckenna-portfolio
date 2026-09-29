@@ -17,6 +17,15 @@ type ProjectVideoProps = {
    */
   sound?: boolean;
   /**
+   * Only meaningful with `sound`: the clip autoplays muted on loop like a
+   * silent one, but keeps the native controls so the soundtrack is one
+   * tap away (BMW Z1's hero — "auto play loop but on mute? still have
+   * option to unmute," per Josh). Same reduced-motion guard as the
+   * silent path; browsers allow muted autoplay, and unmuting is the
+   * visitor's own click.
+   */
+  autoplay?: boolean;
+  /**
    * Defaults to 16/9 (most clips so far are landscape screen recordings).
    * Reuses Plate's own ImageRatio scale — Last Call's clip is a portrait
    * 3/4 phone recording, and forcing that into a 16:9 box would crop out
@@ -41,14 +50,18 @@ type ProjectVideoProps = {
 export function ProjectVideo({
   video,
   sound = false,
+  autoplay = false,
   ratio,
   radius = "rounded-frame",
   className,
 }: ProjectVideoProps) {
   const ref = useRef<HTMLVideoElement>(null);
+  // Muted-on-load: every silent clip, plus sound clips that opt into
+  // ambient autoplay (the visitor unmutes through the controls).
+  const startsMuted = !sound || autoplay;
 
   useEffect(() => {
-    if (sound) return;
+    if (sound && !autoplay) return;
     const node = ref.current;
     if (!node) return;
 
@@ -58,7 +71,7 @@ export function ProjectVideo({
     if (!reduceMotion) {
       node.play().catch(() => {});
     }
-  }, [sound]);
+  }, [sound, autoplay]);
 
   return (
     <video
@@ -67,8 +80,8 @@ export function ProjectVideo({
       poster={video.poster}
       aria-label={video.alt}
       className={`${ratio ? RATIO_CLASS[ratio] : "aspect-video"} w-full ${radius} object-cover ${className ?? ""}`}
-      muted={!sound}
-      loop={!sound}
+      muted={startsMuted}
+      loop={startsMuted}
       controls={sound}
       // Deterrents, not protection — the file is still a public URL. But
       // they remove the two one-click paths: Chromium's download button in

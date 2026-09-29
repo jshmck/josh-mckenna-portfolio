@@ -201,6 +201,11 @@ export type Project = {
     src: string;
     alt: string;
     sound?: boolean;
+    /** With `sound`: autoplay muted on loop anyway, keeping the controls
+     *  so the soundtrack is one tap away (BMW Z1). Honoured by the
+     *  default top position; the pair/bottom/outro slots don't pass it
+     *  through until a project needs it there. See ProjectVideo. */
+    autoplay?: boolean;
     poster?: string;
     /** "pair" renders the video inside the heroPair two-up, alongside
      *  `hero`, instead of full-width above or below it. "outro" moves it
@@ -1666,12 +1671,15 @@ export const projects: Project[] = [
     // Neither alt adds anything past the title above them.
     hideHeroCaptions: true,
     // 2026-09 refresh ("replace the images in the Z1 project with these
-    // new ones"): the animation and the kept woman-and-car illustration
-    // lead as a two-up ("keep the image of the woman and car next to the
-    // animation so they are the two heros," per Josh), then the eight
-    // colourway squares run as two rows of four below, Honda Super N's
-    // own small-squares recipe. The old four-colourway carousel export
-    // left with the refresh.
+    // new ones"): the animation leads the page alone, centred ("drop the
+    // image of the girl character and just have animation centred," per
+    // Josh — it briefly ran as a two-up beside the woman illustration),
+    // then the eight colourway squares run as two rows of four below,
+    // Honda Super N's own small-squares recipe. The old four-colourway
+    // carousel export left with the refresh.
+    // hero stays the woman-and-car illustration OFF the page (below):
+    // it's the /work card's poster frame and the OG image.
+    heroHiddenOnPage: true,
     hero: {
       ratio: "4/5",
       alt: "BMW Z1",
@@ -1682,15 +1690,17 @@ export const projects: Project[] = [
     // Super N's card; ProjectCard never forwards the sound flag, so the
     // page keeps its sound-on controls while the card stays silent.
     cardVideo: true,
-    // Real soundtrack, so Honda's heroVideo rules apply: native controls,
-    // no autoplay. "pair" seats it beside the hero as the second of the
-    // two heros rather than full-width above them.
+    // Real soundtrack, but ambient by default: autoplays muted on loop
+    // with the controls kept so the soundtrack is one tap away ("auto
+    // play loop but on mute? still have option to unmute," per Josh).
+    // Default top position — portrait ratio, so ProjectContent centres
+    // it in a capped column rather than full frame width.
     heroVideo: {
       src: "/work/figma-bmw-z1/11-z1-animation.mp4",
       alt: "The Z1 cycling through its swappable body colours",
       poster: "/work/figma-bmw-z1/12-z1-animation-poster.webp",
       sound: true,
-      position: "pair",
+      autoplay: true,
       ratio: "4/5",
     },
     gallerySpans: [
