@@ -998,7 +998,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         <div
           ref={previousPeekRef}
           data-stack-peek="previous"
-          className="fixed inset-x-0 bottom-0 z-0 origin-top will-change-transform"
+          className="pointer-events-none fixed inset-x-0 bottom-0 z-0 origin-top will-change-transform"
           style={{ top: navHeight, transform: "translate3d(-100%, 0, 0) scale(0.94)", opacity: 0 }}
         >
           <StackPeek project={previous} />
@@ -1008,7 +1008,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         <div
           ref={nextPeekRef}
           data-stack-peek="next"
-          className="fixed inset-x-0 bottom-0 z-0 origin-top will-change-transform"
+          className="pointer-events-none fixed inset-x-0 bottom-0 z-0 origin-top will-change-transform"
           style={{ top: navHeight, transform: "translate3d(100%, 0, 0) scale(0.94)", opacity: 0 }}
         >
           <StackPeek project={next} />
@@ -1023,11 +1023,21 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
           from off-screen, "back" just uncovers a page that was already
           sitting exactly where it belongs the entire time — see
           BackTargetPeek's own doc comment. */}
+      {/* pointer-events-none on all three peek containers (the inner
+          copies already carry it): the back peek in particular sits
+          untransformed over the viewport bottom at opacity 0, and an
+          opacity-0 element still hit-tests — it was swallowing every
+          click on the footer's Privacy/Terms links on any project page
+          reached from the gallery ("privacy and term links in the
+          footer work in all pages except when on a project," per Josh;
+          direct URL loads have no back record, hence no peek and no
+          bug). Gestures live on the container/slab, so the peeks never
+          needed pointer events at all. */}
       {backTarget && (
         <div
           ref={backPeekRef}
           data-stack-peek="back"
-          className="fixed inset-x-0 bottom-0 z-0 will-change-transform"
+          className="pointer-events-none fixed inset-x-0 bottom-0 z-0 will-change-transform"
           style={{ top: navHeight, opacity: 0 }}
         >
           <BackTargetPeek target={backTarget} />
