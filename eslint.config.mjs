@@ -11,6 +11,9 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    // Local `vercel build`/`vercel pull` artifacts (gitignored) — lint was
+    // tripping on generated launcher code inside .vercel/output.
+    ".vercel/**",
     "next-env.d.ts",
   ]),
 ]);

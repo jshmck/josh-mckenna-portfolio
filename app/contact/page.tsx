@@ -4,6 +4,7 @@ import { ContactContent } from "@/components/contact/contact-content";
 import { PageEndCard } from "@/components/ui/page-end-card";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact",
   description:
     "Commissions, collaborations and editorial deadlines — all welcome. Josh reads every message himself and replies within two working days.",

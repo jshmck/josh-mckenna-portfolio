@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy",
   description: "How Josh McKenna collects, uses and stores your data.",
 };

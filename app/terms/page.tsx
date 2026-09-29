@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/terms" },
   title: "Terms of Service",
   description:
     "The terms that apply to commissions and print purchases from Josh McKenna.",

@@ -15,6 +15,7 @@ import { archivedProjects } from "@/lib/archived-projects";
  * should display — array order is the gallery order.
  */
 export const metadata: Metadata = {
+  alternates: { canonical: "/archive" },
   title: "Archive",
   robots: { index: false, follow: false },
 };

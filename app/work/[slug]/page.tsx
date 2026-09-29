@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ProjectContent } from "@/components/work/project-content";
 import { ProjectStackSwipe } from "@/components/work/project-stack-swipe";
 import { getProject, getProjectNeighbours, projects } from "@/lib/projects";
+import { siteConfig } from "@/lib/site";
 
 /** Every project is known at build time, so all detail pages prerender. */
 export function generateStaticParams() {
@@ -35,12 +36,21 @@ export async function generateMetadata({
   // shows, pageTitle included (see its own doc comment in lib/projects.ts).
   const displayTitle = project.pageTitle ?? project.cardTitle ?? project.title;
 
+  // Assembled from the entry's structured facts only — deliberately NOT
+  // the flavour `summary` ("it needs to be matter of fact especially for
+  // SEO, and not ai written," per Josh). The voiced copy stays on the
+  // page itself; search engines and link previews get the plain record.
+  const factualDescription = `${displayTitle} — ${project.deliverables.toLowerCase()} by illustrator Josh McKenna${
+    project.client === "Personal" ? ", a personal project" : ` for ${project.client}`
+  }, ${project.yearLabel ?? project.year}.`;
+
   return {
     title: displayTitle,
-    description: `${project.summary} ${project.discipline} for ${project.client}, ${project.yearLabel ?? project.year}.`,
+    description: factualDescription,
+    alternates: { canonical: `/work/${project.slug}` },
     openGraph: {
       title: `${displayTitle} — Josh McKenna`,
-      description: project.summary,
+      description: factualDescription,
     },
   };
 }
@@ -55,8 +65,35 @@ export default async function ProjectPage({
 
   const { previous, next } = getProjectNeighbours(slug);
 
+  // VisualArtwork structured data (SEO pass, 2026-09) — connects this
+  // piece to Josh's Person entity (see app/layout.tsx) and gives search
+  // engines the artwork's real facts. Built entirely from the trusted
+  // lib/projects.ts entry.
+  const artworkJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "VisualArtwork",
+    name: project.pageTitle ?? project.cardTitle ?? project.title,
+    // Factual, matching the meta description's register — not the
+    // voiced summary (see generateMetadata's comment).
+    description: `${project.deliverables}${project.client === "Personal" ? ", a personal project" : ` for ${project.client}`}, ${project.yearLabel ?? project.year}.`,
+    url: `${siteConfig.url}/work/${project.slug}`,
+    // hero.src is optional (Plate's placeholder state) — omit `image`
+    // rather than emit a broken URL for a not-yet-final entry.
+    ...(project.hero.src && { image: `${siteConfig.url}${project.hero.src}` }),
+    creator: { "@type": "Person", name: siteConfig.name, url: siteConfig.url },
+    dateCreated: String(project.year),
+    artform: project.discipline,
+    ...(project.client !== "Personal" && {
+      sourceOrganization: { "@type": "Organization", name: project.client },
+    }),
+  };
+
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(artworkJsonLd) }}
+      />
       <ProjectStackSwipe slug={slug} previous={previous} next={next}>
         <ProjectContent project={project} />
       </ProjectStackSwipe>

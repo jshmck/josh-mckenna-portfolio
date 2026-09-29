@@ -74,6 +74,31 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+/**
+ * Person structured data, sitewide (SEO pass, 2026-09) — tells search
+ * engines the name, the profession, and that the social profiles are
+ * the same person, so "Josh McKenna" connects to the work. Kept to
+ * facts already public on the site; JSON.stringify of trusted
+ * lib/site.ts constants, no user input.
+ */
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: siteConfig.name,
+  jobTitle: siteConfig.role,
+  description: siteConfig.description,
+  url: siteConfig.url,
+  email: `mailto:${siteConfig.email}`,
+  sameAs: [
+    siteConfig.instagram.url,
+    siteConfig.x.url,
+    siteConfig.linkedin.url,
+    siteConfig.threads.url,
+    siteConfig.behance.url,
+    siteConfig.figma.url,
+  ],
+};
+
 /** viewportFit: "cover" -- "is it possible to utilise apple's full
  *  screen on safari?? above the dynamic island and battery etc," per
  *  Josh. Without this, iOS Safari keeps the page's own viewport
@@ -113,6 +138,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${helveticaNeue.variable} ${archivoBlack.variable} ${spaceMono.variable} ${waldeck.variable} h-full`}
     >
       <body className="flex min-h-full flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <a
           href="#main"
           className="type-label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-canvas"

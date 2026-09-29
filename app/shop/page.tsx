@@ -7,6 +7,7 @@ import { PageEndCard } from "@/components/ui/page-end-card";
 import { Reveal } from "@/components/ui/reveal";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/shop" },
   title: "Shop",
   description: "Prints, stickers and other small things.",
 };

@@ -10,6 +10,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { features, pressQuotes } from "@/lib/about";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/info" },
   title: "Info",
   description:
     "Josh McKenna is an illustrator with over a decade of experience, from the Instagram Pride sticker to murals for Facebook and the environmental branding for LA Pride 2024.",
