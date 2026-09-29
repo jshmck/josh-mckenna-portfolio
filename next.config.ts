@@ -18,6 +18,19 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "assets.bigcartel.com" },
     ],
   },
+  // Belt-and-braces behind app/work/[slug]/page.tsx's dynamicParams=false
+  // (see its comment): the per-project OG route readFile()s hero art from
+  // public/, and if a fallback lambda for it ever comes back, file tracing
+  // would again bundle all ~212MB of public/ into every deployment — the
+  // exact overflow behind Vercel's 10GB Function Storage alert. All OG
+  // images prerender, so no lambda ever needs these files at runtime.
+  // Both keys, not just the OG route: the sibling page lambda inherits the
+  // segment's trace and was carrying the same 212MB even though the page
+  // itself never touches the filesystem.
+  outputFileTracingExcludes: {
+    "app/work/\\[slug\\]/opengraph-image": ["./public/**"],
+    "app/work/\\[slug\\]/page": ["./public/**"],
+  },
 };
 
 export default nextConfig;

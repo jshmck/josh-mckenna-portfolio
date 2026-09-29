@@ -10,6 +10,18 @@ export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
+/**
+ * No runtime fallback for unknown slugs — they 404 at the edge instead of
+ * invoking a lambda. This isn't just semantics: without it, Vercel keeps a
+ * fallback function for this segment whose OG-image sibling readFile()s
+ * hero art out of public/, and file tracing (unable to know which file)
+ * bundled the ENTIRE public/ folder — 212MB of artwork, plus sharp's 19MB
+ * of native binaries — into every deployment. Six retained deployments of
+ * that filled the free tier's 10GB Function Storage cap (Vercel's alert,
+ * 2026-09-29). Fully static output ships the prerendered PNGs alone.
+ */
+export const dynamicParams = false;
+
 export async function generateMetadata({
   params,
 }: PageProps<"/work/[slug]">): Promise<Metadata> {
