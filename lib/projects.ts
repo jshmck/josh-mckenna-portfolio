@@ -1647,12 +1647,17 @@ export const projects: Project[] = [
     year: 2025,
     pinnedRank: 15,
     discipline: "Illustration",
-    deliverables: "2 Illustrations",
-    categories: ["Cars"],
-    summary: "A niche favourite, picked for doors that drop straight into the sill.",
+    deliverables: "Animation & 9 Illustrations",
+    // Motion joins Cars with the animation — a real deliverable, Super
+    // N's own precedent.
+    categories: ["Cars", "Motion"],
+    summary: "2.5L straight-six, 8,000 built — the whole body was swappable thermoplastic.",
     heroCaption: "",
+    // Verbatim per Josh — "the caption now reads."
     brief: [
-      "Made in Figma Draw. The BMW Z1. A niche favourite, picked for doors that drop straight down into the sill.",
+      "BMW Z1, 1989.",
+      "2.5L straight-six. 8,000 built. The whole body was swappable thermoplastic, BMW's own pitch was a full colour change in about 40 minutes.",
+      "Made in Figma Draw.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -1660,17 +1665,48 @@ export const projects: Project[] = [
     cardRatio: "4/5",
     // Neither alt adds anything past the title above them.
     hideHeroCaptions: true,
+    // 2026-09 refresh ("replace the images in the Z1 project with these
+    // new ones"): the animation and the kept woman-and-car illustration
+    // lead as a two-up ("keep the image of the woman and car next to the
+    // animation so they are the two heros," per Josh), then the eight
+    // colourway squares run as two rows of four below, Honda Super N's
+    // own small-squares recipe. The old four-colourway carousel export
+    // left with the refresh.
     hero: {
-      ratio: "4/5",
-      alt: "BMW Z1, four colourways",
-      src: "/work/figma-bmw-z1/01-carousel-hr.webp",
-    },
-    heroPair: {
       ratio: "4/5",
       alt: "BMW Z1",
       src: "/work/figma-bmw-z1/02-single.webp",
     },
-    gallery: [],
+    // The /work card plays the animation muted on loop ("the work card
+    // should be the animation playing," per Josh) — same mechanism as
+    // Super N's card; ProjectCard never forwards the sound flag, so the
+    // page keeps its sound-on controls while the card stays silent.
+    cardVideo: true,
+    // Real soundtrack, so Honda's heroVideo rules apply: native controls,
+    // no autoplay. "pair" seats it beside the hero as the second of the
+    // two heros rather than full-width above them.
+    heroVideo: {
+      src: "/work/figma-bmw-z1/11-z1-animation.mp4",
+      alt: "The Z1 cycling through its swappable body colours",
+      poster: "/work/figma-bmw-z1/12-z1-animation-poster.webp",
+      sound: true,
+      position: "pair",
+      ratio: "4/5",
+    },
+    gallerySpans: [
+      { startIndex: 0, count: 4 },
+      { startIndex: 4, count: 4 },
+    ],
+    gallery: [
+      { ratio: "1/1", alt: "Z1 in cream", src: "/work/figma-bmw-z1/03-z1-cream.webp", caption: false },
+      { ratio: "1/1", alt: "Z1 in red", src: "/work/figma-bmw-z1/04-z1-red.webp", caption: false },
+      { ratio: "1/1", alt: "Z1 in teal", src: "/work/figma-bmw-z1/05-z1-teal.webp", caption: false },
+      { ratio: "1/1", alt: "Z1 in blue", src: "/work/figma-bmw-z1/06-z1-blue.webp", caption: false },
+      { ratio: "1/1", alt: "Z1 in black", src: "/work/figma-bmw-z1/07-z1-black.webp", caption: false },
+      { ratio: "1/1", alt: "Z1 in magenta", src: "/work/figma-bmw-z1/08-z1-magenta.webp", caption: false },
+      { ratio: "1/1", alt: "Z1 in silver", src: "/work/figma-bmw-z1/09-z1-silver.webp", caption: false },
+      { ratio: "1/1", alt: "Z1 in orange", src: "/work/figma-bmw-z1/10-z1-orange.webp", caption: false },
+    ],
   },
   {
     slug: "cowboy",
