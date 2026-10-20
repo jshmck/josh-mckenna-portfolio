@@ -20,12 +20,12 @@ type ImageStackProps = {
   indexOffset?: number;
   /** Trial (Instagram Sticker only): a silent video inserted mid-gallery,
    *  outside the lightbox's photo-cycle. See Project.galleryVideo. */
-  galleryVideo?: { src: string; alt: string; sound?: boolean; afterIndex: number };
+  galleryVideo?: { src: string; alt: string; poster?: string; sound?: boolean; afterIndex: number };
   /** Trial (Instagram Sticker only): fills the same slot an animated GIF
    *  used to — a silent video, autoplaying on loop via ProjectVideo, which
    *  is both lighter than the source GIF and immune to Next's image
    *  optimizer freezing GIFs to their first frame. See Project.galleryGif. */
-  galleryGif?: { src: string; alt: string; ratio: ImageRatio; afterIndex: number };
+  galleryGif?: { src: string; alt: string; poster?: string; ratio: ImageRatio; afterIndex: number };
   /** Trial (Instagram Sticker only): groups consecutive images into one
    *  row instead of stacking them. See Project.gallerySpans. */
   gallerySpans?: { startIndex: number; count: number }[];
@@ -92,7 +92,7 @@ export function ImageStack({
           // upscale it past its real resolution and blur.
           <Reveal className="mx-auto max-w-lg">
             <ProjectVideo
-              video={{ src: galleryGif.src, alt: galleryGif.alt }}
+              video={{ src: galleryGif.src, alt: galleryGif.alt, poster: galleryGif.poster }}
               ratio={galleryGif.ratio}
             />
             <p className="type-label mt-3 text-ink-muted">{galleryGif.alt}</p>
@@ -215,7 +215,7 @@ export function ImageStack({
                 {galleryVideo && galleryVideo.afterIndex === fullIndex + span.count && (
                   <Reveal>
                     <ProjectVideo
-                      video={{ src: galleryVideo.src, alt: galleryVideo.alt }}
+                      video={{ src: galleryVideo.src, alt: galleryVideo.alt, poster: galleryVideo.poster }}
                       sound={galleryVideo.sound}
                     />
                     <p className="type-label mt-3 text-ink-muted">{galleryVideo.alt}</p>
@@ -276,7 +276,7 @@ export function ImageStack({
               {galleryVideo && galleryVideo.afterIndex === fullIndex + 1 && (
                 <Reveal>
                   <ProjectVideo
-                    video={{ src: galleryVideo.src, alt: galleryVideo.alt }}
+                    video={{ src: galleryVideo.src, alt: galleryVideo.alt, poster: galleryVideo.poster }}
                     sound={galleryVideo.sound}
                   />
                   <p className="type-label mt-3 text-ink-muted">{galleryVideo.alt}</p>

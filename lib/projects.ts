@@ -446,6 +446,7 @@ export type Project = {
   galleryVideo?: {
     src: string;
     alt: string;
+    poster?: string;
     sound?: boolean;
     afterIndex: number;
   };
@@ -460,6 +461,7 @@ export type Project = {
   galleryGif?: {
     src: string;
     alt: string;
+    poster?: string;
     ratio: ImageRatio;
     afterIndex: number;
   };
@@ -629,12 +631,14 @@ export const projects: Project[] = [
     // per Josh; the portrait clip centre-crops into it.
     galleryGif: {
       src: "/work/instagram-sticker/11-sticker-animation.mp4",
+      poster: "/work/instagram-sticker/11-sticker-animation-poster.webp",
       alt: "The move behind the sticker.",
       ratio: "1/1",
       afterIndex: 0,
     },
     galleryVideo: {
       src: "/work/instagram-sticker/09-mardi-gras-video.mp4",
+      poster: "/work/instagram-sticker/09-mardi-gras-video-poster.webp",
       alt: "Footage from the Sydney Mardi Gras parade, courtesy of Pedestrian TV.",
       sound: true,
       afterIndex: 4,
@@ -2685,6 +2689,7 @@ export const projects: Project[] = [
     cardRatio: "4/5",
     heroVideo: {
       src: "/work/womp-last-call/02-last-call-video.mp4",
+      poster: "/work/womp-last-call/02-last-call-video-poster.webp",
       alt: "The Last Call hat and keyring, turning",
       position: "pair",
       ratio: "4/5",
@@ -3119,6 +3124,7 @@ export const projects: Project[] = [
     // a three-across row when heroPair is also set.
     heroVideo: {
       src: "/work/womp-bum-selfie/03-bum-selfie-video.mp4",
+      poster: "/work/womp-bum-selfie/03-bum-selfie-video-poster.webp",
       alt: "The bum selfie, turning",
       position: "pair",
       ratio: "4/5",
@@ -3184,6 +3190,7 @@ export const projects: Project[] = [
     // the renders are the artwork, the clip is supplementary.
     heroVideo: {
       src: "/work/womp-pato/03-pato-video.mp4",
+      poster: "/work/womp-pato/03-pato-video-poster.webp",
       alt: "Pato, turning",
       position: "bottom",
     },
