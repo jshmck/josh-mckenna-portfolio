@@ -95,7 +95,7 @@ export default async function ProjectPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(artworkJsonLd) }}
       />
       <ProjectStackSwipe slug={slug} previous={previous} next={next}>
-        <ProjectContent project={project} />
+        <ProjectContent project={project} eager />
       </ProjectStackSwipe>
 
       {/* No floating navigation any more -- BackToTop's frosted

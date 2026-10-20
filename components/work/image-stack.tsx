@@ -29,6 +29,9 @@ type ImageStackProps = {
   /** Trial (Instagram Sticker only): groups consecutive images into one
    *  row instead of stacking them. See Project.gallerySpans. */
   gallerySpans?: { startIndex: number; count: number }[];
+  /** True on the real page, false inside a swipe peek — see Plate's
+   *  `loading` prop for why. */
+  eager?: boolean;
 };
 
 /** Josh's vertical pieces are drawn to run small — full-bleed at the frame's
@@ -52,6 +55,7 @@ export function ImageStack({
   galleryVideo,
   galleryGif,
   gallerySpans = [],
+  eager = false,
 }: ImageStackProps) {
   const { openAt } = useProjectLightbox();
   // Defining any gallerySpans opts a project out of the default "first two
@@ -115,7 +119,7 @@ export function ImageStack({
                   aria-label={`Open larger view of ${image.alt}`}
                   className="block w-full cursor-zoom-in text-left"
                 >
-                  <Plate image={image} sizes={image.small ? "(max-width: 768px) 100vw, 512px" : "(max-width: 768px) 100vw, 50vw"} />
+                  <Plate image={image} sizes={image.small ? "(max-width: 768px) 100vw, 512px" : "(max-width: 768px) 100vw, 50vw"} loading={eager ? "eager" : undefined} />
                 </button>
                 {image.caption !== false && (
                   <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
@@ -190,6 +194,7 @@ export function ImageStack({
                         >
                           <Plate
                             image={spanImage}
+                            loading={eager ? "eager" : undefined}
                             sizes={
                               span.count === 3
                                 ? "(max-width: 640px) 100vw, 33vw"
@@ -233,7 +238,7 @@ export function ImageStack({
                         aria-label={`Open larger view of ${pairImage.alt}`}
                         className="block w-full cursor-zoom-in text-left"
                       >
-                        <Plate image={pairImage} sizes="(max-width: 768px) 100vw, 512px" />
+                        <Plate image={pairImage} sizes="(max-width: 768px) 100vw, 512px" loading={eager ? "eager" : undefined} />
                       </button>
                       {pairImage.caption !== false && (
                         <p className="type-label mt-3 text-ink-muted">{pairImage.alt}</p>
@@ -257,6 +262,7 @@ export function ImageStack({
                 >
                   <Plate
                     image={image}
+                    loading={eager ? "eager" : undefined}
                     sizes={
                       capped
                         ? "(max-width: 768px) 100vw, 512px"

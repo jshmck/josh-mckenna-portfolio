@@ -20,6 +20,8 @@ type PosterGridProps = {
    *  video inside the photo-cycle is a bigger feature than one tile
    *  needs, the same call ImageStack's galleryVideo made. */
   video?: Project["posterGridVideo"];
+  /** True on the real page, false inside a swipe peek. */
+  eager?: boolean;
 };
 
 /**
@@ -35,7 +37,7 @@ type PosterGridProps = {
  * this layout already combines hero + gallery into one array with no
  * write-up split in between.
  */
-export function PosterGrid({ images, columns = 4, video }: PosterGridProps) {
+export function PosterGrid({ images, columns = 4, video, eager = false }: PosterGridProps) {
   const lightbox = useLightboxState(images);
 
   return (
@@ -67,6 +69,7 @@ export function PosterGrid({ images, columns = 4, video }: PosterGridProps) {
                   <Plate
                     image={image}
                     radius=""
+                    loading={eager ? "eager" : undefined}
                     sizes={
                       columns === 5
                         ? "(max-width: 640px) 45vw, (max-width: 768px) 30vw, (max-width: 1024px) 22vw, 18vw"

@@ -120,7 +120,15 @@ function WriteUp({ project, leads = false }: { project: Project; leads?: boolean
  * to know it's being previewed — same markup either way, just how much of
  * it ends up visible differs by context.
  */
-export function ProjectContent({ project: projectProp }: { project: Project }) {
+export function ProjectContent({
+  project: projectProp,
+  eager = false,
+}: {
+  project: Project;
+  /** Real page only (not StackPeek): load every gallery frame up front
+   *  instead of on approach, so scrolling never outruns the network. */
+  eager?: boolean;
+}) {
   // A "card"-positioned heroVideo exists only for the /work grid card
   // (see Project.heroVideo's doc comment) — the page renders exactly as
   // if the project had no video at all. Stripping it here, once, keeps
@@ -446,6 +454,7 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
             images={[project.hero, ...project.gallery]}
             columns={project.posterGridColumns}
             video={project.posterGridVideo}
+            eager={eager}
           />
         ) : (
           <ProjectLightboxProvider images={[...heroLightboxImages, ...project.gallery]}>
@@ -688,6 +697,7 @@ export function ProjectContent({ project: projectProp }: { project: Project }) {
                 galleryVideo={project.galleryVideo}
                 galleryGif={project.galleryGif}
                 gallerySpans={project.gallerySpans}
+                eager={eager}
               />
             ) : null}
           </ProjectLightboxProvider>
