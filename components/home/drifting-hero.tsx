@@ -279,6 +279,15 @@ const BOUNCE_RESTITUTION = 0.5;
  * distance from the curve. No scheduled ramp, no fixed duration -- it's
  * just always gently on, proportional to actual distance from the line. */
 const MAGNET_K = 1.1;
+/** Extra decay, per second, on only the part of a released object's velocity
+ * that points toward/away from its orbit line (the tangent part, its drift
+ * along the curve, is left alone). FRICTION_RATE by itself leaves the
+ * magnet a spring with damping ratio ~0.29 -- a flicked object swung
+ * across its orbit and wobbled for ~15s before settling. This brings the
+ * ratio to ~0.8 (2 * sqrt(MAGNET_K) * 0.8 = FRICTION_RATE + this) so it
+ * eases back with at most one soft overshoot, without shortening how far
+ * a throw glides along its own direction of travel. */
+const MAGNET_NORMAL_DAMPING = 1.1;
 /** Distance/speed thresholds below which a released object is considered
  * captured onto its orbit line and starts landing (see LANDING_MS) -- not
  * yet the same instant as resuming full orbital motion. */
@@ -850,6 +859,24 @@ export function DriftingHero() {
           const frictionDecay = Math.exp(-FRICTION_RATE * dt);
           object.vx = targetVx + (object.vx - targetVx) * frictionDecay;
           object.vy = targetVy + (object.vy - targetVy) * frictionDecay;
+
+          // Extra damping on the across-the-orbit component only (see
+          // MAGNET_NORMAL_DAMPING): split the velocity relative to the
+          // orbit's own pace into along-curve and across-curve parts and
+          // decay just the across part.
+          const tangentLength = Math.hypot(targetVx, targetVy);
+          if (tangentLength > 0.0001) {
+            const tx = targetVx / tangentLength;
+            const ty = targetVy / tangentLength;
+            const relVx = object.vx - targetVx;
+            const relVy = object.vy - targetVy;
+            const along = relVx * tx + relVy * ty;
+            const acrossVx = relVx - along * tx;
+            const acrossVy = relVy - along * ty;
+            const normalDecay = Math.exp(-MAGNET_NORMAL_DAMPING * dt);
+            object.vx -= acrossVx * (1 - normalDecay);
+            object.vy -= acrossVy * (1 - normalDecay);
+          }
 
           // The magnet: a pull toward the nearest point on the curve, not
           // toward any specific advancing phase. Since the ellipse spans
