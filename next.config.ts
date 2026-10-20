@@ -10,6 +10,27 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [{ source: "/about", destination: "/info", permanent: true }];
   },
+  // Everything under public/ was served `max-age=0, must-revalidate`, so
+  // every video and raw image cost a conditional round trip on each view
+  // — the main reason media felt slow on a phone connection. Artwork is
+  // renamed on content swaps (see the media-pipeline note: Next's image
+  // cache keys on the URL too), so a week of freshness plus a month of
+  // stale-while-revalidate is safe. Scoped to media extensions so the
+  // /work/[slug] HTML routes under the same prefixes keep revalidating.
+  async headers() {
+    return [
+      {
+        source:
+          "/:dir(work|about|illustrations|logos)/:path*.:ext(mp4|webp|jpg|jpeg|png|svg|avif)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=604800, stale-while-revalidate=2592000",
+          },
+        ],
+      },
+    ];
+  },
   // Shop product photos are fetched live from Big Cartel (lib/shop.ts) and
   // served from their asset host, not public/ — next/image needs the
   // domain allowlisted to optimise them.
