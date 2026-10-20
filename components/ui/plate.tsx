@@ -39,6 +39,12 @@ type PlateProps = {
   className?: string;
   sizes?: string;
   priority?: boolean;
+  /** `eager` skips next/image's lazy-load deferral. Below-the-fold frames
+   *  sit behind a Reveal fade, and on a phone the browser's lazy threshold
+   *  is short enough that the fade can finish before the file arrives —
+   *  a blank frame that pops in. Callers that are NOT mirrored inside a
+   *  swipe peek opt in; peeks stay lazy so they don't triple the bytes. */
+  loading?: "eager" | "lazy";
 };
 
 /**
@@ -69,6 +75,7 @@ export function Plate({
   className = "",
   sizes = "(max-width: 768px) 100vw, 50vw",
   priority = false,
+  loading,
 }: PlateProps) {
   const fit = image.fit ?? "cover";
   // The placeholder tones exist to signal "nothing here yet," so they
@@ -94,6 +101,7 @@ export function Plate({
           fill
           sizes={sizes}
           priority={priority}
+          loading={priority ? undefined : loading}
           // Deterrent: no drag-to-desktop copy. Right-click is blocked
           // by ImageGuard in the root layout — a handler here would pull
           // Plate (a server component) into the client bundle.

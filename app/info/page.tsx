@@ -199,6 +199,7 @@ export default function AboutPage() {
                         fit: feature.image?.fit,
                       }}
                       sizes="(max-width: 768px) 100vw, 50vw"
+                      loading="eager"
                     />
                   )}
                   <h3 className="font-body mt-4 text-[15px] font-bold text-ink">

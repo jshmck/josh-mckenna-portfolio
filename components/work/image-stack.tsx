@@ -20,15 +20,18 @@ type ImageStackProps = {
   indexOffset?: number;
   /** Trial (Instagram Sticker only): a silent video inserted mid-gallery,
    *  outside the lightbox's photo-cycle. See Project.galleryVideo. */
-  galleryVideo?: { src: string; alt: string; sound?: boolean; afterIndex: number };
+  galleryVideo?: { src: string; alt: string; poster?: string; sound?: boolean; afterIndex: number };
   /** Trial (Instagram Sticker only): fills the same slot an animated GIF
    *  used to — a silent video, autoplaying on loop via ProjectVideo, which
    *  is both lighter than the source GIF and immune to Next's image
    *  optimizer freezing GIFs to their first frame. See Project.galleryGif. */
-  galleryGif?: { src: string; alt: string; ratio: ImageRatio; afterIndex: number };
+  galleryGif?: { src: string; alt: string; poster?: string; ratio: ImageRatio; afterIndex: number };
   /** Trial (Instagram Sticker only): groups consecutive images into one
    *  row instead of stacking them. See Project.gallerySpans. */
   gallerySpans?: { startIndex: number; count: number }[];
+  /** True on the real page, false inside a swipe peek — see Plate's
+   *  `loading` prop for why. */
+  eager?: boolean;
 };
 
 /** Josh's vertical pieces are drawn to run small — full-bleed at the frame's
@@ -52,6 +55,7 @@ export function ImageStack({
   galleryVideo,
   galleryGif,
   gallerySpans = [],
+  eager = false,
 }: ImageStackProps) {
   const { openAt } = useProjectLightbox();
   // Defining any gallerySpans opts a project out of the default "first two
@@ -88,7 +92,7 @@ export function ImageStack({
           // upscale it past its real resolution and blur.
           <Reveal className="mx-auto max-w-lg">
             <ProjectVideo
-              video={{ src: galleryGif.src, alt: galleryGif.alt }}
+              video={{ src: galleryGif.src, alt: galleryGif.alt, poster: galleryGif.poster }}
               ratio={galleryGif.ratio}
             />
             <p className="type-label mt-3 text-ink-muted">{galleryGif.alt}</p>
@@ -115,7 +119,7 @@ export function ImageStack({
                   aria-label={`Open larger view of ${image.alt}`}
                   className="block w-full cursor-zoom-in text-left"
                 >
-                  <Plate image={image} sizes={image.small ? "(max-width: 768px) 100vw, 512px" : "(max-width: 768px) 100vw, 50vw"} />
+                  <Plate image={image} sizes={image.small ? "(max-width: 768px) 100vw, 512px" : "(max-width: 768px) 100vw, 50vw"} loading={eager ? "eager" : undefined} />
                 </button>
                 {image.caption !== false && (
                   <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
@@ -190,6 +194,7 @@ export function ImageStack({
                         >
                           <Plate
                             image={spanImage}
+                            loading={eager ? "eager" : undefined}
                             sizes={
                               span.count === 3
                                 ? "(max-width: 640px) 100vw, 33vw"
@@ -210,7 +215,7 @@ export function ImageStack({
                 {galleryVideo && galleryVideo.afterIndex === fullIndex + span.count && (
                   <Reveal>
                     <ProjectVideo
-                      video={{ src: galleryVideo.src, alt: galleryVideo.alt }}
+                      video={{ src: galleryVideo.src, alt: galleryVideo.alt, poster: galleryVideo.poster }}
                       sound={galleryVideo.sound}
                     />
                     <p className="type-label mt-3 text-ink-muted">{galleryVideo.alt}</p>
@@ -233,7 +238,7 @@ export function ImageStack({
                         aria-label={`Open larger view of ${pairImage.alt}`}
                         className="block w-full cursor-zoom-in text-left"
                       >
-                        <Plate image={pairImage} sizes="(max-width: 768px) 100vw, 512px" />
+                        <Plate image={pairImage} sizes="(max-width: 768px) 100vw, 512px" loading={eager ? "eager" : undefined} />
                       </button>
                       {pairImage.caption !== false && (
                         <p className="type-label mt-3 text-ink-muted">{pairImage.alt}</p>
@@ -257,6 +262,7 @@ export function ImageStack({
                 >
                   <Plate
                     image={image}
+                    loading={eager ? "eager" : undefined}
                     sizes={
                       capped
                         ? "(max-width: 768px) 100vw, 512px"
@@ -270,7 +276,7 @@ export function ImageStack({
               {galleryVideo && galleryVideo.afterIndex === fullIndex + 1 && (
                 <Reveal>
                   <ProjectVideo
-                    video={{ src: galleryVideo.src, alt: galleryVideo.alt }}
+                    video={{ src: galleryVideo.src, alt: galleryVideo.alt, poster: galleryVideo.poster }}
                     sound={galleryVideo.sound}
                   />
                   <p className="type-label mt-3 text-ink-muted">{galleryVideo.alt}</p>

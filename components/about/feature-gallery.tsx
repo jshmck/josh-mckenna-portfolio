@@ -71,9 +71,13 @@ export function FeatureGallery({ images }: FeatureGalleryProps) {
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
-              // Only the first slide is visible before any interaction;
-              // the rest can lazy-load as they're swiped in.
+              // First slide is the LCP candidate; the rest load eagerly
+              // rather than lazily — a swipe into a still-lazy slide
+              // showed an empty frame until the file arrived. The
+              // carousels are a handful of photos each, so the cost is
+              // small.
               priority={i === 0}
+              loading={i === 0 ? undefined : "eager"}
             />
           </div>
         ))}
