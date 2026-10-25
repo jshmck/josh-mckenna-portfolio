@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 
 import { siteConfig } from "@/lib/site";
+import { pageMeta } from "@/lib/page-meta";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/terms" },
+export const metadata: Metadata = pageMeta({
+  path: "/terms",
   title: "Terms of Service",
   description:
     "The terms that apply to commissions and print purchases from Josh McKenna.",
-};
+});
 
 /**
  * Two things bundled into one page, per Josh: commission terms (the
