@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import { legacyRedirects } from "./lib/legacy-redirects";
+
 const nextConfig: NextConfig = {
   /* /about -> /info (2026-09-07): the route slug was renamed to match
      the nav's visible "Info" label before the joshmckenna.com cutover,
@@ -8,7 +10,11 @@ const nextConfig: NextConfig = {
      link keeps working forever; remove only if the route is ever
      genuinely repurposed. */
   async redirects() {
-    return [{ source: "/about", destination: "/info", permanent: true }];
+    return [
+      { source: "/about", destination: "/info", permanent: true },
+      // Old-site URLs Google still has indexed — see lib/legacy-redirects.ts.
+      ...legacyRedirects(),
+    ];
   },
   // Everything under public/ was served `max-age=0, must-revalidate`, so
   // every video and raw image cost a conditional round trip on each view
