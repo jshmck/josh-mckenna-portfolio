@@ -9,7 +9,7 @@
  * Only slugs that clearly name a current project are mapped. The rest
  * (the old 3d0x / a-z-x series, feev, vodafone, xt6, ysl, carnaby-street,
  * and projects since archived) fall through to /work rather than being
- * guessed at.
+ * guessed at. Archived projects' /work/<slug> URLs go to /work too.
  */
 export const LEGACY_PROJECT_SLUGS: Record<string, string> = {
   atlmag: "atlanta-magazine",
@@ -56,5 +56,10 @@ export function legacyRedirects(): Redirect[] {
     { source: "/press", destination: "/info", permanent: true },
     // A project that was renamed when it moved under the womp- series.
     { source: "/work/bum-selfie", destination: "/work/womp-bum-selfie", permanent: true },
+    // Archived projects whose old /work/<slug> URLs Google still has —
+    // sent to the gallery rather than left to 404.
+    { source: "/work/coca-cola-moments", destination: "/work", permanent: true },
+    { source: "/work/perineum-sunning", destination: "/work", permanent: true },
+    { source: "/work/ace-tate-logo", destination: "/work", permanent: true },
   ];
 }
