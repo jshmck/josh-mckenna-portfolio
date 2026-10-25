@@ -24,16 +24,54 @@ export function generateStaticParams() {
 // "contain" hero's transparent margins, same treatment Plate gives it live.
 const CANVAS_BACKGROUND = { r: 250, g: 249, b: 246, alpha: 1 };
 
+/** Heroes at least this wide (width / height) are close enough to the 1.9:1
+ *  card that a cover crop only trims a sliver. Anything squarer or taller
+ *  loses a third to a half of the piece to that crop — Monocle's square
+ *  spot illustration showed as a zoomed, soft fragment of its own belt —
+ *  so those are shown whole instead. */
+const COVER_MIN_RATIO = 1.5;
+
 async function renderHero(absolutePath: string, contain: boolean) {
   const buffer = await readFile(absolutePath);
-  return sharp(buffer)
-    .resize(
-      size.width,
-      size.height,
-      contain
-        ? { fit: "contain", background: CANVAS_BACKGROUND }
-        : { fit: "cover", position: sharp.strategy.attention },
-    )
+
+  if (contain) {
+    return sharp(buffer)
+      .resize(size.width, size.height, {
+        fit: "contain",
+        background: CANVAS_BACKGROUND,
+      })
+      .png()
+      .toBuffer();
+  }
+
+  const { width = 1, height = 1 } = await sharp(buffer).metadata();
+  if (width / height >= COVER_MIN_RATIO) {
+    return sharp(buffer)
+      .resize(size.width, size.height, {
+        fit: "cover",
+        position: sharp.strategy.attention,
+      })
+      .png()
+      .toBuffer();
+  }
+
+  // Squarer/taller art: the whole piece, centred, over a blurred copy of
+  // itself so the side bands match the artwork (on a solid-colour
+  // background like the Monocle teal, the blur is just that colour and
+  // the join is invisible). Never enlarged — upscaling a small source is
+  // what made these cards look soft.
+  const backdrop = await sharp(buffer)
+    .flatten({ background: CANVAS_BACKGROUND })
+    .resize(size.width, size.height, { fit: "cover" })
+    .blur(40)
+    .png()
+    .toBuffer();
+  const foreground = await sharp(buffer)
+    .resize(size.width, size.height, { fit: "inside", withoutEnlargement: true })
+    .png()
+    .toBuffer();
+  return sharp(backdrop)
+    .composite([{ input: foreground, gravity: "center" }])
     .png()
     .toBuffer();
 }
