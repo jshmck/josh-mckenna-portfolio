@@ -1095,8 +1095,13 @@ export function DriftingHero() {
             anything. */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 w-full -translate-x-1/2 -translate-y-1/2 px-6 text-center">
           <h1 className="type-wordmark leading-[0.95] text-brand">
-            <span className="block">jOSH</span>
+            <span className="block">jOSH</span>{" "}
             <span className="block">MCkeNNA</span>
+            {/* Without the space the two blocks read as one run-on word
+                ("jOSHMCkeNNA") to crawlers, and the page's only heading
+                never said what Josh does. Invisible, same wording as the
+                title tag. */}
+            <span className="sr-only"> — Illustrator</span>
           </h1>
         </div>
 
