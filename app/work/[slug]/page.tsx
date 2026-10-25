@@ -61,6 +61,8 @@ export async function generateMetadata({
     description: factualDescription,
     alternates: { canonical: `/work/${project.slug}` },
     openGraph: {
+      type: "website",
+      siteName: siteConfig.name,
       title: `${searchTitle} — Josh McKenna`,
       description: factualDescription,
     },
