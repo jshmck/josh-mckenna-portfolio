@@ -7,7 +7,7 @@ import { siteConfig } from "@/lib/site";
  *  etc. don't set their own lastModified, so this only claims a build-time
  *  timestamp for the routes that actually change with content: the work
  *  index and each project page. */
-const STATIC_ROUTES = ["", "/work", "/info", "/contact", "/shop"];
+const STATIC_ROUTES = ["", "/work", "/info", "/contact", "/shop", "/privacy", "/terms"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
