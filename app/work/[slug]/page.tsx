@@ -44,12 +44,26 @@ export async function generateMetadata({
     project.client === "Personal" ? ", a personal project" : ` for ${project.client}`
   }, ${project.yearLabel ?? project.year}.`;
 
+  // The client's name belongs in the title tag: people search "levis
+  // rainbow rodeo", not "rainbow rodeo", and Search Console showed that
+  // page earning ~80 impressions and no clicks under a title that never
+  // said Levi's. The H1 and the on-page title stay as designed; only the
+  // tab/search/link-card title gains "for {client}". Skipped for personal
+  // work and where the title already names the client (Vogue Magazine).
+  const searchTitle =
+    project.client === "Personal" ||
+    displayTitle.toLowerCase().includes(project.client.toLowerCase())
+      ? displayTitle
+      : `${displayTitle} for ${project.client}`;
+
   return {
-    title: displayTitle,
+    title: searchTitle,
     description: factualDescription,
     alternates: { canonical: `/work/${project.slug}` },
     openGraph: {
-      title: `${displayTitle} — Josh McKenna`,
+      type: "website",
+      siteName: siteConfig.name,
+      title: `${searchTitle} — Josh McKenna`,
       description: factualDescription,
     },
   };
