@@ -65,6 +65,11 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  // <meta name="author"> + rel=author on every page (child pages inherit
+  // it). LinkedIn's Post Inspector reported "No author found" for project
+  // links, and the Person JSON-LD below isn't something it reads.
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
   openGraph: {
     type: "website",
     siteName: siteConfig.name,
