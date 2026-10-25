@@ -3,13 +3,14 @@ import type { Metadata } from "next";
 import { PageEndCard } from "@/components/ui/page-end-card";
 import { WorkGallery } from "@/components/work/work-gallery";
 import { PROJECT_CATEGORIES, getAllProjects } from "@/lib/projects";
+import { pageMeta } from "@/lib/page-meta";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/work" },
+export const metadata: Metadata = pageMeta({
+  path: "/work",
   title: "Work",
   description:
     "Josh McKenna's work spans LGBTQ+ campaigns, editorial illustration, murals, cars, icons, motion and 3D.",
-};
+});
 
 export default function WorkPage() {
   const projects = getAllProjects();

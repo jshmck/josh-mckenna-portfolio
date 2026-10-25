@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 
 import { ContactContent } from "@/components/contact/contact-content";
 import { PageEndCard } from "@/components/ui/page-end-card";
+import { pageMeta } from "@/lib/page-meta";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/contact" },
+export const metadata: Metadata = pageMeta({
+  path: "/contact",
   title: "Contact",
   description:
     "Commissions, collaborations and editorial deadlines — all welcome. Josh reads every message himself and replies within two working days.",
-};
+});
 
 export default function ContactPage() {
   return (

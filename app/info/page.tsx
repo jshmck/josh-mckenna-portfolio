@@ -8,13 +8,14 @@ import { PageEndCard } from "@/components/ui/page-end-card";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { features, pressQuotes } from "@/lib/about";
+import { pageMeta } from "@/lib/page-meta";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/info" },
+export const metadata: Metadata = pageMeta({
+  path: "/info",
   title: "Info",
   description:
     "Josh McKenna is an illustrator with over a decade of experience, from the Instagram Pride sticker to murals for Facebook and the environmental branding for LA Pride 2024.",
-};
+});
 
 /**
  * No visible page title — Josh wants the content to open the page, not a

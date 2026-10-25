@@ -5,12 +5,14 @@ import { WaitlistForm } from "@/components/shop/waitlist-form";
 import { InlineIcon } from "@/components/ui/inline-icon";
 import { PageEndCard } from "@/components/ui/page-end-card";
 import { Reveal } from "@/components/ui/reveal";
+import { pageMeta } from "@/lib/page-meta";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/shop" },
+export const metadata: Metadata = pageMeta({
+  path: "/shop",
   title: "Shop",
-  description: "Prints, stickers and other small things.",
-};
+  description:
+    "Prints, stickers and other small things.",
+});
 
 /**
  * Commerce channel is Big Cartel (see DESIGN.md → Open decisions) — but the

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 
 import { siteConfig } from "@/lib/site";
+import { pageMeta } from "@/lib/page-meta";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/privacy" },
+export const metadata: Metadata = pageMeta({
+  path: "/privacy",
   title: "Privacy Policy",
-  description: "How Josh McKenna collects, uses and stores your data.",
-};
+  description:
+    "How Josh McKenna collects, uses and stores your data.",
+});
 
 /**
  * Structure follows the standard Shopify-generated policy shape (the
