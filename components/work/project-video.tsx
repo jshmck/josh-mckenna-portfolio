@@ -68,9 +68,25 @@ export function ProjectVideo({
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    if (!reduceMotion) {
-      node.play().catch(() => {});
-    }
+    if (reduceMotion) return;
+
+    // Play only while on screen. Starting every clip on mount meant the
+    // home page — which embeds the whole Work gallery — began downloading
+    // three card videos (~5MB) the instant it loaded, in competition with
+    // the fonts and the hero, on a phone connection. Lighthouse mobile put
+    // the wordmark's paint 8+ seconds out behind them. A margin starts
+    // each clip a screen ahead of the visitor so it is already moving by
+    // the time it scrolls in; pausing on the way out stops off-screen
+    // loops burning data and battery.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) node.play().catch(() => {});
+        else node.pause();
+      },
+      { rootMargin: "100% 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
   }, [sound, autoplay]);
 
   return (
