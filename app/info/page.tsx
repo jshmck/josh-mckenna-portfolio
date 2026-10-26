@@ -136,6 +136,10 @@ export default function AboutPage() {
                 src: "/about/portrait-cowboy-rose.jpg",
               }}
               sizes="(max-width: 768px) 100vw, 384px"
+              // The page's largest above-the-fold image and its LCP
+              // element: lazy-loaded it didn't start fetching until ~5s
+              // in on a throttled phone (Lighthouse LCP 9.5s).
+              priority
             />
           </div>
         </div>
