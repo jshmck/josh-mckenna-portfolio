@@ -2311,6 +2311,7 @@ export const projects: Project[] = [
     heroCaption: "",
     brief: [
       "Made in Figma Draw. A nod to Serve Robotics' sidewalk delivery bots, the chaotic little things that tear up LA's pavements and stop dead halfway along a crossing.",
+      "Josh saw one of the bots stuck on a crossing and drew it that afternoon. It was made for the portfolio only.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Portrait source — RATIO_CYCLE would otherwise land the /work card
@@ -2394,6 +2395,7 @@ export const projects: Project[] = [
       "Made for the Rainbow Rodeo at Levi's Haus, Los Angeles, June 2024.",
     brief: [
       "For Pride 2024, Levi's threw a Rainbow Rodeo at Levi's Haus in Los Angeles hosted by Benny Drama, with DJ sets from Violet Chachki and Tinashe. Invite, enamel pins, bar accessories and a tee, all riffing on classic western Americana with the cowboys made explicitly queer.",
+      "Josh was briefed through an agency. He worked up ideas in a sketchbook, moved them to the iPad, then made the final artwork. Everything had to stay clear at the size of an enamel pin. The work was used at the event, given out or sold, and shared on Levi's social channels.",
     ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
@@ -2584,7 +2586,8 @@ export const projects: Project[] = [
     summary: "The HSBC hex, reimagined as a canvas for Pride.",
     heroCaption: "A held frame from the animation, 2023.",
     brief: [
-      "Studio La Plage, HSBC's creative partner agency, called on LGBTQIA+ creatives to reinterpret the HSBC hex as a canvas. My interpretation was about my journey of self discovery when I moved to North America. It ran across HSBC's own social channels.",
+      "Studio La Plage, HSBC's creative partner agency, called on LGBTQIA+ creatives to reinterpret the HSBC hex as a canvas. Josh's interpretation was about his journey of self-discovery after moving to North America. It ran across HSBC's own social channels, including Instagram.",
+      "Studio La Plage invited Josh to take part directly. He drew the artwork in Illustrator and animated it in After Effects, keeping the hex recognisable throughout.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -2630,6 +2633,7 @@ export const projects: Project[] = [
     heroCaption: "One of two opener illustrations for OPTO's Issue 03 cover story, \"The Markets in 2019,\" CMC Markets, Jan/Feb 2019.",
     brief: [
       "CMC Markets commissioned the cover and two opener illustrations for OPTO magazine's Issue 03 cover story, \"The Markets in 2019\": trading intelligence on what was coming next across retail, cars, tech, media, banks, AI & AR, cannabis, medtech, fintech and esports, with a sector's icons built into the oversized \"2019\" numerals themselves.",
+      "Josh was commissioned through his agent and had two to three weeks. He designed the oversized numerals first, then filled them with the sector icons. The issue went out in print and digitally.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
