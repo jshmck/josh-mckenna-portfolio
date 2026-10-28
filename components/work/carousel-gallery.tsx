@@ -84,12 +84,6 @@ export function CarouselGallery({
                     radius=""
                   />
                 </button>
-                {image.caption !== false && (
-                  <p className="type-label mt-3 text-canvas">
-                    {String(index + 1).padStart(2, "0")} —{" "}
-                    {image.alt.split(" — ").pop()}
-                  </p>
-                )}
               </li>
             ))}
           </ul>
