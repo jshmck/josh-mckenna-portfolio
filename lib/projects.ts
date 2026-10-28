@@ -559,10 +559,10 @@ export const projects: Project[] = [
     cardVideo: true,
     cardRatio: "4/5",
     heroVideo: {
-      src: "/work/citroen-2cv-concept/04-2cv-animation.mp4",
+      src: "/work/citroen-2cv-concept/04-2cv-animation-grain.mp4",
       // The frame where the whole car is in shot (~6s), not the opening
       // wheel close-up — shows pre-play and under reduced motion.
-      poster: "/work/citroen-2cv-concept/05-2cv-animation-poster.webp",
+      poster: "/work/citroen-2cv-concept/05-2cv-animation-grain-poster.webp",
       alt: "The 2CV, from a wheel out to the whole car",
       position: "pair",
       ratio: "4/5",
