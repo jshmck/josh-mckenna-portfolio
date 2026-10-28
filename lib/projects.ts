@@ -93,7 +93,14 @@ export type ProjectImage = {
    * the main stage. Never rendered by Plate. Built in project-content.tsx
    * from a silent "pair" heroVideo.
    */
-  video?: { src: string };
+  video?: { src: string; audio?: boolean };
+  /**
+   * A different crop shown in the lightbox instead of this frame — for a
+   * piece composed to fit a layout on the page (the 2CV's 5/4 rear view
+   * beside a 4/5 clip) whose fuller original deserves the enlarged view.
+   * `quality` carries over from the image itself.
+   */
+  lightbox?: { src: string; ratio: ImageRatio };
   /**
    * next/image re-encodes every image at quality 75, which roughly halves
    * film grain (measured on the 2CV hero: 6.6 -> 3.4 at full size, 1.4 on
@@ -215,6 +222,12 @@ export type Project = {
     src: string;
     alt: string;
     sound?: boolean;
+    /** The file has an audio track, but the page clip stays muted and
+     *  control-free (it autoplays and loops like a silent one). The track
+     *  plays unmuted, with native controls, only in the lightbox — opening
+     *  it is the visitor's own click. Needs `poster`; ignored with `sound`.
+     *  See ProjectImage.video. */
+    audio?: boolean;
     /** With `sound`: autoplay muted on loop anyway, keeping the controls
      *  so the soundtrack is one tap away (BMW Z1). Honoured by the
      *  default top position; the pair/bottom/outro slots don't pass it
