@@ -97,6 +97,7 @@ export function Plate({
       {image.src ? (
         <Image
           src={image.src}
+          quality={image.quality}
           alt={image.alt}
           fill
           sizes={sizes}

@@ -41,6 +41,9 @@ const nextConfig: NextConfig = {
   // served from their asset host, not public/ — next/image needs the
   // domain allowlisted to optimise them.
   images: {
+    // 75 is next/image's default; 90 is for artwork whose grain would be
+    // halved by it (ProjectImage.quality).
+    qualities: [75, 90],
     remotePatterns: [
       { protocol: "https", hostname: "assets.bigcartel.com" },
     ],
