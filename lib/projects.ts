@@ -572,8 +572,18 @@ export const projects: Project[] = [
     gallery: [
       {
         ratio: "4/5",
+        alt: "Twingo — yellow",
+        src: "/work/hello-twingo/05-yellow.webp",
+      },
+      {
+        ratio: "4/5",
         alt: "Twingo — red",
         src: "/work/hello-twingo/01-red.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Twingo — blue",
+        src: "/work/hello-twingo/06-blue.webp",
       },
       {
         ratio: "4/5",
@@ -582,23 +592,13 @@ export const projects: Project[] = [
       },
       {
         ratio: "4/5",
-        alt: "Twingo — teal",
-        src: "/work/hello-twingo/03-teal.webp",
-      },
-      {
-        ratio: "4/5",
         alt: "Twingo — green",
         src: "/work/hello-twingo/04-green.webp",
       },
       {
         ratio: "4/5",
-        alt: "Twingo — yellow",
-        src: "/work/hello-twingo/05-yellow.webp",
-      },
-      {
-        ratio: "4/5",
-        alt: "Twingo — blue",
-        src: "/work/hello-twingo/06-blue.webp",
+        alt: "Twingo — turquoise",
+        src: "/work/hello-twingo/03-teal.webp",
       },
     ],
   },
