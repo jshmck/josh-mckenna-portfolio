@@ -196,10 +196,10 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "ambient-9",
-    src: "/illustrations/objects/twingo-yellow.webp",
+    src: "/illustrations/objects/citroen-2cv-cutout.webp",
     alt: "",
     width: 0.28,
-    aspect: 2.202,
+    aspect: 2.403,
     angle: rad(70),
     rx: 0.3,
     ry: 0.31,
