@@ -26,6 +26,12 @@ function isPortraitRatio(ratio: ImageRatio | undefined): boolean {
   return w < h;
 }
 
+/** Width over height above 1 — a landscape frame. */
+function isLandscapeRatio(ratio: string) {
+  const [w, h] = ratio.split("/").map(Number);
+  return w / h > 1;
+}
+
 /** Splits a brief paragraph on a single `[label](/href)` cross-link — the
  *  only markdown this field supports, for pointing between related project
  *  pages (e.g. a 3D piece referencing the flat illustration it's based on). */
@@ -562,13 +568,35 @@ export function ProjectContent({
                         </div>
                       </div>
                     ) : (
-                      <div className="grid gap-6 md:grid-cols-2 md:gap-8">
-                        <div>
+                      // A landscape hero beside a portrait clip: equal
+                      // halves would set a 16:9 still about 370px tall
+                      // next to a 4:5 clip over twice that, with a hole
+                      // under the still. Two thirds + one third lands
+                      // both at roughly the same height (Citroën 2CV
+                      // Concept). A portrait/square hero keeps equal halves.
+                      <div
+                        className={`grid gap-6 md:gap-8 ${
+                          isLandscapeRatio(project.hero.ratio)
+                            ? "md:grid-cols-3"
+                            : "md:grid-cols-2"
+                        }`}
+                      >
+                        <div
+                          className={
+                            isLandscapeRatio(project.hero.ratio)
+                              ? "md:col-span-2"
+                              : undefined
+                          }
+                        >
                           <HeroLightbox
                             images={heroLightboxImages}
                             captions={[project.heroCaption]}
                             hideCaptions={project.hideHeroCaptions}
-                            sizes="(max-width: 768px) 100vw, 50vw"
+                            sizes={
+                              isLandscapeRatio(project.hero.ratio)
+                                ? "(max-width: 768px) 100vw, 66vw"
+                                : "(max-width: 768px) 100vw, 50vw"
+                            }
                           />
                         </div>
                         <div>
