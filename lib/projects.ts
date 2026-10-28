@@ -579,13 +579,15 @@ export const projects: Project[] = [
     cardVideo: true,
     cardRatio: "4/5",
     heroVideo: {
-      src: "/work/citroen-2cv-concept/04-2cv-animation-grain.mp4",
+      src: "/work/citroen-2cv-concept/04-2cv-animation-sound.mp4",
       // The frame where the whole car is in shot (~6s), not the opening
       // wheel close-up — shows pre-play and under reduced motion.
-      poster: "/work/citroen-2cv-concept/05-2cv-animation-grain-poster.webp",
+      poster: "/work/citroen-2cv-concept/05-2cv-animation-sound-poster.webp",
       alt: "The 2CV, from a wheel out to the whole car",
       position: "pair",
       ratio: "4/5",
+      // Sound clips on the track; muted on the page, unmuted in the lightbox.
+      audio: true,
     },
     hero: {
       ratio: "5/4",
@@ -593,6 +595,9 @@ export const projects: Project[] = [
       src: "/work/citroen-2cv-concept/01-rear-view.webp",
       // Photoshop grain is part of the finish; see ProjectImage.quality.
       quality: 90,
+      // The page shows the 5/4 crop so it can sit level with the clip; the
+      // lightbox shows the full 16/9 composition, grain and all.
+      lightbox: { src: "/work/citroen-2cv-concept/02-rear-view-full.webp", ratio: "16/9" },
     },
     gallery: [],
   },
