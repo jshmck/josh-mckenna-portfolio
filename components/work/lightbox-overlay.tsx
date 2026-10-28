@@ -938,6 +938,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
                 width={prevFrame.imgWidth}
                 height={prevFrame.imgHeight}
                 sizes="97vw"
+                quality={prevImage.quality}
                 className={prevFrame.effectiveRadius}
                 style={prevFrame.style}
                 // Eagerly loaded, not the default lazy — this sits
@@ -972,6 +973,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
                 width={nextFrame.imgWidth}
                 height={nextFrame.imgHeight}
                 sizes="97vw"
+                quality={nextImage.quality}
                 className={nextFrame.effectiveRadius}
                 style={nextFrame.style}
                 // Same eager-load reasoning as prevImage above.
@@ -1012,11 +1014,14 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
                 height={imgHeight}
                 className={effectiveRadius}
                 style={imageStyle}
-                muted
+                muted={!openImage.video.audio}
                 loop
                 playsInline
                 autoPlay={!reduceMotion}
-                controls={reduceMotion}
+                controls={reduceMotion || openImage.video.audio}
+                // Native controls: a touch on the video itself must not start
+                // a page swipe or double-tap zoom (the < > row pages instead).
+                data-lightbox-control={openImage.video.audio ? "" : undefined}
                 controlsList="nodownload"
                 onContextMenu={(event) => event.preventDefault()}
               />
@@ -1027,6 +1032,7 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
                 width={imgWidth}
                 height={imgHeight}
                 sizes="97vw"
+                quality={openImage.quality}
                 className={effectiveRadius}
                 style={imageStyle}
                 priority

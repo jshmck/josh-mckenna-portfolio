@@ -266,9 +266,15 @@ export function ProjectContent({
           ratio: project.heroVideo.ratio ?? "16/9",
           alt: project.heroVideo.alt,
           src: project.heroVideo.poster,
-          video: { src: project.heroVideo.src },
+          video: { src: project.heroVideo.src, audio: project.heroVideo.audio },
         }
       : null;
+
+  // The image set the lightbox cycles through: an image with its own
+  // `lightbox` crop shows that instead (quality carries over). The on-page
+  // frames keep the original.
+  const asLightboxImage = (image: ProjectImage): ProjectImage =>
+    image.lightbox ? { ...image, ...image.lightbox, lightbox: undefined } : image;
   const lightboxLeadCount = heroLightboxImages.length + (heroVideoLightboxItem ? 1 : 0);
 
   return (
@@ -494,9 +500,9 @@ export function ProjectContent({
         ) : (
           <ProjectLightboxProvider
             images={[
-              ...heroLightboxImages,
+              ...heroLightboxImages.map(asLightboxImage),
               ...(heroVideoLightboxItem ? [heroVideoLightboxItem] : []),
-              ...project.gallery,
+              ...project.gallery.map(asLightboxImage),
             ]}
           >
             {project.videoRow && (
