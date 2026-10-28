@@ -88,6 +88,13 @@ export type ProjectImage = {
   /** Real artwork path under /public once Josh delivers files. */
   src?: string;
   /**
+   * A lightbox-only stand-in for a clip: `src` is its poster (what the
+   * peeks and any placeholder show), and the overlay plays `video.src` in
+   * the main stage. Never rendered by Plate. Built in project-content.tsx
+   * from a silent "pair" heroVideo.
+   */
+  video?: { src: string };
+  /**
    * next/image re-encodes every image at quality 75, which roughly halves
    * film grain (measured on the 2CV hero: 6.6 -> 3.4 at full size, 1.4 on
    * smaller screens). Set to 90 on artwork whose grain is part of the

@@ -843,6 +843,9 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
   };
 
   const { imgWidth, imgHeight, effectiveRadius, style: imageStyle } = computeFrame(openImage);
+  // Read at render: this only runs once the dialog is open (a client-side
+  // click), never during SSR, so it can't cause a hydration mismatch.
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   // heldIndex ?? openIndex, NOT openIndex — while a drag-committed swap
   // is holding a peek on screen as the stand-in for the still-decoding
   // stage, the peeks keep deriving from the pre-swap index, so the held
@@ -995,16 +998,40 @@ export function LightboxOverlay({ state, radius = "rounded-frame", fit = "unifor
             }`}
             onClick={(event) => event.stopPropagation()}
           >
-            <Image
-              src={openImage.src}
-              alt={openImage.alt}
-              width={imgWidth}
-              height={imgHeight}
-              sizes="97vw"
-              className={effectiveRadius}
-              style={imageStyle}
-              priority
-            />
+            {openImage.video ? (
+              // A hero clip. Same frame as an image (computeFrame works
+              // off the declared ratio), plays muted on a loop; under
+              // reduced motion it doesn't autoplay and shows controls
+              // instead. Remounts per slide (key above), so leaving and
+              // returning restarts it.
+              <video
+                src={openImage.video.src}
+                poster={openImage.src}
+                aria-label={openImage.alt}
+                width={imgWidth}
+                height={imgHeight}
+                className={effectiveRadius}
+                style={imageStyle}
+                muted
+                loop
+                playsInline
+                autoPlay={!reduceMotion}
+                controls={reduceMotion}
+                controlsList="nodownload"
+                onContextMenu={(event) => event.preventDefault()}
+              />
+            ) : (
+              <Image
+                src={openImage.src}
+                alt={openImage.alt}
+                width={imgWidth}
+                height={imgHeight}
+                sizes="97vw"
+                className={effectiveRadius}
+                style={imageStyle}
+                priority
+              />
+            )}
           </div>
         )}
       </div>
