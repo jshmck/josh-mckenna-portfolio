@@ -27,7 +27,11 @@ type CarouselGalleryProps = {
  * `data-swipe-ignore` keeps ProjectStackSwipe's swipe-to-next-project from
  * claiming a horizontal drag that starts on the strip.
  */
-export function CarouselGallery({ images, indexOffset = 0, eager = false }: CarouselGalleryProps) {
+export function CarouselGallery({
+  images,
+  indexOffset = 0,
+  eager = false,
+}: CarouselGalleryProps) {
   const { openAt } = useProjectLightbox();
   const trackRef = useRef<HTMLUListElement>(null);
   const [current, setCurrent] = useState(0);
@@ -40,42 +44,63 @@ export function CarouselGallery({ images, indexOffset = 0, eager = false }: Caro
     const first = track.children[0] as HTMLElement;
     const second = track.children[1] as HTMLElement;
     const step = second.offsetLeft - first.offsetLeft;
-    const next = Math.max(0, Math.min(images.length - 1, Math.round(track.scrollLeft / step)));
+    const next = Math.max(
+      0,
+      Math.min(images.length - 1, Math.round(track.scrollLeft / step)),
+    );
     if (next !== current) setCurrent(next);
   };
 
   return (
     <Reveal>
-      <ul
-        ref={trackRef}
-        onScroll={handleScroll}
-        data-swipe-ignore
-        aria-label="Slides"
-        className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto overscroll-x-contain px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-6 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
-      >
-        {images.map((image, index) => (
-          <li key={image.alt} className="w-[82%] flex-none snap-center md:w-auto">
-            <button
-              type="button"
-              onClick={() => openAt(indexOffset + index)}
-              aria-label={`Open larger view of ${image.alt}`}
-              className="block w-full cursor-zoom-in text-left"
-            >
-              <Plate
-                image={image}
-                sizes="(max-width: 768px) 82vw, 17vw"
-                loading={eager ? "eager" : undefined}
-              />
-            </button>
-            {image.caption !== false && (
-              <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
-            )}
-          </li>
-        ))}
-      </ul>
-      <p aria-hidden="true" className="type-label mt-4 text-ink-muted md:hidden">
-        {current + 1} / {images.length}
-      </p>
+      {/* Contact-sheet band: full viewport width on bg-ink, so slides whose own
+          background is the site's cream read as printed frames on black
+          instead of vanishing into the page, and so rounded corners (which
+          only show against a contrasting edge) are dropped for hard ones. */}
+      <div className="relative left-1/2 w-screen -translate-x-1/2 bg-ink py-10 md:py-14">
+        <div className="mx-auto max-w-frame px-6 md:px-gutter">
+          <ul
+            ref={trackRef}
+            onScroll={handleScroll}
+            data-swipe-ignore
+            aria-label="Slides"
+            className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto overscroll-x-contain px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-6 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
+          >
+            {images.map((image, index) => (
+              <li
+                key={image.alt}
+                className="w-[82%] flex-none snap-center md:w-auto"
+              >
+                <button
+                  type="button"
+                  onClick={() => openAt(indexOffset + index)}
+                  aria-label={`Open larger view of ${image.alt}`}
+                  className="block w-full cursor-zoom-in text-left"
+                >
+                  <Plate
+                    image={image}
+                    sizes="(max-width: 768px) 82vw, 17vw"
+                    loading={eager ? "eager" : undefined}
+                    radius=""
+                  />
+                </button>
+                {image.caption !== false && (
+                  <p className="type-label mt-3 text-canvas">
+                    {String(index + 1).padStart(2, "0")} —{" "}
+                    {image.alt.split(" — ").pop()}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+          <p
+            aria-hidden="true"
+            className="type-label mt-4 text-canvas md:hidden"
+          >
+            {current + 1} / {images.length}
+          </p>
+        </div>
+      </div>
     </Reveal>
   );
 }
