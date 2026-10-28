@@ -545,6 +545,64 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "hello-twingo",
+    title: "Hello Twingo",
+    client: "Personal",
+    year: 2026,
+    discipline: "Illustration",
+    deliverables: "6 illustrations · 1 carousel",
+    categories: ["Cars", "Editorial"],
+    summary: "Six Twingos and one request to Renault.",
+    heroCaption: "",
+    brief: [
+      "I've loved the Twingo since I first saw one in France in the 90s. This is Renault's new Twingo, drawn in six colours and collaged with photos of the original.",
+      "Drawn in Figma and built into a carousel in Instagram Edits, then posted on Instagram and Threads. The Twingo also got a 3D treatment: [Twingo](/work/womp-twingo).",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // The slides are the page: hero stays off it (it only feeds the /work
+    // card and the link preview) and the carousel layout shows all six.
+    heroHiddenOnPage: true,
+    galleryLayout: "carousel",
+    cardRatio: "4/5",
+    hero: {
+      ratio: "4/5",
+      alt: "Twingo — yellow",
+      src: "/work/hello-twingo/05-yellow.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "Twingo — red",
+        src: "/work/hello-twingo/01-red.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Twingo — silver",
+        src: "/work/hello-twingo/02-silver.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Twingo — teal",
+        src: "/work/hello-twingo/03-teal.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Twingo — green",
+        src: "/work/hello-twingo/04-green.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Twingo — yellow",
+        src: "/work/hello-twingo/05-yellow.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Twingo — blue",
+        src: "/work/hello-twingo/06-blue.webp",
+      },
+    ],
+  },
+  {
     slug: "citroen-2cv-concept",
     title: "Citroën 2CV Concept",
     client: "Personal",
