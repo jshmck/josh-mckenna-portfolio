@@ -568,9 +568,11 @@ export const projects: Project[] = [
       ratio: "4/5",
     },
     hero: {
-      ratio: "16/9",
+      ratio: "5/4",
       alt: "Rear view",
       src: "/work/citroen-2cv-concept/01-rear-view.webp",
+      // Photoshop grain is part of the finish; see ProjectImage.quality.
+      quality: 90,
     },
     gallery: [],
   },
