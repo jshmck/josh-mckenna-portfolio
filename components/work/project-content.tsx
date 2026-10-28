@@ -748,8 +748,8 @@ export function ProjectContent({
                 as a two-up, the rest full width, every frame opening
                 full-size in its own shared lightbox. */}
             {project.galleryLayout === "carousel" ? (
-              // A series made to be swiped (Hello Twingo): three-across grid
-              // on desktop, a snap-scroll strip on phones — see CarouselGallery.
+              // A series made to be swiped (Hello Twingo): one row of all the
+              // slides on desktop, a snap-scroll strip on phones — see CarouselGallery.
               <div className="mx-auto max-w-frame px-6 pb-40 max-md:pb-24 md:px-gutter">
                 <CarouselGallery
                   images={project.gallery}

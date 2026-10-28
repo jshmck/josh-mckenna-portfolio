@@ -20,7 +20,7 @@ type CarouselGalleryProps = {
 /**
  * A series made to be swiped (Hello Twingo: an Instagram carousel). One list,
  * restyled by breakpoint rather than rendered twice, so nothing downloads
- * twice: from md up it is a three-across grid showing the whole set at once;
+ * twice: from md up it is one row showing the whole set at once (six across);
  * below md it is a snap-scrolling strip with the next slide peeking in, and a
  * counter. Every slide opens the project's shared lightbox, in order.
  *
@@ -51,7 +51,7 @@ export function CarouselGallery({ images, indexOffset = 0, eager = false }: Caro
         onScroll={handleScroll}
         data-swipe-ignore
         aria-label="Slides"
-        className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto overscroll-x-contain px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 md:pb-0"
+        className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto overscroll-x-contain px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-6 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
       >
         {images.map((image, index) => (
           <li key={image.alt} className="w-[82%] flex-none snap-center md:w-auto">
@@ -63,7 +63,7 @@ export function CarouselGallery({ images, indexOffset = 0, eager = false }: Caro
             >
               <Plate
                 image={image}
-                sizes="(max-width: 768px) 82vw, 33vw"
+                sizes="(max-width: 768px) 82vw, 17vw"
                 loading={eager ? "eager" : undefined}
               />
             </button>
