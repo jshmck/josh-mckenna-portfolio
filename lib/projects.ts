@@ -88,6 +88,13 @@ export type ProjectImage = {
   /** Real artwork path under /public once Josh delivers files. */
   src?: string;
   /**
+   * next/image re-encodes every image at quality 75, which roughly halves
+   * film grain (measured on the 2CV hero: 6.6 -> 3.4 at full size, 1.4 on
+   * smaller screens). Set to 90 on artwork whose grain is part of the
+   * finish. Must be listed in `images.qualities` in next.config.ts.
+   */
+  quality?: 75 | 90;
+  /**
    * `cover` (default) fills the frame, cropping overflow — right for
    * photography. `contain` shows the whole image with no crop, for flat
    * lockups/logos whose edges are the content — Plate pairs it with a
