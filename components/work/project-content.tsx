@@ -26,11 +26,16 @@ function isPortraitRatio(ratio: ImageRatio | undefined): boolean {
   return w < h;
 }
 
-/** Width over height above 1 — a landscape frame. */
-function isLandscapeRatio(ratio: string) {
-  const [w, h] = ratio.split("/").map(Number);
-  return w / h > 1;
-}
+/** Grid column splits that make a `hero` and a `heroVideo` in the "pair"
+ *  position exactly the same height. Left:right = (hero w/h) : (video w/h),
+ *  so a 5/4 still beside a 4/5 clip is 1.5625 : 1 (25fr 16fr), a 16/9 still
+ *  20fr 9fr. Keys are `${hero.ratio}|${heroVideo.ratio}`; a pair that isn't
+ *  listed falls back to equal halves. Full class strings so Tailwind sees
+ *  them. */
+const PAIR_SPLIT: Record<string, string> = {
+  "5/4|4/5": "md:grid-cols-[25fr_16fr]",
+  "16/9|4/5": "md:grid-cols-[20fr_9fr]",
+};
 
 /** Splits a brief paragraph on a single `[label](/href)` cross-link — the
  *  only markdown this field supports, for pointing between related project
@@ -226,6 +231,10 @@ export function ProjectContent({
   // heroPair, heroVideo "pair", spot, hidden) picks its own images prop;
   // this mirrors that same set of cases so the two can never drift apart.
   const heroPairIsVideo = project.heroVideo?.position === "pair";
+  const pairSplit =
+    heroPairIsVideo && !project.heroPair && project.heroVideo
+      ? PAIR_SPLIT[`${project.hero.ratio}|${project.heroVideo.ratio}`]
+      : undefined;
   const heroLightboxImages: ProjectImage[] = project.heroHiddenOnPage
     ? []
     : project.heroSize === "spot"
@@ -568,33 +577,25 @@ export function ProjectContent({
                         </div>
                       </div>
                     ) : (
-                      // A landscape hero beside a portrait clip: equal
-                      // halves would set a 16:9 still about 370px tall
-                      // next to a 4:5 clip over twice that, with a hole
-                      // under the still. Two thirds + one third lands
-                      // both at roughly the same height (Citroën 2CV
-                      // Concept). A portrait/square hero keeps equal halves.
+                      // A hero of a different shape beside the clip: equal
+                      // halves would leave one frame shorter than the other
+                      // (a 16:9 still beside a 4:5 clip is under half its
+                      // height). Column widths sized to the two ratios make
+                      // both frames exactly the same height — see
+                      // PAIR_SPLIT. Same-shape pairs keep equal halves.
                       <div
                         className={`grid gap-6 md:gap-8 ${
-                          isLandscapeRatio(project.hero.ratio)
-                            ? "md:grid-cols-3"
-                            : "md:grid-cols-2"
+                          pairSplit ?? "md:grid-cols-2"
                         }`}
                       >
-                        <div
-                          className={
-                            isLandscapeRatio(project.hero.ratio)
-                              ? "md:col-span-2"
-                              : undefined
-                          }
-                        >
+                        <div>
                           <HeroLightbox
                             images={heroLightboxImages}
                             captions={[project.heroCaption]}
                             hideCaptions={project.hideHeroCaptions}
                             sizes={
-                              isLandscapeRatio(project.hero.ratio)
-                                ? "(max-width: 768px) 100vw, 66vw"
+                              pairSplit
+                                ? "(max-width: 768px) 100vw, 62vw"
                                 : "(max-width: 768px) 100vw, 50vw"
                             }
                           />
