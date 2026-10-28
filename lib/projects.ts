@@ -568,7 +568,7 @@ export const projects: Project[] = [
     summary: "Six Twingos and one request to Renault.",
     heroCaption: "",
     brief: [
-      "I've loved the Twingo since I first saw one in France in the 90s. This is Renault's new Twingo, drawn in six colours and collaged with photos of the original.",
+      "I've loved the Twingo since I first saw one in France in the 90s. Here is Renault's latest, drawn in its new colours plus a few revived from the originals, set against photos of the 90s cars.",
       "Drawn in Figma and built into a carousel in Instagram Edits, then posted on Instagram and Threads. The Twingo also got a 3D treatment: [Twingo](/work/womp-twingo).",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
