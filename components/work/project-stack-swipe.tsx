@@ -595,7 +595,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
         tracking = false;
         if (event.touches.length !== 1) return;
         const target = event.target instanceof Element ? event.target : null;
-        if (target?.closest('[aria-modal="true"], video')) return;
+        if (target?.closest('[aria-modal="true"], video, [data-swipe-ignore]')) return;
         tracking = true;
         startX = event.touches[0].clientX;
         startY = event.touches[0].clientY;
@@ -690,7 +690,7 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
       activeDirection = null;
       if (event.touches.length !== 1) return;
       const touchTarget = event.target instanceof Element ? event.target : null;
-      if (touchTarget?.closest('[aria-modal="true"], video')) return;
+      if (touchTarget?.closest('[aria-modal="true"], video, [data-swipe-ignore]')) return;
       const x = event.touches[0].clientX;
       if (x < EDGE_GUARD || x > window.innerWidth - EDGE_GUARD) return;
       tracking = true;
