@@ -8,6 +8,7 @@ import { HeroLightbox } from "@/components/work/hero-lightbox";
 import { ProjectVideo } from "@/components/work/project-video";
 import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
+import { LightboxTrigger } from "@/components/work/lightbox-trigger";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectNavLink } from "@/components/work/project-nav-link";
 import { ProjectTitle } from "@/components/work/project-title";
@@ -251,6 +252,25 @@ export function ProjectContent({
             ? []
             : [project.hero];
 
+  // A silent clip in the "pair" slot opens in the same lightbox as the images,
+  // straight after the hero (clips with native controls stay as they are — a
+  // click on the control bar must not open the dialog). Counted into the
+  // shared cycle here so every gallery index below shifts by one.
+  const heroVideoLightboxItem: ProjectImage | null =
+    heroPairIsVideo &&
+    !project.heroPair &&
+    project.heroVideo &&
+    !project.heroVideo.sound &&
+    project.heroVideo.poster
+      ? {
+          ratio: project.heroVideo.ratio ?? "16/9",
+          alt: project.heroVideo.alt,
+          src: project.heroVideo.poster,
+          video: { src: project.heroVideo.src },
+        }
+      : null;
+  const lightboxLeadCount = heroLightboxImages.length + (heroVideoLightboxItem ? 1 : 0);
+
   return (
     // Mobile-only "card" presentation -- "on mobile when you open a
     // project it opens up a 'card' with curved corners, (very apple)
@@ -472,7 +492,13 @@ export function ProjectContent({
             eager={eager}
           />
         ) : (
-          <ProjectLightboxProvider images={[...heroLightboxImages, ...project.gallery]}>
+          <ProjectLightboxProvider
+            images={[
+              ...heroLightboxImages,
+              ...(heroVideoLightboxItem ? [heroVideoLightboxItem] : []),
+              ...project.gallery,
+            ]}
+          >
             {project.videoRow && (
               // Same grid-cols-3 recipe as a 3-count gallerySpans row (see
               // ImageStack) — same outer max-w-frame/gutter container, same
@@ -601,14 +627,30 @@ export function ProjectContent({
                           />
                         </div>
                         <div>
-                          <ProjectVideo
-                            video={{
-                              ...project.heroVideo,
-                              poster: project.heroVideo.poster,
-                            }}
-                            sound={project.heroVideo.sound}
-                            ratio={project.heroVideo.ratio}
-                          />
+                          {heroVideoLightboxItem ? (
+                            <LightboxTrigger
+                              index={heroLightboxImages.length}
+                              label={project.heroVideo.alt}
+                            >
+                              <ProjectVideo
+                                video={{
+                                  ...project.heroVideo,
+                                  poster: project.heroVideo.poster,
+                                }}
+                                sound={project.heroVideo.sound}
+                                ratio={project.heroVideo.ratio}
+                              />
+                            </LightboxTrigger>
+                          ) : (
+                            <ProjectVideo
+                              video={{
+                                ...project.heroVideo,
+                                poster: project.heroVideo.poster,
+                              }}
+                              sound={project.heroVideo.sound}
+                              ratio={project.heroVideo.ratio}
+                            />
+                          )}
                         </div>
                       </div>
                     )
@@ -709,7 +751,7 @@ export function ProjectContent({
                 <GalleryGrid
                   leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
                   images={restImages}
-                  indexOffset={heroLightboxImages.length}
+                  indexOffset={lightboxLeadCount}
                 />
               </div>
             ) : project.gallery.length > 0 || project.galleryVideo || project.galleryGif ? (
@@ -722,7 +764,7 @@ export function ProjectContent({
               // bottom of project card is a bit too large," per Josh.
               <ImageStack
                 images={project.gallery}
-                indexOffset={heroLightboxImages.length}
+                indexOffset={lightboxLeadCount}
                 galleryVideo={project.galleryVideo}
                 galleryGif={project.galleryGif}
                 gallerySpans={project.gallerySpans}
