@@ -538,12 +538,12 @@ export const projects: Project[] = [
     // Ranked ahead of Instagram Sticker (1) so it leads /work.
     pinnedRank: 0,
     discipline: "Illustration",
-    deliverables: "1 illustration · 2 details · 1 animation",
+    deliverables: "1 illustration · 1 animation",
     categories: ["Cars", "Motion"],
-    summary: "My favourite new concept car, redrawn in orange.",
+    summary: "My new favourite car, redrawn in orange.",
     heroCaption: "Rear view of the Citroën 2CV concept.",
     brief: [
-      "I drew the new Citroën 2CV concept after seeing it at the Paris auto show. It's my favourite new concept car.",
+      "I drew the new Citroën 2CV concept after seeing it at the Paris auto show. It's now my favourite car.",
       "Made in Figma and animated in Cavalry, with grain added to the final artwork in Photoshop.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
@@ -565,18 +565,7 @@ export const projects: Project[] = [
       alt: "Rear view",
       src: "/work/citroen-2cv-concept/01-rear-view.webp",
     },
-    gallery: [
-      {
-        ratio: "4/5",
-        alt: "Detail — front wheel",
-        src: "/work/citroen-2cv-concept/02-front-wheel.webp",
-      },
-      {
-        ratio: "4/5",
-        alt: "Detail — rear wheel",
-        src: "/work/citroen-2cv-concept/03-rear-wheel.webp",
-      },
-    ],
+    gallery: [],
   },
   {
     slug: "instagram-sticker",
