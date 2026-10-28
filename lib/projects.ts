@@ -531,6 +531,43 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "citroen-2cv-concept",
+    title: "Citroën 2CV Concept",
+    client: "Personal",
+    year: 2026,
+    // Ranked ahead of Instagram Sticker (1) so it leads /work.
+    pinnedRank: 0,
+    discipline: "Illustration",
+    deliverables: "1 illustration · 1 animation",
+    categories: ["Cars", "Motion"],
+    summary: "My new favourite car, redrawn in orange.",
+    heroCaption: "Rear view of the Citroën 2CV concept.",
+    brief: [
+      "I drew the new Citroën 2CV concept after seeing it at the Paris auto show. It's now my favourite car.",
+      "Made in Figma and animated in Cavalry, with grain added to the final artwork in Photoshop.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // The card plays the 4/5 clip, like Last Call's — pinned explicitly so
+    // the grid doesn't crop it into the hero's 16/9.
+    cardVideo: true,
+    cardRatio: "4/5",
+    heroVideo: {
+      src: "/work/citroen-2cv-concept/04-2cv-animation.mp4",
+      // The frame where the whole car is in shot (~6s), not the opening
+      // wheel close-up — shows pre-play and under reduced motion.
+      poster: "/work/citroen-2cv-concept/05-2cv-animation-poster.webp",
+      alt: "The 2CV, from a wheel out to the whole car",
+      position: "pair",
+      ratio: "4/5",
+    },
+    hero: {
+      ratio: "16/9",
+      alt: "Rear view",
+      src: "/work/citroen-2cv-concept/01-rear-view.webp",
+    },
+    gallery: [],
+  },
+  {
     slug: "instagram-sticker",
     title: "Instagram Pride Sticker",
     client: "Instagram",
