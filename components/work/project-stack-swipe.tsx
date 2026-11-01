@@ -299,6 +299,10 @@ export function ProjectStackSwipe({ slug, previous, next, children }: ProjectSta
   // peek shows nothing at all.
   const [peeksMounted, setPeeksMounted] = useState(false);
   useEffect(() => {
+    // Same one-time post-hydration flip as the sessionStorage read just
+    // below — not a subscription, so the rule's cascading-render concern
+    // doesn't apply.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPeeksMounted(true);
   }, []);
   useEffect(() => {
