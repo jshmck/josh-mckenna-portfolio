@@ -332,7 +332,7 @@ export default async function MonzoPage() {
             <div className="grid items-center gap-8 md:grid-cols-2 md:gap-5">
               <div>
                 <p className="type-heading max-w-[24ch] text-ink">
-                  This site is built with Claude Code. I spoke at Config 2026.
+                  This site I built with Claude Code. I spoke at Config 2026.
                 </p>
                 <a
                   href="https://joshmckenna.com"
