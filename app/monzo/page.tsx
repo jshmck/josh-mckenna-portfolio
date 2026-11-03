@@ -212,11 +212,10 @@ export default async function MonzoPage() {
             </div>
 
             <RoleNote href="/work/la-pride">
-              LA Pride 2024: I led the full rebrand start to finish as creative
-              director, with co-designer James Junk. I designed the
-              logo and drew the custom typeface, characters, assets,
-              wayfinding icons and maps. I also made the stage banners,
-              on-screen assets, banners throughout, merch and wristbands.
+              I led the full LA Pride 2024 rebrand as creative director with
+              co-designer James Junk, and designed the logo, typeface,
+              characters, wayfinding, maps, stage and on-screen assets,
+              banners, merch and wristbands.
             </RoleNote>
           </div>
         </Section>
