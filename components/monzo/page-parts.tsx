@@ -124,7 +124,7 @@ export function Block({
   return (
     <Reveal>
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-6">
-        {label ? <p className="type-label text-ink">{label}</p> : <span />}
+        {label && <p className="type-label text-ink">{label}</p>}
         {href && (
           <Link href={href} className="type-label text-ink-muted underline">
             Project
