@@ -197,24 +197,19 @@ export default async function MonzoPage() {
     <ProjectLightboxProvider images={lightbox}>
       <DriftingHero
         compact
-        ids={["ambient-1", "work", "ambient-9", "ambient-10"]}
+        ids={[
+          "ambient-1",
+          "work",
+          "ambient-9",
+          "ambient-10",
+          "ambient-hand",
+          "ambient-11",
+          "contact",
+        ]}
       />
       <main className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
-        <p className="type-label text-ink-muted">For Monzo</p>
-        <p className="type-lede mt-3 max-w-[60ch] text-ink">
-          Brand designer and illustrator who leads brand systems from idea to
-          rollout.
-        </p>
-
         <Section first>
-          <Block label="LA Pride 2024 · Led start to finish" href="/work/la-pride">
-            <p className="type-lede mb-8 max-w-[60ch] text-ink">
-              I was creative director on the full rebrand, working with the
-              co-designer James Junk. I drew the custom typeface, the
-              characters, the assets, the wayfinding icons and the maps. NVE
-              produced it on site for LA Pride.
-            </p>
-            <p className="type-label mb-4 text-ink-muted">The typeface</p>
+          <Block href="/work/la-pride">
             <StillRow
               stills={laType}
               sizes="(max-width: 768px) 70vw, 40vw"

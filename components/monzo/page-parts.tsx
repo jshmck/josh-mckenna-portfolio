@@ -114,14 +114,14 @@ export function Block({
   href,
   children,
 }: {
-  label: string;
+  label?: string;
   href?: string;
   children: ReactNode;
 }) {
   return (
     <Reveal>
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-6">
-        <p className="type-label text-ink">{label}</p>
+        {label ? <p className="type-label text-ink">{label}</p> : <span />}
         {href && (
           <Link href={href} className="type-label text-ink-muted underline">
             Project
