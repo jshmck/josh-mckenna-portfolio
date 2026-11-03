@@ -40,7 +40,7 @@ export function ReelPhone({
     >
       <div
         data-reel=""
-        className="absolute overflow-hidden bg-ink"
+        className="group/reel absolute overflow-hidden bg-ink"
         style={SCREEN}
       >
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2">

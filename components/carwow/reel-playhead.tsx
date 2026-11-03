@@ -26,6 +26,14 @@ export function ReelPlayhead() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
+    const v0 = video();
+    const flag = () => {
+      if (!track.current) return;
+      if (v0?.paused) track.current.dataset.paused = "";
+      else delete track.current.dataset.paused;
+    };
+    v0?.addEventListener("pause", flag);
+    v0?.addEventListener("play", flag);
     const tick = () => {
       const v = video();
       if (v && v.duration && !scrubbing.current)
@@ -33,7 +41,11 @@ export function ReelPlayhead() {
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      v0?.removeEventListener("pause", flag);
+      v0?.removeEventListener("play", flag);
+    };
   }, [place]);
 
   const seek = (event: PointerEvent) => {
@@ -90,9 +102,9 @@ export function ReelPlayhead() {
       >
         <span
           ref={thumb}
-          className="absolute left-0 top-1/2 h-[2.4cqw] w-[2.4cqw] -translate-x-1/2 -translate-y-1/2 scale-0 rounded-full bg-white shadow-[0_0_0_0.3cqw_rgb(0_0_0/0.35)] transition-transform duration-150 group-hover:scale-100 group-data-[scrubbing]:scale-[1.6]"
+          className="absolute left-0 top-1/2 h-[2.4cqw] w-[2.4cqw] -translate-x-1/2 -translate-y-1/2 scale-0 rounded-full bg-white shadow-[0_0_0_0.3cqw_rgb(0_0_0/0.35)] transition-transform duration-150 group-hover/reel:scale-100 group-data-[paused]:scale-100 group-data-[scrubbing]:scale-[1.6]"
         />
-        <span className="block h-[0.45cqw] w-full rounded-full bg-white/30 transition-[height] duration-150 group-hover:h-[1cqw]">
+        <span className="block h-[0.45cqw] w-full rounded-full bg-white/30 transition-[height] duration-150 group-hover/reel:h-[0.8cqw]">
           <span
             ref={bar}
             className="block h-full origin-left scale-x-0 rounded-full bg-white"
