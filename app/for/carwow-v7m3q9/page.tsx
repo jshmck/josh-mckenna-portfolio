@@ -276,9 +276,9 @@ const NOMAD_FORMATS = [
 ];
 
 const MOBELWAGEN_FORMATS = [
-  { src: "/carwow/phone-mw-ad.webp", label: "Facebook ad · 1:1" },
-  { src: "/carwow/phone-mw-post.webp", label: "Instagram post · 4:5" },
-  { src: "/carwow/phone-mw-story.webp", label: "Instagram Story · 9:16" },
+  { src: "/carwow/phone-mw-c-ad.webp", label: "Facebook ad · 1:1" },
+  { src: "/carwow/phone-mw-c-post.webp", label: "Instagram post · 4:5" },
+  { src: "/carwow/phone-mw-c-story.webp", label: "Instagram Story · 9:16" },
   { src: "/carwow/phone-mw-banner.webp", label: "Video banner ad · 16:9" },
 ];
 
