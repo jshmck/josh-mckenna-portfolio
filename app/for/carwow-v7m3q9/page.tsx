@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import {
+  FeedPhone,
+  ReelPhone,
+  StoryPhone,
+} from "@/components/carwow/phone-mockups";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { ProjectVideo } from "@/components/work/project-video";
@@ -69,6 +74,52 @@ const RETAINER = [
     ],
   },
 ];
+
+/** Brands shown as phone mockups (story, reel, feed post) plus a flat banner. */
+const PHONE_SETS: Record<
+  string,
+  {
+    label: string;
+    story: { src: string; alt: string };
+    reel: { src: string; alt: string; caption: string };
+    feed: { src: string; alt: string; caption: string };
+    banner: ProjectImage;
+  }
+> = {
+  Nomad: {
+    label: "Nomad Wheels",
+    story: {
+      src: "/carwow/nomad-story-sahara.webp",
+      alt: "503 Sahara launch story",
+    },
+    reel: {
+      src: "/carwow/nomad-reel-tax.webp",
+      alt: "Tax Return Sale reel",
+      caption: "Tax Return Sale. Up to 40% off, all month long.",
+    },
+    feed: {
+      src: "/carwow/nomad-feed-sahara.webp",
+      alt: "503 Sahara launch post",
+      caption: "503 Sahara forged beadlock. Now available.",
+    },
+    banner: piece("nomad-banner-sahara", "16/9", "503 Sahara banner"),
+  },
+  Möbelwagen: {
+    label: "Möbelwagen",
+    story: { src: "/carwow/mw-story-tax.webp", alt: "Tax Return Sale story" },
+    reel: {
+      src: "/carwow/mw-reel-tax.webp",
+      alt: "Tax Return Sale reel",
+      caption: "Tax Return Sale. 25% off Möbelwagen.",
+    },
+    feed: {
+      src: "/carwow/mw-feed-tax.webp",
+      alt: "Tax Return Sale post",
+      caption: "Tax Return Sale. 25% off Möbelwagen.",
+    },
+    banner: piece("mw-banner-tax", "16/9", "Tax Return Sale banner"),
+  },
+};
 
 const CAMPAIGNS = ["la-pride", "kiehls-trevor-project", "levis-rainbow-rodeo"];
 // Picked for square/portrait frames so the strip stays even.
@@ -191,19 +242,53 @@ export default function CarwowPage() {
                     <p className="type-lede mt-3 text-ink">{brand.line}</p>
                   </div>
                 </div>
-                <div className="columns-2 gap-4 md:col-span-8 md:gap-6 [&>*]:mb-4 [&>*]:break-inside-avoid md:[&>*]:mb-6">
-                  {brand.pieces.map((image) => (
-                    <div key={image.src}>
+                {PHONE_SETS[brand.brand] ? (
+                  <div className="md:col-span-8">
+                    <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0">
+                      <div className="w-[62%] flex-none snap-center md:w-auto">
+                        <StoryPhone
+                          brand={PHONE_SETS[brand.brand].label}
+                          {...PHONE_SETS[brand.brand].story}
+                        />
+                      </div>
+                      <div className="w-[62%] flex-none snap-center md:w-auto">
+                        <ReelPhone
+                          brand={PHONE_SETS[brand.brand].label}
+                          {...PHONE_SETS[brand.brand].reel}
+                        />
+                      </div>
+                      <div className="w-[62%] flex-none snap-center md:w-auto">
+                        <FeedPhone
+                          brand={PHONE_SETS[brand.brand].label}
+                          {...PHONE_SETS[brand.brand].feed}
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-8">
                       <Plate
-                        image={image}
-                        sizes="(max-width: 768px) 50vw, 33vw"
+                        image={PHONE_SETS[brand.brand].banner}
+                        sizes="(max-width: 768px) 100vw, 66vw"
                       />
                       <p className="type-label mt-2 text-ink-muted">
-                        {image.alt}
+                        {PHONE_SETS[brand.brand].banner.alt}
                       </p>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ) : (
+                  <div className="columns-2 gap-4 md:col-span-8 md:gap-6 [&>*]:mb-4 [&>*]:break-inside-avoid md:[&>*]:mb-6">
+                    {brand.pieces.map((image) => (
+                      <div key={image.src}>
+                        <Plate
+                          image={image}
+                          sizes="(max-width: 768px) 50vw, 33vw"
+                        />
+                        <p className="type-label mt-2 text-ink-muted">
+                          {image.alt}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </Reveal>
           ))}
