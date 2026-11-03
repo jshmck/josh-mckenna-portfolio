@@ -528,7 +528,7 @@ export default async function CarwowPage() {
           <div>
             <h2 className="type-heading text-ink">Graphic design</h2>
             <p className="type-label mt-2 text-ink-muted">
-              Allied Wheel Co. · Static ads · Graphic elements · Logos
+              Allied Wheel Components · Static ads · Graphic elements · Logos
             </p>
           </div>
           <p className="type-label text-ink">Nomad</p>
