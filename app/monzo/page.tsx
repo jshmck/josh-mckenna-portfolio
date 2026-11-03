@@ -69,6 +69,18 @@ const LA_IN_USE = [
   ),
 ];
 
+const LEVIS = [
+  img("levis-rainbow-rodeo", "01-poster-v2", "4/5", "The Rainbow Rodeo invite"),
+  img(
+    "levis-rainbow-rodeo",
+    "02-pins-trio",
+    "2/3",
+    "Rainbow Rodeo enamel pins, all three designs",
+  ),
+  img("levis-rainbow-rodeo", "06-cups", "2/3", "Rainbow Rodeo bar cups"),
+  img("levis-rainbow-rodeo", "07-tee-front", "2/3", "The Rainbow Rodeo tee"),
+];
+
 const IDENTITY = {
   hsbc: img(
     "hsbc-pride-logo",
@@ -82,18 +94,6 @@ const IDENTITY = {
     "1/1",
     "Kiehl's Pride limited-edition packaging",
   ),
-  rodeoPins: img(
-    "levis-rainbow-rodeo",
-    "02-pins-trio",
-    "2/3",
-    "Levi's Rainbow Rodeo enamel pins",
-  ),
-  rodeoTee: img(
-    "levis-rainbow-rodeo",
-    "07-tee-front",
-    "2/3",
-    "The Rainbow Rodeo tee",
-  ),
 };
 
 const TYPE = [
@@ -102,12 +102,6 @@ const TYPE = [
     "01-lgbtqiqa",
     "16/9",
     "LGBTQIA2+ as a wordmark, with figures posed in and around the letters",
-  ),
-  img(
-    "levis-rainbow-rodeo",
-    "01-poster-v2",
-    "2/3",
-    "The Levi's Rainbow Rodeo invite",
   ),
   img(
     "beefbar-posters",
@@ -164,7 +158,7 @@ export default async function MonzoPage() {
   const laInUse = await stills(LA_IN_USE);
   const hsbc = await stills([IDENTITY.hsbc]);
   const kiehls = await stills([IDENTITY.kiehls]);
-  const rodeo = await stills([IDENTITY.rodeoPins, IDENTITY.rodeoTee]);
+  const levis = await stills(LEVIS);
   const type = await stills(TYPE);
   const [stickerPrimary] = await stills([STICKER_PRIMARY]);
   const stickerInSitu = await stills(STICKER_IN_SITU);
@@ -224,6 +218,20 @@ export default async function MonzoPage() {
         </Section>
 
         <Section>
+          <Block href="/work/levis-rainbow-rodeo">
+            <p className="type-lede mb-6 max-w-[60ch] text-ink">
+              Levi&apos;s Rainbow Rodeo, Los Angeles, June 2024: I was creative
+              director and illustrator. I made the invite, enamel pins, bar cups
+              and tee.
+            </p>
+            <StillRow
+              stills={levis}
+              sizes="(max-width: 768px) 60vw, 25vw"
+            />
+          </Block>
+        </Section>
+
+        <Section>
           <Block label="Identity">
             <Row>
               {hsbc.map((still) => (
@@ -240,16 +248,9 @@ export default async function MonzoPage() {
                   sizes="(max-width: 768px) 70vw, 30vw"
                 />
               ))}
-              {rodeo.map((still) => (
-                <StillTile
-                  key={still.src}
-                  still={still}
-                  sizes="(max-width: 768px) 50vw, 20vw"
-                />
-              ))}
             </Row>
             <p className="type-label mt-4 text-ink-muted">
-              HSBC Pride · Kiehl&apos;s Pride · Levi&apos;s Rainbow Rodeo
+              HSBC Pride · Kiehl&apos;s Pride
             </p>
           </Block>
         </Section>
@@ -261,7 +262,7 @@ export default async function MonzoPage() {
               sizes="(max-width: 768px) 70vw, 30vw"
             />
             <p className="type-label mt-4 text-ink-muted">
-              Alphabet Soup · Levi&apos;s Rainbow Rodeo · Beefbar
+              Alphabet Soup · Beefbar
             </p>
           </Block>
         </Section>
