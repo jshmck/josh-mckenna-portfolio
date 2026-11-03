@@ -37,19 +37,21 @@ export function StillTile({
   sizes,
   tight = false,
   surface = "bg-placeholder",
+  className = "",
 }: {
   still: Still;
   sizes: string;
   tight?: boolean;
   /** Surface behind transparent art; the default is the brand-blue placeholder. */
   surface?: string;
+  className?: string;
 }) {
   return (
     <LbTile
       index={still.lb}
       label={still.alt}
       r={still.r}
-      className={`relative snap-center overflow-hidden ${surface} ${tight ? "rounded-[3px]" : "rounded-frame"}`}
+      className={`relative snap-center overflow-hidden ${surface} ${tight ? "rounded-[3px]" : "rounded-frame"} ${className}`}
     >
       <Image
         src={still.src}
@@ -167,6 +169,42 @@ export function RoleNote({
       >
         Project
       </Link>
+    </div>
+  );
+}
+
+/**
+ * A row of captioned stills: items share one height like Row, but each
+ * caption sits under its own picture instead of one line for the row.
+ */
+export function CaptionedRow({
+  items,
+  sizes,
+}: {
+  items: { still: Still; caption: string; surface?: string }[];
+  sizes: string;
+}) {
+  return (
+    <div
+      className={`${RAW_ROW.replace("height-row ", "")} items-start gap-3 md:gap-5`}
+    >
+      {items.map(({ still, caption, surface }) => (
+        <figure
+          key={still.src}
+          style={{ "--r": still.r } as React.CSSProperties}
+          className="w-[calc(13.5rem*var(--r))] flex-none snap-center md:w-auto md:min-w-0 md:[flex:var(--r)_1_0%]"
+        >
+          <StillTile
+            still={still}
+            sizes={sizes}
+            surface={surface}
+            className="w-full [aspect-ratio:var(--r)]"
+          />
+          <figcaption className="type-label mt-3 text-ink-muted">
+            {caption}
+          </figcaption>
+        </figure>
+      ))}
     </div>
   );
 }

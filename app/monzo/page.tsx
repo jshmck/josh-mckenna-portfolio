@@ -5,6 +5,7 @@ import { DriftingHero } from "@/components/home/drifting-hero";
 import { LbTile } from "@/components/monzo/lightbox-tile";
 import {
   Block,
+  CaptionedRow,
   ClipTile,
   Row,
   RoleNote,
@@ -234,61 +235,48 @@ export default async function MonzoPage() {
 
         <Section>
           <Block label="Identity">
-            <Row>
-              {hsbc.map((still) => (
-                <StillTile
-                  key={still.src}
-                  still={still}
-                  sizes="(max-width: 768px) 70vw, 30vw"
-                />
-              ))}
-              {kiehls.map((still) => (
-                <StillTile
-                  key={still.src}
-                  still={still}
-                  sizes="(max-width: 768px) 70vw, 30vw"
-                />
-              ))}
-            </Row>
-            <p className="type-label mt-4 text-ink-muted">
-              HSBC Pride · Kiehl&apos;s Pride
-            </p>
+            <CaptionedRow
+              sizes="(max-width: 768px) 70vw, 30vw"
+              items={[
+                { still: hsbc[0], caption: "HSBC Pride" },
+                { still: kiehls[0], caption: "Kiehl's Pride" },
+              ]}
+            />
           </Block>
         </Section>
 
         <Section>
           <Block label="Type and lettering">
-            <StillRow
-              stills={type}
+            <CaptionedRow
               sizes="(max-width: 768px) 70vw, 30vw"
+              items={[
+                { still: type[0], caption: "Alphabet Soup" },
+                { still: type[1], caption: "Beefbar" },
+              ]}
             />
-            <p className="type-label mt-4 text-ink-muted">
-              Alphabet Soup · Beefbar
-            </p>
           </Block>
         </Section>
 
         <Section>
           <Block label="Stickers">
             <div className="space-y-3 md:space-y-5">
-              <Row>
-                {stickerPrimary && (
-                  <StillTile
-                    still={stickerPrimary}
-                    sizes="(max-width: 768px) 80vw, 45vw"
-                  />
-                )}
-                {googleSet && (
-                  <StillTile
-                    still={googleSet}
-                    surface="bg-canvas"
-                    sizes="(max-width: 768px) 60vw, 25vw"
-                  />
-                )}
-              </Row>
-              <p className="type-label text-ink-muted">
-                Instagram Pride Sticker · Google, It&apos;s All Love
-              </p>
+              <CaptionedRow
+                sizes="(max-width: 768px) 80vw, 45vw"
+                items={[
+                  ...(stickerPrimary
+                    ? [{ still: stickerPrimary, caption: "Instagram Pride Sticker" }]
+                    : []),
+                  ...(googleSet
+                    ? [
+                        {
+                          still: googleSet,
+                          caption: "Google, It's All Love",
+                          surface: "bg-canvas",
+                        },
+                      ]
+                    : []),
+                ]}
+              />
               <Row>
                 {stickerInSitu.map((still) => (
                   <StillTile
