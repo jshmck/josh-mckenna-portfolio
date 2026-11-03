@@ -41,6 +41,11 @@ const nextConfig: NextConfig = {
         source: "/koto",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
       },
+      // Monzo's page is its own thing too.
+      {
+        source: "/monzo",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
       {
         source:
           "/:dir(work|about|illustrations|logos)/:path*.:ext(mp4|webp|jpg|jpeg|png|svg|avif)",
