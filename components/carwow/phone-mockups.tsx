@@ -53,7 +53,7 @@ export function ReelPhone({
         </div>
         <ReelPlayhead />
         <div
-          className="absolute inset-x-0 top-[8.5%] flex items-center gap-[2.5cqw] px-[4cqw] text-[3.4cqw] text-white"
+          className="pointer-events-none absolute inset-x-0 top-[8.5%] flex items-center gap-[2.5cqw] px-[4cqw] text-[3.4cqw] text-white"
           aria-hidden="true"
         >
           <Image
@@ -67,7 +67,7 @@ export function ReelPhone({
           <span className="opacity-80">Sponsored</span>
         </div>
         <div
-          className="absolute inset-x-0 bottom-[3.2%] flex items-center gap-[3.1cqw] px-[4cqw] text-[3.3cqw] text-white"
+          className="pointer-events-none absolute inset-x-0 bottom-[3.2%] flex items-center gap-[3.1cqw] px-[4cqw] text-[3.3cqw] text-white"
           aria-hidden="true"
         >
           <span className="flex-1 whitespace-nowrap rounded-full border border-white/80 px-[3.4cqw] py-[1.9cqw]">
