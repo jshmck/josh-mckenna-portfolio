@@ -144,7 +144,7 @@ export const Section = ({
   children: ReactNode;
 }) => (
   <section
-    className={`${first ? "mt-8" : "mt-16"} space-y-16 border-t border-ink pt-8`}
+    className={`space-y-16 ${first ? "mt-16 md:mt-28" : "mt-16 border-t border-ink pt-8"}`}
   >
     {children}
   </section>

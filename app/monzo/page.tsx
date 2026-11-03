@@ -190,6 +190,11 @@ export default async function MonzoPage() {
       <main className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
         <Section first>
           <Block href="/work/la-pride">
+            <p className="type-lede mb-6 max-w-[60ch] text-ink">
+              LA Pride 2024: I led the full rebrand start to finish as
+              creative director, with co-designer James Junk. I drew the custom
+              typeface, characters, assets, wayfinding icons and maps.
+            </p>
             <StillRow
               stills={laType}
               sizes="(max-width: 768px) 70vw, 40vw"
