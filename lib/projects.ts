@@ -1841,7 +1841,7 @@ export const projects: Project[] = [
     // Default top position — portrait ratio, so ProjectContent centres
     // it in a capped column rather than full frame width.
     heroVideo: {
-      src: "/work/figma-bmw-z1/11-z1-animation.mp4",
+      src: "/work/figma-bmw-z1/11-z1-animation-cut.mp4",
       alt: "The Z1 cycling through its swappable body colours",
       // The all-red car on the red background, pulled from ~13.5s in —
       // "have the cover image of the video to be the red on red view,"
