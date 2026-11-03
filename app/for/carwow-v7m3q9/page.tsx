@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
-import { RecordingPhone } from "@/components/carwow/phone-mockups";
-import { Plate } from "@/components/ui/plate";
+import sharp from "sharp";
+import type { CSSProperties, ReactNode } from "react";
+
+import { ReelPhone } from "@/components/carwow/phone-mockups";
 import { Reveal } from "@/components/ui/reveal";
 import { ProjectVideo } from "@/components/work/project-video";
-import { getProject } from "@/lib/projects";
+import { getProject, type ImageRatio, type ProjectImage } from "@/lib/projects";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -15,208 +19,368 @@ import { siteConfig } from "@/lib/site";
  * header in next.config.ts), and at an unguessable path. A static site has
  * no auth, so this is "unlisted", not "secret": anyone holding the URL can
  * open it.
+ *
+ * No section titles: sections are separated by rules, and the only text is
+ * small labels.
  */
 export const metadata: Metadata = {
   title: "Josh McKenna — for Carwow",
   robots: { index: false, follow: false, nocache: true },
 };
 
-/** The design retainer: one Story per brand on an iPhone mockup. Labels only, no sentences. */
-const RETAINER = [
-  {
-    brand: "Nomad",
-    label: "503 Sahara launch · Instagram Story",
-    src: "/carwow/phone-nomad.webp",
-    alt: "Nomad 503 Sahara launch Story on an iPhone",
-  },
-  {
-    brand: "Möbelwagen",
-    label: "Tax Return Sale · Instagram Story",
-    src: "/carwow/phone-mw.webp",
-    alt: "Möbelwagen Tax Return Sale Story on an iPhone",
-  },
-  {
-    brand: "Raceline",
-    label: "Tax Return Sale · Instagram Story",
-    src: "/carwow/phone-raceline.webp",
-    alt: "Raceline Tax Return Sale Story on an iPhone",
-  },
-];
+const img = (
+  folder: string,
+  file: string,
+  ratio: ImageRatio,
+  alt: string,
+): ProjectImage => ({ src: `/work/${folder}/${file}.webp`, ratio, alt });
 
-const CAMPAIGNS = ["la-pride", "kiehls-trevor-project", "levis-rainbow-rodeo"];
-// Picked for square/portrait frames so the strip stays even.
-const CHARACTERS = [
-  "instagram-sticker",
-  "voxi-pride",
-  "womp-pato",
-  "womp-first-3d-character",
-  "sound-of-driving",
-  "monocle-spot-illo",
-];
+const num = (ratio: string) => {
+  const [a, b] = ratio.split("/").map(Number);
+  return a / b;
+};
 
-/** Campaign heading, where the client name isn't how the work is known. */
-const CAMPAIGN_NAME: Record<string, string> = { "la-pride": "LA Pride" };
+/** A still with its real pixel ratio, read from the file so nothing is cropped. */
+type Still = { src: string; alt: string; r: number };
 
-function SectionHead({ n, title }: { n: string; title: string }) {
+async function still(image: ProjectImage & { src: string }): Promise<Still> {
+  const { width, height } = await sharp(
+    await readFile(join(process.cwd(), "public", image.src)),
+  ).metadata();
+  return { src: image.src, alt: image.alt, r: (width ?? 1) / (height ?? 1) };
+}
+
+/** Images that all share one height (see .height-row in globals.css). */
+function HeightRow({
+  images,
+  sizes = "(max-width: 768px) 60vw, 30vw",
+}: {
+  images: Still[];
+  sizes?: string;
+}) {
   return (
-    <div className="flex items-baseline gap-4 border-t border-ink pt-4">
-      <span className="type-label text-ink-muted">{n}</span>
-      <h2 className="type-heading text-ink">{title}</h2>
+    <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+      {images.map((image) => (
+        <div
+          key={image.src}
+          className="relative snap-center overflow-hidden rounded-frame bg-placeholder"
+          style={{ "--r": image.r } as CSSProperties}
+        >
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            sizes={sizes}
+            className="object-cover"
+          />
+        </div>
+      ))}
     </div>
   );
 }
 
-export default function CarwowPage() {
+/** A clip in a row of same-height items. */
+function ClipTile({
+  ratio,
+  children,
+}: {
+  ratio: ImageRatio;
+  children: ReactNode;
+}) {
+  return (
+    <div className="snap-center" style={{ "--r": num(ratio) } as CSSProperties}>
+      {children}
+    </div>
+  );
+}
+
+function Block({
+  label,
+  href,
+  children,
+}: {
+  label: string;
+  href?: string;
+  children: ReactNode;
+}) {
+  return (
+    <Reveal>
+      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-6">
+        <p className="type-label text-ink">{label}</p>
+        {href && (
+          <Link href={href} className="type-label text-ink-muted underline">
+            Project
+          </Link>
+        )}
+      </div>
+      {children}
+    </Reveal>
+  );
+}
+
+const Section = ({ children }: { children: ReactNode }) => (
+  <section className="mt-16 space-y-16 border-t border-ink pt-8">
+    {children}
+  </section>
+);
+
+const LA_PRIDE = [
+  img(
+    "la-pride",
+    "04-key-art-lockup",
+    "2/3",
+    "The LA Pride 2024 key art lockup",
+  ),
+  img("la-pride", "17-vip-entrance", "16/10", "VIP entrance"),
+  img("la-pride", "06-merch-rail", "16/10", "Merch — hoodie, tee and cap"),
+  img("la-pride", "16-main-stage-screen", "16/10", "The main stage"),
+];
+
+const STICKER = [
+  img(
+    "instagram-sticker",
+    "06-sydney-mardi-gras-1",
+    "3/4",
+    "The sticker as a 10ft float at Sydney Mardi Gras",
+  ),
+  img(
+    "instagram-sticker",
+    "02-facebook-mural-cropped",
+    "4/5",
+    "The sticker as a mural in Meta's offices",
+  ),
+  img(
+    "instagram-sticker",
+    "01-06",
+    "9/16",
+    "The sticker on a lifeguard tower in LA",
+  ),
+  img(
+    "instagram-sticker",
+    "05-sticker-set-hr",
+    "16/9",
+    "The sticker in the Pride set, on a phone",
+  ),
+];
+
+const LEVIS = [
+  img("levis-rainbow-rodeo", "01-poster-v2", "4/5", "The invite"),
+  img("levis-rainbow-rodeo", "02-pins-trio", "2/3", "Enamel pins"),
+  img("levis-rainbow-rodeo", "07-tee-front", "2/3", "The tee, worn"),
+  img("levis-rainbow-rodeo", "06-cups", "2/3", "Cups at the bar"),
+];
+
+/** Nomad's 503 Sahara launch in the three formats it ran in. */
+const NOMAD_FORMATS = [
+  { src: "/carwow/phone-nomad-4x5.webp", label: "Feed 4:5" },
+  { src: "/carwow/phone-nomad-1x1.webp", label: "Feed 1:1" },
+  { src: "/carwow/phone-nomad.webp", label: "Story 9:16" },
+];
+
+const REELS = [
+  { n: 1, handle: "racelinewheels", avatar: "raceline" },
+  { n: 2, handle: "nomadwheel", avatar: "nomad" },
+  { n: 3, handle: "nomadwheel", avatar: "nomad" },
+  { n: 4, handle: "nomadwheel", avatar: "nomad" },
+  { n: 5, handle: "mobelwagen", avatar: "mobelwagen" },
+];
+
+const CAR_ILLUSTRATION = [
+  "ford-bronco",
+  "sound-of-driving",
+  "nomad-wheels-505-livery",
+];
+const EDITORIAL = [
+  "monocle-spot-illo",
+  "atlanta-magazine",
+  "wsj-airpods-rich",
+  "california-magazine",
+];
+
+const cardOf = (slug: string) => {
+  const p = getProject(slug);
+  return p ? (p.cardImage ?? p.hero) : undefined;
+};
+
+export default async function CarwowPage() {
   const honda = getProject("honda-super-n");
-  const campaigns = CAMPAIGNS.map((slug) => getProject(slug)).filter(
-    (p) => p !== undefined,
-  );
-  const characters = CHARACTERS.map((slug) => getProject(slug)).filter(
-    (p) => p !== undefined,
-  );
+  const cv = getProject("citroen-2cv-concept");
+  const z1 = getProject("figma-bmw-z1");
+  const beefbar = getProject("beefbar-posters");
+  const twingo = getProject("hello-twingo");
+  const kiehls = getProject("kiehls-trevor-project");
+  const all = (images: (ProjectImage | undefined)[]) =>
+    Promise.all(
+      images
+        .filter((i): i is ProjectImage & { src: string } => !!i?.src)
+        .map(still),
+    );
+  const [
+    laPride,
+    sticker,
+    levis,
+    kiehlsImages,
+    twingoImages,
+    carStills,
+    editorial,
+  ] = await Promise.all([
+    all(LA_PRIDE),
+    all(STICKER),
+    all(LEVIS),
+    all(kiehls ? [kiehls.hero, ...kiehls.gallery].slice(0, 4) : []),
+    all(twingo ? twingo.gallery.slice(0, 6) : []),
+    all(CAR_ILLUSTRATION.map(cardOf)),
+    all(EDITORIAL.map(cardOf)),
+  ]);
 
   return (
     <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
-      {/* Hero — Honda Super N: cars, motion and illustration in one clip. */}
       <h1 className="type-label text-ink-muted">Josh McKenna · For Carwow</h1>
-      {honda?.heroVideo && (
-        <div className="mt-8">
-          <ProjectVideo
-            video={{
-              src: honda.heroVideo.src,
-              alt: honda.heroVideo.alt,
-              poster: honda.heroVideo.poster,
-            }}
-            sound
-            autoplay
-            ratio="16/9"
-          />
-          <p className="type-label mt-3 text-ink-muted">
-            Honda Super N · Illustration, animation ·{" "}
-            <Link href="/work/honda-super-n" className="underline">
-              Project
-            </Link>
-          </p>
-        </div>
-      )}
 
-      {/* 01 Campaigns */}
-      <section className="mt-28">
-        <SectionHead n="01" title="Campaigns" />
-        <div className="mt-10 space-y-20">
-          {campaigns.map((project) => {
-            const images = [project.hero, ...project.gallery].slice(0, 3);
-            return (
-              <Reveal key={project.slug}>
-                <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1">
-                  <h3 className="type-heading text-ink">
-                    {CAMPAIGN_NAME[project.slug] ?? project.client}
-                  </h3>
-                  <p className="type-label text-ink-muted">
-                    {project.deliverables}
-                  </p>
-                </div>
-                <div className="-mx-6 mt-6 flex snap-x snap-mandatory scroll-px-6 items-start gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0">
-                  {images.map((image) => (
-                    <div
-                      key={image.src}
-                      className="w-[78%] flex-none snap-center sm:w-auto"
-                    >
-                      <Plate
-                        image={image}
-                        sizes="(max-width: 640px) 78vw, 33vw"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <p className="type-label mt-4">
-                  <Link href={`/work/${project.slug}`} className="underline">
-                    Project
-                  </Link>
-                </p>
-              </Reveal>
-            );
-          })}
+      {/* Cars: Honda and the 2CV side by side, then the Z1 and Beefbar's Lambo. */}
+      <div className="mt-8 space-y-10">
+        {honda?.heroVideo && cv?.heroVideo && (
+          <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+            <ClipTile ratio="16/9">
+              <ProjectVideo
+                video={{
+                  src: honda.heroVideo.src,
+                  alt: honda.heroVideo.alt,
+                  poster: honda.heroVideo.poster,
+                }}
+                sound
+                autoplay
+                ratio="16/9"
+                className="h-full"
+              />
+            </ClipTile>
+            <ClipTile ratio="4/5">
+              <ProjectVideo
+                video={{
+                  src: cv.heroVideo.src,
+                  alt: cv.heroVideo.alt,
+                  poster: cv.heroVideo.poster,
+                }}
+                ratio="4/5"
+                className="h-full"
+              />
+            </ClipTile>
+          </div>
+        )}
+        <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:w-2/3 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+          {z1?.heroVideo && (
+            <ClipTile ratio="4/5">
+              <ProjectVideo
+                video={{
+                  src: z1.heroVideo.src,
+                  alt: z1.heroVideo.alt,
+                  poster: z1.heroVideo.poster,
+                }}
+                ratio="4/5"
+                className="h-full"
+              />
+            </ClipTile>
+          )}
+          {beefbar?.posterGridVideo && (
+            <ClipTile ratio="4/5">
+              <ProjectVideo
+                video={{
+                  src: beefbar.posterGridVideo.src,
+                  alt: beefbar.posterGridVideo.alt,
+                  poster: beefbar.posterGridVideo.poster,
+                }}
+                ratio="4/5"
+                className="h-full"
+              />
+            </ClipTile>
+          )}
         </div>
-      </section>
-
-      {/* 02 Design retainer */}
-      <section className="mt-28">
-        <SectionHead n="02" title="Design retainer" />
-        <p className="type-label mt-4 text-ink-muted">
-          Allied Wheel Co. · Ongoing retainer · Paid social · Graphics only
+        <p className="type-label text-ink-muted">
+          Honda Super N · Citroën 2CV · BMW Z1 · Beefbar Monte Carlo
         </p>
-        <div className="-mx-6 mt-12 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 md:pb-0">
-          {RETAINER.map((brand) => (
+        <Block label="Hello Twingo" href="/work/hello-twingo">
+          <HeightRow
+            images={twingoImages}
+            sizes="(max-width: 768px) 60vw, 18vw"
+          />
+        </Block>
+      </div>
+
+      <Section>
+        <Block label="LA Pride · 360 campaign" href="/work/la-pride">
+          <HeightRow images={laPride} />
+        </Block>
+        <Block label="Instagram Pride Sticker" href="/work/instagram-sticker">
+          <HeightRow images={sticker} />
+        </Block>
+        <Block label="Levi's Rainbow Rodeo" href="/work/levis-rainbow-rodeo">
+          <HeightRow images={levis} />
+        </Block>
+        <Block label="Kiehl's Pride" href="/work/kiehls-trevor-project">
+          <HeightRow images={kiehlsImages} />
+        </Block>
+      </Section>
+
+      <Section>
+        <p className="type-label text-ink-muted">
+          Nomad · Allied Wheel Co. · Ongoing retainer · Paid social · Graphics
+          only
+        </p>
+        <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+          {NOMAD_FORMATS.map((f) => (
             <Reveal
-              key={brand.brand}
+              key={f.src}
               className="w-[72%] flex-none snap-center md:w-auto"
             >
               <Image
-                src={brand.src}
-                alt={brand.alt}
-                width={900}
-                height={1224}
+                src={f.src}
+                alt={`Nomad 503 Sahara launch, ${f.label}, on an iPhone`}
+                width={700}
+                height={1299}
                 sizes="(max-width: 768px) 72vw, 33vw"
                 className="h-auto w-full"
               />
-              <h3 className="type-heading mt-4 text-ink">{brand.brand}</h3>
-              <p className="type-label mt-1 text-ink-muted">{brand.label}</p>
+              <p className="type-label mt-1 text-ink-muted">{f.label}</p>
             </Reveal>
           ))}
         </div>
-      </section>
+      </Section>
 
-      {/* Reels: screen recordings. Josh made the graphics, not the concept or the edit. */}
-      <section className="mt-28">
-        <SectionHead n="03" title="Reels" />
-        <p className="type-label mt-4 text-ink-muted">
-          Allied Wheel Co. · Paid social · Graphics only
+      <Section>
+        <p className="type-label text-ink-muted">
+          Reels · Allied Wheel Co. · Paid social · Graphics only
         </p>
-        <div className="-mx-6 mt-10 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-5 md:gap-5 md:overflow-visible md:px-0 md:pb-0">
-          {[1, 2, 3, 4, 5].map((n) => (
-            <div key={n} className="w-[62%] flex-none snap-center md:w-auto">
-              <RecordingPhone
-                src={`/carwow/reel-${n}.mp4`}
-                poster={`/carwow/reel-${n}-poster.webp`}
-                alt={`Reel ${n}`}
+        <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-5 md:gap-4 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+          {REELS.map((r) => (
+            <div key={r.n} className="w-[62%] flex-none snap-center md:w-auto">
+              <ReelPhone
+                src={`/carwow/reel-${r.n}.mp4`}
+                poster={`/carwow/reel-${r.n}-poster.webp`}
+                handle={r.handle}
+                avatar={`/carwow/avatar-${r.avatar}.webp`}
+                alt={`Reel ${r.n}`}
               />
             </div>
           ))}
         </div>
-      </section>
+      </Section>
 
-      {/* 04 Illustration */}
-      <section className="mt-28">
-        <SectionHead n="04" title="Illustration" />
-        <div className="mt-8 grid grid-cols-2 items-start gap-4 md:grid-cols-6 md:gap-6">
-          {characters.map((project) => (
-            <Link
-              key={project.slug}
-              href={`/work/${project.slug}`}
-              className="block"
-            >
-              <Plate
-                image={project.cardImage ?? project.hero}
-                sizes="(max-width: 768px) 50vw, 16vw"
-              />
-              <p className="type-label mt-2 text-ink-muted">
-                {project.cardTitle ?? project.title}
-              </p>
-            </Link>
-          ))}
-        </div>
-        <div className="mt-12">
-          <a
-            href="https://joshmckenna.com"
-            className="type-label inline-block rounded-full bg-brand px-8 py-4 text-ink"
-          >
-            Full illustration portfolio
-          </a>
-        </div>
-      </section>
+      <Section>
+        <Block label="Illustration · Cars">
+          <HeightRow images={carStills} />
+        </Block>
+        <Block label="Illustration · Editorial">
+          <HeightRow images={editorial} />
+        </Block>
+        <a
+          href="https://joshmckenna.com"
+          className="type-label inline-block rounded-full bg-brand px-8 py-4 text-ink"
+        >
+          Full illustration portfolio
+        </a>
+      </Section>
 
-      <p className="type-label mt-28 text-ink-muted">
+      <p className="type-label mt-16 border-t border-ink pt-8 text-ink-muted">
         Josh McKenna ·{" "}
         <a href={`mailto:${siteConfig.email}`} className="underline">
           {siteConfig.email}

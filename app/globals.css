@@ -703,3 +703,20 @@
     transform: none;
   }
 }
+
+/* Carwow application page: a row of images that all share one height. On
+   phones each is a fixed-height scroll item; from md the row fills its width
+   and every item grows in proportion to its own aspect ratio, which is what
+   makes the heights match. */
+.height-row > * {
+  aspect-ratio: var(--r);
+  flex: none;
+  height: 13.5rem;
+}
+@media (min-width: 48rem) {
+  .height-row > * {
+    height: auto;
+    flex: var(--r) 1 0%;
+    min-width: 0;
+  }
+}
