@@ -530,7 +530,7 @@ export default async function CarwowPage() {
               sound
               ratio="16/9"
             />
-            <div className="mt-4 max-w-3xl">
+            <div className="mt-4">
               <p className="type-label text-ink">
                 505 Touring launch · Nomad Wheel Co.{" "}
                 <Link
