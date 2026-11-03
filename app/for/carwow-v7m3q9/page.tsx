@@ -21,23 +21,23 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true },
 };
 
-/** The design retainer: one Story per brand on an iPhone mockup. Lines are drafts for Josh to confirm. */
+/** The design retainer: one Story per brand on an iPhone mockup. Labels only, no sentences. */
 const RETAINER = [
   {
     brand: "Nomad",
-    line: "Hand-lettered, torn-paper launch and sale graphics. This is the 503 Sahara forged beadlock launch.",
+    label: "503 Sahara launch · Instagram Story",
     src: "/carwow/phone-nomad.webp",
     alt: "Nomad 503 Sahara launch Story on an iPhone",
   },
   {
     brand: "Möbelwagen",
-    line: "Arched hand-lettering over desert photography. This is the Tax Return Sale.",
+    label: "Tax Return Sale · Instagram Story",
     src: "/carwow/phone-mw.webp",
     alt: "Möbelwagen Tax Return Sale Story on an iPhone",
   },
   {
     brand: "Raceline",
-    line: "Bold red-and-black sale graphics. This is the Tax Return Sale.",
+    label: "Tax Return Sale · Instagram Story",
     src: "/carwow/phone-raceline.webp",
     alt: "Raceline Tax Return Sale Story on an iPhone",
   },
@@ -78,12 +78,7 @@ export default function CarwowPage() {
   return (
     <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
       {/* Hero — Honda Super N: cars, motion and illustration in one clip. */}
-      <p className="type-label text-ink-muted">
-        Josh McKenna · Illustrator and designer · For Carwow
-      </p>
-      <h1 className="type-heading mt-4 max-w-3xl text-ink">
-        Illustration, design and motion for cars.
-      </h1>
+      <h1 className="type-label text-ink-muted">Josh McKenna · For Carwow</h1>
       {honda?.heroVideo && (
         <div className="mt-8">
           <ProjectVideo
@@ -97,9 +92,9 @@ export default function CarwowPage() {
             ratio="16/9"
           />
           <p className="type-label mt-3 text-ink-muted">
-            Honda Super N. Illustrated in Figma, animated in Cavalry.{" "}
+            Honda Super N · Illustration, animation ·{" "}
             <Link href="/work/honda-super-n" className="underline">
-              The project
+              Project
             </Link>
           </p>
         </div>
@@ -121,9 +116,6 @@ export default function CarwowPage() {
                     {project.deliverables}
                   </p>
                 </div>
-                <p className="type-lede mt-2 max-w-2xl text-ink">
-                  {project.summary}
-                </p>
                 <div className="-mx-6 mt-6 flex snap-x snap-mandatory scroll-px-6 items-start gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0">
                   {images.map((image) => (
                     <div
@@ -139,7 +131,7 @@ export default function CarwowPage() {
                 </div>
                 <p className="type-label mt-4">
                   <Link href={`/work/${project.slug}`} className="underline">
-                    See the project
+                    Project
                   </Link>
                 </p>
               </Reveal>
@@ -151,8 +143,8 @@ export default function CarwowPage() {
       {/* 02 Design retainer */}
       <section className="mt-28">
         <SectionHead n="02" title="Design retainer" />
-        <p className="type-lede mt-4 max-w-2xl text-ink">
-          Stories for three wheel brands, as they appear in the app.
+        <p className="type-label mt-4 text-ink-muted">
+          Allied Wheel Co. · Ongoing retainer · Paid social · Graphics only
         </p>
         <div className="-mx-6 mt-12 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 md:pb-0">
           {RETAINER.map((brand) => (
@@ -169,7 +161,7 @@ export default function CarwowPage() {
                 className="h-auto w-full"
               />
               <h3 className="type-heading mt-4 text-ink">{brand.brand}</h3>
-              <p className="type-lede mt-2 text-ink">{brand.line}</p>
+              <p className="type-label mt-1 text-ink-muted">{brand.label}</p>
             </Reveal>
           ))}
         </div>
@@ -178,9 +170,8 @@ export default function CarwowPage() {
       {/* Reels: screen recordings. Josh made the graphics, not the concept or the edit. */}
       <section className="mt-28">
         <SectionHead n="03" title="Reels" />
-        <p className="type-lede mt-4 max-w-2xl text-ink">
-          Graphics I made for these Reels. The ideas and direction weren&apos;t
-          mine.
+        <p className="type-label mt-4 text-ink-muted">
+          Allied Wheel Co. · Paid social · Graphics only
         </p>
         <div className="-mx-6 mt-10 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-5 md:gap-5 md:overflow-visible md:px-0 md:pb-0">
           {[1, 2, 3, 4, 5].map((n) => (
