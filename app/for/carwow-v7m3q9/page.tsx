@@ -183,6 +183,39 @@ const Section = ({ children }: { children: ReactNode }) => (
   </section>
 );
 
+/** A row of iPhone mockups, four to a row from md, each opening the lightbox. */
+function PhoneRow({
+  phones,
+  brand,
+}: {
+  phones: { src: string; label: string; lb: number }[];
+  brand: string;
+}) {
+  return (
+    <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+      {phones.map((f) => (
+        <Reveal key={f.src} className="w-[62%] flex-none snap-center md:w-auto">
+          <LbTile
+            index={f.lb}
+            label={`${brand}, ${f.label}`}
+            className="w-full"
+          >
+            <Image
+              src={f.src}
+              alt={`${brand}, ${f.label}, on an iPhone`}
+              width={700}
+              height={1299}
+              sizes="(max-width: 768px) 62vw, 25vw"
+              className="h-auto w-full"
+            />
+          </LbTile>
+          <p className="type-label mt-1 text-ink-muted">{f.label}</p>
+        </Reveal>
+      ))}
+    </div>
+  );
+}
+
 const LA_PRIDE = [
   img(
     "la-pride",
@@ -239,6 +272,13 @@ const NOMAD_FORMATS = [
   { src: "/carwow/phone-nomad-ad.webp", label: "Facebook ad · 1:1" },
   { src: "/carwow/phone-nomad-post.webp", label: "Instagram post · 4:5" },
   { src: "/carwow/phone-nomad-story.webp", label: "Instagram Story · 9:16" },
+];
+
+const MOBELWAGEN_FORMATS = [
+  { src: "/carwow/phone-mw-ad.webp", label: "Facebook ad · 1:1" },
+  { src: "/carwow/phone-mw-post.webp", label: "Instagram post · 4:5" },
+  { src: "/carwow/phone-mw-story.webp", label: "Instagram Story · 9:16" },
+  { src: "/carwow/phone-mw-banner.webp", label: "Video banner ad · 16:9" },
 ];
 
 const REELS = [
@@ -340,6 +380,14 @@ export default async function CarwowPage() {
       src: f.src,
       ratio: "9/16",
       alt: `Nomad 503 Sahara launch, ${f.label}, on an iPhone`,
+    }),
+  }));
+  const mwPhones = MOBELWAGEN_FORMATS.map((f) => ({
+    ...f,
+    lb: reg({
+      src: f.src,
+      ratio: "9/16",
+      alt: `Möbelwagen Tax Return Sale, ${f.label}, on an iPhone`,
     }),
   }));
   const editorial = await stills(EDITORIAL.map(cardOf));
@@ -460,30 +508,16 @@ export default async function CarwowPage() {
         </Section>
 
         <Section>
-          <p className="type-label text-ink-muted">
-            Nomad · Allied Wheel Co. · Ongoing retainer · Paid social · Graphics
-            only
-          </p>
-          <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
-            {phones.map((f) => (
-              <Reveal
-                key={f.src}
-                className="w-[72%] flex-none snap-center md:w-auto"
-              >
-                <LbTile index={f.lb} label={f.label} className="w-full">
-                  <Image
-                    src={f.src}
-                    alt={`Nomad 503 Sahara launch, ${f.label}, on an iPhone`}
-                    width={700}
-                    height={1299}
-                    sizes="(max-width: 768px) 72vw, 33vw"
-                    className="h-auto w-full"
-                  />
-                </LbTile>
-                <p className="type-label mt-1 text-ink-muted">{f.label}</p>
-              </Reveal>
-            ))}
+          <div>
+            <h2 className="type-heading text-ink">Graphic design</h2>
+            <p className="type-label mt-2 text-ink-muted">
+              Allied Wheel Co. · Paid social · Graphics only
+            </p>
           </div>
+          <p className="type-label text-ink">Nomad</p>
+          <PhoneRow phones={phones} brand="Nomad 503 Sahara launch" />
+          <p className="type-label text-ink">Möbelwagen</p>
+          <PhoneRow phones={mwPhones} brand="Möbelwagen Tax Return Sale" />
           <div>
             <ProjectVideo
               video={{
@@ -515,9 +549,7 @@ export default async function CarwowPage() {
         </Section>
 
         <Section>
-          <p className="type-label text-ink-muted">
-            Reels · Allied Wheel Co. · Paid social · Graphics only · Tee design
-          </p>
+          <p className="type-label text-ink">Reels · Tee design</p>
           <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
             {REELS.map((r) => (
               <div

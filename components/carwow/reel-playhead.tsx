@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, type PointerEvent } from "react";
 
 /**
  * The controls for a Reel: a thin progress line you can drag to scrub, and a
@@ -12,6 +12,11 @@ import { useEffect, useRef, type PointerEvent } from "react";
 export function ReelPlayhead() {
   const track = useRef<HTMLSpanElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
+  const thumb = useRef<HTMLSpanElement>(null);
+  const place = useCallback((ratio: number) => {
+    if (bar.current) bar.current.style.transform = `scaleX(${ratio})`;
+    if (thumb.current) thumb.current.style.left = `${ratio * 100}%`;
+  }, []);
   const scrubbing = useRef(false);
   const wasPlaying = useRef(false);
 
@@ -23,14 +28,13 @@ export function ReelPlayhead() {
     let raf = 0;
     const tick = () => {
       const v = video();
-      if (v && bar.current && v.duration && !scrubbing.current) {
-        bar.current.style.transform = `scaleX(${v.currentTime / v.duration})`;
-      }
+      if (v && v.duration && !scrubbing.current)
+        place(v.currentTime / v.duration);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [place]);
 
   const seek = (event: PointerEvent) => {
     const v = video();
@@ -42,7 +46,7 @@ export function ReelPlayhead() {
       Math.max(0, (event.clientX - rect.left) / rect.width),
     );
     v.currentTime = ratio * v.duration;
-    if (bar.current) bar.current.style.transform = `scaleX(${ratio})`;
+    place(ratio);
   };
 
   return (
@@ -66,21 +70,28 @@ export function ReelPlayhead() {
         onPointerDown={(event) => {
           const v = video();
           scrubbing.current = true;
+          event.currentTarget.dataset.scrubbing = "";
           wasPlaying.current = !!v && !v.paused;
           v?.pause();
           event.currentTarget.setPointerCapture(event.pointerId);
           seek(event);
         }}
         onPointerMove={(event) => scrubbing.current && seek(event)}
-        onPointerUp={() => {
+        onPointerUp={(event) => {
           scrubbing.current = false;
+          delete event.currentTarget.dataset.scrubbing;
           if (wasPlaying.current) void video()?.play();
         }}
-        onPointerCancel={() => {
+        onPointerCancel={(event) => {
           scrubbing.current = false;
+          delete event.currentTarget.dataset.scrubbing;
           if (wasPlaying.current) void video()?.play();
         }}
       >
+        <span
+          ref={thumb}
+          className="absolute left-0 top-1/2 h-[2.4cqw] w-[2.4cqw] -translate-x-1/2 -translate-y-1/2 scale-0 rounded-full bg-white shadow-[0_0_0_0.3cqw_rgb(0_0_0/0.35)] transition-transform duration-150 group-hover:scale-100 group-data-[scrubbing]:scale-[1.6]"
+        />
         <span className="block h-[0.45cqw] w-full rounded-full bg-white/30 transition-[height] duration-150 group-hover:h-[1cqw]">
           <span
             ref={bar}
