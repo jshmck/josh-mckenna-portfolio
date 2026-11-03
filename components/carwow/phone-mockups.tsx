@@ -1,6 +1,8 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 
 import { Plate } from "@/components/ui/plate";
+import { ProjectVideo } from "@/components/work/project-video";
 
 /*
  * Phone mockups for the Carwow application page: the finished artwork sits
@@ -81,36 +83,52 @@ function Glyph({
   }
 }
 
-/** Brand avatar: its first letter on ink, since no real avatar is used. */
+/** Brand avatar: the brand's own profile picture when given, else its first letter. */
 function Avatar({
   brand,
+  avatar,
   className = "h-8 w-8",
 }: {
   brand: string;
+  avatar?: string;
   className?: string;
 }) {
   return (
     <span
       aria-hidden="true"
-      className={`type-label flex ${className} shrink-0 items-center justify-center rounded-full bg-canvas text-ink ring-2 ring-canvas`}
+      className={`type-label relative flex ${className} shrink-0 items-center justify-center overflow-hidden rounded-full bg-canvas text-ink ring-2 ring-canvas`}
     >
-      {brand.slice(0, 1)}
+      {avatar ? (
+        <Image src={avatar} alt="" fill sizes="40px" className="object-cover" />
+      ) : (
+        brand.slice(0, 1)
+      )}
     </span>
   );
 }
 
 /** Plain rounded device frame, no notch artwork or maker branding. */
-function Phone({ children, ratio }: { children: ReactNode; ratio: string }) {
+function Phone({
+  children,
+  ratio,
+  notch = true,
+}: {
+  children: ReactNode;
+  ratio: string;
+  notch?: boolean;
+}) {
   return (
     <div
       className="w-full rounded-[2.2rem] bg-ink p-[7px] shadow-[0_24px_50px_-18px_rgb(0_0_0/0.45)]"
       style={{ aspectRatio: ratio }}
     >
       <div className="relative h-full w-full overflow-hidden rounded-[1.7rem] bg-canvas">
-        <span
-          aria-hidden="true"
-          className="absolute left-1/2 top-2 z-20 h-[14px] w-[34%] -translate-x-1/2 rounded-full bg-ink"
-        />
+        {notch && (
+          <span
+            aria-hidden="true"
+            className="absolute left-1/2 top-2 z-20 h-[14px] w-[34%] -translate-x-1/2 rounded-full bg-ink"
+          />
+        )}
         {children}
       </div>
     </div>
@@ -124,10 +142,12 @@ export function StoryPhone({
   src,
   brand,
   alt,
+  avatar,
 }: {
   src: string;
   brand: string;
   alt: string;
+  avatar?: string;
 }) {
   return (
     <Phone ratio="9 / 17.2">
@@ -147,7 +167,7 @@ export function StoryPhone({
           <span className="h-[3px] flex-1 rounded-full bg-canvas/40" />
         </div>
         <div className="mt-3 flex items-center gap-2">
-          <Avatar brand={brand} className="h-7 w-7" />
+          <Avatar brand={brand} avatar={avatar} className="h-7 w-7" />
           <span className="type-label">{brand}</span>
           <span className="type-label ml-auto opacity-80">Sponsored</span>
           <Glyph name="close" className="h-5 w-5" />
@@ -171,11 +191,13 @@ export function ReelPhone({
   brand,
   alt,
   caption,
+  avatar,
 }: {
   src: string;
   brand: string;
   alt: string;
   caption: string;
+  avatar?: string;
 }) {
   return (
     <Phone ratio="9 / 17.2">
@@ -201,7 +223,7 @@ export function ReelPhone({
         className={`absolute inset-x-0 bottom-0 z-10 px-3 pb-3 pt-12 ${shadeUp} text-canvas`}
       >
         <div className="flex items-center gap-2">
-          <Avatar brand={brand} className="h-7 w-7" />
+          <Avatar brand={brand} avatar={avatar} className="h-7 w-7" />
           <span className="type-label">{brand}</span>
           <span className="type-label rounded-md border border-canvas/80 px-2 py-1">
             Follow
@@ -221,17 +243,19 @@ export function FeedPhone({
   brand,
   alt,
   caption,
+  avatar,
 }: {
   src: string;
   brand: string;
   alt: string;
   caption: string;
+  avatar?: string;
 }) {
   return (
     <Phone ratio="9 / 17.2">
       <div className="flex h-full flex-col bg-canvas pt-7 text-ink">
         <div className="flex items-center gap-2 px-3 py-2">
-          <Avatar brand={brand} className="h-7 w-7" />
+          <Avatar brand={brand} avatar={avatar} className="h-7 w-7" />
           <span className="type-label">{brand}</span>
           <span className="type-label text-ink-muted">Sponsored</span>
           <Glyph name="more" className="ml-auto h-5 w-5" />
@@ -250,6 +274,30 @@ export function FeedPhone({
         <p className="px-3 pt-2 text-[12px] leading-snug">
           <span className="font-bold">{brand}</span> {caption}
         </p>
+      </div>
+    </Phone>
+  );
+}
+
+/** A screen recording that already shows the app interface, in a plain frame. */
+export function RecordingPhone({
+  src,
+  poster,
+  alt,
+}: {
+  src: string;
+  poster: string;
+  alt: string;
+}) {
+  return (
+    <Phone ratio="9 / 17.2" notch={false}>
+      <div className="absolute inset-0">
+        <ProjectVideo
+          video={{ src, poster, alt }}
+          ratio="9/16"
+          radius=""
+          className="h-full w-full"
+        />
       </div>
     </Phone>
   );

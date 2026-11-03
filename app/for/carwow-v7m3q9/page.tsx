@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import {
   FeedPhone,
+  RecordingPhone,
   ReelPhone,
   StoryPhone,
 } from "@/components/carwow/phone-mockups";
@@ -80,6 +81,7 @@ const PHONE_SETS: Record<
   string,
   {
     label: string;
+    avatar: string;
     story: { src: string; alt: string };
     reel: { src: string; alt: string; caption: string };
     feed: { src: string; alt: string; caption: string };
@@ -88,6 +90,7 @@ const PHONE_SETS: Record<
 > = {
   Nomad: {
     label: "Nomad Wheels",
+    avatar: "/carwow/avatar-nomad.webp",
     story: {
       src: "/carwow/nomad-story-sahara.webp",
       alt: "503 Sahara launch story",
@@ -106,6 +109,7 @@ const PHONE_SETS: Record<
   },
   Möbelwagen: {
     label: "Möbelwagen",
+    avatar: "/carwow/avatar-mobelwagen.webp",
     story: { src: "/carwow/mw-story-tax.webp", alt: "Tax Return Sale story" },
     reel: {
       src: "/carwow/mw-reel-tax.webp",
@@ -248,18 +252,21 @@ export default function CarwowPage() {
                       <div className="w-[62%] flex-none snap-center md:w-auto">
                         <StoryPhone
                           brand={PHONE_SETS[brand.brand].label}
+                          avatar={PHONE_SETS[brand.brand].avatar}
                           {...PHONE_SETS[brand.brand].story}
                         />
                       </div>
                       <div className="w-[62%] flex-none snap-center md:w-auto">
                         <ReelPhone
                           brand={PHONE_SETS[brand.brand].label}
+                          avatar={PHONE_SETS[brand.brand].avatar}
                           {...PHONE_SETS[brand.brand].reel}
                         />
                       </div>
                       <div className="w-[62%] flex-none snap-center md:w-auto">
                         <FeedPhone
                           brand={PHONE_SETS[brand.brand].label}
+                          avatar={PHONE_SETS[brand.brand].avatar}
                           {...PHONE_SETS[brand.brand].feed}
                         />
                       </div>
@@ -295,9 +302,29 @@ export default function CarwowPage() {
         </div>
       </section>
 
-      {/* 03 Illustration */}
+      {/* Reels: screen recordings. Josh made the graphics, not the concept or the edit. */}
       <section className="mt-28">
-        <SectionHead n="03" title="Illustration" />
+        <SectionHead n="03" title="Reels" />
+        <p className="type-lede mt-4 max-w-2xl text-ink">
+          Graphics I made for these Reels. The ideas and direction weren&apos;t
+          mine.
+        </p>
+        <div className="-mx-6 mt-10 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-5 md:gap-5 md:overflow-visible md:px-0 md:pb-0">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <div key={n} className="w-[62%] flex-none snap-center md:w-auto">
+              <RecordingPhone
+                src={`/carwow/reel-${n}.mp4`}
+                poster={`/carwow/reel-${n}-poster.webp`}
+                alt={`Reel ${n}`}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 04 Illustration */}
+      <section className="mt-28">
+        <SectionHead n="04" title="Illustration" />
         <div className="mt-8 grid grid-cols-2 items-start gap-4 md:grid-cols-6 md:gap-6">
           {characters.map((project) => (
             <Link
