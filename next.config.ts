@@ -29,6 +29,13 @@ const nextConfig: NextConfig = {
   // /work/[slug] HTML routes under the same prefixes keep revalidating.
   async headers() {
     return [
+      // Private application page: keep it out of search (the page also sets
+      // robots in its metadata). The short URL is guessable, so this and the
+      // missing sitemap entry are all that keep it unlisted.
+      {
+        source: "/carwow",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
       {
         source:
           "/:dir(work|about|illustrations|logos)/:path*.:ext(mp4|webp|jpg|jpeg|png|svg|avif)",

@@ -87,7 +87,10 @@ export function useLightboxState(images: ProjectImage[]): LightboxState {
       document.body.style.left = "";
       document.body.style.right = "";
       document.body.style.overflow = "";
-      window.scrollTo(0, scrollY);
+      // Instant, not smooth: the site sets scroll-behavior: smooth, and with the
+      // body un-pinned (page back at the top) a smooth scrollTo would visibly
+      // glide down from the top of the page to where the visitor was.
+      window.scrollTo({ top: scrollY, behavior: "instant" });
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [openIndex, images.length]);
