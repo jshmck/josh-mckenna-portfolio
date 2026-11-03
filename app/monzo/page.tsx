@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import { DriftingHero } from "@/components/home/drifting-hero";
 import { LbTile } from "@/components/monzo/lightbox-tile";
 import {
   Block,
@@ -194,8 +195,12 @@ export default async function MonzoPage() {
 
   return (
     <ProjectLightboxProvider images={lightbox}>
-      <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
-        <h1 className="type-label text-ink-muted">Josh McKenna · For Monzo</h1>
+      <DriftingHero
+        compact
+        ids={["ambient-1", "work", "ambient-9", "ambient-10"]}
+      />
+      <main className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
+        <p className="type-label text-ink-muted">For Monzo</p>
         <p className="type-lede mt-3 max-w-[60ch] text-ink">
           Brand designer and illustrator who leads brand systems from idea to
           rollout.
