@@ -54,16 +54,21 @@ async function still(image: ProjectImage & { src: string }): Promise<Still> {
 function HeightRow({
   images,
   sizes = "(max-width: 768px) 60vw, 30vw",
+  flush = false,
 }: {
   images: Still[];
   sizes?: string;
+  /** Edge to edge with square corners, so the row reads as one carousel strip. */
+  flush?: boolean;
 }) {
   return (
-    <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+    <div
+      className={`height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden ${flush ? "" : "gap-3 md:gap-5"}`}
+    >
       {images.map((image) => (
         <div
           key={image.src}
-          className="relative snap-center overflow-hidden rounded-frame bg-placeholder"
+          className={`relative snap-center overflow-hidden bg-placeholder ${flush ? "" : "rounded-frame"}`}
           style={{ "--r": image.r } as CSSProperties}
         >
           <Image
@@ -71,6 +76,28 @@ function HeightRow({
             alt={image.alt}
             fill
             sizes={sizes}
+            className="object-cover"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Equal-sized tiles, three to a row. */
+function Grid3({ images }: { images: Still[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
+      {images.map((image) => (
+        <div
+          key={image.src}
+          className="relative aspect-[3/2] overflow-hidden rounded-frame bg-placeholder"
+        >
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            sizes="(max-width: 768px) 50vw, 33vw"
             className="object-cover"
           />
         </div>
@@ -127,16 +154,34 @@ const Section = ({ children }: { children: ReactNode }) => (
 const LA_PRIDE = [
   img(
     "la-pride",
-    "04-key-art-lockup",
-    "2/3",
-    "The LA Pride 2024 key art lockup",
+    "23-key-art-stage-banner",
+    "3/2",
+    "The key art across the main stage",
+  ),
+  img(
+    "la-pride",
+    "05-wayfinding-totem",
+    "16/10",
+    "Wayfinding totem, main stage and food village",
   ),
   img("la-pride", "17-vip-entrance", "16/10", "VIP entrance"),
   img("la-pride", "06-merch-rail", "16/10", "Merch — hoodie, tee and cap"),
+  img(
+    "la-pride",
+    "10-wristbands",
+    "16/10",
+    "Wristbands, VIP and general admission",
+  ),
   img("la-pride", "16-main-stage-screen", "16/10", "The main stage"),
 ];
 
-const STICKER = [
+const STICKER_PRIMARY = img(
+  "instagram-sticker",
+  "05-sticker-set-hr",
+  "16/9",
+  "The sticker in the Pride set, on a phone",
+);
+const STICKER_IN_SITU = [
   img(
     "instagram-sticker",
     "06-sydney-mardi-gras-1",
@@ -155,19 +200,6 @@ const STICKER = [
     "9/16",
     "The sticker on a lifeguard tower in LA",
   ),
-  img(
-    "instagram-sticker",
-    "05-sticker-set-hr",
-    "16/9",
-    "The sticker in the Pride set, on a phone",
-  ),
-];
-
-const LEVIS = [
-  img("levis-rainbow-rodeo", "01-poster-v2", "4/5", "The invite"),
-  img("levis-rainbow-rodeo", "02-pins-trio", "2/3", "Enamel pins"),
-  img("levis-rainbow-rodeo", "07-tee-front", "2/3", "The tee, worn"),
-  img("levis-rainbow-rodeo", "06-cups", "2/3", "Cups at the bar"),
 ];
 
 /** Nomad's 503 Sahara launch in the three formats it ran in. */
@@ -187,9 +219,14 @@ const REELS = [
 
 const CAR_ILLUSTRATION = [
   "ford-bronco",
-  "sound-of-driving",
+  "palm-springs",
   "nomad-wheels-505-livery",
+  "costa-smeralda",
 ];
+const TWINGO = [1, 2, 3, 4, 5, 6].map((n) => ({
+  src: `/carwow/twingo-${n}.webp`,
+  alt: `Hello Twingo, slide ${n}`,
+}));
 const EDITORIAL = [
   "monocle-spot-illo",
   "atlanta-magazine",
@@ -199,7 +236,7 @@ const EDITORIAL = [
 
 const cardOf = (slug: string) => {
   const p = getProject(slug);
-  return p ? (p.cardImage ?? p.hero) : undefined;
+  return p ? (p.cardImageByCategory?.Cars ?? p.cardImage ?? p.hero) : undefined;
 };
 
 export default async function CarwowPage() {
@@ -207,8 +244,8 @@ export default async function CarwowPage() {
   const cv = getProject("citroen-2cv-concept");
   const z1 = getProject("figma-bmw-z1");
   const beefbar = getProject("beefbar-posters");
-  const twingo = getProject("hello-twingo");
   const kiehls = getProject("kiehls-trevor-project");
+  const sticker = getProject("instagram-sticker");
   const all = (images: (ProjectImage | undefined)[]) =>
     Promise.all(
       images
@@ -217,18 +254,18 @@ export default async function CarwowPage() {
     );
   const [
     laPride,
-    sticker,
-    levis,
+    stickerPrimary,
+    stickerInSitu,
     kiehlsImages,
     twingoImages,
     carStills,
     editorial,
   ] = await Promise.all([
     all(LA_PRIDE),
-    all(STICKER),
-    all(LEVIS),
+    all([STICKER_PRIMARY]),
+    all(STICKER_IN_SITU),
     all(kiehls ? [kiehls.hero, ...kiehls.gallery].slice(0, 4) : []),
-    all(twingo ? twingo.gallery.slice(0, 6) : []),
+    Promise.all(TWINGO.map((t) => still({ ...t, ratio: "4/5" }))),
     all(CAR_ILLUSTRATION.map(cardOf)),
     all(EDITORIAL.map(cardOf)),
   ]);
@@ -267,7 +304,7 @@ export default async function CarwowPage() {
             </ClipTile>
           </div>
         )}
-        <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:w-2/3 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+        <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
           {z1?.heroVideo && (
             <ClipTile ratio="4/5">
               <ProjectVideo
@@ -294,27 +331,75 @@ export default async function CarwowPage() {
               />
             </ClipTile>
           )}
+          {carStills.map((image) => (
+            <div
+              key={image.src}
+              className="relative snap-center overflow-hidden rounded-frame bg-placeholder"
+              style={{ "--r": image.r } as CSSProperties}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                sizes="(max-width: 768px) 60vw, 18vw"
+                className="object-cover"
+              />
+            </div>
+          ))}
         </div>
-        <p className="type-label text-ink-muted">
-          Honda Super N · Citroën 2CV · BMW Z1 · Beefbar Monte Carlo
-        </p>
-        <Block label="Hello Twingo" href="/work/hello-twingo">
-          <HeightRow
-            images={twingoImages}
-            sizes="(max-width: 768px) 60vw, 18vw"
-          />
-        </Block>
+        <HeightRow
+          images={twingoImages}
+          sizes="(max-width: 768px) 60vw, 18vw"
+          flush
+        />
       </div>
 
       <Section>
         <Block label="LA Pride · 360 campaign" href="/work/la-pride">
-          <HeightRow images={laPride} />
+          <Grid3 images={laPride} />
         </Block>
         <Block label="Instagram Pride Sticker" href="/work/instagram-sticker">
-          <HeightRow images={sticker} />
-        </Block>
-        <Block label="Levi's Rainbow Rodeo" href="/work/levis-rainbow-rodeo">
-          <HeightRow images={levis} />
+          <div className="space-y-3 md:space-y-5">
+            <div className="relative aspect-video overflow-hidden rounded-frame bg-placeholder">
+              <Image
+                src={stickerPrimary[0].src}
+                alt={stickerPrimary[0].alt}
+                fill
+                sizes="(max-width: 768px) 100vw, 1190px"
+                className="object-cover"
+              />
+            </div>
+            <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+              {stickerInSitu.map((image) => (
+                <div
+                  key={image.src}
+                  className="relative snap-center overflow-hidden rounded-frame bg-placeholder"
+                  style={{ "--r": image.r } as CSSProperties}
+                >
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    sizes="(max-width: 768px) 60vw, 25vw"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+              {sticker?.galleryGif && (
+                <ClipTile ratio="1/1">
+                  <ProjectVideo
+                    video={{
+                      src: sticker.galleryGif.src,
+                      alt: sticker.galleryGif.alt,
+                      poster: sticker.galleryGif.poster,
+                    }}
+                    ratio="1/1"
+                    className="h-full"
+                  />
+                </ClipTile>
+              )}
+            </div>
+          </div>
         </Block>
         <Block label="Kiehl's Pride" href="/work/kiehls-trevor-project">
           <HeightRow images={kiehlsImages} />
@@ -366,10 +451,7 @@ export default async function CarwowPage() {
       </Section>
 
       <Section>
-        <Block label="Illustration · Cars">
-          <HeightRow images={carStills} />
-        </Block>
-        <Block label="Illustration · Editorial">
+        <Block label="Editorial illustration">
           <HeightRow images={editorial} />
         </Block>
         <a
