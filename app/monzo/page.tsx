@@ -134,12 +134,6 @@ const TYPE = [
     "4/5",
     "Beefbar poster, Born in Monte-Carlo",
   ),
-  img(
-    "its-all-love",
-    "04-hero-light",
-    "1/1",
-    "Four of Google's Pride stickers, including the hand-lettered Own it!",
-  ),
 ];
 
 const STICKER_PRIMARY = img(
@@ -294,8 +288,7 @@ export default async function MonzoPage() {
               sizes="(max-width: 768px) 70vw, 30vw"
             />
             <p className="type-label mt-4 text-ink-muted">
-              Alphabet Soup · Levi&apos;s Rainbow Rodeo · Beefbar · Google
-              stickers
+              Alphabet Soup · Levi&apos;s Rainbow Rodeo · Beefbar
             </p>
           </Block>
         </Section>
