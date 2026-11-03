@@ -21,6 +21,7 @@
      instead - so for nav bar etc," 2026-09). The token stays as the seam
      so a future accent colour is a one-line swap. Red is retired too. */
   --color-brand: #30b7ff; /* primary path — hire / commission / wordmark */
+  --color-like: #ff3040; /* a liked heart — the Carwow page's Reel easter egg only */
   --color-accent: var(--color-brand); /* was purple #ae88ff */
   --color-highlight: #ffb600; /* per-project accent wash */
 
@@ -69,7 +70,12 @@
 
   /* Motion */
   --ease-drift: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* springy overshoot — lightbox, playful UI accents */
+  --ease-bounce: cubic-bezier(
+    0.34,
+    1.56,
+    0.64,
+    1
+  ); /* springy overshoot — lightbox, playful UI accents */
 }
 
 /* Mobile-only: --radius-frame drops to the mobile nav circles' own
@@ -322,6 +328,18 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes heart-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 

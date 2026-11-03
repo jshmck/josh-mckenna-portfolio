@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { ReelHeart } from "@/components/carwow/reel-heart";
 import { ReelPlayhead } from "@/components/carwow/reel-playhead";
 import { ProjectVideo } from "@/components/work/project-video";
 
@@ -53,17 +54,15 @@ export function ReelPhone({
         </div>
         <ReelPlayhead />
         {/* Reels-style actions up the right edge, drawn in code like the rest. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-[21%] right-[3.5cqw] flex flex-col items-center gap-[4.2cqw] text-white drop-shadow-[0_0_1.2cqw_rgb(0_0_0/0.55)]"
-        >
+        <div className="pointer-events-none absolute bottom-[21%] right-[3.5cqw] flex flex-col items-center gap-[4.2cqw] text-white drop-shadow-[0_0_1.2cqw_rgb(0_0_0/0.55)]">
+          <ReelHeart />
           {[
-            "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
             "M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.6-.8L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5z",
             "M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z",
           ].map((d) => (
             <svg
               key={d}
+              aria-hidden="true"
               viewBox="0 0 24 24"
               className="h-[6.4cqw] w-[6.4cqw]"
               fill="none"
