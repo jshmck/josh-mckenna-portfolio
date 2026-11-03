@@ -17,7 +17,7 @@ export const siteConfig = {
   location: "London",
   tagline: "Drawings that misbehave.",
   description:
-    "Josh McKenna is a British illustrator working across character design, LGBTQ+ themes, social media icons, brand campaigns and automotive art.",
+    "Josh McKenna is a British illustrator behind Instagram's Pride sticker, working across character design, brand campaigns, editorial and car art.",
   email: "hello@joshmckenna.com",
   instagram: {
     handle: "@jshmck",

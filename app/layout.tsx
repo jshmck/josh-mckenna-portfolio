@@ -15,9 +15,21 @@ import "./globals.css";
    Used at 15px and 22px in the wireframes. */
 const helveticaNeue = localFont({
   src: [
-    { path: "../public/fonts/helvetica-neue/HelveticaNeueRoman.otf", weight: "400", style: "normal" },
-    { path: "../public/fonts/helvetica-neue/HelveticaNeueMedium.otf", weight: "500", style: "normal" },
-    { path: "../public/fonts/helvetica-neue/HelveticaNeueBold.otf", weight: "700", style: "normal" },
+    {
+      path: "../public/fonts/helvetica-neue/HelveticaNeueRoman.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/helvetica-neue/HelveticaNeueMedium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/helvetica-neue/HelveticaNeueBold.otf",
+      weight: "700",
+      style: "normal",
+    },
   ],
   variable: "--font-helvetica-neue",
   display: "swap",
@@ -44,7 +56,13 @@ const archivoBlack = Archivo_Black({
    in font-display; use the --font-weight-waldeck-medium/-black tokens
    (globals.css) instead. */
 const waldeck = localFont({
-  src: [{ path: "../public/fonts/waldeck/Waldeck.ttf", weight: "100 340", style: "normal" }],
+  src: [
+    {
+      path: "../public/fonts/waldeck/Waldeck.ttf",
+      weight: "100 340",
+      style: "normal",
+    },
+  ],
   variable: "--font-waldeck",
   display: "swap",
   fallback: ["Archivo Black", "system-ui", "sans-serif"],
@@ -61,7 +79,7 @@ const spaceMono = Space_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — ${siteConfig.role}`,
+    default: "Josh McKenna — Illustrator for Pride, Brands and Cars",
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -73,7 +91,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: siteConfig.name,
-    title: `${siteConfig.name} — ${siteConfig.role}`,
+    title: "Josh McKenna — Illustrator for Pride, Brands and Cars",
     description: siteConfig.description,
   },
   twitter: { card: "summary_large_image" },
@@ -169,7 +187,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             pills, the swipe peeks) -- only transform/filter/will-change
             ancestors do that -- and the lightbox portals to body
             anyway. md+ is untouched, plain in-flow main. */}
-        <main id="main" className="flex-1 max-md:relative max-md:z-10 max-md:bg-canvas">
+        <main
+          id="main"
+          className="flex-1 max-md:relative max-md:z-10 max-md:bg-canvas"
+        >
           {children}
         </main>
         <Footer />
