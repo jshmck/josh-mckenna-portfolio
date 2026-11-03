@@ -18,11 +18,12 @@ type CarouselGalleryProps = {
 };
 
 /**
- * A series made to be swiped (Hello Twingo: an Instagram carousel). One list,
- * restyled by breakpoint rather than rendered twice, so nothing downloads
- * twice: from md up it is one row showing the whole set at once (six across);
- * below md it is a snap-scrolling strip with the next slide peeking in, and a
- * counter. Every slide opens the project's shared lightbox, in order.
+ * A series made to be swiped (Hello Twingo: an Instagram carousel). One
+ * snap-scrolling strip at every size: slides sit edge to edge with a hair of
+ * gap and a 3px corner, so they read as one carousel; on desktop about four
+ * and a half show, the half-slide peeking to say there are more; on phones one
+ * slide and a bit of the next. A counter shows where you are. Every slide
+ * opens the project's shared lightbox, in order, as its own page.
  *
  * `data-swipe-ignore` keeps ProjectStackSwipe's swipe-to-next-project from
  * claiming a horizontal drag that starts on the strip.
@@ -53,48 +54,37 @@ export function CarouselGallery({
 
   return (
     <Reveal>
-      {/* Contact-sheet band: full viewport width on bg-ink, so slides whose own
-          background is the site's cream read as printed frames on black
-          instead of vanishing into the page, and with only a 3px corner and a hair
-          of gap so the slides read as one carousel strip. */}
-      <div className="relative left-1/2 w-screen -translate-x-1/2 bg-ink py-10 md:py-14">
-        <div className="mx-auto max-w-frame px-6 md:px-gutter">
-          <ul
-            ref={trackRef}
-            onScroll={handleScroll}
-            data-swipe-ignore
-            aria-label="Slides"
-            className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-1 overflow-x-auto overscroll-x-contain px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-6 md:gap-1 md:overflow-visible md:px-0 md:pb-0"
+      <ul
+        ref={trackRef}
+        onScroll={handleScroll}
+        data-swipe-ignore
+        aria-label="Slides"
+        className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-1 overflow-x-auto overscroll-x-contain px-6 pb-2 [scrollbar-width:none] md:mx-0 md:scroll-px-0 md:px-0 [&::-webkit-scrollbar]:hidden"
+      >
+        {images.map((image, index) => (
+          <li
+            key={image.alt}
+            className="w-[82%] flex-none snap-start md:w-[22%]"
           >
-            {images.map((image, index) => (
-              <li
-                key={image.alt}
-                className="w-[82%] flex-none snap-center md:w-auto"
-              >
-                <button
-                  type="button"
-                  onClick={() => openAt(indexOffset + index)}
-                  aria-label={`Open larger view of ${image.alt}`}
-                  className="block w-full cursor-zoom-in text-left"
-                >
-                  <Plate
-                    image={image}
-                    sizes="(max-width: 768px) 82vw, 17vw"
-                    loading={eager ? "eager" : undefined}
-                    radius="rounded-[3px]"
-                  />
-                </button>
-              </li>
-            ))}
-          </ul>
-          <p
-            aria-hidden="true"
-            className="type-label mt-4 text-canvas md:hidden"
-          >
-            {current + 1} / {images.length}
-          </p>
-        </div>
-      </div>
+            <button
+              type="button"
+              onClick={() => openAt(indexOffset + index)}
+              aria-label={`Open larger view of ${image.alt}`}
+              className="block w-full cursor-zoom-in text-left"
+            >
+              <Plate
+                image={image}
+                sizes="(max-width: 768px) 82vw, 22vw"
+                loading={eager ? "eager" : undefined}
+                radius="rounded-[3px]"
+              />
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p aria-hidden="true" className="type-label mt-3 text-ink-muted">
+        {current + 1} / {images.length}
+      </p>
     </Reveal>
   );
 }

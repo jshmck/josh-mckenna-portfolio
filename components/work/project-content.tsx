@@ -727,6 +727,18 @@ export function ProjectContent({
               </div>
             )}
 
+            {project.galleryLayout === "carousel" && (
+              // A series made to be swiped (Hello Twingo) leads the page, above
+              // the write-up, as one carousel strip — see CarouselGallery.
+              <div className="mx-auto max-w-frame px-6 pt-12 max-md:pt-0 md:px-gutter">
+                <CarouselGallery
+                  images={project.gallery}
+                  indexOffset={lightboxLeadCount}
+                  eager={eager}
+                />
+              </div>
+            )}
+
             <WriteUp project={project} />
 
             {project.heroVideo?.position === "outro" && (
@@ -753,17 +765,7 @@ export function ProjectContent({
                 `leadImages`. Every other project gets ImageStack — first two
                 as a two-up, the rest full width, every frame opening
                 full-size in its own shared lightbox. */}
-            {project.galleryLayout === "carousel" ? (
-              // A series made to be swiped (Hello Twingo): one row of all the
-              // slides on desktop, a snap-scroll strip on phones — see CarouselGallery.
-              <div className="mx-auto max-w-frame px-6 pb-40 max-md:pb-24 md:px-gutter">
-                <CarouselGallery
-                  images={project.gallery}
-                  indexOffset={lightboxLeadCount}
-                  eager={eager}
-                />
-              </div>
-            ) : project.galleryLayout === "grid" ? (
+            {project.galleryLayout === "carousel" ? null : project.galleryLayout === "grid" ? (
               <div className="mx-auto max-w-frame px-6 pb-40 max-md:pb-24 md:px-gutter">
                 <GalleryGrid
                   leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
