@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
-import {
-  FeedPhone,
-  RecordingPhone,
-  ReelPhone,
-  StoryPhone,
-} from "@/components/carwow/phone-mockups";
+import { RecordingPhone } from "@/components/carwow/phone-mockups";
 import { Plate } from "@/components/ui/plate";
 import { Reveal } from "@/components/ui/reveal";
 import { ProjectVideo } from "@/components/work/project-video";
-import { getProject, type ImageRatio, type ProjectImage } from "@/lib/projects";
+import { getProject } from "@/lib/projects";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -25,105 +21,27 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true },
 };
 
-const piece = (
-  src: string,
-  ratio: ImageRatio,
-  alt: string,
-  fit?: "contain",
-): ProjectImage => ({
-  src: `/carwow/${src}.webp`,
-  ratio,
-  alt,
-  fit,
-});
-
-/** The design retainer. Lines are drafts for Josh to confirm. */
+/** The design retainer: one Story per brand on an iPhone mockup. Lines are drafts for Josh to confirm. */
 const RETAINER = [
   {
-    brand: "Raceline",
-    line: "Launch banners and statics for the 961 to 964 wheel series, the Go Everywhere stories and a Black Friday dealer flyer.",
-    pieces: [
-      piece("raceline-962-maverick", "16/9", "962 Maverick launch banner"),
-      piece("raceline-963-omega", "4/5", "963 Omega launch static"),
-      piece("raceline-go-everywhere", "25/11", "Go Everywhere stories"),
-      piece(
-        "raceline-black-friday-flyer",
-        "3/2",
-        "Black Friday dealer flyer",
-        "contain",
-      ),
-    ],
-  },
-  {
     brand: "Nomad",
-    line: "Hand-lettered, torn-paper sale statics, the 503 Sahara launch and an event poster.",
-    pieces: [
-      piece("nomad-tax-return", "1/1", "Tax Return Sale static"),
-      piece("nomad-503-sahara", "4/5", "503 Sahara launch static"),
-      piece("nomad-after-party", "4/5", "After Party poster"),
-      piece("nomad-sahara-stories", "16/9", "503 Sahara stories"),
-    ],
+    line: "Hand-lettered, torn-paper launch and sale graphics. This is the 503 Sahara forged beadlock launch.",
+    src: "/carwow/phone-nomad.webp",
+    alt: "Nomad 503 Sahara launch Story on an iPhone",
   },
   {
     brand: "Möbelwagen",
-    line: "Arched hand-lettering over desert photography for the Black Friday, Tax Return and King of the Hammers sales.",
-    pieces: [
-      piece("mobelwagen-black-friday", "1/1", "Black Friday static"),
-      piece("mobelwagen-tax-return", "1/1", "Tax Return Sale static"),
-      piece("mobelwagen-koh", "16/9", "King of the Hammers banner"),
-      piece("mobelwagen-holiday", "1/1", "Holiday Sale static"),
-    ],
+    line: "Arched hand-lettering over desert photography. This is the Tax Return Sale.",
+    src: "/carwow/phone-mw.webp",
+    alt: "Möbelwagen Tax Return Sale Story on an iPhone",
+  },
+  {
+    brand: "Raceline",
+    line: "Bold red-and-black sale graphics. This is the Tax Return Sale.",
+    src: "/carwow/phone-raceline.webp",
+    alt: "Raceline Tax Return Sale Story on an iPhone",
   },
 ];
-
-/** Brands shown as phone mockups (story, reel, feed post) plus a flat banner. */
-const PHONE_SETS: Record<
-  string,
-  {
-    label: string;
-    avatar: string;
-    story: { src: string; alt: string };
-    reel: { src: string; alt: string; caption: string };
-    feed: { src: string; alt: string; caption: string };
-    banner: ProjectImage;
-  }
-> = {
-  Nomad: {
-    label: "Nomad Wheels",
-    avatar: "/carwow/avatar-nomad.webp",
-    story: {
-      src: "/carwow/nomad-story-sahara.webp",
-      alt: "503 Sahara launch story",
-    },
-    reel: {
-      src: "/carwow/nomad-reel-tax.webp",
-      alt: "Tax Return Sale reel",
-      caption: "Tax Return Sale. Up to 40% off, all month long.",
-    },
-    feed: {
-      src: "/carwow/nomad-feed-sahara.webp",
-      alt: "503 Sahara launch post",
-      caption: "503 Sahara forged beadlock. Now available.",
-    },
-    banner: piece("nomad-banner-sahara", "16/9", "503 Sahara banner"),
-  },
-  Möbelwagen: {
-    label: "Möbelwagen",
-    avatar: "/carwow/avatar-mobelwagen.webp",
-    story: { src: "/carwow/mw-story-tax.webp", alt: "Tax Return Sale story" },
-    reel: {
-      src: "/carwow/mw-reel-tax.webp",
-      alt: "Tax Return Sale reel",
-      caption: "Tax Return Sale. 25% off Möbelwagen.",
-    },
-    feed: {
-      src: "/carwow/mw-feed-tax.webp",
-      alt: "Tax Return Sale post",
-      caption: "Tax Return Sale. 25% off Möbelwagen.",
-    },
-    banner: piece("mw-banner-tax", "16/9", "Tax Return Sale banner"),
-  },
-};
 
 const CAMPAIGNS = ["la-pride", "kiehls-trevor-project", "levis-rainbow-rodeo"];
 // Picked for square/portrait frames so the strip stays even.
@@ -234,69 +152,24 @@ export default function CarwowPage() {
       <section className="mt-28">
         <SectionHead n="02" title="Design retainer" />
         <p className="type-lede mt-4 max-w-2xl text-ink">
-          Statics, stories, banners and flyers across three wheel brands.
+          Stories for three wheel brands, as they appear in the app.
         </p>
-        <div className="mt-12 space-y-24">
+        <div className="-mx-6 mt-12 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 md:pb-0">
           {RETAINER.map((brand) => (
-            <Reveal key={brand.brand}>
-              <div className="grid gap-8 md:grid-cols-12">
-                <div className="md:col-span-4">
-                  <div className="md:sticky md:top-28">
-                    <h3 className="type-heading text-ink">{brand.brand}</h3>
-                    <p className="type-lede mt-3 text-ink">{brand.line}</p>
-                  </div>
-                </div>
-                {PHONE_SETS[brand.brand] ? (
-                  <div className="md:col-span-8">
-                    <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0">
-                      <div className="w-[62%] flex-none snap-center md:w-auto">
-                        <StoryPhone
-                          brand={PHONE_SETS[brand.brand].label}
-                          avatar={PHONE_SETS[brand.brand].avatar}
-                          {...PHONE_SETS[brand.brand].story}
-                        />
-                      </div>
-                      <div className="w-[62%] flex-none snap-center md:w-auto">
-                        <ReelPhone
-                          brand={PHONE_SETS[brand.brand].label}
-                          avatar={PHONE_SETS[brand.brand].avatar}
-                          {...PHONE_SETS[brand.brand].reel}
-                        />
-                      </div>
-                      <div className="w-[62%] flex-none snap-center md:w-auto">
-                        <FeedPhone
-                          brand={PHONE_SETS[brand.brand].label}
-                          avatar={PHONE_SETS[brand.brand].avatar}
-                          {...PHONE_SETS[brand.brand].feed}
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-8">
-                      <Plate
-                        image={PHONE_SETS[brand.brand].banner}
-                        sizes="(max-width: 768px) 100vw, 66vw"
-                      />
-                      <p className="type-label mt-2 text-ink-muted">
-                        {PHONE_SETS[brand.brand].banner.alt}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="columns-2 gap-4 md:col-span-8 md:gap-6 [&>*]:mb-4 [&>*]:break-inside-avoid md:[&>*]:mb-6">
-                    {brand.pieces.map((image) => (
-                      <div key={image.src}>
-                        <Plate
-                          image={image}
-                          sizes="(max-width: 768px) 50vw, 33vw"
-                        />
-                        <p className="type-label mt-2 text-ink-muted">
-                          {image.alt}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+            <Reveal
+              key={brand.brand}
+              className="w-[72%] flex-none snap-center md:w-auto"
+            >
+              <Image
+                src={brand.src}
+                alt={brand.alt}
+                width={760}
+                height={1100}
+                sizes="(max-width: 768px) 72vw, 33vw"
+                className="h-auto w-full"
+              />
+              <h3 className="type-heading mt-4 text-ink">{brand.brand}</h3>
+              <p className="type-lede mt-2 text-ink">{brand.line}</p>
             </Reveal>
           ))}
         </div>
