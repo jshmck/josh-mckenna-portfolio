@@ -183,32 +183,26 @@ const Section = ({ children }: { children: ReactNode }) => (
   </section>
 );
 
-/** A row of iPhone mockups, four to a row from md, each opening the lightbox. */
+/** A row of iPhone mockups, four to a row from md. Look-only, like the Reels. */
 function PhoneRow({
   phones,
   brand,
 }: {
-  phones: { src: string; label: string; lb: number }[];
+  phones: { src: string; label: string }[];
   brand: string;
 }) {
   return (
     <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
       {phones.map((f) => (
         <Reveal key={f.src} className="w-[62%] flex-none snap-center md:w-auto">
-          <LbTile
-            index={f.lb}
-            label={`${brand}, ${f.label}`}
-            className="w-full"
-          >
-            <Image
-              src={f.src}
-              alt={`${brand}, ${f.label}, on an iPhone`}
-              width={700}
-              height={1299}
-              sizes="(max-width: 768px) 62vw, 25vw"
-              className="h-auto w-full"
-            />
-          </LbTile>
+          <Image
+            src={f.src}
+            alt={`${brand}, ${f.label}, on an iPhone`}
+            width={700}
+            height={1299}
+            sizes="(max-width: 768px) 62vw, 25vw"
+            className="h-auto w-full"
+          />
           <p className="type-label mt-1 text-ink-muted">{f.label}</p>
         </Reveal>
       ))}
@@ -375,22 +369,8 @@ export default async function CarwowPage() {
   const kiehlsImages = await stills(
     kiehls ? [kiehls.hero, ...kiehls.gallery].slice(0, 4) : [],
   );
-  const phones = NOMAD_FORMATS.map((f) => ({
-    ...f,
-    lb: reg({
-      src: f.src,
-      ratio: "9/16",
-      alt: `Nomad Tax Return Sale, ${f.label}, on an iPhone`,
-    }),
-  }));
-  const mwPhones = MOBELWAGEN_FORMATS.map((f) => ({
-    ...f,
-    lb: reg({
-      src: f.src,
-      ratio: "9/16",
-      alt: `Möbelwagen Tax Return Sale, ${f.label}, on an iPhone`,
-    }),
-  }));
+  const phones = NOMAD_FORMATS;
+  const mwPhones = MOBELWAGEN_FORMATS;
   const editorial = await stills(EDITORIAL.map(cardOf));
 
   return (
