@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { navLinks } from "@/lib/site";
 import { getActiveCategories } from "@/lib/projects";
-import { CartIcon } from "@/components/ui/social-icons";
 
 /**
  * Floating nav, three separate shapes sharing one frost treatment: a jM
@@ -179,7 +178,9 @@ const MERGE_EXIT = 160;
  * no state) so the scroll effect can call it without growing its
  * dependency list. */
 function isWorkFilterRowOnScreen(): boolean {
-  const row = document.querySelector('[aria-label="Filter work by discipline"]');
+  const row = document.querySelector(
+    '[aria-label="Filter work by discipline"]',
+  );
   if (!row) return false;
   const rect = row.getBoundingClientRect();
   return rect.bottom > 0 && rect.top < window.innerHeight;
@@ -237,7 +238,9 @@ function NavWorkSearch({
           if (!event.target.value.trim()) setOpen(false);
         }}
         onChange={(event) => {
-          window.dispatchEvent(new CustomEvent("worklist:search", { detail: event.target.value }));
+          window.dispatchEvent(
+            new CustomEvent("worklist:search", { detail: event.target.value }),
+          );
           // After the dispatch, not before — the gallery's listener
           // moves focus to the in-page input synchronously during it,
           // so by the time the menu unmounts nothing here holds focus.
@@ -282,7 +285,9 @@ export function Nav() {
   // state — that pattern only touches state, never a ref, so it can't
   // also cancel a pending close timer, but a dangling one is harmless
   // (see its comment there).
-  const workMenuCloseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const workMenuCloseTimeout = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
   const cancelWorkMenuClose = () => {
     if (workMenuCloseTimeout.current) {
       clearTimeout(workMenuCloseTimeout.current);
@@ -404,7 +409,8 @@ export function Nav() {
       });
 
       const distanceFromBottom =
-        document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+        document.documentElement.scrollHeight -
+        (window.scrollY + window.innerHeight);
       setAtBottom((current) => {
         if (current) return distanceFromBottom < BOTTOM_EXIT;
         return distanceFromBottom <= BOTTOM_ENTER;
@@ -436,7 +442,9 @@ export function Nav() {
       // closed, and the effect keeps its [pathname]-only deps. Any
       // grace-period close timer left dangling is harmless — it only
       // ever sets false (see prevPathname's comment).
-      setWorkMenuOpen((open) => (open && isWorkFilterRowOnScreen() ? false : open));
+      setWorkMenuOpen((open) =>
+        open && isWorkFilterRowOnScreen() ? false : open,
+      );
     };
 
     const onScroll = () => {
@@ -615,7 +623,10 @@ export function Nav() {
           from the edge -- not overridden at md+, where the header was
           never meant to gain a margin (the three separate shapes there
           already sit exactly at the frame's own edges, unchanged). */}
-      <header ref={headerRef} className="sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)] max-md:px-6 max-[359px]:px-2">
+      <header
+        ref={headerRef}
+        className="sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)] max-md:px-6 max-[359px]:px-2"
+      >
         <nav
           aria-label="Primary"
           // max-md: this element carries the ONE shared shape now — border,
@@ -797,7 +808,11 @@ export function Nav() {
             // leaving the whole box schedules it; Escape closes now.
             onFocus={cancelWorkMenuClose}
             onBlur={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+              if (
+                !event.currentTarget.contains(
+                  event.relatedTarget as Node | null,
+                )
+              ) {
                 scheduleWorkMenuClose();
               }
             }}
@@ -826,13 +841,19 @@ export function Nav() {
                       style={{ animationDelay: `${index * 55}ms` }}
                     >
                       <Link
-                        href={option === "All" ? "/work" : `/work?category=${encodeURIComponent(option)}`}
+                        href={
+                          option === "All"
+                            ? "/work"
+                            : `/work?category=${encodeURIComponent(option)}`
+                        }
                         // The empty search dispatch mirrors the in-page
                         // pills: picking any category (All included, whose
                         // URL may not even change) ends a live search.
                         onClick={() => {
                           closeMenuNow();
-                          window.dispatchEvent(new CustomEvent("worklist:search", { detail: "" }));
+                          window.dispatchEvent(
+                            new CustomEvent("worklist:search", { detail: "" }),
+                          );
                         }}
                         className="font-grotesque inline-block rounded-full border border-ink bg-canvas px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink-muted text-trim-caps shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand"
                       >
@@ -980,57 +1001,9 @@ export function Nav() {
             </ul>
           </div>
 
-          {/* Cart circle -- mirrors jM: pinned to the frame's right edge
-              (justify-self: end), same size, same frost, same
-              hover:/active: nav-pill-hover bulge (see jM's comment above
-              for why it's its own keyframe, not nav-pill-pop --
-              unconditional, plays on every fresh hover/tap regardless
-              of scroll/frost state). Josh's own bag icon now
-              (public/icons/cart.png via CartIcon), not the placeholder
-              outline this used to render. */}
-          <div className="justify-self-end">
-            <Link
-              href="/shop"
-              aria-current={isActive("/shop") ? "page" : undefined}
-              aria-label="Shop"
-              onClick={() => scrollToTopIfCurrent("/shop")}
-              // max-md:border-0 -- own border/background move to the shared
-              // <nav> bar now, same as jM (see shapeFrostClassDesktop).
-              className={`group flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-full max-md:border-0 md:border transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover_650ms_ease-in-out] active:animate-[nav-pill-hover_650ms_ease-in-out] md:h-20 md:w-20 ${shapeFrostClassDesktop}`}
-            >
-              {/* group-hover (keyed to the circle <Link> above, via
-                  `group`), not a plain hover: on the icon itself -- the
-                  icon glyph is much smaller than the circle, so a
-                  self-only hover: left most of the circle's area unable
-                  to trigger it. Same split as jM above otherwise (circle
-                  stays put, only the mark inside it moves) and the same
-                  transition recipe as the footer's social icons
-                  (transition-[color,transform] duration-200 ease-in-out,
-                  group-hover:duration-300 group-hover:ease-drift). Blue
-                  specifically (text-brand), not text-accent -- purple is
-                  reserved for the active-page state, this is a distinct
-                  hover cue. CartIcon's own internal crossfade
-                  (cart.png -> cart-hover.png) is also group-hover-driven
-                  off this same circle now, for the same reason.
-                  group-hover:rotate-6 is jM's own "sideways fun" tilt
-                  (hover:-rotate-6 on its image), applied here too per
-                  Josh so both marks share the same playful wobble --
-                  mirrored to the opposite direction (positive, not
-                  negative) since jM sits on the left and Cart on the
-                  right; tilting the same way as jM read wrong, per
-                  Josh, tilting outward/away from center reads right.
-                  group-active: mirrors every group-hover: here for the
-                  same touch-accessibility reason jM's active: does --
-                  Cart didn't have this before; added it now while
-                  already touching this hover treatment rather than
-                  leaving the gap. */}
-              <CartIcon
-                className={`h-5 w-5 transition-transform duration-200 ease-in-out group-hover:rotate-6 group-hover:scale-110 group-hover:duration-300 group-hover:ease-drift group-active:rotate-6 group-active:scale-110 md:h-7 md:w-7 group-hover:text-brand group-active:text-brand ${
-                  isActive("/shop") ? "text-accent" : "text-ink"
-                }`}
-              />
-            </Link>
-          </div>
+          {/* Cart circle removed with the Shop (archived). An empty cell keeps
+              the grid symmetrical so the centre pill stays centred. */}
+          <div aria-hidden="true" />
         </nav>
       </header>
     </>

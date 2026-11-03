@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
       { source: "/about", destination: "/info", permanent: true },
       // Old-site URLs Google still has indexed — see lib/legacy-redirects.ts.
       ...legacyRedirects(),
+      // Shop archived 2026-11 (nothing to sell yet). /shop was indexed, so it
+      // sends visitors to the work instead of 404ing; temporary (not permanent)
+      // because it may come back. Code lives in app/_shop-archived.
+      { source: "/shop", destination: "/work", permanent: false },
     ];
   },
   // Everything under public/ was served `max-age=0, must-revalidate`, so
