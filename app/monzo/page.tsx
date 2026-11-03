@@ -165,8 +165,10 @@ const GOOGLE_SET = img(
 );
 
 const REELS = [
+  { n: 1, handle: "racelinewheels", avatar: "raceline" },
   { n: 3, handle: "nomadwheel", avatar: "nomad" },
   { n: 4, handle: "nomadwheel", avatar: "nomad" },
+  { n: 5, handle: "mobelwagen", avatar: "mobelwagen" },
 ];
 
 export default async function MonzoPage() {
@@ -334,16 +336,17 @@ export default async function MonzoPage() {
           </Block>
 
           <div>
-            <p className="type-label text-ink">
-              Social video · 505 Touring launch · Nomad Wheel Co.
-            </p>
+            <p className="type-label text-ink">Social video</p>
             <p className="type-label mb-4 mt-1 text-ink-muted">
               Graphic elements · Hand drawn elements · Poster design · Merch
               design · Logos
             </p>
-            <div className="mx-auto grid max-w-[42rem] grid-cols-2 gap-3 md:gap-6">
+            <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
               {REELS.map((r) => (
-                <Reveal key={r.n}>
+                <Reveal
+                  key={r.n}
+                  className="w-[62%] flex-none snap-center md:w-auto"
+                >
                   <ReelPhone
                     src={`/monzo/reel-${r.n}.mp4`}
                     poster={`/monzo/reel-${r.n}-poster.webp`}
@@ -358,35 +361,39 @@ export default async function MonzoPage() {
         </Section>
 
         <Section>
-          <Block label="Tools">
-            <p className="type-lede max-w-[60ch] text-ink">
-              I built this site with Claude Code, and I gave a talk on
-              sculpting in Figma Draw at Config 2026.
-            </p>
-            <a
-              href="https://www.youtube.com/watch?v=0ZoW_ym83JQ"
-              className="mt-4 block max-w-sm"
-            >
-              <span className="relative block aspect-video overflow-hidden rounded-frame bg-placeholder">
-                <Image
-                  src="/about/config-2026-poster.jpg"
-                  alt="Josh on stage at Config 2026"
-                  fill
-                  sizes="(max-width: 768px) 80vw, 24rem"
-                  className="object-cover"
-                />
-              </span>
-              <span className="type-label mt-2 block text-ink">
-                Config 2026 · Sculpting in Figma Draw
-              </span>
-            </a>
-          </Block>
-          <a
-            href="https://joshmckenna.com"
-            className="type-label inline-block rounded-full bg-brand px-8 py-4 text-ink"
-          >
-            Full portfolio
-          </a>
+          <Reveal>
+            <p className="type-label mb-4 text-ink">Tools</p>
+            <div className="grid items-center gap-8 md:grid-cols-2 md:gap-5">
+              <div>
+                <p className="type-heading max-w-[24ch] text-ink">
+                  This site is built with Claude Code. I spoke at Config 2026.
+                </p>
+                <a
+                  href="https://joshmckenna.com"
+                  className="type-label mt-8 inline-block rounded-full bg-brand px-8 py-4 text-ink"
+                >
+                  Full portfolio
+                </a>
+              </div>
+              <a
+                href="https://www.youtube.com/watch?v=0ZoW_ym83JQ"
+                className="block"
+              >
+                <span className="relative block aspect-video overflow-hidden rounded-frame bg-placeholder">
+                  <Image
+                    src="/about/config-2026-poster.jpg"
+                    alt="Josh on stage at Config 2026"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </span>
+                <span className="type-label mt-2 block text-ink">
+                  Config 2026 · Sculpting in Figma Draw
+                </span>
+              </a>
+            </div>
+          </Reveal>
         </Section>
 
         <p className="type-label mt-16 border-t border-ink pt-8 text-ink-muted">
