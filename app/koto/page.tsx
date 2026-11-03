@@ -149,8 +149,8 @@ export default async function KotoPage() {
   const [stickerPrimary] = await stills([STICKER_PRIMARY]);
   const stickerInSitu = await stills(STICKER_IN_SITU);
   const stickerGif = clip(sticker?.galleryGif, "1/1");
-  const bombay = await stills(BOMBAY);
-  const bombayBottles = await stills([
+  const bombay = await stills([
+    ...BOMBAY,
     img(
       "bombay-sapphire",
       "07-bottles-wide",
@@ -173,6 +173,16 @@ export default async function KotoPage() {
         <h1 className="type-label text-ink-muted">Josh McKenna · For Koto</h1>
 
         <Section first>
+          <Block label="Motion">
+            <Row>
+              {z1Clip && <ClipTile {...z1Clip} />}
+              {cvClip && <ClipTile {...cvClip} />}
+              {hondaClip && <ClipTile {...hondaClip} />}
+            </Row>
+          </Block>
+        </Section>
+
+        <Section>
           <Block label="LA Pride · 360 campaign" href="/work/la-pride">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {laPride.map((still) => (
@@ -286,18 +296,17 @@ export default async function KotoPage() {
                     className="h-full"
                   />
                 </div>
-                {bombay.map((still) => (
+                <StillTile
+                  still={bombay[0]}
+                  sizes="(max-width: 768px) 80vw, 50vw"
+                />
+              </Row>
+              <Row>
+                {bombay.slice(1).map((still) => (
                   <StillTile
                     key={still.src}
                     still={still}
-                    sizes="(max-width: 768px) 60vw, 25vw"
-                  />
-                ))}
-                {bombayBottles.map((still) => (
-                  <StillTile
-                    key={still.src}
-                    still={still}
-                    sizes="(max-width: 768px) 60vw, 25vw"
+                    sizes="(max-width: 768px) 80vw, 50vw"
                   />
                 ))}
               </Row>
@@ -315,7 +324,7 @@ export default async function KotoPage() {
               href="/work/kiehls-trevor-project"
             >
               <StillRow
-                stills={kiehlsImages}
+                stills={kiehlsImages.map((still) => ({ ...still, r: invites[0]?.r ?? 0.8 }))}
                 sizes="(max-width: 768px) 60vw, 25vw"
               />
             </Block>
@@ -328,13 +337,6 @@ export default async function KotoPage() {
               stills={editorial}
               sizes="(max-width: 768px) 60vw, 30vw"
             />
-          </Block>
-          <Block label="Experiments">
-            <Row>
-              {z1Clip && <ClipTile {...z1Clip} />}
-              {cvClip && <ClipTile {...cvClip} />}
-              {hondaClip && <ClipTile {...hondaClip} />}
-            </Row>
           </Block>
         </Section>
 
