@@ -500,7 +500,8 @@ export default async function CarwowPage() {
           <PhoneRow phones={phones} brand="Nomad Tax Return Sale" />
           <p className="type-label text-ink">Möbelwagen</p>
           <PhoneRow phones={mwPhones} brand="Möbelwagen Tax Return Sale" />
-          <div>
+          {/* Three phone columns wide, so the film and its caption end where the third phone does. */}
+          <div className="md:w-[calc(75%-6px)]">
             <ProjectVideo
               video={{
                 src: "/carwow/505-touring.mp4",
