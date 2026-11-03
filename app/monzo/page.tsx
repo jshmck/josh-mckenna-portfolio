@@ -200,31 +200,28 @@ export default async function MonzoPage() {
     <ProjectLightboxProvider images={lightbox}>
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For Monzo</h1>
-        <p className="type-lede mt-4 max-w-[60ch] text-ink">
+        <p className="type-lede mt-3 max-w-[60ch] text-ink">
           Brand designer and illustrator who leads brand systems from idea to
           rollout.
         </p>
 
         <Section first>
           <Block label="LA Pride 2024 · Led start to finish" href="/work/la-pride">
-            <p className="type-lede max-w-[60ch] text-ink">
+            <p className="type-lede mb-8 max-w-[60ch] text-ink">
               I was creative director on the full rebrand, working with the
               co-designer James Junk. I drew the custom typeface, the
               characters, the assets, the wayfinding icons and the maps. NVE
               produced it on site for LA Pride.
             </p>
-          </Block>
-
-          <div>
-            <p className="type-label mb-4 text-ink">The typeface</p>
+            <p className="type-label mb-4 text-ink-muted">The typeface</p>
             <StillRow
               stills={laType}
               sizes="(max-width: 768px) 70vw, 40vw"
             />
-          </div>
+          </Block>
 
           <div>
-            <p className="type-label mb-4 text-ink">
+            <p className="type-label mb-4 text-ink-muted">
               In use · stage, wayfinding, lounges and merch
             </p>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
@@ -248,7 +245,7 @@ export default async function MonzoPage() {
           </div>
 
           <Reveal>
-            <div className="grid gap-8 border-t border-hairline pt-8 md:grid-cols-4 md:gap-5">
+            <div className="grid gap-8 border-t border-ink pt-8 md:grid-cols-4 md:gap-5">
               {SEQUENCE.map((s) => (
                 <div key={s.label}>
                   <p className="type-label text-ink">{s.label}</p>
