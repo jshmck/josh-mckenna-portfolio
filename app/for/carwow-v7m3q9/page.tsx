@@ -267,11 +267,12 @@ const STICKER_IN_SITU = [
   ),
 ];
 
-/** Nomad's 503 Sahara launch in the three formats it ran in. */
+/** Nomad's Tax Return Sale in the four formats it ran in. */
 const NOMAD_FORMATS = [
-  { src: "/carwow/phone-nomad-ad.webp", label: "Facebook ad · 1:1" },
-  { src: "/carwow/phone-nomad-post.webp", label: "Instagram post · 4:5" },
-  { src: "/carwow/phone-nomad-story.webp", label: "Instagram Story · 9:16" },
+  { src: "/carwow/phone-nomad-b-ad.webp", label: "Facebook ad · 1:1" },
+  { src: "/carwow/phone-nomad-b-post.webp", label: "Instagram post · 4:5" },
+  { src: "/carwow/phone-nomad-b-story.webp", label: "Instagram Story · 9:16" },
+  { src: "/carwow/phone-nomad-b-banner.webp", label: "Video banner ad · 16:9" },
 ];
 
 const MOBELWAGEN_FORMATS = [
@@ -379,7 +380,7 @@ export default async function CarwowPage() {
     lb: reg({
       src: f.src,
       ratio: "9/16",
-      alt: `Nomad 503 Sahara launch, ${f.label}, on an iPhone`,
+      alt: `Nomad Tax Return Sale, ${f.label}, on an iPhone`,
     }),
   }));
   const mwPhones = MOBELWAGEN_FORMATS.map((f) => ({
@@ -515,7 +516,7 @@ export default async function CarwowPage() {
             </p>
           </div>
           <p className="type-label text-ink">Nomad</p>
-          <PhoneRow phones={phones} brand="Nomad 503 Sahara launch" />
+          <PhoneRow phones={phones} brand="Nomad Tax Return Sale" />
           <p className="type-label text-ink">Möbelwagen</p>
           <PhoneRow phones={mwPhones} brand="Möbelwagen Tax Return Sale" />
           <div>
