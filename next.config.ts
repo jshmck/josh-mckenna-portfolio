@@ -29,6 +29,12 @@ const nextConfig: NextConfig = {
   // /work/[slug] HTML routes under the same prefixes keep revalidating.
   async headers() {
     return [
+      // Private application pages: keep them out of search even if the URL
+      // leaks (the page also sets robots in its metadata).
+      {
+        source: "/for/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
       {
         source:
           "/:dir(work|about|illustrations|logos)/:path*.:ext(mp4|webp|jpg|jpeg|png|svg|avif)",
