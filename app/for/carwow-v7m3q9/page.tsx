@@ -1,14 +1,16 @@
-import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import sharp from "sharp";
 import type { CSSProperties, ReactNode } from "react";
 
+import { LbTile } from "@/components/carwow/lightbox-tile";
 import { ReelPhone } from "@/components/carwow/phone-mockups";
 import { Reveal } from "@/components/ui/reveal";
+import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectVideo } from "@/components/work/project-video";
 import { getProject, type ImageRatio, type ProjectImage } from "@/lib/projects";
 import { siteConfig } from "@/lib/site";
@@ -21,7 +23,7 @@ import { siteConfig } from "@/lib/site";
  * open it.
  *
  * No section titles: sections are separated by rules, and the only text is
- * small labels.
+ * small labels. Every still and silent clip opens one shared lightbox.
  */
 export const metadata: Metadata = {
   title: "Josh McKenna — for Carwow",
@@ -35,89 +37,119 @@ const img = (
   alt: string,
 ): ProjectImage => ({ src: `/work/${folder}/${file}.webp`, ratio, alt });
 
-const num = (ratio: string) => {
-  const [a, b] = ratio.split("/").map(Number);
-  return a / b;
-};
+const NEAREST: [ImageRatio, number][] = [
+  ["1/1", 1],
+  ["2/3", 2 / 3],
+  ["4/5", 0.8],
+  ["3/4", 0.75],
+  ["4/3", 4 / 3],
+  ["5/4", 1.25],
+  ["3/2", 1.5],
+  ["16/10", 1.6],
+  ["9/16", 9 / 16],
+  ["16/9", 16 / 9],
+];
+const nearestRatio = (r: number): ImageRatio =>
+  NEAREST.reduce((best, c) =>
+    Math.abs(c[1] - r) < Math.abs(best[1] - r) ? c : best,
+  )[0];
 
-/** A still with its real pixel ratio, read from the file so nothing is cropped. */
-type Still = { src: string; alt: string; r: number };
+/** A still with its real pixel ratio (read from the file, so nothing is
+ *  cropped) and its place in the lightbox. */
+type Still = { src: string; alt: string; r: number; lb: number };
 
-async function still(image: ProjectImage & { src: string }): Promise<Still> {
-  const { width, height } = await sharp(
-    await readFile(join(process.cwd(), "public", image.src)),
-  ).metadata();
-  return { src: image.src, alt: image.alt, r: (width ?? 1) / (height ?? 1) };
-}
+const RAW_ROW =
+  "height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden";
 
-/** Images that all share one height (see .height-row in globals.css). */
-function HeightRow({
-  images,
-  sizes = "(max-width: 768px) 60vw, 30vw",
-  flush = false,
-}: {
-  images: Still[];
-  sizes?: string;
-  /** Edge to edge with square corners, so the row reads as one carousel strip. */
-  flush?: boolean;
-}) {
-  return (
-    <div
-      className={`height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden ${flush ? "" : "gap-3 md:gap-5"}`}
-    >
-      {images.map((image) => (
-        <div
-          key={image.src}
-          className={`relative snap-center overflow-hidden bg-placeholder ${flush ? "" : "rounded-frame"}`}
-          style={{ "--r": image.r } as CSSProperties}
-        >
-          <Image
-            src={image.src}
-            alt={image.alt}
-            fill
-            sizes={sizes}
-            className="object-cover"
-          />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/** Equal-sized tiles, three to a row. */
-function Grid3({ images }: { images: Still[] }) {
-  return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-      {images.map((image) => (
-        <div
-          key={image.src}
-          className="relative aspect-[3/2] overflow-hidden rounded-frame bg-placeholder"
-        >
-          <Image
-            src={image.src}
-            alt={image.alt}
-            fill
-            sizes="(max-width: 768px) 50vw, 33vw"
-            className="object-cover"
-          />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/** A clip in a row of same-height items. */
-function ClipTile({
-  ratio,
+/** A row whose items all share one height (see .height-row in globals.css). */
+function Row({
+  tight = false,
   children,
 }: {
-  ratio: ImageRatio;
+  tight?: boolean;
   children: ReactNode;
 }) {
   return (
-    <div className="snap-center" style={{ "--r": num(ratio) } as CSSProperties}>
+    <div className={`${RAW_ROW} ${tight ? "gap-1" : "gap-3 md:gap-5"}`}>
       {children}
     </div>
+  );
+}
+
+function StillTile({
+  still,
+  sizes,
+  tight = false,
+}: {
+  still: Still;
+  sizes: string;
+  tight?: boolean;
+}) {
+  return (
+    <LbTile
+      index={still.lb}
+      label={still.alt}
+      r={still.r}
+      className={`relative snap-center overflow-hidden bg-placeholder ${tight ? "rounded-[3px]" : "rounded-frame"}`}
+    >
+      <Image
+        src={still.src}
+        alt={still.alt}
+        fill
+        sizes={sizes}
+        className="object-cover"
+      />
+    </LbTile>
+  );
+}
+
+function StillRow({
+  stills,
+  sizes = "(max-width: 768px) 60vw, 30vw",
+  tight = false,
+}: {
+  stills: Still[];
+  sizes?: string;
+  tight?: boolean;
+}) {
+  return (
+    <Row tight={tight}>
+      {stills.map((still) => (
+        <StillTile key={still.src} still={still} sizes={sizes} tight={tight} />
+      ))}
+    </Row>
+  );
+}
+
+/** A silent looping clip that opens the lightbox. */
+function ClipTile({
+  src,
+  poster,
+  alt,
+  ratio,
+  lb,
+}: {
+  src: string;
+  poster: string;
+  alt: string;
+  ratio: ImageRatio;
+  lb: number;
+}) {
+  const [a, b] = ratio.split("/").map(Number);
+  return (
+    <LbTile
+      index={lb}
+      label={alt}
+      r={a / b}
+      className="relative snap-center overflow-hidden rounded-frame"
+    >
+      <ProjectVideo
+        video={{ src, alt, poster }}
+        ratio={ratio}
+        radius=""
+        className="h-full"
+      />
+    </LbTile>
   );
 }
 
@@ -222,10 +254,7 @@ const CAR_ILLUSTRATION = [
   "nomad-wheels-505-livery",
   "costa-smeralda",
 ];
-const TWINGO = [1, 2, 3, 4, 5, 6].map((n) => ({
-  src: `/carwow/twingo-${n}.webp`,
-  alt: `Hello Twingo, slide ${n}`,
-}));
+
 const EDITORIAL = [
   "monocle-spot-illo",
   "monocle-downward-trend",
@@ -245,191 +274,217 @@ export default async function CarwowPage() {
   const beefbar = getProject("beefbar-posters");
   const kiehls = getProject("kiehls-trevor-project");
   const sticker = getProject("instagram-sticker");
-  const all = (images: (ProjectImage | undefined)[]) =>
-    Promise.all(
-      images
-        .filter((i): i is ProjectImage & { src: string } => !!i?.src)
-        .map(still),
+
+  // The shared lightbox, in page order. Each tile registers itself and keeps
+  // the index; the array is complete before the provider renders.
+  const lightbox: ProjectImage[] = [];
+  const reg = (image: ProjectImage) => lightbox.push(image) - 1;
+
+  const measure = async (image: ProjectImage & { src: string }) => {
+    const { width, height } = await sharp(
+      await readFile(join(process.cwd(), "public", image.src)),
+    ).metadata();
+    return (width ?? 1) / (height ?? 1);
+  };
+  const stills = async (
+    images: (ProjectImage | undefined)[],
+  ): Promise<Still[]> => {
+    const ok = images.filter(
+      (i): i is ProjectImage & { src: string } => !!i?.src,
     );
-  const [
-    laPride,
-    stickerPrimary,
-    stickerInSitu,
-    kiehlsImages,
-    twingoImages,
-    carStills,
-    editorial,
-  ] = await Promise.all([
-    all(LA_PRIDE),
-    all([STICKER_PRIMARY]),
-    all(STICKER_IN_SITU),
-    all(kiehls ? [kiehls.hero, ...kiehls.gallery].slice(0, 4) : []),
-    Promise.all(TWINGO.map((t) => still({ ...t, ratio: "4/5" }))),
-    all(CAR_ILLUSTRATION.map(cardOf)),
-    all(EDITORIAL.map(cardOf)),
-  ]);
+    const ratios = await Promise.all(ok.map(measure));
+    return ok.map((image, i) => ({
+      src: image.src,
+      alt: image.alt,
+      r: ratios[i],
+      lb: reg({ ...image, ratio: nearestRatio(ratios[i]) }),
+    }));
+  };
+  // Clips register a poster + video pair.
+  const clip = (
+    video: { src: string; poster?: string; alt: string } | undefined,
+    ratio: ImageRatio,
+  ) =>
+    video?.poster
+      ? {
+          ...video,
+          poster: video.poster,
+          ratio,
+          lb: reg({
+            src: video.poster,
+            ratio,
+            alt: video.alt,
+            video: { src: video.src },
+          }),
+        }
+      : undefined;
+
+  // Registered in visual order.
+  const cvClip = clip(cv?.heroVideo, "4/5");
+  const z1Clip = clip(z1?.heroVideo, "4/5");
+  const lamboClip = clip(beefbar?.posterGridVideo, "4/5");
+  const [bronco, palm, nomad505, romazzino] = await stills(
+    CAR_ILLUSTRATION.map(cardOf),
+  );
+  const twingoSlides = await stills(getProject("hello-twingo")?.gallery ?? []);
+  const laPride = await stills(LA_PRIDE);
+  const [stickerPrimary] = await stills([STICKER_PRIMARY]);
+  const stickerInSitu = await stills(STICKER_IN_SITU);
+  const stickerGif = clip(sticker?.galleryGif, "1/1");
+  const kiehlsImages = await stills(
+    kiehls ? [kiehls.hero, ...kiehls.gallery].slice(0, 4) : [],
+  );
+  const phones = NOMAD_FORMATS.map((f) => ({
+    ...f,
+    lb: reg({
+      src: f.src,
+      ratio: "9/16",
+      alt: `Nomad 503 Sahara launch, ${f.label}, on an iPhone`,
+    }),
+  }));
+  const editorial = await stills(EDITORIAL.map(cardOf));
 
   return (
-    <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
-      <h1 className="type-label text-ink-muted">Josh McKenna · For Carwow</h1>
+    <ProjectLightboxProvider images={lightbox}>
+      <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
+        <h1 className="type-label text-ink-muted">Josh McKenna · For Carwow</h1>
 
-      {/* Cars: Honda and the 2CV side by side, then the Z1 and Beefbar's Lambo. */}
-      <div className="mt-8 space-y-10">
-        {honda?.heroVideo && cv?.heroVideo && (
-          <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
-            <ClipTile ratio="16/9">
-              <ProjectVideo
-                video={{
-                  src: honda.heroVideo.src,
-                  alt: honda.heroVideo.alt,
-                  poster: honda.heroVideo.poster,
-                }}
-                sound
-                autoplay
-                ratio="16/9"
-                className="h-full"
-              />
-            </ClipTile>
-            <ClipTile ratio="4/5">
-              <ProjectVideo
-                video={{
-                  src: cv.heroVideo.src,
-                  alt: cv.heroVideo.alt,
-                  poster: cv.heroVideo.poster,
-                }}
-                ratio="4/5"
-                className="h-full"
-              />
-            </ClipTile>
-          </div>
-        )}
-        <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
-          {z1?.heroVideo && (
-            <ClipTile ratio="4/5">
-              <ProjectVideo
-                video={{
-                  src: z1.heroVideo.src,
-                  alt: z1.heroVideo.alt,
-                  poster: z1.heroVideo.poster,
-                }}
-                ratio="4/5"
-                className="h-full"
-              />
-            </ClipTile>
+        <div className="mt-8 space-y-10">
+          {/* Honda and the 2CV, then two rows of three. */}
+          {honda?.heroVideo && (
+            <Row>
+              <div
+                className="snap-center"
+                style={{ "--r": 16 / 9 } as CSSProperties}
+              >
+                <ProjectVideo
+                  video={{
+                    src: honda.heroVideo.src,
+                    alt: honda.heroVideo.alt,
+                    poster: honda.heroVideo.poster,
+                  }}
+                  sound
+                  autoplay
+                  ratio="16/9"
+                  className="h-full"
+                />
+              </div>
+              {cvClip && <ClipTile {...cvClip} />}
+            </Row>
           )}
-          {beefbar?.posterGridVideo && (
-            <ClipTile ratio="4/5">
-              <ProjectVideo
-                video={{
-                  src: beefbar.posterGridVideo.src,
-                  alt: beefbar.posterGridVideo.alt,
-                  poster: beefbar.posterGridVideo.poster,
-                }}
-                ratio="4/5"
-                className="h-full"
+          <Row>
+            {z1Clip && <ClipTile {...z1Clip} />}
+            {lamboClip && <ClipTile {...lamboClip} />}
+            {bronco && (
+              <StillTile still={bronco} sizes="(max-width: 768px) 60vw, 30vw" />
+            )}
+          </Row>
+          <Row>
+            {palm && (
+              <StillTile still={palm} sizes="(max-width: 768px) 60vw, 30vw" />
+            )}
+            {nomad505 && (
+              <StillTile
+                still={nomad505}
+                sizes="(max-width: 768px) 60vw, 30vw"
               />
-            </ClipTile>
-          )}
-          {carStills.map((image) => (
-            <div
-              key={image.src}
-              className="relative snap-center overflow-hidden rounded-frame bg-placeholder"
-              style={{ "--r": image.r } as CSSProperties}
-            >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="(max-width: 768px) 60vw, 18vw"
-                className="object-cover"
+            )}
+            {romazzino && (
+              <StillTile
+                still={romazzino}
+                sizes="(max-width: 768px) 60vw, 30vw"
               />
-            </div>
-          ))}
+            )}
+          </Row>
+          {/* Hello Twingo: separate slides in a strip, each its own lightbox page. */}
+          <StillRow
+            stills={twingoSlides}
+            sizes="(max-width: 768px) 60vw, 18vw"
+            tight
+          />
         </div>
-        <HeightRow
-          images={twingoImages}
-          sizes="(max-width: 768px) 60vw, 18vw"
-          flush
-        />
-      </div>
 
-      <Section>
-        <Block label="LA Pride · 360 campaign" href="/work/la-pride">
-          <Grid3 images={laPride} />
-        </Block>
-        <Block label="Instagram Pride Sticker" href="/work/instagram-sticker">
-          <div className="space-y-3 md:space-y-5">
-            <div className="relative aspect-video overflow-hidden rounded-frame bg-placeholder">
-              <Image
-                src={stickerPrimary[0].src}
-                alt={stickerPrimary[0].alt}
-                fill
-                sizes="(max-width: 768px) 100vw, 1190px"
-                className="object-cover"
-              />
-            </div>
-            <div className="height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
-              {stickerInSitu.map((image) => (
-                <div
-                  key={image.src}
-                  className="relative snap-center overflow-hidden rounded-frame bg-placeholder"
-                  style={{ "--r": image.r } as CSSProperties}
+        <Section>
+          <Block label="LA Pride · 360 campaign" href="/work/la-pride">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
+              {laPride.map((still) => (
+                <LbTile
+                  key={still.src}
+                  index={still.lb}
+                  label={still.alt}
+                  className="relative aspect-[3/2] overflow-hidden rounded-frame bg-placeholder"
                 >
                   <Image
-                    src={image.src}
-                    alt={image.alt}
+                    src={still.src}
+                    alt={still.alt}
                     fill
-                    sizes="(max-width: 768px) 60vw, 25vw"
+                    sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-cover"
                   />
-                </div>
+                </LbTile>
               ))}
-              {sticker?.galleryGif && (
-                <ClipTile ratio="1/1">
-                  <ProjectVideo
-                    video={{
-                      src: sticker.galleryGif.src,
-                      alt: sticker.galleryGif.alt,
-                      poster: sticker.galleryGif.poster,
-                    }}
-                    ratio="1/1"
-                    className="h-full"
-                  />
-                </ClipTile>
-              )}
             </div>
-          </div>
-        </Block>
-        <Block label="Kiehl's Pride" href="/work/kiehls-trevor-project">
-          <HeightRow images={kiehlsImages} />
-        </Block>
-      </Section>
+          </Block>
+          <Block label="Instagram Pride Sticker" href="/work/instagram-sticker">
+            <div className="space-y-3 md:space-y-5">
+              {stickerPrimary && (
+                <LbTile
+                  index={stickerPrimary.lb}
+                  label={stickerPrimary.alt}
+                  className="relative aspect-video w-full overflow-hidden rounded-frame bg-placeholder"
+                >
+                  <Image
+                    src={stickerPrimary.src}
+                    alt={stickerPrimary.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 1190px"
+                    className="object-cover"
+                  />
+                </LbTile>
+              )}
+              <Row>
+                {stickerInSitu.map((still) => (
+                  <StillTile
+                    key={still.src}
+                    still={still}
+                    sizes="(max-width: 768px) 60vw, 25vw"
+                  />
+                ))}
+                {stickerGif && <ClipTile {...stickerGif} />}
+              </Row>
+            </div>
+          </Block>
+          <Block label="Kiehl's Pride" href="/work/kiehls-trevor-project">
+            <StillRow stills={kiehlsImages} />
+          </Block>
+        </Section>
 
-      <Section>
-        <p className="type-label text-ink-muted">
-          Nomad · Allied Wheel Co. · Ongoing retainer · Paid social · Graphics
-          only
-        </p>
-        <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
-          {NOMAD_FORMATS.map((f) => (
-            <Reveal
-              key={f.src}
-              className="w-[72%] flex-none snap-center md:w-auto"
-            >
-              <Image
-                src={f.src}
-                alt={`Nomad 503 Sahara launch, ${f.label}, on an iPhone`}
-                width={700}
-                height={1299}
-                sizes="(max-width: 768px) 72vw, 33vw"
-                className="h-auto w-full"
-              />
-              <p className="type-label mt-1 text-ink-muted">{f.label}</p>
-            </Reveal>
-          ))}
-        </div>
-        <div className="grid gap-8 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-8">
+        <Section>
+          <p className="type-label text-ink-muted">
+            Nomad · Allied Wheel Co. · Ongoing retainer · Paid social · Graphics
+            only
+          </p>
+          <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+            {phones.map((f) => (
+              <Reveal
+                key={f.src}
+                className="w-[72%] flex-none snap-center md:w-auto"
+              >
+                <LbTile index={f.lb} label={f.label} className="w-full">
+                  <Image
+                    src={f.src}
+                    alt={`Nomad 503 Sahara launch, ${f.label}, on an iPhone`}
+                    width={700}
+                    height={1299}
+                    sizes="(max-width: 768px) 72vw, 33vw"
+                    className="h-auto w-full"
+                  />
+                </LbTile>
+                <p className="type-label mt-1 text-ink-muted">{f.label}</p>
+              </Reveal>
+            ))}
+          </div>
+          <div>
             <ProjectVideo
               video={{
                 src: "/carwow/505-touring.mp4",
@@ -439,66 +494,77 @@ export default async function CarwowPage() {
               sound
               ratio="16/9"
             />
+            <div className="mt-4 max-w-3xl">
+              <p className="type-label text-ink">
+                505 Touring launch · Nomad Wheel Co.{" "}
+                <Link
+                  href="/work/nomad-wheels-505-livery"
+                  className="text-ink-muted underline"
+                >
+                  Project
+                </Link>
+              </p>
+              <p className="type-lede mt-2 text-ink">
+                A full graphic package for the launch of the 505 Touring wheel,
+                built from a vintage Dakar rally look. The Land Cruiser is mine
+                and that&apos;s me driving. I designed the livery, the logos in
+                the film and the posters.
+              </p>
+            </div>
           </div>
-          <div className="md:col-span-4">
-            <p className="type-label text-ink">
-              505 Touring launch · Nomad Wheel Co.
-            </p>
-            <p className="type-lede mt-3 text-ink">
-              A full graphic package for the launch of the 505 Touring wheel,
-              all built from a vintage Dakar rally look. The Land Cruiser is
-              mine and that&apos;s me driving. I designed the livery, the logos
-              in the film and the posters.
-            </p>
-            <p className="type-label mt-3">
-              <Link
-                href="/work/nomad-wheels-505-livery"
-                className="text-ink-muted underline"
-              >
-                Project
-              </Link>
-            </p>
-          </div>
-        </div>
-      </Section>
+        </Section>
 
-      <Section>
-        <p className="type-label text-ink-muted">
-          Reels · Allied Wheel Co. · Paid social · Graphics only
-        </p>
-        <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
-          {REELS.map((r) => (
-            <div key={r.n} className="w-[62%] flex-none snap-center md:w-auto">
-              <ReelPhone
-                src={`/carwow/reel-${r.n}.mp4`}
-                poster={`/carwow/reel-${r.n}-poster.webp`}
-                handle={r.handle}
-                avatar={`/carwow/avatar-${r.avatar}.webp`}
-                alt={`Reel ${r.n}`}
+        <Section>
+          <p className="type-label text-ink-muted">
+            Reels · Allied Wheel Co. · Paid social · Graphics only · Tee design
+            · I drew the race truck in the first Reel
+          </p>
+          <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+            {REELS.map((r) => (
+              <div
+                key={r.n}
+                className="w-[62%] flex-none snap-center md:w-auto"
+              >
+                <ReelPhone
+                  src={`/carwow/reel-${r.n}.mp4`}
+                  poster={`/carwow/reel-${r.n}-poster.webp`}
+                  handle={r.handle}
+                  avatar={`/carwow/avatar-${r.avatar}.webp`}
+                  alt={`Reel ${r.n}`}
+                />
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section>
+          <Block label="Editorial illustration">
+            <div className="space-y-3 md:space-y-5">
+              <StillRow
+                stills={editorial.slice(0, 2)}
+                sizes="(max-width: 768px) 60vw, 45vw"
+              />
+              <StillRow
+                stills={editorial.slice(2)}
+                sizes="(max-width: 768px) 60vw, 45vw"
               />
             </div>
-          ))}
-        </div>
-      </Section>
+          </Block>
+          <a
+            href="https://joshmckenna.com"
+            className="type-label inline-block rounded-full bg-brand px-8 py-4 text-ink"
+          >
+            Full illustration portfolio
+          </a>
+        </Section>
 
-      <Section>
-        <Block label="Editorial illustration">
-          <HeightRow images={editorial} />
-        </Block>
-        <a
-          href="https://joshmckenna.com"
-          className="type-label inline-block rounded-full bg-brand px-8 py-4 text-ink"
-        >
-          Full illustration portfolio
-        </a>
-      </Section>
-
-      <p className="type-label mt-16 border-t border-ink pt-8 text-ink-muted">
-        Josh McKenna ·{" "}
-        <a href={`mailto:${siteConfig.email}`} className="underline">
-          {siteConfig.email}
-        </a>
-      </p>
-    </main>
+        <p className="type-label mt-16 border-t border-ink pt-8 text-ink-muted">
+          Josh McKenna ·{" "}
+          <a href={`mailto:${siteConfig.email}`} className="underline">
+            {siteConfig.email}
+          </a>
+        </p>
+      </main>
+    </ProjectLightboxProvider>
   );
 }

@@ -55,8 +55,8 @@ export function CarouselGallery({
     <Reveal>
       {/* Contact-sheet band: full viewport width on bg-ink, so slides whose own
           background is the site's cream read as printed frames on black
-          instead of vanishing into the page, and so rounded corners (which
-          only show against a contrasting edge) are dropped for hard ones. */}
+          instead of vanishing into the page, and with only a 3px corner and a hair
+          of gap so the slides read as one carousel strip. */}
       <div className="relative left-1/2 w-screen -translate-x-1/2 bg-ink py-10 md:py-14">
         <div className="mx-auto max-w-frame px-6 md:px-gutter">
           <ul
@@ -64,7 +64,7 @@ export function CarouselGallery({
             onScroll={handleScroll}
             data-swipe-ignore
             aria-label="Slides"
-            className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto overscroll-x-contain px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-6 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
+            className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-1 overflow-x-auto overscroll-x-contain px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-6 md:gap-1 md:overflow-visible md:px-0 md:pb-0"
           >
             {images.map((image, index) => (
               <li
@@ -81,7 +81,7 @@ export function CarouselGallery({
                     image={image}
                     sizes="(max-width: 768px) 82vw, 17vw"
                     loading={eager ? "eager" : undefined}
-                    radius=""
+                    radius="rounded-[3px]"
                   />
                 </button>
               </li>

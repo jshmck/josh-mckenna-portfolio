@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { ReelPlayhead } from "@/components/carwow/reel-playhead";
 import { ProjectVideo } from "@/components/work/project-video";
 
 /*
@@ -37,7 +38,11 @@ export function ReelPhone({
       className="relative w-full [container-type:inline-size]"
       style={{ aspectRatio: "700 / 1299" }}
     >
-      <div className="absolute overflow-hidden bg-ink" style={SCREEN}>
+      <div
+        data-reel=""
+        className="absolute overflow-hidden bg-ink"
+        style={SCREEN}
+      >
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2">
           <ProjectVideo
             video={{ src, poster, alt }}
@@ -46,6 +51,7 @@ export function ReelPhone({
             className="!aspect-[480/650]"
           />
         </div>
+        <ReelPlayhead />
         <div
           className="absolute inset-x-0 top-[8.5%] flex items-center gap-[2.5cqw] px-[4cqw] text-[3.4cqw] text-white"
           aria-hidden="true"
