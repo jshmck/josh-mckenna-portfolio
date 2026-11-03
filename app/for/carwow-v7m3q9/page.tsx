@@ -552,7 +552,7 @@ export default async function CarwowPage() {
 
         <Section>
           <div>
-            <p className="type-label text-ink">Reels</p>
+            <p className="type-label text-ink">Social video</p>
             <p className="type-label mt-1 text-ink-muted">
               Graphic elements · Hand drawn elements · Poster design · Merch
               design · Logos

@@ -52,6 +52,40 @@ export function ReelPhone({
           />
         </div>
         <ReelPlayhead />
+        {/* Reels-style actions up the right edge, drawn in code like the rest. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-[21%] right-[3.5cqw] flex flex-col items-center gap-[4.2cqw] text-white drop-shadow-[0_0_1.2cqw_rgb(0_0_0/0.55)]"
+        >
+          {[
+            "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
+            "M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.6-.8L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5z",
+            "M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z",
+          ].map((d) => (
+            <svg
+              key={d}
+              viewBox="0 0 24 24"
+              className="h-[6.4cqw] w-[6.4cqw]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d={d} />
+            </svg>
+          ))}
+          <svg
+            viewBox="0 0 24 24"
+            className="h-[6.4cqw] w-[6.4cqw]"
+            fill="currentColor"
+          >
+            <circle cx="5" cy="12" r="1.6" />
+            <circle cx="12" cy="12" r="1.6" />
+            <circle cx="19" cy="12" r="1.6" />
+          </svg>
+        </div>
+
         <div
           className="pointer-events-none absolute inset-x-0 top-[8.5%] flex items-center gap-[2.5cqw] px-[4cqw] text-[3.4cqw] text-white"
           aria-hidden="true"
@@ -73,29 +107,6 @@ export function ReelPhone({
           <span className="flex-1 whitespace-nowrap rounded-full border border-white/80 px-[3.4cqw] py-[1.9cqw]">
             Send message
           </span>
-          <svg
-            viewBox="0 0 24 24"
-            className="h-[5.3cqw] w-[5.3cqw]"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-          </svg>
-          <svg
-            viewBox="0 0 24 24"
-            className="h-[5.3cqw] w-[5.3cqw]"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="22" y1="2" x2="11" y2="13" />
-            <polygon points="22 2 15 22 11 13 2 9 22 2" />
-          </svg>
         </div>
       </div>
       <Image
