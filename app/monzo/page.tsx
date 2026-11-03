@@ -69,26 +69,6 @@ const LA_IN_USE = [
   ),
 ];
 
-/** The brief, idea, system and rollout, all from the project page. */
-const SEQUENCE = [
-  {
-    label: "Brief",
-    text: "Rebuild LA Pride's whole visual identity from the ground up: the logo, the typeface, and every banner on site.",
-  },
-  {
-    label: "Idea",
-    text: "Start from vintage Olympic typography and old campaign posters, then build the letters themselves out of people, stacked into the L and the A.",
-  },
-  {
-    label: "System",
-    text: "One custom typeface, plus the characters, assets, wayfinding icons and maps, drawn so everything worked from stage-header size to cap-badge size.",
-  },
-  {
-    label: "Rollout",
-    text: "Posters, wayfinding, banners, stage livery, digital screens, lounges, wristbands and merch.",
-  },
-];
-
 const IDENTITY = {
   hsbc: img(
     "hsbc-pride-logo",
@@ -162,7 +142,7 @@ const GOOGLE_SET = img(
   "its-all-love",
   "01-overview-01",
   "1/1",
-  "The full 24-sticker Pride set for Google",
+  "It's All Love, the 24-sticker set for Google",
 );
 
 const REELS = [
@@ -217,9 +197,6 @@ export default async function MonzoPage() {
           </Block>
 
           <div>
-            <p className="type-label mb-4 text-ink-muted">
-              In use · stage, wayfinding, lounges and merch
-            </p>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {laInUse.map((still) => (
                 <LbTile
@@ -239,21 +216,10 @@ export default async function MonzoPage() {
               ))}
             </div>
           </div>
-
-          <Reveal>
-            <div className="grid gap-8 border-t border-ink pt-8 md:grid-cols-4 md:gap-5">
-              {SEQUENCE.map((s) => (
-                <div key={s.label}>
-                  <p className="type-label text-ink">{s.label}</p>
-                  <p className="type-lede mt-2 text-ink">{s.text}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
         </Section>
 
         <Section>
-          <Block label="Identity · logos, lockups and campaigns">
+          <Block label="Identity">
             <Row>
               {hsbc.map((still) => (
                 <StillTile
@@ -296,7 +262,7 @@ export default async function MonzoPage() {
         </Section>
 
         <Section>
-          <Block label="In-product and motion">
+          <Block label="Stickers">
             <div className="space-y-3 md:space-y-5">
               <Row>
                 {stickerPrimary && (
@@ -308,10 +274,14 @@ export default async function MonzoPage() {
                 {googleSet && (
                   <StillTile
                     still={googleSet}
+                    surface="bg-canvas"
                     sizes="(max-width: 768px) 60vw, 25vw"
                   />
                 )}
               </Row>
+              <p className="type-label text-ink-muted">
+                Instagram Pride Sticker · Google, It&apos;s All Love
+              </p>
               <Row>
                 {stickerInSitu.map((still) => (
                   <StillTile
@@ -323,12 +293,13 @@ export default async function MonzoPage() {
                 {stickerGif && <ClipTile {...stickerGif} />}
               </Row>
             </div>
-            <p className="type-label mt-4 text-ink-muted">
-              Instagram Pride Sticker · Google Pride stickers
+            <p className="type-label mt-3 text-ink-muted md:mt-5">
+              Instagram Pride Sticker · a float at Sydney Mardi Gras, a mural at
+              Meta, animated
             </p>
           </Block>
 
-          <Block label="Motion · built in Cavalry">
+          <Block label="Motion">
             <Row>
               {cvClip && <ClipTile {...cvClip} />}
               {hondaClip && <ClipTile {...hondaClip} />}
@@ -336,8 +307,8 @@ export default async function MonzoPage() {
           </Block>
 
           <div>
-            <p className="type-label text-ink">Social video</p>
-            <p className="type-label mb-4 mt-1 text-ink-muted">
+            <p className="type-label mb-4 text-ink">Social video</p>
+            <p className="type-label mb-4 text-ink-muted">
               Graphic elements · Hand drawn elements · Poster design · Merch
               design · Logos
             </p>

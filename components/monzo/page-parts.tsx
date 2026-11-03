@@ -36,17 +36,20 @@ export function StillTile({
   still,
   sizes,
   tight = false,
+  surface = "bg-placeholder",
 }: {
   still: Still;
   sizes: string;
   tight?: boolean;
+  /** Surface behind transparent art; the default is the brand-blue placeholder. */
+  surface?: string;
 }) {
   return (
     <LbTile
       index={still.lb}
       label={still.alt}
       r={still.r}
-      className={`relative snap-center overflow-hidden bg-placeholder ${tight ? "rounded-[3px]" : "rounded-frame"}`}
+      className={`relative snap-center overflow-hidden ${surface} ${tight ? "rounded-[3px]" : "rounded-frame"}`}
     >
       <Image
         src={still.src}
