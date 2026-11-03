@@ -36,6 +36,11 @@ const nextConfig: NextConfig = {
         source: "/carwow",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
       },
+      // Koto's page is its own thing: separate route, components and assets.
+      {
+        source: "/koto",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
       {
         source:
           "/:dir(work|about|illustrations|logos)/:path*.:ext(mp4|webp|jpg|jpeg|png|svg|avif)",
