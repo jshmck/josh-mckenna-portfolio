@@ -512,7 +512,8 @@ export default async function CarwowPage() {
           <div>
             <h2 className="type-heading text-ink">Graphic design</h2>
             <p className="type-label mt-2 text-ink-muted">
-              Allied Wheel Co. · Paid social · Graphics only
+              Allied Wheel Co. · Social media formatting · Graphic elements ·
+              Logos
             </p>
           </div>
           <p className="type-label text-ink">Nomad</p>
@@ -550,7 +551,13 @@ export default async function CarwowPage() {
         </Section>
 
         <Section>
-          <p className="type-label text-ink">Reels · Tee design</p>
+          <div>
+            <p className="type-label text-ink">Reels</p>
+            <p className="type-label mt-1 text-ink-muted">
+              Graphic elements · Hand drawn elements · Poster design · Merch
+              design · Logos
+            </p>
+          </div>
           <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
             {REELS.map((r) => (
               <div
