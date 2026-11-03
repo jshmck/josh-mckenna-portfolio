@@ -73,11 +73,11 @@ export function LikeSpot({ box }: { box: LikeBox }) {
       {liked && box.kind === "like" && (
         <span
           key="like"
-          className="absolute -inset-x-[4%] -inset-y-[18%] flex items-center gap-[1.1cqw] bg-white pl-[0.5cqw] text-[2.6cqw] font-semibold text-brand"
+          className="absolute -inset-x-[12%] -inset-y-[18%] flex items-center gap-[1.1cqw] bg-white pl-[1.7cqw] text-[2.6cqw] font-semibold text-brand"
         >
           {icon(
             true,
-            "h-[4.1cqw] w-[4.1cqw] animate-[heart-pop_320ms_ease-out]",
+            "h-[4.1cqw] w-[4.1cqw] shrink-0 animate-[heart-pop_320ms_ease-out]",
             THUMB,
           )}
           Liked
@@ -90,7 +90,7 @@ export function LikeSpot({ box }: { box: LikeBox }) {
         >
           {icon(
             true,
-            "h-[4.1cqw] w-[4.1cqw] animate-[heart-pop_320ms_ease-out]",
+            "h-[4.1cqw] w-[4.1cqw] shrink-0 animate-[heart-pop_320ms_ease-out]",
             THUMB,
           )}
           13
