@@ -204,14 +204,13 @@ const STICKER_IN_SITU = [
 
 /** Nomad's 503 Sahara launch in the three formats it ran in. */
 const NOMAD_FORMATS = [
-  { src: "/carwow/phone-nomad-4x5.webp", label: "Feed 4:5" },
-  { src: "/carwow/phone-nomad-1x1.webp", label: "Feed 1:1" },
-  { src: "/carwow/phone-nomad.webp", label: "Story 9:16" },
+  { src: "/carwow/phone-nomad-ad.webp", label: "Facebook ad · 1:1" },
+  { src: "/carwow/phone-nomad-post.webp", label: "Instagram post · 4:5" },
+  { src: "/carwow/phone-nomad-story.webp", label: "Instagram Story · 9:16" },
 ];
 
 const REELS = [
   { n: 1, handle: "racelinewheels", avatar: "raceline" },
-  { n: 2, handle: "nomadwheel", avatar: "nomad" },
   { n: 3, handle: "nomadwheel", avatar: "nomad" },
   { n: 4, handle: "nomadwheel", avatar: "nomad" },
   { n: 5, handle: "mobelwagen", avatar: "mobelwagen" },
@@ -229,7 +228,7 @@ const TWINGO = [1, 2, 3, 4, 5, 6].map((n) => ({
 }));
 const EDITORIAL = [
   "monocle-spot-illo",
-  "atlanta-magazine",
+  "monocle-downward-trend",
   "wsj-airpods-rich",
   "california-magazine",
 ];
@@ -429,13 +428,45 @@ export default async function CarwowPage() {
             </Reveal>
           ))}
         </div>
+        <div className="grid gap-8 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-8">
+            <ProjectVideo
+              video={{
+                src: "/carwow/505-touring.mp4",
+                alt: "The 505 Touring launch film",
+                poster: "/carwow/505-touring-poster.webp",
+              }}
+              sound
+              ratio="16/9"
+            />
+          </div>
+          <div className="md:col-span-4">
+            <p className="type-label text-ink">
+              505 Touring launch · Nomad Wheel Co.
+            </p>
+            <p className="type-lede mt-3 text-ink">
+              A full graphic package for the launch of the 505 Touring wheel,
+              all built from a vintage Dakar rally look. The Land Cruiser is
+              mine and that&apos;s me driving. I designed the livery, the logos
+              in the film and the posters.
+            </p>
+            <p className="type-label mt-3">
+              <Link
+                href="/work/nomad-wheels-505-livery"
+                className="text-ink-muted underline"
+              >
+                Project
+              </Link>
+            </p>
+          </div>
+        </div>
       </Section>
 
       <Section>
         <p className="type-label text-ink-muted">
           Reels · Allied Wheel Co. · Paid social · Graphics only
         </p>
-        <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-5 md:gap-4 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+        <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
           {REELS.map((r) => (
             <div key={r.n} className="w-[62%] flex-none snap-center md:w-auto">
               <ReelPhone
