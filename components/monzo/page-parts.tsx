@@ -149,3 +149,24 @@ export const Section = ({
     {children}
   </section>
 );
+
+/** The role line under a led project's images, with its project link. */
+export function RoleNote({
+  href,
+  children,
+}: {
+  href: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="mt-6">
+      <p className="type-lede max-w-[60ch] text-ink">{children}</p>
+      <Link
+        href={href}
+        className="type-label mt-3 inline-block text-ink-muted underline"
+      >
+        Project
+      </Link>
+    </div>
+  );
+}

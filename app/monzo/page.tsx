@@ -7,6 +7,7 @@ import {
   Block,
   ClipTile,
   Row,
+  RoleNote,
   Section,
   StillRow,
   StillTile,
@@ -35,7 +36,6 @@ export const metadata: Metadata = {
 };
 
 const LA_TYPE = [
-  img("la-pride", "04-key-art-lockup", "1/1", "The LA Pride 2024 lockup"),
   img(
     "la-pride",
     "01-la-pride-4x5",
@@ -183,12 +183,7 @@ export default async function MonzoPage() {
       />
       <main className="mx-auto max-w-frame px-6 pb-32 md:px-gutter">
         <Section first>
-          <Block href="/work/la-pride">
-            <p className="type-lede mb-6 max-w-[60ch] text-ink">
-              LA Pride 2024: I led the full rebrand start to finish as
-              creative director, with co-designer James Junk. I drew the custom
-              typeface, characters, assets, wayfinding icons and maps.
-            </p>
+          <Block>
             <StillRow
               stills={laType}
               sizes="(max-width: 768px) 70vw, 40vw"
@@ -214,20 +209,26 @@ export default async function MonzoPage() {
                 </LbTile>
               ))}
             </div>
+
+            <RoleNote href="/work/la-pride">
+              LA Pride 2024: I led the full rebrand start to finish as creative
+              director, with co-designer James Junk. I drew the custom
+              typeface, characters, assets, wayfinding icons and maps.
+            </RoleNote>
           </div>
         </Section>
 
         <Section>
-          <Block href="/work/levis-rainbow-rodeo">
-            <p className="type-lede mb-6 max-w-[60ch] text-ink">
-              Levi&apos;s Rainbow Rodeo, Los Angeles, June 2024: I was creative
-              director and illustrator. I made the invite, enamel pins, bar cups
-              and tee.
-            </p>
+          <Block>
             <StillRow
               stills={levis}
               sizes="(max-width: 768px) 60vw, 25vw"
             />
+            <RoleNote href="/work/levis-rainbow-rodeo">
+              Levi&apos;s Rainbow Rodeo, Los Angeles, June 2024: I was creative
+              director and illustrator. I made the invite, enamel pins, bar cups
+              and tee.
+            </RoleNote>
           </Block>
         </Section>
 
