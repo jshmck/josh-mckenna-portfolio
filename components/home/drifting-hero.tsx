@@ -146,7 +146,7 @@ const OBJECTS: DriftObject[] = [
     spin: rad(-4.5),
   },
   {
-    id: "shop",
+    id: "ambient-hand",
     // Swapped for the new hand-and-iPhone render, per Josh — new aspect
     // (1722x1914 source) since the crop differs from the old hand's.
     src: "/illustrations/objects/hand-air-2.webp",

@@ -63,7 +63,6 @@ export const siteConfig = {
    — the "info" label, same page. */
 export const navLinks: NavLink[] = [
   { label: "Work", href: "/work" },
-  { label: "Shop", href: "/shop" },
   { label: "Info", href: "/info" },
   { label: "Contact", href: "/contact" },
 ];
