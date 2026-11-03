@@ -19,9 +19,8 @@ import { siteConfig } from "@/lib/site";
 /**
  * Private page for a job application (Carwow). Not linked from anywhere, not
  * in the sitemap, noindex + nofollow (page metadata and an X-Robots-Tag
- * header in next.config.ts), and at an unguessable path. A static site has
- * no auth, so this is "unlisted", not "secret": anyone holding the URL can
- * open it.
+ * header in next.config.ts). A static site has no auth, so this is
+ * "unlisted", not "secret": anyone who types /carwow can open it.
  *
  * No section titles: sections are separated by rules, and the only text is
  * small labels. Every still and silent clip opens one shared lightbox.
