@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * The homepage hero: nine illustration cut-outs orbiting the JOSH McKenna
@@ -255,7 +255,6 @@ const REPEL_RADIUS = 0.18;
 /** Maximum lean, as a fraction of container width. */
 const REPEL_STRENGTH = 0.02;
 
-
 /** How far back we look, in ms, to estimate throw velocity on release.
  * Sized to comfortably hold a whole real flick gesture -- accelerate, peak,
  * ease off before the fingers actually leave the button -- not just its
@@ -328,13 +327,7 @@ const MIN_ORBIT_SEPARATION = rad(40);
  * assumes zero velocity at both ends), this can start and end at whatever
  * the real, non-zero velocities actually are, so there's no hidden
  * "velocity must be near zero here" assumption baked into the curve. */
-const hermite = (
-  p0: number,
-  v0: number,
-  p1: number,
-  v1: number,
-  t: number,
-) => {
+const hermite = (p0: number, v0: number, p1: number, v1: number, t: number) => {
   const t2 = t * t;
   const t3 = t2 * t;
   const h00 = 2 * t3 - 3 * t2 + 1;
@@ -402,7 +395,22 @@ const MOBILE_SCALE_QUERY = "(max-width: 768px)";
 const MOBILE_SCALE = "1.25";
 const DESKTOP_SCALE = "1";
 
-export function DriftingHero() {
+/**
+ * `ids` keeps only those objects (the homepage passes nothing and gets all
+ * nine); `compact` is the half-height frame the private application pages
+ * use, with no scroll cue. Both are read once on mount, like the rest of the
+ * simulation's setup.
+ */
+export function DriftingHero({
+  ids,
+  compact = false,
+}: {
+  ids?: string[];
+  compact?: boolean;
+}) {
+  const [objects] = useState(() =>
+    ids ? OBJECTS.filter((o) => ids.includes(o.id)) : OBJECTS,
+  );
   const frameRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const plateRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -434,7 +442,8 @@ export function DriftingHero() {
     if (!plate) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
-    const relX = (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+    const relX =
+      (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
     const clamped = Math.max(-1, Math.min(1, relX));
     plate.style.rotate = `${-clamped * MAX_TILT}deg`;
   };
@@ -459,7 +468,7 @@ export function DriftingHero() {
     // including while "released", where x/y/vx/vy are a single continuous
     // physics sim (momentum + bounce + a gentle pull toward the nearest
     // point on this object's own ellipse), not two things blended together.
-    const state = OBJECTS.map((object) => {
+    const state = objects.map((object) => {
       const height = object.width / object.aspect;
       const seed = orbitPosition({ ...object, height });
       return {
@@ -554,7 +563,9 @@ export function DriftingHero() {
         const py = (event.clientY - rect.top) / rect.height;
         object.grabOffsetX = px - object.x;
         object.grabOffsetY = py - object.y;
-        object.dragHistory = [{ t: performance.now(), x: object.x, y: object.y }];
+        object.dragHistory = [
+          { t: performance.now(), x: object.x, y: object.y },
+        ];
         node.style.transition = "none";
         node.style.cursor = "grabbing";
         // :hover tracks real cursor position, not pointer capture, so while
@@ -572,7 +583,10 @@ export function DriftingHero() {
       };
 
       const onDragMove = (event: PointerEvent) => {
-        if (object.mode !== "dragging" || event.pointerId !== object.pointerId) {
+        if (
+          object.mode !== "dragging" ||
+          event.pointerId !== object.pointerId
+        ) {
           return;
         }
         // The primary button reads as already released -- the mouse button
@@ -610,7 +624,10 @@ export function DriftingHero() {
       };
 
       const onDragEnd = (event: PointerEvent) => {
-        if (object.mode !== "dragging" || event.pointerId !== object.pointerId) {
+        if (
+          object.mode !== "dragging" ||
+          event.pointerId !== object.pointerId
+        ) {
           return;
         }
 
@@ -818,7 +835,10 @@ export function DriftingHero() {
             const rawDiff = rawNearestAngle - neighborAngle;
             const diff = Math.atan2(Math.sin(rawDiff), Math.cos(rawDiff));
             const absDiff = Math.abs(diff);
-            if (absDiff < MIN_ORBIT_SEPARATION && absDiff < closestConflictDiff) {
+            if (
+              absDiff < MIN_ORBIT_SEPARATION &&
+              absDiff < closestConflictDiff
+            ) {
               closestConflictDiff = absDiff;
               // Proportional, not a hard switch: 0 right at the boundary
               // (matching "no effect" just outside it, so there's no seam
@@ -929,7 +949,8 @@ export function DriftingHero() {
           // fixed-rate orbital motion.
           if (
             Math.hypot(dx, dy) < SETTLE_DISTANCE &&
-            Math.hypot(object.vx - targetVx, object.vy - targetVy) < SETTLE_SPEED
+            Math.hypot(object.vx - targetVx, object.vy - targetVy) <
+              SETTLE_SPEED
           ) {
             // Capture both endpoints once, up front: where/how fast it
             // actually is right now (its real velocity, not zero), and
@@ -957,8 +978,10 @@ export function DriftingHero() {
             object.landingFromVY = object.vy;
             object.landingToX = landingEnd.x;
             object.landingToY = landingEnd.y;
-            object.landingToVX = -object.rx * Math.sin(angleAtLandingEnd) * object.spin;
-            object.landingToVY = object.ry * Math.cos(angleAtLandingEnd) * object.spin;
+            object.landingToVX =
+              -object.rx * Math.sin(angleAtLandingEnd) * object.spin;
+            object.landingToVY =
+              object.ry * Math.cos(angleAtLandingEnd) * object.spin;
             object.landingMs = 0;
             // The angle keeps advancing at the top of the loop every
             // frame regardless of mode, so setting it to nearestAngle now
@@ -1039,13 +1062,13 @@ export function DriftingHero() {
       frame.removeEventListener("pointerleave", onPointerLeave);
       dragCleanup.forEach((cleanup) => cleanup());
     };
-  }, []);
+  }, [objects]);
 
   return (
     // pb-24 on mobile stacked on top of an already-vh-dominated h-[88vh]
     // frame read as a huge gap before Who -- desktop has room to spare at
     // that width, mobile doesn't. Smaller below md, unchanged from md up.
-    <section className="relative pb-10 md:pb-24">
+    <section className={compact ? "relative pb-6" : "relative pb-10 md:pb-24"}>
       {/* The liquid-glass displacement the chair's backdrop-filter points
           at (see DriftObject.glassMask). Gentle low-frequency turbulence
           warps the backdrop like looking through wavy glass — the actual
@@ -1084,7 +1107,7 @@ export function DriftingHero() {
         // `container-type: size` gives the objects cqw/cqh units, so their
         // JS-driven transforms are expressed relative to this frame rather
         // than the viewport.
-        className="relative mx-auto h-[min(88vh,880px)] max-w-frame [container-type:size]"
+        className={`relative mx-auto max-w-frame [container-type:size] ${compact ? "h-[min(44vh,440px)]" : "h-[min(88vh,880px)]"}`}
       >
         {/* Name lockup. Always on top of every hero object, in every mode
             (idle, hovered, dragged, thrown) -- objects used to only pull
@@ -1105,7 +1128,7 @@ export function DriftingHero() {
           </h1>
         </div>
 
-        {OBJECTS.map((object, index) => {
+        {objects.map((object, index) => {
           const height = object.width / object.aspect;
           const seed = orbitPosition({ ...object, height });
 
@@ -1225,27 +1248,31 @@ export function DriftingHero() {
             Josh — so the cue's bottom edge still clears the smallest
             fold and just rides slightly higher up the frame once the
             bar collapses. */}
-        <button
-          type="button"
-          aria-label="Scroll down to more about Josh"
-          onClick={() => document.getElementById("home-who")?.scrollIntoView()}
-          className="absolute left-1/2 top-[calc(100svh_-_144px)] z-30 hidden h-12 w-11 -translate-x-1/2 items-center justify-center text-ink/60 max-md:flex"
-        >
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 26 16"
-            fill="none"
-            className="w-4 animate-[scroll-cue-hop_2.4s_ease-in-out_infinite]"
+        {!compact && (
+          <button
+            type="button"
+            aria-label="Scroll down to more about Josh"
+            onClick={() =>
+              document.getElementById("home-who")?.scrollIntoView()
+            }
+            className="absolute left-1/2 top-[calc(100svh_-_144px)] z-30 hidden h-12 w-11 -translate-x-1/2 items-center justify-center text-ink/60 max-md:flex"
           >
-            <path
-              d="M4 4 L13 12 L22 4"
-              stroke="currentColor"
-              strokeWidth="7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 26 16"
+              fill="none"
+              className="w-4 animate-[scroll-cue-hop_2.4s_ease-in-out_infinite]"
+            >
+              <path
+                d="M4 4 L13 12 L22 4"
+                stroke="currentColor"
+                strokeWidth="7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        )}
       </div>
     </section>
   );
