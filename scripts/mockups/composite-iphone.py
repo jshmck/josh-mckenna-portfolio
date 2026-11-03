@@ -23,8 +23,18 @@ x0, y0, x1, y1 = pix.bbox
 mask = pix.composite().getchannel("A")
 screen = Image.open(screen_path).convert("RGBA").resize((x1 - x0, y1 - y0), Image.LANCZOS)
 hide = {"Podium", "Delete this layer", "Colors", "Shadows"}
+# A .webp/.png output is a cut-out: the studio background is removed by building
+# an alpha from the 'Case' (phone body) and 'Screen' layers, not by hiding it.
+cutout = out_path.lower().endswith((".webp", ".png"))
 base = psd.composite(layer_filter=lambda l: l.kind != "smartobject" and l.name not in hide).convert("RGBA")
 base.paste(screen, (x0, y0), mask)
-out = base.crop((1250, 380, 2750, 2420)).convert("RGB")
+if cutout:
+    alpha = Image.new("L", base.size, 0)
+    case = next(l for l in next(l for l in mock if l.name == "Case") if l.kind == "pixel")
+    alpha.paste(case.composite().getchannel("A"), case.bbox[:2])
+    alpha.paste(255, (x0, y0), mask)
+    base.putalpha(alpha)
+out = base.crop((1250, 380, 2750, 2420))
+out = out if cutout else out.convert("RGB")
 out.thumbnail((900, 1300))
 out.save(out_path, quality=88)

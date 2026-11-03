@@ -164,7 +164,7 @@ export default function CarwowPage() {
                 src={brand.src}
                 alt={brand.alt}
                 width={760}
-                height={1100}
+                height={1034}
                 sizes="(max-width: 768px) 72vw, 33vw"
                 className="h-auto w-full"
               />
