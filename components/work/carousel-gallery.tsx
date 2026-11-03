@@ -20,9 +20,9 @@ type CarouselGalleryProps = {
 /**
  * A series made to be swiped (Hello Twingo: an Instagram carousel). One
  * snap-scrolling strip at every size: slides sit edge to edge with a hair of
- * gap and a 3px corner, so they read as one carousel; on desktop about four
- * and a half show, the half-slide peeking to say there are more; on phones one
- * slide and a bit of the next. A counter shows where you are. Every slide
+ * gap and a 3px corner, so they read as one carousel; on desktop all six sit in one
+ * row, so nothing is hidden; on phones one slide and a bit of the next, with a
+ * counter showing where you are. Every slide
  * opens the project's shared lightbox, in order, as its own page.
  *
  * `data-swipe-ignore` keeps ProjectStackSwipe's swipe-to-next-project from
@@ -64,7 +64,7 @@ export function CarouselGallery({
         {images.map((image, index) => (
           <li
             key={image.alt}
-            className="w-[82%] flex-none snap-start md:w-[22%]"
+            className="w-[82%] flex-none snap-start md:w-[calc((100%-1.25rem)/6)]"
           >
             <button
               type="button"
@@ -74,7 +74,7 @@ export function CarouselGallery({
             >
               <Plate
                 image={image}
-                sizes="(max-width: 768px) 82vw, 22vw"
+                sizes="(max-width: 768px) 82vw, 17vw"
                 loading={eager ? "eager" : undefined}
                 radius="rounded-[3px]"
               />
@@ -82,7 +82,7 @@ export function CarouselGallery({
           </li>
         ))}
       </ul>
-      <p aria-hidden="true" className="type-label mt-3 text-ink-muted">
+      <p aria-hidden="true" className="type-label mt-3 text-ink-muted md:hidden">
         {current + 1} / {images.length}
       </p>
     </Reveal>
