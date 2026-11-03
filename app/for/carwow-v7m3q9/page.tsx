@@ -517,7 +517,6 @@ export default async function CarwowPage() {
         <Section>
           <p className="type-label text-ink-muted">
             Reels · Allied Wheel Co. · Paid social · Graphics only · Tee design
-            · I drew the race truck in the first Reel
           </p>
           <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
             {REELS.map((r) => (
