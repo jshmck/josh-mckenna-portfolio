@@ -145,6 +145,7 @@ export default async function KotoPage() {
   const kiehls = getProject("kiehls-trevor-project");
   const sticker = getProject("instagram-sticker");
   const mrPorter = getProject("mr-porter-miami-invites");
+  const hp = getProject("hp-print-over-hate");
 
   const { lightbox, stills, clip } = createLightbox();
 
@@ -260,7 +261,11 @@ export default async function KotoPage() {
             </p>
           </Block>
           <div>
-            <p className="type-label mb-4 text-ink">Social video</p>
+            <p className="type-label text-ink">Social video</p>
+            <p className="type-label mb-4 mt-1 text-ink-muted">
+              Graphic elements · Hand drawn elements · Poster design · Merch
+              design · Logos
+            </p>
             <div className="-mx-6 flex snap-x snap-mandatory items-start gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
               {REELS.map((r) => (
                 <Reveal
@@ -315,6 +320,22 @@ export default async function KotoPage() {
               </Row>
             </div>
           </Block>
+          {hp?.heroVideo && (
+            <Block label="HP · Print Over Hate" href="/work/hp-print-over-hate">
+              <ProjectVideo
+                video={{
+                  src: "/about/hp-latex.mp4",
+                  alt: hp.heroVideo.alt,
+                  poster: "/about/hp-latex-poster-50s.jpg",
+                }}
+                sound
+                ratio="16/9"
+              />
+              <p className="type-lede mt-4 max-w-[60ch] text-ink">
+                {hp.summary}
+              </p>
+            </Block>
+          )}
           <div className="grid gap-16 md:grid-cols-2 md:gap-5">
             <Block
               label="Mr Porter · Miami invites"
