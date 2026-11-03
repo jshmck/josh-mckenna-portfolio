@@ -25,9 +25,14 @@ const b64 = (f) => "data:image/webp;base64," + fs.readFileSync(f).toString("base
     <div style="padding:22px 24px 6px;font-size:31px;font-weight:600;line-height:1.25">${process.env.TITLE}</div>
     <div style="padding:0 24px 18px;font-size:23px;color:#606060">Ad · ${process.env.DOMAIN}</div>
     <div style="display:flex;align-items:center;gap:16px;padding:6px 24px 22px"><img src="${av}" style="width:64px;height:64px;border-radius:50%"><div style="flex:1;font-size:27px;font-weight:600">${process.env.NAME}</div><div style="background:#0f0f0f;color:#fff;border-radius:40px;padding:15px 30px;font-size:25px;font-weight:600">${process.env.CTA}</div></div>
-    <div style="display:flex;gap:14px;padding:0 24px 28px;font-size:24px"><span style="display:flex;gap:10px;align-items:center;background:#f2f2f2;border-radius:40px;padding:13px 26px">${like}12</span><span style="display:flex;gap:10px;align-items:center;background:#f2f2f2;border-radius:40px;padding:13px 26px">${share}Share</span><span style="display:flex;gap:10px;align-items:center;background:#f2f2f2;border-radius:40px;padding:13px 26px">${dl}Save</span></div>
+    <div style="display:flex;gap:14px;padding:0 24px 28px;font-size:24px"><span id="like" style="display:flex;gap:10px;align-items:center;background:#f2f2f2;border-radius:40px;padding:13px 26px">${like}12</span><span style="display:flex;gap:10px;align-items:center;background:#f2f2f2;border-radius:40px;padding:13px 26px">${share}Share</span><span style="display:flex;gap:10px;align-items:center;background:#f2f2f2;border-radius:40px;padding:13px 26px">${dl}Save</span></div>
     ${ghost(80)}${ghost(65)}${ghost(75)}
    </div></body></html>`;
   await page.setContent(html); await page.waitForTimeout(500);
-  await page.screenshot({ path: process.env.OUT }); await b.close();
+  await page.screenshot({ path: process.env.OUT });
+  if (process.env.BBOX) {
+    const bb = await page.evaluate(() => { const r = document.getElementById("like").getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height }; });
+    fs.writeFileSync(process.env.BBOX, JSON.stringify(bb));
+  }
+  await b.close();
 })();

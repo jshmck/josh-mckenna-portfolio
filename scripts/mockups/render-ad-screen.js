@@ -22,9 +22,14 @@ const b64 = (f) => "data:image/webp;base64," + fs.readFileSync(f).toString("base
     <img src="${art}" style="display:block;width:${W}px;height:${W}px">
     <div style="background:#f0f2f5;display:flex;align-items:center;gap:16px;padding:18px 24px"><div style="flex:1;line-height:1.3"><div style="font-size:22px;color:#65676b">${process.env.DOMAIN}</div><div style="font-size:27px;font-weight:600">${process.env.HEADLINE}</div></div><div style="background:#dfe1e5;border-radius:10px;padding:16px 26px;font-size:26px;font-weight:600">${process.env.CTA}</div></div>
     <div style="display:flex;justify-content:space-around;padding:20px 24px 10px;border-top:1px solid #e4e6eb;margin-top:4px;font-size:25px;color:#65676b">
-     <span style="display:flex;gap:10px;align-items:center">${like}Like</span><span style="display:flex;gap:10px;align-items:center">${comment}Comment</span><span style="display:flex;gap:10px;align-items:center">${share}Share</span></div>
+     <span id="like" style="display:flex;gap:10px;align-items:center">${like}Like</span><span style="display:flex;gap:10px;align-items:center">${comment}Comment</span><span style="display:flex;gap:10px;align-items:center">${share}Share</span></div>
    </div>
   </body></html>`;
   await page.setContent(html); await page.waitForTimeout(500);
-  await page.screenshot({ path: process.env.OUT }); await b.close();
+  await page.screenshot({ path: process.env.OUT });
+  if (process.env.BBOX) {
+    const bb = await page.evaluate(() => { const r = document.getElementById("like").getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height }; });
+    fs.writeFileSync(process.env.BBOX, JSON.stringify(bb));
+  }
+  await b.close();
 })();

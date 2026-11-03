@@ -8,6 +8,7 @@ import sharp from "sharp";
 import type { CSSProperties, ReactNode } from "react";
 
 import { LbTile } from "@/components/carwow/lightbox-tile";
+import { LikeSpot, type LikeBox } from "@/components/carwow/like-spot";
 import { ReelPhone } from "@/components/carwow/phone-mockups";
 import { Reveal } from "@/components/ui/reveal";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
@@ -188,21 +189,24 @@ function PhoneRow({
   phones,
   brand,
 }: {
-  phones: { src: string; label: string }[];
+  phones: { src: string; label: string; like: LikeBox }[];
   brand: string;
 }) {
   return (
     <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
       {phones.map((f) => (
         <Reveal key={f.src} className="w-[62%] flex-none snap-center md:w-auto">
-          <Image
-            src={f.src}
-            alt={`${brand}, ${f.label}, on an iPhone`}
-            width={700}
-            height={1299}
-            sizes="(max-width: 768px) 62vw, 25vw"
-            className="h-auto w-full"
-          />
+          <div className="relative [container-type:inline-size]">
+            <Image
+              src={f.src}
+              alt={`${brand}, ${f.label}, on an iPhone`}
+              width={700}
+              height={1299}
+              sizes="(max-width: 768px) 62vw, 25vw"
+              className="h-auto w-full"
+            />
+            <LikeSpot box={f.like} />
+          </div>
           <p className="type-label mt-1 text-ink-muted">{f.label}</p>
         </Reveal>
       ))}
@@ -262,18 +266,50 @@ const STICKER_IN_SITU = [
 ];
 
 /** Nomad's Tax Return Sale in the four formats it ran in. */
-const NOMAD_FORMATS = [
-  { src: "/carwow/phone-nomad-b-ad.webp", label: "Facebook ad · 1:1" },
-  { src: "/carwow/phone-nomad-b-post.webp", label: "Instagram post · 4:5" },
-  { src: "/carwow/phone-nomad-b-story.webp", label: "Instagram Story · 9:16" },
-  { src: "/carwow/phone-nomad-b-banner.webp", label: "Video banner ad · 16:9" },
+const NOMAD_FORMATS: { src: string; label: string; like: LikeBox }[] = [
+  {
+    src: "/carwow/phone-nomad-b-ad.webp",
+    label: "Facebook ad · 1:1",
+    like: { kind: "like", x: 83, y: 1217, w: 96, h: 40 },
+  },
+  {
+    src: "/carwow/phone-nomad-b-post.webp",
+    label: "Instagram post · 4:5",
+    like: { kind: "heart", x: 24, y: 1219, w: 46, h: 46 },
+  },
+  {
+    src: "/carwow/phone-nomad-b-story.webp",
+    label: "Instagram Story · 9:16",
+    like: { kind: "heart", x: 623, y: 1552, w: 44, h: 44 },
+  },
+  {
+    src: "/carwow/phone-nomad-b-banner.webp",
+    label: "Video banner ad · 16:9",
+    like: { kind: "count", x: 24, y: 769, w: 129, h: 66 },
+  },
 ];
 
-const MOBELWAGEN_FORMATS = [
-  { src: "/carwow/phone-mw-c-ad.webp", label: "Facebook ad · 1:1" },
-  { src: "/carwow/phone-mw-c-post.webp", label: "Instagram post · 4:5" },
-  { src: "/carwow/phone-mw-c-story.webp", label: "Instagram Story · 9:16" },
-  { src: "/carwow/phone-mw-banner.webp", label: "Video banner ad · 16:9" },
+const MOBELWAGEN_FORMATS: { src: string; label: string; like: LikeBox }[] = [
+  {
+    src: "/carwow/phone-mw-c-ad.webp",
+    label: "Facebook ad · 1:1",
+    like: { kind: "like", x: 83, y: 1217, w: 96, h: 40 },
+  },
+  {
+    src: "/carwow/phone-mw-c-post.webp",
+    label: "Instagram post · 4:5",
+    like: { kind: "heart", x: 24, y: 1219, w: 46, h: 46 },
+  },
+  {
+    src: "/carwow/phone-mw-c-story.webp",
+    label: "Instagram Story · 9:16",
+    like: { kind: "heart", x: 623, y: 1552, w: 44, h: 44 },
+  },
+  {
+    src: "/carwow/phone-mw-banner.webp",
+    label: "Video banner ad · 16:9",
+    like: { kind: "count", x: 24, y: 807, w: 129, h: 66 },
+  },
 ];
 
 const REELS = [
@@ -492,8 +528,7 @@ export default async function CarwowPage() {
           <div>
             <h2 className="type-heading text-ink">Graphic design</h2>
             <p className="type-label mt-2 text-ink-muted">
-              Allied Wheel Co. · Social media formatting · Graphic elements ·
-              Logos
+              Allied Wheel Co. · Static ads · Graphic elements · Logos
             </p>
           </div>
           <p className="type-label text-ink">Nomad</p>
@@ -501,7 +536,7 @@ export default async function CarwowPage() {
           <p className="type-label text-ink">Möbelwagen</p>
           <PhoneRow phones={mwPhones} brand="Möbelwagen Tax Return Sale" />
           {/* Three phone columns wide, so the film and its caption end where the third phone does. */}
-          <div className="md:w-[calc(75%-6px)]">
+          <div className="md:mx-auto md:w-[calc(75%-6px)]">
             <ProjectVideo
               video={{
                 src: "/carwow/505-touring.mp4",

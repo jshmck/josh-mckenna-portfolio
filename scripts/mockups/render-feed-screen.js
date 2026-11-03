@@ -21,7 +21,7 @@ const b64 = (f) => "data:image/webp;base64," + fs.readFileSync(f).toString("base
    <div style="position:absolute;left:0;right:0;top:${tall ? 160 : 180}px">
     <div style="display:flex;align-items:center;gap:16px;padding:0 24px 14px"><img src="${av}" style="width:62px;height:62px;border-radius:50%"><div style="flex:1;line-height:1.15"><b style="font-size:28px;font-weight:600">${process.env.HANDLE}</b><div style="font-size:22px;color:#555">Sponsored</div></div><b style="font-size:38px;letter-spacing:2px">···</b></div>
     <img src="${art}" style="display:block;width:${W}px;height:${imgH}px">
-    <div style="display:flex;align-items:center;gap:26px;padding:${tall ? 14 : 20}px 24px 6px">${heart}${comment}${send}<span style="margin-left:auto">${mark}</span></div>
+    <div style="display:flex;align-items:center;gap:26px;padding:${tall ? 14 : 20}px 24px 6px"><span id="like" style="display:flex">${heart}</span>${comment}${send}<span style="margin-left:auto">${mark}</span></div>
     <div style="padding:2px 24px;font-size:26px;font-weight:600">1,284 likes</div>
     <div style="padding:6px 24px 0;font-size:26px;line-height:1.3"><b style="font-weight:600">${process.env.HANDLE}</b> ${process.env.CAPTION}</div>
     <div style="padding:8px 24px 0;font-size:25px;color:#777">View all 42 comments</div>
@@ -29,5 +29,10 @@ const b64 = (f) => "data:image/webp;base64," + fs.readFileSync(f).toString("base
    <div style="position:absolute;left:0;right:0;bottom:0;height:150px;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:space-around;align-items:flex-start;padding:26px 20px 0;box-sizing:border-box">${home}${search}${plus}${play}${user}</div>
   </body></html>`;
   await page.setContent(html); await page.waitForTimeout(500);
-  await page.screenshot({ path: process.env.OUT }); await b.close();
+  await page.screenshot({ path: process.env.OUT });
+  if (process.env.BBOX) {
+    const bb = await page.evaluate(() => { const r = document.getElementById("like").getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height }; });
+    fs.writeFileSync(process.env.BBOX, JSON.stringify(bb));
+  }
+  await b.close();
 })();

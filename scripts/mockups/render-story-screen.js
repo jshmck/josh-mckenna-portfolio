@@ -23,8 +23,13 @@ const b64 = (f) => "data:image/webp;base64," + fs.readFileSync(f).toString("base
    <div style="position:absolute;right:62px;top:56px;display:flex;gap:12px;align-items:center"><svg width="40" height="24" viewBox="0 0 20 12" fill="white"><rect x="0" y="8" width="3" height="4" rx=".6"/><rect x="5" y="5" width="3" height="7" rx=".6"/><rect x="10" y="2.5" width="3" height="9.5" rx=".6"/><rect x="15" y="0" width="3" height="12" rx=".6"/></svg><svg width="38" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><path d="M2 9a15 15 0 0 1 20 0"/><path d="M5.5 12.5a10 10 0 0 1 13 0"/><path d="M9 16a5 5 0 0 1 6 0"/></svg><div style="width:62px;height:28px;border:2.5px solid rgba(255,255,255,.6);border-radius:9px;padding:2.5px"><div style="width:100%;height:100%;background:#fff;border-radius:4px"></div></div></div>
    <div style="position:absolute;left:${left}px;right:${left}px;top:150px;display:flex;gap:8px"><i style="flex:1;height:5px;border-radius:3px;background:#fff"></i><i style="flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.35)"></i><i style="flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.35)"></i></div>
    <div style="position:absolute;left:${left}px;right:${left}px;top:172px;display:flex;align-items:center;gap:16px"><img src="${av}" style="width:60px;height:60px;border-radius:50%"><b style="font-size:29px;font-weight:600">${process.env.HANDLE}</b><span style="font-size:26px;opacity:.8">Sponsored</span><span style="margin-left:auto">${x}</span></div>
-   <div style="position:absolute;left:${left}px;right:${left}px;bottom:44px;display:flex;align-items:center;gap:24px"><div style="flex:1;border:2.5px solid rgba(255,255,255,.85);border-radius:60px;padding:20px 30px;font-size:29px">Send message</div>${heart}${send}</div>
+   <div style="position:absolute;left:${left}px;right:${left}px;bottom:44px;display:flex;align-items:center;gap:24px"><div style="flex:1;border:2.5px solid rgba(255,255,255,.85);border-radius:60px;padding:20px 30px;font-size:29px">Send message</div><span id="like" style="display:flex">${heart}</span>${send}</div>
   </body></html>`;
   await page.setContent(html); await page.waitForTimeout(500);
-  await page.screenshot({ path: process.env.OUT }); await b.close();
+  await page.screenshot({ path: process.env.OUT });
+  if (process.env.BBOX) {
+    const bb = await page.evaluate(() => { const r = document.getElementById("like").getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height }; });
+    fs.writeFileSync(process.env.BBOX, JSON.stringify(bb));
+  }
+  await b.close();
 })();
