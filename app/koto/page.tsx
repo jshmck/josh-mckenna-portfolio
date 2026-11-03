@@ -106,7 +106,11 @@ const REELS = [
   { n: 5, handle: "mobelwagen", avatar: "mobelwagen" },
 ];
 
-const EDITORIAL = ["vogue-sun-tan", "monocle-spot-illo", "monocle-downward-trend"];
+const EDITORIAL = [
+  "vogue-sun-tan",
+  "monocle-spot-illo",
+  "monocle-downward-trend",
+];
 
 /** Talks already on the About page, linked out rather than re-hosted. */
 const TALKS: { src: string; alt: string; label: string; href?: string }[] = [
@@ -235,7 +239,6 @@ export default async function KotoPage() {
         </Section>
 
         <Section>
-          
           <Block
             label="505 Touring launch · Nomad Wheel Co."
             href="/work/nomad-wheels-505-livery"
@@ -317,14 +320,14 @@ export default async function KotoPage() {
               label="Mr Porter · Miami invites"
               href="/work/mr-porter-miami-invites"
             >
-              <StillRow stills={invites} sizes="(max-width: 768px) 60vw, 25vw" />
-            </Block>
-            <Block
-              label="Kiehl's Pride"
-              href="/work/kiehls-trevor-project"
-            >
               <StillRow
-                stills={kiehlsImages.map((still) => ({ ...still, r: invites[0]?.r ?? 0.8 }))}
+                stills={invites.map((still) => ({ ...still, r: 0.8 }))}
+                sizes="(max-width: 768px) 60vw, 25vw"
+              />
+            </Block>
+            <Block label="Kiehl's Pride" href="/work/kiehls-trevor-project">
+              <StillRow
+                stills={kiehlsImages.map((still) => ({ ...still, r: 0.8 }))}
                 sizes="(max-width: 768px) 60vw, 25vw"
               />
             </Block>
