@@ -107,7 +107,7 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
             <ProjectVideo
               className="w-full md:max-w-md md:ml-auto"
               video={{
-                src: "/work/beefbar-posters/15-monte-carlo-lambo-animation.mp4",
+                src: "/work/beefbar-posters/15-monte-carlo-lambo-card.mp4",
                 alt: "Monte Carlo poster animated — a Lamborghini Miura outside the Casino de Monte-Carlo",
                 poster: "/work/beefbar-posters/15-monte-carlo-lambo-poster.webp",
               }}
