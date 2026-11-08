@@ -161,9 +161,12 @@ export function ProjectCard({
           />
         )}
         {hoverCaption && hoverImage && (
+          // display:none until the device can hover: a lazy <img> inside a
+          // display:none box is never fetched, so touch screens skip the
+          // crossfade image they can never see (~2.4 MB across /work).
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100"
+            className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100 [@media(hover:hover)]:block"
           >
             {hoverImage.src ? (
               <Image
