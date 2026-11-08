@@ -633,8 +633,10 @@ export const projects: Project[] = [
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // The card plays the 4/5 clip, like Last Call's — pinned explicitly so
-    // the grid doesn't crop it into the hero's 16/9.
-    cardVideo: true,
+    // the grid doesn't crop it into the hero's 16/9. The card plays a
+    // 720px silent cut (0.9MB) of the page's 2.8MB clip, which is what a
+    // phone was downloading for a card it shows at ~390px.
+    cardVideo: { src: "/work/citroen-2cv-concept/04-2cv-animation-card.mp4" },
     cardRatio: "4/5",
     heroVideo: {
       src: "/work/citroen-2cv-concept/04-2cv-animation-sound.mp4",
@@ -892,8 +894,9 @@ export const projects: Project[] = [
     // the video," per Josh.
     // Grid card autoplays the same clip muted/looping (ProjectCard never
     // forwards heroVideo's sound flag to the card), same mechanism as
-    // Instagram Sticker's turnaround.
-    cardVideo: true,
+    // Instagram Sticker's turnaround. Card file is a 1280px silent cut
+    // (0.7MB) of the page's 2.2MB clip.
+    cardVideo: { src: "/work/honda-super-n/19-super-n-animation-card.mp4" },
     heroVideo: {
       src: "/work/honda-super-n/19-super-n-animation-final.mp4",
       alt: "The Super N, turning, ending on the Super-N title card",
@@ -1286,7 +1289,8 @@ export const projects: Project[] = [
     // cardVideoByCategory's doc comment.
     cardVideoByCategory: {
       Motion: {
-        src: "/work/beefbar-posters/15-monte-carlo-lambo-animation.mp4",
+        // 720px cut (0.24MB); the page tile below keeps the 4MB original.
+        src: "/work/beefbar-posters/15-monte-carlo-lambo-card.mp4",
         alt: "Monte Carlo, animated",
       },
     },
