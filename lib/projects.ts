@@ -1595,7 +1595,7 @@ export const projects: Project[] = [
     // per Josh.
     pinnedRank: 17.5,
     discipline: "Automotive Livery",
-    deliverables: "Vehicle Livery · Event Poster · Social Assets · Promotional Film",
+    deliverables: "Vehicle Livery · Event Poster · Social Assets · Apparel · Promotional Film",
     // "remove 505 from icons," per Josh.
     categories: ["Cars"],
     summary: "Livery and posters for Nomad's 505 wheel launch, filmed on Josh's own Land Cruiser.",
