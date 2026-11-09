@@ -2761,26 +2761,26 @@ export const projects: Project[] = [
     deliverables: "1 Gift Tin",
     categories: ["LGBTQ+"],
     summary: "A riverside scene wrapped around a champagne tin for Pride.",
-    heroCaption: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut.",
+    heroCaption: "The flat wrap artwork, before it went round the tin.",
     brief: [
       "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month gift tin: the house's Cuvée Brut wrapped in queer scenes by the river, with a rainbow hot-air balloon drifting over town.",
+      "I worked with the printers and Piper-Heidsieck to leave room for the logos and margins, then built the scene around them.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Piper-Heidsieck" },
     ],
-    // The hero is the campaign's own 469px product render, so `spot` keeps
-    // it at the small centred width the resolution can honestly fill, same
-    // reasoning as Monocle's heel. The flat wrap (from the 2024 press kit,
-    // at full size) carries the page below it.
-    heroSize: "spot",
-    // 9/16 (matching the hero's own true ratio) ran the /work grid card
-    // far taller than its neighbours — "piper needs to be in a square
-    // and shrunk, or 4/5," per Josh. 4/5 is the site's standard portrait
-    // frame (see cardRatio's own doc comment); the tin is `fit: contain`
-    // on canvas, so the shorter frame just letterboxes more, no crop.
+    // The flat wrap leads the page now, full width from the 3340px press-kit
+    // file; the campaign's own 469px product render (the tin beside the
+    // bottle) is too small to lead, so it stays the /work card face and
+    // sits small under the wrap, same reasoning as Monocle's heel.
+    // 9/16 (the render's own true ratio) ran the /work grid card far taller
+    // than its neighbours — "piper needs to be in a square and shrunk, or
+    // 4/5," per Josh. 4/5 is the site's standard portrait frame (see
+    // cardRatio's own doc comment); the tin is `fit: contain` on canvas,
+    // so the shorter frame just letterboxes more, no crop.
     cardRatio: "4/5",
-    hero: {
+    cardImage: {
       ratio: "9/16",
       alt: "The tin, beside the bottle",
       src: "/work/piper-heidsieck/01-tin.webp",
@@ -2788,11 +2788,18 @@ export const projects: Project[] = [
       // real-alpha fix (see Plate).
       fit: "contain",
     },
+    hero: {
+      ratio: "183/200",
+      alt: "The flat wrap artwork, before it went round the tin",
+      src: "/work/piper-heidsieck/02-flat-wrap-v2.webp",
+    },
     gallery: [
       {
-        ratio: "183/200",
-        alt: "The flat wrap artwork, before it went round the tin",
-        src: "/work/piper-heidsieck/02-flat-wrap.webp",
+        ratio: "9/16",
+        alt: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut",
+        src: "/work/piper-heidsieck/01-tin.webp",
+        fit: "contain",
+        small: true,
       },
     ],
   },

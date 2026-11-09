@@ -110,7 +110,7 @@ const LA_PRIDE = [
 const PIPER = [
   img(
     "piper-heidsieck",
-    "02-flat-wrap",
+    "02-flat-wrap-v2",
     "183/200",
     "The flat wrap artwork, before it went round the tin",
   ),
