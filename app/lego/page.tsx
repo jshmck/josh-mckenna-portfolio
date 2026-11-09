@@ -87,6 +87,12 @@ const FIVE_OH_FIVE = [
 const LA_PRIDE = [
   img(
     "la-pride",
+    "04-key-art-lockup",
+    "1/1",
+    "The L.A. Pride 2024 logomark: an L and an A built out of illustrated characters",
+  ),
+  img(
+    "la-pride",
     "23-key-art-stage-banner",
     "3/2",
     "The key art across the main stage",
@@ -105,7 +111,6 @@ const LA_PRIDE = [
     "16/10",
     "Wristbands, VIP and general admission",
   ),
-  img("la-pride", "16-main-stage-screen", "16/10", "The main stage"),
 ];
 
 const PIPER = [
@@ -272,19 +277,23 @@ export default async function LegoPage() {
               </p>
             )}
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {laPrideStills.map((still) => (
+              {laPrideStills.map((still, index) => (
                 <LbTile
                   key={still.src}
                   index={still.lb}
                   label={still.alt}
-                  className="relative aspect-[3/2] overflow-hidden rounded-frame bg-placeholder"
+                  className={`relative aspect-[3/2] overflow-hidden rounded-frame ${
+                    index === 0 ? "bg-canvas" : "bg-placeholder"
+                  }`}
                 >
                   <Image
                     src={still.src}
                     alt={still.alt}
                     fill
                     sizes="(max-width: 768px) 50vw, 33vw"
-                    className="object-cover"
+                    // The logomark is a square on canvas cream: shown whole,
+                    // not cropped to a 3/2 strip through the middle.
+                    className={index === 0 ? "object-contain" : "object-cover"}
                   />
                 </LbTile>
               ))}
