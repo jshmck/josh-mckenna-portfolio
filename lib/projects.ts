@@ -259,6 +259,13 @@ export type Project = {
    */
   heroPair?: ProjectImage;
   /**
+   * Stacks directly under `hero` in a left column, with `heroPair` as one
+   * tall image on the right (HeroStackLightbox). Needs `heroPair`. Team
+   * Yamato only: the two views over the front/rear panorama, beside the
+   * sticker sheet. Lightbox order is hero, heroUnder, heroPair.
+   */
+  heroUnder?: ProjectImage;
+  /**
    * A third image alongside `hero`/`heroPair`, all three side by side —
    * Costa Smeralda's three posters, none of them a "pair" plus an
    * afterthought. Requires `heroPair` to also be set; HeroLightbox ignores
@@ -588,34 +595,27 @@ export const projects: Project[] = [
     heroCaption: "",
     brief: [
       "Team Yamato was Honda's own race club. In 1982 their touring car ran as number 1, in blue and red, with a stack of sponsor stickers. I put that livery on the new Super-N, my favourite little electric hot hatch, to see if it still works.",
-      "Eight stickers, three stripes, three views. I wanted it clear enough that a printer could cut it and a stranger could apply it.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
-    // The two big views and the sticker placement sheet open the page as a
-    // pair (the sheet is taller, HeroLightbox matches their heights); the
-    // front/rear pair closes it full width.
+    // Matches Josh's reference board: the two views over the front/rear
+    // panorama on the left, the tall sticker sheet on the right.
     hero: {
       ratio: "4/5",
       alt: "Team Yamato livery on the Super-N, front and rear three-quarter views",
       src: "/work/team-yamato-super-n/01-yamato-views.webp",
     },
+    heroUnder: {
+      ratio: "2160/966",
+      alt: "Team Yamato Super-N, front and rear views",
+      src: "/work/team-yamato-super-n/03-front-rear.webp",
+    },
     heroPair: {
       ratio: "9/16",
       alt: "Sticker placement diagram for the Team Yamato Super-N, with eight numbered stickers and three stripes",
-      src: "/work/team-yamato-super-n/02-sticker-placement.webp",
+      src: "/work/team-yamato-super-n/02-sticker-placement-v2.webp",
     },
-    // One entry flips off the default two-up so the lone panorama runs
-    // full width instead of sitting in half a row.
     hideHeroCaptions: true,
-    gallerySpans: [{ startIndex: 0, count: 1 }],
-    gallery: [
-      {
-        ratio: "2160/966",
-        alt: "Team Yamato Super-N, front and rear views",
-        src: "/work/team-yamato-super-n/03-front-rear.webp",
-        caption: false,
-      },
-    ],
+    gallery: [],
   },
   {
     slug: "hello-twingo",
