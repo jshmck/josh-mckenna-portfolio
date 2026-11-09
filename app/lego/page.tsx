@@ -86,8 +86,10 @@ const FIVE_OH_FIVE = [
 const LA_PRIDE = [
   img(
     "la-pride",
-    "04-key-art-lockup",
-    "1/1",
+    "01-la-pride-1x2",
+    // Declared 2/3 only to satisfy the type; createLightbox measures the
+    // real ratio (1/2) from the file.
+    "2/3",
     "The L.A. Pride 2024 logomark: an L and an A built out of illustrated characters",
   ),
   img(
@@ -104,12 +106,6 @@ const LA_PRIDE = [
   ),
   img("la-pride", "17-vip-entrance", "16/10", "VIP entrance"),
   img("la-pride", "06-merch-rail", "16/10", "Merch — hoodie, tee and cap"),
-  img(
-    "la-pride",
-    "10-wristbands",
-    "16/10",
-    "Wristbands, VIP and general admission",
-  ),
 ];
 
 const PIPER = [
@@ -153,6 +149,8 @@ export default async function LegoPage() {
   const nomad = getProject("nomad-wheels-505-livery");
   const yamato = getProject("team-yamato-super-n");
   const laPrideProject = getProject("la-pride");
+  const piper = getProject("piper-heidsieck");
+  const bombay = getProject("bombay-sapphire");
 
   const { lightbox, stills } = createLightbox();
 
@@ -181,6 +179,11 @@ export default async function LegoPage() {
             label="505 Touring launch · Nomad Wheels"
             href="/work/nomad-wheels-505-livery"
           >
+            {nomad && (
+              <p className="type-label mb-4 text-ink-muted">
+                {nomad.deliverables}
+              </p>
+            )}
             {/* Drawing and side photo lead, level with each other; the film
                 is the second row. */}
             <div className="space-y-3 md:space-y-5">
@@ -224,6 +227,11 @@ export default async function LegoPage() {
             label="Team Yamato · Honda Super-N"
             href="/work/team-yamato-super-n"
           >
+            {yamato && (
+              <p className="type-label mb-4 text-ink-muted">
+                {yamato.deliverables}
+              </p>
+            )}
             {yamatoStack && yamatoStills[0] && (
               <HeroStackLightbox
                 images={[yamatoStack[0], yamatoStack[1], yamatoStack[2]]}
@@ -245,24 +253,31 @@ export default async function LegoPage() {
                 {laPrideProject.deliverables}
               </p>
             )}
+            {/* The logomark introduces the section: a tall lime tile down
+                the left, two photo rows beside it. On a phone it runs full
+                width above the four photos. */}
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {laPrideStills.map((still, index) => (
                 <LbTile
                   key={still.src}
                   index={still.lb}
                   label={still.alt}
-                  className={`relative aspect-[3/2] overflow-hidden rounded-frame ${
-                    index === 0 ? "bg-canvas" : "bg-placeholder"
+                  className={`relative overflow-hidden rounded-frame bg-placeholder ${
+                    index === 0
+                      ? "col-span-2 aspect-square md:col-span-1 md:row-span-2 md:aspect-auto"
+                      : "aspect-square"
                   }`}
                 >
                   <Image
                     src={still.src}
                     alt={still.alt}
                     fill
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                    // The logomark is a square on canvas cream: shown whole,
-                    // not cropped to a 3/2 strip through the middle.
-                    className={index === 0 ? "object-contain" : "object-cover"}
+                    sizes={
+                      index === 0
+                        ? "(max-width: 768px) 100vw, 33vw"
+                        : "(max-width: 768px) 50vw, 33vw"
+                    }
+                    className="object-cover"
                   />
                 </LbTile>
               ))}
@@ -280,6 +295,11 @@ export default async function LegoPage() {
             label="Limited edition tin · Piper-Heidsieck"
             href="/work/piper-heidsieck"
           >
+            {piper && (
+              <p className="type-label mb-4 text-ink-muted">
+                {piper.deliverables}
+              </p>
+            )}
             <Row>
               <StillTile
                 still={piperStills[0]}
@@ -315,6 +335,11 @@ export default async function LegoPage() {
             label="Bombay Sapphire · Stir Creativity"
             href="/work/bombay-sapphire"
           >
+            {bombay && (
+              <p className="type-label mb-4 text-ink-muted">
+                {bombay.deliverables}
+              </p>
+            )}
             {/* Just the bottles, big: the two shots side by side at the full
                 frame width. */}
             <div className="grid gap-3 md:grid-cols-2 md:gap-5">
