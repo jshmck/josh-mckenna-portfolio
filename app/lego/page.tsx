@@ -86,10 +86,8 @@ const FIVE_OH_FIVE = [
 const LA_PRIDE = [
   img(
     "la-pride",
-    "01-la-pride-2x5",
-    // Declared 2/3 only to satisfy the type; createLightbox measures the
-    // real ratio (2/5) from the file.
-    "2/3",
+    "01-la-pride-4x5-centred",
+    "4/5",
     "The L.A. Pride 2024 logomark: an L and an A built out of illustrated characters",
   ),
   img(
@@ -106,6 +104,12 @@ const LA_PRIDE = [
   ),
   img("la-pride", "17-vip-entrance", "16/10", "VIP entrance"),
   img("la-pride", "06-merch-rail", "16/10", "Merch — hoodie, tee and cap"),
+  img(
+    "la-pride",
+    "10-wristbands",
+    "16/10",
+    "Wristbands, VIP and general admission",
+  ),
 ];
 
 const PIPER = [
@@ -253,30 +257,21 @@ export default async function LegoPage() {
                 {laPrideProject.deliverables}
               </p>
             )}
-            {/* The logomark introduces the section: a tall lime tile down
-                the left, two photo rows beside it. On a phone it runs full
-                width above the four photos. */}
+            {/* The logomark introduces the section as the first tile of the
+                row; every tile is a tall 4/5 portrait. */}
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {laPrideStills.map((still, index) => (
+              {laPrideStills.map((still) => (
                 <LbTile
                   key={still.src}
                   index={still.lb}
                   label={still.alt}
-                  className={`relative overflow-hidden rounded-frame bg-placeholder ${
-                    index === 0
-                      ? "col-span-2 aspect-square md:col-span-1 md:row-span-2 md:aspect-auto"
-                      : "aspect-[4/5]"
-                  }`}
+                  className="relative aspect-[4/5] overflow-hidden rounded-frame bg-placeholder"
                 >
                   <Image
                     src={still.src}
                     alt={still.alt}
                     fill
-                    sizes={
-                      index === 0
-                        ? "(max-width: 768px) 100vw, 33vw"
-                        : "(max-width: 768px) 50vw, 33vw"
-                    }
+                    sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-cover"
                   />
                 </LbTile>
