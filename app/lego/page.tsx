@@ -29,9 +29,9 @@ export const metadata: Metadata = {
 const FIVE_OH_FIVE = [
   img(
     "nomad-wheels-505-livery",
-    "07-livery-sheet",
-    "1/1",
-    "Livery technical drawings: top, front, rear and both sides",
+    "07-livery-sheet-v2",
+    "3980/3257",
+    "Livery technical drawings: front, rear and both sides",
   ),
   img(
     "nomad-wheels-505-livery",
