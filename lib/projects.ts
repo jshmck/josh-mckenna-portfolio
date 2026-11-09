@@ -61,9 +61,10 @@ export type ImageRatio =
   // Team Yamato's front/rear pair — a 2.24:1 panorama, true 2160x966.
   // 3/2 would have cropped a third of it.
   | "2160/966"
-  // 505 Wheel Launch's livery sheet — true 3980x3257 export, a 1.22:1 board
-  // with a border and a full-bleed legend band that 5/4 would have shaved.
-  | "3980/3257"
+  // 505 Wheel Launch's livery sheet — the cream version, trimmed to its
+  // edge-to-edge 3980x3275 board (1.22:1) with a border and a full-bleed
+  // legend band that 5/4 would have shaved.
+  | "3980/3275"
   // Instagram Sticker's Sticker Set photo — true 16:9, no existing ratio
   // came within 10% without a visible side crop.
   | "16/9"
@@ -1747,9 +1748,9 @@ export const projects: Project[] = [
     ],
     gallery: [
       {
-        ratio: "3980/3257",
+        ratio: "3980/3275",
         alt: "Livery technical drawings: front, rear and both sides",
-        src: "/work/nomad-wheels-505-livery/07-livery-sheet-v2.webp",
+        src: "/work/nomad-wheels-505-livery/07-livery-sheet-v3.webp",
         caption: false,
       },
       {
