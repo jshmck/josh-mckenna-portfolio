@@ -1644,13 +1644,8 @@ export const projects: Project[] = [
         src: "/work/nomad-wheels-505-livery/03-desert-side-profile.webp",
       },
       {
-        ratio: "2/3",
-        alt: "A driver in a white race suit buckling a helmet beside the livery",
-        src: "/work/nomad-wheels-505-livery/04-helmet-portrait.webp",
-      },
-      {
         ratio: "3/2",
-        alt: "A driver in a white race suit and helmet at the Land Cruiser's door, mountains behind",
+        alt: "Josh at the Land Cruiser's door in a race suit carrying the livery logos",
         src: "/work/nomad-wheels-505-livery/05-helmet-door.webp",
       },
       {
