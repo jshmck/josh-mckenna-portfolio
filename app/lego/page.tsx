@@ -30,7 +30,18 @@ import { siteConfig } from "@/lib/site";
  */
 export const metadata: Metadata = {
   title: "Josh McKenna — for LEGO",
+  description: "Selected work by Josh McKenna.",
   robots: { index: false, follow: false, nocache: true },
+  // Own link preview (see opengraph-image.tsx next to this file); without
+  // these the site's generic title and description would sit under it.
+  openGraph: {
+    title: "Josh McKenna — for LEGO",
+    description: "Selected work by Josh McKenna.",
+  },
+  twitter: {
+    title: "Josh McKenna — for LEGO",
+    description: "Selected work by Josh McKenna.",
+  },
 };
 
 const FIVE_OH_FIVE = [
