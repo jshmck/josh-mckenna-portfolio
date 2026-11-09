@@ -794,6 +794,7 @@ export function ProjectContent({
                 lead
                 images={project.gallery.slice(0, galleryAbove)}
                 indexOffset={lightboxLeadCount}
+                matchHeights={project.matchGalleryPairHeights}
                 eager={eager}
               />
             )}

@@ -61,9 +61,10 @@ export type ImageRatio =
   // Team Yamato's front/rear pair — a 2.24:1 panorama, true 2160x966.
   // 3/2 would have cropped a third of it.
   | "2160/966"
-  // 505 Wheel Launch's livery sheet — true 3980x3257 export, a 1.22:1 board
-  // with a border and a full-bleed legend band that 5/4 would have shaved.
-  | "3980/3257"
+  // 505 Wheel Launch's livery sheet — the cream version, trimmed to its
+  // edge-to-edge 3980x3275 board (1.22:1) with a border and a full-bleed
+  // legend band that 5/4 would have shaved.
+  | "3980/3275"
   // Piper-Heidsieck's flat tin wrap — true 2196x2400 (reduced 183/200), just
   // wider than 8/9 and 250/291. Nearest existing ratio would have shaved the
   // lamp post or the bridge off a wrap that has to read edge to edge.
@@ -317,6 +318,13 @@ export type Project = {
    * for a livery reader, before the brief.
    */
   galleryAbove?: number;
+  /**
+   * Sizes the `galleryAbove` pair's two columns by their aspect ratios, so
+   * images of different shapes share one height (ImageStack
+   * `matchHeights`). 505 Wheel Launch only for now: the technical drawing
+   * and the side-on photo sit level.
+   */
+  matchGalleryPairHeights?: boolean;
   /**
    * A closing row after the gallery, rendered with HeroLightbox so a pair
    * of different shapes still lands at one shared height. Joins the
@@ -1708,10 +1716,10 @@ export const projects: Project[] = [
     // true), with the poster and the flyer as a two-up underneath it
     // rather than a full-width hero followed by a single gallery image.
     heroVideo: {
-      src: "/work/nomad-wheels-505-livery/04-touring-promo.mp4",
+      src: "/work/nomad-wheels-505-livery/04-touring-promo-v2.mp4",
       alt: "The 505 Touring launch promotional film",
       sound: true,
-      poster: "/work/nomad-wheels-505-livery/05-video-poster.webp",
+      poster: "/work/nomad-wheels-505-livery/05-video-poster-v3.webp",
     },
     hero: {
       ratio: "4/5",
@@ -1724,6 +1732,7 @@ export const projects: Project[] = [
     // stays the card's hover image now that it isn't a heroPair.
     heroHiddenOnPage: true,
     galleryAbove: 2,
+    matchGalleryPairHeights: true,
     cardHoverImage: {
       ratio: "1/1",
       alt: "505 Touring release event flyer",
@@ -1743,14 +1752,16 @@ export const projects: Project[] = [
     ],
     gallery: [
       {
-        ratio: "3980/3257",
+        ratio: "3980/3275",
         alt: "Livery technical drawings: front, rear and both sides",
-        src: "/work/nomad-wheels-505-livery/07-livery-sheet-v2.webp",
+        src: "/work/nomad-wheels-505-livery/07-livery-sheet-v4.webp",
+        caption: false,
       },
       {
         ratio: "3/2",
         alt: "The Land Cruiser in profile at speed, livery side-on",
         src: "/work/nomad-wheels-505-livery/03-desert-side-profile.webp",
+        caption: false,
       },
       {
         ratio: "3/2",

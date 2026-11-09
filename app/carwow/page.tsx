@@ -538,9 +538,9 @@ export default async function CarwowPage() {
           <div className="md:mx-auto md:w-[calc(75%-6px)]">
             <ProjectVideo
               video={{
-                src: "/carwow/505-touring.mp4",
+                src: "/carwow/505-touring-v2.mp4",
                 alt: "The 505 Touring launch film",
-                poster: "/carwow/505-touring-frame.webp",
+                poster: "/carwow/505-touring-frame-v3.webp",
               }}
               sound
               ratio="16/9"

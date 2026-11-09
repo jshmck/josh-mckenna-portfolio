@@ -38,6 +38,13 @@ type ImageStackProps = {
   /** True on the real page, false inside a swipe peek — see Plate's
    *  `loading` prop for why. */
   eager?: boolean;
+  /**
+   * Sizes the first two images' columns in proportion to their aspect ratios
+   * so a two-up of different shapes lands at one shared height, instead of
+   * two equal columns with a taller and a shorter image. From md up; below
+   * that the pair stacks full width as ever.
+   */
+  matchHeights?: boolean;
 };
 
 /** Josh's vertical pieces are drawn to run small — full-bleed at the frame's
@@ -64,6 +71,7 @@ export function ImageStack({
   lead = false,
   flush = false,
   eager = false,
+  matchHeights = false,
 }: ImageStackProps) {
   const { openAt } = useProjectLightbox();
   // Defining any gallerySpans opts a project out of the default "first two
@@ -75,6 +83,18 @@ export function ImageStack({
   const [firstImage, secondImage, ...restImages] = images;
   const loopImages = manualLayout ? images : restImages;
   const indexOffsetLocal = manualLayout ? 0 : 2;
+  const ratioOf = (ratio: string) => {
+    const [w, h] = ratio.split("/").map(Number);
+    return w / h;
+  };
+  // Column widths in the images' own aspect ratios: height = width / ratio
+  // comes out identical for both, whatever the gap.
+  const matchedColumns =
+    matchHeights && firstImage && secondImage && !firstImage.small && !secondImage.small
+      ? ({
+          "--cols": `${ratioOf(firstImage.ratio)}fr ${ratioOf(secondImage.ratio)}fr`,
+        } as React.CSSProperties)
+      : undefined;
 
   return (
     <>
@@ -116,8 +136,9 @@ export function ImageStack({
             className={
               firstImage?.small || secondImage?.small
                 ? "flex flex-wrap justify-center gap-6 md:gap-8"
-                : "grid gap-6 md:grid-cols-2 md:gap-8"
+                : `grid gap-6 md:gap-8 ${matchedColumns ? "md:[grid-template-columns:var(--cols)]" : "md:grid-cols-2"}`
             }
+            style={matchedColumns}
           >
             {[firstImage, secondImage].filter(Boolean).map((image, index) => (
               <Reveal
