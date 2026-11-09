@@ -314,6 +314,13 @@ export type Project = {
    */
   galleryAbove?: number;
   /**
+   * Sizes the `galleryAbove` pair's two columns by their aspect ratios, so
+   * images of different shapes share one height (ImageStack
+   * `matchHeights`). 505 Wheel Launch only for now: the technical drawing
+   * and the side-on photo sit level.
+   */
+  matchGalleryPairHeights?: boolean;
+  /**
    * A closing row after the gallery, rendered with HeroLightbox so a pair
    * of different shapes still lands at one shared height. Joins the
    * lightbox cycle after the gallery. 505 Wheel Launch only for now: the
@@ -1720,6 +1727,7 @@ export const projects: Project[] = [
     // stays the card's hover image now that it isn't a heroPair.
     heroHiddenOnPage: true,
     galleryAbove: 2,
+    matchGalleryPairHeights: true,
     cardHoverImage: {
       ratio: "1/1",
       alt: "505 Touring release event flyer",
@@ -1742,11 +1750,13 @@ export const projects: Project[] = [
         ratio: "3980/3257",
         alt: "Livery technical drawings: front, rear and both sides",
         src: "/work/nomad-wheels-505-livery/07-livery-sheet-v2.webp",
+        caption: false,
       },
       {
         ratio: "3/2",
         alt: "The Land Cruiser in profile at speed, livery side-on",
         src: "/work/nomad-wheels-505-livery/03-desert-side-profile.webp",
+        caption: false,
       },
       {
         ratio: "3/2",
