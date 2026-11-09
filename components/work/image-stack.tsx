@@ -39,10 +39,11 @@ type ImageStackProps = {
    *  `loading` prop for why. */
   eager?: boolean;
   /**
-   * Sizes the first two images' columns in proportion to their aspect ratios
-   * so a two-up of different shapes lands at one shared height, instead of
-   * two equal columns with a taller and a shorter image. From md up; below
-   * that the pair stacks full width as ever.
+   * Sizes a two-up's columns in proportion to the images' aspect ratios so
+   * a pair of different shapes lands at one shared height, instead of two
+   * equal columns with a taller and a shorter image. Applies to the first
+   * two images' row and to any two-image `gallerySpans` row. From sm up;
+   * below that the pair stacks full width as ever.
    */
   matchHeights?: boolean;
 };
@@ -214,8 +215,17 @@ export function ImageStack({
                         ? "grid-cols-4"
                         : span.count === 3
                           ? "grid-cols-1 sm:grid-cols-3"
-                          : "grid-cols-1 sm:grid-cols-2"
+                          : matchHeights && span.count === 2
+                            ? "grid-cols-1 sm:[grid-template-columns:var(--cols)]"
+                            : "grid-cols-1 sm:grid-cols-2"
                     }`}
+                    style={
+                      matchHeights && span.count === 2
+                        ? ({
+                            "--cols": `${ratioOf(spanImages[0].ratio)}fr ${ratioOf(spanImages[1].ratio)}fr`,
+                          } as React.CSSProperties)
+                        : undefined
+                    }
                   >
                     {spanImages.map((spanImage, i) => (
                       <div key={spanImage.alt}>

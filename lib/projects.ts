@@ -319,10 +319,12 @@ export type Project = {
    */
   galleryAbove?: number;
   /**
-   * Sizes the `galleryAbove` pair's two columns by their aspect ratios, so
+   * Sizes every two-up row's columns by the images' aspect ratios, so
    * images of different shapes share one height (ImageStack
-   * `matchHeights`). 505 Wheel Launch only for now: the technical drawing
-   * and the side-on photo sit level.
+   * `matchHeights`): the `galleryAbove` pair, and any two-image
+   * `gallerySpans` row below. 505 Wheel Launch (the technical drawing and
+   * the side-on photo sit level) and Instagram Sticker (an all two-column
+   * gallery).
    */
   matchGalleryPairHeights?: boolean;
   /**
@@ -870,19 +872,20 @@ export const projects: Project[] = [
       sound: true,
       afterIndex: 4,
     },
-    // Sticker Set (16/9) leads as a standalone single, above the float, per
-    // Josh — it can't sit in a two-up pair with either Mardi Gras photo
-    // (3/4) without mismatching heights, so gallerySpans skips the default
-    // "first two auto-pair" and takes manual control of the whole layout
-    // from index 0: the 2020 remake runs as its own small single at index
-    // 1, Mardi Gras 2019 + Detail pair at indices 2-3, the three LA
-    // composites (indices 4-6, all true 9/16) share a row, and the book
-    // feature + Meta mural (indices 7-8, both 4/5) — the two "lonely"
-    // single-image features — pair up too.
+    // Every image row is a two-up ("i prefer two columns for images," per
+    // Josh), with matchGalleryPairHeights keeping each pair level when the
+    // two shapes differ: Sticker Set + 2020 remake (indices 0-1), the two
+    // Mardi Gras photos (2-3, the Pedestrian TV film follows), two LA
+    // composites (4-5), the third LA composite + the book feature (6-7),
+    // the Meta mural + the Vogue takeover (8-9). The animation (galleryGif)
+    // and the film (galleryVideo) stay single, since they aren't images.
+    matchGalleryPairHeights: true,
     gallerySpans: [
+      { startIndex: 0, count: 2 },
       { startIndex: 2, count: 2 },
-      { startIndex: 4, count: 3 },
-      { startIndex: 7, count: 2 },
+      { startIndex: 4, count: 2 },
+      { startIndex: 6, count: 2 },
+      { startIndex: 8, count: 2 },
     ],
     gallery: [
       {
