@@ -1711,10 +1711,10 @@ export const projects: Project[] = [
     // true), with the poster and the flyer as a two-up underneath it
     // rather than a full-width hero followed by a single gallery image.
     heroVideo: {
-      src: "/work/nomad-wheels-505-livery/04-touring-promo.mp4",
+      src: "/work/nomad-wheels-505-livery/04-touring-promo-v2.mp4",
       alt: "The 505 Touring launch promotional film",
       sound: true,
-      poster: "/work/nomad-wheels-505-livery/05-video-poster.webp",
+      poster: "/work/nomad-wheels-505-livery/05-video-poster-v2.webp",
     },
     hero: {
       ratio: "4/5",
