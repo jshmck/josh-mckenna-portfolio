@@ -10,6 +10,7 @@ import {
   StillRow,
   StillTile,
 } from "@/components/koto/page-parts";
+import { Plate } from "@/components/ui/plate";
 import { HeroStackLightbox } from "@/components/work/hero-stack-lightbox";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectVideo } from "@/components/work/project-video";
@@ -157,6 +158,36 @@ export default async function LegoPage() {
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
 
         <Section first>
+          <Block label="About">
+            {/* The Info page's own About Josh paragraph, verbatim, beside a
+                portrait. Not in the lightbox: it's context, not work. */}
+            <div className="grid gap-8 md:grid-cols-[1fr_20rem] md:items-start md:gap-12">
+              <p className="type-lede max-w-[60ch] text-ink">
+                Josh McKenna is an illustrator with over a decade of experience
+                working across digital products, editorial, and physical spaces.
+                He studied illustration at Falmouth University before going
+                freelance in 2014, working with brands from Apple to the
+                Guardian. From the iconic Instagram Pride sticker to murals for
+                Facebook and the full environmental branding for LA Pride 2024,
+                his work centres bold, inclusive characters and an obsession
+                with cars. He draws, animates and occasionally makes things in
+                3D.
+              </p>
+              <Plate
+                className="w-full max-w-xs md:max-w-none md:justify-self-end"
+                image={{
+                  ratio: "4/5",
+                  alt: "Josh McKenna in a yellow shirt, smiling, in the studio",
+                  src: "/about/portrait-yellow-shirt.webp",
+                }}
+                sizes="(max-width: 768px) 80vw, 320px"
+                priority
+              />
+            </div>
+          </Block>
+        </Section>
+
+        <Section>
           <Block
             label="505 Touring launch · Nomad Wheels"
             href="/work/nomad-wheels-505-livery"
@@ -279,8 +310,8 @@ export default async function LegoPage() {
               </LbTile>
             </Row>
             <p className="type-lede mt-4 max-w-[60ch] text-ink">
-              A limited-edition Pride tin for Piper-Heidsieck&apos;s Cuvée
-              Brut, 2024. The artwork is drawn flat and wraps round the tin; the
+              A limited-edition Pride tin for Piper-Heidsieck&apos;s Cuvée Brut,
+              2024. The artwork is drawn flat and wraps round the tin; the
               finished tin is on the right.
             </p>
           </Block>
