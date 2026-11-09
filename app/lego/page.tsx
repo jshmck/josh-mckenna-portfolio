@@ -122,11 +122,25 @@ const PIPER = [
   ),
 ];
 
+const BOMBAY_BOTTLES = [
+  img(
+    "bombay-sapphire",
+    "07-bottles-wide",
+    "4/3",
+    "Fifty hand-finished bottles, ready to go",
+  ),
+  img(
+    "bombay-sapphire",
+    "08-bottles-macro",
+    "4/3",
+    "Bottle detail, botanicals from the Grains of Paradise",
+  ),
+];
+
 /** More work, linked out to its own page rather than re-shown here. */
 const MORE = [
   "honda-super-n",
   "instagram-sticker",
-  "bombay-sapphire",
   "kiehls-trevor-project",
 ];
 
@@ -146,6 +160,7 @@ export default async function LegoPage() {
   const yamatoStills = yamatoStack ? await stills([...yamatoStack]) : [];
   const laPrideStills = await stills(LA_PRIDE);
   const piperStills = await stills(PIPER);
+  const bombayStills = await stills(BOMBAY_BOTTLES);
 
   const more = MORE.map((slug) => getProject(slug)).filter(
     (project) => project !== undefined,
@@ -287,8 +302,36 @@ export default async function LegoPage() {
         </Section>
 
         <Section>
+          <Block
+            label="Bombay Sapphire · Stir Creativity"
+            href="/work/bombay-sapphire"
+          >
+            {/* Just the bottles, big: the two shots side by side at the full
+                frame width. */}
+            <div className="grid gap-3 md:grid-cols-2 md:gap-5">
+              {bombayStills.map((still) => (
+                <LbTile
+                  key={still.src}
+                  index={still.lb}
+                  label={still.alt}
+                  className="relative aspect-[4/3] overflow-hidden rounded-frame bg-placeholder"
+                >
+                  <Image
+                    src={still.src}
+                    alt={still.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </LbTile>
+              ))}
+            </div>
+          </Block>
+        </Section>
+
+        <Section>
           <Block label="More">
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {more.map((project) => {
                 const card = project.cardImage ?? project.hero;
                 return (
@@ -303,7 +346,7 @@ export default async function LegoPage() {
                           src={card.src}
                           alt={card.alt}
                           fill
-                          sizes="(max-width: 768px) 50vw, 25vw"
+                          sizes="(max-width: 768px) 50vw, 33vw"
                           className="object-cover transition-transform duration-300 ease-drift group-hover:scale-[1.02]"
                         />
                       )}
