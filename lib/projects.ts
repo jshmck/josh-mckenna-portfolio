@@ -2770,10 +2770,10 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Piper-Heidsieck" },
     ],
-    // The flat wrap leads the page now, full width from the 3340px press-kit
-    // file; the campaign's own 469px product render (the tin beside the
-    // bottle) is too small to lead, so it stays the /work card face and
-    // sits small under the wrap, same reasoning as Monocle's heel.
+    // The flat wrap leads the page from the 3340px press-kit file; the
+    // campaign's own 469px product render (the tin beside the bottle) is
+    // too small to lead on its own, so it's the /work card face and sits
+    // level beside the wrap (heroPair).
     // 9/16 (the render's own true ratio) ran the /work grid card far taller
     // than its neighbours — "piper needs to be in a square and shrunk, or
     // 4/5," per Josh. 4/5 is the site's standard portrait frame (see
@@ -2793,15 +2793,17 @@ export const projects: Project[] = [
       alt: "The flat wrap artwork, before it went round the tin",
       src: "/work/piper-heidsieck/02-flat-wrap-v2.webp",
     },
-    gallery: [
-      {
-        ratio: "9/16",
-        alt: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut",
-        src: "/work/piper-heidsieck/01-tin.webp",
-        fit: "contain",
-        small: true,
-      },
-    ],
+    // The tin beside the wrap, level with it — the finished piece next to
+    // the flat artwork it was made from.
+    heroPair: {
+      ratio: "9/16",
+      alt: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut",
+      src: "/work/piper-heidsieck/01-tin.webp",
+      // Transparent background — contain on bg-canvas, the usual
+      // real-alpha fix (see Plate).
+      fit: "contain",
+    },
+    gallery: [],
   },
   // Coca-Cola Moments lived here — archived to lib/archived-projects.ts
   // per Josh, not deleted; see that file for the restore path.
