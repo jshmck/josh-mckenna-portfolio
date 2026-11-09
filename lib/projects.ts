@@ -58,6 +58,9 @@ export type ImageRatio =
   // shot (1134x2016, true 9:16). Nearest existing ratio (3/4) would have
   // cropped 28.7%, risking the figure's raised arm at the top of frame.
   | "9/16"
+  // Team Yamato's front/rear pair — a 2.24:1 panorama, true 2160x966.
+  // 3/2 would have cropped a third of it.
+  | "2160/966"
   // Instagram Sticker's Sticker Set photo — true 16:9, no existing ratio
   // came within 10% without a visible side crop.
   | "16/9"
@@ -573,6 +576,47 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "team-yamato-super-n",
+    title: "Team Yamato, Super-N",
+    client: "Personal",
+    year: 2026,
+    discipline: "Automotive Livery",
+    deliverables: "Key Art · Personal Study · Vehicle Livery",
+    categories: ["Cars"],
+    summary: "Honda's 1982 touring car livery, put on the new Super-N.",
+    heroCaption: "",
+    brief: [
+      "Team Yamato was Honda's own race club. In 1982 their touring car ran as number 1, in blue and red, with a stack of sponsor stickers. I put that livery on the new Super-N, my favourite little electric hot hatch, to see if it still works.",
+      "Eight stickers, three stripes, three views. I wanted it clear enough that a printer could cut it and a stranger could apply it.",
+    ],
+    credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
+    // The two big views and the sticker placement sheet open the page as a
+    // pair (the sheet is taller, HeroLightbox matches their heights); the
+    // front/rear pair closes it full width.
+    hero: {
+      ratio: "4/5",
+      alt: "Team Yamato livery on the Super-N, front and rear three-quarter views",
+      src: "/work/team-yamato-super-n/01-yamato-views.webp",
+    },
+    heroPair: {
+      ratio: "9/16",
+      alt: "Sticker placement diagram for the Team Yamato Super-N, with eight numbered stickers and three stripes",
+      src: "/work/team-yamato-super-n/02-sticker-placement.webp",
+    },
+    // One entry flips off the default two-up so the lone panorama runs
+    // full width instead of sitting in half a row.
+    hideHeroCaptions: true,
+    gallerySpans: [{ startIndex: 0, count: 1 }],
+    gallery: [
+      {
+        ratio: "2160/966",
+        alt: "Team Yamato Super-N, front and rear views",
+        src: "/work/team-yamato-super-n/03-front-rear.webp",
+        caption: false,
+      },
+    ],
+  },
   {
     slug: "hello-twingo",
     title: "Hello Twingo",
