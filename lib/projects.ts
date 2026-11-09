@@ -266,12 +266,12 @@ export type Project = {
    */
   heroUnder?: ProjectImage;
   /**
-   * A reference photo that hovers in a box under the write-up text, as wide
-   * as the text, drifting around inside it and scrolling with the page
-   * (ReferenceSticker). A visitor can drag it and flick it away. Decorative
-   * on top of the real images — not in the lightbox — so its `alt` carries
-   * the credit. Team Yamato only: the 1982 touring car beside its livery
-   * study.
+   * A reference photo that hovers between the brief and the credits,
+   * floating gently in place and scrolling with the page, so it's met on
+   * the way down to the write-up (ReferenceSticker). A visitor can drag it
+   * and flick it away. Decorative on top of the real images — not in the
+   * lightbox — so its `alt` carries the credit. Team Yamato only: the 1982
+   * touring car beside its livery study.
    */
   heroFloat?: { src: string; alt: string; width: number; height: number };
   /**
@@ -617,7 +617,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Team Yamato livery on the Super-N, front and rear three-quarter views",
-      src: "/work/team-yamato-super-n/01-yamato-views-v4.webp",
+      src: "/work/team-yamato-super-n/01-yamato-views-v5.webp",
     },
     heroUnder: {
       ratio: "2160/966",
