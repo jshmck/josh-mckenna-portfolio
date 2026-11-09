@@ -103,7 +103,12 @@ const LA_PRIDE = [
     "16/10",
     "Wayfinding totem, main stage and food village",
   ),
-  img("la-pride", "17-vip-entrance", "16/10", "VIP entrance"),
+  img(
+    "ford-bronco",
+    "01-bronco-2021",
+    "1/1",
+    "Ford Bronco, three-quarter rear, parked in the desert",
+  ),
   img("la-pride", "06-merch-rail", "16/10", "Merch — hoodie, tee and cap"),
   img(
     "la-pride",
@@ -127,6 +132,13 @@ const PIPER = [
     "The finished tin, beside the bottle",
   ),
 ];
+
+/** Per-tile crop focus for the portrait tiles, keyed by a fragment of the
+ *  file name. The wayfinding photo has its blue map at ~66% across, so 85%
+ *  centres a 4/5 crop on it (the default 50% showed mostly grass). */
+const LA_PRIDE_FOCUS: Record<string, string> = {
+  "05-wayfinding-totem": "85% center",
+};
 
 const BOMBAY_BOTTLES = [
   img(
@@ -274,6 +286,11 @@ export default async function LegoPage() {
                     fill
                     sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-cover"
+                    style={{
+                      objectPosition: Object.entries(LA_PRIDE_FOCUS).find(([key]) =>
+                        still.src.includes(key),
+                      )?.[1],
+                    }}
                   />
                 </LbTile>
               ))}
