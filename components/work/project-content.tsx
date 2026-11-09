@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { BuiltList } from "@/components/work/built-list";
 import { BackToTopLink } from "@/components/ui/back-to-top-link";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { GalleryGrid } from "@/components/work/gallery-grid";
@@ -91,6 +92,7 @@ function WriteUp({ project, leads = false }: { project: Project; leads?: boolean
             {renderBriefParagraph(paragraph)}
           </p>
         ))}
+        {project.built && <BuiltList items={project.built} className="mt-12" />}
       </div>
 
       {/* Pins while the write-up scrolls past, per the wireframe. */}

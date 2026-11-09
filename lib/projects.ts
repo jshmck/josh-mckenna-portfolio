@@ -168,6 +168,12 @@ export type ProjectImage = {
   square?: boolean;
 };
 
+/** One line of a project's "What I built" list. */
+export type BuiltItem = {
+  item: string;
+  detail: string;
+};
+
 export type Credit = {
   role: string;
   name: string;
@@ -210,6 +216,13 @@ export type Project = {
   heroCaption: string;
   /** "The brief, in Josh's words." — one paragraph per entry. */
   brief: string[];
+  /**
+   * Optional "What I built" list under the brief: one short line per
+   * deliverable, in the same order as `deliverables`. Rendered by BuiltList
+   * on the project page, and reused by any private page that shows the
+   * project. L.A. Pride only for now.
+   */
+  built?: BuiltItem[];
   credits: Credit[];
   hero: ProjectImage;
   /**
@@ -1128,6 +1141,48 @@ export const projects: Project[] = [
     brief: [
       "James Junk and I got the call to rebuild the whole visual identity from the ground up: the logo, the typeface, posters, wayfinding, every banner on site, the stage livery, digital assets for the venue's screens, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there I built the letters themselves out of people, stacking characters into the L and the A. Everything had to work at stage-header size and cap-badge size from the same drawing.",
       "I played creative director and we came up with a custom type, and I drew the characters, assets, wayfinding icons and maps.",
+    ],
+    built: [
+      {
+        item: "Logo",
+        detail:
+          "The L and the A built from stacked illustrated characters, one drawing that works from stage-header size down to cap-badge size.",
+      },
+      {
+        item: "Type",
+        detail:
+          "A custom typeface made with James Junk, starting from vintage Olympic typography and old campaign posters.",
+      },
+      {
+        item: "Posters",
+        detail: "The flyposted lineup sheet with the site map.",
+      },
+      {
+        item: "Wayfinding",
+        detail:
+          "The icons and the maps, as on the wayfinding totem for the main stage and the food village.",
+      },
+      {
+        item: "Banners",
+        detail:
+          "Every banner on site, including the lamp-post banners on Hollywood Boulevard.",
+      },
+      {
+        item: "Stage livery",
+        detail: "The key art across the main stage header.",
+      },
+      {
+        item: "Digital screens",
+        detail: "Assets for the venue's screens, including the main stage screen.",
+      },
+      {
+        item: "Wristbands",
+        detail: "VIP and general admission.",
+      },
+      {
+        item: "Merch",
+        detail: "Hoodie, tee and cap.",
+      },
     ],
     credits: [
       {
