@@ -2740,9 +2740,10 @@ export const projects: Project[] = [
     slug: "piper-heidsieck",
     title: "Piper-Heidsieck",
     client: "Piper-Heidsieck",
-    // TRIAL: "Bottle Packaging > Piper-Heidsieck," per Josh — see
+    // TRIAL: "Gift Packaging > Piper-Heidsieck," per Josh (was "Bottle
+    // Packaging", but the work is the tin, not the bottle) — see
     // Project.cardTitle.
-    cardTitle: "Bottle Packaging",
+    cardTitle: "Gift Packaging",
     cardLabel: "Piper-Heidsieck",
     year: 2024,
     discipline: "Illustration",
