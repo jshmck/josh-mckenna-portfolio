@@ -7,6 +7,7 @@ import { GalleryGrid } from "@/components/work/gallery-grid";
 import { HeroLightbox } from "@/components/work/hero-lightbox";
 import { HeroStackLightbox } from "@/components/work/hero-stack-lightbox";
 import { ProjectVideo } from "@/components/work/project-video";
+import { ReferenceSticker } from "@/components/work/reference-sticker";
 import { CarouselGallery } from "@/components/work/carousel-gallery";
 import { ImageStack } from "@/components/work/image-stack";
 import { PosterGrid } from "@/components/work/poster-grid";
@@ -587,6 +588,7 @@ export function ProjectContent({
                 // inter-image gap-6 rhythm there instead.
                 className={`mx-auto max-w-frame px-6 pt-12 md:px-gutter ${project.videoRow ? "max-md:pt-6" : "max-md:pt-0"}`}
               >
+                {project.heroFloat && <ReferenceSticker {...project.heroFloat} />}
                 {/* Video position: "top" (default, Nomad Wheels) is the main
                     showcase leading the page; "bottom" (Pato) is supplementary,
                     under the artwork it's showing off; "pair" (Last Call) sits

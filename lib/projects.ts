@@ -266,6 +266,14 @@ export type Project = {
    */
   heroUnder?: ProjectImage;
   /**
+   * A reference photo stuck to the corner of the screen, fixed while the
+   * page scrolls, that a visitor can drag and flick away
+   * (ReferenceSticker). Decorative on top of the real images — not in the
+   * lightbox — so its `alt` carries the credit. Team Yamato only: the 1982
+   * touring car beside its livery study.
+   */
+  heroFloat?: { src: string; alt: string; width: number; height: number };
+  /**
    * A third image alongside `hero`/`heroPair`, all three side by side —
    * Costa Smeralda's three posters, none of them a "pair" plus an
    * afterthought. Requires `heroPair` to also be set; HeroLightbox ignores
@@ -608,7 +616,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Team Yamato livery on the Super-N, front and rear three-quarter views",
-      src: "/work/team-yamato-super-n/01-yamato-views-v2.webp",
+      src: "/work/team-yamato-super-n/01-yamato-views-v3.webp",
     },
     heroUnder: {
       ratio: "2160/966",
@@ -618,22 +626,16 @@ export const projects: Project[] = [
     heroPair: {
       ratio: "9/16",
       alt: "Sticker placement diagram for the Team Yamato Super-N, with eight numbered stickers and three stripes",
-      src: "/work/team-yamato-super-n/02-sticker-placement-v5.webp",
+      src: "/work/team-yamato-super-n/02-sticker-placement-v6.webp",
     },
     hideHeroCaptions: true,
-    // The original car, for comparison. A 1024px web photo, so `small`
-    // keeps it at the 512px cap instead of stretching it full width;
-    // gallerySpans flips off the default two-up so it takes the
-    // standalone path.
-    gallerySpans: [{ startIndex: 0, count: 1 }],
-    gallery: [
-      {
-        ratio: "3/2",
-        alt: "The 1982 Team Yamato touring car, Honda Collection Hall. Photo: japanesenostalgiccar.com",
-        src: "/work/team-yamato-super-n/04-1982-team-yamato-civic.webp",
-        small: true,
-      },
-    ],
+    heroFloat: {
+      src: "/work/team-yamato-super-n/05-civic-photo.webp",
+      alt: "The 1982 Team Yamato touring car, Honda Collection Hall. Photo: japanesenostalgiccar.com",
+      width: 852,
+      height: 682,
+    },
+    gallery: [],
   },
   {
     slug: "hello-twingo",
