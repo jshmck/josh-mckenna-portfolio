@@ -1634,14 +1634,19 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        ratio: "3/2",
-        alt: "The 505 Touring Land Cruiser kicking up dust in the desert",
-        src: "/work/nomad-wheels-505-livery/02-desert-dust.webp",
+        ratio: "1/1",
+        alt: "Livery No. 2 technical drawings: top, front, rear and both sides",
+        src: "/work/nomad-wheels-505-livery/07-livery-sheet.webp",
       },
       {
         ratio: "3/2",
         alt: "The Land Cruiser in profile at speed, livery side-on",
         src: "/work/nomad-wheels-505-livery/03-desert-side-profile.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The 505 Touring Land Cruiser kicking up dust in the desert",
+        src: "/work/nomad-wheels-505-livery/02-desert-dust.webp",
       },
       {
         ratio: "3/2",
@@ -1652,11 +1657,6 @@ export const projects: Project[] = [
         ratio: "3/2",
         alt: "Nomad Racing apparel with the livery graphics, front and back",
         src: "/work/nomad-wheels-505-livery/06-apparel.webp",
-      },
-      {
-        ratio: "1/1",
-        alt: "Livery No. 2 technical drawings: top, front, rear and both sides",
-        src: "/work/nomad-wheels-505-livery/07-livery-sheet.webp",
       },
     ],
   },
