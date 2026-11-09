@@ -540,7 +540,7 @@ export default async function CarwowPage() {
               video={{
                 src: "/carwow/505-touring-v2.mp4",
                 alt: "The 505 Touring launch film",
-                poster: "/carwow/505-touring-frame-v2.webp",
+                poster: "/carwow/505-touring-frame-v3.webp",
               }}
               sound
               ratio="16/9"
