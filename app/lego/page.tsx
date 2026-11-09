@@ -3,7 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { LbTile } from "@/components/koto/lightbox-tile";
-import { Block, Section, StillRow } from "@/components/koto/page-parts";
+import {
+  Block,
+  Row,
+  Section,
+  StillRow,
+  StillTile,
+} from "@/components/koto/page-parts";
 import { HeroStackLightbox } from "@/components/work/hero-stack-lightbox";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectVideo } from "@/components/work/project-video";
@@ -17,7 +23,8 @@ import { siteConfig } from "@/lib/site";
  * sitemap. A static site has no auth, so this is "unlisted", not "secret".
  *
  * Leads with three pieces, in this order: the 505 Touring launch, the Team
- * Yamato livery on the Honda Super-N, and the LA Pride campaign. Everything
+ * Yamato livery on the Honda Super-N, and the LA Pride campaign, then the
+ * Piper-Heidsieck gift tin as the packaging piece. Everything
  * on it is already on the public site (no assets of its own); the building
  * blocks are the ones the Koto page uses.
  */
@@ -89,6 +96,21 @@ const LA_PRIDE = [
   img("la-pride", "16-main-stage-screen", "16/10", "The main stage"),
 ];
 
+const PIPER = [
+  img(
+    "piper-heidsieck",
+    "02-flat-wrap",
+    "183/200",
+    "The flat wrap artwork, before it went round the tin",
+  ),
+  img(
+    "piper-heidsieck",
+    "01-tin",
+    "9/16",
+    "The finished tin, beside the bottle",
+  ),
+];
+
 /** More work, linked out to its own page rather than re-shown here. */
 const MORE = [
   "honda-super-n",
@@ -112,6 +134,7 @@ export default async function LegoPage() {
       : undefined;
   const yamatoStills = yamatoStack ? await stills([...yamatoStack]) : [];
   const laPrideStills = await stills(LA_PRIDE);
+  const piperStills = await stills(PIPER);
 
   const more = MORE.map((slug) => getProject(slug)).filter(
     (project) => project !== undefined,
@@ -206,6 +229,41 @@ export default async function LegoPage() {
                 {laPrideProject.brief[1]}
               </p>
             )}
+          </Block>
+        </Section>
+
+        <Section>
+          <Block
+            label="Gift tin · Piper-Heidsieck"
+            href="/work/piper-heidsieck"
+          >
+            <Row>
+              <StillTile
+                still={piperStills[0]}
+                sizes="(max-width: 768px) 60vw, 40vw"
+              />
+              {/* The tin shot is a transparent cut-out: contain it on the
+                  canvas, not the brand-blue tile surface the stills use. */}
+              <LbTile
+                index={piperStills[1].lb}
+                label={piperStills[1].alt}
+                r={piperStills[1].r}
+                className="relative snap-center overflow-hidden rounded-frame bg-canvas"
+              >
+                <Image
+                  src={piperStills[1].src}
+                  alt={piperStills[1].alt}
+                  fill
+                  sizes="(max-width: 768px) 40vw, 25vw"
+                  className="object-contain"
+                />
+              </LbTile>
+            </Row>
+            <p className="type-lede mt-4 max-w-[60ch] text-ink">
+              A limited-edition Pride gift tin for Piper-Heidsieck&apos;s Cuvée
+              Brut, 2024. The artwork is drawn flat and wraps round the tin; the
+              finished tin is on the right.
+            </p>
           </Block>
         </Section>
 
