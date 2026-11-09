@@ -1632,7 +1632,38 @@ export const projects: Project[] = [
       alt: "505 Touring release event flyer",
       src: "/work/nomad-wheels-505-livery/01-socials-02.webp",
     },
-    gallery: [],
+    gallery: [
+      {
+        ratio: "3/2",
+        alt: "The 505 Touring Land Cruiser kicking up dust in the desert",
+        src: "/work/nomad-wheels-505-livery/02-desert-dust.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "The Land Cruiser in profile at speed, livery side-on",
+        src: "/work/nomad-wheels-505-livery/03-desert-side-profile.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "A driver in a white race suit buckling a helmet beside the livery",
+        src: "/work/nomad-wheels-505-livery/04-helmet-portrait.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "A driver in a white race suit and helmet at the Land Cruiser's door, mountains behind",
+        src: "/work/nomad-wheels-505-livery/05-helmet-door.webp",
+      },
+      {
+        ratio: "3/2",
+        alt: "Nomad Racing apparel with the livery graphics, front and back",
+        src: "/work/nomad-wheels-505-livery/06-apparel.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Livery No. 2 technical drawings: top, front, rear and both sides",
+        src: "/work/nomad-wheels-505-livery/07-livery-sheet.webp",
+      },
+    ],
   },
   {
     // Merged with the former wagamama-brighton project — two Wagamama Pride
