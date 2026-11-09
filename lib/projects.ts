@@ -1648,6 +1648,7 @@ export const projects: Project[] = [
         ratio: "3/2",
         alt: "The 505 Touring Land Cruiser kicking up dust in the desert",
         src: "/work/nomad-wheels-505-livery/02-desert-dust.webp",
+        caption: false,
       },
       {
         ratio: "3/2",
