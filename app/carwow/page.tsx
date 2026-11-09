@@ -547,7 +547,7 @@ export default async function CarwowPage() {
             />
             <div className="mt-4">
               <p className="type-label text-ink">
-                505 Touring launch · Nomad Wheel Co.{" "}
+                505 Touring launch · Nomad Wheels{" "}
                 <Link
                   href="/work/nomad-wheels-505-livery"
                   className="text-ink-muted underline"

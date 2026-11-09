@@ -1,5 +1,5 @@
 // Renders a Mail-style window (3410x2146, the MacBook mockup screen) showing an email.
-//   EMAIL=email.png AV=avatar.webp FROM="Nomad Wheel Co." SUBJECT="..." OUT=screen.png node render-mail-screen.js
+//   EMAIL=email.png AV=avatar.webp FROM="Nomad Wheels" SUBJECT="..." OUT=screen.png node render-mail-screen.js
 const { chromium } = require("playwright");
 const fs = require("fs");
 const b64 = (f, t) => `data:${t};base64,` + fs.readFileSync(f).toString("base64");

@@ -1604,8 +1604,8 @@ export const projects: Project[] = [
     // real project.title now, not a cardTitle override, so it's what
     // shows everywhere: H1, breadcrumb, browser tab, OG tags.
     title: "505 Wheel Launch",
-    client: "Nomad Wheel Co.",
-    cardLabel: "Nomad Wheel Co.",
+    client: "Nomad Wheels",
+    cardLabel: "Nomad Wheels",
     year: 2024,
     // Traded 12 for the Monocle heel's 17.5 — "swap 505 and monocle,"
     // per Josh.
@@ -1614,17 +1614,17 @@ export const projects: Project[] = [
     deliverables: "Vehicle Livery · Event Poster · Social Assets · Apparel · Promotional Film",
     // "remove 505 from icons," per Josh.
     categories: ["Cars"],
-    summary: "Livery and posters for Nomad's 505 wheel launch, filmed on Josh's own Land Cruiser.",
+    summary: "Livery and posters for the Nomad Wheels 505 launch, filmed on Josh's own Land Cruiser.",
     heroCaption:
-      "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch.",
+      "The full print-ready livery artwork for Nomad Wheels' 505 Touring launch.",
     brief: [
-      "Nomad Wheel Co. asked for a full graphic package around the launch of the 505 Touring wheel: vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. I reinterpreted popular brands as plays on the Nomad name.",
+      "Nomad Wheels asked for a full graphic package around the launch of the 505 Touring wheel: vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. I reinterpreted popular brands as plays on the Nomad name.",
       "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film.",
       "I also added the logos to the race suit and long-sleeved tees for the launch.",
     ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Client", name: "Nomad Wheel Co." },
+      { role: "Client", name: "Nomad Wheels" },
     ],
     // Josh's own re-crop, a true 4/5 with no empty margin — used as-is for
     // both the /work card and the project page's own hero, so no separate
@@ -1658,7 +1658,7 @@ export const projects: Project[] = [
     outroPair: [
       {
         ratio: "4/5",
-        alt: "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch.",
+        alt: "The full print-ready livery artwork for Nomad Wheels' 505 Touring launch.",
         src: "/work/nomad-wheels-505-livery/01-nomad-505.webp",
       },
       {

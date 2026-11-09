@@ -241,7 +241,7 @@ export default async function KotoPage() {
 
         <Section>
           <Block
-            label="505 Touring launch · Nomad Wheel Co."
+            label="505 Touring launch · Nomad Wheels"
             href="/work/nomad-wheels-505-livery"
           >
             <ProjectVideo
