@@ -47,7 +47,7 @@ export const metadata: Metadata = {
 const FIVE_OH_FIVE = [
   img(
     "nomad-wheels-505-livery",
-    "07-livery-sheet-v4",
+    "07-livery-sheet-v5",
     "3980/3275",
     "Livery technical drawings: front, rear and both sides",
   ),
@@ -161,17 +161,25 @@ export default async function LegoPage() {
             label="505 Touring launch · Nomad Wheels"
             href="/work/nomad-wheels-505-livery"
           >
-            {nomad?.heroVideo && (
-              <ProjectVideo
-                video={{
-                  src: nomad.heroVideo.src,
-                  alt: nomad.heroVideo.alt,
-                  poster: nomad.heroVideo.poster,
-                }}
-                sound
-                ratio="16/9"
+            {/* Drawing and side photo lead, level with each other; the film
+                is the second row. */}
+            <div className="space-y-3 md:space-y-5">
+              <StillRow
+                stills={nomadStills.slice(0, 2)}
+                sizes="(max-width: 768px) 60vw, 50vw"
               />
-            )}
+              {nomad?.heroVideo && (
+                <ProjectVideo
+                  video={{
+                    src: nomad.heroVideo.src,
+                    alt: nomad.heroVideo.alt,
+                    poster: nomad.heroVideo.poster,
+                  }}
+                  sound
+                  ratio="16/9"
+                />
+              )}
+            </div>
             <p className="type-lede mt-4 max-w-[60ch] text-ink">
               A full graphic package for the launch of the 505 Touring wheel,
               built from a vintage Dakar rally look. The Land Cruiser is mine
@@ -181,11 +189,11 @@ export default async function LegoPage() {
           </Block>
           <div className="space-y-3 md:space-y-5">
             <StillRow
-              stills={nomadStills.slice(0, 3)}
-              sizes="(max-width: 768px) 60vw, 40vw"
+              stills={nomadStills.slice(2, 4)}
+              sizes="(max-width: 768px) 60vw, 50vw"
             />
             <StillRow
-              stills={nomadStills.slice(3)}
+              stills={nomadStills.slice(4)}
               sizes="(max-width: 768px) 60vw, 40vw"
             />
           </div>
