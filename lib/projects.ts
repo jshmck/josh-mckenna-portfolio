@@ -588,7 +588,7 @@ export const projects: Project[] = [
     title: "Team Yamato, Super-N",
     client: "Personal",
     year: 2026,
-    discipline: "Automotive Livery",
+    discipline: "Vehicle Livery",
     deliverables: "Key Art · Personal Study · Vehicle Livery",
     categories: ["Cars"],
     summary: "Honda's 1982 touring car livery, put on the new Super-N.",
@@ -602,7 +602,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Team Yamato livery on the Super-N, front and rear three-quarter views",
-      src: "/work/team-yamato-super-n/01-yamato-views.webp",
+      src: "/work/team-yamato-super-n/01-yamato-views-v2.webp",
     },
     heroUnder: {
       ratio: "2160/966",
@@ -612,7 +612,7 @@ export const projects: Project[] = [
     heroPair: {
       ratio: "9/16",
       alt: "Sticker placement diagram for the Team Yamato Super-N, with eight numbered stickers and three stripes",
-      src: "/work/team-yamato-super-n/02-sticker-placement-v2.webp",
+      src: "/work/team-yamato-super-n/02-sticker-placement-v3.webp",
     },
     hideHeroCaptions: true,
     gallery: [],
@@ -623,7 +623,7 @@ export const projects: Project[] = [
     client: "Personal",
     year: 2026,
     discipline: "Illustration",
-    deliverables: "6 illustrations · 1 carousel",
+    deliverables: "6 Illustrations · 1 Carousel",
     categories: ["Cars", "Editorial"],
     summary: "Six Twingos and one request to Renault.",
     heroCaption: "",
@@ -683,7 +683,7 @@ export const projects: Project[] = [
     // Ranked ahead of Instagram Sticker (1) so it leads /work.
     pinnedRank: 0,
     discipline: "Illustration",
-    deliverables: "1 illustration · 1 animation",
+    deliverables: "1 Illustration · 1 Animation",
     categories: ["Cars", "Motion"],
     summary: "My new favourite car, redrawn in orange.",
     heroCaption: "Rear view of the Citroën 2CV concept.",
@@ -1317,7 +1317,7 @@ export const projects: Project[] = [
     yearLabel: "2019–Present Day",
     pinnedRank: 6,
     discipline: "Illustration",
-    deliverables: "Illustrated Poster & Menu Design",
+    deliverables: "Posters · Menus",
     // Cars per Josh ("add the monte-carlo poster from beefbar into the
     // cars section") — the card leads with the Monte Carlo Miura crop,
     // so the project reads as a car piece in that filter. Motion because
@@ -1546,7 +1546,7 @@ export const projects: Project[] = [
     // into 4/5 with no change to this project's own fields at all.
     cardRatio: "1/1",
     discipline: "Editorial Illustration",
-    deliverables: "1 Spot Illo",
+    deliverables: "1 Spot Illustration",
     // Icons dropped — same reasoning as Rooted Journal's own comment.
     categories: ["Editorial"],
     summary: "A sumo wrestler's whole physique, reduced to a knot and a topknot.",
@@ -1623,7 +1623,7 @@ export const projects: Project[] = [
     // driving as is and the california egg," per Josh.
     pinnedRank: 11,
     discipline: "Editorial Illustration",
-    deliverables: "Half-Page Illustration",
+    deliverables: "1 Half-Page Illustration",
     categories: ["Editorial"],
     summary: "An egg, nested in a bed of California poppies.",
     heroCaption: "A half-page illustration for California Magazine, on the state's growing fertility industry, 2019.",
@@ -1654,7 +1654,7 @@ export const projects: Project[] = [
     // Traded 12 for the Monocle heel's 17.5 — "swap 505 and monocle,"
     // per Josh.
     pinnedRank: 17.5,
-    discipline: "Automotive Livery",
+    discipline: "Vehicle Livery",
     deliverables: "Vehicle Livery · Event Poster · Social Assets · Apparel · Promotional Film",
     // "remove 505 from icons," per Josh.
     categories: ["Cars"],
@@ -1843,7 +1843,7 @@ export const projects: Project[] = [
     // porter"), then down to BMW Z1's 15 — "swap the mr porter invite
     // with the BMW z1," per Josh, once the Z1 card became the animation.
     pinnedRank: 15,
-    discipline: "Event Invitation",
+    discipline: "Illustration",
     deliverables: "2 Invitations",
     categories: [],
     // Overrides effectiveCardRatio's RATIO_CYCLE fallback -- without this
@@ -1905,7 +1905,7 @@ export const projects: Project[] = [
     // per Josh (Mr Porter took this entry's old 15).
     pinnedRank: 7,
     discipline: "Illustration",
-    deliverables: "Animation & 9 Illustrations",
+    deliverables: "1 Animation · 9 Illustrations",
     // Motion joins Cars with the animation — a real deliverable, Super
     // N's own precedent.
     categories: ["Cars", "Motion"],
@@ -2098,7 +2098,7 @@ export const projects: Project[] = [
     // Josh.
     pinnedRank: 12,
     discipline: "Editorial Illustration",
-    deliverables: "1 Spot Illo",
+    deliverables: "1 Spot Illustration",
     categories: ["Editorial"],
     summary: "A stiletto heel, cracking under its own weight.",
     heroCaption: "For \"Downward Trend,\" Sophie Grove's piece on the decline of the high heel, Monocle, October 2018.",
@@ -2622,7 +2622,7 @@ export const projects: Project[] = [
     cardTitle: "Rainbow Rodeo",
     year: 2024,
     discipline: "Pride Campaign",
-    deliverables: "1 invite · 3 enamel pins · 1 tee · bar accessories",
+    deliverables: "1 Invite · 3 Enamel Pins · 1 Tee · Bar Accessories",
     categories: ["LGBTQ+"],
     summary: "Two cowboys sharing a horse, printed on pins, cups and tees for Pride.",
     heroCaption:
@@ -2716,7 +2716,7 @@ export const projects: Project[] = [
     cardLabel: "Piper-Heidsieck",
     year: 2024,
     discipline: "Illustration",
-    deliverables: "1 gift tin",
+    deliverables: "1 Gift Tin",
     categories: ["LGBTQ+"],
     summary: "A riverside scene wrapped around a champagne tin for Pride.",
     heroCaption: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut.",
@@ -2814,8 +2814,8 @@ export const projects: Project[] = [
     // HSBC/Voxi square duo (Voxi's own denseSquare dropped too), and
     // down here among 4/5 neighbours a lone forced square is exactly
     // the uneven-row problem the flag avoids.
-    discipline: "Illustration & Animation",
-    deliverables: "1 animation",
+    discipline: "Animation",
+    deliverables: "1 Animation",
     categories: ["LGBTQ+", "Motion"],
     summary: "The HSBC hex, reimagined as a canvas for Pride.",
     heroCaption: "A held frame from the animation, 2023.",
@@ -2861,7 +2861,7 @@ export const projects: Project[] = [
     // rank-22/23/24 square row was already dissolved), and this entry
     // took Costa's old array slot. Array order is the gallery order.
     discipline: "Editorial Illustration",
-    deliverables: "Cover + 2 Opener Illustrations",
+    deliverables: "1 Cover · 2 Opener Illustrations",
     categories: ["Editorial"],
     summary: "Two oversized numerals, packed with everything trading in 2019.",
     heroCaption: "One of two opener illustrations for OPTO's Issue 03 cover story, \"The Markets in 2019,\" CMC Markets, Jan/Feb 2019.",
@@ -3055,7 +3055,7 @@ export const projects: Project[] = [
     year: 2019,
     yearLabel: "The Inequality Issue, 2019",
     discipline: "Editorial Illustration",
-    deliverables: "Editorial Illustration",
+    deliverables: "Illustration",
     categories: ["LGBTQ+", "Editorial"],
     summary: "A mechanic, rising from under the hood in heels.",
     heroCaption: "Illustrated for \"The Gay Divide,\" Weapons of Reason's The Inequality Issue, 2019.",
