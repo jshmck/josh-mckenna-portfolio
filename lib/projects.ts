@@ -608,7 +608,7 @@ export const projects: Project[] = [
     summary: "Honda's 1982 touring car livery, put on the new Super-N.",
     heroCaption: "",
     brief: [
-      "Team Yamato was Honda's own race club. In 1982 their touring car ran as number 1, in blue and red, with a stack of sponsor stickers. I put that livery on the new Super-N, my favourite little electric hot hatch, to see if it still works.",
+      "Team Yamato was Honda's own race club. In 1982 their touring car ran as number 1, in blue and red, with a stack of sponsor stickers. I put that livery on the new Super-N, my favourite little electric hot hatch, to see if it still works in 2026.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Matches Josh's reference board: the two views over the front/rear
