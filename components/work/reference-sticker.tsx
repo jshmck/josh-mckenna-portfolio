@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef, useState } from "react";
 
 type ReferenceStickerProps = {
   src: string;
@@ -19,33 +18,26 @@ const FLICK_DISTANCE = 160;
 const GLIDE_MS = 700;
 
 /**
- * A reference photo that hovers around the screen on its own slow path,
- * above the page, while the page scrolls underneath. Pick it up and the
- * drift pauses; let go and it glides back onto its path. A quick flick
- * sends it off the screen for good (until the page reloads) — the same
- * gesture as flicking a repost bubble off an Instagram story.
+ * A reference photo that hovers beside the write-up, drifting slowly in a
+ * small patch of the page — it scrolls with the page, so you come across it
+ * as you read down to the brief. Pick it up and the drift pauses; let go and
+ * it glides back onto its path. A quick flick sends it off the screen for
+ * good (until the page reloads) — the same gesture as flicking a repost
+ * bubble off an Instagram story.
  *
- * The path is two sine waves of different lengths (~38s and ~47s), so it
- * wanders across the lower-right two thirds of the screen without ever
- * repeating an obvious loop, and never reaches the nav.
+ * Mount it inside a `relative` parent: it anchors itself to that box (the
+ * gap between the text and the credits on desktop, the bottom-right corner
+ * on a phone) and drifts a short way either side of the anchor on two sine
+ * waves of different lengths, so the path never visibly repeats.
  *
- * Motion contract: one rAF loop writes the transform straight to the DOM;
- * React state flips once, when the sticker has left. With reduced motion
- * there is no loop at all — it rests in the bottom-right corner, a flick
- * dismisses it on release, and the ✕ button covers keyboard and
- * screen-reader visitors either way.
+ * Motion contract: one rAF loop writes the transform straight to the DOM,
+ * and only while the sticker is on screen; React state flips once, when it
+ * has left. With reduced motion there is no loop at all — it rests at its
+ * anchor, a flick dismisses it on release, and the ✕ button covers keyboard
+ * and screen-reader visitors either way.
  */
-const subscribeNever = () => () => {};
-
 export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerProps) {
   const [gone, setGone] = useState(false);
-  // False on the server and the first client render, true after hydration:
-  // the portal target (document.body) only exists in the browser.
-  const mounted = useSyncExternalStore(
-    subscribeNever,
-    () => true,
-    () => false,
-  );
   const stickerRef = useRef<HTMLDivElement>(null);
   const s = useRef({
     // Drift clock (ms of drifting done); paused while held.
@@ -60,6 +52,7 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
     py0: 0,
     holding: false,
     flinging: false,
+    inView: false,
     vx: 0,
     vy: 0,
     pointerId: 0,
@@ -70,14 +63,14 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
   });
 
   const orbit = (clock: number) => {
-    // Range of the path, in px up and left of the corner rest spot.
-    const rx = Math.min(window.innerWidth * 0.6, 900);
-    const ry = Math.min(window.innerHeight * 0.55, 480);
-    const a = (Math.sin(clock / 6000 + 0.6) + 1) / 2;
-    const b = (Math.sin(clock / 7500 + 2.1) + 1) / 2;
+    // Short drift either side of the anchor: wider on a desktop, where the
+    // text-to-credits gap has room, tight on a phone.
+    const wide = window.innerWidth >= 768;
+    const rx = wide ? 80 : 22;
+    const ry = wide ? 60 : 14;
     return {
-      x: -rx * a,
-      y: -ry * b,
+      x: Math.sin(clock / 5200 + 0.6) * rx,
+      y: Math.sin(clock / 6700 + 2.1) * ry,
       // A slow lean, so it never looks pinned flat.
       rot: -3 + Math.sin(clock / 4200) * 4,
     };
@@ -92,11 +85,18 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
   };
 
   useEffect(() => {
-    if (!mounted || gone) return;
+    if (gone) return;
+    const el = stickerRef.current;
     const d = s.current;
+    if (!el) return;
     d.reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     apply();
     if (d.reduced) return;
+    // Only drift while it's actually on screen.
+    const observer = new IntersectionObserver(([entry]) => {
+      d.inView = entry.isIntersecting;
+    });
+    observer.observe(el);
     d.last = performance.now();
     const tick = (now: number) => {
       const dt = Math.min(now - d.last, 32);
@@ -105,15 +105,12 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
         d.ox += d.vx * dt;
         d.oy += d.vy * dt;
         apply();
-        const r = stickerRef.current?.getBoundingClientRect();
-        if (
-          r &&
-          (r.right < 0 || r.left > window.innerWidth || r.bottom < 0 || r.top > window.innerHeight)
-        ) {
+        const r = el.getBoundingClientRect();
+        if (r.right < 0 || r.left > window.innerWidth || r.bottom < 0 || r.top > window.innerHeight) {
           setGone(true);
           return;
         }
-      } else if (!d.holding) {
+      } else if (!d.holding && d.inView) {
         d.clock += dt;
         // Glide back onto the path after being let go.
         const k = Math.exp(-dt / GLIDE_MS);
@@ -124,10 +121,13 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
       d.raf = requestAnimationFrame(tick);
     };
     d.raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(d.raf);
+    return () => {
+      cancelAnimationFrame(d.raf);
+      observer.disconnect();
+    };
     // apply/orbit only read refs and window.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mounted, gone]);
+  }, [gone]);
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     const d = s.current;
@@ -184,12 +184,9 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
     // Otherwise the loop's glide carries it back onto its path.
   };
 
-  if (gone || !mounted) return null;
+  if (gone) return null;
 
-  // Portalled to <body>: the project page sits inside a transformed
-  // wrapper (the pull-down swipe), and `position: fixed` inside a
-  // transformed ancestor is fixed to that ancestor, not the screen.
-  return createPortal(
+  return (
     <div
       ref={stickerRef}
       onPointerDown={onPointerDown}
@@ -197,10 +194,12 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
       title="Flick me away"
+      // Anchored with the `translate` property (Tailwind v4), so the
+      // inline transform the loop writes only carries the drift.
       // touch-action: none on the sticker alone, so a finger on it drags
       // the sticker instead of scrolling the page; the rest of the page
       // scrolls as normal.
-      className="group fixed bottom-5 right-4 z-30 w-32 cursor-grab touch-none select-none active:cursor-grabbing md:bottom-8 md:right-8 md:w-60"
+      className="group absolute z-10 w-28 cursor-grab touch-none select-none active:cursor-grabbing max-md:bottom-3 max-md:right-3 md:left-[58%] md:top-1/2 md:w-60 md:-translate-x-1/2 md:-translate-y-1/2"
       style={{ transform: "rotate(-3deg)" }}
     >
       <Image
@@ -208,7 +207,7 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
         alt={alt}
         width={width}
         height={height}
-        sizes="(max-width: 768px) 128px, 240px"
+        sizes="(max-width: 768px) 112px, 240px"
         draggable={false}
         className="pointer-events-none h-auto w-full rounded-frame shadow-[0_8px_24px_rgba(0,0,0,0.25)] max-md:rounded-[20px]"
       />
@@ -223,7 +222,6 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
       >
         ✕
       </button>
-    </div>,
-    document.body,
+    </div>
   );
 }
