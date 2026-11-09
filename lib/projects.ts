@@ -588,6 +588,12 @@ export const projects: Project[] = [
     title: "Team Yamato, Super-N",
     client: "Personal",
     year: 2026,
+    // Pinned straight after Honda Super N (2) — same car, so the two
+    // cards read as a pair. Fractional so no other rank moves.
+    pinnedRank: 2.5,
+    // The 4/5 hero as-is — without this the grid's ratio rhythm hands it a
+    // squatter frame and crops the top and bottom off both cars.
+    cardRatio: "4/5",
     discipline: "Vehicle Livery",
     deliverables: "Key Art · Personal Study · Vehicle Livery",
     categories: ["Cars"],
@@ -607,7 +613,7 @@ export const projects: Project[] = [
     heroUnder: {
       ratio: "2160/966",
       alt: "Team Yamato Super-N, front and rear views",
-      src: "/work/team-yamato-super-n/03-front-rear.webp",
+      src: "/work/team-yamato-super-n/03-front-rear-v2.webp",
     },
     heroPair: {
       ratio: "9/16",
