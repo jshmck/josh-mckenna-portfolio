@@ -41,7 +41,11 @@ export function GalleryGrid({ leadImages = [], images, indexOffset = 0 }: Galler
   return (
     <>
       {leadImages.length > 0 && (
-        <div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8">
+        <div
+          className={`mb-8 grid grid-cols-1 gap-6 md:gap-8 ${
+            leadImages.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+          }`}
+        >
           {leadImages.map((image, index) => (
             <Reveal key={image.alt}>
               <button
@@ -52,7 +56,14 @@ export function GalleryGrid({ leadImages = [], images, indexOffset = 0 }: Galler
               >
                 <div className="overflow-hidden rounded-frame">
                   <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.03]">
-                    <Plate image={image} sizes="(max-width: 768px) 100vw, 50vw" />
+                    <Plate
+                      image={image}
+                      sizes={
+                        leadImages.length === 3
+                          ? "(max-width: 768px) 100vw, 33vw"
+                          : "(max-width: 768px) 100vw, 50vw"
+                      }
+                    />
                   </div>
                 </div>
               </button>
