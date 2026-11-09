@@ -266,11 +266,12 @@ export type Project = {
    */
   heroUnder?: ProjectImage;
   /**
-   * A reference photo stuck to the corner of the screen, fixed while the
-   * page scrolls, that a visitor can drag and flick away
-   * (ReferenceSticker). Decorative on top of the real images — not in the
-   * lightbox — so its `alt` carries the credit. Team Yamato only: the 1982
-   * touring car beside its livery study.
+   * A reference photo that hovers beside the write-up, drifting in a small
+   * patch of the page and scrolling with it, so it's met on the way down to
+   * the brief (ReferenceSticker). A visitor can drag it and flick it away.
+   * Decorative on top of the real images — not in the lightbox — so its
+   * `alt` carries the credit. Team Yamato only: the 1982 touring car beside
+   * its livery study.
    */
   heroFloat?: { src: string; alt: string; width: number; height: number };
   /**

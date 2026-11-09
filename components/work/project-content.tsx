@@ -78,8 +78,10 @@ function WriteUp({ project, leads = false }: { project: Project; leads?: boolean
     // journal, beefbar etc) the text could be tighter," per Josh.
     <div
       data-project-writeup
-      className={`mx-auto grid max-w-frame gap-14 px-6 py-20 max-md:py-10 md:grid-cols-[1fr_260px] md:px-gutter ${leads ? "max-md:pt-0" : ""}`}
+      className={`relative mx-auto grid max-w-frame gap-14 px-6 py-20 max-md:py-10 md:grid-cols-[1fr_260px] md:px-gutter ${leads ? "max-md:pt-0" : ""}`}
     >
+      {/* A reference photo hovering by the brief — see ReferenceSticker. */}
+      {project.heroFloat && <ReferenceSticker {...project.heroFloat} />}
       <div className="max-w-2xl">
         {project.brief.map((paragraph, index) => (
           <p
@@ -588,7 +590,6 @@ export function ProjectContent({
                 // inter-image gap-6 rhythm there instead.
                 className={`mx-auto max-w-frame px-6 pt-12 md:px-gutter ${project.videoRow ? "max-md:pt-6" : "max-md:pt-0"}`}
               >
-                {project.heroFloat && <ReferenceSticker {...project.heroFloat} />}
                 {/* Video position: "top" (default, Nomad Wheels) is the main
                     showcase leading the page; "bottom" (Pato) is supplementary,
                     under the artwork it's showing off; "pair" (Last Call) sits
