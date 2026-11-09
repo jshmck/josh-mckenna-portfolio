@@ -848,6 +848,7 @@ export function ProjectContent({
                 galleryVideo={project.galleryVideo}
                 galleryGif={project.galleryGif}
                 gallerySpans={project.gallerySpans}
+                matchHeights={project.matchGalleryPairHeights}
                 eager={eager}
               />
             ) : null}
