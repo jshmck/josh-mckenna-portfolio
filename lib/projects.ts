@@ -1604,6 +1604,7 @@ export const projects: Project[] = [
     brief: [
       "Nomad Wheel Co. asked for a full graphic package around the launch of the 505 Touring wheel: vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. I reinterpreted popular brands as plays on the Nomad name.",
       "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film.",
+      "I also added the logos to the race suit and long-sleeved tees for the launch.",
     ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
