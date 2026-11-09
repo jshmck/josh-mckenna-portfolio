@@ -596,9 +596,9 @@ export const projects: Project[] = [
     title: "Team Yamato, Super-N",
     client: "Personal",
     year: 2026,
-    // Pinned straight after Honda Super N (2) — same car, so the two
-    // cards read as a pair. Fractional so no other rank moves.
-    pinnedRank: 2.5,
+    // Was straight after Honda Super N; swapped with LA Pride (now 2.5),
+    // per Josh.
+    pinnedRank: 3,
     // The 4/5 hero as-is — without this the grid's ratio rhythm hands it a
     // squatter frame and crops the top and bottom off both cars.
     cardRatio: "4/5",
@@ -1082,7 +1082,9 @@ export const projects: Project[] = [
     cardTitle: "Pride 2024",
     cardLabel: "LA Pride",
     year: 2024,
-    pinnedRank: 3,
+    // Swapped with Team Yamato (now 3), per Josh: LA Pride takes the slot
+    // straight after Honda Super N.
+    pinnedRank: 2.5,
     discipline: "Festival Identity",
     // Full rebrand scope, per Josh — "it was a rebrand project, involved
     // everything: logo, type, posters, wayfinding, banners, stage
