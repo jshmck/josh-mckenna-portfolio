@@ -617,17 +617,17 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Team Yamato livery on the Super-N, front and rear three-quarter views",
-      src: "/work/team-yamato-super-n/01-yamato-views-v3.webp",
+      src: "/work/team-yamato-super-n/01-yamato-views-v4.webp",
     },
     heroUnder: {
       ratio: "2160/966",
       alt: "Team Yamato Super-N, front and rear views",
-      src: "/work/team-yamato-super-n/03-front-rear-v2.webp",
+      src: "/work/team-yamato-super-n/03-front-rear-v3.webp",
     },
     heroPair: {
       ratio: "9/16",
       alt: "Sticker placement diagram for the Team Yamato Super-N, with eight numbered stickers and three stripes",
-      src: "/work/team-yamato-super-n/02-sticker-placement-v6.webp",
+      src: "/work/team-yamato-super-n/02-sticker-placement-v7.webp",
     },
     hideHeroCaptions: true,
     heroFloat: {
