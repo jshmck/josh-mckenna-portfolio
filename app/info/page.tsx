@@ -115,15 +115,13 @@ export default function AboutPage() {
 
             {/* 4/5 per Josh — "same rule as gallery", the portrait ratio
                 the /work grid uses, kept when the photo was swapped
-                ("keep the frame the same size," per Josh). Pre-cropped
-                from the 2:3 studio master (Desktop/Website Projects
-                Folder/Josh.JPG): a light 100px trim off the top keeps
-                real headroom above the hat, the rest comes off the
-                bottom so the crop ends at the knee rather than slicing
-                the sock mid-shin. The filename names the shot, not just
-                "portrait": Next's image cache keys on the URL, so
-                swapping a different photo in under the same name serves
-                the stale one.
+                ("keep the frame the same size," per Josh). Now the
+                yellow-shirt studio portrait (700x906, from the Falmouth
+                Wunderkammer alumni story, Josh's own photo) — the 4/5
+                frame trims a few percent off its top and bottom. The
+                filename names the shot, not just "portrait": Next's image
+                cache keys on the URL, so swapping a different photo in
+                under the same name serves the stale one.
                 Capped at max-w-sm and tucked to the right edge on desktop
                 ("it feels quite big on the page," per Josh — full column
                 width read as a hero image, not a headshot); mobile keeps
@@ -132,8 +130,8 @@ export default function AboutPage() {
               className="w-full md:col-span-2 md:max-w-sm md:justify-self-end"
               image={{
                 ratio: "4/5",
-                alt: "Josh McKenna in a cowboy hat, holding a red rose, against a studio backdrop",
-                src: "/about/portrait-cowboy-rose.jpg",
+                alt: "Josh McKenna in a yellow shirt, smiling, in the studio",
+                src: "/about/portrait-yellow-shirt.webp",
               }}
               sizes="(max-width: 768px) 100vw, 384px"
               // The page's largest above-the-fold image and its LCP
