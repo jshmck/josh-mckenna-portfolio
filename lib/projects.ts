@@ -612,7 +612,7 @@ export const projects: Project[] = [
     heroPair: {
       ratio: "9/16",
       alt: "Sticker placement diagram for the Team Yamato Super-N, with eight numbered stickers and three stripes",
-      src: "/work/team-yamato-super-n/02-sticker-placement-v3.webp",
+      src: "/work/team-yamato-super-n/02-sticker-placement-v4.webp",
     },
     hideHeroCaptions: true,
     gallery: [],
