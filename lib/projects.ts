@@ -1645,11 +1645,6 @@ export const projects: Project[] = [
       },
       {
         ratio: "3/2",
-        alt: "The 505 Touring Land Cruiser kicking up dust in the desert",
-        src: "/work/nomad-wheels-505-livery/02-desert-dust.webp",
-      },
-      {
-        ratio: "3/2",
         alt: "Josh at the Land Cruiser's door in a race suit carrying the livery logos",
         src: "/work/nomad-wheels-505-livery/05-helmet-door.webp",
       },
