@@ -1750,7 +1750,7 @@ export const projects: Project[] = [
       {
         ratio: "3980/3275",
         alt: "Livery technical drawings: front, rear and both sides",
-        src: "/work/nomad-wheels-505-livery/07-livery-sheet-v3.webp",
+        src: "/work/nomad-wheels-505-livery/07-livery-sheet-v4.webp",
         caption: false,
       },
       {
