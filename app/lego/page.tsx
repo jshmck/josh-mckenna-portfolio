@@ -24,7 +24,7 @@ import { siteConfig } from "@/lib/site";
  *
  * Leads with three pieces, in this order: the 505 Touring launch, the Team
  * Yamato livery on the Honda Super-N, and the LA Pride campaign, then the
- * Piper-Heidsieck gift tin as the packaging piece. Everything
+ * Piper-Heidsieck tin as the packaging piece. Everything
  * on it is already on the public site (no assets of its own); the building
  * blocks are the ones the Koto page uses.
  */
@@ -245,7 +245,7 @@ export default async function LegoPage() {
 
         <Section>
           <Block
-            label="Gift tin · Piper-Heidsieck"
+            label="Limited edition tin · Piper-Heidsieck"
             href="/work/piper-heidsieck"
           >
             <Row>
@@ -271,7 +271,7 @@ export default async function LegoPage() {
               </LbTile>
             </Row>
             <p className="type-lede mt-4 max-w-[60ch] text-ink">
-              A limited-edition Pride gift tin for Piper-Heidsieck&apos;s Cuvée
+              A limited-edition Pride tin for Piper-Heidsieck&apos;s Cuvée
               Brut, 2024. The artwork is drawn flat and wraps round the tin; the
               finished tin is on the right.
             </p>
