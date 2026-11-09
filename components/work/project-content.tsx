@@ -178,7 +178,11 @@ export function ProjectContent({
     projectProp.heroVideo?.position === "card"
       ? { ...projectProp, heroVideo: undefined }
       : projectProp;
-  const [firstImage, secondImage, ...restImages] = project.gallery;
+  // `galleryLayout: "grid"` only: the first two gallery images (three on
+  // la-pride) are the lead row above the uniform grid.
+  const gridLeadCount = project.galleryGridLeads ?? 2;
+  const gridLeads = project.gallery.slice(0, gridLeadCount);
+  const gridRest = project.gallery.slice(gridLeadCount);
 
   // Prev/next derived here rather than passed in as props --
   // ProjectContent is also rendered by ProjectStackSwipe's StackPeek,
@@ -828,8 +832,8 @@ export function ProjectContent({
             {project.galleryLayout === "carousel" ? null : project.galleryLayout === "grid" ? (
               <div className="mx-auto max-w-frame px-6 pb-40 max-md:pb-24 md:px-gutter">
                 <GalleryGrid
-                  leadImages={[firstImage, secondImage].filter((image): image is NonNullable<typeof image> => Boolean(image))}
-                  images={restImages}
+                  leadImages={gridLeads}
+                  images={gridRest}
                   indexOffset={lightboxLeadCount}
                 />
               </div>

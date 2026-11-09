@@ -575,6 +575,11 @@ export type Project = {
    * Posters only for now.
    */
   galleryLayout?: "grid" | "poster-grid" | "carousel";
+  /** `"grid"` only: how many of the first `gallery` images run as the tall
+   *  lead row above the uniform two-column grid. Defaults to 2; 3 puts the
+   *  lead row three across (la-pride: the flyposted wall, the logomark and
+   *  the lamp-post banner, all 2/3). */
+  galleryGridLeads?: 2 | 3;
   /** `"poster-grid"` only: column count at the widest breakpoint. Defaults
    *  to 4 (Beefbar). Rooted Journal's ten same-size spot icons read as two
    *  clean rows of five rather than 4+4+2, so it opts into 5. */
@@ -1191,9 +1196,13 @@ export const projects: Project[] = [
       },
       {
         ratio: "2/3",
-        fit: "contain",
         alt: "The key art lockup",
-        src: "/work/la-pride/04-key-art-lockup.webp",
+        src: "/work/la-pride/01-la-pride-2x3.webp",
+      },
+      {
+        ratio: "2/3",
+        alt: "The campaign on a lamp-post banner, Hollywood Boulevard",
+        src: "/work/la-pride/09-lamp-post-banner.webp",
       },
       {
         ratio: "16/10",
@@ -1257,6 +1266,7 @@ export const projects: Project[] = [
       },
     ],
     galleryLayout: "grid",
+    galleryGridLeads: 3,
   },
   {
     slug: "atlanta-magazine",
