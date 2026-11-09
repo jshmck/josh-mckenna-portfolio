@@ -277,6 +277,10 @@ export function ProjectContent({
   const asLightboxImage = (image: ProjectImage): ProjectImage =>
     image.lightbox ? { ...image, ...image.lightbox, lightbox: undefined } : image;
   const lightboxLeadCount = heroLightboxImages.length + (heroVideoLightboxItem ? 1 : 0);
+  // Gallery images that open the page above the write-up (galleryAbove),
+  // and the rest that keep their place below it.
+  const galleryAbove = project.galleryAbove ?? 0;
+  const galleryBelow = project.gallery.slice(galleryAbove);
 
   return (
     // Mobile-only "card" presentation -- "on mobile when you open a
@@ -504,6 +508,7 @@ export function ProjectContent({
               ...heroLightboxImages.map(asLightboxImage),
               ...(heroVideoLightboxItem ? [heroVideoLightboxItem] : []),
               ...project.gallery.map(asLightboxImage),
+              ...(project.outroPair ?? []).map(asLightboxImage),
             ]}
           >
             {project.videoRow && (
@@ -739,6 +744,15 @@ export function ProjectContent({
               </div>
             )}
 
+            {galleryAbove > 0 && (
+              <ImageStack
+                lead
+                images={project.gallery.slice(0, galleryAbove)}
+                indexOffset={lightboxLeadCount}
+                eager={eager}
+              />
+            )}
+
             <WriteUp project={project} />
 
             {project.heroVideo?.position === "outro" && (
@@ -773,7 +787,7 @@ export function ProjectContent({
                   indexOffset={lightboxLeadCount}
                 />
               </div>
-            ) : project.gallery.length > 0 || project.galleryVideo || project.galleryGif ? (
+            ) : galleryBelow.length > 0 || project.galleryVideo || project.galleryGif ? (
               // Gated on actually having something to show -- an empty
               // ImageStack still rendered its wrapper's full bottom
               // padding, so projects that end in text (Ford Bronco: hero
@@ -782,14 +796,25 @@ export function ProjectContent({
               // Surfaced by "the spacing from last image or text to
               // bottom of project card is a bit too large," per Josh.
               <ImageStack
-                images={project.gallery}
-                indexOffset={lightboxLeadCount}
+                images={galleryBelow}
+                indexOffset={lightboxLeadCount + galleryAbove}
+                flush={Boolean(project.outroPair)}
                 galleryVideo={project.galleryVideo}
                 galleryGif={project.galleryGif}
                 gallerySpans={project.gallerySpans}
                 eager={eager}
               />
             ) : null}
+
+            {project.outroPair && (
+              <div className="mx-auto max-w-frame px-6 pb-40 pt-6 max-md:pb-24 md:px-gutter md:pt-8">
+                <HeroLightbox
+                  images={project.outroPair}
+                  captions={project.outroPair.map((image) => (image.caption === false ? "" : image.alt))}
+                  indexOffset={lightboxLeadCount + project.gallery.length}
+                />
+              </div>
+            )}
           </ProjectLightboxProvider>
         )}
 

@@ -29,6 +29,12 @@ type ImageStackProps = {
   /** Trial (Instagram Sticker only): groups consecutive images into one
    *  row instead of stacking them. See Project.gallerySpans. */
   gallerySpans?: { startIndex: number; count: number }[];
+  /** Sits directly under the hero/video, above the write-up: top spacing
+   *  instead of the page-closing bottom padding. See Project.galleryAbove. */
+  lead?: boolean;
+  /** Something follows this stack, so drop the page-closing bottom
+   *  padding. See Project.outroPair. */
+  flush?: boolean;
   /** True on the real page, false inside a swipe peek — see Plate's
    *  `loading` prop for why. */
   eager?: boolean;
@@ -55,6 +61,8 @@ export function ImageStack({
   galleryVideo,
   galleryGif,
   gallerySpans = [],
+  lead = false,
+  flush = false,
   eager = false,
 }: ImageStackProps) {
   const { openAt } = useProjectLightbox();
@@ -85,7 +93,11 @@ export function ImageStack({
           frames on mobile," per Josh, mobile only, matching the same
           gap-6/md:gap-8 pairing PosterGrid and MasonryGrid already use.
           Desktop's md:space-y-8/md:gap-8 stays exactly as it was. */}
-      <div className="mx-auto max-w-frame space-y-6 px-6 pb-40 max-md:pb-24 md:space-y-8 md:px-gutter">
+      <div
+        className={`mx-auto max-w-frame space-y-6 px-6 md:space-y-8 md:px-gutter ${
+          lead ? "pt-6 md:pt-8" : flush ? "" : "pb-40 max-md:pb-24"
+        }`}
+      >
         {galleryGif && galleryGif.afterIndex === 0 && (
           // Capped to max-w-lg (512px) — the source is only 1080px native,
           // so stretching it to the frame's full 1344px width would

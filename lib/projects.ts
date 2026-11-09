@@ -284,6 +284,22 @@ export type Project = {
    */
   heroHiddenOnPage?: boolean;
   /**
+   * How many of the first `gallery` images render ABOVE the write-up
+   * (straight under the hero/video) instead of below it. The rest of the
+   * gallery keeps its usual place. 505 Wheel Launch only for now: the
+   * technical drawing and the side-on photo open the page under the film,
+   * for a livery reader, before the brief.
+   */
+  galleryAbove?: number;
+  /**
+   * A closing row after the gallery, rendered with HeroLightbox so a pair
+   * of different shapes still lands at one shared height. Joins the
+   * lightbox cycle after the gallery. 505 Wheel Launch only for now: the
+   * key-art illustration and the launch invite close the page, and `hero`
+   * stays the /work card face and OG image via `heroHiddenOnPage`.
+   */
+  outroPair?: ProjectImage[];
+  /**
    * Suppresses the caption paragraph(s) under `hero`/`heroPair` — BMW Z1
    * only for now, where the alt text ("BMW Z1") added nothing the title
    * above it didn't already say.
@@ -1628,11 +1644,29 @@ export const projects: Project[] = [
       alt: "The full 505 Touring livery — Land Cruiser drifting through desert dunes",
       src: "/work/nomad-wheels-505-livery/01-nomad-505.webp",
     },
-    heroPair: {
+    // The page opens film, then the drawing and side-on photo (galleryAbove),
+    // then the brief; the key-art illustration and the invite close it
+    // (outroPair). `hero` stays the card face / OG image, and the invite
+    // stays the card's hover image now that it isn't a heroPair.
+    heroHiddenOnPage: true,
+    galleryAbove: 2,
+    cardHoverImage: {
       ratio: "1/1",
       alt: "505 Touring release event flyer",
       src: "/work/nomad-wheels-505-livery/01-socials-02.webp",
     },
+    outroPair: [
+      {
+        ratio: "4/5",
+        alt: "The full print-ready livery artwork for Nomad Wheel Co.'s 505 Touring launch.",
+        src: "/work/nomad-wheels-505-livery/01-nomad-505.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "505 Touring release event flyer",
+        src: "/work/nomad-wheels-505-livery/01-socials-02.webp",
+      },
+    ],
     gallery: [
       {
         ratio: "1/1",

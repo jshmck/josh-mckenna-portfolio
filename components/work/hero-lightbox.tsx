@@ -19,12 +19,15 @@ type HeroLightboxProps = {
   captions: string[];
   hideCaptions?: boolean;
   sizes?: string;
+  /** How many lightbox frames precede these images in the shared cycle.
+   *  0 for a hero (always first); set when the row closes the page. */
+  indexOffset?: number;
 };
 
 /** Click-to-enlarge for the project hero / heroPair images — opens the same
  *  shared lightbox cycle as the gallery below it, via ProjectLightboxProvider,
  *  so paging from a hero image carries straight on into the gallery. */
-export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: HeroLightboxProps) {
+export function HeroLightbox({ images, captions, hideCaptions = false, sizes, indexOffset = 0 }: HeroLightboxProps) {
   const { openAt } = useProjectLightbox();
 
   // Images of different ratios (e.g. a 4/5 flat set beside a 250/291
@@ -128,7 +131,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
         >
           <button
             type="button"
-            onClick={() => openAt(index)}
+            onClick={() => openAt(indexOffset + index)}
             aria-label={`Open larger view of ${image.alt}`}
             className={`group block cursor-zoom-in text-left ${heightMatchedRow ? "h-full" : "w-full"}`}
           >
@@ -148,7 +151,7 @@ export function HeroLightbox({ images, captions, hideCaptions = false, sizes }: 
                         ? "(max-width: 768px) 100vw, 50vw"
                         : "(max-width: 1344px) 100vw, 1344px")
                   }
-                  priority={index === 0}
+                  priority={indexOffset === 0 && index === 0}
                   radius={image.square ? "" : undefined}
                   className={heightMatchedRow ? "h-full" : undefined}
                 />
