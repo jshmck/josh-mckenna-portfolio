@@ -1732,7 +1732,7 @@ export const projects: Project[] = [
       src: "/work/nomad-wheels-505-livery/04-touring-promo-v2.mp4",
       alt: "The 505 Touring launch promotional film",
       sound: true,
-      poster: "/work/nomad-wheels-505-livery/05-video-poster-v3.webp",
+      poster: "/work/nomad-wheels-505-livery/05-video-poster-v4.webp",
     },
     hero: {
       ratio: "4/5",

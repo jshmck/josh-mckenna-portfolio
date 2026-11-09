@@ -248,7 +248,7 @@ export default async function KotoPage() {
               video={{
                 src: "/koto/505-touring-v2.mp4",
                 alt: "The 505 Touring launch film",
-                poster: "/koto/505-touring-frame-v3.webp",
+                poster: "/koto/505-touring-frame-v4.webp",
               }}
               sound
               ratio="16/9"
