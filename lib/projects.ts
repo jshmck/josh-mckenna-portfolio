@@ -2758,13 +2758,13 @@ export const projects: Project[] = [
     cardLabel: "Piper-Heidsieck",
     year: 2024,
     discipline: "Illustration",
-    deliverables: "1 Gift Tin",
+    deliverables: "1 Metal Tin",
     categories: ["LGBTQ+"],
     summary: "A riverside scene wrapped around a champagne tin for Pride.",
     heroCaption: "The flat wrap artwork, before it went round the tin.",
     brief: [
-      "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month gift tin: the house's Cuvée Brut wrapped in queer scenes by the river, with a rainbow hot-air balloon drifting over town.",
-      "I worked with the printers and Piper-Heidsieck to leave room for the logos and margins, then built the scene around them.",
+      "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month tin: the house's Cuvée Brut wrapped in queer scenes by the river, with a rainbow hot-air balloon drifting over town.",
+      "I worked closely with the printers and Piper-Heidsieck to a very strict layout: space for the logos, print margins and overlap, with the whole scene built to fit.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
