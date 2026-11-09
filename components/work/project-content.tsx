@@ -134,6 +134,28 @@ function WriteUp({ project, leads = false }: { project: Project; leads?: boolean
  * to know it's being previewed — same markup either way, just how much of
  * it ends up visible differs by context.
  */
+/**
+ * Where a project's Discipline links to on /work. Each discipline opens the
+ * category pill it belongs under; plain "Illustration" is the whole body of
+ * work, so it opens the unfiltered gallery. A discipline with no entry here
+ * stays plain text.
+ */
+const DISCIPLINE_FILTER: Record<string, string> = {
+  Illustration: "",
+  "Editorial Illustration": "Editorial",
+  "3D Illustration": "3D",
+  "Vehicle Livery": "Cars",
+  "Pride Campaign": "LGBTQ+",
+  "Festival Identity": "LGBTQ+",
+  Animation: "Motion",
+};
+
+function disciplineHref(discipline: string): string | undefined {
+  const category = DISCIPLINE_FILTER[discipline];
+  if (category === undefined) return undefined;
+  return category ? `/work?category=${encodeURIComponent(category)}` : "/work";
+}
+
 export function ProjectContent({
   project: projectProp,
   eager = false,
@@ -175,7 +197,7 @@ export function ProjectContent({
   // clientPartner (Comic Relief x Sink The Pink so far) prints as a second
   // line under Client, not appended inline — value stays an array only
   // when there's a second name to show.
-  const meta: { label: string; value: string | string[] }[] = [
+  const meta: { label: string; value: string | string[]; href?: string }[] = [
     {
       label: "Client",
       value: project.clientPartner
@@ -183,7 +205,11 @@ export function ProjectContent({
         : project.client,
     },
     { label: "Year", value: project.yearLabel ?? String(project.year) },
-    { label: "Discipline", value: project.discipline },
+    {
+      label: "Discipline",
+      value: project.discipline,
+      href: disciplineHref(project.discipline),
+    },
     { label: "Deliverables", value: project.deliverables },
   ];
 
@@ -471,9 +497,18 @@ export function ProjectContent({
                 <div key={item.label}>
                   <dt className="type-label text-ink/60">{item.label}</dt>
                   <dd className="mt-1.5 font-body text-[15px] font-medium text-ink">
-                    {Array.isArray(item.value)
-                      ? item.value.map((line) => <div key={line}>{line}</div>)
-                      : item.value}
+                    {Array.isArray(item.value) ? (
+                      item.value.map((line) => <div key={line}>{line}</div>)
+                    ) : item.href ? (
+                      <Link
+                        href={item.href}
+                        className="transition-colors duration-200 hover:text-accent"
+                      >
+                        {item.value}
+                      </Link>
+                    ) : (
+                      item.value
+                    )}
                   </dd>
                 </div>
               ))}
