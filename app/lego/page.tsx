@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { BuiltList } from "@/components/work/built-list";
 import { LbTile } from "@/components/koto/lightbox-tile";
 import {
   Block,
@@ -281,6 +282,9 @@ export default async function LegoPage() {
               <p className="type-lede mt-4 max-w-[60ch] text-ink">
                 {laPrideProject.brief[1]}
               </p>
+            )}
+            {laPrideProject?.built && (
+              <BuiltList items={laPrideProject.built} className="mt-10 max-w-3xl" />
             )}
           </Block>
         </Section>
