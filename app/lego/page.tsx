@@ -86,9 +86,9 @@ const FIVE_OH_FIVE = [
 const LA_PRIDE = [
   img(
     "la-pride",
-    "01-la-pride-1x2",
+    "01-la-pride-2x5",
     // Declared 2/3 only to satisfy the type; createLightbox measures the
-    // real ratio (1/2) from the file.
+    // real ratio (2/5) from the file.
     "2/3",
     "The L.A. Pride 2024 logomark: an L and an A built out of illustrated characters",
   ),
@@ -265,7 +265,7 @@ export default async function LegoPage() {
                   className={`relative overflow-hidden rounded-frame bg-placeholder ${
                     index === 0
                       ? "col-span-2 aspect-square md:col-span-1 md:row-span-2 md:aspect-auto"
-                      : "aspect-square"
+                      : "aspect-[4/5]"
                   }`}
                 >
                   <Image
