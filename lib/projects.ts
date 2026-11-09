@@ -1650,7 +1650,7 @@ export const projects: Project[] = [
       },
       {
         ratio: "3/2",
-        alt: "Josh at the Land Cruiser's door in a race suit carrying the livery logos",
+        alt: "Right side, matching livery: Josh wearing a custom race suit with the logos applied",
         src: "/work/nomad-wheels-505-livery/05-helmet-door.webp",
       },
       {
