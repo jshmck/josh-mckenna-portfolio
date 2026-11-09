@@ -2090,7 +2090,20 @@ export const projects: Project[] = [
       alt: "The mural in Bombay Sapphire's Shoreditch CANVAS pop-up, #StirCreativity in the window",
       src: "/work/bombay-sapphire/01-storefront.webp",
     },
+    // The bottles lead the gallery ("bottles shots priority," per Josh): the
+    // wide shot and the macro are the first two-up under the write-up, then
+    // the jacket and the mural.
     gallery: [
+      {
+        ratio: "4/3",
+        alt: "Fifty hand-finished bottles, ready to go",
+        src: "/work/bombay-sapphire/07-bottles-wide.webp",
+      },
+      {
+        ratio: "4/3",
+        alt: "Bottle detail — botanicals from the Grains of Paradise",
+        src: "/work/bombay-sapphire/08-bottles-macro.webp",
+      },
       {
         ratio: "4/3",
         alt: "The finished jacket back",
@@ -2105,16 +2118,6 @@ export const projects: Project[] = [
         ratio: "3/2",
         alt: "Painting the mural live in the window",
         src: "/work/bombay-sapphire/02-mural-painting.webp",
-      },
-      {
-        ratio: "4/3",
-        alt: "Fifty hand-finished bottles, ready to go",
-        src: "/work/bombay-sapphire/07-bottles-wide.webp",
-      },
-      {
-        ratio: "4/3",
-        alt: "Bottle detail — botanicals from the Grains of Paradise",
-        src: "/work/bombay-sapphire/08-bottles-macro.webp",
       },
     ],
   },
