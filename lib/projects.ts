@@ -1197,7 +1197,7 @@ export const projects: Project[] = [
       {
         ratio: "2/3",
         alt: "The key art lockup",
-        src: "/work/la-pride/01-la-pride-2x3.webp",
+        src: "/work/la-pride/01-la-pride-2x3-v2.webp",
       },
       {
         ratio: "2/3",
