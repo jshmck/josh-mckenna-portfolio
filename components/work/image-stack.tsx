@@ -270,7 +270,9 @@ export function ImageStack({
                     }
                   />
                 </button>
-                <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
+                {image.caption !== false && (
+                  <p className="type-label mt-3 text-ink-muted">{image.alt}</p>
+                )}
               </Reveal>
 
               {galleryVideo && galleryVideo.afterIndex === fullIndex + 1 && (
