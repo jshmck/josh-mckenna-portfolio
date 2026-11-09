@@ -64,6 +64,10 @@ export type ImageRatio =
   // 505 Wheel Launch's livery sheet — true 3980x3257 export, a 1.22:1 board
   // with a border and a full-bleed legend band that 5/4 would have shaved.
   | "3980/3257"
+  // Piper-Heidsieck's flat tin wrap — true 2196x2400 (reduced 183/200), just
+  // wider than 8/9 and 250/291. Nearest existing ratio would have shaved the
+  // lamp post or the bridge off a wrap that has to read edge to edge.
+  | "183/200"
   // Instagram Sticker's Sticker Set photo — true 16:9, no existing ratio
   // came within 10% without a visible side crop.
   | "16/9"
@@ -2753,10 +2757,10 @@ export const projects: Project[] = [
       { role: "Illustration", name: "Josh McKenna" },
       { role: "Client", name: "Piper-Heidsieck" },
     ],
-    // The only asset is the campaign's own 469px product render ("product
-    // shot only," per Josh — the press-kit pages were dropped). `spot`
-    // keeps it at the small centred width the resolution can honestly
-    // fill, same reasoning as Monocle's heel.
+    // The hero is the campaign's own 469px product render, so `spot` keeps
+    // it at the small centred width the resolution can honestly fill, same
+    // reasoning as Monocle's heel. The flat wrap (from the 2024 press kit,
+    // at full size) carries the page below it.
     heroSize: "spot",
     // 9/16 (matching the hero's own true ratio) ran the /work grid card
     // far taller than its neighbours — "piper needs to be in a square
@@ -2772,7 +2776,13 @@ export const projects: Project[] = [
       // real-alpha fix (see Plate).
       fit: "contain",
     },
-    gallery: [],
+    gallery: [
+      {
+        ratio: "183/200",
+        alt: "The flat wrap artwork, before it went round the tin",
+        src: "/work/piper-heidsieck/02-flat-wrap.webp",
+      },
+    ],
   },
   // Coca-Cola Moments lived here — archived to lib/archived-projects.ts
   // per Josh, not deleted; see that file for the restore path.
