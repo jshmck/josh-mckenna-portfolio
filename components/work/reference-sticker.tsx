@@ -18,21 +18,22 @@ const FLICK_DISTANCE = 160;
 const GLIDE_MS = 700;
 
 /**
- * A reference photo that hovers in a box under the write-up text, drifting
- * slowly around it — the box scrolls with the page, so you come across the
- * sticker as you read down past the brief. Pick it up and the drift pauses; let go and
+ * A reference photo that hovers between the brief and the credits, floating
+ * gently in place — it scrolls with the page, so you come across it as you
+ * read down to the brief. Pick it up and the drift pauses; let go and
  * it glides back onto its path. A quick flick sends it off the screen for
  * good (until the page reloads) — the same gesture as flicking a repost
  * bubble off an Instagram story.
  *
- * Mount it inside a `relative` parent of a fixed size: that box is its
- * whole world. It roams the box edge to edge and never leaves it (until
- * flicked), so the box decides where on the page it's met.
+ * Mount it inside the `relative` write-up: it anchors itself in the gap
+ * between the brief and the credits on desktop (the write-up's bottom-right
+ * corner on a phone) and floats a few pixels either side of that spot, on
+ * two waves of different lengths so the motion never visibly repeats.
  *
  * Motion contract: one rAF loop writes the transform straight to the DOM,
  * and only while the sticker is on screen; React state flips once, when it
- * has left. With reduced motion there is no loop at all — it rests in the
- * middle of its box, a flick dismisses it on release, and the ✕ button covers keyboard
+ * has left. With reduced motion there is no loop at all — it rests at its
+ * anchor, a flick dismisses it on release, and the ✕ button covers keyboard
  * and screen-reader visitors either way.
  */
 export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerProps) {
@@ -62,18 +63,16 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
   });
 
   const orbit = (clock: number, still = false) => {
-    // The sticker roams the whole of its parent box and never leaves it:
-    // each axis swings between the box edge and the opposite edge, on two
-    // waves of different lengths so the path never visibly repeats.
-    const el = stickerRef.current;
-    const box = el?.parentElement;
-    const ax = el && box ? Math.max(0, box.clientWidth - el.offsetWidth) / 2 : 0;
-    const ay = el && box ? Math.max(0, box.clientHeight - el.offsetHeight) / 2 : 0;
+    // A gentle float either side of its anchor: just enough to read as
+    // hovering, never enough to wander off the paragraph's side of the page.
+    const wide = window.innerWidth >= 768;
+    const rx = wide ? 16 : 10;
+    const ry = wide ? 18 : 8;
     return {
-      x: ax + (still ? 0 : Math.sin(clock / 5200 + 0.6) * ax),
-      y: ay + (still ? 0 : Math.sin(clock / 6700 + 2.1) * ay),
+      x: still ? 0 : Math.sin(clock / 5200 + 0.6) * rx,
+      y: still ? 0 : Math.sin(clock / 3400 + 2.1) * ry,
       // A slow lean, so it never looks pinned flat.
-      rot: -3 + (still ? 0 : Math.sin(clock / 4200) * 4),
+      rot: -3 + (still ? 0 : Math.sin(clock / 4200) * 2.5),
     };
   };
 
@@ -196,12 +195,12 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
       title="Flick me away"
-      // Sits at its box's top-left; the loop's inline transform carries
-      // it everywhere else.
+      // Anchored with the `translate` property (Tailwind v4), so the
+      // inline transform the loop writes only carries the float.
       // touch-action: none on the sticker alone, so a finger on it drags
       // the sticker instead of scrolling the page; the rest of the page
       // scrolls as normal.
-      className="group absolute left-0 top-0 z-10 w-28 cursor-grab touch-none select-none active:cursor-grabbing md:w-60"
+      className="group absolute z-10 w-24 cursor-grab touch-none select-none active:cursor-grabbing max-md:bottom-3 max-md:right-3 md:left-[66%] md:top-1/2 md:w-52 md:-translate-x-1/2 md:-translate-y-1/2"
       style={{ transform: "rotate(-3deg)" }}
     >
       <Image
@@ -209,7 +208,7 @@ export function ReferenceSticker({ src, alt, width, height }: ReferenceStickerPr
         alt={alt}
         width={width}
         height={height}
-        sizes="(max-width: 768px) 112px, 240px"
+        sizes="(max-width: 768px) 96px, 208px"
         draggable={false}
         className="pointer-events-none h-auto w-full rounded-frame shadow-[0_8px_24px_rgba(0,0,0,0.25)] max-md:rounded-[20px]"
       />

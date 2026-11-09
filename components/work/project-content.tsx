@@ -78,8 +78,10 @@ function WriteUp({ project, leads = false }: { project: Project; leads?: boolean
     // journal, beefbar etc) the text could be tighter," per Josh.
     <div
       data-project-writeup
-      className={`mx-auto grid max-w-frame gap-14 px-6 py-20 max-md:py-10 md:grid-cols-[1fr_260px] md:px-gutter ${leads ? "max-md:pt-0" : ""}`}
+      className={`relative mx-auto grid max-w-frame gap-14 px-6 py-20 max-md:py-10 md:grid-cols-[1fr_260px] md:px-gutter ${leads ? "max-md:pt-0" : ""}`}
     >
+      {/* A reference photo floating by the brief — see ReferenceSticker. */}
+      {project.heroFloat && <ReferenceSticker {...project.heroFloat} />}
       <div className="max-w-2xl">
         {project.brief.map((paragraph, index) => (
           <p
@@ -89,13 +91,6 @@ function WriteUp({ project, leads = false }: { project: Project; leads?: boolean
             {renderBriefParagraph(paragraph)}
           </p>
         ))}
-        {/* A reference photo hovering in a box under the text, as wide as the
-            text itself — see ReferenceSticker. */}
-        {project.heroFloat && (
-          <div className="relative mt-12 h-72 max-md:mt-8 max-md:h-40">
-            <ReferenceSticker {...project.heroFloat} />
-          </div>
-        )}
       </div>
 
       {/* Pins while the write-up scrolls past, per the wireframe. */}
