@@ -1,6 +1,6 @@
 // Renders a Facebook-style feed ad (775x1657, the iPhone mockup's screen), light mode,
 // for 1:1 artwork: page header, primary text, image, link bar with a call to action.
-//   ART=art.webp AV=avatar.webp NAME="Nomad Wheel Co." TEXT="..." HEADLINE="..." DOMAIN=NOMADWHEEL.COM CTA="Shop now" OUT=screen.png node render-ad-screen.js
+//   ART=art.webp AV=avatar.webp NAME="Nomad Wheels" TEXT="..." HEADLINE="..." DOMAIN=NOMADWHEEL.COM CTA="Shop now" OUT=screen.png node render-ad-screen.js
 const { chromium } = require("playwright");
 const fs = require("fs");
 const b64 = (f) => "data:image/webp;base64," + fs.readFileSync(f).toString("base64");
