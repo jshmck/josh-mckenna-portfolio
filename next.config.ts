@@ -46,6 +46,11 @@ const nextConfig: NextConfig = {
         source: "/monzo",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
       },
+      // And LEGO's.
+      {
+        source: "/lego",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
       {
         source:
           "/:dir(work|about|illustrations|logos)/:path*.:ext(mp4|webp|jpg|jpeg|png|svg|avif)",
