@@ -615,7 +615,19 @@ export const projects: Project[] = [
       src: "/work/team-yamato-super-n/02-sticker-placement-v4.webp",
     },
     hideHeroCaptions: true,
-    gallery: [],
+    // The original car, for comparison. A 1024px web photo, so `small`
+    // keeps it at the 512px cap instead of stretching it full width;
+    // gallerySpans flips off the default two-up so it takes the
+    // standalone path.
+    gallerySpans: [{ startIndex: 0, count: 1 }],
+    gallery: [
+      {
+        ratio: "3/2",
+        alt: "The 1982 Team Yamato touring car, Honda Collection Hall. Photo: japanesenostalgiccar.com",
+        src: "/work/team-yamato-super-n/04-1982-team-yamato-civic.webp",
+        small: true,
+      },
+    ],
   },
   {
     slug: "hello-twingo",
