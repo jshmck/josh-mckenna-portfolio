@@ -2751,10 +2751,10 @@ export const projects: Project[] = [
     slug: "piper-heidsieck",
     title: "Piper-Heidsieck",
     client: "Piper-Heidsieck",
-    // TRIAL: "Gift Packaging > Piper-Heidsieck," per Josh (was "Bottle
-    // Packaging", but the work is the tin, not the bottle) — see
-    // Project.cardTitle.
-    cardTitle: "Gift Packaging",
+    // TRIAL: "Limited Edition Packaging > Piper-Heidsieck," per Josh (was
+    // "Bottle Packaging", then "Gift Packaging" — the work is the metal tin
+    // that holds the bottle, not a gift box) — see Project.cardTitle.
+    cardTitle: "Limited Edition Packaging",
     cardLabel: "Piper-Heidsieck",
     year: 2024,
     discipline: "Illustration",
