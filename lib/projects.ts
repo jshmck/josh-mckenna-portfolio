@@ -613,7 +613,7 @@ export const projects: Project[] = [
     heroUnder: {
       ratio: "2160/966",
       alt: "Team Yamato Super-N, front and rear views",
-      src: "/work/team-yamato-super-n/03-front-rear.webp",
+      src: "/work/team-yamato-super-n/03-front-rear-v2.webp",
     },
     heroPair: {
       ratio: "9/16",
