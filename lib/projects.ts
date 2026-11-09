@@ -1955,11 +1955,6 @@ export const projects: Project[] = [
         src: "/work/bombay-sapphire/04-embroidery-macro.webp",
       },
       {
-        ratio: "1/1",
-        alt: "Sketching the design on iPad before it went to embroidery",
-        src: "/work/bombay-sapphire/05-ipad-sketch-v2.webp",
-      },
-      {
         ratio: "3/2",
         alt: "Painting the mural live in the window",
         src: "/work/bombay-sapphire/02-mural-painting.webp",
