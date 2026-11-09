@@ -83,9 +83,19 @@ const nextConfig: NextConfig = {
   // Both keys, not just the OG route: the sibling page lambda inherits the
   // segment's trace and was carrying the same 212MB even though the page
   // itself never touches the filesystem.
+  //
+  // The private application pages are the same story, second round: each of
+  // /koto, /carwow, /monzo and /lego measures stills with sharp (lib/koto-
+  // lightbox.ts) by reading them from public/ at build time, and each was
+  // tracing the whole ~202MB of public/ into its function. They prerender
+  // static too, so none of it is needed at runtime.
   outputFileTracingExcludes: {
     "app/work/\\[slug\\]/opengraph-image": ["./public/**"],
     "app/work/\\[slug\\]/page": ["./public/**"],
+    "app/koto/page": ["./public/**"],
+    "app/carwow/page": ["./public/**"],
+    "app/monzo/page": ["./public/**"],
+    "app/lego/page": ["./public/**"],
   },
 };
 
