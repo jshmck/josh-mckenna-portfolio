@@ -617,7 +617,7 @@ export const projects: Project[] = [
     hero: {
       ratio: "4/5",
       alt: "Team Yamato livery on the Super-N, front and rear three-quarter views",
-      src: "/work/team-yamato-super-n/01-yamato-views-v5.webp",
+      src: "/work/team-yamato-super-n/01-yamato-views-v6.webp",
     },
     heroUnder: {
       ratio: "2160/966",
