@@ -7,6 +7,10 @@ import type { ProjectImage } from "@/lib/projects";
 type HeroStackLightboxProps = {
   /** [top-left, under-left, right] — the lightbox cycle runs in that order. */
   images: [ProjectImage, ProjectImage, ProjectImage];
+  /** How many lightbox frames precede these three in the shared cycle —
+   *  0 on a project page (they lead it), set when the stack sits partway
+   *  down a private page's longer lightbox. */
+  indexOffset?: number;
 };
 
 /**
@@ -16,20 +20,20 @@ type HeroStackLightboxProps = {
  * spreads to match it, so both columns share a top and a bottom edge —
  * Team Yamato's reference layout. Stacks to one column below md.
  */
-export function HeroStackLightbox({ images }: HeroStackLightboxProps) {
+export function HeroStackLightbox({ images, indexOffset = 0 }: HeroStackLightboxProps) {
   const { openAt } = useProjectLightbox();
   const [top, under, side] = images;
 
   const cell = (image: ProjectImage, index: number, sizes: string) => (
     <button
       type="button"
-      onClick={() => openAt(index)}
+      onClick={() => openAt(indexOffset + index)}
       aria-label={`Open larger view of ${image.alt}`}
       className="group block w-full cursor-zoom-in text-left"
     >
       <div className="overflow-hidden rounded-frame">
         <div className="transition-transform duration-300 ease-drift group-hover:scale-[1.02]">
-          <Plate image={image} sizes={sizes} priority={index === 0} />
+          <Plate image={image} sizes={sizes} priority={indexOffset === 0 && index === 0} />
         </div>
       </div>
     </button>
