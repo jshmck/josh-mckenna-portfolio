@@ -316,10 +316,10 @@ export default async function LegoPage() {
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
         <p className={BLURB}>
-          I&apos;m a London illustrator and graphic designer, working for brands
-          since 2014. I&apos;m applying for the Senior Graphic Designer,
-          Vehicles role. Cars and racing are a lot of what I draw for fun, so
-          the work starts with liveries.
+          Cars are my life. I grew up on Colin McRae Rally and LEGO, studied a
+          bit of automotive design at Coventry, and have spent the last few
+          years designing graphics for an aftermarket wheel company, including
+          a livery for my own Land Cruiser.
         </p>
 
         <Section first>
