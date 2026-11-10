@@ -7,6 +7,7 @@ import Link from "next/link";
 import sharp from "sharp";
 import type { CSSProperties, ReactNode } from "react";
 
+import { SwipeRow } from "@/components/ui/swipe-row";
 import { LbTile } from "@/components/carwow/lightbox-tile";
 import { LikeSpot, type LikeBox } from "@/components/carwow/like-spot";
 import { ReelPhone } from "@/components/carwow/phone-mockups";
@@ -58,10 +59,11 @@ const nearestRatio = (r: number): ImageRatio =>
  *  cropped) and its place in the lightbox. */
 type Still = { src: string; alt: string; r: number; lb: number };
 
-const RAW_ROW =
-  "height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden";
+const FIT_ROW = "fit-row swipe-phone flex max-md:items-start md:flex-row";
 
-/** A row whose items all share one height (see .height-row in globals.css). */
+/** A row whose items all share one height from md (see .fit-row in
+ *  globals.css); on a phone each image gets its own line, no swiping. `tight`
+ *  strips (Hello Twingo) stay a swipe carousel on phones. */
 function Row({
   tight = false,
   children,
@@ -70,9 +72,9 @@ function Row({
   children: ReactNode;
 }) {
   return (
-    <div className={`${RAW_ROW} ${tight ? "gap-1" : "gap-3 md:gap-5"}`}>
+    <SwipeRow className={`${FIT_ROW} ${tight ? "gap-3 md:gap-1" : "gap-3 md:gap-5"}`}>
       {children}
-    </div>
+    </SwipeRow>
   );
 }
 
@@ -183,7 +185,7 @@ const Section = ({ children }: { children: ReactNode }) => (
   </section>
 );
 
-/** A row of iPhone mockups, four to a row from md. Look-only, like the Reels. */
+/** A row of iPhone mockups: a swipe carousel on a phone, four across from md. Look-only, like the Reels. */
 function PhoneRow({
   phones,
   brand,
@@ -192,9 +194,9 @@ function PhoneRow({
   brand: string;
 }) {
   return (
-    <div className="-mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+    <SwipeRow className="swipe-phone flex items-start gap-4 md:grid md:grid-cols-4 md:gap-6">
       {phones.map((f) => (
-        <Reveal key={f.src} className="w-[62%] flex-none snap-center md:w-auto">
+        <Reveal key={f.src} className="md:w-auto">
           <div className="relative [container-type:inline-size]">
             <Image
               src={f.src}
@@ -209,7 +211,7 @@ function PhoneRow({
           <p className="type-label mt-1 text-ink-muted">{f.label}</p>
         </Reveal>
       ))}
-    </div>
+    </SwipeRow>
   );
 }
 

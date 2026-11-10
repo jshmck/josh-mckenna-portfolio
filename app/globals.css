@@ -739,16 +739,33 @@
   }
 }
 
-/* The stacking variant (/lego): on phones each image is full width, one
-   under another, at its own aspect ratio; from md it behaves exactly like
-   .height-row. */
-.stack-row > * {
-  aspect-ratio: var(--r);
-  width: 100%;
+/* The row on the private application pages (/lego, /koto, /carwow, /monzo).
+   From md the items sit side by side at one shared height, like .height-row.
+   On a phone it is a swipe carousel whose slides are each the full width of
+   the column, at their own aspect ratio: the first image is its normal size
+   and none of the next one peeks in (SwipeRow adds dots under it). The Hello
+   Twingo strips use it too. */
+@media (max-width: 47.99rem) {
+  .swipe-phone {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .swipe-phone::-webkit-scrollbar {
+    display: none;
+  }
+  .swipe-phone > * {
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+  .fit-row > * {
+    aspect-ratio: var(--r);
+  }
 }
 @media (min-width: 48rem) {
-  .stack-row > * {
-    width: auto;
+  .fit-row > * {
+    aspect-ratio: var(--r);
     flex: var(--r) 1 0%;
     min-width: 0;
   }

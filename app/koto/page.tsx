@@ -366,7 +366,7 @@ export default async function KotoPage() {
 
         <Section>
           <Block label="Talks">
-            <div className="-mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-3 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
               {TALKS.map((t) => {
                 const tile = (
                   <>
@@ -385,10 +385,7 @@ export default async function KotoPage() {
                   </>
                 );
                 return (
-                  <div
-                    key={t.src}
-                    className="w-[80%] flex-none snap-center md:w-auto"
-                  >
+                  <div key={t.src}>
                     {t.href ? (
                       <a href={t.href} className="block">
                         {tile}

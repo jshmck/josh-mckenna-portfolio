@@ -1,3 +1,4 @@
+import { SwipeRow } from "@/components/ui/swipe-row";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -14,10 +15,11 @@ import type { Still } from "@/lib/monzo-lightbox";
  * height. Every still and silent clip opens the page's shared lightbox.
  */
 
-const RAW_ROW =
-  "height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden";
+const FIT_ROW = "fit-row swipe-phone flex max-md:items-start md:flex-row";
 
-/** A row whose items all share one height (see .height-row in globals.css). */
+/** A row whose items all share one height from md (see .fit-row in
+ *  globals.css); on a phone each image gets its own line, no swiping. `tight`
+ *  strips (Hello Twingo) stay a swipe carousel on phones. */
 export function Row({
   tight = false,
   children,
@@ -26,9 +28,9 @@ export function Row({
   children: ReactNode;
 }) {
   return (
-    <div className={`${RAW_ROW} ${tight ? "gap-1" : "gap-3 md:gap-5"}`}>
+    <SwipeRow className={`${FIT_ROW} ${tight ? "gap-3 md:gap-1" : "gap-3 md:gap-5"}`}>
       {children}
-    </div>
+    </SwipeRow>
   );
 }
 
@@ -174,8 +176,9 @@ export function RoleNote({
 }
 
 /**
- * A row of captioned stills: items share one height like Row, but each
- * caption sits under its own picture instead of one line for the row.
+ * A row of captioned stills: items share one height like Row from md (one per
+ * line on a phone, no swiping), but each caption sits under its own picture
+ * instead of one line for the row.
  */
 export function CaptionedRow({
   items,
@@ -185,14 +188,12 @@ export function CaptionedRow({
   sizes: string;
 }) {
   return (
-    <div
-      className={`${RAW_ROW.replace("height-row ", "")} items-start gap-3 md:gap-5`}
-    >
+    <SwipeRow className="swipe-phone flex gap-3 max-md:items-start md:items-start md:gap-5">
       {items.map(({ still, caption, surface }) => (
         <figure
           key={still.src}
           style={{ "--r": still.r } as React.CSSProperties}
-          className="w-[calc(13.5rem*var(--r))] flex-none snap-center md:w-auto md:min-w-0 md:[flex:var(--r)_1_0%]"
+          className="w-full min-w-0 md:[flex:var(--r)_1_0%]"
         >
           <StillTile
             still={still}
@@ -205,6 +206,6 @@ export function CaptionedRow({
           </figcaption>
         </figure>
       ))}
-    </div>
+    </SwipeRow>
   );
 }
