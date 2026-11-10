@@ -646,6 +646,18 @@ export const projects: Project[] = [
     brief: [
       "Team Yamato was Honda's own race club. In 1982 their touring car ran as number 1, in blue and red, with a stack of sponsor stickers. I put that livery on the new Super-N, my favourite little electric hot hatch, as a modern-day homage.",
     ],
+    built: [
+      {
+        item: "Vehicle livery",
+        detail:
+          "Honda's 1982 number 1 touring car, blue and red, sponsor stickers and all, put on the new Super-N.",
+      },
+      {
+        item: "Personal study",
+        detail:
+          "A modern-day homage, not a commission.",
+      },
+    ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // Matches Josh's reference board: the two views over the front/rear
     // panorama on the left, the tall sticker sheet on the right.
@@ -1772,6 +1784,33 @@ export const projects: Project[] = [
       "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film.",
       "I also added the logos to the race suit and long-sleeved tees for the launch.",
     ],
+    built: [
+      {
+        item: "Livery",
+        detail:
+          "A vintage Dakar rally look, with popular brands redrawn as plays on the Nomad name, on my own Land Cruiser.",
+      },
+      {
+        item: "Event poster",
+        detail:
+          "The launch poster, in the same rally look.",
+      },
+      {
+        item: "Social assets",
+        detail:
+          "The launch posts, drawn from the same system.",
+      },
+      {
+        item: "Apparel",
+        detail:
+          "The logos on the race suit and the long-sleeved tees.",
+      },
+      {
+        item: "Promotional film",
+        detail:
+          "The logos in the film, and me driving the Land Cruiser through the California desert.",
+      },
+    ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
       { role: "Client", name: "Nomad Wheels" },
@@ -2147,6 +2186,23 @@ export const projects: Project[] = [
     brief: [
       "Bombay Sapphire's CANVAS was a four-day pop-up in Shoreditch built around one line: Stir Creativity. I was one of fifteen artists asked to contribute, working across three pieces: a mural painted live in the window, a back-of-jacket embroidery, and fifty hand-finished bottles.",
       "The starting point was a Grains of Paradise pod from a trip to the distillery: earthy for the first few seconds, then this fiery burst. I wanted the work to feel the same way, harvesty and celebratory at once, so the mural and the jacket both lean on the same botanical shapes and hot orange-on-blue palette.",
+    ],
+    built: [
+      {
+        item: "Mural",
+        detail:
+          "Painted live in the window of the CANVAS pop-up in Shoreditch.",
+      },
+      {
+        item: "Embroidered jacket",
+        detail:
+          "A back-of-jacket design using the mural's botanical shapes and orange-on-blue palette, embroidered by Lisa.",
+      },
+      {
+        item: "Hand-painted bottles",
+        detail:
+          "Fifty, hand painted and finished with custom vinyl stickers.",
+      },
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -2836,6 +2892,18 @@ export const projects: Project[] = [
     brief: [
       "Piper-Heidsieck commissioned artwork for a limited-edition Pride Month tin: the house's Cuvée Brut wrapped in queer scenes by the river, with a rainbow hot-air balloon drifting over town.",
       "I worked closely with the printers and Piper-Heidsieck to a very strict layout: space for the logos, print margins and overlap, with the whole scene built to fit.",
+    ],
+    built: [
+      {
+        item: "Metal tin",
+        detail:
+          "Pride Month artwork for the Cuvée Brut, with queer scenes by the river and a rainbow hot-air balloon over town.",
+      },
+      {
+        item: "Print",
+        detail:
+          "Built to the printers' strict layout, with space for the logos, print margins and overlap.",
+      },
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
