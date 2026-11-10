@@ -17,16 +17,24 @@ import type { Still } from "@/lib/koto-lightbox";
 const RAW_ROW =
   "height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden";
 
-/** A row whose items all share one height (see .height-row in globals.css). */
+const STACK_ROW = "stack-row flex flex-col md:flex-row";
+
+/** A row whose items all share one height (see .height-row in globals.css).
+ *  On phones it's a swipe carousel, or with `stack` the items sit one under
+ *  another at full width. */
 export function Row({
   tight = false,
+  stack = false,
   children,
 }: {
   tight?: boolean;
+  stack?: boolean;
   children: ReactNode;
 }) {
   return (
-    <div className={`${RAW_ROW} ${tight ? "gap-1" : "gap-3 md:gap-5"}`}>
+    <div
+      className={`${stack ? STACK_ROW : RAW_ROW} ${tight ? "gap-1" : "gap-3 md:gap-5"}`}
+    >
       {children}
     </div>
   );
@@ -63,13 +71,15 @@ export function StillRow({
   stills,
   sizes = "(max-width: 768px) 60vw, 30vw",
   tight = false,
+  stack = false,
 }: {
   stills: Still[];
   sizes?: string;
   tight?: boolean;
+  stack?: boolean;
 }) {
   return (
-    <Row tight={tight}>
+    <Row tight={tight} stack={stack}>
       {stills.map((still) => (
         <StillTile key={still.src} still={still} sizes={sizes} tight={tight} />
       ))}

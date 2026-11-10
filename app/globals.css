@@ -738,3 +738,18 @@
     min-width: 0;
   }
 }
+
+/* The stacking variant (/lego): on phones each image is full width, one
+   under another, at its own aspect ratio; from md it behaves exactly like
+   .height-row. */
+.stack-row > * {
+  aspect-ratio: var(--r);
+  width: 100%;
+}
+@media (min-width: 48rem) {
+  .stack-row > * {
+    width: auto;
+    flex: var(--r) 1 0%;
+    min-width: 0;
+  }
+}

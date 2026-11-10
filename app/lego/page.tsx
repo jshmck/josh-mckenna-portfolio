@@ -200,8 +200,9 @@ export default async function LegoPage() {
                 is the second row. */}
             <div className="space-y-3 md:space-y-5">
               <StillRow
+                stack
                 stills={nomadStills.slice(0, 2)}
-                sizes="(max-width: 768px) 60vw, 50vw"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               {nomad?.heroVideo && (
                 <ProjectVideo
@@ -224,12 +225,14 @@ export default async function LegoPage() {
           </Block>
           <div className="space-y-3 md:space-y-5">
             <StillRow
+              stack
               stills={nomadStills.slice(2, 4)}
-              sizes="(max-width: 768px) 60vw, 50vw"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <StillRow
+              stack
               stills={nomadStills.slice(4)}
-              sizes="(max-width: 768px) 60vw, 40vw"
+              sizes="(max-width: 768px) 100vw, 40vw"
             />
           </div>
         </Section>
@@ -311,10 +314,10 @@ export default async function LegoPage() {
                 {piper.deliverables}
               </p>
             )}
-            <Row>
+            <Row stack>
               <StillTile
                 still={piperStills[0]}
-                sizes="(max-width: 768px) 60vw, 40vw"
+                sizes="(max-width: 768px) 100vw, 40vw"
               />
               {/* The tin shot is a transparent cut-out: contain it on the
                   canvas, not the brand-blue tile surface the stills use. */}
@@ -328,7 +331,7 @@ export default async function LegoPage() {
                   src={piperStills[1].src}
                   alt={piperStills[1].alt}
                   fill
-                  sizes="(max-width: 768px) 40vw, 25vw"
+                  sizes="(max-width: 768px) 100vw, 25vw"
                   className="object-contain"
                 />
               </LbTile>
