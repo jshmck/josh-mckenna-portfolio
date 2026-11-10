@@ -399,9 +399,6 @@ export default async function LegoPage() {
                   ratio="4/5"
                 />
               </div>
-              <p className="type-lede mt-4 max-w-[60ch] text-ink">
-                {z1.brief.join(" ")}
-              </p>
             </Block>
           </Section>
         )}
