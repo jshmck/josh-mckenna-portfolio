@@ -216,7 +216,6 @@ export default async function LegoPage() {
                 is the second row. */}
             <div className="space-y-3 md:space-y-5">
               <StillRow
-                stack
                 stills={nomadStills.slice(0, 2)}
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
@@ -241,12 +240,10 @@ export default async function LegoPage() {
           </Block>
           <div className="space-y-3 md:space-y-5">
             <StillRow
-              stack
               stills={nomadStills.slice(2, 4)}
               sizes="(max-width: 768px) 100vw, 50vw"
             />
             <StillRow
-              stack
               stills={nomadStills.slice(4)}
               sizes="(max-width: 768px) 100vw, 40vw"
             />
@@ -327,7 +324,7 @@ export default async function LegoPage() {
                 {piper.deliverables}
               </p>
             )}
-            <Row stack>
+            <Row>
               <StillTile
                 still={piperStills[0]}
                 sizes="(max-width: 768px) 100vw, 40vw"
@@ -419,7 +416,7 @@ export default async function LegoPage() {
                   ambient setup as the project page: muted autoplay loop,
                   sound one tap away. The two stills open the page
                   lightbox; the film doesn't. */}
-              <Row stack>
+              <Row>
                 <StillTile
                   still={z1Stills[0]}
                   sizes="(max-width: 768px) 60vw, 30vw"
