@@ -172,6 +172,8 @@ const MORE: {
   /** The hover preview, when it should differ from the project's own next
    *  picture. */
   hover?: ProjectImage;
+  /** CSS object-position for the hover image's 4/5 crop. */
+  hoverPosition?: string;
   /** A clip that fades in on hover, in place of a still. */
   hoverVideo?: { src: string; poster: string; alt: string };
   /** A silent looping clip in place of the still (the image is its poster). */
@@ -231,13 +233,15 @@ const MORE: {
       alt: "The Pride window wrapped around the corner of Wagamama Marble Arch",
     },
     position: "50% center",
-    // The Brighton artwork on hover, per Josh (the project's own next
-    // picture would be the Proud Beyond Pride shot).
+    // The finished window at Wagamama Brighton on hover, per Josh (the
+    // photo, not the flat artwork). 100% keeps the black strip down the
+    // photo's left edge out of the 4/5 crop.
     hover: {
-      src: "/work/wagamama-pride/01-brighton-hr-v2.webp",
-      ratio: "16/9",
-      alt: "The full Wagamama Brighton Pride artwork",
+      src: "/work/wagamama-pride/06-window-install.webp",
+      ratio: "1/1",
+      alt: "The finished window, installed at Wagamama Brighton",
     },
+    hoverPosition: "100% center",
   },
   {
     slug: "levis-rainbow-rodeo",
@@ -545,7 +549,7 @@ export default async function LegoPage() {
         <Section>
           <Block bold label="More">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {more.map(({ project, image, position, video, label, hover: hoverOverride, hoverVideo }) => {
+              {more.map(({ project, image, position, video, label, hover: hoverOverride, hoverPosition, hoverVideo }) => {
                 const card = image ?? project.cardImage ?? project.hero;
                 // The same hover preview as the /work cards: the project's
                 // curated hover image, else its next picture, never the one
@@ -616,6 +620,7 @@ export default async function LegoPage() {
                             fill
                             sizes="(max-width: 768px) 50vw, 33vw"
                             className="object-cover"
+                            style={{ objectPosition: hoverPosition }}
                           />
                         </div>
                       )}
