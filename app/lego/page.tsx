@@ -169,6 +169,9 @@ const MORE: {
   image?: ProjectImage;
   /** CSS object-position for the 4/5 crop. */
   position?: string;
+  /** The hover preview, when it should differ from the project's own next
+   *  picture. */
+  hover?: ProjectImage;
   /** A silent looping clip in place of the still (the image is its poster). */
   video?: string;
   /** Caption, when "client · title" isn't right (personal pieces name the
@@ -218,6 +221,13 @@ const MORE: {
       alt: "The Pride illustration on a Wagamama window",
     },
     position: "100% center",
+    // The Brighton artwork on hover, per Josh (the project's own next
+    // picture would be the Proud Beyond Pride shot).
+    hover: {
+      src: "/work/wagamama-pride/01-brighton-hr-v2.webp",
+      ratio: "16/9",
+      alt: "The full Wagamama Brighton Pride artwork",
+    },
   },
   {
     slug: "levis-rainbow-rodeo",
@@ -525,7 +535,7 @@ export default async function LegoPage() {
         <Section>
           <Block bold label="More">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {more.map(({ project, image, position, video, label }) => {
+              {more.map(({ project, image, position, video, label, hover: hoverOverride }) => {
                 const card = image ?? project.cardImage ?? project.hero;
                 // The same hover preview as the /work cards: the project's
                 // curated hover image, else its next picture, never the one
@@ -533,9 +543,10 @@ export default async function LegoPage() {
                 // still would cover the motion.
                 const hover = video
                   ? undefined
-                  : [project.cardHoverImage, project.heroPair, ...project.gallery].find(
+                  : (hoverOverride ??
+                    [project.cardHoverImage, project.heroPair, ...project.gallery].find(
                       (candidate) => candidate?.src && candidate.src !== card.src,
-                    );
+                    ));
                 return (
                   <Link
                     key={project.slug}
@@ -589,8 +600,9 @@ export default async function LegoPage() {
             {honda?.heroVideo && (
               <div className="mt-8 md:mt-12">
                 {/* The Honda Super N turntable at the full width of the page,
-                    under the grid. Same setup as its project page: native
-                    controls and sound one tap away, no autoplay. */}
+                    under the grid. Autoplays muted on a loop (browsers don't
+                    allow autoplay with sound), keeping the native controls so
+                    the soundtrack is one tap away: same setup as the Z1. */}
                 <ProjectVideo
                   video={{
                     src: honda.heroVideo.src,
@@ -598,6 +610,7 @@ export default async function LegoPage() {
                     poster: honda.heroVideo.poster,
                   }}
                   sound
+                  autoplay
                   ratio="16/9"
                 />
                 <Link
