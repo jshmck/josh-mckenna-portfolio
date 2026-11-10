@@ -4,26 +4,43 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import sharp from "sharp";
 
-// The link preview for the private /lego page: the 0:11 frame of the 505
-// Touring launch film, the same still the film uses as its poster (the
-// "505 Touring" title in the corner, the Land Cruiser kicking up dust).
-// Source is .webp, which next/og can't decode, so sharp crops it to the
-// card and hands over a finished PNG. The 16:9 still loses ~36px top and
-// bottom to the 1.9:1 card; the title sits well clear of that.
+// The link preview for the private /lego page: the Team Yamato Super-N,
+// front and rear, on its blue. Josh's pick over the 505 film frame, which
+// was too dark to read at thumbnail size. Source is .webp, which next/og
+// can't decode, so sharp builds a finished PNG. The 2.24:1 pair is fitted
+// whole inside the 1.9:1 card with a margin, and the card is filled with
+// the artwork's own blue, sampled from its corner so there's no colour
+// to keep in sync here.
 export const alt = "Josh McKenna — selected work";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const MARGIN = { x: 40, y: 30 };
+
 export default async function Image() {
-  const still = await sharp(
-    await readFile(
-      join(
-        process.cwd(),
-        "public/work/nomad-wheels-505-livery/05-video-poster-v3.webp",
-      ),
-    ),
-  )
-    .resize(size.width, size.height, { fit: "cover", position: "centre" })
+  const source = await readFile(
+    join(process.cwd(), "public/work/team-yamato-super-n/03-front-rear-v3.webp"),
+  );
+
+  const { data: corner } = await sharp(source)
+    .extract({ left: 5, top: 5, width: 1, height: 1 })
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const background = { r: corner[0], g: corner[1], b: corner[2] };
+
+  const art = await sharp(source)
+    .resize(size.width - MARGIN.x * 2, size.height - MARGIN.y * 2, {
+      fit: "contain",
+      background,
+    })
+    .extend({
+      top: MARGIN.y,
+      bottom: MARGIN.y,
+      left: MARGIN.x,
+      right: MARGIN.x,
+      background,
+    })
     .png()
     .toBuffer();
 
@@ -31,7 +48,7 @@ export default async function Image() {
     (
       <div style={{ width: "100%", height: "100%", display: "flex" }}>
         <img
-          src={`data:image/png;base64,${still.toString("base64")}`}
+          src={`data:image/png;base64,${art.toString("base64")}`}
           width={size.width}
           height={size.height}
           alt=""
