@@ -417,7 +417,11 @@ export default async function LegoPage() {
               ))}
             </div>
             {laPrideProject?.brief[1] && (
-              <p className="type-lede mt-4 max-w-[60ch] text-ink">
+              // From lg the paragraph is exactly one tile wide (the grid above
+              // is three columns with a 1.25rem gap), so its edges sit on the
+              // grid under the first image; below lg a column is too narrow to
+              // read, so it keeps the usual line length.
+              <p className="type-lede mt-4 max-w-[60ch] text-ink lg:w-[calc((100%-2.5rem)/3)]">
                 {laPrideProject.brief[1]}
               </p>
             )}
