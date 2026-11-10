@@ -176,6 +176,27 @@ const MORE: {
   label?: string;
 }[] = [
   {
+    slug: "citroen-2cv-concept",
+    label: "Citroën · 2CV Concept",
+    // The 720px silent card cut the /work grid plays, over the frame where
+    // the whole car is in shot.
+    video: "/work/citroen-2cv-concept/04-2cv-animation-card.mp4",
+    image: {
+      src: "/work/citroen-2cv-concept/05-2cv-animation-sound-poster.webp",
+      ratio: "4/5",
+      alt: "The 2CV animation, from a wheel out to the whole car",
+    },
+  },
+  {
+    slug: "voxi-pride",
+    image: {
+      src: "/work/voxi-pride/07-phone.webp",
+      ratio: "1/1",
+      alt: "The Voxi Pride phone case",
+    },
+  },
+  { slug: "kiehls-trevor-project" },
+  {
     slug: "instagram-sticker",
     // The sticker set on a phone, not the sticker character: it's the
     // clearest "what was this" shot. 16/9 source; 55% centres the phone in
@@ -197,27 +218,6 @@ const MORE: {
       alt: "The Pride illustration on a Wagamama window",
     },
     position: "100% center",
-  },
-  { slug: "kiehls-trevor-project" },
-  {
-    slug: "citroen-2cv-concept",
-    label: "Citroën · 2CV Concept",
-    // The 720px silent card cut the /work grid plays, over the frame where
-    // the whole car is in shot.
-    video: "/work/citroen-2cv-concept/04-2cv-animation-card.mp4",
-    image: {
-      src: "/work/citroen-2cv-concept/05-2cv-animation-sound-poster.webp",
-      ratio: "4/5",
-      alt: "The 2CV animation, from a wheel out to the whole car",
-    },
-  },
-  {
-    slug: "voxi-pride",
-    image: {
-      src: "/work/voxi-pride/07-phone.webp",
-      ratio: "1/1",
-      alt: "The Voxi Pride phone case",
-    },
   },
   {
     slug: "ford-bronco",
@@ -255,6 +255,7 @@ export default async function LegoPage() {
   const piper = getProject("piper-heidsieck");
   const bombay = getProject("bombay-sapphire");
   const z1 = getProject("figma-bmw-z1");
+  const honda = getProject("honda-super-n");
   const twingo = getProject("hello-twingo");
 
   const { lightbox, stills } = createLightbox();
@@ -560,6 +561,28 @@ export default async function LegoPage() {
                 );
               })}
             </div>
+            {honda?.heroVideo && (
+              <div className="mt-8 md:mt-12">
+                {/* The Honda Super N turntable at the full width of the page,
+                    under the grid. Same setup as its project page: native
+                    controls and sound one tap away, no autoplay. */}
+                <ProjectVideo
+                  video={{
+                    src: honda.heroVideo.src,
+                    alt: honda.heroVideo.alt,
+                    poster: honda.heroVideo.poster,
+                  }}
+                  sound
+                  ratio="16/9"
+                />
+                <Link
+                  href="/work/honda-super-n"
+                  className="type-label mt-3 inline-block text-ink underline underline-offset-4"
+                >
+                  Honda · Super N
+                </Link>
+              </div>
+            )}
           </Block>
           <a
             href="https://joshmckenna.com"
