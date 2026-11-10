@@ -169,6 +169,11 @@ const MORE: {
   image?: ProjectImage;
   /** CSS object-position for the 4/5 crop. */
   position?: string;
+  /** A silent looping clip in place of the still (the image is its poster). */
+  video?: string;
+  /** Caption, when "client · title" isn't right (personal pieces name the
+   *  brand they're drawn for). */
+  label?: string;
 }[] = [
   {
     slug: "instagram-sticker",
@@ -194,6 +199,53 @@ const MORE: {
     position: "100% center",
   },
   { slug: "kiehls-trevor-project" },
+  {
+    slug: "citroen-2cv-concept",
+    label: "Citroën · 2CV Concept",
+    // The 720px silent card cut the /work grid plays, over the frame where
+    // the whole car is in shot.
+    video: "/work/citroen-2cv-concept/04-2cv-animation-card.mp4",
+    image: {
+      src: "/work/citroen-2cv-concept/05-2cv-animation-sound-poster.webp",
+      ratio: "4/5",
+      alt: "The 2CV animation, from a wheel out to the whole car",
+    },
+  },
+  {
+    slug: "voxi-pride",
+    image: {
+      src: "/work/voxi-pride/07-phone.webp",
+      ratio: "1/1",
+      alt: "The Voxi Pride phone case",
+    },
+  },
+  {
+    slug: "ford-bronco",
+    label: "Ford · Bronco",
+  },
+  {
+    slug: "levis-rainbow-rodeo",
+    image: {
+      src: "/work/levis-rainbow-rodeo/02-pins-trio.webp",
+      ratio: "2/3",
+      alt: "The three Rainbow Rodeo enamel pins",
+    },
+  },
+  {
+    slug: "figma-vitra-virgil",
+    label: "Vitra · Chair",
+  },
+  {
+    slug: "beefbar-posters",
+    label: "Beefbar · Monte Carlo",
+    // The Monte Carlo Lambo from the home page, as its silent card clip.
+    video: "/work/beefbar-posters/15-monte-carlo-lambo-card.mp4",
+    image: {
+      src: "/work/beefbar-posters/15-monte-carlo-lambo-poster.webp",
+      ratio: "4/5",
+      alt: "The Monte Carlo poster animated, a Lamborghini Miura outside the Casino",
+    },
+  },
 ];
 
 export default async function LegoPage() {
@@ -472,7 +524,7 @@ export default async function LegoPage() {
         <Section>
           <Block bold label="More">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {more.map(({ project, image, position }) => {
+              {more.map(({ project, image, position, video, label }) => {
                 const card = image ?? project.cardImage ?? project.hero;
                 return (
                   <Link
@@ -481,19 +533,28 @@ export default async function LegoPage() {
                     className="group block"
                   >
                     <div className="relative aspect-[4/5] overflow-hidden rounded-frame bg-placeholder">
-                      {card.src && (
-                        <Image
-                          src={card.src}
-                          alt={card.alt}
-                          fill
-                          sizes="(max-width: 768px) 50vw, 33vw"
-                          className="object-cover transition-transform duration-300 ease-drift group-hover:scale-[1.02]"
-                          style={{ objectPosition: position }}
+                      {video && card.src ? (
+                        <ProjectVideo
+                          video={{ src: video, alt: card.alt, poster: card.src }}
+                          ratio="4/5"
+                          radius=""
+                          className="h-full"
                         />
+                      ) : (
+                        card.src && (
+                          <Image
+                            src={card.src}
+                            alt={card.alt}
+                            fill
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                            className="object-cover transition-transform duration-300 ease-drift group-hover:scale-[1.02]"
+                            style={{ objectPosition: position }}
+                          />
+                        )
                       )}
                     </div>
-                    <p className="type-label mt-3 text-ink">
-                      {project.client} · {project.cardTitle ?? project.title}
+                    <p className="type-label mt-3 text-ink underline underline-offset-4">
+                      {label ?? `${project.client} · ${project.cardTitle ?? project.title}`}
                     </p>
                   </Link>
                 );
