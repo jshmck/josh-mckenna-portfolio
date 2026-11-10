@@ -10,13 +10,12 @@ import type { BuiltItem } from "@/lib/projects";
 export function BuiltList({ items, className = "" }: { items: BuiltItem[]; className?: string }) {
   return (
     <div className={className}>
-      {/* A real heading, not another mono label: a hairline rule and a bold
-          body-size title set the list apart from the Logo / Type / Posters
-          labels inside it, which share the mono label style. */}
-      <div className="border-t border-hairline pt-5">
-        <h3 className="type-lede font-bold text-ink">What I built</h3>
-      </div>
-      <dl className="mt-5 grid grid-cols-1 gap-x-8 gap-y-2.5 sm:grid-cols-[9rem_1fr] sm:gap-y-3">
+      {/* The original small uppercase label, set apart from the row labels
+          inside it by an underline (and ink, not muted, like before). */}
+      <h3 className="type-label text-ink underline decoration-1 underline-offset-4">
+        What I built
+      </h3>
+      <dl className="mt-4 grid grid-cols-1 gap-x-8 gap-y-2.5 sm:grid-cols-[9rem_1fr] sm:gap-y-3">
         {items.map((item) => (
           <div key={item.item} className="sm:contents">
             <dt className="type-label mr-2 inline text-ink-muted sm:mr-0">{item.item}</dt>
