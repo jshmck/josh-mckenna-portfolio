@@ -103,12 +103,7 @@ const LA_PRIDE = [
     "16/10",
     "Wayfinding totem, main stage and food village",
   ),
-  img(
-    "ford-bronco",
-    "01-bronco-2021",
-    "1/1",
-    "Ford Bronco, three-quarter rear, parked in the desert",
-  ),
+  img("la-pride", "17-vip-entrance", "16/10", "VIP entrance"),
   img("la-pride", "06-merch-rail", "16/10", "Merch — hoodie, tee and cap"),
   img(
     "la-pride",
