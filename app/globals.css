@@ -216,6 +216,17 @@
   text-transform: uppercase;
 }
 
+/* The section title on the private application pages (/lego): the mono label
+   voice, bold and a size up so it reads as a heading above its deliverables
+   line, which stays type-label. */
+@utility type-section {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
 @utility type-lede {
   font-family: var(--font-body);
   font-size: 1rem;

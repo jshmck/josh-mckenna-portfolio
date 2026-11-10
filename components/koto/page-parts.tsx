@@ -119,18 +119,18 @@ export function Block({
 }: {
   label: string;
   href?: string;
-  /** Bold section title and Project link (/lego). */
+  /** Larger bold section title and Project link (/lego). */
   bold?: boolean;
   children: ReactNode;
 }) {
   return (
     <Reveal>
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-6">
-        <p className={`type-label text-ink ${bold ? "font-bold" : ""}`}>{label}</p>
+        <p className={`${bold ? "type-section" : "type-label"} text-ink`}>{label}</p>
         {href && (
           <Link
             href={href}
-            className={`type-label underline ${bold ? "font-bold text-ink" : "text-ink-muted"}`}
+            className={`${bold ? "type-section text-ink" : "type-label text-ink-muted"} underline`}
           >
             Project
           </Link>
