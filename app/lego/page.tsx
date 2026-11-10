@@ -167,6 +167,11 @@ const Z1_COLOURS = [
 ];
 
 /** More work, linked out to its own page rather than re-shown here. */
+/** The paragraph under each section's frames: one measure (about 60
+ *  characters, left on the frame's edge) and one gap, the same in every
+ *  section. */
+const BLURB = "type-lede mt-6 max-w-[60ch] text-ink";
+
 const MORE: {
   slug: string;
   /** Overrides the project's own card image. */
@@ -310,7 +315,7 @@ export default async function LegoPage() {
     <ProjectLightboxProvider images={lightbox}>
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
-        <p className="type-lede mt-4 max-w-[60ch] text-ink">
+        <p className={BLURB}>
           I&apos;m a London illustrator and graphic designer, working for brands
           since 2014. I&apos;m applying for the Senior Graphic Designer,
           Vehicles role. Cars and racing are a lot of what I draw for fun, so
@@ -346,7 +351,7 @@ export default async function LegoPage() {
                 />
               )}
             </div>
-            <p className="type-lede mt-4 max-w-[60ch] text-ink">
+            <p className={BLURB}>
               A full graphic package for the launch of the 505 Touring wheel,
               built from a vintage Dakar rally look. The Land Cruiser is mine
               and that&apos;s me driving. I designed the livery, the logos in
@@ -382,7 +387,7 @@ export default async function LegoPage() {
               />
             )}
             {yamato?.brief[0] && (
-              <p className="type-lede mt-4 max-w-[60ch] text-ink">
+              <p className={BLURB}>
                 {yamato.brief[0]}
               </p>
             )}
@@ -422,11 +427,7 @@ export default async function LegoPage() {
               ))}
             </div>
             {laPrideProject?.brief[1] && (
-              // From lg the paragraph is exactly one tile wide (the grid above
-              // is three columns with a 1.25rem gap), so its edges sit on the
-              // grid under the first image; below lg a column is too narrow to
-              // read, so it keeps the usual line length.
-              <p className="type-lede mt-4 max-w-[60ch] text-ink lg:w-[calc((100%-2.5rem)/3)]">
+              <p className={BLURB}>
                 {laPrideProject.brief[1]}
               </p>
             )}
@@ -465,7 +466,7 @@ export default async function LegoPage() {
                 />
               </LbTile>
             </Row>
-            <p className="type-lede mt-4 max-w-[60ch] text-ink">
+            <p className={BLURB}>
               A limited-edition Pride tin for Piper-Heidsieck&apos;s Cuvée Brut,
               2024. The artwork is drawn flat and wraps round the tin; the
               finished tin is on the right.
@@ -504,7 +505,7 @@ export default async function LegoPage() {
               ))}
             </div>
             {bombay?.brief[0] && (
-              <p className="type-lede mt-4 max-w-[60ch] text-ink">
+              <p className={BLURB}>
                 {bombay.brief[0]}
               </p>
             )}
