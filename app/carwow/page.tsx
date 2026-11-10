@@ -13,6 +13,7 @@ import {
   MOBELWAGEN_FORMATS,
   NOMAD_FORMATS,
   PhoneRow,
+  REELS,
 } from "@/components/carwow/ad-phones";
 import { ReelPhone } from "@/components/carwow/phone-mockups";
 import { Reveal } from "@/components/ui/reveal";
@@ -238,13 +239,6 @@ const STICKER_IN_SITU = [
     "9/16",
     "The sticker on a lifeguard tower in LA",
   ),
-];
-
-const REELS = [
-  { n: 1, handle: "racelinewheels", avatar: "raceline" },
-  { n: 3, handle: "nomadwheel", avatar: "nomad" },
-  { n: 4, handle: "nomadwheel", avatar: "nomad" },
-  { n: 5, handle: "mobelwagen", avatar: "mobelwagen" },
 ];
 
 const CAR_ILLUSTRATION = [
