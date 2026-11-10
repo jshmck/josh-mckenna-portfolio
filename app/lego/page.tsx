@@ -172,6 +172,8 @@ const MORE: {
   /** The hover preview, when it should differ from the project's own next
    *  picture. */
   hover?: ProjectImage;
+  /** A clip that fades in on hover, in place of a still. */
+  hoverVideo?: { src: string; poster: string; alt: string };
   /** A silent looping clip in place of the still (the image is its poster). */
   video?: string;
   /** Caption, when "client · title" isn't right (personal pieces name the
@@ -210,17 +212,25 @@ const MORE: {
       alt: "The Instagram Pride sticker set open on a phone",
     },
     position: "55% center",
+    // The sticker animation on the light pink background, as on the /work
+    // card, instead of a second still.
+    hoverVideo: {
+      src: "/work/instagram-sticker/11-sticker-animation.mp4",
+      poster: "/work/instagram-sticker/11-sticker-animation-poster.webp",
+      alt: "The Instagram Pride sticker moving on a light pink background",
+    },
   },
   {
     slug: "wagamama-pride",
-    // A close-up of the window install; 100% trims the black strip on the
-    // photo's left edge out of the crop.
+    // The corner window with its decals, at Marble Arch: the photo runs
+    // curved around the building's corner. 3/2 source, centred in the 4/5
+    // crop so the middle figure and "Proud beyond Pride" stay in.
     image: {
-      src: "/work/wagamama-pride/06-window-install.webp",
-      ratio: "1/1",
-      alt: "The Pride illustration on a Wagamama window",
+      src: "/work/wagamama-pride/04-marble-arch.webp",
+      ratio: "3/2",
+      alt: "The Pride window wrapped around the corner of Wagamama Marble Arch",
     },
-    position: "100% center",
+    position: "50% center",
     // The Brighton artwork on hover, per Josh (the project's own next
     // picture would be the Proud Beyond Pride shot).
     hover: {
@@ -535,13 +545,13 @@ export default async function LegoPage() {
         <Section>
           <Block bold label="More">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {more.map(({ project, image, position, video, label, hover: hoverOverride }) => {
+              {more.map(({ project, image, position, video, label, hover: hoverOverride, hoverVideo }) => {
                 const card = image ?? project.cardImage ?? project.hero;
                 // The same hover preview as the /work cards: the project's
                 // curated hover image, else its next picture, never the one
                 // already showing. No preview on the clip cards, where a
                 // still would cover the motion.
-                const hover = video
+                const hover = video || hoverVideo
                   ? undefined
                   : (hoverOverride ??
                     [project.cardHoverImage, project.heroPair, ...project.gallery].find(
@@ -572,6 +582,26 @@ export default async function LegoPage() {
                             style={{ objectPosition: position }}
                           />
                         )
+                      )}
+                      {hoverVideo && (
+                        // The clip sits under the still at opacity 0 and
+                        // fades in on hover; display:none until the device
+                        // can hover, so a phone never loads it.
+                        <div
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:hover)]:block"
+                        >
+                          <ProjectVideo
+                            video={{
+                              src: hoverVideo.src,
+                              alt: hoverVideo.alt,
+                              poster: hoverVideo.poster,
+                            }}
+                            ratio="4/5"
+                            radius=""
+                            className="h-full"
+                          />
+                        </div>
                       )}
                       {hover?.src && (
                         // display:none until the device can hover, so touch
