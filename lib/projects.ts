@@ -1859,9 +1859,9 @@ export const projects: Project[] = [
     ],
     gallery: [
       {
-        ratio: "3980/3275",
+        ratio: "4/5",
         alt: "Livery technical drawings: front, rear and both sides",
-        src: "/work/nomad-wheels-505-livery/07-livery-sheet-v5.webp",
+        src: "/work/nomad-wheels-505-livery/07-livery-sheet-v6.webp",
         caption: false,
       },
       {
