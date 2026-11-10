@@ -176,6 +176,7 @@ export default async function LegoPage() {
   const piper = getProject("piper-heidsieck");
   const bombay = getProject("bombay-sapphire");
   const z1 = getProject("figma-bmw-z1");
+  const twingo = getProject("hello-twingo");
 
   const { lightbox, stills } = createLightbox();
 
@@ -189,6 +190,7 @@ export default async function LegoPage() {
   const laPrideStills = await stills(LA_PRIDE);
   const piperStills = await stills(PIPER);
   const bombayStills = await stills(BOMBAY_BOTTLES);
+  const twingoSlides = await stills(twingo?.gallery ?? []);
   const z1Stills = await stills(Z1_COLOURS);
 
   const more = MORE.map((slug) => getProject(slug)).filter(
@@ -387,6 +389,23 @@ export default async function LegoPage() {
             </div>
           </Block>
         </Section>
+
+        {twingo && twingoSlides.length > 0 && (
+          <Section>
+            <Block label="Hello Twingo · Personal" href="/work/hello-twingo">
+              <p className="type-label mb-4 text-ink-muted">
+                {twingo.deliverables}
+              </p>
+              {/* The six Twingo slides as a tight strip, the same as on the
+                  Carwow page; each opens its own lightbox frame. */}
+              <StillRow
+                stills={twingoSlides}
+                sizes="(max-width: 768px) 60vw, 18vw"
+                tight
+              />
+            </Block>
+          </Section>
+        )}
 
         {z1?.heroVideo && (
           <Section>
