@@ -15,7 +15,7 @@ import { HeroStackLightbox } from "@/components/work/hero-stack-lightbox";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectVideo } from "@/components/work/project-video";
 import { createLightbox, img } from "@/lib/koto-lightbox";
-import { getProject } from "@/lib/projects";
+import { getProject, type ProjectImage } from "@/lib/projects";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -163,10 +163,37 @@ const Z1_COLOURS = [
 ];
 
 /** More work, linked out to its own page rather than re-shown here. */
-const MORE = [
-  "honda-super-n",
-  "instagram-sticker",
-  "kiehls-trevor-project",
+const MORE: {
+  slug: string;
+  /** Overrides the project's own card image. */
+  image?: ProjectImage;
+  /** CSS object-position for the 4/5 crop. */
+  position?: string;
+}[] = [
+  {
+    slug: "instagram-sticker",
+    // The sticker set on a phone, not the sticker character: it's the
+    // clearest "what was this" shot. 16/9 source; 55% centres the phone in
+    // the 4/5 crop.
+    image: {
+      src: "/work/instagram-sticker/05-sticker-set-hr.webp",
+      ratio: "16/9",
+      alt: "The Instagram Pride sticker set open on a phone",
+    },
+    position: "55% center",
+  },
+  {
+    slug: "wagamama-pride",
+    // A close-up of the window install; 100% trims the black strip on the
+    // photo's left edge out of the crop.
+    image: {
+      src: "/work/wagamama-pride/06-window-install.webp",
+      ratio: "1/1",
+      alt: "The Pride illustration on a Wagamama window",
+    },
+    position: "100% center",
+  },
+  { slug: "kiehls-trevor-project" },
 ];
 
 export default async function LegoPage() {
@@ -193,9 +220,10 @@ export default async function LegoPage() {
   const z1Stills = await stills(Z1_COLOURS);
   const piperStills = await stills(PIPER);
 
-  const more = MORE.map((slug) => getProject(slug)).filter(
-    (project) => project !== undefined,
-  );
+  const more = MORE.flatMap((item) => {
+    const project = getProject(item.slug);
+    return project ? [{ ...item, project }] : [];
+  });
 
   return (
     <ProjectLightboxProvider images={lightbox}>
@@ -252,7 +280,7 @@ export default async function LegoPage() {
 
         <Section>
           <Block bold
-            label="Team Yamato · Honda Super-N"
+            label="Team Yamato · Personal"
             href="/work/team-yamato-super-n"
           >
             {yamato && (
@@ -444,8 +472,8 @@ export default async function LegoPage() {
         <Section>
           <Block bold label="More">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {more.map((project) => {
-                const card = project.cardImage ?? project.hero;
+              {more.map(({ project, image, position }) => {
+                const card = image ?? project.cardImage ?? project.hero;
                 return (
                   <Link
                     key={project.slug}
@@ -460,11 +488,12 @@ export default async function LegoPage() {
                           fill
                           sizes="(max-width: 768px) 50vw, 33vw"
                           className="object-cover transition-transform duration-300 ease-drift group-hover:scale-[1.02]"
+                          style={{ objectPosition: position }}
                         />
                       )}
                     </div>
                     <p className="type-label mt-3 text-ink">
-                      {project.cardTitle ?? project.title}
+                      {project.client} · {project.cardTitle ?? project.title}
                     </p>
                   </Link>
                 );
