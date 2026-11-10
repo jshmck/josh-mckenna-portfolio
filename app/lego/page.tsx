@@ -334,7 +334,7 @@ export default async function LegoPage() {
           >
             {nomad && (
               <p className="type-label mb-4 text-ink-muted">
-                <span className="text-ink">Graphic design</span> · {nomad.deliverables}
+                <span className="text-ink">Illustration · Graphic design</span> · {nomad.deliverables}
               </p>
             )}
             {/* Drawing and side photo lead, level with each other; the film
@@ -382,7 +382,7 @@ export default async function LegoPage() {
           >
             {yamato && (
               <p className="type-label mb-4 text-ink-muted">
-                <span className="text-ink">Graphic design</span> · {yamato.deliverables}
+                <span className="text-ink">Illustration · Graphic design</span> · {yamato.deliverables}
               </p>
             )}
             {yamatoStack && yamatoStills[0] && (
@@ -521,7 +521,7 @@ export default async function LegoPage() {
           <Section>
             <Block bold label="Hello Twingo · Personal" href="/work/hello-twingo">
               <p className="type-label mb-4 text-ink-muted">
-                <span className="text-ink">Illustration</span> · {twingo.deliverables}
+                <span className="text-ink">Illustration · Graphic design</span> · {twingo.deliverables}
               </p>
               {/* The six Twingo slides as a tight strip, the same as on the
                   Carwow page; each opens its own lightbox frame. */}
@@ -538,7 +538,7 @@ export default async function LegoPage() {
           <Section>
             <Block bold label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
               <p className="type-label mb-4 text-ink-muted">
-                <span className="text-ink">Illustration</span> · {z1.deliverables}
+                <span className="text-ink">Illustration · Animation</span> · {z1.deliverables}
               </p>
               {/* The animation first, then the all-red and the all-blue Z1,
                   all three 4/5. The film has the same ambient setup as the
