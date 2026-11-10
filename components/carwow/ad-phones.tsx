@@ -1,13 +1,15 @@
 import Image from "next/image";
 
 import { LikeSpot, type LikeBox } from "@/components/carwow/like-spot";
+import { ReelPhone } from "@/components/carwow/phone-mockups";
 import { Reveal } from "@/components/ui/reveal";
 import { SwipeRow } from "@/components/ui/swipe-row";
 
 /*
  * The graphic-design static ads, shared by /carwow and /lego: the Nomad and
  * Möbelwagen Tax Return Sale in the four formats each ran in, each set on an
- * iPhone with the like button live-looking but look-only.
+ * iPhone with the like button live-looking but look-only. Also the social
+ * Reels (ReelPhone), which /lego shows as a full-width swipe row.
  */
 
 export type AdPhone = { src: string; label: string; like: LikeBox };
@@ -77,6 +79,33 @@ export function PhoneRow({ phones, brand }: { phones: AdPhone[]; brand: string }
             <LikeSpot box={f.like} />
           </div>
           <p className="type-label mt-1 text-ink-muted">{f.label}</p>
+        </Reveal>
+      ))}
+    </SwipeRow>
+  );
+}
+
+/** The social video Reels: the clip in /carwow/reel-<n>.mp4, a handle, an avatar. */
+export const REELS = [
+  { n: 1, handle: "racelinewheels", avatar: "raceline" },
+  { n: 3, handle: "nomadwheel", avatar: "nomad" },
+  { n: 4, handle: "nomadwheel", avatar: "nomad" },
+  { n: 5, handle: "mobelwagen", avatar: "mobelwagen" },
+];
+
+/** The Reels as a swipe carousel with full-width slides on a phone, four across from md. */
+export function ReelsRow() {
+  return (
+    <SwipeRow className="swipe-phone flex items-start gap-4 md:grid md:grid-cols-4 md:gap-6">
+      {REELS.map((r) => (
+        <Reveal key={r.n} className="md:w-auto">
+          <ReelPhone
+            src={`/carwow/reel-${r.n}.mp4`}
+            poster={`/carwow/reel-${r.n}-poster.webp`}
+            handle={r.handle}
+            avatar={`/carwow/avatar-${r.avatar}.webp`}
+            alt={`Reel ${r.n}`}
+          />
         </Reveal>
       ))}
     </SwipeRow>
