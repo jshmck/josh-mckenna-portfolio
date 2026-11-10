@@ -321,11 +321,11 @@ export default async function LegoPage() {
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
         <p className={BLURB}>
-          Cars are my life. I grew up on Colin McRae Rally and LEGO, started
-          out studying automotive design at Coventry before switching to
-          illustration, and have spent the last few years designing graphics
-          for an aftermarket wheel company, including a livery for my own Land
-          Cruiser.
+          Cars are my life. I grew up on Colin McRae Rally, Gran Turismo, races
+          at Silverstone and LEGO, started out studying automotive design at
+          Coventry before switching to illustration, and have spent the last
+          few years designing graphics for an aftermarket wheel company,
+          including a livery for my own Land Cruiser.
         </p>
 
         <Section first>
