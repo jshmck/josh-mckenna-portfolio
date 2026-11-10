@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -156,6 +157,11 @@ const BOMBAY_BOTTLES = [
   ),
 ];
 
+const Z1_COLOURS = [
+  img("figma-bmw-z1", "04-z1-red", "1/1", "The Z1 in red"),
+  img("figma-bmw-z1", "06-z1-blue", "1/1", "The Z1 in blue"),
+];
+
 /** More work, linked out to its own page rather than re-shown here. */
 const MORE = [
   "honda-super-n",
@@ -183,6 +189,7 @@ export default async function LegoPage() {
   const laPrideStills = await stills(LA_PRIDE);
   const piperStills = await stills(PIPER);
   const bombayStills = await stills(BOMBAY_BOTTLES);
+  const z1Stills = await stills(Z1_COLOURS);
 
   const more = MORE.map((slug) => getProject(slug)).filter(
     (project) => project !== undefined,
@@ -387,21 +394,35 @@ export default async function LegoPage() {
               <p className="type-label mb-4 text-ink-muted">
                 {z1.deliverables}
               </p>
-              {/* Portrait, so it sits centred in a capped column rather than
-                  the full frame width. Same ambient setup as the project
-                  page: muted autoplay loop, sound one tap away. */}
-              <div className="mx-auto max-w-md">
-                <ProjectVideo
-                  video={{
-                    src: z1.heroVideo.src,
-                    alt: z1.heroVideo.alt,
-                    poster: z1.heroVideo.poster,
-                  }}
-                  sound
-                  autoplay
-                  ratio="4/5"
+              {/* The animation between the all-red and the all-blue Z1, all
+                  three at one shared height (see .height-row in
+                  globals.css). The film stays portrait (4/5), with the same
+                  ambient setup as the project page: muted autoplay loop,
+                  sound one tap away. The two stills open the page
+                  lightbox; the film doesn't. */}
+              <Row stack>
+                <StillTile
+                  still={z1Stills[0]}
+                  sizes="(max-width: 768px) 60vw, 30vw"
                 />
-              </div>
+                <div className="snap-center" style={{ "--r": 4 / 5 } as CSSProperties}>
+                  <ProjectVideo
+                    video={{
+                      src: z1.heroVideo.src,
+                      alt: z1.heroVideo.alt,
+                      poster: z1.heroVideo.poster,
+                    }}
+                    sound
+                    autoplay
+                    ratio="4/5"
+                    className="h-full"
+                  />
+                </div>
+                <StillTile
+                  still={z1Stills[1]}
+                  sizes="(max-width: 768px) 60vw, 30vw"
+                />
+              </Row>
             </Block>
           </Section>
         )}
