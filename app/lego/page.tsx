@@ -104,10 +104,10 @@ const LA_PRIDE = [
     "Wayfinding totem, main stage and food village",
   ),
   img(
-    "ford-bronco",
-    "01-bronco-2021",
-    "1/1",
-    "Ford Bronco, three-quarter rear, parked in the desert",
+    "la-pride",
+    "25-entrance-bronco-totem",
+    "3/2",
+    "The orange entrance totem, with the green Bronco and the rainbow",
   ),
   img("la-pride", "06-merch-rail", "16/10", "Merch — hoodie, tee and cap"),
   img(
@@ -138,6 +138,8 @@ const PIPER = [
  *  centres a 4/5 crop on it (the default 50% showed mostly grass). */
 const LA_PRIDE_FOCUS: Record<string, string> = {
   "05-wayfinding-totem": "85% center",
+  // Centres the green Bronco (~48% across) in the portrait crop.
+  "25-entrance-bronco-totem": "48% center",
 };
 
 const BOMBAY_BOTTLES = [
