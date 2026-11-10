@@ -623,9 +623,17 @@ export function Nav() {
           from the edge -- not overridden at md+, where the header was
           never meant to gain a margin (the three separate shapes there
           already sit exactly at the frame's own edges, unchanged). */}
+      {/* pointer-events-none on <header> and (md+) <nav>: the header is a
+          full-width 88px band that sticks to the top, and every page's
+          content scrolls underneath it. Without this the empty parts of the
+          band (around the jM mark, either side of the links pill) swallowed
+          clicks meant for links sliding under it, e.g. a "Project" link
+          scrolled up to header height. The jM link and the links pill (and
+          its Work drop-down) opt back in with pointer-events-auto. Below md
+          <nav> IS the visible frosted bar, so it keeps catching clicks. */}
       <header
         ref={headerRef}
-        className="sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)] max-md:px-6 max-[359px]:px-2"
+        className="pointer-events-none sticky top-0 z-40 flex min-h-[88px] items-start justify-center pt-[env(safe-area-inset-top)] max-md:px-6 max-[359px]:px-2"
       >
         <nav
           aria-label="Primary"
@@ -658,7 +666,7 @@ export function Nav() {
           // capsule radius. px-2 stays for horizontal breathing; the
           // jM mark itself keeps ~7px of clearance inside its own
           // 53px box, so nothing visually touches the bar's edge.
-          className={`mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-frame max-md:border max-md:px-2 max-md:py-0 max-[359px]:px-1 ${barFrostClassMobile}`}
+          className={`pointer-events-none max-md:pointer-events-auto mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-frame max-md:border max-md:px-2 max-md:py-0 max-[359px]:px-1 ${barFrostClassMobile}`}
         >
           {/* jM circle -- pinned to the frame's left edge (justify-self:
               start), the same edge the pre-pill nav always had it at.
@@ -678,7 +686,7 @@ export function Nav() {
               covers the scroll-driven state) so it plays on every fresh hover/tap
               regardless of whether the pill is currently frosted or
               not. */}
-          <div className="justify-self-start">
+          <div className="pointer-events-auto justify-self-start">
             <Link
               href="/"
               aria-label="Josh McKenna — home"
@@ -821,7 +829,7 @@ export function Nav() {
             }}
             // max-md:border-0 -- own border/background move to the shared
             // <nav> bar now, same as jM/Cart (see shapeFrostClassDesktop).
-            className={`relative flex items-center gap-3 rounded-full max-md:border-0 md:border px-3.5 py-3 max-[359px]:px-1 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${shapeFrostClassDesktop}`}
+            className={`pointer-events-auto relative flex items-center gap-3 rounded-full max-md:border-0 md:border px-3.5 py-3 max-[359px]:px-1 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${shapeFrostClassDesktop}`}
           >
             {workMenuOpen && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3">
