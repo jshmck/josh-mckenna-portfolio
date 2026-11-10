@@ -3,12 +3,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import {
-  MOBELWAGEN_FORMATS,
-  NOMAD_FORMATS,
-  PhoneRow,
-  ReelsRow,
-} from "@/components/carwow/ad-phones";
+import { ReelsRow } from "@/components/carwow/ad-phones";
 import { LbTile } from "@/components/koto/lightbox-tile";
 import {
   Block,
@@ -31,7 +26,10 @@ import { siteConfig } from "@/lib/site";
  *
  * Leads with three pieces, in this order: the 505 Touring launch, the Team
  * Yamato livery on the Honda Super-N, and the LA Pride campaign, then the
- * Piper-Heidsieck tin as the packaging piece. Everything
+ * Piper-Heidsieck tin as the packaging piece (the brief names packaging).
+ * The social video sits last, just above More: the weakest fit for a
+ * vehicles role. The static-ad "Graphic design" section was dropped.
+ * Everything
  * on it is already on the public site (no assets of its own); the building
  * blocks are the ones the Koto page uses.
  */
@@ -312,6 +310,12 @@ export default async function LegoPage() {
     <ProjectLightboxProvider images={lightbox}>
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
+        <p className="type-lede mt-4 max-w-[60ch] text-ink">
+          I&apos;m a London illustrator and graphic designer, working for brands
+          since 2014. I&apos;m applying for the Senior Graphic Designer,
+          Vehicles role. Cars and racing are a lot of what I draw for fun, so
+          the work starts with liveries.
+        </p>
 
         <Section first>
           <Block bold
@@ -431,6 +435,46 @@ export default async function LegoPage() {
 
         <Section>
           <Block bold
+            label="Limited edition tin · Piper-Heidsieck"
+            href="/work/piper-heidsieck"
+          >
+            {piper && (
+              <p className="type-label mb-4 text-ink-muted">
+                {piper.deliverables}
+              </p>
+            )}
+            <Row>
+              <StillTile
+                still={piperStills[0]}
+                sizes="(max-width: 768px) 100vw, 40vw"
+              />
+              {/* The tin shot is a transparent cut-out: contain it on the
+                  canvas, not the brand-blue tile surface the stills use. */}
+              <LbTile
+                index={piperStills[1].lb}
+                label={piperStills[1].alt}
+                r={piperStills[1].r}
+                className="relative snap-center overflow-hidden rounded-frame bg-canvas"
+              >
+                <Image
+                  src={piperStills[1].src}
+                  alt={piperStills[1].alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                  className="object-contain"
+                />
+              </LbTile>
+            </Row>
+            <p className="type-lede mt-4 max-w-[60ch] text-ink">
+              A limited-edition Pride tin for Piper-Heidsieck&apos;s Cuvée Brut,
+              2024. The artwork is drawn flat and wraps round the tin; the
+              finished tin is on the right.
+            </p>
+          </Block>
+        </Section>
+
+        <Section>
+          <Block bold
             label="Bombay Sapphire · Stir Creativity"
             href="/work/bombay-sapphire"
           >
@@ -459,6 +503,11 @@ export default async function LegoPage() {
                 </LbTile>
               ))}
             </div>
+            {bombay?.brief[0] && (
+              <p className="type-lede mt-4 max-w-[60ch] text-ink">
+                {bombay.brief[0]}
+              </p>
+            )}
           </Block>
         </Section>
 
@@ -478,38 +527,6 @@ export default async function LegoPage() {
             </Block>
           </Section>
         )}
-
-        <Section>
-          <Block bold label="Graphic design">
-            <p className="type-label mb-6 text-ink-muted">
-              Allied Wheel Components · Static ads · Graphic elements · Logos
-            </p>
-            {/* The Tax Return Sale static ads from the Carwow page, each in the
-                four formats it ran in on an iPhone: look-only, so they stay
-                out of the lightbox. */}
-            <div className="space-y-10">
-              <div>
-                <p className="type-label mb-4 text-ink">Nomad</p>
-                <PhoneRow phones={NOMAD_FORMATS} brand="Nomad Tax Return Sale" />
-              </div>
-              <div>
-                <p className="type-label mb-4 text-ink">Möbelwagen</p>
-                <PhoneRow phones={MOBELWAGEN_FORMATS} brand="Möbelwagen Tax Return Sale" />
-              </div>
-            </div>
-          </Block>
-        </Section>
-
-        <Section>
-          <Block bold label="Social video">
-            <p className="type-label mb-6 text-ink-muted">
-              Graphic elements · Hand drawn elements · Poster design · Merch design · Logos
-            </p>
-            {/* The Reels from the Carwow page, each in an iPhone: look-only
-                video, so they stay out of the lightbox. */}
-            <ReelsRow />
-          </Block>
-        </Section>
 
         {z1?.heroVideo && (
           <Section>
@@ -549,42 +566,13 @@ export default async function LegoPage() {
         )}
 
         <Section>
-          <Block bold
-            label="Limited edition tin · Piper-Heidsieck"
-            href="/work/piper-heidsieck"
-          >
-            {piper && (
-              <p className="type-label mb-4 text-ink-muted">
-                {piper.deliverables}
-              </p>
-            )}
-            <Row>
-              <StillTile
-                still={piperStills[0]}
-                sizes="(max-width: 768px) 100vw, 40vw"
-              />
-              {/* The tin shot is a transparent cut-out: contain it on the
-                  canvas, not the brand-blue tile surface the stills use. */}
-              <LbTile
-                index={piperStills[1].lb}
-                label={piperStills[1].alt}
-                r={piperStills[1].r}
-                className="relative snap-center overflow-hidden rounded-frame bg-canvas"
-              >
-                <Image
-                  src={piperStills[1].src}
-                  alt={piperStills[1].alt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 25vw"
-                  className="object-contain"
-                />
-              </LbTile>
-            </Row>
-            <p className="type-lede mt-4 max-w-[60ch] text-ink">
-              A limited-edition Pride tin for Piper-Heidsieck&apos;s Cuvée Brut,
-              2024. The artwork is drawn flat and wraps round the tin; the
-              finished tin is on the right.
+          <Block bold label="Social video">
+            <p className="type-label mb-6 text-ink-muted">
+              Graphic elements · Hand drawn elements · Poster design · Merch design · Logos
             </p>
+            {/* The Reels from the Carwow page, each in an iPhone: look-only
+                video, so they stay out of the lightbox. */}
+            <ReelsRow />
           </Block>
         </Section>
 
