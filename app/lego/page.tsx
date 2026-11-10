@@ -190,8 +190,8 @@ export default async function LegoPage() {
   const laPrideStills = await stills(LA_PRIDE);
   const bombayStills = await stills(BOMBAY_BOTTLES);
   const twingoSlides = await stills(twingo?.gallery ?? []);
-  const piperStills = await stills(PIPER);
   const z1Stills = await stills(Z1_COLOURS);
+  const piperStills = await stills(PIPER);
 
   const more = MORE.map((slug) => getProject(slug)).filter(
     (project) => project !== undefined,
@@ -364,6 +364,43 @@ export default async function LegoPage() {
           </Section>
         )}
 
+        {z1?.heroVideo && (
+          <Section>
+            <Block bold label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
+              <p className="type-label mb-4 text-ink-muted">
+                {z1.deliverables}
+              </p>
+              {/* The animation first, then the all-red and the all-blue Z1,
+                  all three 4/5. The film has the same ambient setup as the
+                  project page: muted autoplay loop, sound one tap away. The
+                  two stills open the page lightbox; the film doesn't. */}
+              <Row>
+                <div className="snap-center" style={{ "--r": 4 / 5 } as CSSProperties}>
+                  <ProjectVideo
+                    video={{
+                      src: z1.heroVideo.src,
+                      alt: z1.heroVideo.alt,
+                      poster: z1.heroVideo.poster,
+                    }}
+                    sound
+                    autoplay
+                    ratio="4/5"
+                    className="h-full"
+                  />
+                </div>
+                <StillTile
+                  still={z1Stills[0]}
+                  sizes="(max-width: 768px) 60vw, 30vw"
+                />
+                <StillTile
+                  still={z1Stills[1]}
+                  sizes="(max-width: 768px) 60vw, 30vw"
+                />
+              </Row>
+            </Block>
+          </Section>
+        )}
+
         <Section>
           <Block bold
             label="Limited edition tin · Piper-Heidsieck"
@@ -403,43 +440,6 @@ export default async function LegoPage() {
             </p>
           </Block>
         </Section>
-
-        {z1?.heroVideo && (
-          <Section>
-            <Block bold label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
-              <p className="type-label mb-4 text-ink-muted">
-                {z1.deliverables}
-              </p>
-              {/* The animation first, then the all-red and the all-blue Z1,
-                  all three 4/5. The film has the same ambient setup as the
-                  project page: muted autoplay loop, sound one tap away. The
-                  two stills open the page lightbox; the film doesn't. */}
-              <Row>
-                <div className="snap-center" style={{ "--r": 4 / 5 } as CSSProperties}>
-                  <ProjectVideo
-                    video={{
-                      src: z1.heroVideo.src,
-                      alt: z1.heroVideo.alt,
-                      poster: z1.heroVideo.poster,
-                    }}
-                    sound
-                    autoplay
-                    ratio="4/5"
-                    className="h-full"
-                  />
-                </div>
-                <StillTile
-                  still={z1Stills[0]}
-                  sizes="(max-width: 768px) 60vw, 30vw"
-                />
-                <StillTile
-                  still={z1Stills[1]}
-                  sizes="(max-width: 768px) 60vw, 30vw"
-                />
-              </Row>
-            </Block>
-          </Section>
-        )}
 
         <Section>
           <Block bold label="More">
