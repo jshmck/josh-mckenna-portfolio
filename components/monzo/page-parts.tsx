@@ -1,3 +1,4 @@
+import { SwipeRow } from "@/components/ui/swipe-row";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -14,10 +15,7 @@ import type { Still } from "@/lib/monzo-lightbox";
  * height. Every still and silent clip opens the page's shared lightbox.
  */
 
-const RAW_ROW =
-  "height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden";
-
-const FIT_ROW = "fit-row flex flex-col md:flex-row";
+const FIT_ROW = "fit-row swipe-phone flex max-md:items-start md:flex-row";
 
 /** A row whose items all share one height from md (see .fit-row in
  *  globals.css); on a phone each image gets its own line, no swiping. `tight`
@@ -30,9 +28,9 @@ export function Row({
   children: ReactNode;
 }) {
   return (
-    <div className={`${tight ? RAW_ROW : FIT_ROW} ${tight ? "gap-1" : "gap-3 md:gap-5"}`}>
+    <SwipeRow className={`${FIT_ROW} ${tight ? "gap-3 md:gap-1" : "gap-3 md:gap-5"}`}>
       {children}
-    </div>
+    </SwipeRow>
   );
 }
 
@@ -190,9 +188,7 @@ export function CaptionedRow({
   sizes: string;
 }) {
   return (
-    <div
-      className="flex flex-col items-start gap-6 md:flex-row md:gap-5"
-    >
+    <SwipeRow className="swipe-phone flex gap-3 max-md:items-start md:items-start md:gap-5">
       {items.map(({ still, caption, surface }) => (
         <figure
           key={still.src}
@@ -210,6 +206,6 @@ export function CaptionedRow({
           </figcaption>
         </figure>
       ))}
-    </div>
+    </SwipeRow>
   );
 }

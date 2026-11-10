@@ -158,8 +158,8 @@ const BOMBAY_BOTTLES = [
 ];
 
 const Z1_COLOURS = [
-  img("figma-bmw-z1", "04-z1-red", "1/1", "The Z1 in red"),
-  img("figma-bmw-z1", "06-z1-blue", "1/1", "The Z1 in blue"),
+  img("figma-bmw-z1", "04-z1-red-4x5", "4/5", "The Z1 in red"),
+  img("figma-bmw-z1", "06-z1-blue-4x5", "4/5", "The Z1 in blue"),
 ];
 
 /** More work, linked out to its own page rather than re-shown here. */
@@ -188,9 +188,9 @@ export default async function LegoPage() {
       : undefined;
   const yamatoStills = yamatoStack ? await stills([...yamatoStack]) : [];
   const laPrideStills = await stills(LA_PRIDE);
-  const piperStills = await stills(PIPER);
   const bombayStills = await stills(BOMBAY_BOTTLES);
   const twingoSlides = await stills(twingo?.gallery ?? []);
+  const piperStills = await stills(PIPER);
   const z1Stills = await stills(Z1_COLOURS);
 
   const more = MORE.map((slug) => getProject(slug)).filter(
@@ -316,46 +316,6 @@ export default async function LegoPage() {
 
         <Section>
           <Block
-            label="Limited edition tin · Piper-Heidsieck"
-            href="/work/piper-heidsieck"
-          >
-            {piper && (
-              <p className="type-label mb-4 text-ink-muted">
-                {piper.deliverables}
-              </p>
-            )}
-            <Row>
-              <StillTile
-                still={piperStills[0]}
-                sizes="(max-width: 768px) 100vw, 40vw"
-              />
-              {/* The tin shot is a transparent cut-out: contain it on the
-                  canvas, not the brand-blue tile surface the stills use. */}
-              <LbTile
-                index={piperStills[1].lb}
-                label={piperStills[1].alt}
-                r={piperStills[1].r}
-                className="relative snap-center overflow-hidden rounded-frame bg-canvas"
-              >
-                <Image
-                  src={piperStills[1].src}
-                  alt={piperStills[1].alt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 25vw"
-                  className="object-contain"
-                />
-              </LbTile>
-            </Row>
-            <p className="type-lede mt-4 max-w-[60ch] text-ink">
-              A limited-edition Pride tin for Piper-Heidsieck&apos;s Cuvée Brut,
-              2024. The artwork is drawn flat and wraps round the tin; the
-              finished tin is on the right.
-            </p>
-          </Block>
-        </Section>
-
-        <Section>
-          <Block
             label="Bombay Sapphire · Stir Creativity"
             href="/work/bombay-sapphire"
           >
@@ -404,23 +364,57 @@ export default async function LegoPage() {
           </Section>
         )}
 
+        <Section>
+          <Block
+            label="Limited edition tin · Piper-Heidsieck"
+            href="/work/piper-heidsieck"
+          >
+            {piper && (
+              <p className="type-label mb-4 text-ink-muted">
+                {piper.deliverables}
+              </p>
+            )}
+            <Row>
+              <StillTile
+                still={piperStills[0]}
+                sizes="(max-width: 768px) 100vw, 40vw"
+              />
+              {/* The tin shot is a transparent cut-out: contain it on the
+                  canvas, not the brand-blue tile surface the stills use. */}
+              <LbTile
+                index={piperStills[1].lb}
+                label={piperStills[1].alt}
+                r={piperStills[1].r}
+                className="relative snap-center overflow-hidden rounded-frame bg-canvas"
+              >
+                <Image
+                  src={piperStills[1].src}
+                  alt={piperStills[1].alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                  className="object-contain"
+                />
+              </LbTile>
+            </Row>
+            <p className="type-lede mt-4 max-w-[60ch] text-ink">
+              A limited-edition Pride tin for Piper-Heidsieck&apos;s Cuvée Brut,
+              2024. The artwork is drawn flat and wraps round the tin; the
+              finished tin is on the right.
+            </p>
+          </Block>
+        </Section>
+
         {z1?.heroVideo && (
           <Section>
             <Block label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
               <p className="type-label mb-4 text-ink-muted">
                 {z1.deliverables}
               </p>
-              {/* The animation between the all-red and the all-blue Z1, all
-                  three at one shared height (see .height-row in
-                  globals.css). The film stays portrait (4/5), with the same
-                  ambient setup as the project page: muted autoplay loop,
-                  sound one tap away. The two stills open the page
-                  lightbox; the film doesn't. */}
+              {/* The animation first, then the all-red and the all-blue Z1,
+                  all three 4/5. The film has the same ambient setup as the
+                  project page: muted autoplay loop, sound one tap away. The
+                  two stills open the page lightbox; the film doesn't. */}
               <Row>
-                <StillTile
-                  still={z1Stills[0]}
-                  sizes="(max-width: 768px) 60vw, 30vw"
-                />
                 <div className="snap-center" style={{ "--r": 4 / 5 } as CSSProperties}>
                   <ProjectVideo
                     video={{
@@ -434,6 +428,10 @@ export default async function LegoPage() {
                     className="h-full"
                   />
                 </div>
+                <StillTile
+                  still={z1Stills[0]}
+                  sizes="(max-width: 768px) 60vw, 30vw"
+                />
                 <StillTile
                   still={z1Stills[1]}
                   sizes="(max-width: 768px) 60vw, 30vw"
