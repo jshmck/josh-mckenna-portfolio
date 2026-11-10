@@ -203,7 +203,7 @@ export default async function LegoPage() {
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
 
         <Section first>
-          <Block
+          <Block bold
             label="505 Touring launch · Nomad Wheels"
             href="/work/nomad-wheels-505-livery"
           >
@@ -251,7 +251,7 @@ export default async function LegoPage() {
         </Section>
 
         <Section>
-          <Block
+          <Block bold
             label="Team Yamato · Honda Super-N"
             href="/work/team-yamato-super-n"
           >
@@ -275,7 +275,7 @@ export default async function LegoPage() {
         </Section>
 
         <Section>
-          <Block label="LA Pride · 360 campaign" href="/work/la-pride">
+          <Block bold label="LA Pride · 360 campaign" href="/work/la-pride">
             {laPrideProject && (
               <p className="type-label mb-4 text-ink-muted">
                 {laPrideProject.deliverables}
@@ -315,7 +315,7 @@ export default async function LegoPage() {
         </Section>
 
         <Section>
-          <Block
+          <Block bold
             label="Bombay Sapphire · Stir Creativity"
             href="/work/bombay-sapphire"
           >
@@ -349,7 +349,7 @@ export default async function LegoPage() {
 
         {twingo && twingoSlides.length > 0 && (
           <Section>
-            <Block label="Hello Twingo · Personal" href="/work/hello-twingo">
+            <Block bold label="Hello Twingo · Personal" href="/work/hello-twingo">
               <p className="type-label mb-4 text-ink-muted">
                 {twingo.deliverables}
               </p>
@@ -365,7 +365,7 @@ export default async function LegoPage() {
         )}
 
         <Section>
-          <Block
+          <Block bold
             label="Limited edition tin · Piper-Heidsieck"
             href="/work/piper-heidsieck"
           >
@@ -406,7 +406,7 @@ export default async function LegoPage() {
 
         {z1?.heroVideo && (
           <Section>
-            <Block label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
+            <Block bold label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
               <p className="type-label mb-4 text-ink-muted">
                 {z1.deliverables}
               </p>
@@ -442,7 +442,7 @@ export default async function LegoPage() {
         )}
 
         <Section>
-          <Block label="More">
+          <Block bold label="More">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {more.map((project) => {
                 const card = project.cardImage ?? project.hero;
