@@ -220,10 +220,6 @@ const MORE: {
     position: "100% center",
   },
   {
-    slug: "ford-bronco",
-    label: "Ford · Bronco",
-  },
-  {
     slug: "levis-rainbow-rodeo",
     image: {
       src: "/work/levis-rainbow-rodeo/02-pins-trio.webp",
@@ -232,8 +228,12 @@ const MORE: {
     },
   },
   {
+    slug: "ford-bronco",
+    label: "Ford · Bronco",
+  },
+  {
     slug: "figma-vitra-virgil",
-    label: "Vitra · Chair",
+    label: "Vitra · Virgil Abloh",
   },
   {
     slug: "beefbar-posters",
