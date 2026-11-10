@@ -3,6 +3,11 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import {
+  MOBELWAGEN_FORMATS,
+  NOMAD_FORMATS,
+  PhoneRow,
+} from "@/components/carwow/ad-phones";
 import { LbTile } from "@/components/koto/lightbox-tile";
 import {
   Block,
@@ -543,6 +548,27 @@ export default async function LegoPage() {
               2024. The artwork is drawn flat and wraps round the tin; the
               finished tin is on the right.
             </p>
+          </Block>
+        </Section>
+
+        <Section>
+          <Block bold label="Graphic design">
+            <p className="type-label mb-6 text-ink-muted">
+              Allied Wheel Components · Static ads · Graphic elements · Logos
+            </p>
+            {/* The Tax Return Sale static ads from the Carwow page, each in the
+                four formats it ran in on an iPhone: look-only, so they stay
+                out of the lightbox. */}
+            <div className="space-y-10">
+              <div>
+                <p className="type-label mb-4 text-ink">Nomad</p>
+                <PhoneRow phones={NOMAD_FORMATS} brand="Nomad Tax Return Sale" />
+              </div>
+              <div>
+                <p className="type-label mb-4 text-ink">Möbelwagen</p>
+                <PhoneRow phones={MOBELWAGEN_FORMATS} brand="Möbelwagen Tax Return Sale" />
+              </div>
+            </div>
           </Block>
         </Section>
 
