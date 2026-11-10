@@ -527,6 +527,15 @@ export default async function LegoPage() {
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {more.map(({ project, image, position, video, label }) => {
                 const card = image ?? project.cardImage ?? project.hero;
+                // The same hover preview as the /work cards: the project's
+                // curated hover image, else its next picture, never the one
+                // already showing. No preview on the clip cards, where a
+                // still would cover the motion.
+                const hover = video
+                  ? undefined
+                  : [project.cardHoverImage, project.heroPair, ...project.gallery].find(
+                      (candidate) => candidate?.src && candidate.src !== card.src,
+                    );
                 return (
                   <Link
                     key={project.slug}
@@ -552,6 +561,22 @@ export default async function LegoPage() {
                             style={{ objectPosition: position }}
                           />
                         )
+                      )}
+                      {hover?.src && (
+                        // display:none until the device can hover, so touch
+                        // screens never fetch it (same as /work's cards).
+                        <div
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:hover)]:block"
+                        >
+                          <Image
+                            src={hover.src}
+                            alt=""
+                            fill
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                            className="object-cover"
+                          />
+                        </div>
                       )}
                     </div>
                     <p className="type-label mt-3 text-ink underline underline-offset-4">
