@@ -322,7 +322,7 @@ export default async function LegoPage() {
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
         <p className={BLURB}>
           Hi, I&apos;m Josh, and I&apos;m obsessed with cars. I grew up on
-          Colin McRae Rally, Gran Turismo, races at Silverstone and LEGO,
+          Colin McRae Rally, Gran Turismo, races at Silverstone and LEGO. I
           started out studying automotive design at Coventry before switching
           to illustration, and have spent the last few years designing
           graphics for an aftermarket wheel company, including a livery for my
