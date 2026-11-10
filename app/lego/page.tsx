@@ -163,6 +163,7 @@ export default async function LegoPage() {
   const laPrideProject = getProject("la-pride");
   const piper = getProject("piper-heidsieck");
   const bombay = getProject("bombay-sapphire");
+  const z1 = getProject("figma-bmw-z1");
 
   const { lightbox, stills } = createLightbox();
 
@@ -376,6 +377,34 @@ export default async function LegoPage() {
             </div>
           </Block>
         </Section>
+
+        {z1?.heroVideo && (
+          <Section>
+            <Block label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
+              <p className="type-label mb-4 text-ink-muted">
+                {z1.deliverables}
+              </p>
+              {/* Portrait, so it sits centred in a capped column rather than
+                  the full frame width. Same ambient setup as the project
+                  page: muted autoplay loop, sound one tap away. */}
+              <div className="mx-auto max-w-md">
+                <ProjectVideo
+                  video={{
+                    src: z1.heroVideo.src,
+                    alt: z1.heroVideo.alt,
+                    poster: z1.heroVideo.poster,
+                  }}
+                  sound
+                  autoplay
+                  ratio="4/5"
+                />
+              </div>
+              <p className="type-lede mt-4 max-w-[60ch] text-ink">
+                {z1.brief.join(" ")}
+              </p>
+            </Block>
+          </Section>
+        )}
 
         <Section>
           <Block label="More">
