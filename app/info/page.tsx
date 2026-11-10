@@ -69,16 +69,18 @@ export default function AboutPage() {
                 <h2 className="type-heading text-ink">About Josh</h2>
                 <Reveal>
                   <p className="mt-12 type-lede text-ink-muted">
-                    Josh McKenna is an illustrator with over a decade of
-                    experience working across digital products, editorial,
-                    and physical spaces. He studied illustration at Falmouth
-                    University before going freelance in 2014, working with
-                    brands from Apple to the Guardian. From the iconic
+                    Josh McKenna is an illustrator and graphic designer with
+                    over a decade of experience across digital products,
+                    editorial and physical spaces. After a short spell
+                    studying automotive design at Coventry, he studied
+                    illustration at Falmouth University and went freelance in
+                    2014, working with brands from Apple to the Guardian. His
+                    work centres bold, inclusive characters, from the
                     Instagram Pride sticker to murals for Facebook and the
-                    full environmental branding for LA Pride 2024, his work
-                    centres bold, inclusive characters and an obsession with
-                    cars. He draws, animates and occasionally makes things
-                    in 3D.
+                    full environmental branding for LA Pride 2024. He&apos;s
+                    also a lifelong car obsessive, and designed the race
+                    livery for his own vintage Land Cruiser. He draws,
+                    animates and occasionally makes things in 3D.
                   </p>
                 </Reveal>
 

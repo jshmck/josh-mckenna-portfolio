@@ -166,6 +166,11 @@ const Z1_COLOURS = [
   img("figma-bmw-z1", "06-z1-blue-4x5", "4/5", "The Z1 in blue"),
 ];
 
+/* Each section's small deliverables line opens with its discipline
+   ("Graphic design", "Illustration", ...) in text-ink, so a reviewer hiring
+   a graphic designer can see at a glance which pieces are which. Tags are
+   Josh's own calls, set inline on each section below. */
+
 /** More work, linked out to its own page rather than re-shown here. */
 /** The paragraph under each section's frames: one measure (about 60
  *  characters, left on the frame's edge) and one gap, the same in every
@@ -316,10 +321,10 @@ export default async function LegoPage() {
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
         <p className={BLURB}>
-          I&apos;m a London illustrator and graphic designer, working for brands
-          since 2014. I&apos;m applying for the Senior Graphic Designer,
-          Vehicles role. Cars and racing are a lot of what I draw for fun, so
-          the work starts with liveries.
+          Cars are my life. I grew up on Colin McRae Rally and LEGO, studied a
+          bit of automotive design at Coventry, and have spent the last few
+          years designing graphics for an aftermarket wheel company, including
+          a livery for my own Land Cruiser.
         </p>
 
         <Section first>
@@ -329,7 +334,7 @@ export default async function LegoPage() {
           >
             {nomad && (
               <p className="type-label mb-4 text-ink-muted">
-                {nomad.deliverables}
+                <span className="text-ink">Graphic design</span> · {nomad.deliverables}
               </p>
             )}
             {/* Drawing and side photo lead, level with each other; the film
@@ -377,7 +382,7 @@ export default async function LegoPage() {
           >
             {yamato && (
               <p className="type-label mb-4 text-ink-muted">
-                {yamato.deliverables}
+                <span className="text-ink">Graphic design</span> · {yamato.deliverables}
               </p>
             )}
             {yamatoStack && yamatoStills[0] && (
@@ -398,7 +403,7 @@ export default async function LegoPage() {
           <Block bold label="LA Pride · 360 campaign" href="/work/la-pride">
             {laPrideProject && (
               <p className="type-label mb-4 text-ink-muted">
-                {laPrideProject.deliverables}
+                <span className="text-ink">Graphic design · Illustration</span> · {laPrideProject.deliverables}
               </p>
             )}
             {/* The logomark introduces the section as the first tile of the
@@ -441,7 +446,7 @@ export default async function LegoPage() {
           >
             {piper && (
               <p className="type-label mb-4 text-ink-muted">
-                {piper.deliverables}
+                <span className="text-ink">Illustration · Packaging</span> · {piper.deliverables}
               </p>
             )}
             <Row>
@@ -481,7 +486,7 @@ export default async function LegoPage() {
           >
             {bombay && (
               <p className="type-label mb-4 text-ink-muted">
-                {bombay.deliverables}
+                <span className="text-ink">Illustration · Packaging</span> · {bombay.deliverables}
               </p>
             )}
             {/* Just the bottles, big: the two shots side by side at the full
@@ -516,7 +521,7 @@ export default async function LegoPage() {
           <Section>
             <Block bold label="Hello Twingo · Personal" href="/work/hello-twingo">
               <p className="type-label mb-4 text-ink-muted">
-                {twingo.deliverables}
+                <span className="text-ink">Illustration</span> · {twingo.deliverables}
               </p>
               {/* The six Twingo slides as a tight strip, the same as on the
                   Carwow page; each opens its own lightbox frame. */}
@@ -533,7 +538,7 @@ export default async function LegoPage() {
           <Section>
             <Block bold label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
               <p className="type-label mb-4 text-ink-muted">
-                {z1.deliverables}
+                <span className="text-ink">Illustration</span> · {z1.deliverables}
               </p>
               {/* The animation first, then the all-red and the all-blue Z1,
                   all three 4/5. The film has the same ambient setup as the
@@ -569,7 +574,9 @@ export default async function LegoPage() {
         <Section>
           <Block bold label="Social video">
             <p className="type-label mb-6 text-ink-muted">
-              Graphic elements · Hand drawn elements · Poster design · Merch design · Logos
+              <span className="text-ink">Graphic design</span> · Graphic
+              elements · Hand drawn elements · Poster design · Merch design ·
+              Logos
             </p>
             {/* The Reels from the Carwow page, each in an iPhone: look-only
                 video, so they stay out of the lightbox. */}
