@@ -163,6 +163,7 @@ export default async function LegoPage() {
   const laPrideProject = getProject("la-pride");
   const piper = getProject("piper-heidsieck");
   const bombay = getProject("bombay-sapphire");
+  const z1 = getProject("figma-bmw-z1");
 
   const { lightbox, stills } = createLightbox();
 
@@ -222,6 +223,9 @@ export default async function LegoPage() {
               and that&apos;s me driving. I designed the livery, the logos in
               the film and the posters.
             </p>
+            {nomad?.built && (
+              <BuiltList items={nomad.built} className="mt-10 max-w-3xl" />
+            )}
           </Block>
           <div className="space-y-3 md:space-y-5">
             <StillRow
@@ -257,6 +261,9 @@ export default async function LegoPage() {
               <p className="type-lede mt-4 max-w-[60ch] text-ink">
                 {yamato.brief[0]}
               </p>
+            )}
+            {yamato?.built && (
+              <BuiltList items={yamato.built} className="mt-10 max-w-3xl" />
             )}
           </Block>
         </Section>
@@ -341,6 +348,9 @@ export default async function LegoPage() {
               2024. The artwork is drawn flat and wraps round the tin; the
               finished tin is on the right.
             </p>
+            {piper?.built && (
+              <BuiltList items={piper.built} className="mt-10 max-w-3xl" />
+            )}
           </Block>
         </Section>
 
@@ -374,8 +384,36 @@ export default async function LegoPage() {
                 </LbTile>
               ))}
             </div>
+            {bombay?.built && (
+              <BuiltList items={bombay.built} className="mt-10 max-w-3xl" />
+            )}
           </Block>
         </Section>
+
+        {z1?.heroVideo && (
+          <Section>
+            <Block label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
+              <p className="type-label mb-4 text-ink-muted">
+                {z1.deliverables}
+              </p>
+              {/* Portrait, so it sits centred in a capped column rather than
+                  the full frame width. Same ambient setup as the project
+                  page: muted autoplay loop, sound one tap away. */}
+              <div className="mx-auto max-w-md">
+                <ProjectVideo
+                  video={{
+                    src: z1.heroVideo.src,
+                    alt: z1.heroVideo.alt,
+                    poster: z1.heroVideo.poster,
+                  }}
+                  sound
+                  autoplay
+                  ratio="4/5"
+                />
+              </div>
+            </Block>
+          </Section>
+        )}
 
         <Section>
           <Block label="More">
