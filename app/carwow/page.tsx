@@ -9,7 +9,11 @@ import type { CSSProperties, ReactNode } from "react";
 
 import { SwipeRow } from "@/components/ui/swipe-row";
 import { LbTile } from "@/components/carwow/lightbox-tile";
-import { LikeSpot, type LikeBox } from "@/components/carwow/like-spot";
+import {
+  MOBELWAGEN_FORMATS,
+  NOMAD_FORMATS,
+  PhoneRow,
+} from "@/components/carwow/ad-phones";
 import { ReelPhone } from "@/components/carwow/phone-mockups";
 import { Reveal } from "@/components/ui/reveal";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
@@ -185,36 +189,6 @@ const Section = ({ children }: { children: ReactNode }) => (
   </section>
 );
 
-/** A row of iPhone mockups: a swipe carousel on a phone, four across from md. Look-only, like the Reels. */
-function PhoneRow({
-  phones,
-  brand,
-}: {
-  phones: { src: string; label: string; like: LikeBox }[];
-  brand: string;
-}) {
-  return (
-    <SwipeRow className="swipe-phone flex items-start gap-4 md:grid md:grid-cols-4 md:gap-6">
-      {phones.map((f) => (
-        <Reveal key={f.src} className="md:w-auto">
-          <div className="relative [container-type:inline-size]">
-            <Image
-              src={f.src}
-              alt={`${brand}, ${f.label}, on an iPhone`}
-              width={700}
-              height={1299}
-              sizes="(max-width: 768px) 62vw, 25vw"
-              className="h-auto w-full"
-            />
-            <LikeSpot box={f.like} />
-          </div>
-          <p className="type-label mt-1 text-ink-muted">{f.label}</p>
-        </Reveal>
-      ))}
-    </SwipeRow>
-  );
-}
-
 const LA_PRIDE = [
   img(
     "la-pride",
@@ -264,53 +238,6 @@ const STICKER_IN_SITU = [
     "9/16",
     "The sticker on a lifeguard tower in LA",
   ),
-];
-
-/** Nomad's Tax Return Sale in the four formats it ran in. */
-const NOMAD_FORMATS: { src: string; label: string; like: LikeBox }[] = [
-  {
-    src: "/carwow/phone-nomad-b-ad.webp",
-    label: "Facebook ad · 1:1",
-    like: { kind: "like", x: 83, y: 1217, w: 96, h: 40 },
-  },
-  {
-    src: "/carwow/phone-nomad-b-post.webp",
-    label: "Instagram post · 4:5",
-    like: { kind: "heart", x: 24, y: 1219, w: 46, h: 46 },
-  },
-  {
-    src: "/carwow/phone-nomad-b-story.webp",
-    label: "Instagram Story · 9:16",
-    like: { kind: "heart", x: 623, y: 1552, w: 44, h: 44 },
-  },
-  {
-    src: "/carwow/phone-nomad-b-banner.webp",
-    label: "Video banner ad · 16:9",
-    like: { kind: "count", x: 24, y: 769, w: 129, h: 66 },
-  },
-];
-
-const MOBELWAGEN_FORMATS: { src: string; label: string; like: LikeBox }[] = [
-  {
-    src: "/carwow/phone-mw-c-ad.webp",
-    label: "Facebook ad · 1:1",
-    like: { kind: "like", x: 83, y: 1217, w: 96, h: 40 },
-  },
-  {
-    src: "/carwow/phone-mw-c-post.webp",
-    label: "Instagram post · 4:5",
-    like: { kind: "heart", x: 24, y: 1219, w: 46, h: 46 },
-  },
-  {
-    src: "/carwow/phone-mw-c-story.webp",
-    label: "Instagram Story · 9:16",
-    like: { kind: "heart", x: 623, y: 1552, w: 44, h: 44 },
-  },
-  {
-    src: "/carwow/phone-mw-banner.webp",
-    label: "Video banner ad · 16:9",
-    like: { kind: "count", x: 24, y: 807, w: 129, h: 66 },
-  },
 ];
 
 const REELS = [
