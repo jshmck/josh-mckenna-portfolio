@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import { BuiltList } from "@/components/work/built-list";
 import { LbTile } from "@/components/koto/lightbox-tile";
 import {
   Block,
@@ -223,9 +222,6 @@ export default async function LegoPage() {
               and that&apos;s me driving. I designed the livery, the logos in
               the film and the posters.
             </p>
-            {nomad?.built && (
-              <BuiltList items={nomad.built} className="mt-10 max-w-3xl" />
-            )}
           </Block>
           <div className="space-y-3 md:space-y-5">
             <StillRow
@@ -261,9 +257,6 @@ export default async function LegoPage() {
               <p className="type-lede mt-4 max-w-[60ch] text-ink">
                 {yamato.brief[0]}
               </p>
-            )}
-            {yamato?.built && (
-              <BuiltList items={yamato.built} className="mt-10 max-w-3xl" />
             )}
           </Block>
         </Section>
@@ -305,9 +298,6 @@ export default async function LegoPage() {
                 {laPrideProject.brief[1]}
               </p>
             )}
-            {laPrideProject?.built && (
-              <BuiltList items={laPrideProject.built} className="mt-10 max-w-3xl" />
-            )}
           </Block>
         </Section>
 
@@ -348,9 +338,6 @@ export default async function LegoPage() {
               2024. The artwork is drawn flat and wraps round the tin; the
               finished tin is on the right.
             </p>
-            {piper?.built && (
-              <BuiltList items={piper.built} className="mt-10 max-w-3xl" />
-            )}
           </Block>
         </Section>
 
@@ -384,9 +371,6 @@ export default async function LegoPage() {
                 </LbTile>
               ))}
             </div>
-            {bombay?.built && (
-              <BuiltList items={bombay.built} className="mt-10 max-w-3xl" />
-            )}
           </Block>
         </Section>
 
