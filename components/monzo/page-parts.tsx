@@ -17,11 +17,11 @@ import type { Still } from "@/lib/monzo-lightbox";
 const RAW_ROW =
   "height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden";
 
-const FIT_ROW = "fit-row flex";
+const FIT_ROW = "fit-row flex flex-col md:flex-row";
 
-/** A row whose items all share one height (see .fit-row in globals.css): side by
- *  side at every width, no swiping. `tight` strips (Hello Twingo) stay a swipe
- *  carousel on phones. */
+/** A row whose items all share one height from md (see .fit-row in
+ *  globals.css); on a phone each image gets its own line, no swiping. `tight`
+ *  strips (Hello Twingo) stay a swipe carousel on phones. */
 export function Row({
   tight = false,
   children,
@@ -178,8 +178,8 @@ export function RoleNote({
 }
 
 /**
- * A row of captioned stills: items share one height like Row (side by side
- * at every width, no swiping), but each caption sits under its own picture
+ * A row of captioned stills: items share one height like Row from md (one per
+ * line on a phone, no swiping), but each caption sits under its own picture
  * instead of one line for the row.
  */
 export function CaptionedRow({
@@ -191,13 +191,13 @@ export function CaptionedRow({
 }) {
   return (
     <div
-      className="flex items-start gap-3 md:gap-5"
+      className="flex flex-col items-start gap-6 md:flex-row md:gap-5"
     >
       {items.map(({ still, caption, surface }) => (
         <figure
           key={still.src}
           style={{ "--r": still.r } as React.CSSProperties}
-          className="min-w-0 [flex:var(--r)_1_0%]"
+          className="w-full min-w-0 md:[flex:var(--r)_1_0%]"
         >
           <StillTile
             still={still}

@@ -61,11 +61,11 @@ type Still = { src: string; alt: string; r: number; lb: number };
 const RAW_ROW =
   "height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden";
 
-const FIT_ROW = "fit-row flex";
+const FIT_ROW = "fit-row flex flex-col md:flex-row";
 
-/** A row whose items all share one height (see .fit-row in globals.css): side by
- *  side at every width, no swiping. `tight` strips (Hello Twingo) stay a swipe
- *  carousel on phones. */
+/** A row whose items all share one height from md (see .fit-row in
+ *  globals.css); on a phone each image gets its own line, no swiping. `tight`
+ *  strips (Hello Twingo) stay a swipe carousel on phones. */
 function Row({
   tight = false,
   children,
@@ -187,7 +187,7 @@ const Section = ({ children }: { children: ReactNode }) => (
   </section>
 );
 
-/** A row of iPhone mockups: two across on a phone, four from md. Look-only, like the Reels. */
+/** A row of iPhone mockups: one per line on a phone, four across from md. Look-only, like the Reels. */
 function PhoneRow({
   phones,
   brand,
@@ -196,7 +196,7 @@ function PhoneRow({
   brand: string;
 }) {
   return (
-    <div className="grid grid-cols-2 items-start gap-4 md:grid-cols-4 md:gap-6">
+    <div className="mx-auto grid max-w-[18rem] grid-cols-1 items-start gap-8 md:max-w-none md:grid-cols-4 md:gap-6">
       {phones.map((f) => (
         <Reveal key={f.src}>
           <div className="relative [container-type:inline-size]">

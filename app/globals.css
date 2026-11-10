@@ -739,22 +739,19 @@
   }
 }
 
-/* The phone-friendly row on the private application pages (/lego, /koto,
-   /carwow, /monzo): the items sit side by side at one shared height with no
-   swiping and no stacking, at every width. A row of four or more wraps
-   two-up on a phone instead of shrinking to slivers (each item's basis is its
-   aspect ratio times 46%, grow is the ratio, so a wrapped line still lands at
-   one height). The Hello Twingo strips opt out and keep .height-row's swipe. */
+/* The row on the private application pages (/lego, /koto, /carwow, /monzo).
+   From md the items sit side by side at one shared height, exactly like
+   .height-row. On a phone every image gets its own line at full width and its
+   own aspect ratio: no swiping, no side by side. The Hello Twingo strips
+   (the `tight` rows) opt out and keep .height-row's swipe carousel. */
 .fit-row > * {
   aspect-ratio: var(--r);
-  flex: var(--r) 1 0%;
-  min-width: 0;
+  width: 100%;
 }
-@media (max-width: 47.99rem) {
-  .fit-row:has(> :nth-child(4)) {
-    flex-wrap: wrap;
-  }
-  .fit-row:has(> :nth-child(4)) > * {
-    flex: var(--r) 1 calc(var(--r) * 46%);
+@media (min-width: 48rem) {
+  .fit-row > * {
+    width: auto;
+    flex: var(--r) 1 0%;
+    min-width: 0;
   }
 }

@@ -17,12 +17,12 @@ import type { Still } from "@/lib/koto-lightbox";
 const RAW_ROW =
   "height-row -mx-6 flex snap-x snap-mandatory scroll-px-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden";
 
-const FIT_ROW = "fit-row flex";
+const FIT_ROW = "fit-row flex flex-col md:flex-row";
 
 /** A row whose items all share one height (see .height-row in globals.css).
- *  The items sit side by side at every width (see .fit-row in globals.css),
- *  with no swiping and no stacking, except `tight` strips (Hello Twingo),
- *  which stay a swipe carousel on phones. */
+ *  Side by side from md; on a phone each image gets its own line (see
+ *  .fit-row in globals.css), no swiping. Only `tight` strips (Hello Twingo)
+ *  swipe on phones. */
 export function Row({
   tight = false,
   children,
