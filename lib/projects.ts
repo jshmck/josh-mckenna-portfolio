@@ -833,7 +833,7 @@ export const projects: Project[] = [
       "Instagram wanted a Pride sticker as part of a new sticker set for Stories, with other LGBTQ+ artists (Carra Sykes, Andy Simmonds, Cute Brute and José Antonio Roda), available throughout Pride month.",
       "So I created a sassy, muscular bloke in red high heels, designed to read clearly at sticker size, a couple of cm on a phone screen. The artwork reflects where my style was at that point: bold shapes, a simple palette, diverse characters, a tongue-in-cheek sense of humour. It's true to masculinity and sexuality, my real lived experience and personal take on Pride.",
       "Its popularity meant it stayed embedded in the app for years, with a remake commissioned in 2020 that ran for Pride season. Millions used it, including celebrities I never expected to see sharing my art (Michelle Obama!).",
-      "The sticker went way beyond the app: a 10ft-high float at Sydney Mardi Gras, murals at Trafalgar Square and Meta's head offices, an Instagram takeover of Vogue's account, a feature in a Gestalten book and public talks I'm still giving today.",
+      "The sticker went way beyond the app: a four-metre float at Sydney Mardi Gras, murals at Trafalgar Square and Meta's head offices, an Instagram takeover of Vogue's account, a feature in a Gestalten book and public talks I'm still giving today.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
@@ -874,7 +874,7 @@ export const projects: Project[] = [
     cardImageByCategory: {
       Murals: {
         ratio: "3/4",
-        alt: "The character reimagined as a 10ft-high float, watched by an estimated 500,000 spectators at the Sydney Mardi Gras parade.",
+        alt: "The character reimagined as a four-metre float, watched by an estimated 500,000 spectators at the Sydney Mardi Gras parade.",
         src: "/work/instagram-sticker/06-sydney-mardi-gras-1.webp",
       },
     },
@@ -936,7 +936,7 @@ export const projects: Project[] = [
       },
       {
         ratio: "3/4",
-        alt: "The character reimagined as a 10ft-high float, watched by an estimated 500,000 spectators at the Sydney Mardi Gras parade.",
+        alt: "The character reimagined as a four-metre float, watched by an estimated 500,000 spectators at the Sydney Mardi Gras parade.",
         src: "/work/instagram-sticker/06-sydney-mardi-gras-1.webp",
       },
       {

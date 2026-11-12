@@ -123,7 +123,7 @@ const STICKER_IN_SITU = [
     "instagram-sticker",
     "06-sydney-mardi-gras-1",
     "3/4",
-    "The sticker as a 10ft float at Sydney Mardi Gras",
+    "The sticker as a four-metre float at Sydney Mardi Gras",
   ),
   img(
     "instagram-sticker",
