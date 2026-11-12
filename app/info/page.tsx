@@ -71,16 +71,19 @@ export default function AboutPage() {
                   <p className="mt-12 type-lede text-ink-muted">
                     Josh McKenna is an illustrator and graphic designer with
                     over a decade of experience across digital products,
-                    editorial and physical spaces. After a short spell
+                    editorial, packaging and physical spaces. After a short spell
                     studying automotive design at Coventry, he studied
                     illustration at Falmouth University and went freelance in
                     2014, working with brands from Apple to the Guardian. His
                     work centres bold, inclusive characters, from the
-                    Instagram Pride sticker to murals for Facebook and the
-                    full environmental branding for LA Pride 2024. He&apos;s
-                    also a lifelong car obsessive, and designed the race
-                    livery for his own vintage Land Cruiser. He draws,
-                    animates and occasionally makes things in 3D.
+                    Instagram Pride sticker to murals for Facebook, and he was
+                    creative lead on the visual system for LA Pride 2024. A
+                    lifelong car obsessive, he&apos;s been the graphic designer
+                    at Allied Wheel Components since 2024, working across
+                    Nomad, Raceline and Möbelwagen, and designed the
+                    Dakar-inspired launch livery for his own vintage Land
+                    Cruiser. He draws, animates in Cavalry and occasionally
+                    makes things in 3D.
                   </p>
                 </Reveal>
 
