@@ -331,7 +331,7 @@ export default async function LegoPage() {
 
         <Section first>
           <Block bold
-            label="505 Touring launch · Nomad Wheels"
+            label="505 Touring launch · Brand toolkit"
             href="/work/nomad-wheels-505-livery"
           >
             {nomad && (
@@ -359,10 +359,11 @@ export default async function LegoPage() {
               )}
             </div>
             <p className={BLURB}>
-              A full graphic package for the launch of the 505 Touring wheel,
-              built from a vintage Dakar rally look. The Land Cruiser is mine
-              and that&apos;s me driving. I designed the livery, the logos in
-              the film and the posters.
+              A brand toolkit for Nomad Wheels&apos; 505 Touring launch, built
+              from a vintage Dakar rally look: the logos, the livery, technical
+              drawings, the vehicle wrap, posters, apparel and a race suit, all
+              delivered as production-ready assets for print and install. The
+              Land Cruiser is mine and that&apos;s me driving.
             </p>
           </Block>
           <div className="space-y-3 md:space-y-5">
@@ -402,7 +403,7 @@ export default async function LegoPage() {
         </Section>
 
         <Section>
-          <Block bold label="LA Pride · 360 campaign" href="/work/la-pride">
+          <Block bold label="LA Pride · Visual system" href="/work/la-pride">
             {laPrideProject && (
               <p className="type-label mb-4 text-ink-muted">
                 <span className="text-ink">Graphic design · Illustration</span> · {laPrideProject.deliverables}
@@ -433,11 +434,14 @@ export default async function LegoPage() {
                 </LbTile>
               ))}
             </div>
-            {laPrideProject?.brief[1] && (
-              <p className={BLURB}>
-                {laPrideProject.brief[1]}
-              </p>
-            )}
+            <p className={BLURB}>
+              I played creative director on a full visual system for the
+              festival. James Junk and I made a custom typeface, and I drew the
+              characters that became the logo. From there I built the toolkit
+              that carried it across the site: wayfinding, signage, maps,
+              banners, digital assets for the screens, wristbands and merch. One
+              drawing had to work from stage-header size down to a cap badge.
+            </p>
           </Block>
         </Section>
 
