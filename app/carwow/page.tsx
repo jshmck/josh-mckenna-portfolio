@@ -190,7 +190,52 @@ const Section = ({ children }: { children: ReactNode }) => (
   </section>
 );
 
+const FIVE_OH_FIVE = [
+  img(
+    "nomad-wheels-505-livery",
+    "07-livery-sheet-v6",
+    "4/5",
+    "Livery sheet: front, rear and both sides",
+  ),
+  img(
+    "nomad-wheels-505-livery",
+    "03-desert-side-profile",
+    "3/2",
+    "The Land Cruiser in profile at speed, livery side-on",
+  ),
+  img(
+    "nomad-wheels-505-livery",
+    "05-helmet-door",
+    "3/2",
+    "Right side, matching livery: Josh wearing a custom race suit with the logos applied",
+  ),
+  img(
+    "nomad-wheels-505-livery",
+    "06-apparel",
+    "3/2",
+    "Apparel with the livery graphics, front and back",
+  ),
+  img(
+    "nomad-wheels-505-livery",
+    "01-nomad-505",
+    "4/5",
+    "The full print-ready livery artwork",
+  ),
+  img(
+    "nomad-wheels-505-livery",
+    "01-socials-02",
+    "1/1",
+    "505 Touring release event flyer",
+  ),
+];
+
 const LA_PRIDE = [
+  img(
+    "la-pride",
+    "01-la-pride-4x5-centred",
+    "4/5",
+    "The L.A. Pride 2024 logomark: an L and an A built out of illustrated characters",
+  ),
   img(
     "la-pride",
     "23-key-art-stage-banner",
@@ -203,7 +248,12 @@ const LA_PRIDE = [
     "16/10",
     "Wayfinding totem, main stage and food village",
   ),
-  img("la-pride", "17-vip-entrance", "16/10", "VIP entrance"),
+  img(
+    "la-pride",
+    "25-entrance-bronco-totem",
+    "3/2",
+    "The orange entrance totem, with the green Bronco and the rainbow",
+  ),
   img("la-pride", "06-merch-rail", "16/10", "Merch — hoodie, tee and cap"),
   img(
     "la-pride",
@@ -211,8 +261,15 @@ const LA_PRIDE = [
     "16/10",
     "Wristbands, VIP and general admission",
   ),
-  img("la-pride", "16-main-stage-screen", "16/10", "The main stage"),
 ];
+
+const LA_PRIDE_FOCUS: Record<string, string> = {
+  "05-wayfinding-totem": "85% center",
+  // Centres the green Bronco (~48% across) in the portrait crop.
+  "25-entrance-bronco-totem": "48% center",
+};
+
+const BLURB = "type-lede mt-6 max-w-[60ch] text-ink";
 
 const STICKER_PRIMARY = img(
   "instagram-sticker",
@@ -261,6 +318,9 @@ const cardOf = (slug: string) => {
 };
 
 export default async function CarwowPage() {
+  const nomad = getProject("nomad-wheels-505-livery");
+  const laPrideProject = getProject("la-pride");
+  const twingo = getProject("hello-twingo");
   const honda = getProject("honda-super-n");
   const cv = getProject("citroen-2cv-concept");
   const z1 = getProject("figma-bmw-z1");
@@ -313,14 +373,15 @@ export default async function CarwowPage() {
       : undefined;
 
   // Registered in visual order.
+  const nomadStills = await stills(FIVE_OH_FIVE);
+  const laPride = await stills(LA_PRIDE);
+  const twingoSlides = await stills(twingo?.gallery ?? []);
   const cvClip = clip(cv?.heroVideo, "4/5");
   const z1Clip = clip(z1?.heroVideo, "4/5");
   const lamboClip = clip(beefbar?.posterGridVideo, "4/5");
   const [bronco, palm, nomad505, romazzino] = await stills(
     CAR_ILLUSTRATION.map(cardOf),
   );
-  const twingoSlides = await stills(getProject("hello-twingo")?.gallery ?? []);
-  const laPride = await stills(LA_PRIDE);
   const [stickerPrimary] = await stills([STICKER_PRIMARY]);
   const stickerInSitu = await stills(STICKER_IN_SITU);
   const stickerGif = clip(sticker?.galleryGif, "1/1");
@@ -336,7 +397,132 @@ export default async function CarwowPage() {
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For Carwow</h1>
 
-        <div className="mt-8 space-y-10">
+        <Section>
+          <Block
+            label="505 Touring launch · Visual toolkit"
+            href="/work/nomad-wheels-505-livery"
+          >
+            {nomad && (
+              <p className="type-label mb-4 text-ink-muted">
+                <span className="text-ink">Illustration · Graphic design</span> · {nomad.deliverables}
+              </p>
+            )}
+            {/* Drawing and side photo lead, level with each other; the film
+                is the second row. */}
+            <div className="space-y-3 md:space-y-5">
+              <StillRow
+                stills={nomadStills.slice(0, 2)}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+              {nomad?.heroVideo && (
+                <ProjectVideo
+                  video={{
+                    src: nomad.heroVideo.src,
+                    alt: nomad.heroVideo.alt,
+                    poster: nomad.heroVideo.poster,
+                  }}
+                  sound
+                  ratio="16/9"
+                />
+              )}
+            </div>
+            <p className={BLURB}>
+              A visual toolkit for Nomad Wheels&apos; 505 Touring launch, built
+              from a vintage Dakar rally look: the identity, the livery and wrap
+              graphics, posters, apparel and a race suit, all prepared as
+              production-ready artwork for print and the wrap. The Land Cruiser
+              is mine and that&apos;s me driving.
+            </p>
+          </Block>
+          <div className="space-y-3 md:space-y-5">
+            <StillRow
+              stills={nomadStills.slice(2, 4)}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <StillRow
+              stills={nomadStills.slice(4)}
+              sizes="(max-width: 768px) 100vw, 40vw"
+            />
+          </div>
+        </Section>
+
+        <Section>
+          <Block label="LA Pride · Visual system" href="/work/la-pride">
+            {laPrideProject && (
+              <p className="type-label mb-4 text-ink-muted">
+                <span className="text-ink">Graphic design · Illustration</span> · {laPrideProject.deliverables}
+              </p>
+            )}
+            {/* The logomark introduces the section as the first tile of the
+                row; every tile is a tall 4/5 portrait. */}
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
+              {laPride.map((still) => (
+                <LbTile
+                  key={still.src}
+                  index={still.lb}
+                  label={still.alt}
+                  className="relative aspect-[4/5] overflow-hidden rounded-frame bg-placeholder"
+                >
+                  <Image
+                    src={still.src}
+                    alt={still.alt}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    className="object-cover"
+                    style={{
+                      objectPosition: Object.entries(LA_PRIDE_FOCUS).find(([key]) =>
+                        still.src.includes(key),
+                      )?.[1],
+                    }}
+                  />
+                </LbTile>
+              ))}
+            </div>
+            <p className={BLURB}>
+              I was creative lead on a complete visual system for the festival.
+              I drew the characters that became the logo, art-directed designer
+              James Junk, with whom I made a custom typeface, and worked with
+              the client team and production partners. The system
+              ran across wayfinding, signage, maps, stage graphics, vehicle
+              graphics, screens, wristbands and merch. The hard part was keeping
+              it consistent from a stage header down to a cap badge.
+            </p>
+          </Block>
+        </Section>
+
+        {twingo && twingoSlides.length > 0 && (
+          <Section>
+            <Block label="Hello Twingo · Personal" href="/work/hello-twingo">
+              <p className="type-label mb-4 text-ink-muted">
+                <span className="text-ink">Illustration · Graphic design</span> · {twingo.deliverables}
+              </p>
+              {/* The six Twingo slides as a tight strip, the same as on the
+                  Carwow page; each opens its own lightbox frame. */}
+              <StillRow
+                stills={twingoSlides}
+                sizes="(max-width: 768px) 60vw, 18vw"
+                tight
+              />
+            </Block>
+          </Section>
+        )}
+
+        <Section>
+          <div>
+            <h2 className="type-heading text-ink">Graphic design</h2>
+            <p className="type-label mt-2 text-ink-muted">
+              Graphic Designer, Allied Wheel Components · Monthly social ads ·
+              Campaign artwork · Logos
+            </p>
+          </div>
+          <p className="type-label text-ink">Nomad</p>
+          <PhoneRow phones={phones} brand="Nomad Tax Return Sale" />
+          <p className="type-label text-ink">Möbelwagen</p>
+          <PhoneRow phones={mwPhones} brand="Möbelwagen Tax Return Sale" />
+        </Section>
+
+        <Section>
+        <div className="space-y-10">
           {/* Honda and the 2CV, then two rows of three. */}
           {honda?.heroVideo && (
             <Row>
@@ -383,35 +569,10 @@ export default async function CarwowPage() {
               />
             )}
           </Row>
-          {/* Hello Twingo: separate slides in a strip, each its own lightbox page. */}
-          <StillRow
-            stills={twingoSlides}
-            sizes="(max-width: 768px) 60vw, 18vw"
-            tight
-          />
         </div>
+        </Section>
 
         <Section>
-          <Block label="LA Pride · Visual system" href="/work/la-pride">
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {laPride.map((still) => (
-                <LbTile
-                  key={still.src}
-                  index={still.lb}
-                  label={still.alt}
-                  className="relative aspect-[3/2] overflow-hidden rounded-frame bg-placeholder"
-                >
-                  <Image
-                    src={still.src}
-                    alt={still.alt}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                    className="object-cover"
-                  />
-                </LbTile>
-              ))}
-            </div>
-          </Block>
           <Block label="Instagram Pride Sticker" href="/work/instagram-sticker">
             <div className="space-y-3 md:space-y-5">
               {stickerPrimary && (
@@ -444,49 +605,6 @@ export default async function CarwowPage() {
           <Block label="Kiehl's Pride" href="/work/kiehls-trevor-project">
             <StillRow stills={kiehlsImages} />
           </Block>
-        </Section>
-
-        <Section>
-          <div>
-            <h2 className="type-heading text-ink">Graphic design</h2>
-            <p className="type-label mt-2 text-ink-muted">
-              Graphic Designer, Allied Wheel Components · Monthly social ads ·
-              Campaign artwork · Logos
-            </p>
-          </div>
-          <p className="type-label text-ink">Nomad</p>
-          <PhoneRow phones={phones} brand="Nomad Tax Return Sale" />
-          <p className="type-label text-ink">Möbelwagen</p>
-          <PhoneRow phones={mwPhones} brand="Möbelwagen Tax Return Sale" />
-          {/* Three phone columns wide, so the film and its caption end where the third phone does. */}
-          <div className="md:mx-auto md:w-[calc(75%-6px)]">
-            <ProjectVideo
-              video={{
-                src: "/carwow/505-touring-v2.mp4",
-                alt: "The 505 Touring launch film",
-                poster: "/carwow/505-touring-frame-v5.webp",
-              }}
-              sound
-              ratio="16/9"
-            />
-            <div className="mt-4">
-              <p className="type-label text-ink">
-                505 Touring launch · Nomad Wheels{" "}
-                <Link
-                  href="/work/nomad-wheels-505-livery"
-                  className="text-ink-muted underline"
-                >
-                  Project
-                </Link>
-              </p>
-              <p className="type-lede mt-2 text-ink">
-                A visual toolkit for Nomad Wheels&apos; 505 Touring launch, built
-                from a vintage Dakar rally look: the identity, the livery and
-                wrap graphics, the logos in the film, posters, apparel and a race
-                suit. The Land Cruiser is mine and that&apos;s me driving.
-              </p>
-            </div>
-          </div>
         </Section>
 
         <Section>
