@@ -392,7 +392,7 @@ export default async function CarwowPage() {
         </div>
 
         <Section>
-          <Block label="LA Pride · 360 campaign" href="/work/la-pride">
+          <Block label="LA Pride · Visual system" href="/work/la-pride">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {laPride.map((still) => (
                 <LbTile
@@ -450,7 +450,8 @@ export default async function CarwowPage() {
           <div>
             <h2 className="type-heading text-ink">Graphic design</h2>
             <p className="type-label mt-2 text-ink-muted">
-              Allied Wheel Components · Static ads · Graphic elements · Logos
+              Graphic Designer, Allied Wheel Components · Monthly social ads ·
+              Campaign artwork · Logos
             </p>
           </div>
           <p className="type-label text-ink">Nomad</p>
@@ -479,10 +480,10 @@ export default async function CarwowPage() {
                 </Link>
               </p>
               <p className="type-lede mt-2 text-ink">
-                A full graphic package for the launch of the 505 Touring wheel,
-                built from a vintage Dakar rally look. The Land Cruiser is mine
-                and that&apos;s me driving. I designed the livery, the logos in
-                the film and the posters.
+                A visual toolkit for Nomad Wheels&apos; 505 Touring launch, built
+                from a vintage Dakar rally look: the identity, the livery and
+                wrap graphics, the logos in the film, posters, apparel and a race
+                suit. The Land Cruiser is mine and that&apos;s me driving.
               </p>
             </div>
           </div>
