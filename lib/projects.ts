@@ -1152,7 +1152,7 @@ export const projects: Project[] = [
     heroCaption: "",
     brief: [
       "James Junk and I got the call to rebuild the whole visual identity from the ground up: the logo, the typeface, posters, wayfinding, every banner on site, the stage livery, digital assets for the venue's screens, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there I built the letters themselves out of people, stacking characters into the L and the A. Everything had to work at stage-header size and cap-badge size from the same drawing.",
-      "I was creative lead, art-directing a collaborating designer and working with the client team and production partners. James Junk and I made a custom typeface, and I drew the characters that became the logo, then carried them across the whole festival: the posters, the banners, the stage graphics, the vehicle graphics and the assets for the venue's screens. I also drew the wayfinding icons and the maps, and the same look ran onto the signage, the wristbands, VIP and general admission, and the hoodies, tees and caps.",
+      "I was creative lead, art-directing designer James Junk and working with the client team and production partners. Together we made a custom typeface, and I drew the characters that became the logo, then carried them across the whole festival: the posters, the banners, the stage graphics, the vehicle graphics and the assets for the venue's screens. I also drew the wayfinding icons and the maps, and the same look ran onto the signage, the wristbands, VIP and general admission, and the hoodies, tees and caps.",
     ],
     built: [
       {

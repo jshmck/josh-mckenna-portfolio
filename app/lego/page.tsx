@@ -439,9 +439,9 @@ export default async function LegoPage() {
             </div>
             <p className={BLURB}>
               I was creative lead on a complete visual system for the festival.
-              I drew the characters that became the logo, made a custom typeface
-              with James Junk, and art-directed a collaborating designer while
-              working with the client team and production partners. The system
+              I drew the characters that became the logo, art-directed designer
+              James Junk, with whom I made a custom typeface, and worked with
+              the client team and production partners. The system
               ran across wayfinding, signage, maps, stage graphics, vehicle
               graphics, screens, wristbands and merch. The hard part was keeping
               it consistent from a stage header down to a cap badge.
