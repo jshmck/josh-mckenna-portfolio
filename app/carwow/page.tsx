@@ -298,12 +298,7 @@ const STICKER_IN_SITU = [
   ),
 ];
 
-const CAR_ILLUSTRATION = [
-  "ford-bronco",
-  "palm-springs",
-  "nomad-wheels-505-livery",
-  "costa-smeralda",
-];
+const CAR_ILLUSTRATION = ["ford-bronco", "palm-springs", "costa-smeralda"];
 
 const EDITORIAL = [
   "monocle-spot-illo",
@@ -379,7 +374,7 @@ export default async function CarwowPage() {
   const cvClip = clip(cv?.heroVideo, "4/5");
   const z1Clip = clip(z1?.heroVideo, "4/5");
   const lamboClip = clip(beefbar?.posterGridVideo, "4/5");
-  const [bronco, palm, nomad505, romazzino] = await stills(
+  const [bronco, palm, romazzino] = await stills(
     CAR_ILLUSTRATION.map(cardOf),
   );
   const [stickerPrimary] = await stills([STICKER_PRIMARY]);
@@ -555,12 +550,6 @@ export default async function CarwowPage() {
           <Row>
             {palm && (
               <StillTile still={palm} sizes="(max-width: 768px) 60vw, 30vw" />
-            )}
-            {nomad505 && (
-              <StillTile
-                still={nomad505}
-                sizes="(max-width: 768px) 60vw, 30vw"
-              />
             )}
             {romazzino && (
               <StillTile
