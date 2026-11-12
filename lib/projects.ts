@@ -1765,6 +1765,8 @@ export const projects: Project[] = [
   },
   {
     slug: "nomad-wheels-505-livery",
+    // Link previews show the Land Cruiser photo, not the livery artwork.
+    shareImage: "/work/nomad-wheels-505-livery/03-desert-side-profile.webp",
     // Renamed from "Nomad 505 Touring" sitewide, per Josh — this is the
     // real project.title now, not a cardTitle override, so it's what
     // shows everywhere: H1, breadcrumb, browser tab, OG tags.
