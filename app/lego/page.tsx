@@ -54,7 +54,7 @@ const FIVE_OH_FIVE = [
     "nomad-wheels-505-livery",
     "07-livery-sheet-v6",
     "4/5",
-    "Livery technical drawings: front, rear and both sides",
+    "Livery sheet: front, rear and both sides",
   ),
   img(
     "nomad-wheels-505-livery",
@@ -324,14 +324,17 @@ export default async function LegoPage() {
           Hi, I&apos;m Josh, and I&apos;m obsessed with cars. I grew up on
           Colin McRae Rally, Gran Turismo, races at Silverstone and LEGO. I
           started out studying automotive design at Coventry before switching
-          to illustration, and have spent the last few years designing
-          graphics for an aftermarket wheel company, including a livery for my
-          own Land Cruiser.
+          to illustration. Since 2024 I&apos;ve been the graphic designer at
+          Allied Wheel Components, working across Nomad, Raceline and
+          Möbelwagen: campaign artwork for print, digital and video, monthly
+          social ads in every format, catalogues, flyers, sales materials and
+          merch, all taken through to production-ready files with the
+          printers.
         </p>
 
         <Section first>
           <Block bold
-            label="505 Touring launch · Brand toolkit"
+            label="505 Touring launch · Visual toolkit"
             href="/work/nomad-wheels-505-livery"
           >
             {nomad && (
@@ -359,11 +362,11 @@ export default async function LegoPage() {
               )}
             </div>
             <p className={BLURB}>
-              A brand toolkit for Nomad Wheels&apos; 505 Touring launch, built
-              from a vintage Dakar rally look: the logos, the livery, technical
-              drawings, the vehicle wrap, posters, apparel and a race suit, all
-              delivered as production-ready assets for print and install. The
-              Land Cruiser is mine and that&apos;s me driving.
+              A visual toolkit for Nomad Wheels&apos; 505 Touring launch, built
+              from a vintage Dakar rally look: the identity, the livery and wrap
+              graphics, posters, apparel and a race suit, all prepared as
+              production-ready artwork for print and the wrap. The Land Cruiser
+              is mine and that&apos;s me driving.
             </p>
           </Block>
           <div className="space-y-3 md:space-y-5">
@@ -435,12 +438,13 @@ export default async function LegoPage() {
               ))}
             </div>
             <p className={BLURB}>
-              I was creative director on a full visual system for the
-              festival. James Junk and I made a custom typeface, and I drew the
-              characters that became the logo. From there I built the toolkit
-              that carried it across the site: wayfinding, signage, maps,
-              banners, digital assets for the screens, wristbands and merch. One
-              drawing had to work from stage-header size down to a cap badge.
+              I was creative lead on a complete visual system for the festival.
+              I drew the characters that became the logo, made a custom typeface
+              with James Junk, and art-directed a collaborating designer while
+              working with the client team and production partners. The system
+              ran across wayfinding, signage, maps, stage graphics, vehicle
+              graphics, screens, wristbands and merch. The hard part was keeping
+              it consistent from a stage header down to a cap badge.
             </p>
           </Block>
         </Section>

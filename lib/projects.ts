@@ -1141,7 +1141,7 @@ export const projects: Project[] = [
     // already confirmed deliverables, kept alongside the fuller list
     // rather than dropped.
     deliverables:
-      "Logo · Type · Posters · Wayfinding · Banners · Stage Livery · Digital Screens · Wristbands · Merch",
+      "Logo · Type · Posters · Wayfinding · Signage · Maps · Banners · Stage Graphics · Vehicle Graphics · Digital Screens · Wristbands · Merch",
     categories: ["LGBTQ+", "Murals"],
     // True ratio of the lockup cardImage (a 4/5 export of the same
     // artwork) — pinned explicitly rather than leaving it to chance which
@@ -1152,7 +1152,7 @@ export const projects: Project[] = [
     heroCaption: "",
     brief: [
       "James Junk and I got the call to rebuild the whole visual identity from the ground up: the logo, the typeface, posters, wayfinding, every banner on site, the stage livery, digital assets for the venue's screens, the lounges, the wristbands, the merch. Vintage Olympic typography and old campaign posters were the starting point; from there I built the letters themselves out of people, stacking characters into the L and the A. Everything had to work at stage-header size and cap-badge size from the same drawing.",
-      "I played creative director, and James Junk and I came up with a custom typeface. I drew the characters that became the logo, then carried them across the whole festival: the posters, the lamp-post banners along Hollywood Boulevard, the livery over the main stage and the assets for the venue's screens. I also drew the wayfinding icons and the maps, and the same look ran onto the wristbands, VIP and general admission, and the hoodies, tees and caps.",
+      "I was creative lead, art-directing a collaborating designer and working with the client team and production partners. James Junk and I made a custom typeface, and I drew the characters that became the logo, then carried them across the whole festival: the posters, the banners, the stage graphics, the vehicle graphics and the assets for the venue's screens. I also drew the wayfinding icons and the maps, and the same look ran onto the signage, the wristbands, VIP and general admission, and the hoodies, tees and caps.",
     ],
     built: [
       {
@@ -1177,7 +1177,7 @@ export const projects: Project[] = [
       {
         item: "Banners",
         detail:
-          "Every banner on site, including the lamp-post banners on Hollywood Boulevard.",
+          "Every banner on site, from the entrance to the stages.",
       },
       {
         item: "Stage livery",
@@ -1773,16 +1773,16 @@ export const projects: Project[] = [
     // per Josh.
     pinnedRank: 17.5,
     discipline: "Vehicle Livery",
-    deliverables: "Vehicle Livery · Event Poster · Social Assets · Apparel · Promotional Film",
+    deliverables: "Logos · Vehicle Livery · Wrap Graphics · Event Poster · Social Assets · Apparel · Race Suit · Promotional Film",
     // "remove 505 from icons," per Josh.
     categories: ["Cars"],
-    summary: "Livery and posters for the Nomad Wheels 505 launch, filmed on Josh's own Land Cruiser.",
+    summary: "A Dakar-inspired visual toolkit for the Nomad Wheels 505 launch, filmed on Josh's own Land Cruiser.",
     heroCaption:
       "The full print-ready livery artwork for Nomad Wheels' 505 Touring launch.",
     brief: [
-      "Nomad Wheels asked for a full graphic package around the launch of the 505 Touring wheel: vehicle livery, an event poster and social assets, all built from the same vintage Dakar rally look. I reinterpreted popular brands as plays on the Nomad name.",
-      "The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film.",
-      "I also added the logos to the race suit and long-sleeved tees for the launch.",
+      "Nomad Wheels asked for a visual toolkit for the launch of the 505 Touring wheel: logos, a vehicle livery and wrap graphics, an event poster, social assets and apparel, all built from the same vintage Dakar rally look. I redrew popular brands as plays on the Nomad name to fill the livery with sponsor-style marks.",
+      "I prepared the artwork as production-ready files and worked directly with the printers. The livery went onto my own Land Cruiser, which I then drove through the California desert for the launch's promotional film.",
+      "The same marks carried onto the race suit and the long-sleeved tees. The launch sits inside my ongoing role as graphic designer at Allied Wheel Components, the company behind Nomad, Raceline and Möbelwagen.",
     ],
     built: [
       {
@@ -1860,7 +1860,7 @@ export const projects: Project[] = [
     gallery: [
       {
         ratio: "4/5",
-        alt: "Livery technical drawings: front, rear and both sides",
+        alt: "Livery sheet: front, rear and both sides",
         src: "/work/nomad-wheels-505-livery/07-livery-sheet-v6.webp",
         caption: false,
       },
@@ -2452,12 +2452,12 @@ export const projects: Project[] = [
     // be taller, to match the other two on the row," per Josh).
     pinnedRank: 19,
     discipline: "Pride Campaign",
-    deliverables: "Packaging · Parade Float",
+    deliverables: "Packaging · Advertising · Parade Float",
     categories: ["LGBTQ+"],
     summary: "A Pride parade, wrapped around a jar of face cream.",
     heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
     brief: [
-      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project: a parade scene built into limited-edition packaging across Kiehl's product line, with the same artwork on a float in the New York City Pride parade. A portion of proceeds went to the charity.",
+      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project: a parade scene built into limited-edition packaging across Kiehl's product line and the campaign advertising, with the same artwork on a float in the New York City Pride parade. A portion of proceeds went to the charity.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },
