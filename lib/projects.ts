@@ -323,6 +323,9 @@ export type Project = {
    * as a standalone hero would double it up on the same page.
    */
   heroHiddenOnPage?: boolean;
+  /** Overrides hero.src as the /work/<slug> link-preview (OG) image, for
+   *  a project whose hero isn't the piece people should see when shared. */
+  shareImage?: string;
   /**
    * How many of the first `gallery` images render ABOVE the write-up
    * (straight under the hero/video) instead of below it. The rest of the
@@ -2081,6 +2084,8 @@ export const projects: Project[] = [
     // hero stays the woman-and-car illustration OFF the page (below):
     // it's the /work card's poster frame and the OG image.
     heroHiddenOnPage: true,
+    // Link previews show a frame of the animation, not the old Figma hero.
+    shareImage: "/work/figma-bmw-z1/14-z1-poster-red.webp",
     hero: {
       ratio: "4/5",
       alt: "BMW Z1",
