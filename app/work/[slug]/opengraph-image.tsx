@@ -83,7 +83,7 @@ export default async function Image({
 }) {
   const { slug } = await params;
   const project = getProject(slug);
-  const heroSrc = project?.hero.src;
+  const heroSrc = project?.shareImage ?? project?.hero.src;
 
   // Every project ships with real hero.src art (see lib/projects.ts's Plate
   // fallback for anything mid-ingest) — the identity image only covers a
@@ -92,7 +92,7 @@ export default async function Image({
   // "cover" crop should touch.
   const png = await renderHero(
     join(process.cwd(), "public", heroSrc ?? "/illustrations/instagram-sticker-og.png"),
-    heroSrc ? project!.hero.fit === "contain" : true,
+    heroSrc ? !project?.shareImage && project!.hero.fit === "contain" : true,
   );
 
   return new ImageResponse(
