@@ -51,6 +51,11 @@ const nextConfig: NextConfig = {
         source: "/lego",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
       },
+      // And Meta's.
+      {
+        source: "/meta",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
       {
         source:
           "/:dir(work|about|illustrations|logos)/:path*.:ext(mp4|webp|jpg|jpeg|png|svg|avif)",
@@ -96,6 +101,7 @@ const nextConfig: NextConfig = {
     "app/carwow/page": ["./public/**"],
     "app/monzo/page": ["./public/**"],
     "app/lego/page": ["./public/**"],
+    "app/meta/page": ["./public/**"],
   },
 };
 
