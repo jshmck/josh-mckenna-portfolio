@@ -26,7 +26,8 @@ import { siteConfig } from "@/lib/site";
  * Same building blocks and layout as /lego. Order is Josh's: the
  * Instagram Pride sticker (the Meta connection), the Google sticker set
  * (one visual language across many assets), the LA Pride identity
- * system, then Kiehl's and Levi's (extending an established brand), then
+ * system, the Nomad 505 Touring launch (a brand toolkit, same section as
+ * /lego's lead), then Kiehl's and Levi's (extending an established brand), then
  * motion (the JD lists After Effects/Lottie as a plus). The Google set is
  * archived from the public site, so its card here has no Project link.
  */
@@ -122,6 +123,18 @@ const LA_PRIDE_FOCUS: Record<string, string> = {
   "05-wayfinding-totem": "85% center",
 };
 
+/* The 505 Touring launch, same stills as /lego's lead section: the
+   livery sheet and the side profile lead, the film follows, then the
+   suit, apparel, print-ready artwork and the event flyer. */
+const FIVE_OH_FIVE = [
+  img("nomad-wheels-505-livery", "07-livery-sheet-v6", "4/5", "Livery sheet: front, rear and both sides"),
+  img("nomad-wheels-505-livery", "03-desert-side-profile", "3/2", "The Land Cruiser in profile at speed, livery side-on"),
+  img("nomad-wheels-505-livery", "05-helmet-door", "3/2", "Right side, matching livery: Josh wearing a custom race suit with the logos applied"),
+  img("nomad-wheels-505-livery", "06-apparel", "3/2", "Apparel with the livery graphics, front and back"),
+  img("nomad-wheels-505-livery", "01-nomad-505", "4/5", "The full print-ready livery artwork"),
+  img("nomad-wheels-505-livery", "01-socials-02", "1/1", "505 Touring release event flyer"),
+];
+
 const KIEHLS = [
   img(
     "kiehls-trevor-project",
@@ -146,11 +159,11 @@ const MORE: { slug: string; image?: ProjectImage; label?: string }[] = [
   { slug: "hsbc-pride-logo" },
   { slug: "piper-heidsieck" },
   { slug: "bombay-sapphire" },
-  { slug: "nomad-wheels-505-livery" },
 ];
 
 export default async function MetaPage() {
   const ig = getProject("instagram-sticker");
+  const nomad = getProject("nomad-wheels-505-livery");
   const laPride = getProject("la-pride");
   const kiehls = getProject("kiehls-trevor-project");
   const levis = getProject("levis-rainbow-rodeo");
@@ -164,6 +177,7 @@ export default async function MetaPage() {
   const igImpact = await stills(IG_IMPACT);
   const google = await stills(GOOGLE);
   const laPrideStills = await stills(LA_PRIDE);
+  const nomadStills = await stills(FIVE_OH_FIVE);
   const kiehlsStills = await stills(KIEHLS);
   const levisStills = await stills(LEVIS);
 
@@ -177,15 +191,20 @@ export default async function MetaPage() {
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For Meta</h1>
         <p className={BLURB}>
-          Hi, I&apos;m Josh. In 2017 I drew a Pride sticker for Instagram
-          Stories. It was meant to last a month and stayed in the app for
-          years. Most of my work since has been the same problem at different
-          sizes: drawing rules that hold from a couple of centimetres on a
-          phone up to a stage header. Sticker sets, a festival identity,
-          packaging across a whole product line. Since 2024 I&apos;ve also been
-          the graphic designer at Allied Wheel Components, running the visual
-          output for three brands, and this year I spoke at Config about
-          sculpting in Figma Draw.
+          I’m Josh, a brand designer and illustrator working across visual
+          identity, digital products and graphic systems. I’m interested in how
+          a strong visual idea can become a flexible system, working just as
+          well as a small in-product icon as it does across a campaign or
+          physical space.
+        </p>
+        <p className={BLURB}>
+          In 2017, I created the Pride sticker for Instagram Stories. It was
+          designed to be temporary, but stayed in the product for five years.
+          Since then, I’ve continued working across brand systems, iconography
+          and digital experiences, most recently developing visual identities
+          and campaign systems for three automotive brands. I’m interested in
+          the space where brand and product meet, and how design systems can
+          make that experience feel consistent without losing character.
         </p>
 
         <Section first>
@@ -335,6 +354,53 @@ export default async function MetaPage() {
               hold from a stage header down to a cap badge.
             </p>
           </Block>
+        </Section>
+
+        <Section>
+          <Block bold label="Nomad Wheels · 505 Touring launch" href="/work/nomad-wheels-505-livery">
+            {nomad && (
+              <p className={TAGS}>
+                <span className="text-ink">Brand toolkit · Graphic design</span> ·{" "}
+                {nomad.deliverables}
+              </p>
+            )}
+            <div className="space-y-3 md:space-y-5">
+              <StillRow
+                stills={nomadStills.slice(0, 2)}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+              {nomad?.heroVideo && (
+                <ProjectVideo
+                  video={{
+                    src: nomad.heroVideo.src,
+                    alt: nomad.heroVideo.alt,
+                    poster: nomad.heroVideo.poster,
+                  }}
+                  sound
+                  ratio="16/9"
+                />
+              )}
+            </div>
+            <p className={BLURB}>
+              A launch toolkit for Nomad Wheels&apos; 505 Touring wheel, built
+              from a vintage Dakar rally look: the identity, livery and wrap
+              graphics, posters, apparel and a race suit, all prepared as
+              production-ready artwork. It sits inside my role at Allied Wheel
+              Components, where I keep three brands (Nomad, Raceline and
+              Möbelwagen) consistent across social ads in every format, print,
+              video and merch.
+            </p>
+          </Block>
+          <div className="space-y-3 md:space-y-5">
+            <StillRow
+              stills={nomadStills.slice(2, 4)}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <StillRow
+              stills={nomadStills.slice(4)}
+              sizes="(max-width: 768px) 100vw, 40vw"
+            />
+          </div>
         </Section>
 
         <Section>
