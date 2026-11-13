@@ -2464,7 +2464,7 @@ export const projects: Project[] = [
     summary: "A Pride parade, wrapped around a jar of face cream.",
     heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
     brief: [
-      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project: a parade scene built into limited-edition packaging across Kiehl's product line and the campaign advertising, with the same artwork on a float in the New York City Pride parade. A portion of proceeds went to the charity.",
+      "Kiehl's commissioned artwork for their 2023 global Pride campaign, in support of The Trevor Project: a parade scene wrapped around a limited-edition jar of Kiehl's Ultra Facial Cream and run through the campaign advertising, with the same artwork on a float in the New York City Pride parade. A portion of proceeds went to the charity.",
     ],
     credits: [
       { role: "Illustration", name: "Josh McKenna" },

@@ -26,7 +26,8 @@ import { siteConfig } from "@/lib/site";
  * Same building blocks and layout as /lego. Order is Josh's: the
  * Instagram Pride sticker (the Meta connection), the Google sticker set
  * (one visual language across many assets), the LA Pride identity
- * system, then Kiehl's and Levi's (extending an established brand), then
+ * system, the Nomad 505 Touring launch (a brand toolkit, same section as
+ * /lego's lead), then Kiehl's and Levi's (extending an established brand), then
  * motion (the JD lists After Effects/Lottie as a plus). The Google set is
  * archived from the public site, so its card here has no Project link.
  */
@@ -122,6 +123,18 @@ const LA_PRIDE_FOCUS: Record<string, string> = {
   "05-wayfinding-totem": "85% center",
 };
 
+/* The 505 Touring launch, same stills as /lego's lead section: the
+   livery sheet and the side profile lead, the film follows, then the
+   suit, apparel, print-ready artwork and the event flyer. */
+const FIVE_OH_FIVE = [
+  img("nomad-wheels-505-livery", "07-livery-sheet-v6", "4/5", "Livery sheet: front, rear and both sides"),
+  img("nomad-wheels-505-livery", "03-desert-side-profile", "3/2", "The Land Cruiser in profile at speed, livery side-on"),
+  img("nomad-wheels-505-livery", "05-helmet-door", "3/2", "Right side, matching livery: Josh wearing a custom race suit with the logos applied"),
+  img("nomad-wheels-505-livery", "06-apparel", "3/2", "Apparel with the livery graphics, front and back"),
+  img("nomad-wheels-505-livery", "01-nomad-505", "4/5", "The full print-ready livery artwork"),
+  img("nomad-wheels-505-livery", "01-socials-02", "1/1", "505 Touring release event flyer"),
+];
+
 const KIEHLS = [
   img(
     "kiehls-trevor-project",
@@ -146,11 +159,11 @@ const MORE: { slug: string; image?: ProjectImage; label?: string }[] = [
   { slug: "hsbc-pride-logo" },
   { slug: "piper-heidsieck" },
   { slug: "bombay-sapphire" },
-  { slug: "nomad-wheels-505-livery" },
 ];
 
 export default async function MetaPage() {
   const ig = getProject("instagram-sticker");
+  const nomad = getProject("nomad-wheels-505-livery");
   const laPride = getProject("la-pride");
   const kiehls = getProject("kiehls-trevor-project");
   const levis = getProject("levis-rainbow-rodeo");
@@ -164,6 +177,7 @@ export default async function MetaPage() {
   const igImpact = await stills(IG_IMPACT);
   const google = await stills(GOOGLE);
   const laPrideStills = await stills(LA_PRIDE);
+  const nomadStills = await stills(FIVE_OH_FIVE);
   const kiehlsStills = await stills(KIEHLS);
   const levisStills = await stills(LEVIS);
 
@@ -177,15 +191,20 @@ export default async function MetaPage() {
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For Meta</h1>
         <p className={BLURB}>
-          Hi, I&apos;m Josh. In 2017 I drew a Pride sticker for Instagram
-          Stories. It was meant to last a month and stayed in the app for
-          years. Most of my work since has been the same problem at different
-          sizes: drawing rules that hold from a couple of centimetres on a
-          phone up to a stage header. Sticker sets, a festival identity,
-          packaging across a whole product line. Since 2024 I&apos;ve also been
-          the graphic designer at Allied Wheel Components, running the visual
-          output for three brands, and this year I spoke at Config about
-          sculpting in Figma Draw.
+          I’m Josh, a brand designer and illustrator working across visual
+          identity, digital products and graphic systems. I’m interested in how
+          a strong visual idea can become a flexible system, working just as
+          well as a small in-product icon as it does across a campaign or
+          physical space.
+        </p>
+        <p className={BLURB}>
+          In 2017, I created the Pride sticker for Instagram Stories. It was
+          designed to be temporary, but stayed in the product for five years.
+          Since then, I’ve continued working across brand systems, iconography
+          and digital experiences, most recently developing visual identities
+          and campaign systems for three automotive brands. I’m interested in
+          the space where brand and product meet, and how design systems can
+          make that experience feel consistent without losing character.
         </p>
 
         <Section first>
@@ -221,20 +240,27 @@ export default async function MetaPage() {
               />
             </div>
             <p className={BLURB}>
-              Instagram&apos;s product marketing team found my work in Hello Mr
-              and asked for a Pride sticker for a new Stories set, alongside
-              four other LGBTQ+ artists. The character had to read at sticker
-              size, a couple of centimetres on a phone, so it&apos;s bold shapes
-              and a tight palette. It was meant to run for Pride month. It
-              stayed embedded in the app for years, with a remake commissioned
-              in 2020, and millions of people used it (Michelle Obama
-              included).
+              Instagram&apos;s product marketing team discovered
+              my work in Hello Mr and commissioned a Pride sticker
+              for a new Instagram Stories set, alongside four
+              other LGBTQ+ artists.
             </p>
             <p className={BLURB}>
-              Then it left the app: a four-metre float at Sydney Mardi Gras,
-              murals at Trafalgar Square and in Meta&apos;s head offices, an
-              Instagram takeover of British Vogue&apos;s account, a feature in a
-              Gestalten book, and talks I&apos;m still giving.
+              The character needed to read at just a couple of
+              centimetres on a phone screen, so I focused on bold
+              shapes, a limited palette and a clear silhouette.
+              Originally intended for Pride month, the sticker
+              remained in the app for years. A second version was
+              commissioned in 2020, and it went on to be used by
+              millions of people.
+            </p>
+            <p className={BLURB}>
+              Its life extended well beyond the product: from a
+              four-metre float at Sydney Mardi Gras to murals in
+              Trafalgar Square and Meta&apos;s offices, an
+              Instagram takeover of British Vogue, and inclusion
+              in a Gestalten book. It&apos;s still a project
+              I&apos;m asked to speak about today.
             </p>
           </Block>
           {ig?.galleryVideo && (
@@ -251,7 +277,7 @@ export default async function MetaPage() {
         </Section>
 
         <Section>
-          <Block bold label="Google · Pride sticker set">
+          <Block bold label="Google · Pride stickers">
             <p className={TAGS}>
               <span className="text-ink">Iconography · Illustration</span> · 24
               stickers · Google Allo · 2017
@@ -279,18 +305,27 @@ export default async function MetaPage() {
               />
             </Row>
             <p className={BLURB}>
-              Twenty-four Pride stickers for Google Allo, commissioned through
-              Anyways, from a finger snap to a full lesbian wedding. The job was
-              keeping two dozen different characters and moments feeling like
-              one set: same drawing rules, same palette, same weight at the
-              same tiny size. It won an Applied Arts Photography &amp;
-              Illustration Award (Conceptual Illustration, 2018).
+              Twenty-four Pride stickers for Google Allo,
+              commissioned through Anyways. The set ranged from a
+              finger snap to a full lesbian wedding.
+            </p>
+            <p className={BLURB}>
+              The challenge was making two dozen different
+              characters and moments feel like one coherent
+              family. I developed a consistent set of drawing
+              rules, proportions, palette and visual weight so
+              every sticker felt part of the same system, even at
+              a very small size.
+            </p>
+            <p className={BLURB}>
+              The project received an Applied Arts Photography
+              &amp; Illustration Award in 2018.
             </p>
           </Block>
         </Section>
 
         <Section>
-          <Block bold label="LA Pride · Identity system" href="/work/la-pride">
+          <Block bold label="LA Pride · Visual identity" href="/work/la-pride">
             {laPride && (
               <p className={TAGS}>
                 <span className="text-ink">Creative lead · Brand identity</span> ·{" "}
@@ -321,24 +356,77 @@ export default async function MetaPage() {
               ))}
             </div>
             <p className={BLURB}>
-              I was creative lead on the whole identity for the City of Los
-              Angeles&apos; Pride festival, art-directing designer James Junk and
-              working with the client team and production partners. I drew the
-              characters that became the logo, we made a custom typeface
-              together, and I drew the wayfinding icons and maps.
+              Creative lead on the visual identity for the City of
+              Los Angeles&apos; Pride festival. I art-directed
+              designer James Junk, worked with the client team and
+              production partners, and developed the visual
+              direction across the project.
             </p>
             <p className={BLURB}>
-              From there it was a system, not a set of one-offs: the same
-              drawing, type and colour rules applied by different suppliers
-              across posters, signage, banners, stage livery, vehicle graphics,
-              venue screens, wristbands and merch. The hard part was making it
-              hold from a stage header down to a cap badge.
+              I drew the characters that became the logo and the
+              wayfinding icons and maps, and worked with James on
+              a custom typeface. Together, we built a visual
+              system that could be applied consistently across
+              posters, signage, banners, stage graphics, vehicle
+              graphics, venue screens, wristbands and merchandise.
+            </p>
+            <p className={BLURB}>
+              The challenge was making one identity work across a
+              huge range of formats, scales and production
+              methods, from a stage header to a small cap badge.
             </p>
           </Block>
         </Section>
 
         <Section>
-          <Block bold label="Kiehl's · Global Pride campaign" href="/work/kiehls-trevor-project">
+          <Block bold label="Nomad Wheels · 505 Touring launch" href="/work/nomad-wheels-505-livery">
+            {nomad && (
+              <p className={TAGS}>
+                <span className="text-ink">Brand toolkit · Graphic design</span> ·{" "}
+                {nomad.deliverables}
+              </p>
+            )}
+            <div className="space-y-3 md:space-y-5">
+              <StillRow
+                stills={nomadStills.slice(0, 2)}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+              {nomad?.heroVideo && (
+                <ProjectVideo
+                  video={{
+                    src: nomad.heroVideo.src,
+                    alt: nomad.heroVideo.alt,
+                    poster: nomad.heroVideo.poster,
+                  }}
+                  sound
+                  ratio="16/9"
+                />
+              )}
+            </div>
+            <p className={BLURB}>
+              A launch toolkit for Nomad Wheels&apos; 505 Touring wheel, built
+              from a vintage Dakar rally look: the identity, livery and wrap
+              graphics, posters, apparel and a race suit, all prepared as
+              production-ready artwork. It sits inside my role at Allied Wheel
+              Components, where I keep three brands (Nomad, Raceline and
+              Möbelwagen) consistent across social ads in every format, print,
+              video and merch.
+            </p>
+          </Block>
+          <div className="space-y-3 md:space-y-5">
+            <StillRow
+              stills={nomadStills.slice(2, 4)}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <StillRow
+              stills={nomadStills.slice(4)}
+              sizes="(max-width: 768px) 100vw, 40vw"
+            />
+          </div>
+        </Section>
+
+        <Section>
+          <Block bold label="Kiehl's · Pride campaign" href="/work/kiehls-trevor-project">
             {kiehls && (
               <p className={TAGS}>
                 <span className="text-ink">Illustration</span> ·{" "}
@@ -350,17 +438,23 @@ export default async function MetaPage() {
               sizes="(max-width: 768px) 60vw, 30vw"
             />
             <p className={BLURB}>
-              Kiehl&apos;s 2023 global Pride campaign, in support of The Trevor
-              Project, through Havas. A parade scene built to sit inside
-              Kiehl&apos;s existing packaging across the product line, then
-              carried into the campaign advertising and onto a float in the NYC
-              Pride parade. My characters, their brand.
+              Illustration for Kiehl&apos;s 2023 global Pride
+              campaign, supporting The Trevor Project, through
+              Havas.
+            </p>
+            <p className={BLURB}>
+              I created a parade scene that was designed to sit
+              within Kiehl&apos;s existing packaging system, on
+              the limited-edition Ultra Facial Cream. The
+              illustrations were then carried through into
+              campaign advertising and a float at the New York
+              City Pride parade.
             </p>
           </Block>
         </Section>
 
         <Section>
-          <Block bold label="Levi's · Rainbow Rodeo" href="/work/levis-rainbow-rodeo">
+          <Block bold label="Levi's · Pride 2024" href="/work/levis-rainbow-rodeo">
             {levis && (
               <p className={TAGS}>
                 <span className="text-ink">Illustration · Creative direction</span> ·{" "}
@@ -372,11 +466,18 @@ export default async function MetaPage() {
               sizes="(max-width: 768px) 60vw, 25vw"
             />
             <p className={BLURB}>
-              Levi&apos;s Pride 2024 event at Levi&apos;s Haus, LA. Invite, enamel
-              pins, bar accessories and a tee, riffing on Levi&apos;s western
-              Americana with the cowboys made explicitly queer. Everything had
-              to stay clear at the size of an enamel pin. Used at the event and
-              across Levi&apos;s social channels.
+              Illustration and graphics for Levi&apos;s Pride
+              event at Levi&apos;s Haus in Los Angeles. The work
+              included invitations, enamel pins, bar accessories
+              and a T-shirt, drawing on Levi&apos;s western
+              Americana and giving it a distinctly queer
+              perspective.
+            </p>
+            <p className={BLURB}>
+              The illustrations had to remain clear and
+              recognisable at very different sizes, particularly
+              on small enamel pins. The work appeared at the event
+              and across Levi&apos;s social channels.
             </p>
           </Block>
         </Section>
@@ -388,20 +489,28 @@ export default async function MetaPage() {
                 <span className="text-ink">Animation</span> · Cavalry · Figma
               </p>
               <Row>
-                {[z1, citroen].map((project) =>
-                  project?.heroVideo ? (
+                {[
+                  z1?.heroVideo && { key: "z1", ...z1.heroVideo, sound: true },
+                  citroen?.heroVideo && { key: "2cv", ...citroen.heroVideo, sound: true },
+                  // The Monte Carlo Miura from the home page: its silent card
+                  // clip, so no sound control.
+                  {
+                    key: "miura",
+                    src: "/work/beefbar-posters/15-monte-carlo-lambo-card.mp4",
+                    alt: "Monte Carlo poster animated, a Lamborghini Miura outside the Casino de Monte-Carlo",
+                    poster: "/work/beefbar-posters/15-monte-carlo-lambo-poster.webp",
+                    sound: false,
+                  },
+                ].map((clip) =>
+                  clip ? (
                     <div
-                      key={project.slug}
+                      key={clip.key}
                       className="snap-center"
                       style={{ "--r": 4 / 5 } as CSSProperties}
                     >
                       <ProjectVideo
-                        video={{
-                          src: project.heroVideo.src,
-                          alt: project.heroVideo.alt,
-                          poster: project.heroVideo.poster,
-                        }}
-                        sound
+                        video={{ src: clip.src, alt: clip.alt, poster: clip.poster }}
+                        sound={clip.sound}
                         autoplay
                         ratio="4/5"
                         className="h-full"
@@ -411,8 +520,8 @@ export default async function MetaPage() {
                 )}
               </Row>
               <p className={BLURB}>
-                I animate my own illustration now, built in Figma and moved in
-                Cavalry: the BMW Z1 and the Citroën 2CV.
+                I animate my own illustration now, built in Figma and keyframed
+                in Cavalry: the BMW Z1, Citroën 2CV and Lambo Miura.
               </p>
             </Block>
           </Section>
@@ -423,6 +532,14 @@ export default async function MetaPage() {
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {more.map(({ project, image, label }) => {
                 const card = image ?? project.cardImage ?? project.hero;
+                const contain = card.fit === "contain";
+                // The same hover preview as /lego and the /work cards: the
+                // project's curated hover image, else its next picture (the
+                // hero last, for cards like Piper whose card image is the
+                // pair), never the one already showing.
+                const hover = [project.cardHoverImage, project.heroPair, ...project.gallery, project.hero].find(
+                  (candidate) => candidate?.src && candidate.src !== card.src,
+                );
                 return (
                   <Link
                     key={project.slug}
@@ -433,7 +550,7 @@ export default async function MetaPage() {
                         tin) sit whole on the canvas, not cropped over the
                         brand-blue placeholder surface. */}
                     <div
-                      className={`relative aspect-[4/5] overflow-hidden rounded-frame ${card.fit === "contain" ? "bg-canvas" : "bg-placeholder"}`}
+                      className={`relative aspect-[4/5] overflow-hidden rounded-frame ${contain ? "bg-canvas" : "bg-placeholder"}`}
                     >
                       {card.src && (
                         <Image
@@ -441,8 +558,24 @@ export default async function MetaPage() {
                           alt={card.alt}
                           fill
                           sizes="(max-width: 768px) 50vw, 33vw"
-                          className={`${card.fit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-300 ease-drift group-hover:scale-[1.02]`}
+                          className={`${contain ? "object-contain" : "object-cover"} transition-transform duration-300 ease-drift group-hover:scale-[1.02]`}
                         />
+                      )}
+                      {hover?.src && (
+                        // display:none until the device can hover, so touch
+                        // screens never fetch it (same as /lego and /work).
+                        <div
+                          aria-hidden="true"
+                          className={`pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:hover)]:block ${hover.fit === "contain" ? "bg-canvas" : ""}`}
+                        >
+                          <Image
+                            src={hover.src}
+                            alt=""
+                            fill
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                            className={hover.fit === "contain" ? "object-contain" : "object-cover"}
+                          />
+                        </div>
                       )}
                     </div>
                     <p className="type-label mt-3 text-ink underline underline-offset-4">
