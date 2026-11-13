@@ -126,7 +126,7 @@ const OBJECTS: DriftObject[] = [
   },
   {
     id: "work",
-    src: "/illustrations/objects/car-super-n-body-honda.webp",
+    src: "/illustrations/objects/car-yamato-super-n.webp",
     alt: "",
     /* Swapped from the blue Honda to the purple Super N, sized up per Josh.
        Later swapped again for a 3/4-angle render of the same car (drop
@@ -137,9 +137,11 @@ const OBJECTS: DriftObject[] = [
        dimensions, no baked-in shadow this time. Swapped back to the Honda
        colourway (same "Super N 3-4" render, 1870x1587, matching aspect)
        per Josh -- width/aspect untouched since the pixel dimensions are
-       identical. */
-    width: 0.2352,
-    aspect: 1.178,
+       identical. Swapped for the Team Yamato Super-N side profile per Josh
+       (for now) -- a much wider crop (aspect 1.935), so width goes up to
+       0.3 to keep roughly the same on-screen area as the 3/4 Honda. */
+    width: 0.3,
+    aspect: 1.935,
     angle: rad(320),
     rx: 0.3,
     ry: 0.31,
