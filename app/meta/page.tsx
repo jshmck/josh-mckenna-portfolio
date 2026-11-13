@@ -417,10 +417,10 @@ export default async function MetaPage() {
             />
             <p className={BLURB}>
               Kiehl&apos;s 2023 global Pride campaign, in support of The Trevor
-              Project, through Havas. A parade scene built to sit inside
-              Kiehl&apos;s existing packaging across the product line, then
-              carried into the campaign advertising and onto a float in the NYC
-              Pride parade. My characters, their brand.
+              Project, through Havas. A parade scene wrapped around the
+              limited-edition Ultra Facial Cream jar, then carried into the
+              campaign advertising and onto a float in the NYC Pride parade.
+              My characters, their brand.
             </p>
           </Block>
         </Section>
@@ -454,20 +454,28 @@ export default async function MetaPage() {
                 <span className="text-ink">Animation</span> · Cavalry · Figma
               </p>
               <Row>
-                {[z1, citroen].map((project) =>
-                  project?.heroVideo ? (
+                {[
+                  z1?.heroVideo && { key: "z1", ...z1.heroVideo, sound: true },
+                  citroen?.heroVideo && { key: "2cv", ...citroen.heroVideo, sound: true },
+                  // The Monte Carlo Miura from the home page: its silent card
+                  // clip, so no sound control.
+                  {
+                    key: "miura",
+                    src: "/work/beefbar-posters/15-monte-carlo-lambo-card.mp4",
+                    alt: "Monte Carlo poster animated, a Lamborghini Miura outside the Casino de Monte-Carlo",
+                    poster: "/work/beefbar-posters/15-monte-carlo-lambo-poster.webp",
+                    sound: false,
+                  },
+                ].map((clip) =>
+                  clip ? (
                     <div
-                      key={project.slug}
+                      key={clip.key}
                       className="snap-center"
                       style={{ "--r": 4 / 5 } as CSSProperties}
                     >
                       <ProjectVideo
-                        video={{
-                          src: project.heroVideo.src,
-                          alt: project.heroVideo.alt,
-                          poster: project.heroVideo.poster,
-                        }}
-                        sound
+                        video={{ src: clip.src, alt: clip.alt, poster: clip.poster }}
+                        sound={clip.sound}
                         autoplay
                         ratio="4/5"
                         className="h-full"
@@ -477,8 +485,8 @@ export default async function MetaPage() {
                 )}
               </Row>
               <p className={BLURB}>
-                I animate my own illustration now, built in Figma and moved in
-                Cavalry: the BMW Z1 and the Citroën 2CV.
+                I animate my own illustration now, built in Figma and keyframed
+                in Cavalry: the BMW Z1, Citroën 2CV and Lambo Miura.
               </p>
             </Block>
           </Section>
@@ -489,6 +497,14 @@ export default async function MetaPage() {
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {more.map(({ project, image, label }) => {
                 const card = image ?? project.cardImage ?? project.hero;
+                const contain = card.fit === "contain";
+                // The same hover preview as /lego and the /work cards: the
+                // project's curated hover image, else its next picture (the
+                // hero last, for cards like Piper whose card image is the
+                // pair), never the one already showing.
+                const hover = [project.cardHoverImage, project.heroPair, ...project.gallery, project.hero].find(
+                  (candidate) => candidate?.src && candidate.src !== card.src,
+                );
                 return (
                   <Link
                     key={project.slug}
@@ -499,7 +515,7 @@ export default async function MetaPage() {
                         tin) sit whole on the canvas, not cropped over the
                         brand-blue placeholder surface. */}
                     <div
-                      className={`relative aspect-[4/5] overflow-hidden rounded-frame ${card.fit === "contain" ? "bg-canvas" : "bg-placeholder"}`}
+                      className={`relative aspect-[4/5] overflow-hidden rounded-frame ${contain ? "bg-canvas" : "bg-placeholder"}`}
                     >
                       {card.src && (
                         <Image
@@ -507,8 +523,24 @@ export default async function MetaPage() {
                           alt={card.alt}
                           fill
                           sizes="(max-width: 768px) 50vw, 33vw"
-                          className={`${card.fit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-300 ease-drift group-hover:scale-[1.02]`}
+                          className={`${contain ? "object-contain" : "object-cover"} transition-transform duration-300 ease-drift group-hover:scale-[1.02]`}
                         />
+                      )}
+                      {hover?.src && (
+                        // display:none until the device can hover, so touch
+                        // screens never fetch it (same as /lego and /work).
+                        <div
+                          aria-hidden="true"
+                          className={`pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:hover)]:block ${hover.fit === "contain" ? "bg-canvas" : ""}`}
+                        >
+                          <Image
+                            src={hover.src}
+                            alt=""
+                            fill
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                            className={hover.fit === "contain" ? "object-contain" : "object-cover"}
+                          />
+                        </div>
                       )}
                     </div>
                     <p className="type-label mt-3 text-ink underline underline-offset-4">
