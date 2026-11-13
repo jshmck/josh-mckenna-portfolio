@@ -161,6 +161,17 @@ const BOMBAY_BOTTLES = [
   ),
 ];
 
+/** Josh's quick livery exercise on his own side-on 2CV drawing: plain car
+ *  above, livery below, one 4/5 sheet. Placeholder he may swap. */
+const TWO_CV_LIVERY = [
+  img(
+    "citroen-2cv-concept",
+    "06-2cv-livery",
+    "4/5",
+    "Citroën 2CV side profile, plain red above and in livery below",
+  ),
+];
+
 const Z1_COLOURS = [
   img("figma-bmw-z1", "04-z1-red-4x5", "4/5", "The Z1 in red"),
   img("figma-bmw-z1", "06-z1-blue-4x5", "4/5", "The Z1 in blue"),
@@ -305,6 +316,7 @@ export default async function LegoPage() {
       ? ([yamato.hero, yamato.heroUnder, yamato.heroPair] as const)
       : undefined;
   const yamatoStills = yamatoStack ? await stills([...yamatoStack]) : [];
+  const twoCvStills = await stills(TWO_CV_LIVERY);
   const laPrideStills = await stills(LA_PRIDE);
   const bombayStills = await stills(BOMBAY_BOTTLES);
   const twingoSlides = await stills(twingo?.gallery ?? []);
@@ -406,6 +418,39 @@ export default async function LegoPage() {
                 {yamato.brief[0]}
               </p>
             )}
+          </Block>
+        </Section>
+
+        <Section>
+          <Block bold
+            label="Citroën 2CV · Livery exercise"
+            href="/work/citroen-2cv-concept"
+          >
+            <p className="type-label mb-4 text-ink-muted">
+              <span className="text-ink">Graphic design</span> · Vehicle livery
+            </p>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-5">
+              {twoCvStills.map((still) => (
+                <LbTile
+                  key={still.src}
+                  index={still.lb}
+                  label={still.alt}
+                  className="relative aspect-[4/5] overflow-hidden rounded-frame bg-placeholder"
+                >
+                  <Image
+                    src={still.src}
+                    alt={still.alt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                </LbTile>
+              ))}
+            </div>
+            <p className={BLURB}>
+              A quick livery exercise on my own side-on drawing of the new
+              2CV: the plain car above, the livery below.
+            </p>
           </Block>
         </Section>
 
