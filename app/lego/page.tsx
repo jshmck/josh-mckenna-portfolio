@@ -448,8 +448,8 @@ export default async function LegoPage() {
               ))}
             </div>
             <p className={BLURB}>
-              A quick livery exercise on my own side-on drawing of the new
-              2CV: the plain car above, the livery below.
+              A quick livery exercise of the new 2CV: a nod to the Xsara WRC
+              car from 2004.
             </p>
           </Block>
         </Section>
