@@ -240,20 +240,27 @@ export default async function MetaPage() {
               />
             </div>
             <p className={BLURB}>
-              Instagram&apos;s product marketing team found my work in Hello Mr
-              and asked for a Pride sticker for a new Stories set, alongside
-              four other LGBTQ+ artists. The character had to read at sticker
-              size, a couple of centimetres on a phone, so it&apos;s bold shapes
-              and a tight palette. It was meant to run for Pride month. It
-              stayed embedded in the app for years, with a remake commissioned
-              in 2020, and millions of people used it (Michelle Obama
-              included).
+              Instagram&apos;s product marketing team discovered
+              my work in Hello Mr and commissioned a Pride sticker
+              for a new Instagram Stories set, alongside four
+              other LGBTQ+ artists.
             </p>
             <p className={BLURB}>
-              Then it left the app: a four-metre float at Sydney Mardi Gras,
-              murals at Trafalgar Square and in Meta&apos;s head offices, an
-              Instagram takeover of British Vogue&apos;s account, a feature in a
-              Gestalten book, and talks I&apos;m still giving.
+              The character needed to read at just a couple of
+              centimetres on a phone screen, so I focused on bold
+              shapes, a limited palette and a clear silhouette.
+              Originally intended for Pride month, the sticker
+              remained in the app for years. A second version was
+              commissioned in 2020, and it went on to be used by
+              millions of people.
+            </p>
+            <p className={BLURB}>
+              Its life extended well beyond the product: from a
+              four-metre float at Sydney Mardi Gras to murals in
+              Trafalgar Square and Meta&apos;s offices, an
+              Instagram takeover of British Vogue, and inclusion
+              in a Gestalten book. It&apos;s still a project
+              I&apos;m asked to speak about today.
             </p>
           </Block>
           {ig?.galleryVideo && (
@@ -270,7 +277,7 @@ export default async function MetaPage() {
         </Section>
 
         <Section>
-          <Block bold label="Google · Pride sticker set">
+          <Block bold label="Google · Pride stickers">
             <p className={TAGS}>
               <span className="text-ink">Iconography · Illustration</span> · 24
               stickers · Google Allo · 2017
@@ -298,18 +305,27 @@ export default async function MetaPage() {
               />
             </Row>
             <p className={BLURB}>
-              Twenty-four Pride stickers for Google Allo, commissioned through
-              Anyways, from a finger snap to a full lesbian wedding. The job was
-              keeping two dozen different characters and moments feeling like
-              one set: same drawing rules, same palette, same weight at the
-              same tiny size. It won an Applied Arts Photography &amp;
-              Illustration Award (Conceptual Illustration, 2018).
+              Twenty-four Pride stickers for Google Allo,
+              commissioned through Anyways. The set ranged from a
+              finger snap to a full lesbian wedding.
+            </p>
+            <p className={BLURB}>
+              The challenge was making two dozen different
+              characters and moments feel like one coherent
+              family. I developed a consistent set of drawing
+              rules, proportions, palette and visual weight so
+              every sticker felt part of the same system, even at
+              a very small size.
+            </p>
+            <p className={BLURB}>
+              The project received an Applied Arts Photography
+              &amp; Illustration Award in 2018.
             </p>
           </Block>
         </Section>
 
         <Section>
-          <Block bold label="LA Pride · Identity system" href="/work/la-pride">
+          <Block bold label="LA Pride · Visual identity" href="/work/la-pride">
             {laPride && (
               <p className={TAGS}>
                 <span className="text-ink">Creative lead · Brand identity</span> ·{" "}
@@ -340,18 +356,24 @@ export default async function MetaPage() {
               ))}
             </div>
             <p className={BLURB}>
-              I was creative lead on the whole identity for the City of Los
-              Angeles&apos; Pride festival, art-directing designer James Junk and
-              working with the client team and production partners. I drew the
-              characters that became the logo, we made a custom typeface
-              together, and I drew the wayfinding icons and maps.
+              Creative lead on the visual identity for the City of
+              Los Angeles&apos; Pride festival. I art-directed
+              designer James Junk, worked with the client team and
+              production partners, and developed the visual
+              direction across the project.
             </p>
             <p className={BLURB}>
-              From there it was a system, not a set of one-offs: the same
-              drawing, type and colour rules applied by different suppliers
-              across posters, signage, banners, stage livery, vehicle graphics,
-              venue screens, wristbands and merch. The hard part was making it
-              hold from a stage header down to a cap badge.
+              I drew the characters that became the logo and the
+              wayfinding icons and maps, and worked with James on
+              a custom typeface. Together, we built a visual
+              system that could be applied consistently across
+              posters, signage, banners, stage graphics, vehicle
+              graphics, venue screens, wristbands and merchandise.
+            </p>
+            <p className={BLURB}>
+              The challenge was making one identity work across a
+              huge range of formats, scales and production
+              methods, from a stage header to a small cap badge.
             </p>
           </Block>
         </Section>
@@ -404,7 +426,7 @@ export default async function MetaPage() {
         </Section>
 
         <Section>
-          <Block bold label="Kiehl's · Global Pride campaign" href="/work/kiehls-trevor-project">
+          <Block bold label="Kiehl's · Pride campaign" href="/work/kiehls-trevor-project">
             {kiehls && (
               <p className={TAGS}>
                 <span className="text-ink">Illustration</span> ·{" "}
@@ -416,17 +438,23 @@ export default async function MetaPage() {
               sizes="(max-width: 768px) 60vw, 30vw"
             />
             <p className={BLURB}>
-              Kiehl&apos;s 2023 global Pride campaign, in support of The Trevor
-              Project, through Havas. A parade scene wrapped around the
-              limited-edition Ultra Facial Cream jar, then carried into the
-              campaign advertising and onto a float in the NYC Pride parade.
-              My characters, their brand.
+              Illustration for Kiehl&apos;s 2023 global Pride
+              campaign, supporting The Trevor Project, through
+              Havas.
+            </p>
+            <p className={BLURB}>
+              I created a parade scene that was designed to sit
+              within Kiehl&apos;s existing packaging system, on
+              the limited-edition Ultra Facial Cream. The
+              illustrations were then carried through into
+              campaign advertising and a float at the New York
+              City Pride parade.
             </p>
           </Block>
         </Section>
 
         <Section>
-          <Block bold label="Levi's · Rainbow Rodeo" href="/work/levis-rainbow-rodeo">
+          <Block bold label="Levi's · Pride 2024" href="/work/levis-rainbow-rodeo">
             {levis && (
               <p className={TAGS}>
                 <span className="text-ink">Illustration · Creative direction</span> ·{" "}
@@ -438,11 +466,18 @@ export default async function MetaPage() {
               sizes="(max-width: 768px) 60vw, 25vw"
             />
             <p className={BLURB}>
-              Levi&apos;s Pride 2024 event at Levi&apos;s Haus, LA. Invite, enamel
-              pins, bar accessories and a tee, riffing on Levi&apos;s western
-              Americana with the cowboys made explicitly queer. Everything had
-              to stay clear at the size of an enamel pin. Used at the event and
-              across Levi&apos;s social channels.
+              Illustration and graphics for Levi&apos;s Pride
+              event at Levi&apos;s Haus in Los Angeles. The work
+              included invitations, enamel pins, bar accessories
+              and a T-shirt, drawing on Levi&apos;s western
+              Americana and giving it a distinctly queer
+              perspective.
+            </p>
+            <p className={BLURB}>
+              The illustrations had to remain clear and
+              recognisable at very different sizes, particularly
+              on small enamel pins. The work appeared at the event
+              and across Levi&apos;s social channels.
             </p>
           </Block>
         </Section>
