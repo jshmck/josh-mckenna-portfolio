@@ -429,14 +429,19 @@ export default async function MetaPage() {
                     href={`/work/${project.slug}`}
                     className="group block"
                   >
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-frame bg-placeholder">
+                    {/* Transparent cut-outs (fit: contain, e.g. the Piper
+                        tin) sit whole on the canvas, not cropped over the
+                        brand-blue placeholder surface. */}
+                    <div
+                      className={`relative aspect-[4/5] overflow-hidden rounded-frame ${card.fit === "contain" ? "bg-canvas" : "bg-placeholder"}`}
+                    >
                       {card.src && (
                         <Image
                           src={card.src}
                           alt={card.alt}
                           fill
                           sizes="(max-width: 768px) 50vw, 33vw"
-                          className="object-cover transition-transform duration-300 ease-drift group-hover:scale-[1.02]"
+                          className={`${card.fit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-300 ease-drift group-hover:scale-[1.02]`}
                         />
                       )}
                     </div>
