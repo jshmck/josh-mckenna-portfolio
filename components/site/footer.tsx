@@ -71,6 +71,13 @@ export function Footer() {
               </span>
             ))}
           </p>
+          {/* Build credit -- Josh designs and builds sites for other
+              people now, and this is the same line that goes in the
+              footer of every client site. Plain text here because on
+              his own site there's nowhere more useful to send it. */}
+          <p className="mt-1 font-body text-[13px] text-ink-muted">
+            Site by {siteConfig.name}
+          </p>
         </div>
 
         <ul className="flex items-center gap-4">
