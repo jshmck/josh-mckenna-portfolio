@@ -321,15 +321,19 @@ export default async function LegoPage() {
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
         <p className={BLURB}>
-          Hi, I&apos;m Josh, and I&apos;m obsessed with cars. I grew up on
-          Colin McRae Rally, Gran Turismo, races at Silverstone and LEGO. I
-          started out studying automotive design at Coventry before switching
-          to illustration. Since 2024 I&apos;ve been the graphic designer at
-          Allied Wheel Components, working across Nomad, Raceline and
-          Möbelwagen: campaign artwork for print, digital and video, monthly
-          social ads in every format, catalogues, flyers, sales materials and
-          merch, all taken through to production-ready files with the
-          printers.
+          Hi, I&apos;m Josh, and I&apos;ve been obsessed with cars for as long
+          as I can remember. I grew up on Colin McRae Rally, Gran Turismo,
+          trips to Silverstone and LEGO. I started out studying Automotive
+          Design at Coventry before finding my way into illustration and
+          graphic design.
+        </p>
+        <p className={BLURB}>
+          Since 2024, I&apos;ve been the graphic designer at Allied Wheel
+          Components, working across Nomad, Raceline and Möbelwagen. My work
+          spans brand identity, automotive graphics and campaign toolkits,
+          taking ideas from the initial concept through to finished
+          applications across vehicles, print, digital, video and
+          merchandise.
         </p>
 
         <Section first>
