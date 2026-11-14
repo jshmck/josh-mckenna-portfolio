@@ -1,10 +1,8 @@
 import {
   BehanceIcon,
-  FigmaIcon,
   InstagramIcon,
   LinkedInIcon,
   ThreadsIcon,
-  XIcon,
 } from "@/components/ui/social-icons";
 
 import { siteConfig } from "@/lib/site";
@@ -28,11 +26,9 @@ type SocialLink = {
 export const socialLinks: SocialLink[] = [
   { label: "Instagram", href: siteConfig.instagram.url, Icon: InstagramIcon },
   { label: "Threads", href: siteConfig.threads.url, Icon: ThreadsIcon },
-  { label: "X", href: siteConfig.x.url, Icon: XIcon },
   { label: "LinkedIn", href: siteConfig.linkedin.url, Icon: LinkedInIcon },
   // Behance's mark is naturally wider than the others (its own proportions,
   // not a square glyph like the rest) — sized down a touch so it doesn't
   // read heavier than its neighbours at the same height.
   { label: "Behance", href: siteConfig.behance.url, Icon: BehanceIcon, size: 14 },
-  { label: "Figma", href: siteConfig.figma.url, Icon: FigmaIcon },
 ];
