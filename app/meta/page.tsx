@@ -103,6 +103,7 @@ const LA_PRIDE = [
     "4/5",
     "The L.A. Pride 2024 logomark: an L and an A built out of illustrated characters",
   ),
+  img("la-pride", "23-key-art-stage-banner", "3/2", "The key art on a stage banner"),
   img("la-pride", "07-flyposted-lineup", "2/3", "Flyposted lineup poster with the site map"),
   img(
     "la-pride",
