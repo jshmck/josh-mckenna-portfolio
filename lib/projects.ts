@@ -802,9 +802,9 @@ export const projects: Project[] = [
         caption: false,
       },
       {
-        src: "/work/citroen-2cv-concept/08-2cv-spot-green-v2.webp",
+        src: "/work/citroen-2cv-concept/08-2cv-spot-stripe.webp",
         ratio: "4/5",
-        alt: "New Citroën 2CV in an orange and white Spot special edition",
+        alt: "New Citroën 2CV in an orange and white Spot special edition with a striped roof",
         caption: false,
       },
       {
