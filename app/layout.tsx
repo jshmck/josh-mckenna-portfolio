@@ -114,11 +114,9 @@ const personJsonLd = {
   email: `mailto:${siteConfig.email}`,
   sameAs: [
     siteConfig.instagram.url,
-    siteConfig.x.url,
     siteConfig.linkedin.url,
     siteConfig.threads.url,
     siteConfig.behance.url,
-    siteConfig.figma.url,
   ],
 };
 
