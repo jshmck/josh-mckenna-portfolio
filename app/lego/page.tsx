@@ -166,7 +166,7 @@ const BOMBAY_BOTTLES = [
  *  the 4/5 tiles crop nothing off the car. */
 const TWO_CV_SPECIALS = [
   img("citroen-2cv-concept", "07-2cv-bic-green", "4/5", "New Citroën 2CV in a blue and yellow Bic special edition"),
-  img("citroen-2cv-concept", "08-2cv-spot-green", "4/5", "New Citroën 2CV in an orange and white Spot special edition"),
+  img("citroen-2cv-concept", "08-2cv-spot-green-v2", "4/5", "New Citroën 2CV in an orange and white Spot special edition"),
   img("citroen-2cv-concept", "09-2cv-cocorico-green", "4/5", "New Citroën 2CV in a blue, white and red Cocorico special edition"),
 ];
 
