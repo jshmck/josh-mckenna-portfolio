@@ -448,8 +448,8 @@ export default async function LegoPage() {
             <p className={BLURB}>
               I&apos;m looking forward to seeing what special editions we get
               with the new 2CV. Here are some of my favourites from the old
-              ones, each livery reworked to the new body: Saxo Bic, 2CV Spot
-              and the 2CV Cocorico.
+              ones, reworked to the new body: Saxo Bic, 2CV Spot and the 2CV
+              Cocorico.
             </p>
           </Block>
         </Section>
