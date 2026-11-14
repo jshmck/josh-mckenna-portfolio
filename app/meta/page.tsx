@@ -160,6 +160,7 @@ const MORE: { slug: string; image?: ProjectImage; label?: string }[] = [
   { slug: "hsbc-pride-logo" },
   { slug: "piper-heidsieck" },
   { slug: "bombay-sapphire" },
+  { slug: "team-yamato-super-n" },
 ];
 
 export default async function MetaPage() {
