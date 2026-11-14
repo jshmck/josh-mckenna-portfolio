@@ -172,6 +172,15 @@ const TWO_CV_LIVERY = [
   ),
 ];
 
+/** Three special editions on the new 2CV, homages to the old ones. Source
+ *  renders are 16:9; padded top and bottom with the same grained blue so
+ *  the 4/5 tiles crop nothing off the car. */
+const TWO_CV_SPECIALS = [
+  img("citroen-2cv-concept", "07-2cv-bic", "4/5", "New Citroën 2CV in a blue and yellow Bic special edition"),
+  img("citroen-2cv-concept", "08-2cv-spot", "4/5", "New Citroën 2CV in an orange and white Spot special edition"),
+  img("citroen-2cv-concept", "09-2cv-cocorico", "4/5", "New Citroën 2CV in a blue, white and red Cocorico special edition"),
+];
+
 const Z1_COLOURS = [
   img("figma-bmw-z1", "04-z1-red-4x5", "4/5", "The Z1 in red"),
   img("figma-bmw-z1", "06-z1-blue-4x5", "4/5", "The Z1 in blue"),
@@ -317,6 +326,7 @@ export default async function LegoPage() {
       : undefined;
   const yamatoStills = yamatoStack ? await stills([...yamatoStack]) : [];
   const twoCvStills = await stills(TWO_CV_LIVERY);
+  const twoCvSpecialStills = await stills(TWO_CV_SPECIALS);
   const laPrideStills = await stills(LA_PRIDE);
   const bombayStills = await stills(BOMBAY_BOTTLES);
   const twingoSlides = await stills(twingo?.gallery ?? []);
@@ -450,6 +460,39 @@ export default async function LegoPage() {
             <p className={BLURB}>
               A quick livery exercise of the new 2CV: a nod to the Xsara WRC
               car from 2004.
+            </p>
+          </Block>
+        </Section>
+
+        <Section>
+          <Block bold
+            label="Citroën 2CV · Special editions"
+            href="/work/citroen-2cv-concept"
+          >
+            <p className="type-label mb-4 text-ink-muted">
+              <span className="text-ink">Graphic design</span> · Vehicle livery
+            </p>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:gap-5">
+              {twoCvSpecialStills.map((still) => (
+                <LbTile
+                  key={still.src}
+                  index={still.lb}
+                  label={still.alt}
+                  className="relative aspect-[4/5] overflow-hidden rounded-frame bg-placeholder"
+                >
+                  <Image
+                    src={still.src}
+                    alt={still.alt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                    className="object-cover"
+                  />
+                </LbTile>
+              ))}
+            </div>
+            <p className={BLURB}>
+              Three special editions on the new 2CV, homages to the old
+              special editions: Saxo Bic, 2CV Spot and the 2CV Cocorico.
             </p>
           </Block>
         </Section>
