@@ -796,19 +796,19 @@ export const projects: Project[] = [
     // brief's last line names them.
     gallery: [
       {
-        src: "/work/citroen-2cv-concept/07-2cv-bic-v3.webp",
+        src: "/work/citroen-2cv-concept/07-2cv-bic-green.webp",
         ratio: "4/5",
         alt: "New Citroën 2CV in a blue and yellow Bic special edition",
         caption: false,
       },
       {
-        src: "/work/citroen-2cv-concept/08-2cv-spot-v3.webp",
+        src: "/work/citroen-2cv-concept/08-2cv-spot-green.webp",
         ratio: "4/5",
         alt: "New Citroën 2CV in an orange and white Spot special edition",
         caption: false,
       },
       {
-        src: "/work/citroen-2cv-concept/09-2cv-cocorico-v3.webp",
+        src: "/work/citroen-2cv-concept/09-2cv-cocorico-green.webp",
         ratio: "4/5",
         alt: "New Citroën 2CV in a blue, white and red Cocorico special edition",
         caption: false,
