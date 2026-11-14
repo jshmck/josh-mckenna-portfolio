@@ -446,8 +446,10 @@ export default async function LegoPage() {
               ))}
             </div>
             <p className={BLURB}>
-              Three special editions on the new 2CV, homages to the old
-              special editions: Saxo Bic, 2CV Spot and the 2CV Cocorico.
+              I&apos;m looking forward to seeing what special editions we get
+              with the new 2CV. Here are some of my favourites from the old
+              ones, redrawn on the new car: Saxo Bic, 2CV Spot and the 2CV
+              Cocorico.
             </p>
           </Block>
         </Section>
