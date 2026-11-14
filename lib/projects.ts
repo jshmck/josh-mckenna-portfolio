@@ -754,13 +754,14 @@ export const projects: Project[] = [
     // Ranked ahead of Instagram Sticker (1) so it leads /work.
     pinnedRank: 0,
     discipline: "Illustration",
-    deliverables: "1 Illustration · 1 Animation",
+    deliverables: "1 Illustration · 1 Animation · 3 Liveries",
     categories: ["Cars", "Motion"],
     summary: "My new favourite car, redrawn in orange.",
     heroCaption: "Rear view of the Citroën 2CV concept.",
     brief: [
       "I drew the new Citroën 2CV concept after seeing it at the Paris auto show. It's now my favourite car.",
       "Made in Figma and animated in Cavalry, with grain added to the final artwork in Photoshop.",
+      "I'm looking forward to seeing what special editions we get with the new 2CV. Here are some of my favourites from the old ones, reworked to the new body: Saxo Bic, 2CV Spot and the 2CV Cocorico.",
     ],
     credits: [{ role: "Illustration & Creative Direction", name: "Josh McKenna" }],
     // The card plays the 4/5 clip, like Last Call's — pinned explicitly so
@@ -790,7 +791,30 @@ export const projects: Project[] = [
       // lightbox shows the full 16/9 composition, grain and all.
       lightbox: { src: "/work/citroen-2cv-concept/02-rear-view-full.webp", ratio: "16/9" },
     },
-    gallery: [],
+    // Josh's three special editions, homages to the old ones — same 4/5
+    // frames as /lego, run as one row of three. Captions hidden; the
+    // brief's last line names them.
+    gallery: [
+      {
+        src: "/work/citroen-2cv-concept/07-2cv-bic-v3.webp",
+        ratio: "4/5",
+        alt: "New Citroën 2CV in a blue and yellow Bic special edition",
+        caption: false,
+      },
+      {
+        src: "/work/citroen-2cv-concept/08-2cv-spot-v3.webp",
+        ratio: "4/5",
+        alt: "New Citroën 2CV in an orange and white Spot special edition",
+        caption: false,
+      },
+      {
+        src: "/work/citroen-2cv-concept/09-2cv-cocorico-v3.webp",
+        ratio: "4/5",
+        alt: "New Citroën 2CV in a blue, white and red Cocorico special edition",
+        caption: false,
+      },
+    ],
+    gallerySpans: [{ startIndex: 0, count: 3 }],
   },
   {
     slug: "instagram-sticker",
