@@ -165,9 +165,9 @@ const BOMBAY_BOTTLES = [
  *  renders are 16:9; padded top and bottom with the same grained blue so
  *  the 4/5 tiles crop nothing off the car. */
 const TWO_CV_SPECIALS = [
-  img("citroen-2cv-concept", "07-2cv-bic-v3", "4/5", "New Citroën 2CV in a blue and yellow Bic special edition"),
-  img("citroen-2cv-concept", "08-2cv-spot-v3", "4/5", "New Citroën 2CV in an orange and white Spot special edition"),
-  img("citroen-2cv-concept", "09-2cv-cocorico-v3", "4/5", "New Citroën 2CV in a blue, white and red Cocorico special edition"),
+  img("citroen-2cv-concept", "07-2cv-bic-green", "4/5", "New Citroën 2CV in a blue and yellow Bic special edition"),
+  img("citroen-2cv-concept", "08-2cv-spot-green", "4/5", "New Citroën 2CV in an orange and white Spot special edition"),
+  img("citroen-2cv-concept", "09-2cv-cocorico-green", "4/5", "New Citroën 2CV in a blue, white and red Cocorico special edition"),
 ];
 
 const Z1_COLOURS = [
