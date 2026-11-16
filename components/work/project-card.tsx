@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Parallax } from "@/components/ui/parallax";
+import { HoverImage } from "@/components/work/hover-image";
 import { Plate } from "@/components/ui/plate";
 import { ProjectVideo } from "@/components/work/project-video";
 import type { Project, ProjectImage } from "@/lib/projects";
@@ -169,13 +169,7 @@ export function ProjectCard({
             className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100 [@media(hover:hover)]:block"
           >
             {hoverImage.src ? (
-              <Image
-                src={hoverImage.src}
-                alt=""
-                fill
-                sizes={sizes}
-                className="object-cover"
-              />
+              <HoverImage src={hoverImage.src} sizes={sizes} />
             ) : (
               <div className="h-full w-full bg-placeholder" />
             )}
