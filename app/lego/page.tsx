@@ -3,6 +3,8 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { HoverImage } from "@/components/work/hover-image";
+
 import { ReelsRow } from "@/components/carwow/ad-phones";
 import { LbTile } from "@/components/koto/lightbox-tile";
 import {
@@ -711,13 +713,10 @@ export default async function LegoPage() {
                           aria-hidden="true"
                           className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:hover)]:block"
                         >
-                          <Image
+                          <HoverImage
                             src={hover.src}
-                            alt=""
-                            fill
                             sizes="(max-width: 768px) 50vw, 33vw"
-                            className="object-cover"
-                            style={{ objectPosition: hoverPosition }}
+                            position={hoverPosition}
                           />
                         </div>
                       )}
