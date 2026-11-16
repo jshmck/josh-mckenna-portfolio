@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
@@ -39,6 +40,11 @@ type WorkGalleryProps = {
    * `interactive` check duplicated here.
    */
   recordContext?: "work" | "home";
+  /** Home's cut-off: in the unfiltered, unsearched view the grid stops after
+   *  this project and a "More" link to /work follows. Choose a slug that
+   *  ends a row, so the bottom edge stays flat. Filtered and searched views
+   *  still show every match. */
+  endAfter?: string;
 };
 
 const CATEGORY_PARAM = "category";
@@ -367,6 +373,7 @@ export function WorkGallery({
   initialFilter,
   initialQuery,
   recordContext,
+  endAfter,
 }: WorkGalleryProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -599,6 +606,12 @@ export function WorkGallery({
   }, [filter, query, projects]);
 
   const filters: Filter[] = ["All", ...categories];
+
+  // Home's cut-off (see endAfter). Only the plain "All" view is trimmed;
+  // picking a pill or typing a search shows the whole match list.
+  const cutAt = endAfter && !isDense ? visible.findIndex((p) => p.slug === endAfter) : -1;
+  const shown = cutAt >= 0 ? visible.slice(0, cutAt + 1) : visible;
+  const hasMore = shown.length < visible.length;
 
   /** Entrance wrapper per pill: index 0 (All) drops down, everything
    *  after wooshes out rightward on the same gloopy spring as the pills'
@@ -957,7 +970,7 @@ export function WorkGallery({
           // likely to leave a visible hole ("i dont want any gaps...
           // inside the search," per Josh).
           dense={isDense}
-          items={visible.map((project, index) => {
+          items={shown.map((project, index) => {
             // Filtered views can lead with a category-specific cover; when
             // one applies, hover swaps back to the original lead instead
             // of the usual second-image pick. The override's own ratio
@@ -1057,6 +1070,18 @@ export function WorkGallery({
           })}
         />
       </div>
+
+      {hasMore && (
+        <Link
+          href="/work"
+          className="type-label mt-12 inline-flex items-center gap-2 whitespace-nowrap text-ink transition-[color,transform] duration-200 ease-in-out hover:scale-105 hover:text-accent hover:duration-300 hover:ease-drift"
+        >
+          <span>More work</span>
+          <span aria-hidden="true" className="font-body text-base font-normal md:text-lg">
+            →
+          </span>
+        </Link>
+      )}
 
       {/* Not visible — announces the filtered count to screen readers only.
           Sighted users see the grid change; there's no visual equivalent of
