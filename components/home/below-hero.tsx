@@ -158,6 +158,7 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
             initialFilter={peek?.category as Filter | undefined}
             initialQuery={peek?.query}
             recordContext={peek ? undefined : "home"}
+            endAfter="monocle-spot-illo"
           />
         </div>
       </section>

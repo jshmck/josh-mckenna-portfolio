@@ -1374,7 +1374,7 @@ export const projects: Project[] = [
     // Traded 4 for Vogue's 8 — "swap vogue with ATL mag, theyre both
     // landscape so should work easy," per Josh: both are 5/3 span-2
     // cards, so the trade moves only these two.
-    pinnedRank: 8,
+    pinnedRank: 9,
     yearLabel: "October 2022",
     discipline: "Editorial Illustration",
     deliverables: "1 Illustration",
@@ -1684,12 +1684,13 @@ export const projects: Project[] = [
     // per Josh. First 3D Character now fills 23 in its place, so the
     // Rooted Journal/OPTO trio stays a trio — see that pinnedRank
     // comment. No longer denseSquare since it's not part of that row.
-    pinnedRank: 9,
-    // Explicit, not RATIO_CYCLE's alternation — the artwork itself is a
-    // square export, and leaving this to the cycle meant a pinnedRank
-    // reorder elsewhere could silently flip this card's parity and crop it
-    // into 4/5 with no change to this project's own fields at all.
-    cardRatio: "1/1",
+    pinnedRank: 8,
+    // Explicit, not RATIO_CYCLE's alternation, so a pinnedRank reorder
+    // elsewhere can't flip this card's parity. 4/5 (the artwork is a square
+    // export, cropped at the sides) so it ends Home's third row level with
+    // Beefbar and the Z1 — Home's grid stops here, and the bottom edge has
+    // to be flat above the "More work" link.
+    cardRatio: "4/5",
     discipline: "Editorial Illustration",
     deliverables: "1 Spot Illustration",
     // Icons dropped — same reasoning as Rooted Journal's own comment.
