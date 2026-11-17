@@ -631,6 +631,76 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "porsche-911-dakar-iltis",
+    title: "Porsche 911 Dakar, Iltis",
+    client: "Personal",
+    year: 2026,
+    discipline: "Illustration",
+    deliverables: "3 Illustrations",
+    categories: ["Cars"],
+    summary: "The 911 Dakar, imagined as the 1980 Paris–Dakar Iltis.",
+    heroCaption: "",
+    brief: [
+      "The 911 Dakar, reimagined as a tribute to the cool little VW Iltis, winner of the 1980 Paris–Dakar rally. Its four-wheel drive system gave Audi the idea for the Quattro.",
+    ],
+    credits: [
+      { role: "Illustration & Creative Direction", name: "Josh McKenna" },
+      { role: "Reference photo", name: "Robb Pritchard / Petrolicious" },
+    ],
+    // True 16:9 renders, so the card is a landscape span-2 frame — and 5/3,
+    // never 16/9, per the standing rule on `cardRatio`. A 4/5 card would
+    // crop the car in half.
+    cardRatio: "5/3",
+    // The three renders side by side in one row, captions off: the
+    // livery leads (it is the card and the share image), then the same car
+    // plain. Grain is part of the finish, so quality 90 (see
+    // ProjectImage.quality).
+    hero: {
+      ratio: "16/9",
+      alt: "The Iltis livery, number 136",
+      src: "/work/porsche-911-dakar-iltis/01-dakar-iltis.webp",
+      quality: 90,
+    },
+    heroPair: {
+      ratio: "16/9",
+      alt: "Plain, in sand",
+      src: "/work/porsche-911-dakar-iltis/02-dakar-sand.webp",
+      quality: 90,
+    },
+    heroThird: {
+      ratio: "16/9",
+      alt: "Plain, in green",
+      src: "/work/porsche-911-dakar-iltis/03-dakar-green-v2.webp",
+      quality: 90,
+    },
+    hideHeroCaptions: true,
+    // The reference photo and the flattened-panel layout, level with each
+    // other under the renders and above the write-up, same as the 505's
+    // drawing and side-on photo (galleryAbove + matchGalleryPairHeights).
+    // The photo is Petrolicious's, used with Josh's permission and
+    // credited in its caption and in `credits`. Side-on in a field on
+    // purpose: the first pick was another dust-cloud-in-the-desert shot,
+    // too close to the 505's.
+    // PLACEHOLDER: the panel layout (1280x1280, transparent) stands in
+    // until the livery art lands on it. When the art arrives, swap in a
+    // NEW filename (Next caches by path).
+    galleryAbove: 2,
+    matchGalleryPairHeights: true,
+    gallery: [
+      {
+        ratio: "3/2",
+        alt: "VW Iltis, number 137. Photo: Robb Pritchard / Petrolicious",
+        src: "/work/porsche-911-dakar-iltis/06-iltis-side-profile.webp",
+      },
+      {
+        ratio: "1/1",
+        alt: "Livery layout, flattened panels",
+        src: "/work/porsche-911-dakar-iltis/04-livery-panels-placeholder.webp",
+        fit: "contain",
+      },
+    ],
+  },
+  {
     slug: "team-yamato-super-n",
     title: "Team Yamato, Super-N",
     client: "Personal",
