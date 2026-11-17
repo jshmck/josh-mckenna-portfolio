@@ -5,7 +5,12 @@ import Link from "next/link";
 
 import { HoverImage } from "@/components/work/hover-image";
 
-import { ReelsRow } from "@/components/carwow/ad-phones";
+import {
+  MOBELWAGEN_FORMATS,
+  NOMAD_FORMATS,
+  PhoneRow,
+  ReelsRow,
+} from "@/components/carwow/ad-phones";
 import { LbTile } from "@/components/koto/lightbox-tile";
 import {
   Block,
@@ -26,11 +31,15 @@ import { siteConfig } from "@/lib/site";
  * (page metadata and an X-Robots-Tag header in next.config.ts), not in the
  * sitemap. A static site has no auth, so this is "unlisted", not "secret".
  *
- * Leads with three pieces, in this order: the 505 Touring launch, the Team
- * Yamato livery on the Honda Super-N, and the LA Pride campaign, then the
- * Piper-Heidsieck tin as the packaging piece (the brief names packaging).
- * The social video sits last, just above More: the weakest fit for a
- * vehicles role. The static-ad "Graphic design" section was dropped.
+ * Opens with the 911 Dakar as the 1980 Paris–Dakar Iltis (three wide
+ * renders in one row), then the two paid, lead-role pieces back to back (the
+ * 505 Touring launch, then the LA Pride campaign the intro names), then the
+ * personal liveries (the Team Yamato Honda Super-N and the 2CV special
+ * editions), then the Piper-Heidsieck tin as the packaging piece (the brief
+ * names packaging).
+ * The static-ad "Graphic design" section (from the Carwow page) and then the
+ * social video close the projects, just above More: the social video is the
+ * weakest fit for a vehicles role.
  * Everything
  * on it is already on the public site (no assets of its own); the building
  * blocks are the ones the Koto page uses.
@@ -298,6 +307,7 @@ const MORE: {
 ];
 
 export default async function LegoPage() {
+  const dakar = getProject("porsche-911-dakar-iltis");
   const nomad = getProject("nomad-wheels-505-livery");
   const yamato = getProject("team-yamato-super-n");
   const laPrideProject = getProject("la-pride");
@@ -310,18 +320,25 @@ export default async function LegoPage() {
   const { lightbox, stills } = createLightbox();
 
   // Registered in visual order.
+  // The three renders, then the reference photo (3) and the flattened-panel
+  // layout (4).
+  const dakarStills = await stills(
+    dakar?.heroPair && dakar.heroThird
+      ? [dakar.hero, dakar.heroPair, dakar.heroThird, ...dakar.gallery]
+      : [],
+  );
   const nomadStills = await stills(FIVE_OH_FIVE);
+  const laPrideStills = await stills(LA_PRIDE);
   const yamatoStack =
     yamato?.heroUnder && yamato.heroPair
       ? ([yamato.hero, yamato.heroUnder, yamato.heroPair] as const)
       : undefined;
   const yamatoStills = yamatoStack ? await stills([...yamatoStack]) : [];
   const twoCvSpecialStills = await stills(TWO_CV_SPECIALS);
-  const laPrideStills = await stills(LA_PRIDE);
+  const piperStills = await stills(PIPER);
   const bombayStills = await stills(BOMBAY_BOTTLES);
   const twingoSlides = await stills(twingo?.gallery ?? []);
   const z1Stills = await stills(Z1_COLOURS);
-  const piperStills = await stills(PIPER);
 
   const more = MORE.flatMap((item) => {
     const project = getProject(item.slug);
@@ -333,22 +350,88 @@ export default async function LegoPage() {
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
         <p className={BLURB}>
-          Hi, I&apos;m Josh, and I&apos;ve been obsessed with cars for as long
-          as I can remember. I grew up on Colin McRae Rally, Gran Turismo,
-          trips to Silverstone and LEGO. I started out studying Automotive
-          Design at Coventry before finding my way into illustration and
-          graphic design.
-        </p>
-        <p className={BLURB}>
-          Since 2024, I&apos;ve been the graphic designer at Allied Wheel
-          Components, working across Nomad, Raceline and Möbelwagen. My work
-          spans brand identity, automotive graphics and campaign toolkits,
-          taking ideas from the initial concept through to finished
-          applications across vehicles, print, digital, video and
-          merchandise.
+          My obsession with cars and visual culture goes back as far as I can
+          remember. I studied Automotive Design briefly at Coventry and then
+          Illustration at Falmouth, and I&apos;ve been freelance since 2014 for
+          clients including Apple, Instagram, Google and Levi&apos;s. Since
+          2024 I&apos;ve been the graphic designer at Allied Wheel Components,
+          the aftermarket wheel company behind Nomad, Raceline and Möbelwagen.
+          I was creative lead on LA Pride 2024, developing a complete visual
+          identity across logo, custom typography, wayfinding, stage screens
+          and wristbands. Recreating famous liveries at LEGO scale, and
+          inventing ones that don&apos;t exist yet, is the most fun I can think
+          of.
         </p>
 
-        <Section first>
+        {dakar && dakarStills.length > 0 && (
+          <Section first>
+            <Block
+              bold
+              label="Porsche 911 Dakar · Personal"
+              href="/work/porsche-911-dakar-iltis"
+            >
+              <p className="type-label mb-4 text-ink-muted">
+                <span className="text-ink">Illustration · Vehicle livery</span> · {dakar.deliverables}
+              </p>
+              {/* The three wide renders in one row: the livery, then the same
+                  car plain in sand and green. True 16:9, grain left in
+                  (quality 90). Stacked on a phone, one per row. */}
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:gap-5">
+                {dakarStills.slice(0, 3).map((still) => (
+                  <LbTile
+                    key={still.src}
+                    index={still.lb}
+                    label={still.alt}
+                    className="relative aspect-[16/9] overflow-hidden rounded-frame bg-placeholder"
+                  >
+                    <Image
+                      src={still.src}
+                      alt={still.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                      quality={90}
+                      className="object-cover"
+                    />
+                  </LbTile>
+                ))}
+              </div>
+              {/* The reference photo and the flattened-panel layout (a
+                  placeholder until the livery art lands on it), level with
+                  each other. The layout is a transparent cut-out, so it is
+                  contained on the canvas, as the Piper tin is. */}
+              {dakarStills[3] && dakarStills[4] && (
+                <div className="mt-3 md:mt-5">
+                  <Row>
+                    <StillTile
+                      still={dakarStills[3]}
+                      sizes="(max-width: 768px) 100vw, 40vw"
+                    />
+                    <LbTile
+                      index={dakarStills[4].lb}
+                      label={dakarStills[4].alt}
+                      r={dakarStills[4].r}
+                      className="relative snap-center overflow-hidden rounded-frame bg-canvas"
+                    >
+                      <Image
+                        src={dakarStills[4].src}
+                        alt={dakarStills[4].alt}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 40vw"
+                        className="object-contain"
+                      />
+                    </LbTile>
+                  </Row>
+                  <p className="type-label mt-3 text-ink-muted">
+                    Reference photo: Robb Pritchard / Petrolicious
+                  </p>
+                </div>
+              )}
+              {dakar.brief[0] && <p className={BLURB}>{dakar.brief[0]}</p>}
+            </Block>
+          </Section>
+        )}
+
+        <Section first={!(dakar && dakarStills.length > 0)}>
           <Block bold
             label="505 Touring launch · Visual toolkit"
             href="/work/nomad-wheels-505-livery"
@@ -395,6 +478,50 @@ export default async function LegoPage() {
               sizes="(max-width: 768px) 100vw, 40vw"
             />
           </div>
+        </Section>
+
+        <Section>
+          <Block bold label="LA Pride · Visual system" href="/work/la-pride">
+            {laPrideProject && (
+              <p className="type-label mb-4 text-ink-muted">
+                <span className="text-ink">Graphic design · Illustration</span> · {laPrideProject.deliverables}
+              </p>
+            )}
+            {/* The logomark introduces the section as the first tile of the
+                row; every tile is a tall 4/5 portrait. */}
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
+              {laPrideStills.map((still) => (
+                <LbTile
+                  key={still.src}
+                  index={still.lb}
+                  label={still.alt}
+                  className="relative aspect-[4/5] overflow-hidden rounded-frame bg-placeholder"
+                >
+                  <Image
+                    src={still.src}
+                    alt={still.alt}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    className="object-cover"
+                    style={{
+                      objectPosition: Object.entries(LA_PRIDE_FOCUS).find(([key]) =>
+                        still.src.includes(key),
+                      )?.[1],
+                    }}
+                  />
+                </LbTile>
+              ))}
+            </div>
+            <p className={BLURB}>
+              I was creative lead on a complete visual system for the festival.
+              I drew the characters that became the logo, art-directed designer
+              James Junk, with whom I made a custom typeface, and worked with
+              the client team and production partners. The system
+              ran across wayfinding, signage, maps, stage graphics, vehicle
+              graphics, screens, wristbands and merch. The hard part was keeping
+              it consistent from a stage header down to a cap badge.
+            </p>
+          </Block>
         </Section>
 
         <Section>
@@ -452,50 +579,6 @@ export default async function LegoPage() {
               with the new 2CV. Here are some of my favourites from the old
               ones, reworked to the new body: Saxo Bic, 2CV Spot and the 2CV
               Cocorico.
-            </p>
-          </Block>
-        </Section>
-
-        <Section>
-          <Block bold label="LA Pride · Visual system" href="/work/la-pride">
-            {laPrideProject && (
-              <p className="type-label mb-4 text-ink-muted">
-                <span className="text-ink">Graphic design · Illustration</span> · {laPrideProject.deliverables}
-              </p>
-            )}
-            {/* The logomark introduces the section as the first tile of the
-                row; every tile is a tall 4/5 portrait. */}
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {laPrideStills.map((still) => (
-                <LbTile
-                  key={still.src}
-                  index={still.lb}
-                  label={still.alt}
-                  className="relative aspect-[4/5] overflow-hidden rounded-frame bg-placeholder"
-                >
-                  <Image
-                    src={still.src}
-                    alt={still.alt}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                    className="object-cover"
-                    style={{
-                      objectPosition: Object.entries(LA_PRIDE_FOCUS).find(([key]) =>
-                        still.src.includes(key),
-                      )?.[1],
-                    }}
-                  />
-                </LbTile>
-              ))}
-            </div>
-            <p className={BLURB}>
-              I was creative lead on a complete visual system for the festival.
-              I drew the characters that became the logo, art-directed designer
-              James Junk, with whom I made a custom typeface, and worked with
-              the client team and production partners. The system
-              ran across wayfinding, signage, maps, stage graphics, vehicle
-              graphics, screens, wristbands and merch. The hard part was keeping
-              it consistent from a stage header down to a cap badge.
             </p>
           </Block>
         </Section>
@@ -631,6 +714,27 @@ export default async function LegoPage() {
             </Block>
           </Section>
         )}
+
+        <Section>
+          <Block bold label="Graphic design">
+            <p className="type-label mb-6 text-ink-muted">
+              Allied Wheel Components · Static ads · Graphic elements · Logos
+            </p>
+            {/* The Tax Return Sale static ads from the Carwow page, each in the
+                four formats it ran in on an iPhone: look-only, so they stay
+                out of the lightbox. */}
+            <div className="space-y-10">
+              <div>
+                <p className="type-label mb-4 text-ink">Nomad</p>
+                <PhoneRow phones={NOMAD_FORMATS} brand="Nomad Tax Return Sale" />
+              </div>
+              <div>
+                <p className="type-label mb-4 text-ink">Möbelwagen</p>
+                <PhoneRow phones={MOBELWAGEN_FORMATS} brand="Möbelwagen Tax Return Sale" />
+              </div>
+            </div>
+          </Block>
+        </Section>
 
         <Section>
           <Block bold label="Social video">
