@@ -6,6 +6,7 @@ import { BackToTopLink } from "@/components/ui/back-to-top-link";
 import { TiltIllustration } from "@/components/ui/tilt-illustration";
 import { GalleryGrid } from "@/components/work/gallery-grid";
 import { HeroLightbox } from "@/components/work/hero-lightbox";
+import { HeroMosaicLightbox } from "@/components/work/hero-mosaic-lightbox";
 import { HeroStackLightbox } from "@/components/work/hero-stack-lightbox";
 import { ProjectVideo } from "@/components/work/project-video";
 import { ReferenceSticker } from "@/components/work/reference-sticker";
@@ -281,7 +282,9 @@ export function ProjectContent({
         ? project.heroPair
           ? [project.hero, project.heroPair]
           : [project.hero]
-        : project.heroPair && project.heroUnder
+        : project.heroPair && project.heroUnder && project.heroThird
+          ? [project.hero, project.heroPair, project.heroUnder, project.heroThird]
+          : project.heroPair && project.heroUnder
           ? [project.hero, project.heroUnder, project.heroPair]
           : project.heroPair
           ? project.heroThird
@@ -628,7 +631,14 @@ export function ProjectContent({
                       />
                     </div>
                   )}
-                {project.heroPair && project.heroUnder ? (
+                {project.heroPair && project.heroUnder && project.heroThird ? (
+                  <HeroMosaicLightbox
+                    images={[project.hero, project.heroPair, project.heroUnder, project.heroThird]}
+                    wideCaption={
+                      project.heroUnder.caption === false ? undefined : project.heroUnder.alt
+                    }
+                  />
+                ) : project.heroPair && project.heroUnder ? (
                   <HeroStackLightbox
                     images={[project.hero, project.heroUnder, project.heroPair]}
                   />
