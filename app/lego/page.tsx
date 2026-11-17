@@ -352,19 +352,23 @@ export default async function LegoPage() {
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
         {/* Two columns from xl, so the longer intro uses the width instead of
             sitting in a 60ch strip on the left (about 50 characters a line
-            each); one column of the usual measure below that. */}
+            each); one column of the usual measure below that. The second
+            column starts at "I was creative lead" (a forced break), so a
+            sentence never runs across the gap between the columns. */}
         <p className="type-lede mt-6 max-w-[60ch] text-ink xl:max-w-none xl:columns-2 xl:gap-x-8">
           My obsession with cars and visual culture goes back as far as I can
           remember. I studied Automotive Design briefly at Coventry and then
           Illustration at Falmouth, and I&apos;ve been freelance since 2014 for
           clients including Apple, Instagram, Google and Levi&apos;s. Since
           2024 I&apos;ve been the graphic designer at Allied Wheel Components,
-          the aftermarket wheel company behind Nomad, Raceline and Möbelwagen.
-          I was creative lead on LA Pride 2024, developing a complete visual
-          identity across logo, custom typography, wayfinding, stage screens
-          and wristbands. Recreating famous liveries at LEGO scale, and
-          inventing ones that don&apos;t exist yet, is the most fun I can think
-          of.
+          the aftermarket wheel company behind Nomad, Raceline and Möbelwagen.{" "}
+          <span className="xl:block xl:break-before-column">
+            I was creative lead on LA Pride 2024, developing a complete visual
+            identity across logo, custom typography, wayfinding, stage screens
+            and wristbands. Recreating famous liveries at LEGO scale, and
+            inventing ones that don&apos;t exist yet, is the most fun I can
+            think of.
+          </span>
         </p>
 
         {dakar && dakarMosaic && dakarStills[0] && (
