@@ -46,6 +46,8 @@ export const metadata: Metadata = {
 };
 
 const BLURB = "type-lede mt-6 max-w-[60ch] text-ink";
+/** The intro paragraphs: BLURB, but filling their column from xl. */
+const INTRO = "type-lede mt-6 max-w-[60ch] text-ink xl:max-w-none";
 const TAGS = "type-label mb-4 text-ink-muted";
 
 /* Instagram: product first (the set in Stories, the 2020 remake), then
@@ -192,22 +194,27 @@ export default async function MetaPage() {
     <ProjectLightboxProvider images={lightbox}>
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For Meta</h1>
-        <p className={BLURB}>
-          I’m Josh, a brand designer and illustrator working across visual
-          identity, digital products and graphic systems. I’m interested in how
-          a strong visual idea can become a flexible system, working just as
-          well as a small in-product icon as it does across a campaign or
-          physical space.
-        </p>
-        <p className={BLURB}>
-          In 2017, I created the Pride sticker for Instagram Stories. It was
-          designed to be temporary, but stayed in the product for five years.
-          Since then, I’ve continued working across brand systems, iconography
-          and digital experiences, most recently developing visual identities
-          and campaign systems for three automotive brands. I’m interested in
-          the space where brand and product meet, and how design systems can
-          make that experience feel consistent without losing character.
-        </p>
+        {/* The two intro paragraphs side by side from xl, so they use the width
+            instead of sitting in a 60ch strip on the left; stacked at the usual
+            measure below that. */}
+        <div className="xl:grid xl:grid-cols-2 xl:gap-x-8">
+          <p className={INTRO}>
+            I’m Josh, a brand designer and illustrator working across visual
+            identity, digital products and graphic systems. I’m interested in how
+            a strong visual idea can become a flexible system, working just as
+            well as a small in-product icon as it does across a campaign or
+            physical space.
+          </p>
+          <p className={INTRO}>
+            In 2017, I created the Pride sticker for Instagram Stories. It was
+            designed to be temporary, but stayed in the product for five years.
+            Since then, I’ve continued working across brand systems, iconography
+            and digital experiences, most recently developing visual identities
+            and campaign systems for three automotive brands. I’m interested in
+            the space where brand and product meet, and how design systems can
+            make that experience feel consistent without losing character.
+          </p>
+        </div>
 
         <Section first>
           <Block bold label="Instagram · Pride sticker" href="/work/instagram-sticker">
