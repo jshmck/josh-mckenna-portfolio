@@ -642,7 +642,7 @@ export const projects: Project[] = [
     client: "Personal",
     year: 2026,
     discipline: "Illustration",
-    deliverables: "2 Illustrations",
+    deliverables: "2 Illustrations · 1 Livery Layout",
     categories: ["Cars"],
     summary: "The 911 Dakar, imagined as the 1980 Paris–Dakar Iltis.",
     heroCaption: "",
@@ -694,15 +694,18 @@ export const projects: Project[] = [
       alt: "VW Iltis, number 137. Photo: Robb Pritchard / Petrolicious",
       src: "/work/porsche-911-dakar-iltis/06-iltis-side-profile.webp",
     },
-    // PLACEHOLDER: the flattened-panel layout (1280x1280, transparent)
-    // stands in until the livery art lands on it. When the art arrives, swap
-    // in a NEW filename (Next caches by path). Contained, so the square
-    // shows whole on the canvas.
+    // The livery on the flattened panels. Josh's file is 4:5 with the art
+    // in the middle and transparent margin above and below; cropped to a
+    // square around the art (nothing of the drawing cut) so the mosaic's
+    // column maths holds. Contained, so it shows whole on the canvas.
     heroThird: {
       ratio: "1/1",
-      alt: "Livery layout, flattened panels",
-      src: "/work/porsche-911-dakar-iltis/04-livery-panels-placeholder.webp",
+      alt: "The livery on the flattened panels, number 136",
+      src: "/work/porsche-911-dakar-iltis/04-livery-panels-final.webp",
       fit: "contain",
+      // Fine wireframe lines and small decal type: Next's default quality
+      // (75) softens them.
+      quality: 90,
     },
     gallery: [],
   },
