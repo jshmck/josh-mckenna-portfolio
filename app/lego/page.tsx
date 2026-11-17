@@ -19,6 +19,7 @@ import {
   StillRow,
   StillTile,
 } from "@/components/koto/page-parts";
+import { HeroMosaicLightbox } from "@/components/work/hero-mosaic-lightbox";
 import { HeroStackLightbox } from "@/components/work/hero-stack-lightbox";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectVideo } from "@/components/work/project-video";
@@ -320,13 +321,13 @@ export default async function LegoPage() {
   const { lightbox, stills } = createLightbox();
 
   // Registered in visual order.
-  // The three renders, then the reference photo (3) and the flattened-panel
-  // layout (4).
-  const dakarStills = await stills(
-    dakar?.heroPair && dakar.heroThird
-      ? [dakar.hero, dakar.heroPair, dakar.heroThird, ...dakar.gallery]
-      : [],
-  );
+  // The Dakar mosaic in reading order: the two renders, the reference photo,
+  // then the flattened-panel layout.
+  const dakarMosaic =
+    dakar?.heroPair && dakar.heroUnder && dakar.heroThird
+      ? ([dakar.hero, dakar.heroPair, dakar.heroUnder, dakar.heroThird] as const)
+      : undefined;
+  const dakarStills = dakarMosaic ? await stills([...dakarMosaic]) : [];
   const nomadStills = await stills(FIVE_OH_FIVE);
   const laPrideStills = await stills(LA_PRIDE);
   const yamatoStack =
@@ -349,7 +350,10 @@ export default async function LegoPage() {
     <ProjectLightboxProvider images={lightbox}>
       <main className="mx-auto max-w-frame px-6 pb-32 pt-8 md:px-gutter">
         <h1 className="type-label text-ink-muted">Josh McKenna · For LEGO</h1>
-        <p className={BLURB}>
+        {/* Two columns from xl, so the longer intro uses the width instead of
+            sitting in a 60ch strip on the left (about 50 characters a line
+            each); one column of the usual measure below that. */}
+        <p className="type-lede mt-6 max-w-[60ch] text-ink xl:max-w-none xl:columns-2 xl:gap-x-8">
           My obsession with cars and visual culture goes back as far as I can
           remember. I studied Automotive Design briefly at Coventry and then
           Illustration at Falmouth, and I&apos;ve been freelance since 2014 for
@@ -363,7 +367,7 @@ export default async function LegoPage() {
           of.
         </p>
 
-        {dakar && dakarStills.length > 0 && (
+        {dakar && dakarMosaic && dakarStills[0] && (
           <Section first>
             <Block
               bold
@@ -373,65 +377,21 @@ export default async function LegoPage() {
               <p className="type-label mb-4 text-ink-muted">
                 <span className="text-ink">Illustration · Vehicle livery</span> · {dakar.deliverables}
               </p>
-              {/* The three wide renders in one row: the livery, then the same
-                  car plain in sand and green. True 16:9, grain left in
-                  (quality 90). Stacked on a phone, one per row. */}
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:gap-5">
-                {dakarStills.slice(0, 3).map((still) => (
-                  <LbTile
-                    key={still.src}
-                    index={still.lb}
-                    label={still.alt}
-                    className="relative aspect-[16/9] overflow-hidden rounded-frame bg-placeholder"
-                  >
-                    <Image
-                      src={still.src}
-                      alt={still.alt}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                      quality={90}
-                      className="object-cover"
-                    />
-                  </LbTile>
-                ))}
-              </div>
-              {/* The reference photo and the flattened-panel layout (a
-                  placeholder until the livery art lands on it), level with
-                  each other. The layout is a transparent cut-out, so it is
-                  contained on the canvas, as the Piper tin is. */}
-              {dakarStills[3] && dakarStills[4] && (
-                <div className="mt-3 md:mt-5">
-                  <Row>
-                    <StillTile
-                      still={dakarStills[3]}
-                      sizes="(max-width: 768px) 100vw, 40vw"
-                    />
-                    <LbTile
-                      index={dakarStills[4].lb}
-                      label={dakarStills[4].alt}
-                      r={dakarStills[4].r}
-                      className="relative snap-center overflow-hidden rounded-frame bg-canvas"
-                    >
-                      <Image
-                        src={dakarStills[4].src}
-                        alt={dakarStills[4].alt}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 40vw"
-                        className="object-contain"
-                      />
-                    </LbTile>
-                  </Row>
-                  <p className="type-label mt-3 text-ink-muted">
-                    Reference photo: Robb Pritchard / Petrolicious
-                  </p>
-                </div>
-              )}
+              {/* Two renders over the reference photo, the same width as the
+                  pair, and the flattened-panel layout (a placeholder until
+                  the livery art lands on it) as high as the two rows. One
+                  stack on a phone. The photo's credit sits under it. */}
+              <HeroMosaicLightbox
+                images={[dakarMosaic[0], dakarMosaic[1], dakarMosaic[2], dakarMosaic[3]]}
+                indexOffset={dakarStills[0].lb}
+                wideCaption={dakarMosaic[2].alt}
+              />
               {dakar.brief[0] && <p className={BLURB}>{dakar.brief[0]}</p>}
             </Block>
           </Section>
         )}
 
-        <Section first={!(dakar && dakarStills.length > 0)}>
+        <Section first={!(dakar && dakarMosaic && dakarStills[0])}>
           <Block bold
             label="505 Touring launch · Visual toolkit"
             href="/work/nomad-wheels-505-livery"

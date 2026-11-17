@@ -284,6 +284,11 @@ export type Project = {
    * tall image on the right (HeroStackLightbox). Needs `heroPair`. Team
    * Yamato only: the two views over the front/rear panorama, beside the
    * sticker sheet. Lightbox order is hero, heroUnder, heroPair.
+   * With `heroThird` set as well the four lay out as a mosaic instead
+   * (HeroMosaicLightbox): hero and heroPair side by side over heroUnder, the
+   * same width as the pair, with heroThird as a square beside them as high
+   * as the two rows. Lightbox order is hero, heroPair, heroUnder, heroThird.
+   * Porsche 911 Dakar only.
    */
   heroUnder?: ProjectImage;
   /**
@@ -300,7 +305,8 @@ export type Project = {
    * Costa Smeralda's three posters, none of them a "pair" plus an
    * afterthought. Requires `heroPair` to also be set; HeroLightbox ignores
    * a lone `heroThird` without it. Own caption from its own `alt`, same as
-   * `heroPair`.
+   * `heroPair`. Alongside `heroUnder` it is instead the tall image of the
+   * mosaic (see `heroUnder`).
    */
   heroThird?: ProjectImage;
   /**
@@ -636,7 +642,7 @@ export const projects: Project[] = [
     client: "Personal",
     year: 2026,
     discipline: "Illustration",
-    deliverables: "3 Illustrations",
+    deliverables: "2 Illustrations",
     categories: ["Cars"],
     summary: "The 911 Dakar, imagined as the 1980 Paris–Dakar Iltis.",
     heroCaption: "",
@@ -651,54 +657,54 @@ export const projects: Project[] = [
     // never 16/9, per the standing rule on `cardRatio`. A 4/5 card would
     // crop the car in half.
     cardRatio: "5/3",
-    // The three renders side by side in one row, captions off: the
-    // livery leads (it is the card and the share image), then the same car
-    // plain. Grain is part of the finish, so quality 90 (see
-    // ProjectImage.quality).
+    // A mosaic (HeroMosaicLightbox): the two renders side by side over the
+    // Iltis photo, the same width as the pair, and the flattened-panel layout
+    // down the right as high as the two rows. Reading order is hero,
+    // heroPair, heroUnder, heroThird. The livery leads (it is the card and
+    // the share image). Grain is part of the finish, so quality 90 (see
+    // ProjectImage.quality). The renders carry no captions; the photo keeps
+    // its credit line.
     hero: {
       ratio: "16/9",
       alt: "The Iltis livery, number 136",
-      src: "/work/porsche-911-dakar-iltis/01-dakar-iltis.webp",
+      src: "/work/porsche-911-dakar-iltis/01-dakar-iltis-v2.webp",
       quality: 90,
     },
     heroPair: {
       ratio: "16/9",
       alt: "Plain, in sand",
-      src: "/work/porsche-911-dakar-iltis/02-dakar-sand.webp",
+      src: "/work/porsche-911-dakar-iltis/02-dakar-sand-v2.webp",
       quality: 90,
     },
-    heroThird: {
-      ratio: "16/9",
-      alt: "Plain, in green",
-      src: "/work/porsche-911-dakar-iltis/03-dakar-green-v2.webp",
-      quality: 90,
-    },
-    hideHeroCaptions: true,
-    // The reference photo and the flattened-panel layout, level with each
-    // other under the renders and above the write-up, same as the 505's
-    // drawing and side-on photo (galleryAbove + matchGalleryPairHeights).
-    // The photo is Petrolicious's, used with Josh's permission and
-    // credited in its caption and in `credits`. Side-on in a field on
-    // purpose: the first pick was another dust-cloud-in-the-desert shot,
+    // The reference photo: Petrolicious's, used with Josh's permission and
+    // credited in the caption under it and in `credits`. Side-on in a field
+    // on purpose: the first pick was another dust-cloud-in-the-desert shot,
     // too close to the 505's.
-    // PLACEHOLDER: the panel layout (1280x1280, transparent) stands in
-    // until the livery art lands on it. When the art arrives, swap in a
-    // NEW filename (Next caches by path).
-    galleryAbove: 2,
-    matchGalleryPairHeights: true,
-    gallery: [
-      {
-        ratio: "3/2",
-        alt: "VW Iltis, number 137. Photo: Robb Pritchard / Petrolicious",
+    heroUnder: {
+      // Cropped 16/9 from the 3/2 original: a shorter photo makes the left
+      // block shorter, so the renders and the drawing beside it run bigger.
+      // Anchored to the bottom so the © Petrolicious mark stays in frame (the
+      // roof has plenty of headroom); the lightbox opens the full 3/2.
+      ratio: "16/9",
+      position: "50% 100%",
+      lightbox: {
         src: "/work/porsche-911-dakar-iltis/06-iltis-side-profile.webp",
+        ratio: "3/2",
       },
-      {
-        ratio: "1/1",
-        alt: "Livery layout, flattened panels",
-        src: "/work/porsche-911-dakar-iltis/04-livery-panels-placeholder.webp",
-        fit: "contain",
-      },
-    ],
+      alt: "VW Iltis, number 137. Photo: Robb Pritchard / Petrolicious",
+      src: "/work/porsche-911-dakar-iltis/06-iltis-side-profile.webp",
+    },
+    // PLACEHOLDER: the flattened-panel layout (1280x1280, transparent)
+    // stands in until the livery art lands on it. When the art arrives, swap
+    // in a NEW filename (Next caches by path). Contained, so the square
+    // shows whole on the canvas.
+    heroThird: {
+      ratio: "1/1",
+      alt: "Livery layout, flattened panels",
+      src: "/work/porsche-911-dakar-iltis/04-livery-panels-placeholder.webp",
+      fit: "contain",
+    },
+    gallery: [],
   },
   {
     slug: "team-yamato-super-n",
