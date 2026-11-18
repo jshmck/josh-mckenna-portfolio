@@ -14,6 +14,10 @@ type HeroMosaicLightboxProps = {
   indexOffset?: number;
   /** A line under the wide image — the photo credit. */
   wideCaption?: string;
+  /** A second image beside the wide one: the two then sit side by side
+   *  under the pair, each with its own caption (its `alt`), and the tall
+   *  image follows it in the lightbox cycle. */
+  wideB?: ProjectImage;
 };
 
 /**
@@ -29,6 +33,10 @@ type HeroMosaicLightboxProps = {
  * up). A taller wide image (3/2 was tried) makes the stack taller and the
  * renders smaller; keep the ratios and the column share in step.
  *
+ * With `wideB` the wide row splits into two 3/2 photos, each the width of
+ * one pair image. The stack is then ~0.61x its width, so the column share
+ * becomes 1.65fr : 1fr to keep the square level with it.
+ *
  * From xl the mosaic sits as one block; below it, narrower than a laptop,
  * the left block would shrink the renders to thumbnails, so it stacks (the
  * pair side by side from md, the tall image capped and centred) instead.
@@ -37,6 +45,7 @@ export function HeroMosaicLightbox({
   images,
   indexOffset = 0,
   wideCaption,
+  wideB,
 }: HeroMosaicLightboxProps) {
   const { openAt } = useProjectLightbox();
   const [a, b, wide, tall] = images;
@@ -56,20 +65,36 @@ export function HeroMosaicLightbox({
     </button>
   );
 
+  const photo = (image: ProjectImage, index: number, caption: string | undefined, sizes: string) => (
+    <div>
+      {cell(image, index, sizes)}
+      {caption && <p className="type-label mt-3 text-ink-muted">{caption}</p>}
+    </div>
+  );
+
   return (
-    <div className="grid gap-6 xl:grid-cols-[1.138fr_1fr] xl:gap-8">
+    <div
+      className={`grid gap-6 xl:gap-8 ${wideB ? "xl:grid-cols-[1.65fr_1fr]" : "xl:grid-cols-[1.138fr_1fr]"}`}
+    >
       <div className="grid gap-6 md:grid-cols-2 md:gap-8">
         {cell(a, 0, "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw")}
         {cell(b, 1, "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw")}
-        <div className="md:col-span-2">
-          {cell(wide, 2, "(max-width: 1280px) 100vw, 50vw")}
-          {wideCaption && (
-            <p className="type-label mt-3 text-ink-muted">{wideCaption}</p>
-          )}
-        </div>
+        {wideB ? (
+          <>
+            {photo(wide, 2, wideCaption, "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw")}
+            {photo(wideB, 3, wideB.alt, "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw")}
+          </>
+        ) : (
+          <div className="md:col-span-2">
+            {cell(wide, 2, "(max-width: 1280px) 100vw, 50vw")}
+            {wideCaption && (
+              <p className="type-label mt-3 text-ink-muted">{wideCaption}</p>
+            )}
+          </div>
+        )}
       </div>
       <div className="mx-auto w-full max-w-xl xl:max-w-none">
-        {cell(tall, 3, "(max-width: 1280px) 100vw, 48vw")}
+        {cell(tall, wideB ? 4 : 3, "(max-width: 1280px) 100vw, 40vw")}
       </div>
     </div>
   );

@@ -325,7 +325,13 @@ export default async function LegoPage() {
   // then the flattened-panel layout.
   const dakarMosaic =
     dakar?.heroPair && dakar.heroUnder && dakar.heroThird
-      ? ([dakar.hero, dakar.heroPair, dakar.heroUnder, dakar.heroThird] as const)
+      ? ([
+          dakar.hero,
+          dakar.heroPair,
+          dakar.heroUnder,
+          ...(dakar.heroUnderB ? [dakar.heroUnderB] : []),
+          dakar.heroThird,
+        ] as const)
       : undefined;
   const dakarStills = dakarMosaic ? await stills([...dakarMosaic]) : [];
   const nomadStills = await stills(FIVE_OH_FIVE);
@@ -386,9 +392,10 @@ export default async function LegoPage() {
                   the livery art lands on it) as high as the two rows. One
                   stack on a phone. The photo's credit sits under it. */}
               <HeroMosaicLightbox
-                images={[dakarMosaic[0], dakarMosaic[1], dakarMosaic[2], dakarMosaic[3]]}
+                images={[dakar.hero, dakar.heroPair!, dakar.heroUnder!, dakar.heroThird!]}
                 indexOffset={dakarStills[0].lb}
-                wideCaption={dakarMosaic[2].alt}
+                wideCaption={dakar.heroUnder!.alt}
+                wideB={dakar.heroUnderB}
               />
               {dakar.brief[0] && <p className={BLURB}>{dakar.brief[0]}</p>}
             </Block>

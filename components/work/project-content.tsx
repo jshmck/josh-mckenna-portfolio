@@ -283,7 +283,13 @@ export function ProjectContent({
           ? [project.hero, project.heroPair]
           : [project.hero]
         : project.heroPair && project.heroUnder && project.heroThird
-          ? [project.hero, project.heroPair, project.heroUnder, project.heroThird]
+          ? [
+              project.hero,
+              project.heroPair,
+              project.heroUnder,
+              ...(project.heroUnderB ? [project.heroUnderB] : []),
+              project.heroThird,
+            ]
           : project.heroPair && project.heroUnder
           ? [project.hero, project.heroUnder, project.heroPair]
           : project.heroPair
@@ -637,6 +643,7 @@ export function ProjectContent({
                     wideCaption={
                       project.heroUnder.caption === false ? undefined : project.heroUnder.alt
                     }
+                    wideB={project.heroUnderB}
                   />
                 ) : project.heroPair && project.heroUnder ? (
                   <HeroStackLightbox
