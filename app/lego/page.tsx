@@ -19,7 +19,6 @@ import {
   StillRow,
   StillTile,
 } from "@/components/koto/page-parts";
-import { HeroMosaicLightbox } from "@/components/work/hero-mosaic-lightbox";
 import { HeroStackLightbox } from "@/components/work/hero-stack-lightbox";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectVideo } from "@/components/work/project-video";
@@ -321,11 +320,11 @@ export default async function LegoPage() {
   const { lightbox, stills } = createLightbox();
 
   // Registered in visual order.
-  // The Dakar mosaic in reading order: the two renders, the reference photo,
-  // then the flattened-panel layout.
+  // The Dakar block in reading order: the two renders, the flattened-panel
+  // layout, then the reference photo.
   const dakarMosaic =
     dakar?.heroPair && dakar.heroUnder && dakar.heroThird
-      ? ([dakar.hero, dakar.heroPair, dakar.heroUnder, dakar.heroThird] as const)
+      ? ([dakar.hero, dakar.heroPair, dakar.heroThird, dakar.heroUnder] as const)
       : undefined;
   const dakarStills = dakarMosaic ? await stills([...dakarMosaic]) : [];
   const nomadStills = await stills(FIVE_OH_FIVE);
@@ -381,16 +380,72 @@ export default async function LegoPage() {
               <p className="type-label mb-4 text-ink-muted">
                 <span className="text-ink">Illustration · Vehicle livery</span> · {dakar.deliverables}
               </p>
-              {/* Two renders over the reference photo, the same width as the
-                  pair, and the flattened-panel layout (a placeholder until
-                  the livery art lands on it) as high as the two rows. One
-                  stack on a phone. The photo's credit sits under it. */}
-              <HeroMosaicLightbox
-                images={[dakarMosaic[0], dakarMosaic[1], dakarMosaic[2], dakarMosaic[3]]}
-                indexOffset={dakarStills[0].lb}
-                wideCaption={dakarMosaic[2].alt}
-              />
-              {dakar.brief[0] && <p className={BLURB}>{dakar.brief[0]}</p>}
+              {/* The livery panels lead: the renders side by side on top, the
+                  flattened-panel layout large underneath, and the Iltis
+                  reference photo small beside it with its credit and the
+                  write-up. One stack on a phone. */}
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-5">
+                {dakarStills.slice(0, 2).map((still) => (
+                  <LbTile
+                    key={still.src}
+                    index={still.lb}
+                    label={still.alt}
+                    className="relative aspect-video overflow-hidden rounded-frame bg-placeholder"
+                  >
+                    <Image
+                      src={still.src}
+                      alt={still.alt}
+                      fill
+                      quality={90}
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  </LbTile>
+                ))}
+              </div>
+              <div className="mt-3 grid grid-cols-1 gap-6 md:mt-5 md:grid-cols-3 md:gap-5">
+                {dakarStills[2] && (
+                  <LbTile
+                    index={dakarStills[2].lb}
+                    label={dakarStills[2].alt}
+                    className="relative aspect-square md:col-span-2"
+                  >
+                    <Image
+                      src={dakarStills[2].src}
+                      alt={dakarStills[2].alt}
+                      fill
+                      quality={90}
+                      sizes="(max-width: 768px) 100vw, 66vw"
+                      className="object-contain"
+                    />
+                  </LbTile>
+                )}
+                <div className="flex flex-col justify-end">
+                  {dakarStills[3] && (
+                    <>
+                      <LbTile
+                        index={dakarStills[3].lb}
+                        label={dakarStills[3].alt}
+                        className="relative aspect-[3/2] overflow-hidden rounded-frame bg-placeholder"
+                      >
+                        <Image
+                          src={dakarStills[3].src}
+                          alt={dakarStills[3].alt}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-cover"
+                        />
+                      </LbTile>
+                      <p className="type-label mt-3 text-ink-muted">
+                        {dakarStills[3].alt}
+                      </p>
+                    </>
+                  )}
+                  {dakar.brief[0] && (
+                    <p className="type-lede mt-6 text-ink">{dakar.brief[0]}</p>
+                  )}
+                </div>
+              </div>
             </Block>
           </Section>
         )}
