@@ -658,7 +658,7 @@ export const projects: Project[] = [
     ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Reference photos", name: "Volkswagen, dakardantan.com" },
+      { role: "Reference photo", name: "Volkswagen" },
     ],
     // True 16:9 renders, so the card is a landscape span-2 frame — and 5/3,
     // never 16/9, per the standing rule on `cardRatio`. A 4/5 card would
@@ -685,18 +685,16 @@ export const projects: Project[] = [
     },
     // Volkswagen's studio shot of the 1980 winner, number 137: its sand
     // backdrop matches the renders. Replaced the Petrolicious field photo.
+    // Cropped 16/9 on the page so the mosaic's column maths holds (the car
+    // sits mid-frame, only backdrop is lost); the lightbox opens the 3/2.
     heroUnder: {
-      ratio: "3/2",
+      ratio: "16/9",
+      lightbox: {
+        src: "/work/porsche-911-dakar-iltis/08-iltis-137-vw.webp",
+        ratio: "3/2",
+      },
       alt: "VW Iltis, number 137. Photo: Volkswagen",
       src: "/work/porsche-911-dakar-iltis/08-iltis-137-vw.webp",
-    },
-    // The same Iltis, number 136, mid-rally: it shows the stripe the
-    // livery borrows. Josh's file is small (500px), so it sits half-width
-    // beside the 137 photo rather than full width.
-    heroUnderB: {
-      ratio: "3/2",
-      alt: "VW Iltis, number 136. Photo: dakardantan.com",
-      src: "/work/porsche-911-dakar-iltis/07-iltis-136-rally.webp",
     },
     // The livery on the flattened panels. Josh's file is 4:5 with the art
     // in the middle and transparent margin above and below; cropped to a
