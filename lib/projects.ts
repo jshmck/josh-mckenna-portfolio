@@ -672,8 +672,8 @@ export const projects: Project[] = [
     },
     heroPair: {
       ratio: "16/9",
-      alt: "Plain, in sand",
-      src: "/work/porsche-911-dakar-iltis/02-dakar-sand-v2.webp",
+      alt: "The Iltis livery in black, number 136",
+      src: "/work/porsche-911-dakar-iltis/03-dakar-black.webp",
       quality: 90,
     },
     // The reference photo: Petrolicious's, used with Josh's permission and
@@ -701,7 +701,7 @@ export const projects: Project[] = [
     heroThird: {
       ratio: "1/1",
       alt: "The livery on the flattened panels, number 136",
-      src: "/work/porsche-911-dakar-iltis/04-livery-panels-final.webp",
+      src: "/work/porsche-911-dakar-iltis/05-livery-panels-v2.webp",
       fit: "contain",
       // Fine wireframe lines and small decal type: Next's default quality
       // (75) softens them.
