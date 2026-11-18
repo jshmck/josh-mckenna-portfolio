@@ -292,6 +292,13 @@ export type Project = {
    */
   heroUnder?: ProjectImage;
   /**
+   * Mosaic only: a second image beside `heroUnder`, the two side by side
+   * under the pair (each the width of one pair image, own caption from its
+   * own `alt`). Lightbox order becomes hero, heroPair, heroUnder,
+   * heroUnderB, heroThird.
+   */
+  heroUnderB?: ProjectImage;
+  /**
    * A reference photo that hovers between the brief and the credits,
    * floating gently in place and scrolling with the page, so it's met on
    * the way down to the write-up (ReferenceSticker). A visitor can drag it
@@ -651,7 +658,7 @@ export const projects: Project[] = [
     ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Reference photo", name: "Robb Pritchard / Petrolicious" },
+      { role: "Reference photos", name: "Robb Pritchard / Petrolicious, dakardantan.com" },
     ],
     // True 16:9 renders, so the card is a landscape span-2 frame — and 5/3,
     // never 16/9, per the standing rule on `cardRatio`. A 4/5 card would
@@ -681,11 +688,10 @@ export const projects: Project[] = [
     // on purpose: the first pick was another dust-cloud-in-the-desert shot,
     // too close to the 505's.
     heroUnder: {
-      // Cropped 16/9 from the 3/2 original: a shorter photo makes the left
-      // block shorter, so the renders and the drawing beside it run bigger.
-      // Anchored to the bottom so the © Petrolicious mark stays in frame (the
-      // roof has plenty of headroom); the lightbox opens the full 3/2.
-      ratio: "16/9",
+      // 3/2, the original's own ratio, to match the 136 photo beside it
+      // (heroUnderB). Anchored to the bottom so the © Petrolicious mark
+      // stays in frame.
+      ratio: "3/2",
       position: "50% 100%",
       lightbox: {
         src: "/work/porsche-911-dakar-iltis/06-iltis-side-profile.webp",
@@ -693,6 +699,14 @@ export const projects: Project[] = [
       },
       alt: "VW Iltis, number 137. Photo: Robb Pritchard / Petrolicious",
       src: "/work/porsche-911-dakar-iltis/06-iltis-side-profile.webp",
+    },
+    // The same Iltis, number 136, mid-rally: it shows the stripe the
+    // livery borrows. Josh's file is small (500px), so it sits half-width
+    // beside the Petrolicious photo rather than full width.
+    heroUnderB: {
+      ratio: "3/2",
+      alt: "VW Iltis, number 136. Photo: dakardantan.com",
+      src: "/work/porsche-911-dakar-iltis/07-iltis-136-rally.webp",
     },
     // The livery on the flattened panels. Josh's file is 4:5 with the art
     // in the middle and transparent margin above and below; cropped to a
