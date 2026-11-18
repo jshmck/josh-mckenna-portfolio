@@ -658,7 +658,7 @@ export const projects: Project[] = [
     ],
     credits: [
       { role: "Illustration & Creative Direction", name: "Josh McKenna" },
-      { role: "Reference photos", name: "Robb Pritchard / Petrolicious, dakardantan.com" },
+      { role: "Reference photos", name: "Volkswagen, dakardantan.com" },
     ],
     // True 16:9 renders, so the card is a landscape span-2 frame — and 5/3,
     // never 16/9, per the standing rule on `cardRatio`. A 4/5 card would
@@ -683,26 +683,16 @@ export const projects: Project[] = [
       src: "/work/porsche-911-dakar-iltis/03-dakar-black.webp",
       quality: 90,
     },
-    // The reference photo: Petrolicious's, used with Josh's permission and
-    // credited in the caption under it and in `credits`. Side-on in a field
-    // on purpose: the first pick was another dust-cloud-in-the-desert shot,
-    // too close to the 505's.
+    // Volkswagen's studio shot of the 1980 winner, number 137: its sand
+    // backdrop matches the renders. Replaced the Petrolicious field photo.
     heroUnder: {
-      // 3/2, the original's own ratio, to match the 136 photo beside it
-      // (heroUnderB). Anchored to the bottom so the © Petrolicious mark
-      // stays in frame.
       ratio: "3/2",
-      position: "50% 100%",
-      lightbox: {
-        src: "/work/porsche-911-dakar-iltis/06-iltis-side-profile.webp",
-        ratio: "3/2",
-      },
-      alt: "VW Iltis, number 137. Photo: Robb Pritchard / Petrolicious",
-      src: "/work/porsche-911-dakar-iltis/06-iltis-side-profile.webp",
+      alt: "VW Iltis, number 137. Photo: Volkswagen",
+      src: "/work/porsche-911-dakar-iltis/08-iltis-137-vw.webp",
     },
     // The same Iltis, number 136, mid-rally: it shows the stripe the
     // livery borrows. Josh's file is small (500px), so it sits half-width
-    // beside the Petrolicious photo rather than full width.
+    // beside the 137 photo rather than full width.
     heroUnderB: {
       ratio: "3/2",
       alt: "VW Iltis, number 136. Photo: dakardantan.com",
