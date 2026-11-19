@@ -2989,6 +2989,47 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "gipsy-hill-coolada",
+    title: "Gipsy Hill",
+    client: "Gipsy Hill",
+    // Card reads "Beer Can · Gipsy Hill", the same pattern as Piper's
+    // "Limited Edition Packaging · Piper-Heidsieck".
+    cardTitle: "Beer Can",
+    cardLabel: "Gipsy Hill",
+    year: 2022,
+    discipline: "Illustration",
+    deliverables: "1 Can",
+    categories: ["Packaging"],
+    summary: "A Piña Colada beer, dressed for a holiday.",
+    heroCaption: "The COOLADA can, with a pineapple and a Piña Colada.",
+    brief: [
+      "Gipsy Hill asked for tropical vibes for COOLADA, their Piña Colada NEIPA collab.",
+    ],
+    credits: [
+      { role: "Illustration", name: "Josh McKenna" },
+      { role: "Client", name: "Gipsy Hill" },
+    ],
+    // Cropped to 4/5 from the photos Josh posted (no flat artwork on hand);
+    // the same three files the /lego page uses.
+    hero: {
+      ratio: "4/5",
+      alt: "The can — with a Piña Colada",
+      src: "/work/gipsy-hill-coolada/01-coolada-pineapple.webp",
+    },
+    gallery: [
+      {
+        ratio: "4/5",
+        alt: "The can — in the sky",
+        src: "/work/gipsy-hill-coolada/02-coolada-sky.webp",
+      },
+      {
+        ratio: "4/5",
+        alt: "Two cans",
+        src: "/work/gipsy-hill-coolada/03-coolada-cans.webp",
+      },
+    ],
+  },
+  {
     slug: "piper-heidsieck",
     title: "Piper-Heidsieck",
     client: "Piper-Heidsieck",
