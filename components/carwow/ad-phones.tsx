@@ -78,7 +78,6 @@ export function PhoneRow({ phones, brand }: { phones: AdPhone[]; brand: string }
             />
             <LikeSpot box={f.like} />
           </div>
-          <p className="type-label mt-1 text-ink-muted">{f.label}</p>
         </Reveal>
       ))}
     </SwipeRow>
