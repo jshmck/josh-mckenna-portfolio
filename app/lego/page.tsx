@@ -8,7 +8,6 @@ import {
   MOBELWAGEN_FORMATS,
   NOMAD_FORMATS,
   PhoneRow,
-  ReelsRow,
 } from "@/components/carwow/ad-phones";
 import { LbTile } from "@/components/koto/lightbox-tile";
 import {
@@ -39,9 +38,9 @@ import { siteConfig } from "@/lib/site";
  * names packaging), then Bombay Sapphire and the Gipsy Hill COOLADA can,
  * so the page also covers the product-graphics LEGO DESiGN role. The BMW Z1
  * and Hello Twingo live in More rather than as full sections.
- * The static-ad "Graphic design" section (from the Carwow page) and then the
- * social video close the projects, just above More: the social video is the
- * weakest fit for a vehicles role.
+ * The static-ad "Graphic design" section (from the Carwow page) closes the
+ * projects, just above More. The social video and the Honda Super N clip
+ * were cut (weakest fit / same car as Team Yamato).
  * Everything on it is on the public site except the Gipsy Hill photos
  * (public/work/gipsy-hill-coolada, used only here); the building blocks are
  * the ones the Koto page uses.
@@ -316,7 +315,6 @@ export default async function LegoPage() {
   const laPrideProject = getProject("la-pride");
   const piper = getProject("piper-heidsieck");
   const bombay = getProject("bombay-sapphire");
-  const honda = getProject("honda-super-n");
 
   const { lightbox, stills } = createLightbox();
 
@@ -683,19 +681,6 @@ export default async function LegoPage() {
         </Section>
 
         <Section>
-          <Block bold label="Social video">
-            <p className="type-label mb-6 text-ink-muted">
-              <span className="text-ink">Graphic design</span> · Graphic
-              elements · Hand drawn elements · Poster design · Merch design ·
-              Logos
-            </p>
-            {/* The Reels from the Carwow page, each in an iPhone: look-only
-                video, so they stay out of the lightbox. */}
-            <ReelsRow />
-          </Block>
-        </Section>
-
-        <Section>
           <Block bold label="More">
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
               {more.map(({ project, image, position, video, label, hover: hoverOverride, hoverPosition, hoverVideo }) => {
@@ -778,30 +763,6 @@ export default async function LegoPage() {
                 );
               })}
             </div>
-            {honda?.heroVideo && (
-              <div className="mt-8 md:mt-12">
-                {/* The Honda Super N turntable at the full width of the page,
-                    under the grid. Autoplays muted on a loop (browsers don't
-                    allow autoplay with sound), keeping the native controls so
-                    the soundtrack is one tap away: same setup as the Z1. */}
-                <ProjectVideo
-                  video={{
-                    src: honda.heroVideo.src,
-                    alt: honda.heroVideo.alt,
-                    poster: honda.heroVideo.poster,
-                  }}
-                  sound
-                  autoplay
-                  ratio="16/9"
-                />
-                <Link
-                  href="/work/honda-super-n"
-                  className="type-label mt-3 inline-block text-ink underline underline-offset-4"
-                >
-                  Honda · Super N
-                </Link>
-              </div>
-            )}
           </Block>
           <a
             href="https://joshmckenna.com"
