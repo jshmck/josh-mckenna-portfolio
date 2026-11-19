@@ -52,11 +52,11 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
                 ends "brand campaigns, car art [car] and graphics" with no
                 final "and" -- the heading column caps at 596px on every
                 desktop width, and an extra "and" risks orphaning the
-                last word. "Illustrator and graphic designer" and "vehicle
-                "car art and graphics" (was "automotive art") per Josh; the
-                nbsp pairs keep "car art" and "and graphics" together so
-                no word is orphaned on the last line, so the homepage
-                matches his CV and LinkedIn title. */}
+                last word. "Illustrator and graphic designer" and "car
+                art and graphics" (was "automotive art") per Josh, so the
+                homepage matches his CV and LinkedIn title. The nbsp pairs
+                keep "car art" and "and graphics" together so no word is
+                left alone on the last line. */}
             <h2 className="type-heading text-ink">
               British <InlineIcon name="cloud" /> illustrator and graphic
               designer working across character design, LGBTQ+{" "}
