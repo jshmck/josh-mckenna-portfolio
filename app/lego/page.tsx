@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,7 +8,6 @@ import {
   MOBELWAGEN_FORMATS,
   NOMAD_FORMATS,
   PhoneRow,
-  ReelsRow,
 } from "@/components/carwow/ad-phones";
 import { LbTile } from "@/components/koto/lightbox-tile";
 import {
@@ -37,13 +35,15 @@ import { siteConfig } from "@/lib/site";
  * 505 Touring launch, then the LA Pride campaign the intro names), then the
  * personal liveries (the Team Yamato Honda Super-N and the 2CV special
  * editions), then the Piper-Heidsieck tin as the packaging piece (the brief
- * names packaging).
- * The static-ad "Graphic design" section (from the Carwow page) and then the
- * social video close the projects, just above More: the social video is the
- * weakest fit for a vehicles role.
- * Everything
- * on it is already on the public site (no assets of its own); the building
- * blocks are the ones the Koto page uses.
+ * names packaging), then Bombay Sapphire and the Gipsy Hill COOLADA can,
+ * so the page also covers the product-graphics LEGO DESiGN role. The BMW Z1
+ * and Hello Twingo live in More rather than as full sections.
+ * The static-ad "Graphic design" section (from the Carwow page) closes the
+ * projects, just above More. The social video and the Honda Super N clip
+ * were cut (weakest fit / same car as Team Yamato).
+ * Everything on it is on the public site except the Gipsy Hill photos
+ * (public/work/gipsy-hill-coolada, used only here); the building blocks are
+ * the ones the Koto page uses.
  */
 export const metadata: Metadata = {
   title: "Josh McKenna — for LEGO",
@@ -173,6 +173,13 @@ const BOMBAY_BOTTLES = [
   ),
 ];
 
+/** Gipsy Hill's COOLADA can: the photos Josh posted, cropped to 4/5. */
+const GIPSY_HILL = [
+  img("gipsy-hill-coolada", "01-coolada-pineapple", "4/5", "The COOLADA can beside a pineapple and a Piña Colada"),
+  img("gipsy-hill-coolada", "02-coolada-sky", "4/5", "The COOLADA can against a blue sky"),
+  img("gipsy-hill-coolada", "03-coolada-cans", "4/5", "Two COOLADA cans against a blue sky"),
+];
+
 /** Three special editions on the new 2CV, homages to the old ones. Source
  *  renders are 16:9; padded top and bottom with the same grained blue so
  *  the 4/5 tiles crop nothing off the car. */
@@ -217,18 +224,6 @@ const MORE: {
    *  brand they're drawn for). */
   label?: string;
 }[] = [
-  {
-    slug: "citroen-2cv-concept",
-    label: "Citroën · 2CV Concept",
-    // The 720px silent card cut the /work grid plays, over the frame where
-    // the whole car is in shot.
-    video: "/work/citroen-2cv-concept/04-2cv-animation-card.mp4",
-    image: {
-      src: "/work/citroen-2cv-concept/05-2cv-animation-sound-poster.webp",
-      ratio: "4/5",
-      alt: "The 2CV animation, from a wheel out to the whole car",
-    },
-  },
   {
     slug: "voxi-pride",
     image: {
@@ -291,8 +286,14 @@ const MORE: {
     label: "Ford · Bronco",
   },
   {
-    slug: "figma-vitra-virgil",
-    label: "Vitra · Virgil Abloh",
+    slug: "figma-bmw-z1",
+    label: "BMW · Z1",
+    image: Z1_COLOURS[0],
+    hover: Z1_COLOURS[1],
+  },
+  {
+    slug: "hello-twingo",
+    label: "Renault · Hello Twingo",
   },
   {
     slug: "beefbar-posters",
@@ -314,9 +315,6 @@ export default async function LegoPage() {
   const laPrideProject = getProject("la-pride");
   const piper = getProject("piper-heidsieck");
   const bombay = getProject("bombay-sapphire");
-  const z1 = getProject("figma-bmw-z1");
-  const honda = getProject("honda-super-n");
-  const twingo = getProject("hello-twingo");
 
   const { lightbox, stills } = createLightbox();
 
@@ -344,8 +342,7 @@ export default async function LegoPage() {
   const twoCvSpecialStills = await stills(TWO_CV_SPECIALS);
   const piperStills = await stills(PIPER);
   const bombayStills = await stills(BOMBAY_BOTTLES);
-  const twingoSlides = await stills(twingo?.gallery ?? []);
-  const z1Stills = await stills(Z1_COLOURS);
+  const gipsyStills = await stills(GIPSY_HILL);
 
   const more = MORE.flatMap((item) => {
     const project = getProject(item.slug);
@@ -632,59 +629,35 @@ export default async function LegoPage() {
           </Block>
         </Section>
 
-        {twingo && twingoSlides.length > 0 && (
-          <Section>
-            <Block bold label="Hello Twingo · Personal" href="/work/hello-twingo">
-              <p className="type-label mb-4 text-ink-muted">
-                <span className="text-ink">Illustration · Graphic design</span> · {twingo.deliverables}
-              </p>
-              {/* The six Twingo slides as a tight strip, the same as on the
-                  Carwow page; each opens its own lightbox frame. */}
-              <StillRow
-                stills={twingoSlides}
-                sizes="(max-width: 768px) 60vw, 18vw"
-                tight
-              />
-            </Block>
-          </Section>
-        )}
-
-        {z1?.heroVideo && (
-          <Section>
-            <Block bold label="BMW Z1 · Personal" href="/work/figma-bmw-z1">
-              <p className="type-label mb-4 text-ink-muted">
-                <span className="text-ink">Illustration · Animation</span> · {z1.deliverables}
-              </p>
-              {/* The animation first, then the all-red and the all-blue Z1,
-                  all three 4/5. The film has the same ambient setup as the
-                  project page: muted autoplay loop, sound one tap away. The
-                  two stills open the page lightbox; the film doesn't. */}
-              <Row>
-                <div className="snap-center" style={{ "--r": 4 / 5 } as CSSProperties}>
-                  <ProjectVideo
-                    video={{
-                      src: z1.heroVideo.src,
-                      alt: z1.heroVideo.alt,
-                      poster: z1.heroVideo.poster,
-                    }}
-                    sound
-                    autoplay
-                    ratio="4/5"
-                    className="h-full"
+        <Section>
+          <Block bold label="COOLADA · Gipsy Hill">
+            <p className="type-label mb-4 text-ink-muted">
+              <span className="text-ink">Illustration · Packaging</span> · Beer can artwork
+            </p>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:gap-5">
+              {gipsyStills.map((still) => (
+                <LbTile
+                  key={still.src}
+                  index={still.lb}
+                  label={still.alt}
+                  className="relative aspect-[4/5] overflow-hidden rounded-frame bg-placeholder"
+                >
+                  <Image
+                    src={still.src}
+                    alt={still.alt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                    className="object-cover"
                   />
-                </div>
-                <StillTile
-                  still={z1Stills[0]}
-                  sizes="(max-width: 768px) 60vw, 30vw"
-                />
-                <StillTile
-                  still={z1Stills[1]}
-                  sizes="(max-width: 768px) 60vw, 30vw"
-                />
-              </Row>
-            </Block>
-          </Section>
-        )}
+                </LbTile>
+              ))}
+            </div>
+            <p className={BLURB}>
+              Can artwork for COOLADA, Gipsy Hill&apos;s Piña Colada NEIPA
+              collab. The brief was tropical vibes.
+            </p>
+          </Block>
+        </Section>
 
         <Section>
           <Block bold label="Graphic design">
@@ -704,19 +677,6 @@ export default async function LegoPage() {
                 <PhoneRow phones={MOBELWAGEN_FORMATS} brand="Möbelwagen Tax Return Sale" />
               </div>
             </div>
-          </Block>
-        </Section>
-
-        <Section>
-          <Block bold label="Social video">
-            <p className="type-label mb-6 text-ink-muted">
-              <span className="text-ink">Graphic design</span> · Graphic
-              elements · Hand drawn elements · Poster design · Merch design ·
-              Logos
-            </p>
-            {/* The Reels from the Carwow page, each in an iPhone: look-only
-                video, so they stay out of the lightbox. */}
-            <ReelsRow />
           </Block>
         </Section>
 
@@ -803,30 +763,6 @@ export default async function LegoPage() {
                 );
               })}
             </div>
-            {honda?.heroVideo && (
-              <div className="mt-8 md:mt-12">
-                {/* The Honda Super N turntable at the full width of the page,
-                    under the grid. Autoplays muted on a loop (browsers don't
-                    allow autoplay with sound), keeping the native controls so
-                    the soundtrack is one tap away: same setup as the Z1. */}
-                <ProjectVideo
-                  video={{
-                    src: honda.heroVideo.src,
-                    alt: honda.heroVideo.alt,
-                    poster: honda.heroVideo.poster,
-                  }}
-                  sound
-                  autoplay
-                  ratio="16/9"
-                />
-                <Link
-                  href="/work/honda-super-n"
-                  className="type-label mt-3 inline-block text-ink underline underline-offset-4"
-                >
-                  Honda · Super N
-                </Link>
-              </div>
-            )}
           </Block>
           <a
             href="https://joshmckenna.com"
