@@ -49,24 +49,21 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
                 side of each icon are real text so it gets normal word
                 spacing -- keep each icon on the same source line as its
                 neighbouring words, or JSX drops the whitespace. The list
-                ends "brand campaigns, automotive" with no final "and":
-                the heading column caps at 596px on every desktop width,
-                and "and automotive [car] art" is ~40px too wide for it,
-                which left "art" alone on a last line. The comma version
-                breaks as "automotive [car] art" at every width, the same
-                last line as mobile and the Figma reference. Moving the
-                car before "automotive" was measured and doesn't help --
-                same four things on the line either way. */}
+                ends "brand campaigns, vehicle [car] liveries" with no
+                final "and" -- the heading column caps at 596px on every
+                desktop width, and an extra "and" risks orphaning the
+                last word. "Illustrator and graphic designer" and "vehicle
+                liveries" (was "automotive art") per Josh, so the homepage
+                matches his CV and LinkedIn title. */}
             <h2 className="type-heading text-ink">
-              British <InlineIcon name="cloud" /> illustrator working across
-              character design, LGBTQ+ <InlineIcon name="heart" /> themes,
-              social media icons, brand campaigns, automotive{" "}
-              <InlineIcon name="car" /> art
+              British <InlineIcon name="cloud" /> illustrator and graphic
+              designer working across character design, LGBTQ+{" "}
+              <InlineIcon name="heart" /> themes, social media icons, brand
+              campaigns, vehicle <InlineIcon name="car" /> liveries
             </h2>
             <p className="type-lede mt-6 max-w-lg text-ink-muted">
-              Loud, proud, diverse characters. 2D mostly, a bit of 3D lately.
-              Restaurant posters are his bread and butter. Cars are the thing
-              he draws for free.
+              Loud, proud, diverse characters. 2D mostly, and some motion
+              lately. Cars are the thing he draws for free.
             </p>
             <Link
               href="/info"
