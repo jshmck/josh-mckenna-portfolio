@@ -60,8 +60,8 @@ export function HomeBelowHero({ projects, categories, peek }: HomeBelowHeroProps
             <h2 className="type-heading text-ink">
               British <InlineIcon name="cloud" /> illustrator and graphic
               designer working across character design, LGBTQ+{" "}
-              <InlineIcon name="heart" /> themes, social media icons, brand
-              campaigns, car&nbsp;art <InlineIcon name="car" /> and&nbsp;graphics
+              <InlineIcon name="heart" /> themes, brand campaigns,
+              car&nbsp;art <InlineIcon name="car" /> and&nbsp;graphics
             </h2>
             <p className="type-lede mt-6 max-w-lg text-ink-muted">
               Loud, proud, diverse characters. 2D mostly, and some motion
