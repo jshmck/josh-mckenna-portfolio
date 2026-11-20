@@ -436,6 +436,11 @@ export default async function LegoPage() {
             <dd className="type-lede">London, open to relocation</dd>
             <dt className="type-label">Experience</dt>
             <dd className="type-lede">12 years&apos; professional experience</dd>
+            <dt className="type-label">Skills</dt>
+            <dd className="type-lede">
+              Vehicle livery and graphics, visual identity, illustration,
+              packaging, production-ready files
+            </dd>
             <dt className="type-label">Tools</dt>
             <dd className="type-lede">
               Illustrator, Photoshop, InDesign (Adobe Certified Expert), Figma,
