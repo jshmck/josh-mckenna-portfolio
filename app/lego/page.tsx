@@ -205,6 +205,12 @@ const Z1_COLOURS = [
  *  section. */
 const BLURB = "type-lede mt-6 max-w-[60ch] text-ink";
 
+/** The CV and cover letter buttons: the contact form's HOWDY pill, the same
+ *  recipe as the Work filter chips (components/contact/enquiry-form.tsx):
+ *  ink outline at rest, brand outline on hover, filled brand on press. */
+const DOC_PILL =
+  "font-grotesque inline-block rounded-full border border-ink px-4 py-[9.5px] text-[11px] leading-none font-semibold uppercase tracking-[0.02em] text-ink-muted text-trim-caps transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:border-brand hover:text-brand active:border-brand active:bg-brand active:text-canvas";
+
 /** Shorter than this and a write-up stays one column. */
 const LONG_BLURB = 230;
 /** The shorter column has to hold at least this share of the text, or two
@@ -447,16 +453,14 @@ export default async function LegoPage() {
               Cavalry, Procreate
             </dd>
           </dl>
-          {/* The two documents, as buttons in the same blue and bold label
-              voice as the page's other calls to action, so they read as
-              things to open rather than more facts. */}
+          {/* The two documents, as the contact form's HOWDY button. */}
           <div className="flex flex-wrap items-start gap-3">
             <a
               href="/lego/josh-mckenna-cv.pdf"
               target="_blank"
               rel="noopener"
               aria-label="CV (PDF, opens in a new tab)"
-              className="type-section inline-block rounded-full bg-brand px-6 py-3 text-ink transition-transform duration-300 ease-drift hover:scale-[1.03]"
+              className={DOC_PILL}
             >
               CV
             </a>
@@ -465,7 +469,7 @@ export default async function LegoPage() {
               target="_blank"
               rel="noopener"
               aria-label="Cover letter (PDF, opens in a new tab)"
-              className="type-section inline-block rounded-full bg-brand px-6 py-3 text-ink transition-transform duration-300 ease-drift hover:scale-[1.03]"
+              className={DOC_PILL}
             >
               Cover letter
             </a>
