@@ -205,6 +205,49 @@ const Z1_COLOURS = [
  *  section. */
 const BLURB = "type-lede mt-6 max-w-[60ch] text-ink";
 
+/** Shorter than this and a write-up stays one column. */
+const LONG_BLURB = 230;
+/** The shorter column has to hold at least this share of the text, or two
+ *  columns would be one full and one near-empty. */
+const MIN_COLUMN_SHARE = 0.33;
+
+/**
+ * The write-up under a project. A long one runs in two columns from xl, like
+ * the intro, so it uses the width instead of sitting in a 60ch strip on the
+ * left. The second column starts at the sentence boundary that splits the text
+ * most evenly (a sentence never runs across the gap); a write-up with no
+ * boundary that splits it fairly (one very long sentence and one short one)
+ * stays in one column. Text only, so the split is the same on server and client.
+ */
+function Blurb({ children }: { children: string }) {
+  const text = children.trim();
+  const sentences = text.split(/(?<=[.!?])\s+/);
+
+  let at = 0;
+  let closest = Infinity;
+  let before = 0;
+  for (let i = 1; i < sentences.length; i++) {
+    before += sentences[i - 1].length + 1;
+    const off = Math.abs(text.length / 2 - before);
+    if (off < closest) {
+      closest = off;
+      at = i;
+    }
+  }
+  const first = sentences.slice(0, at).join(" ");
+  const second = sentences.slice(at).join(" ");
+  const shorter = Math.min(first.length, second.length);
+  const split =
+    text.length >= LONG_BLURB && at > 0 && shorter / text.length >= MIN_COLUMN_SHARE;
+
+  if (!split) return <p className={BLURB}>{text}</p>;
+  return (
+    <p className={`${BLURB} xl:max-w-none xl:columns-2 xl:gap-x-8`}>
+      {first}{" "}
+      <span className="xl:block xl:break-before-column">{second}</span>
+    </p>
+  );
+}
 
 /** The skills each piece shows, as a line under its write-up. Worded the way
  *  the CV and cover letter word the same work; tools stay in the intro's
@@ -431,7 +474,7 @@ export default async function LegoPage() {
                 wideCaption={dakar.heroUnder!.alt}
                 wideB={dakar.heroUnderB}
               />
-              {dakar.brief[0] && <p className={BLURB}>{dakar.brief[0]}</p>}
+              {dakar.brief[0] && <Blurb>{dakar.brief[0]}</Blurb>}
               <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Livery layout drawing", "Illustration"]} />
             </Block>
           </Section>
@@ -466,13 +509,13 @@ export default async function LegoPage() {
                 />
               )}
             </div>
-            <p className={BLURB}>
+            <Blurb>
               A visual toolkit for Nomad Wheels&apos; 505 Touring launch, built
               from a vintage Dakar rally look: the identity, the livery and wrap
               graphics, posters, apparel and a race suit, all prepared as
               production-ready artwork for print and the wrap. The Land Cruiser
               is mine and that&apos;s me driving.
-            </p>
+            </Blurb>
             <Skills
               items={[
                 "Livery design",
@@ -529,7 +572,7 @@ export default async function LegoPage() {
                 </LbTile>
               ))}
             </div>
-            <p className={BLURB}>
+            <Blurb>
               I was creative lead on a complete visual system for the festival.
               I drew the characters that became the logo, art-directed designer
               James Junk, with whom I made a custom typeface, and worked with
@@ -537,7 +580,7 @@ export default async function LegoPage() {
               ran across wayfinding, signage, maps, stage graphics, vehicle
               graphics, screens, wristbands and merch. The hard part was keeping
               it consistent from a stage header down to a cap badge.
-            </p>
+            </Blurb>
             <Skills
               items={[
                 "Art direction",
@@ -569,9 +612,9 @@ export default async function LegoPage() {
               />
             )}
             {yamato?.brief[0] && (
-              <p className={BLURB}>
+              <Blurb>
                 {yamato.brief[0]}
-              </p>
+              </Blurb>
             )}
             <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Decal placement sheet", "Illustration"]} />
           </Block>
@@ -603,12 +646,12 @@ export default async function LegoPage() {
                 </LbTile>
               ))}
             </div>
-            <p className={BLURB}>
+            <Blurb>
               I&apos;m looking forward to seeing what special editions we get
               with the new 2CV. Here are some of my favourites from the old
               ones, reworked to the new body: Saxo Bic, 2CV Spot and the 2CV
               Cocorico.
-            </p>
+            </Blurb>
             <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Illustration"]} />
           </Block>
         </Section>
@@ -645,11 +688,11 @@ export default async function LegoPage() {
                 />
               </LbTile>
             </Row>
-            <p className={BLURB}>
+            <Blurb>
               A limited-edition Pride tin for Piper-Heidsieck&apos;s Cuvée Brut,
               2024. The artwork is drawn flat and wraps round the tin; the
               finished tin is on the right.
-            </p>
+            </Blurb>
             <Skills items={["Packaging", "Illustration", "Working with printers", "Print-ready artwork"]} />
           </Block>
         </Section>
@@ -685,9 +728,9 @@ export default async function LegoPage() {
               ))}
             </div>
             {bombay?.brief[0] && (
-              <p className={BLURB}>
+              <Blurb>
                 {bombay.brief[0]}
-              </p>
+              </Blurb>
             )}
             <Skills items={["Hand-painted packaging", "Vinyl details", "Illustration"]} />
           </Block>
@@ -716,10 +759,10 @@ export default async function LegoPage() {
                 </LbTile>
               ))}
             </div>
-            <p className={BLURB}>
+            <Blurb>
               Can artwork for COOLADA, Gipsy Hill&apos;s Piña Colada NEIPA
               collab. The brief was tropical vibes.
-            </p>
+            </Blurb>
             <Skills items={["Can artwork", "Packaging", "Illustration"]} />
           </Block>
         </Section>
