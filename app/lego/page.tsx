@@ -430,28 +430,41 @@ export default async function LegoPage() {
         {/* The CV's own facts, for a screener who stops here: where, how
             long, and the tools, then the two application documents. All of
             it is lifted from the CV; change it there first. */}
-        <div className="type-label mt-6 flex flex-wrap items-baseline gap-x-8 gap-y-2 text-ink">
-          <p>London · Open to relocation · 12 years&apos; professional experience</p>
-          <p>Illustrator, Photoshop, InDesign (Adobe Certified Expert), Figma, Cavalry, Procreate</p>
-          <p>
+        <div className="mt-8 grid gap-6 xl:grid-cols-2 xl:gap-x-8">
+          <dl className="grid grid-cols-[6.5rem_1fr] items-baseline gap-x-4 gap-y-3 text-ink">
+            <dt className="type-label">Based</dt>
+            <dd className="type-lede">London, open to relocation</dd>
+            <dt className="type-label">Experience</dt>
+            <dd className="type-lede">12 years&apos; professional experience</dd>
+            <dt className="type-label">Tools</dt>
+            <dd className="type-lede">
+              Illustrator, Photoshop, InDesign (Adobe Certified Expert), Figma,
+              Cavalry, Procreate
+            </dd>
+          </dl>
+          {/* The two documents, as buttons in the same blue and bold label
+              voice as the page's other calls to action, so they read as
+              things to open rather than more facts. */}
+          <div className="flex flex-wrap items-start gap-3">
             <a
               href="/lego/josh-mckenna-cv.pdf"
               target="_blank"
               rel="noopener"
-              className="underline underline-offset-4"
+              aria-label="CV (PDF, opens in a new tab)"
+              className="type-section inline-block rounded-full bg-brand px-6 py-3 text-ink transition-transform duration-300 ease-drift hover:scale-[1.03]"
             >
-              CV (PDF)
+              CV
             </a>
-            {" · "}
             <a
               href="/lego/josh-mckenna-cover-letter.pdf"
               target="_blank"
               rel="noopener"
-              className="underline underline-offset-4"
+              aria-label="Cover letter (PDF, opens in a new tab)"
+              className="type-section inline-block rounded-full bg-brand px-6 py-3 text-ink transition-transform duration-300 ease-drift hover:scale-[1.03]"
             >
-              Cover letter (PDF)
+              Cover letter
             </a>
-          </p>
+          </div>
         </div>
 
         {dakar && dakarMosaic && dakarStills[0] && (
