@@ -205,6 +205,8 @@ const Z1_COLOURS = [
  *  section. */
 const BLURB = "type-lede mt-6 max-w-[60ch] text-ink";
 
+
+
 const MORE: {
   slug: string;
   /** Overrides the project's own card image. */
@@ -373,6 +375,33 @@ export default async function LegoPage() {
             think of.
           </span>
         </p>
+
+        {/* The CV's own facts, for a screener who stops here: where, how
+            long, and the tools, then the two application documents. All of
+            it is lifted from the CV; change it there first. */}
+        <div className="type-label mt-6 flex flex-wrap items-baseline gap-x-8 gap-y-2 text-ink">
+          <p>London · Open to relocation · 12 years&apos; professional experience</p>
+          <p>Illustrator, Photoshop, InDesign (Adobe Certified Expert), Figma, Cavalry, Procreate</p>
+          <p>
+            <a
+              href="/lego/josh-mckenna-cv.pdf"
+              target="_blank"
+              rel="noopener"
+              className="underline underline-offset-4"
+            >
+              CV (PDF)
+            </a>
+            {" · "}
+            <a
+              href="/lego/josh-mckenna-cover-letter.pdf"
+              target="_blank"
+              rel="noopener"
+              className="underline underline-offset-4"
+            >
+              Cover letter (PDF)
+            </a>
+          </p>
+        </div>
 
         {dakar && dakarMosaic && dakarStills[0] && (
           <Section first>

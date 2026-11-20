@@ -51,6 +51,12 @@ const nextConfig: NextConfig = {
         source: "/lego",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
       },
+      // The CV and cover letter the LEGO page links to carry a phone number:
+      // keep the files out of search as well as the page.
+      {
+        source: "/lego/:file.pdf",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
       // And Meta's.
       {
         source: "/meta",
