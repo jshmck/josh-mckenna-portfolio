@@ -206,6 +206,14 @@ const Z1_COLOURS = [
 const BLURB = "type-lede mt-6 max-w-[60ch] text-ink";
 
 
+/** The skills each piece shows, as a line under its write-up. Worded the way
+ *  the CV and cover letter word the same work; tools stay in the intro's
+ *  facts line rather than repeating on every project. */
+function Skills({ items }: { items: string[] }) {
+  return (
+    <p className="type-label mt-4 text-ink">Skills · {items.join(" · ")}</p>
+  );
+}
 
 const MORE: {
   slug: string;
@@ -424,6 +432,7 @@ export default async function LegoPage() {
                 wideB={dakar.heroUnderB}
               />
               {dakar.brief[0] && <p className={BLURB}>{dakar.brief[0]}</p>}
+              <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Livery layout drawing", "Illustration"]} />
             </Block>
           </Section>
         )}
@@ -464,6 +473,17 @@ export default async function LegoPage() {
               production-ready artwork for print and the wrap. The Land Cruiser
               is mine and that&apos;s me driving.
             </p>
+            <Skills
+              items={[
+                "Livery design",
+                "Identity and logos",
+                "Visual toolkit",
+                "Technical drawing",
+                "Vehicle graphics",
+                "Apparel",
+                "Print-ready artwork",
+              ]}
+            />
           </Block>
           <div className="space-y-3 md:space-y-5">
             <StillRow
@@ -518,6 +538,17 @@ export default async function LegoPage() {
               graphics, screens, wristbands and merch. The hard part was keeping
               it consistent from a stage header down to a cap badge.
             </p>
+            <Skills
+              items={[
+                "Art direction",
+                "Visual identity",
+                "Custom typography",
+                "Wayfinding",
+                "Stage and vehicle graphics",
+                "Merchandise",
+                "Consistency across applications",
+              ]}
+            />
           </Block>
         </Section>
 
@@ -542,6 +573,7 @@ export default async function LegoPage() {
                 {yamato.brief[0]}
               </p>
             )}
+            <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Decal placement sheet", "Illustration"]} />
           </Block>
         </Section>
 
@@ -577,6 +609,7 @@ export default async function LegoPage() {
               ones, reworked to the new body: Saxo Bic, 2CV Spot and the 2CV
               Cocorico.
             </p>
+            <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Illustration"]} />
           </Block>
         </Section>
 
@@ -617,6 +650,7 @@ export default async function LegoPage() {
               2024. The artwork is drawn flat and wraps round the tin; the
               finished tin is on the right.
             </p>
+            <Skills items={["Packaging", "Illustration", "Working with printers", "Print-ready artwork"]} />
           </Block>
         </Section>
 
@@ -655,6 +689,7 @@ export default async function LegoPage() {
                 {bombay.brief[0]}
               </p>
             )}
+            <Skills items={["Hand-painted packaging", "Vinyl details", "Illustration"]} />
           </Block>
         </Section>
 
@@ -685,6 +720,7 @@ export default async function LegoPage() {
               Can artwork for COOLADA, Gipsy Hill&apos;s Piña Colada NEIPA
               collab. The brief was tropical vibes.
             </p>
+            <Skills items={["Can artwork", "Packaging", "Illustration"]} />
           </Block>
         </Section>
 
@@ -706,6 +742,7 @@ export default async function LegoPage() {
                 <PhoneRow phones={MOBELWAGEN_FORMATS} brand="Möbelwagen Tax Return Sale" />
               </div>
             </div>
+            <Skills items={["Advertising", "Campaign toolkits", "Multi-format artwork"]} />
           </Block>
         </Section>
 
