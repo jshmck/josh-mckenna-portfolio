@@ -17,7 +17,6 @@ import {
   StillRow,
   StillTile,
 } from "@/components/koto/page-parts";
-import { HeroMosaicLightbox } from "@/components/work/hero-mosaic-lightbox";
 import { HeroStackLightbox } from "@/components/work/hero-stack-lightbox";
 import { ProjectLightboxProvider } from "@/components/work/project-lightbox-context";
 import { ProjectVideo } from "@/components/work/project-video";
@@ -171,6 +170,13 @@ const BOMBAY_BOTTLES = [
     "4/3",
     "Bottle detail, botanicals from the Grains of Paradise",
   ),
+];
+
+/** The final Blender renders of the 911 Dakar, front and rear, with the
+ *  livery drawing applied as a UV map. Josh's 4:5 exports, used only here. */
+const DAKAR_RENDERS = [
+  img("porsche-911-dakar-iltis", "10-render-black-front", "4/5", "Blender render of the 911 Dakar in the black livery, front three-quarter"),
+  img("porsche-911-dakar-iltis", "11-render-black-rear", "4/5", "Blender render of the 911 Dakar in the black livery, rear three-quarter"),
 ];
 
 /** Gipsy Hill's COOLADA can: the photos Josh posted, cropped to 4/5. */
@@ -378,19 +384,13 @@ export default async function LegoPage() {
   const { lightbox, stills } = createLightbox();
 
   // Registered in visual order.
-  // The Dakar mosaic in reading order: the two renders, the reference photo,
-  // then the flattened-panel layout.
-  const dakarMosaic =
-    dakar?.heroPair && dakar.heroUnder && dakar.heroThird
-      ? ([
-          dakar.hero,
-          dakar.heroPair,
-          dakar.heroUnder,
-          ...(dakar.heroUnderB ? [dakar.heroUnderB] : []),
-          dakar.heroThird,
-        ] as const)
-      : undefined;
-  const dakarStills = dakarMosaic ? await stills([...dakarMosaic]) : [];
+  // The Dakar section as two rows of three, in reading order: the two
+  // illustrations and the reference photo, then the two Blender renders and
+  // the flat livery drawing they were mapped from.
+  const dakarImages = dakar
+    ? [dakar.hero, dakar.heroPair, dakar.heroUnder, ...DAKAR_RENDERS, dakar.heroThird]
+    : [];
+  const dakarStills = await stills(dakarImages);
   const nomadStills = await stills(FIVE_OH_FIVE);
   const laPrideStills = await stills(LA_PRIDE);
   const yamatoStack =
@@ -476,7 +476,7 @@ export default async function LegoPage() {
           </div>
         </div>
 
-        {dakar && dakarMosaic && dakarStills[0] && (
+        {dakar && dakarStills.length === 6 && (
           <Section first>
             <Block
               bold
@@ -484,25 +484,46 @@ export default async function LegoPage() {
               href="/work/porsche-911-dakar-iltis"
             >
               <p className="type-label mb-4 text-ink-muted">
-                <span className="text-ink">Illustration · Vehicle livery</span> · {dakar.deliverables}
+                <span className="text-ink">Illustration · Vehicle livery · 3D</span> · 2 Illustrations · 2 Renders · 1 Livery Layout
               </p>
-              {/* Two renders over the reference photo, the same width as the
-                  pair, and the flattened-panel layout (a placeholder until
-                  the livery art lands on it) as high as the two rows. One
-                  stack on a phone. The photo's credit sits under it. */}
-              <HeroMosaicLightbox
-                images={[dakar.hero, dakar.heroPair!, dakar.heroUnder!, dakar.heroThird!]}
-                indexOffset={dakarStills[0].lb}
-                wideCaption={dakar.heroUnder!.alt}
-                wideB={dakar.heroUnderB}
-              />
-              {dakar.brief[0] && <Blurb>{dakar.brief[0]}</Blurb>}
-              <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Livery layout drawing", "Illustration"]} />
+              {/* Two rows of three equal columns. Top: the two illustrations
+                  and the Volkswagen reference photo, all 16/9 (the photo is
+                  cropped from 3/2; the lightbox opens it whole). Bottom: the
+                  two renders and the flat livery drawing, all 4/5 (the
+                  drawing is contained, on no background, so it shows as
+                  Josh's transparent file with none of it cut). */}
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:gap-5">
+                {dakarStills.map((still, i) => (
+                  <div key={still.src}>
+                    <LbTile
+                      index={still.lb}
+                      label={still.alt}
+                      className={`relative block w-full overflow-hidden rounded-frame ${i === 5 ? "" : "bg-placeholder"} ${i < 3 ? "aspect-video" : "aspect-[4/5]"}`}
+                    >
+                      <Image
+                        src={still.src}
+                        alt={still.alt}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 33vw"
+                        quality={90}
+                        className={i === 5 ? "object-contain" : "object-cover"}
+                      />
+                    </LbTile>
+                    {i === 2 && (
+                      <p className="type-label mt-3 text-ink-muted">{still.alt}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <Blurb>
+                {`${dakar.brief[0]} I drew the livery flat as a technical drawing, then mapped it onto the 3D model as a UV map and rendered it in Blender.`}
+              </Blurb>
+              <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Livery layout drawing", "UV mapping", "Blender", "Illustration"]} />
             </Block>
           </Section>
         )}
 
-        <Section first={!(dakar && dakarMosaic && dakarStills[0])}>
+        <Section first={!(dakar && dakarStills.length === 6)}>
           <Block bold
             label="505 Touring launch · Visual toolkit"
             href="/work/nomad-wheels-505-livery"
