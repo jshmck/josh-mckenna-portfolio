@@ -490,14 +490,15 @@ export default async function LegoPage() {
                   and the Volkswagen reference photo, all 16/9 (the photo is
                   cropped from 3/2; the lightbox opens it whole). Bottom: the
                   two renders and the flat livery drawing, all 4/5 (the
-                  drawing is contained on the canvas, so none of it is cut). */}
+                  drawing is contained, on no background, so it shows as
+                  Josh's transparent file with none of it cut). */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:gap-5">
                 {dakarStills.map((still, i) => (
                   <div key={still.src}>
                     <LbTile
                       index={still.lb}
                       label={still.alt}
-                      className={`relative block w-full overflow-hidden rounded-frame bg-placeholder ${i < 3 ? "aspect-video" : "aspect-[4/5]"}`}
+                      className={`relative block w-full overflow-hidden rounded-frame ${i === 5 ? "" : "bg-placeholder"} ${i < 3 ? "aspect-video" : "aspect-[4/5]"}`}
                     >
                       <Image
                         src={still.src}
