@@ -175,8 +175,8 @@ const BOMBAY_BOTTLES = [
 /** The final Blender renders of the 911 Dakar, front and rear, with the
  *  livery drawing applied as a UV map. Josh's 4:5 exports, used only here. */
 const DAKAR_RENDERS = [
-  img("porsche-911-dakar-iltis", "10-render-black-front", "4/5", "Blender render of the 911 Dakar in the black livery, front three-quarter"),
-  img("porsche-911-dakar-iltis", "11-render-black-rear", "4/5", "Blender render of the 911 Dakar in the black livery, rear three-quarter"),
+  img("porsche-911-dakar-iltis", "10-render-sand-blue-front", "4/5", "Blender render of the 911 Dakar in the sand and blue livery, front three-quarter"),
+  img("porsche-911-dakar-iltis", "11-render-sand-blue-rear", "4/5", "Blender render of the 911 Dakar in the sand and blue livery, rear three-quarter"),
 ];
 
 /** Gipsy Hill's COOLADA can: the photos Josh posted, cropped to 4/5. */
@@ -516,7 +516,7 @@ export default async function LegoPage() {
                 ))}
               </div>
               <Blurb>
-                {`${dakar.brief[0]} I drew the livery flat as a technical drawing, then mapped it onto the 3D model as a UV map and rendered it in Blender.`}
+                {`${dakar.brief[0]} I illustrated the idea first, then drew the livery flat as a technical drawing, mapped it onto the 3D model as a UV map and rendered it in Blender.`}
               </Blurb>
               <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Livery layout drawing", "UV mapping", "Blender", "Illustration"]} />
             </Block>
