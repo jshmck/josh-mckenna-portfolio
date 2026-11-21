@@ -516,7 +516,7 @@ export default async function LegoPage() {
                 ))}
               </div>
               <Blurb>
-                {`${dakar.brief[0]} I drew the livery flat as a technical drawing, then mapped it onto the 3D model as a UV map and rendered it in Blender.`}
+                {`${dakar.brief[0]} I illustrated the idea first, then drew the livery flat as a technical drawing, mapped it onto the 3D model as a UV map and rendered it in Blender.`}
               </Blurb>
               <Skills items={["Art direction", "Livery design", "Vehicle graphics", "Livery layout drawing", "UV mapping", "Blender", "Illustration"]} />
             </Block>
