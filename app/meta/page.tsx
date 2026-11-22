@@ -199,8 +199,8 @@ export default async function MetaPage() {
             measure below that. */}
         <div className="xl:grid xl:grid-cols-2 xl:gap-x-8">
           <p className={INTRO}>
-            I’m Josh, a brand designer and illustrator working across visual
-            identity, digital products and graphic systems. I’m interested in how
+            I’m Josh, a brand designer and senior illustrator working across
+            visual identity, digital products and graphic systems. I’m interested in how
             a strong visual idea can become a flexible system, working just as
             well as a small in-product icon as it does across a campaign or
             physical space.

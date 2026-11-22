@@ -14,7 +14,7 @@ export const metadata: Metadata = pageMeta({
   path: "/info",
   title: "Info",
   description:
-    "Josh McKenna is an illustrator with over a decade of experience, from the Instagram Pride sticker to murals for Facebook and the environmental branding for LA Pride 2024.",
+    "Josh McKenna is a senior illustrator with over a decade of experience, from the Instagram Pride sticker to murals for Facebook and the environmental branding for LA Pride 2024.",
 });
 
 /**
@@ -69,8 +69,8 @@ export default function AboutPage() {
                 <h2 className="type-heading text-ink">About Josh</h2>
                 <Reveal>
                   <p className="mt-12 type-lede text-ink-muted">
-                    Josh McKenna is an illustrator and graphic designer with
-                    over a decade of experience across digital products,
+                    Josh McKenna is a senior illustrator and graphic designer
+                    with over a decade of experience across digital products,
                     editorial, packaging and physical spaces. After a short spell
                     studying automotive design at Coventry, he studied
                     illustration at Falmouth University and went freelance in
