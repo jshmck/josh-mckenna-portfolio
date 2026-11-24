@@ -81,6 +81,22 @@ const nextConfig: NextConfig = {
     // 75 is next/image's default; 90 is for artwork whose grain would be
     // halved by it (ProjectImage.quality).
     qualities: [75, 90],
+    // Vercel's free tier meters Image Optimization at 5,000 transformations
+    // a month, one per unique (source, width, quality), so every rung in the
+    // width ladder is another transformation per image. Next's default
+    // ladder is 15 rungs (32-3840); with ~250 source images that alone could
+    // cross the cap. These 6 keep what the artwork can use: 1200 is a
+    // full-width phone at 3x (390 x 3 = 1170), 2560 is a retina laptop and
+    // the lightbox, and only 18 of the ~340 source files are wider than that.
+    // The 128 and 384 rungs cover the nav circles, stickers and thumbs.
+    deviceSizes: [640, 1200, 1920, 2560],
+    imageSizes: [128, 384],
+    // A year: artwork is renamed whenever its content changes (see the
+    // header comment above), so a cached variant never goes stale, and a
+    // re-transform after expiry is a transformation we don't need to pay
+    // for. If an asset is ever overwritten in place, purge it with
+    // `vercel cache invalidate --srcimg <path>`.
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       { protocol: "https", hostname: "assets.bigcartel.com" },
     ],
