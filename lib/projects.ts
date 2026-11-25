@@ -912,7 +912,7 @@ export const projects: Project[] = [
     pinnedRank: 1,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set · Mural · Parade Float",
-    categories: ["LGBTQ+", "Murals"],
+    categories: ["LGBTQ+", "Murals", "Motion"],
     featured: true,
     // 4/5 frame even though cardImage is a true 1/1 — "put instagram
     // sticker in 4/5 frame to help with the grid," per Josh: leading the
@@ -2569,7 +2569,7 @@ export const projects: Project[] = [
     pinnedRank: 19,
     discipline: "Pride Campaign",
     deliverables: "Packaging · Advertising · Parade Float",
-    categories: ["LGBTQ+"],
+    categories: ["LGBTQ+", "Packaging"],
     summary: "A Pride parade, wrapped around a jar of face cream.",
     heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
     brief: [
@@ -3043,7 +3043,7 @@ export const projects: Project[] = [
     year: 2024,
     discipline: "Illustration",
     deliverables: "1 Metal Tin",
-    categories: ["LGBTQ+"],
+    categories: ["LGBTQ+", "Packaging"],
     summary: "A riverside scene wrapped around a champagne tin for Pride.",
     heroCaption: "The flat wrap artwork, before it went round the tin.",
     brief: [
