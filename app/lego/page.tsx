@@ -142,7 +142,7 @@ const PIPER = [
   ),
   img(
     "piper-heidsieck",
-    "01-tin",
+    "01-tin-v2",
     "9/16",
     "The finished tin, beside the bottle",
   ),

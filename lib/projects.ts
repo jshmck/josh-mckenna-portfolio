@@ -3079,7 +3079,7 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "9/16",
       alt: "The tin, beside the bottle",
-      src: "/work/piper-heidsieck/01-tin.webp",
+      src: "/work/piper-heidsieck/01-tin-v2.webp",
       // Transparent background — contain on bg-canvas, the usual
       // real-alpha fix (see Plate).
       fit: "contain",
@@ -3094,7 +3094,9 @@ export const projects: Project[] = [
     heroPair: {
       ratio: "9/16",
       alt: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut",
-      src: "/work/piper-heidsieck/01-tin.webp",
+      // v2: the tin's colours graded to the flat artwork (the supplied
+      // pack shot had the turquoise sky as powder blue). Bottle untouched.
+      src: "/work/piper-heidsieck/01-tin-v2.webp",
       // Transparent background — contain on bg-canvas, the usual
       // real-alpha fix (see Plate).
       fit: "contain",
