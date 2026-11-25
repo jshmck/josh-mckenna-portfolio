@@ -666,7 +666,13 @@ export function Nav() {
           // capsule radius. px-2 stays for horizontal breathing; the
           // jM mark itself keeps ~7px of clearance inside its own
           // 53px box, so nothing visually touches the bar's edge.
-          className={`pointer-events-none max-md:pointer-events-auto mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter max-md:rounded-frame max-md:border max-md:px-2 max-md:py-0 max-[359px]:px-1 ${barFrostClassMobile}`}
+          // lg: three equal columns on the gallery's own 32px gap
+          // (MasonryGrid's getGap), inside the same frame and gutter as
+          // /work, so the links pill is exactly as wide as the middle
+          // column of cards and its 40px corners nest into theirs. Tied
+          // to the same 1024px breakpoint where the gallery goes to three
+          // columns; change one and change the other.
+          className={`pointer-events-none max-md:pointer-events-auto mx-auto mt-5 grid w-full max-w-frame grid-cols-[1fr_auto_1fr] items-center px-6 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out md:px-gutter lg:grid-cols-3 lg:gap-x-8 max-md:rounded-frame max-md:border max-md:px-2 max-md:py-0 max-[359px]:px-1 ${barFrostClassMobile}`}
         >
           {/* jM circle -- pinned to the frame's left edge (justify-self:
               start), the same edge the pre-pill nav always had it at.
@@ -829,7 +835,7 @@ export function Nav() {
             }}
             // max-md:border-0 -- own border/background move to the shared
             // <nav> bar now, same as jM/Cart (see shapeFrostClassDesktop).
-            className={`pointer-events-auto relative flex items-center gap-3 rounded-full max-md:border-0 md:border px-3.5 py-3 max-[359px]:px-1 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 ${shapeFrostClassDesktop}`}
+            className={`pointer-events-auto relative flex items-center gap-3 rounded-full max-md:border-0 md:border px-3.5 py-3 max-[359px]:px-1 transition-[background-color,border-color,backdrop-filter] duration-300 ease-in-out hover:animate-[nav-pill-hover-soft_650ms_ease-in-out] active:animate-[nav-pill-hover-soft_650ms_ease-in-out] md:h-20 md:gap-10 md:px-12 md:py-0 lg:px-0 ${shapeFrostClassDesktop}`}
           >
             {workMenuOpen && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3">
@@ -888,7 +894,11 @@ export function Nav() {
                 </div>
               </div>
             )}
-            <ul className="flex items-center gap-3 md:gap-10 max-[359px]:gap-1">
+            {/* lg: the pill's width comes from the grid column now, so the
+                words share it out evenly (end space = space between)
+                rather than holding a fixed gap and padding that would
+                overflow the ~290px column at 1024px. */}
+            <ul className="flex items-center gap-3 md:gap-10 lg:w-full lg:justify-evenly lg:gap-0 max-[359px]:gap-1">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   {/* Same nav-pill-hover squash-and-stretch as jM/Cart's
