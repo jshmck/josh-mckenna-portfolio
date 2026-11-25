@@ -649,6 +649,9 @@ export const projects: Project[] = [
     title: "Porsche 911 Dakar, Iltis",
     client: "Personal",
     year: 2026,
+    // Swapped places with Wagamama Pride, per Josh — both are 5/3
+    // landscape span-2 cards, so the grid shape is unchanged.
+    pinnedRank: 13,
     discipline: "Illustration",
     deliverables: "2 Illustrations · 1 Livery Layout",
     categories: ["Cars"],
@@ -2016,11 +2019,10 @@ export const projects: Project[] = [
     cardLabel: "Wagamama",
     year: 2023,
     yearLabel: "2022–2023",
-    // Swapped down into Honda's old slot so Honda could move "almost at
-    // the top," per Josh — same 5/3 landscape span-2 shape, so trading
-    // pinnedRank only swaps the two of them. See honda-super-n's own
-    // comment.
-    pinnedRank: 13,
+    // Swapped places with the 911 Dakar, per Josh: 26 puts it straight
+    // after the last other pinned card (Bombay Sapphire, 25), where the
+    // Dakar used to open the unpinned tail.
+    pinnedRank: 26,
     discipline: "Pride Campaign",
     deliverables: "Vinyl Window Display",
     categories: ["LGBTQ+", "Murals"],
