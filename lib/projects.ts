@@ -2291,11 +2291,21 @@ export const projects: Project[] = [
     pinnedRank: 25,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
-    categories: ["Murals"],
+    categories: ["Murals", "Packaging"],
     // Standardized to 16/9 with the other landscape /work cards, not the
     // hero's true 1.5 — checked against the actual storefront shot,
     // nothing essential is cropped. Same fix as Vogue's series above.
     cardRatio: "5/3",
+    // The Packaging pill leads with the bottles, not the mural storefront.
+    // Landscape on purpose: it spans two columns, which leaves one empty
+    // slot in that view's grid rather than a single card alone on a row.
+    cardImageByCategory: {
+      Packaging: {
+        ratio: "5/3",
+        alt: "Fifty hand-finished bottles, ready to go",
+        src: "/work/bombay-sapphire/07-bottles-wide.webp",
+      },
+    },
     summary:
       "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
     heroCaption: "The Stir Creativity mural, live in Bombay Sapphire's Shoreditch pop-up.",
@@ -3564,11 +3574,11 @@ export const projects: Project[] = [
     year: 2017,
     discipline: "Illustration",
     deliverables: "Building Wrap · Campaign Film",
-    // Murals only, and hidden from the default "All" /work view and search
-    // — "campaign film should be under the mural section only," per Josh.
-    // Still fully reachable at /work/hp-print-over-hate and visible under
-    // the Murals pill.
-    categories: ["Murals"],
+    // Hidden from the default "All" /work view and search. Still fully
+    // reachable at /work/hp-print-over-hate and visible under the Murals
+    // and LGBTQ+ pills (LGBTQ+ added per Josh: the wrap covered hate speech
+    // on Dublin's oldest gay pub).
+    categories: ["LGBTQ+", "Murals"],
     hiddenFromAll: true,
     summary:
       "A building-scale wrap for HP's Print Over Hate campaign, covering hate speech on Dublin's oldest gay bar.",
