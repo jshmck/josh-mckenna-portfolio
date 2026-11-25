@@ -912,7 +912,7 @@ export const projects: Project[] = [
     pinnedRank: 1,
     discipline: "Pride Campaign",
     deliverables: "Sticker Set · Mural · Parade Float",
-    categories: ["LGBTQ+", "Murals"],
+    categories: ["LGBTQ+", "Murals", "Motion"],
     featured: true,
     // 4/5 frame even though cardImage is a true 1/1 — "put instagram
     // sticker in 4/5 frame to help with the grid," per Josh: leading the
@@ -2291,11 +2291,21 @@ export const projects: Project[] = [
     pinnedRank: 25,
     discipline: "Illustration",
     deliverables: "Mural · Embroidered Jacket · Hand-Painted Bottles",
-    categories: ["Murals"],
+    categories: ["Murals", "Packaging"],
     // Standardized to 16/9 with the other landscape /work cards, not the
     // hero's true 1.5 — checked against the actual storefront shot,
     // nothing essential is cropped. Same fix as Vogue's series above.
     cardRatio: "5/3",
+    // The Packaging pill leads with the bottles, not the mural storefront.
+    // Landscape on purpose: it spans two columns, which leaves one empty
+    // slot in that view's grid rather than a single card alone on a row.
+    cardImageByCategory: {
+      Packaging: {
+        ratio: "5/3",
+        alt: "Fifty hand-finished bottles, ready to go",
+        src: "/work/bombay-sapphire/07-bottles-wide.webp",
+      },
+    },
     summary:
       "A gin campaign in three parts: a live-painted mural, an embroidered jacket, and fifty hand-finished bottles.",
     heroCaption: "The Stir Creativity mural, live in Bombay Sapphire's Shoreditch pop-up.",
@@ -2569,7 +2579,7 @@ export const projects: Project[] = [
     pinnedRank: 19,
     discipline: "Pride Campaign",
     deliverables: "Packaging · Advertising · Parade Float",
-    categories: ["LGBTQ+"],
+    categories: ["LGBTQ+", "Packaging"],
     summary: "A Pride parade, wrapped around a jar of face cream.",
     heroCaption: "For Kiehl's 2023 global Pride campaign, in support of The Trevor Project.",
     brief: [
@@ -3043,7 +3053,7 @@ export const projects: Project[] = [
     year: 2024,
     discipline: "Illustration",
     deliverables: "1 Metal Tin",
-    categories: ["LGBTQ+"],
+    categories: ["LGBTQ+", "Packaging"],
     summary: "A riverside scene wrapped around a champagne tin for Pride.",
     heroCaption: "The flat wrap artwork, before it went round the tin.",
     brief: [
@@ -3079,7 +3089,7 @@ export const projects: Project[] = [
     cardImage: {
       ratio: "9/16",
       alt: "The tin, beside the bottle",
-      src: "/work/piper-heidsieck/01-tin.webp",
+      src: "/work/piper-heidsieck/01-tin-v2.webp",
       // Transparent background — contain on bg-canvas, the usual
       // real-alpha fix (see Plate).
       fit: "contain",
@@ -3094,7 +3104,9 @@ export const projects: Project[] = [
     heroPair: {
       ratio: "9/16",
       alt: "The Pride Day limited-edition tin for Piper-Heidsieck's Cuvée Brut",
-      src: "/work/piper-heidsieck/01-tin.webp",
+      // v2: the tin's colours graded to the flat artwork (the supplied
+      // pack shot had the turquoise sky as powder blue). Bottle untouched.
+      src: "/work/piper-heidsieck/01-tin-v2.webp",
       // Transparent background — contain on bg-canvas, the usual
       // real-alpha fix (see Plate).
       fit: "contain",
@@ -3562,11 +3574,11 @@ export const projects: Project[] = [
     year: 2017,
     discipline: "Illustration",
     deliverables: "Building Wrap · Campaign Film",
-    // Murals only, and hidden from the default "All" /work view and search
-    // — "campaign film should be under the mural section only," per Josh.
-    // Still fully reachable at /work/hp-print-over-hate and visible under
-    // the Murals pill.
-    categories: ["Murals"],
+    // Hidden from the default "All" /work view and search. Still fully
+    // reachable at /work/hp-print-over-hate and visible under the Murals
+    // and LGBTQ+ pills (LGBTQ+ added per Josh: the wrap covered hate speech
+    // on Dublin's oldest gay pub).
+    categories: ["LGBTQ+", "Murals"],
     hiddenFromAll: true,
     summary:
       "A building-scale wrap for HP's Print Over Hate campaign, covering hate speech on Dublin's oldest gay bar.",
