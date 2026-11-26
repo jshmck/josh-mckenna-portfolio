@@ -86,6 +86,7 @@ app/
   work/page.tsx        gallery index
   work/[slug]/page.tsx project template (generateStaticParams)
   info/ contact/ shop/
+  lab/                 unlisted experiments page — see below
 components/
   site/     nav · footer · marquee · cta-band     (chrome — nav and footer
                                                      are both in the root
@@ -102,11 +103,24 @@ components/
                                                      both /contact and Info
                                                      — see below)
   shop/     waitlist-form
+  lab/      lab-stage · lab-item                 (the /lab collage)
 lib/
   site.ts       nav links, contact details, footer — single source for chrome
   projects.ts   typed project content + access helpers
   about.ts      clients, press quotes, talks & features, sequence captions
+  lab.ts        /lab's artwork list, scatter maths, seeded layout
 ```
+
+**`/lab` is Josh's sandbox, and it is deliberately off the map.** A draggable,
+shuffle-able collage of cut-outs and posters with big lowercase labels, riffing
+on quentinchambry.com. It is `noindex` (page metadata plus an `X-Robots-Tag`
+header in `next.config.ts`), has no nav link and no sitemap entry, same as
+`/lego` and `/koto`. Don't link it from the real pages or add it to the
+sitemap unless Josh says it has graduated. Deleting `app/lab`, `components/lab`,
+`lib/lab.ts`, the header entry and the `type-lab` / `.lab-*` rules in
+`globals.css` removes it completely. Swap artwork in `lib/lab.ts` (posters must
+use a ratio `<Plate>` already knows). `type-lab` is a fifth type size, allowed
+only because the page is an experiment; it is not part of the system.
 
 **The footer lives in `app/layout.tsx`, on every page.** It used to be
 Info-only, deliberately kept out of the root layout — reversed because the
