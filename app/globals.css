@@ -234,6 +234,20 @@
   font-weight: 400;
 }
 
+/* The big lowercase section words on /lab (the experiments page) — the
+   Quentin Chambry-style "about" / "shuffle" labels Josh liked. Helvetica
+   Neue Bold, tight, lowercase in the source text. Experiment-only: if /lab
+   graduates into the real site this either replaces type-heading or goes
+   (a new size is a design decision, so it's flagged here rather than left
+   to look like part of the system). */
+@utility type-lab {
+  font-family: var(--font-grotesque);
+  font-size: clamp(2.25rem, 5.6vw, 5.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  font-weight: 700;
+}
+
 /* Inline icons -- Josh's own stroke icons set inside sentences like glyphs
    (components/ui/inline-icon.tsx). One shared base plus a metrics utility
    per icon. Heights are em so they scale with the surrounding type at any
@@ -730,6 +744,72 @@
   [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* /lab — the experiments collage (components/lab/, lib/lab.ts).
+
+   The stage is a size container, so items are sized and placed in container
+   units and the whole collage scales with the window. One `--lab-unit` is
+   0.9% of the stage's shorter side (the desktop value initialLayout() in
+   lib/lab.ts assumes); phones get 1.35%, because the same proportions on a
+   390px-wide stage would make every piece a postage stamp, and they show a
+   smaller set to match. (A custom property holds the unit as an unresolved
+   token, so `cqmin` is resolved where it is used: on the item, against the
+   stage.)
+
+   Position is `--fx` / `--fy`, 0-1 across the stage's *free range* (stage
+   minus the item's own size), turned into a translate here. JS only ever
+   writes those two numbers, so a resize re-lays everything out with no
+   observer and nothing can end up outside the stage.
+
+   The shuffle glide is a CSS transition on that translate, so the global
+   reduced-motion rule flattens it on its own. It only exists while the stage
+   carries `data-glide` (set for the length of a shuffle): left on all the
+   time, a window resize changes the computed translate too and every piece
+   would swim (and overshoot, on the bounce curve) to its new spot. The
+   stagger delay rides `--td`, which the script leaves unset under reduced
+   motion (a transition-delay is not something that rule zeroes). */
+.lab-stage {
+  --lab-unit: 0.9cqmin;
+}
+@media (width < 48rem) {
+  .lab-stage {
+    --lab-unit: 1.35cqmin;
+  }
+}
+
+.lab-item {
+  --w: calc(var(--s) * var(--lab-unit));
+  --h: calc(var(--w) / var(--a));
+  width: var(--w);
+  transform: translate3d(
+    calc(var(--fx) * (100cqw - var(--w))),
+    calc(var(--fy) * (100cqh - var(--h))),
+    0
+  );
+}
+
+.lab-stage[data-glide] .lab-item {
+  transition: transform 700ms var(--ease-bounce);
+}
+
+.lab-item,
+.lab-item > * {
+  transition-delay: var(--td, 0ms);
+}
+
+/* Fade + rise on first reveal, staggered by `--i` (set by the script, left
+   at 0 under reduced motion). Uses the standalone `translate` property so it
+   never fights the item's own transform, nor the inner `scale` / `rotate`. */
+@keyframes lab-rise {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
   }
 }
 
