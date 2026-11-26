@@ -62,6 +62,11 @@ const nextConfig: NextConfig = {
         source: "/meta",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
       },
+      // The experiments page: unlisted, kept out of search like the above.
+      {
+        source: "/lab",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
       {
         source:
           "/:dir(work|about|illustrations|logos)/:path*.:ext(mp4|webp|jpg|jpeg|png|svg|avif)",
