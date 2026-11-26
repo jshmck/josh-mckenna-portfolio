@@ -112,8 +112,8 @@ lib/
 ```
 
 **`/lab` is Josh's sandbox, and it is deliberately off the map.** A draggable,
-shuffle-able collage of cut-outs and posters with big lowercase labels, riffing
-on quentinchambry.com. It is `noindex` (page metadata plus an `X-Robots-Tag`
+shuffle-able collage of mostly transparent cut-outs (plus three full-artwork
+posters) with big lowercase labels, riffing on quentinchambry.com. It is `noindex` (page metadata plus an `X-Robots-Tag`
 header in `next.config.ts`), has no nav link and no sitemap entry, same as
 `/lego` and `/koto`. Don't link it from the real pages or add it to the
 sitemap unless Josh says it has graduated. Deleting `app/lab`, `components/lab`,

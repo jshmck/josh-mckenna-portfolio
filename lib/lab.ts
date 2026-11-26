@@ -1,8 +1,10 @@
 import type { ImageRatio } from "@/lib/projects";
 
 /**
- * /lab — the experiments page. A loose collage of cut-outs and posters that
- * can be dragged about (and stay where they're dropped) and shuffled.
+ * /lab — the experiments page. A loose collage that can be dragged about (and
+ * stays where it's dropped) and shuffled. Mostly transparent cut-outs, with a
+ * few full artworks (posters) mixed in for contrast: Josh's brief was "mostly
+ * png transparent BG with maybe two or 3 full artworks".
  *
  * This file is the whole content seam for the page: which artwork appears,
  * how big, and the scatter maths that decides where it lands. Everything
@@ -32,34 +34,41 @@ export type LabPiece =
 
 const O = "/illustrations/objects";
 const W = "/work";
+const R = `${W}/rooted-journal-editorial`;
 
 export const labPieces: LabPiece[] = [
-  // Cut-outs — the same alpha artwork the homepage hero drifts.
+  // Cut-outs, first the objects the homepage hero drifts. Sizes are in stage
+  // units; the Rooted Journal spots are square with ~85% visible, so they run a
+  // touch smaller than their frame suggests.
   { id: "car", kind: "cutout", src: `${O}/car-super-n-body-honda.webp`, aspect: 1.178, size: 30 },
   { id: "citroen", kind: "cutout", src: `${O}/citroen-2cv-cutout.webp`, aspect: 2.403, size: 34 },
   { id: "face", kind: "cutout", src: `${O}/josh-face-2.webp`, aspect: 1.103, size: 21 },
   { id: "hand", kind: "cutout", src: `${O}/hand-air-2.webp`, aspect: 0.9, size: 19 },
   { id: "flowers", kind: "cutout", src: `${O}/flowers.webp`, aspect: 1.112, size: 24 },
   { id: "hat", kind: "cutout", src: `${O}/cowboy-hat.webp`, aspect: 1.331, size: 23 },
-  { id: "pato", kind: "cutout", src: `${O}/pato.webp`, aspect: 0.8, size: 19, desktopOnly: true },
+  { id: "pato", kind: "cutout", src: `${O}/pato.webp`, aspect: 0.8, size: 19 },
+  { id: "yeti", kind: "cutout", src: `${O}/yeti-cooler.webp`, aspect: 0.8, size: 19 },
   { id: "pride", kind: "cutout", src: `${O}/pride-sticker.webp`, aspect: 0.781, size: 16, desktopOnly: true },
-  { id: "yeti", kind: "cutout", src: `${O}/yeti-cooler.webp`, aspect: 0.8, size: 19, desktopOnly: true },
   { id: "chair", kind: "cutout", src: `${O}/chair-vitra-virgil-4.webp`, aspect: 0.866, size: 19, desktopOnly: true },
   { id: "tin", kind: "cutout", src: `${W}/piper-heidsieck/01-tin-v2.webp`, aspect: 0.586, size: 14, desktopOnly: true },
 
-  // Posters — real print pieces, kept to the ratios Plate already knows.
+  // Cut-outs from the project pages: the Rooted Journal spots, the 2020
+  // Instagram sticker dancer, and the Hikes n Bikes "pump more" mural.
+  { id: "tractor", kind: "cutout", src: `${R}/01-support-local.webp`, aspect: 1, size: 21, desktopOnly: true },
+  { id: "fishing", kind: "cutout", src: `${R}/03-fishing.webp`, aspect: 1, size: 21, desktopOnly: true },
+  { id: "recycle", kind: "cutout", src: `${R}/05-buy-seconds.webp`, aspect: 1, size: 21, desktopOnly: true },
+  { id: "stump", kind: "cutout", src: `${R}/06-reforest.webp`, aspect: 1, size: 22, desktopOnly: true },
+  { id: "pumpkin", kind: "cutout", src: `${R}/07-preserve-heirloom.webp`, aspect: 1, size: 21, desktopOnly: true },
+  { id: "megaphone", kind: "cutout", src: `${R}/10-advocate.webp`, aspect: 1, size: 21, desktopOnly: true },
+  { id: "dancer", kind: "cutout", src: `${W}/instagram-sticker/12-sticker-2020-remake.webp`, aspect: 1, size: 24, desktopOnly: true },
+  { id: "pump-more", kind: "cutout", src: `${W}/hikes-n-bikes/02-mural-artwork.webp`, aspect: 2.273, size: 34, desktopOnly: true },
+
+  // The full artworks, three of them: real print pieces, kept to the ratios
+  // Plate already knows. Different enough from each other (framed, flat, red)
+  // that they read as a deliberate few among the cut-outs.
   { id: "baku", kind: "poster", src: `${W}/beefbar-posters/01-baku-02.webp`, aspect: 0.707, ratio: "707/1000", size: 20 },
-  { id: "meribel", kind: "poster", src: `${W}/beefbar-posters/07-meribel.webp`, aspect: 0.707, ratio: "707/1000", size: 20 },
   { id: "la-pride", kind: "poster", src: `${W}/la-pride/01-la-pride-2x3-v2.webp`, aspect: 0.667, ratio: "2/3", size: 19 },
   { id: "rodeo", kind: "poster", src: `${W}/levis-rainbow-rodeo/01-poster-v2.webp`, aspect: 0.8, ratio: "4/5", size: 20 },
-  { id: "underground", kind: "poster", src: `${W}/figma-underground/01-underground-final-hr.webp`, aspect: 0.8, ratio: "4/5", size: 19, desktopOnly: true },
-  { id: "proud", kind: "poster", src: `${W}/bershka/01-we-are-proud-hero.webp`, aspect: 0.5625, ratio: "9/16", size: 15 },
-  { id: "monaco", kind: "poster", src: `${W}/beefbar-posters/08-monaco.webp`, aspect: 0.707, ratio: "707/1000", size: 21, desktopOnly: true },
-  { id: "santorini", kind: "poster", src: `${W}/beefbar-posters/11-santorini.webp`, aspect: 0.707, ratio: "707/1000", size: 20, desktopOnly: true },
-  { id: "rimowa", kind: "poster", src: `${W}/figma-rimowa/01-rimowa2.webp`, aspect: 0.8, ratio: "4/5", size: 19, desktopOnly: true },
-  { id: "vitra", kind: "poster", src: `${W}/figma-vitra-virgil/01-vitgr-hr3.webp`, aspect: 0.8, ratio: "4/5", size: 19, desktopOnly: true },
-  { id: "cowboy", kind: "poster", src: `${W}/cowboy/02-cowboy-full-hr.webp`, aspect: 0.8, ratio: "4/5", size: 18, desktopOnly: true },
-  { id: "voxi", kind: "poster", src: `${W}/voxi-pride/02-card.webp`, aspect: 0.8, ratio: "4/5", size: 19, desktopOnly: true },
 ];
 
 /** Maximum resting tilt either side of upright, degrees. Cut-outs can lean
